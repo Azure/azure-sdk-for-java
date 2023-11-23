@@ -56,6 +56,6 @@ public final class CommunicationServicesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.communicationServices().delete("bhvgy", "gu", com.azure.core.util.Context.NONE);
+        manager.communicationServices().delete("uscrpabgyepsb", "tazqugxywpmueefj", com.azure.core.util.Context.NONE);
     }
 }

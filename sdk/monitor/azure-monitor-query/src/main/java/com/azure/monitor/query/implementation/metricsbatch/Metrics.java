@@ -20,9 +20,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.monitor.query.implementation.metricsbatch.models.AdditionalInfoErrorResponseException;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
-import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
+import com.azure.monitor.query.implementation.metricsbatch.models.BatchMetricResultsResponse;
+import com.azure.monitor.query.implementation.metricsbatch.models.ErrorContractException;
+import com.azure.monitor.query.implementation.metricsbatch.models.MetricBatchResourceIdList;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -56,8 +57,8 @@ public final class Metrics {
     public interface MetricsService {
         @Post("/subscriptions/{subscriptionId}/metrics:getBatch")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(AdditionalInfoErrorResponseException.class)
-        Mono<Response<MetricResultsResponse>> batch(
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<BatchMetricResultsResponse>> batch(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("subscriptionId") String subscriptionId,
                 @QueryParam("starttime") String starttime,
@@ -69,15 +70,16 @@ public final class Metrics {
                 @QueryParam("top") Integer top,
                 @QueryParam("orderby") String orderBy,
                 @QueryParam("filter") String filter,
+                @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ResourceIdList resourceIds,
+                @BodyParam("application/json") MetricBatchResourceIdList resourceIds,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/subscriptions/{subscriptionId}/metrics:getBatch")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(AdditionalInfoErrorResponseException.class)
-        Response<MetricResultsResponse> batchSync(
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Response<BatchMetricResultsResponse> batchSync(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("subscriptionId") String subscriptionId,
                 @QueryParam("starttime") String starttime,
@@ -89,8 +91,9 @@ public final class Metrics {
                 @QueryParam("top") Integer top,
                 @QueryParam("orderby") String orderBy,
                 @QueryParam("filter") String filter,
+                @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") ResourceIdList resourceIds,
+                @BodyParam("application/json") MetricBatchResourceIdList resourceIds,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -106,11 +109,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -120,24 +124,28 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricResultsResponse>> batchWithResponseAsync(
+    public Mono<Response<BatchMetricResultsResponse>> batchWithResponseAsync(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
             String aggregation,
             Integer top,
             String orderBy,
-            String filter) {
+            String filter,
+            Boolean autoAdjustTimegrain) {
         final String accept = "application/json";
         String metricnamesConverted =
                 metricnames.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
@@ -155,6 +163,7 @@ public final class Metrics {
                                 top,
                                 orderBy,
                                 filter,
+                                autoAdjustTimegrain,
                                 this.client.getApiVersion(),
                                 resourceIds,
                                 accept,
@@ -172,11 +181,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -186,18 +196,21 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricResultsResponse>> batchWithResponseAsync(
+    public Mono<Response<BatchMetricResultsResponse>> batchWithResponseAsync(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
@@ -205,6 +218,7 @@ public final class Metrics {
             Integer top,
             String orderBy,
             String filter,
+            Boolean autoAdjustTimegrain,
             Context context) {
         final String accept = "application/json";
         String metricnamesConverted =
@@ -221,6 +235,7 @@ public final class Metrics {
                 top,
                 orderBy,
                 filter,
+                autoAdjustTimegrain,
                 this.client.getApiVersion(),
                 resourceIds,
                 accept,
@@ -238,11 +253,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -252,24 +268,28 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricResultsResponse> batchAsync(
+    public Mono<BatchMetricResultsResponse> batchAsync(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
             String aggregation,
             Integer top,
             String orderBy,
-            String filter) {
+            String filter,
+            Boolean autoAdjustTimegrain) {
         return batchWithResponseAsync(
                         subscriptionId,
                         metricnamespace,
@@ -281,7 +301,8 @@ public final class Metrics {
                         aggregation,
                         top,
                         orderBy,
-                        filter)
+                        filter,
+                        autoAdjustTimegrain)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -296,11 +317,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -310,18 +332,21 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricResultsResponse> batchAsync(
+    public Mono<BatchMetricResultsResponse> batchAsync(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
@@ -329,6 +354,7 @@ public final class Metrics {
             Integer top,
             String orderBy,
             String filter,
+            Boolean autoAdjustTimegrain,
             Context context) {
         return batchWithResponseAsync(
                         subscriptionId,
@@ -342,6 +368,7 @@ public final class Metrics {
                         top,
                         orderBy,
                         filter,
+                        autoAdjustTimegrain,
                         context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -357,11 +384,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -371,18 +399,21 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricResultsResponse> batchWithResponse(
+    public Response<BatchMetricResultsResponse> batchWithResponse(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
@@ -390,6 +421,7 @@ public final class Metrics {
             Integer top,
             String orderBy,
             String filter,
+            Boolean autoAdjustTimegrain,
             Context context) {
         final String accept = "application/json";
         String metricnamesConverted =
@@ -406,6 +438,7 @@ public final class Metrics {
                 top,
                 orderBy,
                 filter,
+                autoAdjustTimegrain,
                 this.client.getApiVersion(),
                 resourceIds,
                 accept,
@@ -423,11 +456,12 @@ public final class Metrics {
      *     have specified the endtime parameter, then this parameter is required. If only starttime is specified, then
      *     endtime defaults to the current time. If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query. *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     *     case for 'FULL' value that returns single datapoint for entire time span requested. *Examples: PT15M, PT1H,
+     *     P1D*, FULL.
      * @param aggregation The list of aggregation types (comma separated) to retrieve. *Examples: average, minimum,
      *     maximum*.
-     * @param top The maximum number of records to retrieve per resource ID in the request. Valid only if filter is
-     *     specified. Defaults to 10.
+     * @param top The maximum number of records to retrieve. Valid only if a filter is specified. Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort. Only one order can be
      *     specified. *Examples: sum asc*.
      * @param filter The filter is used to reduce the set of metric data returned.&lt;br&gt;Example:&lt;br&gt;Metric
@@ -437,24 +471,28 @@ public final class Metrics {
      *     because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time
      *     series where A = a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;-
      *     Return all time series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     *     will return the result using the closest supported timespan. When set to false, an error is returned for
+     *     invalid timespan parameters. Defaults to false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricResultsResponse batch(
+    public BatchMetricResultsResponse batch(
             String subscriptionId,
             String metricnamespace,
             List<String> metricnames,
-            ResourceIdList resourceIds,
+            MetricBatchResourceIdList resourceIds,
             String starttime,
             String endtime,
             Duration interval,
             String aggregation,
             Integer top,
             String orderBy,
-            String filter) {
+            String filter,
+            Boolean autoAdjustTimegrain) {
         return batchWithResponse(
                         subscriptionId,
                         metricnamespace,
@@ -467,6 +505,7 @@ public final class Metrics {
                         top,
                         orderBy,
                         filter,
+                        autoAdjustTimegrain,
                         Context.NONE)
                 .getValue();
     }

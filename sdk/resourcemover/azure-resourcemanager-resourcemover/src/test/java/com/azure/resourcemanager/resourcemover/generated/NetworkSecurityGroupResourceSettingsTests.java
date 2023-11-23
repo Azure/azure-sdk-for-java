@@ -8,6 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcemover.models.NetworkSecurityGroupResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.NsgSecurityRule;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class NetworkSecurityGroupResourceSettingsTests {
@@ -16,51 +18,69 @@ public final class NetworkSecurityGroupResourceSettingsTests {
         NetworkSecurityGroupResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/networkSecurityGroups\",\"securityRules\":[{\"name\":\"i\",\"access\":\"kvceoveilovnotyf\",\"description\":\"cnjbkcnxdhbt\",\"destinationAddressPrefix\":\"phywpnvj\",\"destinationPortRange\":\"qnermclfplphoxu\",\"direction\":\"rpabg\",\"priority\":1582480909,\"protocol\":\"bjtazqugxywpmu\",\"sourceAddressPrefix\":\"fjz\",\"sourcePortRange\":\"qkqujidsu\"}],\"targetResourceName\":\"onobglaocqx\"}")
+                    "{\"resourceType\":\"Microsoft.Network/networkSecurityGroups\",\"tags\":{\"ucww\":\"ugicjooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\"},\"securityRules\":[{\"name\":\"txnrjaw\",\"access\":\"wgxhn\",\"description\":\"kxfbkpycgklwndn\",\"destinationAddressPrefix\":\"dauwhvylwzbtd\",\"destinationPortRange\":\"ujznb\",\"direction\":\"ow\",\"priority\":2070148801,\"protocol\":\"zqlveualupjmkhf\",\"sourceAddressPrefix\":\"bbcswsrtjri\",\"sourcePortRange\":\"rbpbewtghfgblcg\"}],\"targetResourceName\":\"zvlvqhjkbegib\",\"targetResourceGroupName\":\"mxiebw\"}")
                 .toObject(NetworkSecurityGroupResourceSettings.class);
-        Assertions.assertEquals("onobglaocqx", model.targetResourceName());
-        Assertions.assertEquals("i", model.securityRules().get(0).name());
-        Assertions.assertEquals("kvceoveilovnotyf", model.securityRules().get(0).access());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.securityRules().get(0).description());
-        Assertions.assertEquals("phywpnvj", model.securityRules().get(0).destinationAddressPrefix());
-        Assertions.assertEquals("qnermclfplphoxu", model.securityRules().get(0).destinationPortRange());
-        Assertions.assertEquals("rpabg", model.securityRules().get(0).direction());
-        Assertions.assertEquals(1582480909, model.securityRules().get(0).priority());
-        Assertions.assertEquals("bjtazqugxywpmu", model.securityRules().get(0).protocol());
-        Assertions.assertEquals("fjz", model.securityRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("qkqujidsu", model.securityRules().get(0).sourcePortRange());
+        Assertions.assertEquals("zvlvqhjkbegib", model.targetResourceName());
+        Assertions.assertEquals("mxiebw", model.targetResourceGroupName());
+        Assertions.assertEquals("ugicjooxdjebw", model.tags().get("ucww"));
+        Assertions.assertEquals("txnrjaw", model.securityRules().get(0).name());
+        Assertions.assertEquals("wgxhn", model.securityRules().get(0).access());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.securityRules().get(0).description());
+        Assertions.assertEquals("dauwhvylwzbtd", model.securityRules().get(0).destinationAddressPrefix());
+        Assertions.assertEquals("ujznb", model.securityRules().get(0).destinationPortRange());
+        Assertions.assertEquals("ow", model.securityRules().get(0).direction());
+        Assertions.assertEquals(2070148801, model.securityRules().get(0).priority());
+        Assertions.assertEquals("zqlveualupjmkhf", model.securityRules().get(0).protocol());
+        Assertions.assertEquals("bbcswsrtjri", model.securityRules().get(0).sourceAddressPrefix());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.securityRules().get(0).sourcePortRange());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityGroupResourceSettings model =
             new NetworkSecurityGroupResourceSettings()
-                .withTargetResourceName("onobglaocqx")
+                .withTargetResourceName("zvlvqhjkbegib")
+                .withTargetResourceGroupName("mxiebw")
+                .withTags(mapOf("ucww", "ugicjooxdjebw", "bvmeuecivy", "vo", "ueiotwmcdyt", "zceuojgjrw"))
                 .withSecurityRules(
                     Arrays
                         .asList(
                             new NsgSecurityRule()
-                                .withName("i")
-                                .withAccess("kvceoveilovnotyf")
-                                .withDescription("cnjbkcnxdhbt")
-                                .withDestinationAddressPrefix("phywpnvj")
-                                .withDestinationPortRange("qnermclfplphoxu")
-                                .withDirection("rpabg")
-                                .withPriority(1582480909)
-                                .withProtocol("bjtazqugxywpmu")
-                                .withSourceAddressPrefix("fjz")
-                                .withSourcePortRange("qkqujidsu")));
+                                .withName("txnrjaw")
+                                .withAccess("wgxhn")
+                                .withDescription("kxfbkpycgklwndn")
+                                .withDestinationAddressPrefix("dauwhvylwzbtd")
+                                .withDestinationPortRange("ujznb")
+                                .withDirection("ow")
+                                .withPriority(2070148801)
+                                .withProtocol("zqlveualupjmkhf")
+                                .withSourceAddressPrefix("bbcswsrtjri")
+                                .withSourcePortRange("rbpbewtghfgblcg")));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupResourceSettings.class);
-        Assertions.assertEquals("onobglaocqx", model.targetResourceName());
-        Assertions.assertEquals("i", model.securityRules().get(0).name());
-        Assertions.assertEquals("kvceoveilovnotyf", model.securityRules().get(0).access());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.securityRules().get(0).description());
-        Assertions.assertEquals("phywpnvj", model.securityRules().get(0).destinationAddressPrefix());
-        Assertions.assertEquals("qnermclfplphoxu", model.securityRules().get(0).destinationPortRange());
-        Assertions.assertEquals("rpabg", model.securityRules().get(0).direction());
-        Assertions.assertEquals(1582480909, model.securityRules().get(0).priority());
-        Assertions.assertEquals("bjtazqugxywpmu", model.securityRules().get(0).protocol());
-        Assertions.assertEquals("fjz", model.securityRules().get(0).sourceAddressPrefix());
-        Assertions.assertEquals("qkqujidsu", model.securityRules().get(0).sourcePortRange());
+        Assertions.assertEquals("zvlvqhjkbegib", model.targetResourceName());
+        Assertions.assertEquals("mxiebw", model.targetResourceGroupName());
+        Assertions.assertEquals("ugicjooxdjebw", model.tags().get("ucww"));
+        Assertions.assertEquals("txnrjaw", model.securityRules().get(0).name());
+        Assertions.assertEquals("wgxhn", model.securityRules().get(0).access());
+        Assertions.assertEquals("kxfbkpycgklwndn", model.securityRules().get(0).description());
+        Assertions.assertEquals("dauwhvylwzbtd", model.securityRules().get(0).destinationAddressPrefix());
+        Assertions.assertEquals("ujznb", model.securityRules().get(0).destinationPortRange());
+        Assertions.assertEquals("ow", model.securityRules().get(0).direction());
+        Assertions.assertEquals(2070148801, model.securityRules().get(0).priority());
+        Assertions.assertEquals("zqlveualupjmkhf", model.securityRules().get(0).protocol());
+        Assertions.assertEquals("bbcswsrtjri", model.securityRules().get(0).sourceAddressPrefix());
+        Assertions.assertEquals("rbpbewtghfgblcg", model.securityRules().get(0).sourcePortRange());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

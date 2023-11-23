@@ -5,18 +5,18 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capability for the PostgreSQL server. */
+/** location capability. */
 @Immutable
 public final class CapabilitiesListResult {
     /*
      * A list of supported capabilities.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FlexibleServerCapabilityInner> value;
+    private List<CapabilityPropertiesInner> value;
 
     /*
      * Link to retrieve next page of results.
@@ -33,7 +33,7 @@ public final class CapabilitiesListResult {
      *
      * @return the value value.
      */
-    public List<FlexibleServerCapabilityInner> value() {
+    public List<CapabilityPropertiesInner> value() {
         return this.value;
     }
 

@@ -10,8 +10,8 @@ import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -67,7 +67,7 @@ public class DeviceCodeCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -89,13 +89,13 @@ public class DeviceCodeCredentialTest {
                 new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -136,7 +136,7 @@ public class DeviceCodeCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
         try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
@@ -158,13 +158,13 @@ public class DeviceCodeCredentialTest {
                 new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
 
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
 
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -191,7 +191,7 @@ public class DeviceCodeCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -219,7 +219,7 @@ public class DeviceCodeCredentialTest {
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 

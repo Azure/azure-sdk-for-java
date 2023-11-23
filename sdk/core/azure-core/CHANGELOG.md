@@ -1,6 +1,6 @@
 # Release History
 
-## 1.44.0-beta.1 (Unreleased)
+## 1.46.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,43 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.45.0 (2023-11-03)
+
+### Features Added
+
+- Added `PollOperationDetails` as details of long-running operations.
+
+### Bugs Fixed
+
+- Checks for HTTPS requirement when using certain credentials now checks for the protocol not being 'https'. ([#37454](https://github.com/Azure/azure-sdk-for-java/pull/37454))
+
+## 1.44.1 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.31` to `3.4.33`.
+
+## 1.44.0 (2023-10-06)
+
+### Features Added
+
+- Added `CoreUtils.getResultWithTimeout` to get a value of a `Future` and cancel it if the `get` times out. ([#37055](https://github.com/Azure/azure-sdk-for-java/pull/37055))
+- Added `transfer` and `transferAsync` overloads in `IOUtils` that accept an estimated data size to attempt to better
+  optimize transfers to reduce reads and writes. ([#36650](https://github.com/Azure/azure-sdk-for-java/pull/36650))
+
+### Bugs Fixed
+
+- Fixed a bug where `FluxByteBufferContent.toReplayableContent()` didn't eagerly make the `Flux<ByteBuffer>` replayable. ([#36999](https://github.com/Azure/azure-sdk-for-java/pull/36999))
+
+### Other Changes
+
+- REST calls using `SyncRestProxy` no longer logs unexpected HTTP status code responses to align with the asynchronous
+  behavior in `AsyncRestProxy`. ([#36680](https://github.com/Azure/azure-sdk-for-java/pull/36680))
+- Rewrote internal reflection handling to better support Android. ([#36612](https://github.com/Azure/azure-sdk-for-java/pull/36612))
+- Replaced `doFinally` with `Mono.using` and `Flux.using`. ([#36997](https://github.com/Azure/azure-sdk-for-java/pull/36997))
 
 ## 1.43.0 (2023-09-07)
 

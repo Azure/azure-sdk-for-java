@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for ManagedHsms Update. */
 public final class ManagedHsmsUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_Update.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Update.json
      */
     /**
      * Sample code: Update an existing managed HSM Pool.
@@ -31,6 +31,7 @@ public final class ManagedHsmsUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

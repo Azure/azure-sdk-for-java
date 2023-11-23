@@ -30,7 +30,7 @@ public final class NetworkConnectionsGetHealthDetailsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"startDateTime\":\"2021-11-18T23:48:24Z\",\"endDateTime\":\"2021-01-08T05:35:46Z\",\"healthChecks\":[]},\"id\":\"hlctddunqn\",\"name\":\"yfp\",\"type\":\"hrqbnjjrcg\"}";
+            "{\"properties\":{\"startDateTime\":\"2021-02-03T13:21:09Z\",\"endDateTime\":\"2021-11-05T18:25:40Z\",\"healthChecks\":[{\"status\":\"Warning\",\"displayName\":\"hqepvufhbzehewh\",\"startDateTime\":\"2021-04-21T15:05:08Z\",\"endDateTime\":\"2021-04-25T05:24:23Z\",\"errorType\":\"qnbldxe\",\"recommendedAction\":\"lgsc\",\"additionalDetails\":\"ri\"},{\"status\":\"Unknown\",\"displayName\":\"r\",\"startDateTime\":\"2021-03-22T23:28:04Z\",\"endDateTime\":\"2021-05-14T17:56:54Z\",\"errorType\":\"ofldpuviyfcaa\",\"recommendedAction\":\"olhbhlvb\",\"additionalDetails\":\"uqibsxtkcu\"},{\"status\":\"Passed\",\"displayName\":\"farfs\",\"startDateTime\":\"2021-04-06T00:55:24Z\",\"endDateTime\":\"2021-03-08T02:00:13Z\",\"errorType\":\"xnq\",\"recommendedAction\":\"wgfstmhqykizm\",\"additionalDetails\":\"saoafcluqvox\"},{\"status\":\"Unknown\",\"displayName\":\"im\",\"startDateTime\":\"2021-12-04T12:52:02Z\",\"endDateTime\":\"2021-02-13T02:01:44Z\",\"errorType\":\"wwpbmzgwesyd\",\"recommendedAction\":\"wefohecbvo\",\"additionalDetails\":\"ndyqleal\"}]},\"id\":\"lmtkhlowkxx\",\"name\":\"vbrdfjmzsyzfho\",\"type\":\"lhikcyychunsj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class NetworkConnectionsGetHealthDetailsWithResponseMockTests {
         HealthCheckStatusDetails response =
             manager
                 .networkConnections()
-                .getHealthDetailsWithResponse("ttexoqqpwcyyufmh", "uncuw", com.azure.core.util.Context.NONE)
+                .getHealthDetailsWithResponse("vbopfppdbwnu", "gahxkumasjcaa", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

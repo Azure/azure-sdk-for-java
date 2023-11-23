@@ -13,7 +13,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Objects;
 
 /** The SearchIndexerLimits model. */
 @Immutable
@@ -68,10 +67,6 @@ public final class SearchIndexerLimits implements JsonSerializable<SearchIndexer
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("maxRunTime", Objects.toString(this.maxRunTime, null));
-        jsonWriter.writeNumberField("maxDocumentExtractionSize", this.maxDocumentExtractionSize);
-        jsonWriter.writeNumberField(
-                "maxDocumentContentCharactersToExtract", this.maxDocumentContentCharactersToExtract);
         return jsonWriter.writeEndObject();
     }
 

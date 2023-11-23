@@ -60,11 +60,10 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface AnnotationsService {
+    public interface AnnotationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/Annotations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AnnotationErrorException.class)
         Mono<Response<AnnotationsListResult>> list(
@@ -80,8 +79,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/Annotations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AnnotationErrorException.class)
         Mono<Response<List<AnnotationInner>>> create(
@@ -96,8 +94,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/Annotations/{annotationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations/{annotationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -111,8 +108,7 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/Annotations/{annotationId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/Annotations/{annotationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(AnnotationErrorException.class)
         Mono<Response<List<AnnotationInner>>> get(
@@ -470,24 +466,6 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationProperties Properties that need to be specified to create an annotation of a Application
      *     Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Annotation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AnnotationInner> create(
-        String resourceGroupName, String resourceName, AnnotationInner annotationProperties) {
-        return createAsync(resourceGroupName, resourceName, annotationProperties).block();
-    }
-
-    /**
-     * Create an Annotation of an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
-     *     Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
@@ -498,6 +476,24 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     public Response<List<AnnotationInner>> createWithResponse(
         String resourceGroupName, String resourceName, AnnotationInner annotationProperties, Context context) {
         return createWithResponseAsync(resourceGroupName, resourceName, annotationProperties, context).block();
+    }
+
+    /**
+     * Create an Annotation of an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param annotationProperties Properties that need to be specified to create an annotation of a Application
+     *     Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AnnotationErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Annotation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AnnotationInner> create(
+        String resourceGroupName, String resourceName, AnnotationInner annotationProperties) {
+        return createWithResponse(resourceGroupName, resourceName, annotationProperties, Context.NONE).getValue();
     }
 
     /**
@@ -624,21 +620,6 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName, String annotationId) {
-        deleteAsync(resourceGroupName, resourceName, annotationId).block();
-    }
-
-    /**
-     * Delete an Annotation of an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -649,6 +630,21 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String annotationId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, annotationId, context).block();
+    }
+
+    /**
+     * Delete an Annotation of an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName, String annotationId) {
+        deleteWithResponse(resourceGroupName, resourceName, annotationId, Context.NONE);
     }
 
     /**
@@ -780,22 +776,6 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AnnotationErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the annotation for given id.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AnnotationInner> get(String resourceGroupName, String resourceName, String annotationId) {
-        return getAsync(resourceGroupName, resourceName, annotationId).block();
-    }
-
-    /**
-     * Get the annotation for given id.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnnotationErrorException thrown if the request is rejected by server.
@@ -806,5 +786,21 @@ public final class AnnotationsClientImpl implements AnnotationsClient {
     public Response<List<AnnotationInner>> getWithResponse(
         String resourceGroupName, String resourceName, String annotationId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, annotationId, context).block();
+    }
+
+    /**
+     * Get the annotation for given id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param annotationId The unique annotation ID. This is unique within a Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AnnotationErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the annotation for given id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AnnotationInner> get(String resourceGroupName, String resourceName, String annotationId) {
+        return getWithResponse(resourceGroupName, resourceName, annotationId, Context.NONE).getValue();
     }
 }

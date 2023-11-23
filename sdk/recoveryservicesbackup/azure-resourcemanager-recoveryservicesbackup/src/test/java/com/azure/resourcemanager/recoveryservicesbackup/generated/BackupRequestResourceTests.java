@@ -17,36 +17,37 @@ public final class BackupRequestResourceTests {
         BackupRequestResource model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"objectType\":\"BackupRequest\"},\"eTag\":\"ntoe\",\"location\":\"okdwb\",\"tags\":{\"t\":\"szzcmrvexztv\",\"lmnguxaw\":\"gsfraoyzkoow\",\"uximerqfobw\":\"aldsy\",\"r\":\"znkbykutwpfhpagm\"},\"id\":\"kdsnfdsdoakgtdl\",\"name\":\"kkze\",\"type\":\"dlhewp\"}")
+                    "{\"properties\":{\"objectType\":\"BackupRequest\"},\"eTag\":\"kggkfpa\",\"location\":\"ao\",\"tags\":{\"jnsjervtiagxsd\":\"lpqblylsyxk\",\"beyvpnqicvinvkjj\":\"zuempsbzkf\",\"yhmlwpaztzp\":\"dxrbuukzcle\",\"ckw\":\"fn\"},\"id\":\"fz\",\"name\":\"whxxbuyqax\",\"type\":\"feqztppriol\"}")
                 .toObject(BackupRequestResource.class);
-        Assertions.assertEquals("okdwb", model.location());
-        Assertions.assertEquals("szzcmrvexztv", model.tags().get("t"));
-        Assertions.assertEquals("ntoe", model.etag());
+        Assertions.assertEquals("ao", model.location());
+        Assertions.assertEquals("lpqblylsyxk", model.tags().get("jnsjervtiagxsd"));
+        Assertions.assertEquals("kggkfpa", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupRequestResource model =
             new BackupRequestResource()
-                .withLocation("okdwb")
+                .withLocation("ao")
                 .withTags(
                     mapOf(
-                        "t",
-                        "szzcmrvexztv",
-                        "lmnguxaw",
-                        "gsfraoyzkoow",
-                        "uximerqfobw",
-                        "aldsy",
-                        "r",
-                        "znkbykutwpfhpagm"))
+                        "jnsjervtiagxsd",
+                        "lpqblylsyxk",
+                        "beyvpnqicvinvkjj",
+                        "zuempsbzkf",
+                        "yhmlwpaztzp",
+                        "dxrbuukzcle",
+                        "ckw",
+                        "fn"))
                 .withProperties(new BackupRequest())
-                .withEtag("ntoe");
+                .withEtag("kggkfpa");
         model = BinaryData.fromObject(model).toObject(BackupRequestResource.class);
-        Assertions.assertEquals("okdwb", model.location());
-        Assertions.assertEquals("szzcmrvexztv", model.tags().get("t"));
-        Assertions.assertEquals("ntoe", model.etag());
+        Assertions.assertEquals("ao", model.location());
+        Assertions.assertEquals("lpqblylsyxk", model.tags().get("jnsjervtiagxsd"));
+        Assertions.assertEquals("kggkfpa", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -17,11 +17,11 @@ import java.util.List;
  * or terminal. It allows users to
  * <a href="https://learn.microsoft.com/powershell/azure/authenticate-azureps">authenticate interactively</a>
  * as a user and/or a service principal against
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>. The {@link AzurePowerShellCredential} authenticates in a development environment and acquires a token on
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>.
+ * The {@link AzurePowerShellCredential} authenticates in a development environment and acquires a token on
  * behalf of the logged-in user or service principal in Azure Powershell. It acts as the Azure Powershell logged in
  * user or service principal and executes an Azure Powershell command underneath to authenticate the application
- * against Azure Active Directory.</p>
+ * against Microsoft Entra ID.</p>
  *
  * <p><strong>Sample: Construct AzurePowershellCredential</strong></p>
  *

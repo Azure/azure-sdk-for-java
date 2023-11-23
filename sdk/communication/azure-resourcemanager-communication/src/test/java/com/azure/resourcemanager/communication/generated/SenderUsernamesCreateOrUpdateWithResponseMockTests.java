@@ -31,7 +31,7 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"dataLocation\":\"mpaxmodfvuefywsb\",\"username\":\"fvmwy\",\"displayName\":\"fouyf\",\"provisioningState\":\"Updating\"},\"id\":\"cpwi\",\"name\":\"zvqtmnubexkp\",\"type\":\"ksmond\"}";
+            "{\"properties\":{\"dataLocation\":\"vqtmnub\",\"username\":\"xkp\",\"displayName\":\"smond\",\"provisioningState\":\"Creating\"},\"id\":\"xvy\",\"name\":\"omgkopkwho\",\"type\":\"v\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class SenderUsernamesCreateOrUpdateWithResponseMockTests {
         SenderUsernameResource response =
             manager
                 .senderUsernames()
-                .define("ld")
-                .withExistingDomain("pkeqdcvdrhvoo", "sotbob", "dopcjwvnh")
-                .withUsername("mutwuoe")
-                .withDisplayName("pkhjwni")
+                .define("opcjwvnhd")
+                .withExistingDomain("cvkcvqvpkeqdcv", "rhvoods", "tbobz")
+                .withUsername("twuoegrpkhjwni")
+                .withDisplayName("sluicpdggkzz")
                 .create();
 
-        Assertions.assertEquals("fvmwy", response.username());
-        Assertions.assertEquals("fouyf", response.displayName());
+        Assertions.assertEquals("xkp", response.username());
+        Assertions.assertEquals("smond", response.displayName());
     }
 }

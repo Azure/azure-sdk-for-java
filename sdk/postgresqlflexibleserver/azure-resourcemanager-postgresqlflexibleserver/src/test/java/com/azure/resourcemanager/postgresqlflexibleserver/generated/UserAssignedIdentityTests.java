@@ -18,10 +18,10 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"userAssignedIdentities\":{\"poczvyifqrvkdvjs\":{\"principalId\":\"o\",\"clientId\":\"qn\"},\"watkpnpulexxb\":{\"principalId\":\"rm\",\"clientId\":\"d\"},\"hzdobpxjmflbvvnc\":{\"principalId\":\"wtruwiqzbqjvsovm\",\"clientId\":\"kacspkw\"},\"imjm\":{\"principalId\":\"kcciwwzjuqkhr\",\"clientId\":\"jiwkuofoskghsau\"}},\"type\":\"UserAssigned\",\"tenantId\":\"eduugi\"}")
+                    "{\"userAssignedIdentities\":{\"zoymibmrqyibahw\":{\"principalId\":\"uejrjxgc\",\"clientId\":\"ibrhosxsdqr\"},\"iwbwoenwashrtdtk\":{\"principalId\":\"uszdtmhrkwof\",\"clientId\":\"voqacpiexpbt\"},\"obyu\":{\"principalId\":\"qxwbpokulpiu\",\"clientId\":\"aasipqi\"}},\"type\":\"UserAssigned\",\"tenantId\":\"pqlpq\"}")
                 .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("o", model.userAssignedIdentities().get("poczvyifqrvkdvjs").principalId());
-        Assertions.assertEquals("qn", model.userAssignedIdentities().get("poczvyifqrvkdvjs").clientId());
+        Assertions.assertEquals("uejrjxgc", model.userAssignedIdentities().get("zoymibmrqyibahw").principalId());
+        Assertions.assertEquals("ibrhosxsdqr", model.userAssignedIdentities().get("zoymibmrqyibahw").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
@@ -31,21 +31,20 @@ public final class UserAssignedIdentityTests {
             new UserAssignedIdentity()
                 .withUserAssignedIdentities(
                     mapOf(
-                        "poczvyifqrvkdvjs",
-                        new UserIdentity().withPrincipalId("o").withClientId("qn"),
-                        "watkpnpulexxb",
-                        new UserIdentity().withPrincipalId("rm").withClientId("d"),
-                        "hzdobpxjmflbvvnc",
-                        new UserIdentity().withPrincipalId("wtruwiqzbqjvsovm").withClientId("kacspkw"),
-                        "imjm",
-                        new UserIdentity().withPrincipalId("kcciwwzjuqkhr").withClientId("jiwkuofoskghsau")))
+                        "zoymibmrqyibahw",
+                        new UserIdentity().withPrincipalId("uejrjxgc").withClientId("ibrhosxsdqr"),
+                        "iwbwoenwashrtdtk",
+                        new UserIdentity().withPrincipalId("uszdtmhrkwof").withClientId("voqacpiexpbt"),
+                        "obyu",
+                        new UserIdentity().withPrincipalId("qxwbpokulpiu").withClientId("aasipqi")))
                 .withType(IdentityType.USER_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("o", model.userAssignedIdentities().get("poczvyifqrvkdvjs").principalId());
-        Assertions.assertEquals("qn", model.userAssignedIdentities().get("poczvyifqrvkdvjs").clientId());
+        Assertions.assertEquals("uejrjxgc", model.userAssignedIdentities().get("zoymibmrqyibahw").principalId());
+        Assertions.assertEquals("ibrhosxsdqr", model.userAssignedIdentities().get("zoymibmrqyibahw").clientId());
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

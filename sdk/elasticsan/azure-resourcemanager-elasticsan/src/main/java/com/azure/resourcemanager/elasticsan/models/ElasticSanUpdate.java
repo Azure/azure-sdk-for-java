@@ -106,6 +106,31 @@ public final class ElasticSanUpdate {
     }
 
     /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to ElasticSan Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ElasticSanUpdate object itself.
+     */
+    public ElasticSanUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ElasticSanUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -50,6 +50,13 @@ public interface CommunicationServiceResource {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
@@ -141,11 +148,13 @@ public interface CommunicationServiceResource {
             DefinitionStages.WithResourceGroup,
             DefinitionStages.WithCreate {
     }
+
     /** The CommunicationServiceResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the CommunicationServiceResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the CommunicationServiceResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -164,6 +173,7 @@ public interface CommunicationServiceResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the CommunicationServiceResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -174,12 +184,16 @@ public interface CommunicationServiceResource {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the CommunicationServiceResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithDataLocation, DefinitionStages.WithLinkedDomains {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
+                DefinitionStages.WithDataLocation,
+                DefinitionStages.WithLinkedDomains {
             /**
              * Executes the create request.
              *
@@ -195,6 +209,7 @@ public interface CommunicationServiceResource {
              */
             CommunicationServiceResource create(Context context);
         }
+
         /** The stage of the CommunicationServiceResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -205,6 +220,19 @@ public interface CommunicationServiceResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /** The stage of the CommunicationServiceResource definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (system assigned and/or user assigned
+             * identities).
+             *
+             * @param identity Managed service identity (system assigned and/or user assigned identities).
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the CommunicationServiceResource definition allowing to specify dataLocation. */
         interface WithDataLocation {
             /**
@@ -216,6 +244,7 @@ public interface CommunicationServiceResource {
              */
             WithCreate withDataLocation(String dataLocation);
         }
+
         /** The stage of the CommunicationServiceResource definition allowing to specify linkedDomains. */
         interface WithLinkedDomains {
             /**
@@ -227,6 +256,7 @@ public interface CommunicationServiceResource {
             WithCreate withLinkedDomains(List<String> linkedDomains);
         }
     }
+
     /**
      * Begins update for the CommunicationServiceResource resource.
      *
@@ -235,7 +265,7 @@ public interface CommunicationServiceResource {
     CommunicationServiceResource.Update update();
 
     /** The template for CommunicationServiceResource update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithLinkedDomains {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithLinkedDomains {
         /**
          * Executes the update request.
          *
@@ -251,6 +281,7 @@ public interface CommunicationServiceResource {
          */
         CommunicationServiceResource apply(Context context);
     }
+
     /** The CommunicationServiceResource update stages. */
     interface UpdateStages {
         /** The stage of the CommunicationServiceResource update allowing to specify tags. */
@@ -264,6 +295,19 @@ public interface CommunicationServiceResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
+        /** The stage of the CommunicationServiceResource update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Managed service identity (system assigned and/or user assigned
+             * identities).
+             *
+             * @param identity Managed service identity (system assigned and/or user assigned identities).
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
         /** The stage of the CommunicationServiceResource update allowing to specify linkedDomains. */
         interface WithLinkedDomains {
             /**
@@ -275,6 +319,7 @@ public interface CommunicationServiceResource {
             Update withLinkedDomains(List<String> linkedDomains);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 /** Samples for EventsOperation ListByTenantId. */
 public final class EventsOperationListByTenantIdSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Events_ListByTenantId.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Events_ListByTenantId.json
      */
     /**
      * Sample code: ListEventsByTenantId.

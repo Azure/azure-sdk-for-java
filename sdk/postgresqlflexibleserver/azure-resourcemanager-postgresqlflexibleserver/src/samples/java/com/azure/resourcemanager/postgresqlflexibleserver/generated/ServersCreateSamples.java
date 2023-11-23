@@ -7,7 +7,6 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ActiveDirectoryAuthEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ArmServerKeyType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.AzureManagedDiskPerformanceTiers;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
@@ -21,7 +20,6 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerVersion;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.SkuTier;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageAutoGrow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserIdentity;
 import java.time.OffsetDateTime;
@@ -31,7 +29,7 @@ import java.util.Map;
 /** Samples for Servers Create. */
 public final class ServersCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithDataEncryptionEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithDataEncryptionEnabled.json
      */
     /**
      * Sample code: ServerCreateWithDataEncryptionEnabled.
@@ -57,14 +55,12 @@ public final class ServersCreateSamples {
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("password")
             .withVersion(ServerVersion.ONE_TWO)
-            .withStorage(new Storage().withStorageSizeGB(512).withAutoGrow(StorageAutoGrow.DISABLED))
+            .withStorage(new Storage().withStorageSizeGB(512))
             .withDataEncryption(
                 new DataEncryption()
                     .withPrimaryKeyUri("fakeTokenPlaceholder")
                     .withPrimaryUserAssignedIdentityId(
                         "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId("")
                     .withType(ArmServerKeyType.AZURE_KEY_VAULT))
             .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED))
             .withNetwork(
@@ -80,29 +76,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReviveDropped.json
-     */
-    /**
-     * Sample code: ServerCreateReviveDropped.
-     *
-     * @param manager Entry point to PostgreSqlManager.
-     */
-    public static void serverCreateReviveDropped(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .servers()
-            .define("pgtestsvc5-rev")
-            .withRegion("westus")
-            .withExistingResourceGroup("testrg")
-            .withSourceServerResourceId(
-                "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pgtestsvc5")
-            .withPointInTimeUtc(OffsetDateTime.parse("2023-04-27T00:04:59.4078005+00:00"))
-            .withCreateMode(CreateMode.REVIVE_DROPPED)
-            .create();
-    }
-
-    /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateGeoRestoreWithDataEncryptionEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateGeoRestore.json
      */
     /**
      * Sample code: Create a database as a geo-restore in geo-paired location.
@@ -116,24 +90,6 @@ public final class ServersCreateSamples {
             .define("pgtestsvc5geo")
             .withRegion("eastus")
             .withExistingResourceGroup("testrg")
-            .withIdentity(
-                new UserAssignedIdentity()
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity",
-                            new UserIdentity(),
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
-                            new UserIdentity()))
-                    .withType(IdentityType.USER_ASSIGNED))
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-geo-usermanagedidentity")
-                    .withType(ArmServerKeyType.AZURE_KEY_VAULT))
             .withSourceServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername")
             .withPointInTimeUtc(OffsetDateTime.parse("2021-06-27T00:04:59.4078005+00:00"))
@@ -142,7 +98,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create a new server.
@@ -160,11 +116,7 @@ public final class ServersCreateSamples {
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("password")
             .withVersion(ServerVersion.ONE_TWO)
-            .withStorage(
-                new Storage()
-                    .withStorageSizeGB(512)
-                    .withAutoGrow(StorageAutoGrow.DISABLED)
-                    .withTier(AzureManagedDiskPerformanceTiers.P20))
+            .withStorage(new Storage().withStorageSizeGB(512))
             .withBackup(new Backup().withBackupRetentionDays(7).withGeoRedundantBackup(GeoRedundantBackupEnum.DISABLED))
             .withNetwork(
                 new Network()
@@ -179,7 +131,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateWithAadAuthEnabled.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateWithAadAuthEnabled.json
      */
     /**
      * Sample code: Create a new server with active directory authentication enabled.
@@ -198,11 +150,7 @@ public final class ServersCreateSamples {
             .withAdministratorLogin("cloudsa")
             .withAdministratorLoginPassword("password")
             .withVersion(ServerVersion.ONE_TWO)
-            .withStorage(
-                new Storage()
-                    .withStorageSizeGB(512)
-                    .withAutoGrow(StorageAutoGrow.DISABLED)
-                    .withTier(AzureManagedDiskPerformanceTiers.P20))
+            .withStorage(new Storage().withStorageSizeGB(512))
             .withAuthConfig(
                 new AuthConfig()
                     .withActiveDirectoryAuth(ActiveDirectoryAuthEnum.ENABLED)
@@ -223,7 +171,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreateReplica.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreateReplica.json
      */
     /**
      * Sample code: ServerCreateReplica.
@@ -237,21 +185,6 @@ public final class ServersCreateSamples {
             .define("pgtestsvc5rep")
             .withRegion("westus")
             .withExistingResourceGroup("testrg")
-            .withIdentity(
-                new UserAssignedIdentity()
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity",
-                            new UserIdentity()))
-                    .withType(IdentityType.USER_ASSIGNED))
-            .withDataEncryption(
-                new DataEncryption()
-                    .withPrimaryKeyUri("fakeTokenPlaceholder")
-                    .withPrimaryUserAssignedIdentityId(
-                        "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-usermanagedidentity")
-                    .withGeoBackupKeyUri("fakeTokenPlaceholder")
-                    .withGeoBackupUserAssignedIdentityId("")
-                    .withType(ArmServerKeyType.AZURE_KEY_VAULT))
             .withSourceServerResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforPostgreSQL/flexibleServers/sourcepgservername")
             .withPointInTimeUtc(OffsetDateTime.parse("2021-06-27T00:04:59.4078005+00:00"))
@@ -260,7 +193,7 @@ public final class ServersCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-01-preview/examples/ServerCreatePointInTimeRestore.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-12-01/examples/ServerCreatePointInTimeRestore.json
      */
     /**
      * Sample code: Create a database as a point in time restore.
@@ -281,6 +214,7 @@ public final class ServersCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

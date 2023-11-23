@@ -67,6 +67,20 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public HDInsightHiveActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightHiveActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public HDInsightHiveActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
@@ -222,7 +236,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
      *
      * @return the variables value.
      */
-    public List<Object> variables() {
+    public Map<String, Object> variables() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().variables();
     }
 
@@ -232,7 +246,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
      * @param variables the variables value to set.
      * @return the HDInsightHiveActivity object itself.
      */
-    public HDInsightHiveActivity withVariables(List<Object> variables) {
+    public HDInsightHiveActivity withVariables(Map<String, Object> variables) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HDInsightHiveActivityTypeProperties();
         }

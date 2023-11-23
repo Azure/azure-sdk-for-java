@@ -87,9 +87,6 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }

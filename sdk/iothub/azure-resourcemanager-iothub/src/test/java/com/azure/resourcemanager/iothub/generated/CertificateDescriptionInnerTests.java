@@ -15,22 +15,22 @@ public final class CertificateDescriptionInnerTests {
         CertificateDescriptionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"subject\":\"mond\",\"expiry\":\"Thu, 01 Apr 2021 23:21:50"
-                        + " GMT\",\"thumbprint\":\"xvy\",\"isVerified\":false,\"created\":\"Fri, 01 Oct 2021 02:55:48"
-                        + " GMT\",\"updated\":\"Mon, 25 Jan 2021 05:21:40"
-                        + " GMT\",\"certificate\":\"whojvp\"},\"etag\":\"qgxy\",\"id\":\"mocmbqfqvmk\",\"name\":\"xozap\",\"type\":\"helxprglya\"}")
+                    "{\"properties\":{\"subject\":\"yzrpzbchckqqzq\",\"expiry\":\"Wed, 10 Nov 2021 00:02:28"
+                        + " GMT\",\"thumbprint\":\"ysuiizynkedya\",\"isVerified\":true,\"created\":\"Fri, 29 Oct 2021"
+                        + " 12:30:56 GMT\",\"updated\":\"Fri, 21 May 2021 15:42:34"
+                        + " GMT\",\"certificate\":\"bzyh\"},\"etag\":\"tsmypyynpcdp\",\"id\":\"mnzgmwznmabi\",\"name\":\"nsorgjhxbldt\",\"type\":\"wwrlkdmtncv\"}")
                 .toObject(CertificateDescriptionInner.class);
-        Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("whojvp", model.properties().certificate());
+        Assertions.assertEquals(true, model.properties().isVerified());
+        Assertions.assertEquals("bzyh", model.properties().certificate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CertificateDescriptionInner model =
             new CertificateDescriptionInner()
-                .withProperties(new CertificateProperties().withIsVerified(false).withCertificate("whojvp"));
+                .withProperties(new CertificateProperties().withIsVerified(true).withCertificate("bzyh"));
         model = BinaryData.fromObject(model).toObject(CertificateDescriptionInner.class);
-        Assertions.assertEquals(false, model.properties().isVerified());
-        Assertions.assertEquals("whojvp", model.properties().certificate());
+        Assertions.assertEquals(true, model.properties().isVerified());
+        Assertions.assertEquals("bzyh", model.properties().certificate());
     }
 }

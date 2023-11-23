@@ -37,7 +37,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     }
 
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"fast"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosSyncStoredProcTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
@@ -45,13 +45,13 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createStoredProcedure() throws Exception {
 
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
@@ -70,7 +70,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void createSproc_alreadyExists() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -87,7 +87,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -106,7 +106,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(readResponse2, false);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void replaceStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -147,7 +147,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         return storedProcedureDef;
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void deleteStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
 
@@ -160,7 +160,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
             .delete();
 
     }
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void executeStoredProcedure() throws Exception {
         CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
             UUID.randomUUID().toString(),
@@ -189,7 +189,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(executeResponse, true);
     }
 
-    @Test(groups = "simple", timeOut = TIMEOUT)
+    @Test(groups = "fast", timeOut = TIMEOUT)
     public void executeStoredProcedureWithScriptLoggingEnabled() throws Exception {
         // Create a stored procedure
         CosmosStoredProcedureProperties storedProcedure = new CosmosStoredProcedureProperties(
@@ -221,7 +221,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateDiagnostics(executeResponse, true);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void readAllSprocs() throws Exception {
         CosmosStoredProcedureProperties storedProcedureDef = getCosmosStoredProcedureProperties();
         CosmosStoredProcedureResponse response =
@@ -236,7 +236,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"fast"}, timeOut = TIMEOUT)
     public void querySprocs() throws Exception {
         CosmosStoredProcedureProperties properties = getCosmosStoredProcedureProperties();
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(properties);

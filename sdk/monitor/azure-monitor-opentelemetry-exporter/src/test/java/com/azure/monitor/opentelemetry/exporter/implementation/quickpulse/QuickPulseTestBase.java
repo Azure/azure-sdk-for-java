@@ -19,6 +19,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.FluxUtil;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RemoteDependencyTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.RequestTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
@@ -72,6 +73,7 @@ public class QuickPulseTestBase extends TestProxyTestBase {
         return new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(new NoopTracer())
             .build();
     }
 

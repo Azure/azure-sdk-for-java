@@ -13,7 +13,7 @@ public final class ServerVersionCapabilityTests {
         ServerVersionCapability model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"dfvzwdzuhty\",\"supportedVersionsToUpgrade\":[\"sdkf\",\"hwxmnteiwa\",\"pvkmijcmmxdcuf\",\"fsrpymzidnse\"],\"status\":\"Disabled\",\"reason\":\"bzsgfyccsne\"}")
+                    "{\"name\":\"dxyt\",\"supportedVersionsToUpgrade\":[\"yrxvwfudwpznt\",\"hdzhlrqj\",\"hckfrlhrx\",\"bkyvp\"],\"supportedVcores\":[{\"name\":\"uzbpzkafku\",\"vCores\":8812234948991108432,\"supportedIops\":4066142529374885485,\"supportedMemoryPerVcoreMB\":5441826391386286828,\"status\":\"seyvj\"},{\"name\":\"rts\",\"vCores\":6845900513521781120,\"supportedIops\":6698294689469432122,\"supportedMemoryPerVcoreMB\":1190726733123875676,\"status\":\"fm\"},{\"name\":\"gkvtmelmqkrhah\",\"vCores\":9144697658006681867,\"supportedIops\":8641218324516083606,\"supportedMemoryPerVcoreMB\":6531016586304771464,\"status\":\"dhmdua\"},{\"name\":\"exq\",\"vCores\":6851389169185127110,\"supportedIops\":4668891538540973425,\"supportedMemoryPerVcoreMB\":6898104589669073559,\"status\":\"gvxp\"}],\"status\":\"omzlfmi\"}")
                 .toObject(ServerVersionCapability.class);
     }
 

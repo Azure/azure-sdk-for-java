@@ -22,11 +22,6 @@ import java.util.List;
 @Fluent
 public final class AsciiFoldingTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.AsciiFoldingTokenFilter";
-
-    /*
      * A value indicating whether the original token will be kept. Default is false.
      */
     private Boolean preserveOriginal;
@@ -63,7 +58,7 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.AsciiFoldingTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeBooleanField("preserveOriginal", this.preserveOriginal);
         return jsonWriter.writeEndObject();
@@ -91,11 +86,9 @@ public final class AsciiFoldingTokenFilter extends TokenFilter {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Azure.Search.AsciiFoldingTokenFilter".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.AsciiFoldingTokenFilter'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

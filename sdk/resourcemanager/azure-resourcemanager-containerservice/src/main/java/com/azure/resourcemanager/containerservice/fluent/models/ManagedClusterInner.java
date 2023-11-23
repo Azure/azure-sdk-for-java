@@ -31,6 +31,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsPr
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
+import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -991,6 +992,39 @@ public final class ManagedClusterInner extends Resource {
         }
         this.innerProperties().withAzureMonitorProfile(azureMonitorProfile);
         return this;
+    }
+
+    /**
+     * Get the serviceMeshProfile property: Service mesh profile for a managed cluster.
+     *
+     * @return the serviceMeshProfile value.
+     */
+    public ServiceMeshProfile serviceMeshProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceMeshProfile();
+    }
+
+    /**
+     * Set the serviceMeshProfile property: Service mesh profile for a managed cluster.
+     *
+     * @param serviceMeshProfile the serviceMeshProfile value to set.
+     * @return the ManagedClusterInner object itself.
+     */
+    public ManagedClusterInner withServiceMeshProfile(ServiceMeshProfile serviceMeshProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterProperties();
+        }
+        this.innerProperties().withServiceMeshProfile(serviceMeshProfile);
+        return this;
+    }
+
+    /**
+     * Get the resourceUid property: The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds
+     * (i.e: create, delete, create sequence).
+     *
+     * @return the resourceUid value.
+     */
+    public String resourceUid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceUid();
     }
 
     /**

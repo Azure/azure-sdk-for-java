@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for SenderUsernames ListByDomains. */
 public final class SenderUsernamesListByDomainsSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/senderUsernames/listByDomain.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/senderUsernames/listByDomain.json
      */
     /**
      * Sample code: Get SenderUsernames resource.

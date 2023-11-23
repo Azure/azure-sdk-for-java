@@ -14,18 +14,18 @@ public final class LabSupportPropertiesTests {
     public void testDeserialize() throws Exception {
         LabSupportProperties model =
             BinaryData
-                .fromString("{\"enabled\":\"Disabled\",\"markdown\":\"deicbtwnpzao\"}")
+                .fromString("{\"enabled\":\"Disabled\",\"markdown\":\"jugwdkcglhsl\"}")
                 .toObject(LabSupportProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.enabled());
-        Assertions.assertEquals("deicbtwnpzao", model.markdown());
+        Assertions.assertEquals("jugwdkcglhsl", model.markdown());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabSupportProperties model =
-            new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("deicbtwnpzao");
+            new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("jugwdkcglhsl");
         model = BinaryData.fromObject(model).toObject(LabSupportProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.enabled());
-        Assertions.assertEquals("deicbtwnpzao", model.markdown());
+        Assertions.assertEquals("jugwdkcglhsl", model.markdown());
     }
 }

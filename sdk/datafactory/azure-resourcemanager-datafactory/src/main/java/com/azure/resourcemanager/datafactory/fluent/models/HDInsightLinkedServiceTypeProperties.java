@@ -45,10 +45,10 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
@@ -172,22 +172,22 @@ public final class HDInsightLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightLinkedServiceTypeProperties object itself.
      */
-    public HDInsightLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public HDInsightLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

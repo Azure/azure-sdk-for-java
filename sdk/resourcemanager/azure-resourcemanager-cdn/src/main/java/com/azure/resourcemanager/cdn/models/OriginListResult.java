@@ -27,6 +27,10 @@ public final class OriginListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OriginListResult class. */
+    public OriginListResult() {
+    }
+
     /**
      * Get the value property: List of CDN origins within an endpoint.
      *

@@ -17,11 +17,11 @@ public final class SharedPublicIpAddressConfigurationTests {
         SharedPublicIpAddressConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"inboundNatRules\":[{\"transportProtocol\":\"Tcp\",\"frontendPort\":1583288095,\"backendPort\":1256241648}]}")
+                    "{\"inboundNatRules\":[{\"transportProtocol\":\"Tcp\",\"frontendPort\":1513768261,\"backendPort\":930430831},{\"transportProtocol\":\"Tcp\",\"frontendPort\":845097361,\"backendPort\":182360383}]}")
                 .toObject(SharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.inboundNatRules().get(0).transportProtocol());
-        Assertions.assertEquals(1583288095, model.inboundNatRules().get(0).frontendPort());
-        Assertions.assertEquals(1256241648, model.inboundNatRules().get(0).backendPort());
+        Assertions.assertEquals(1513768261, model.inboundNatRules().get(0).frontendPort());
+        Assertions.assertEquals(930430831, model.inboundNatRules().get(0).backendPort());
     }
 
     @org.junit.jupiter.api.Test
@@ -33,11 +33,15 @@ public final class SharedPublicIpAddressConfigurationTests {
                         .asList(
                             new InboundNatRule()
                                 .withTransportProtocol(TransportProtocol.TCP)
-                                .withFrontendPort(1583288095)
-                                .withBackendPort(1256241648)));
+                                .withFrontendPort(1513768261)
+                                .withBackendPort(930430831),
+                            new InboundNatRule()
+                                .withTransportProtocol(TransportProtocol.TCP)
+                                .withFrontendPort(845097361)
+                                .withBackendPort(182360383)));
         model = BinaryData.fromObject(model).toObject(SharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.inboundNatRules().get(0).transportProtocol());
-        Assertions.assertEquals(1583288095, model.inboundNatRules().get(0).frontendPort());
-        Assertions.assertEquals(1256241648, model.inboundNatRules().get(0).backendPort());
+        Assertions.assertEquals(1513768261, model.inboundNatRules().get(0).frontendPort());
+        Assertions.assertEquals(930430831, model.inboundNatRules().get(0).backendPort());
     }
 }

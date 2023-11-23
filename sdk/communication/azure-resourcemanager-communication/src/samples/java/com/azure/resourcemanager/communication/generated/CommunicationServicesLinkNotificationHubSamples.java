@@ -9,7 +9,7 @@ import com.azure.resourcemanager.communication.models.LinkNotificationHubParamet
 /** Samples for CommunicationServices LinkNotificationHub. */
 public final class CommunicationServicesLinkNotificationHubSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/communicationServices/linkNotificationHub.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/communicationServices/linkNotificationHub.json
      */
     /**
      * Sample code: Link notification hub.

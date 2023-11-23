@@ -25,9 +25,7 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -65,6 +63,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final TestPublisher<AmqpEndpointState> endpointProcessor = TestPublisher.createCold();
@@ -85,17 +84,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private MessageSerializer messageSerializer;
     @Mock
     private ServiceBusManagementNode managementNode;
-
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
@@ -199,7 +187,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
-            .thenCancel().verify();
+            .thenCancel()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -289,22 +278,13 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messageProcessor.next(message);
                 }
             })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId, receivedMessage, context);
-            })
-            .thenAwait(Duration.ofSeconds(1)).thenCancel().verify();
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
+            .thenAwait(Duration.ofSeconds(1)).thenCancel()
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(client.acceptNextSession()
                 .flatMapMany(ServiceBusReceiverAsyncClient::receiveMessagesWithContext))
@@ -313,18 +293,12 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messagePublisher2.next(message2);
                 }
             })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
-            .assertNext(context -> {
-                assertMessageEquals(sessionId2, receivedMessage2, context);
-            })
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
+            .assertNext(context -> assertMessageEquals(sessionId2, receivedMessage2, context))
             .thenAwait(Duration.ofSeconds(1))
             .thenCancel()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
     }
 
     @Test
@@ -382,7 +356,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
                     messageProcessor.complete();
                 })
                 .expectComplete()
-                .verify();
+                .verify(DEFAULT_TIMEOUT);
         } finally {
             client.close();
         }

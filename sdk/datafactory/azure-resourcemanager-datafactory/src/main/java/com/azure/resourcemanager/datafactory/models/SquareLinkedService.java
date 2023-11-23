@@ -91,7 +91,7 @@ public final class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
      *
      * @return the host value.
      */
@@ -100,7 +100,7 @@ public final class SquareLinkedService extends LinkedService {
     }
 
     /**
-     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
+     * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
      *
      * @param host the host value to set.
      * @return the SquareLinkedService object itself.
@@ -261,22 +261,22 @@ public final class SquareLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SquareLinkedService object itself.
      */
-    public SquareLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SquareLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SquareLinkedServiceTypeProperties();
         }

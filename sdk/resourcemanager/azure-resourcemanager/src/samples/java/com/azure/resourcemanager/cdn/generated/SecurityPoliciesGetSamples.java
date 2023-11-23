@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityPolicies Get. */
 public final class SecurityPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/SecurityPolicies_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/SecurityPolicies_Get.json
      */
     /**
      * Sample code: SecurityPolicies_Get.
@@ -22,6 +20,6 @@ public final class SecurityPoliciesGetSamples {
             .manager()
             .serviceClient()
             .getSecurityPolicies()
-            .getWithResponse("RG", "profile1", "securityPolicy1", Context.NONE);
+            .getWithResponse("RG", "profile1", "securityPolicy1", com.azure.core.util.Context.NONE);
     }
 }

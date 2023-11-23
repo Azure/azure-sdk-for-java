@@ -15,20 +15,20 @@ public final class CommunicationServicePropertiesTests {
         CommunicationServiceProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Unknown\",\"hostName\":\"kjfkg\",\"dataLocation\":\"awxklr\",\"notificationHubId\":\"lwckbasyypnddhs\",\"version\":\"bacphejko\",\"immutableResourceId\":\"nqgoulzndli\",\"linkedDomains\":[\"qkgfgibma\",\"gakeqsr\"]}")
+                    "{\"provisioningState\":\"Running\",\"hostName\":\"cuertu\",\"dataLocation\":\"kdosvqw\",\"notificationHubId\":\"mdgbbjfdd\",\"version\":\"bmbexppbhtqqro\",\"immutableResourceId\":\"p\",\"linkedDomains\":[\"algbquxigjyjg\"]}")
                 .toObject(CommunicationServiceProperties.class);
-        Assertions.assertEquals("awxklr", model.dataLocation());
-        Assertions.assertEquals("qkgfgibma", model.linkedDomains().get(0));
+        Assertions.assertEquals("kdosvqw", model.dataLocation());
+        Assertions.assertEquals("algbquxigjyjg", model.linkedDomains().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunicationServiceProperties model =
             new CommunicationServiceProperties()
-                .withDataLocation("awxklr")
-                .withLinkedDomains(Arrays.asList("qkgfgibma", "gakeqsr"));
+                .withDataLocation("kdosvqw")
+                .withLinkedDomains(Arrays.asList("algbquxigjyjg"));
         model = BinaryData.fromObject(model).toObject(CommunicationServiceProperties.class);
-        Assertions.assertEquals("awxklr", model.dataLocation());
-        Assertions.assertEquals("qkgfgibma", model.linkedDomains().get(0));
+        Assertions.assertEquals("kdosvqw", model.dataLocation());
+        Assertions.assertEquals("algbquxigjyjg", model.linkedDomains().get(0));
     }
 }

@@ -17,6 +17,15 @@ public final class AssignmentType extends ExpandableStringEnum<AssignmentType> {
     public static final AssignmentType ASSIGNED = fromString("Assigned");
 
     /**
+     * Creates a new instance of AssignmentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssignmentType() {
+    }
+
+    /**
      * Creates or finds a AssignmentType from its string representation.
      *
      * @param name a name to look for.

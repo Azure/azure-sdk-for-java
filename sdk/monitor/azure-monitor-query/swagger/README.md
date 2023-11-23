@@ -103,13 +103,12 @@ customization-class: src/main/java/MetricsDefinitionsCustomization.java
 enable-sync-stack: true
 ```
 
-
 ## Metrics Batch Query
 These settings apply only when `--tag=package-metrics-batch` is specified on the command line.
 
 ``` yaml $(tag) == 'package-metrics-batch'
 use: '@autorest/java@4.1.17'
-input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/154cb5c6d5bdd2b183ea8d9d1b7e5bbd0caa625b/specification/monitor/data-plane/Microsoft.Insights/preview/2023-05-01-preview/metricBatch.json
+input-file: https://raw.githubusercontent.com/srnagar/azure-rest-api-specs/fb0e6987b97d7cd6cd13f2f45493f48d3e63e804/specification/monitor/data-plane/Microsoft.Insights/stable/2023-10-01/metricBatch.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../

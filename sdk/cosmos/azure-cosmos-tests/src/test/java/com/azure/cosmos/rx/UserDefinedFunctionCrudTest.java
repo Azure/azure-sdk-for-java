@@ -27,7 +27,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void createUserDefinedFunction() throws Exception {
         // create udf
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
@@ -46,7 +46,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readUserDefinedFunction() throws Exception {
         // create a udf
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
@@ -69,7 +69,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void deleteUserDefinedFunction() throws Exception {
         // create a udf
         CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
@@ -89,13 +89,13 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_UserDefinedFunctionCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

@@ -68,6 +68,20 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public HDInsightMapReduceActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HDInsightMapReduceActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public HDInsightMapReduceActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

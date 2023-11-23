@@ -20,10 +20,10 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /** Creates an instance of GoogleSheetsLinkedServiceTypeProperties class. */
     public GoogleSheetsLinkedServiceTypeProperties() {
@@ -51,22 +51,22 @@ public final class GoogleSheetsLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleSheetsLinkedServiceTypeProperties object itself.
      */
-    public GoogleSheetsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public GoogleSheetsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

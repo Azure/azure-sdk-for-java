@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.implementation.AzureCommunicationC
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
@@ -44,10 +45,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -71,17 +72,21 @@ public final class CallAutomationAsyncClient {
     private final AzureCommunicationCallAutomationServiceImpl azureCommunicationCallAutomationServiceInternal;
     private final CallRecordingsImpl callRecordingsInternal;
     private final CallMediasImpl callMediasInternal;
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
+    private final CallAutomationEventProcessor eventProcessor;
 
-    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
+    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
+        this.callDialogsInternal = callServiceClient.getCallDialogs();
+        this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
@@ -89,7 +94,14 @@ public final class CallAutomationAsyncClient {
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
-    //region Pre-call Actions
+    /**
+     * Get the event processor for handling events.
+     * @return {@link CallAutomationEventProcessor} as event processor
+     */
+    public CallAutomationEventProcessor getEventProcessor() {
+        return eventProcessor;
+    }
+
     /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
@@ -98,6 +110,7 @@ public final class CallAutomationAsyncClient {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
+    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -168,10 +181,10 @@ public final class CallAutomationAsyncClient {
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        CreateCallResult result = new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -193,10 +206,10 @@ public final class CallAutomationAsyncClient {
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        CreateCallResult result = new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -344,9 +357,11 @@ public final class CallAutomationAsyncClient {
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-                        return new SimpleResponse<>(response,
-                            new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        AnswerCallResult result = new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -466,7 +481,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal, callDialogsInternal, eventProcessor);
     }
     //endregion
 

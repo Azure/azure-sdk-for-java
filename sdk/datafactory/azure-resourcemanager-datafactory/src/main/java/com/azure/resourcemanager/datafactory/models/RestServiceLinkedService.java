@@ -66,7 +66,7 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the url property: The base URL of the REST service.
+     * Get the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @return the url value.
      */
@@ -75,7 +75,7 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the url property: The base URL of the REST service.
+     * Set the url property: The base URL of the REST service. Type: string (or Expression with resultType string).
      *
      * @param url the url value to set.
      * @return the RestServiceLinkedService object itself.
@@ -139,7 +139,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: The user name used in Basic authentication type.
+     * Get the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @return the username value.
      */
@@ -148,7 +149,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: The user name used in Basic authentication type.
+     * Set the username property: The user name used in Basic authentication type. Type: string (or Expression with
+     * resultType string).
      *
      * @param username the username value to set.
      * @return the RestServiceLinkedService object itself.
@@ -211,6 +213,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @return the servicePrincipalId value.
      */
@@ -220,6 +223,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalId property: The application's client ID used in AadServicePrincipal authentication type.
+     * Type: string (or Expression with resultType string).
      *
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the RestServiceLinkedService object itself.
@@ -257,7 +261,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @return the tenant value.
      */
@@ -267,7 +271,7 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Set the tenant property: The tenant information (domain name or tenant ID) used in AadServicePrincipal
-     * authentication type under which your application resides.
+     * authentication type under which your application resides. Type: string (or Expression with resultType string).
      *
      * @param tenant the tenant value to set.
      * @return the RestServiceLinkedService object itself.
@@ -308,7 +312,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the aadResourceId property: The resource you are requesting authorization to use.
+     * Get the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @return the aadResourceId value.
      */
@@ -317,7 +322,8 @@ public final class RestServiceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the aadResourceId property: The resource you are requesting authorization to use.
+     * Set the aadResourceId property: The resource you are requesting authorization to use. Type: string (or Expression
+     * with resultType string).
      *
      * @param aadResourceId the aadResourceId value to set.
      * @return the RestServiceLinkedService object itself.
@@ -332,22 +338,22 @@ public final class RestServiceLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the RestServiceLinkedService object itself.
      */
-    public RestServiceLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public RestServiceLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new RestServiceLinkedServiceTypeProperties();
         }

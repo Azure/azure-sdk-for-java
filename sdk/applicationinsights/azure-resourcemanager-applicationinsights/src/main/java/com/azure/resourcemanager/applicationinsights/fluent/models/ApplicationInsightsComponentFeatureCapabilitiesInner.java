@@ -106,6 +106,10 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
     @JsonProperty(value = "ThrottleRate", access = JsonProperty.Access.WRITE_ONLY)
     private Float throttleRate;
 
+    /** Creates an instance of ApplicationInsightsComponentFeatureCapabilitiesInner class. */
+    public ApplicationInsightsComponentFeatureCapabilitiesInner() {
+    }
+
     /**
      * Get the supportExportData property: Whether allow to use continuous export feature.
      *

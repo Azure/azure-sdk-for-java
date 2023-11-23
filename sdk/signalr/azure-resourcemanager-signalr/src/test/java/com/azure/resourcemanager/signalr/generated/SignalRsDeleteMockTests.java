@@ -56,6 +56,6 @@ public final class SignalRsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.signalRs().delete("f", "kqscazuawxtzx", com.azure.core.util.Context.NONE);
+        manager.signalRs().delete("kfvxcnq", "xqpswok", com.azure.core.util.Context.NONE);
     }
 }

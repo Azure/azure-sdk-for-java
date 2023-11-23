@@ -5,10 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -46,16 +43,6 @@ public class ServiceBusSenderClientTest {
     private static final Duration RETRY_TIMEOUT = Duration.ofSeconds(10);
     private static final String TEST_CONTENTS = "My message for service bus queue!";
     private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {

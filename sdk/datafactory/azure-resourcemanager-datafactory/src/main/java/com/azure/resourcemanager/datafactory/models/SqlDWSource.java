@@ -35,6 +35,14 @@ public final class SqlDWSource extends TabularSource {
     private Object storedProcedureParameters;
 
     /*
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "isolationLevel")
+    private Object isolationLevel;
+
+    /*
      * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
      * "PhysicalPartitionsOfTable", "DynamicRange".
      */
@@ -116,6 +124,30 @@ public final class SqlDWSource extends TabularSource {
      */
     public SqlDWSource withStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
+        return this;
+    }
+
+    /**
+     * Get the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @return the isolationLevel value.
+     */
+    public Object isolationLevel() {
+        return this.isolationLevel;
+    }
+
+    /**
+     * Set the isolationLevel property: Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
+     *
+     * @param isolationLevel the isolationLevel value to set.
+     * @return the SqlDWSource object itself.
+     */
+    public SqlDWSource withIsolationLevel(Object isolationLevel) {
+        this.isolationLevel = isolationLevel;
         return this;
     }
 

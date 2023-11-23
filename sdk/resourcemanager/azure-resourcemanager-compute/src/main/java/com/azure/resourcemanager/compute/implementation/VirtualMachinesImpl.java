@@ -314,10 +314,10 @@ public class VirtualMachinesImpl
             listNextSinglePageAsync.setAccessible(true);
             return null;
         });
-        return new PagedFlux<>(
+        return wrapPageAsync(new PagedFlux<>(
             () -> {
                 try {
-                    return (Mono<PagedResponse<VirtualMachine>>)
+                    return (Mono<PagedResponse<VirtualMachineInner>>)
                         listSinglePageAsync.invoke(inner(), ResourceUtils.groupFromResourceId(vmssId), String.format("'virtualMachineScaleSet/id' eq '%s'", vmssId), null);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
@@ -325,13 +325,13 @@ public class VirtualMachinesImpl
             },
             nextLink -> {
                 try {
-                    return (Mono<PagedResponse<VirtualMachine>>)
+                    return (Mono<PagedResponse<VirtualMachineInner>>)
                         // encode nextLink
                         listNextSinglePageAsync.invoke(inner(), ResourceUtils.encodeResourceId(nextLink), Context.NONE);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
-            });
+            }));
     }
 
     @Override

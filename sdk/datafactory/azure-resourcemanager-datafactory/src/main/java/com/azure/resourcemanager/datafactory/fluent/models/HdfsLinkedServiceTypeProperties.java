@@ -28,10 +28,10 @@ public final class HdfsLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * User name for Windows authentication. Type: string (or Expression with resultType string).
@@ -95,22 +95,22 @@ public final class HdfsLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HdfsLinkedServiceTypeProperties object itself.
      */
-    public HdfsLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public HdfsLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

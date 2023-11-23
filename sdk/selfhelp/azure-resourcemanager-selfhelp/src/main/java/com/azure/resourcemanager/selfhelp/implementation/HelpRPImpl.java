@@ -22,10 +22,13 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.selfhelp.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionsClient;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
 import com.azure.resourcemanager.selfhelp.fluent.OperationsClient;
+import com.azure.resourcemanager.selfhelp.fluent.SolutionOperationsClient;
+import com.azure.resourcemanager.selfhelp.fluent.TroubleshootersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -110,6 +113,18 @@ public final class HelpRPImpl implements HelpRP {
         return this.operations;
     }
 
+    /** The CheckNameAvailabilitiesClient object to access its operations. */
+    private final CheckNameAvailabilitiesClient checkNameAvailabilities;
+
+    /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    public CheckNameAvailabilitiesClient getCheckNameAvailabilities() {
+        return this.checkNameAvailabilities;
+    }
+
     /** The DiagnosticsClient object to access its operations. */
     private final DiagnosticsClient diagnostics;
 
@@ -134,6 +149,30 @@ public final class HelpRPImpl implements HelpRP {
         return this.discoverySolutions;
     }
 
+    /** The SolutionOperationsClient object to access its operations. */
+    private final SolutionOperationsClient solutionOperations;
+
+    /**
+     * Gets the SolutionOperationsClient object to access its operations.
+     *
+     * @return the SolutionOperationsClient object.
+     */
+    public SolutionOperationsClient getSolutionOperations() {
+        return this.solutionOperations;
+    }
+
+    /** The TroubleshootersClient object to access its operations. */
+    private final TroubleshootersClient troubleshooters;
+
+    /**
+     * Gets the TroubleshootersClient object to access its operations.
+     *
+     * @return the TroubleshootersClient object.
+     */
+    public TroubleshootersClient getTroubleshooters() {
+        return this.troubleshooters;
+    }
+
     /**
      * Initializes an instance of HelpRP client.
      *
@@ -153,10 +192,13 @@ public final class HelpRPImpl implements HelpRP {
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01";
+        this.apiVersion = "2023-09-01-preview";
         this.operations = new OperationsClientImpl(this);
+        this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.discoverySolutions = new DiscoverySolutionsClientImpl(this);
+        this.solutionOperations = new SolutionOperationsClientImpl(this);
+        this.troubleshooters = new TroubleshootersClientImpl(this);
     }
 
     /**

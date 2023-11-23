@@ -13,15 +13,15 @@ public final class EmailServicePropertiesTests {
     public void testDeserialize() throws Exception {
         EmailServiceProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"dataLocation\":\"ofqweykhmenevfye\"}")
+                .fromString("{\"provisioningState\":\"Updating\",\"dataLocation\":\"zgpphrcgyncocpe\"}")
                 .toObject(EmailServiceProperties.class);
-        Assertions.assertEquals("ofqweykhmenevfye", model.dataLocation());
+        Assertions.assertEquals("zgpphrcgyncocpe", model.dataLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailServiceProperties model = new EmailServiceProperties().withDataLocation("ofqweykhmenevfye");
+        EmailServiceProperties model = new EmailServiceProperties().withDataLocation("zgpphrcgyncocpe");
         model = BinaryData.fromObject(model).toObject(EmailServiceProperties.class);
-        Assertions.assertEquals("ofqweykhmenevfye", model.dataLocation());
+        Assertions.assertEquals("zgpphrcgyncocpe", model.dataLocation());
     }
 }

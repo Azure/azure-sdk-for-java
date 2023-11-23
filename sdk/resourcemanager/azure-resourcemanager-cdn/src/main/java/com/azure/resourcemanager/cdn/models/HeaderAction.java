@@ -20,6 +20,15 @@ public final class HeaderAction extends ExpandableStringEnum<HeaderAction> {
     public static final HeaderAction DELETE = fromString("Delete");
 
     /**
+     * Creates a new instance of HeaderAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HeaderAction() {
+    }
+
+    /**
      * Creates or finds a HeaderAction from its string representation.
      *
      * @param name a name to look for.

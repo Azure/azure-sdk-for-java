@@ -102,7 +102,8 @@ public interface Volume {
      * Gets the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -179,7 +180,7 @@ public interface Volume {
     /**
      * Gets the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @return the networkFeatures value.
      */
@@ -271,7 +272,7 @@ public interface Volume {
     /**
      * Gets the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbAccessBasedEnumeration value.
      */
@@ -280,7 +281,7 @@ public interface Volume {
     /**
      * Gets the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbNonBrowsable value.
      */
@@ -348,6 +349,17 @@ public interface Volume {
      * @return the coolnessPeriod value.
      */
     Integer coolnessPeriod();
+
+    /**
+     * Gets the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
+     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
+     * values for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This
+     * policy is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    CoolAccessRetrievalPolicy coolAccessRetrievalPolicy();
 
     /**
      * Gets the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
@@ -612,11 +624,13 @@ public interface Volume {
              * Specifies the usageThreshold property: usageThreshold
              *
              * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
+             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
+             * exceptional basis. Specified in bytes..
              *
              * @param usageThreshold usageThreshold
              *     <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting
-             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
+             *     LargeVolume on exceptional basis. Specified in bytes.
              * @return the next definition stage.
              */
             WithSubnetId withUsageThreshold(long usageThreshold);
@@ -665,6 +679,7 @@ public interface Volume {
                 DefinitionStages.WithLdapEnabled,
                 DefinitionStages.WithCoolAccess,
                 DefinitionStages.WithCoolnessPeriod,
+                DefinitionStages.WithCoolAccessRetrievalPolicy,
                 DefinitionStages.WithUnixPermissions,
                 DefinitionStages.WithAvsDataStore,
                 DefinitionStages.WithIsDefaultQuotaEnabled,
@@ -802,10 +817,10 @@ public interface Volume {
             /**
              * Specifies the networkFeatures property: Network features
              *
-             * <p>Basic network, or Standard features available to the volume..
+             * <p>Network features available to the volume, or current state of update..
              *
              * @param networkFeatures Network features
-             *     <p>Basic network, or Standard features available to the volume.
+             *     <p>Network features available to the volume, or current state of update.
              * @return the next definition stage.
              */
             WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
@@ -906,11 +921,11 @@ public interface Volume {
             /**
              * Specifies the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
              *
-             * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
+             * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
              * volume.
              *
              * @param smbAccessBasedEnumeration smbAccessBasedEnumeration
-             *     <p>Enables access based enumeration share property for SMB Shares. Only applicable for
+             *     <p>Enables access-based enumeration share property for SMB Shares. Only applicable for
              *     SMB/DualProtocol volume.
              * @return the next definition stage.
              */
@@ -922,10 +937,10 @@ public interface Volume {
             /**
              * Specifies the smbNonBrowsable property: smbNonBrowsable
              *
-             * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
              *
              * @param smbNonBrowsable smbNonBrowsable
-             *     <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             *     <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
              * @return the next definition stage.
              */
             WithCreate withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
@@ -1019,6 +1034,27 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withCoolnessPeriod(Integer coolnessPeriod);
+        }
+
+        /** The stage of the Volume definition allowing to specify coolAccessRetrievalPolicy. */
+        interface WithCoolAccessRetrievalPolicy {
+            /**
+             * Specifies the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval
+             * behavior from the cool tier to standard storage based on the read pattern for cool access enabled
+             * volumes. The possible values for this field are: Default - Data will be pulled from cool tier to standard
+             * storage on random reads. This policy is the default. OnRead - All client-driven data read is pulled from
+             * cool tier to standard storage on both sequential and random reads. Never - No client-driven data is
+             * pulled from cool tier to standard storage..
+             *
+             * @param coolAccessRetrievalPolicy coolAccessRetrievalPolicy determines the data retrieval behavior from
+             *     the cool tier to standard storage based on the read pattern for cool access enabled volumes. The
+             *     possible values for this field are: Default - Data will be pulled from cool tier to standard storage
+             *     on random reads. This policy is the default. OnRead - All client-driven data read is pulled from cool
+             *     tier to standard storage on both sequential and random reads. Never - No client-driven data is pulled
+             *     from cool tier to standard storage.
+             * @return the next definition stage.
+             */
+            WithCreate withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy);
         }
 
         /** The stage of the Volume definition allowing to specify unixPermissions. */
@@ -1189,7 +1225,10 @@ public interface Volume {
             UpdateStages.WithUnixPermissions,
             UpdateStages.WithCoolAccess,
             UpdateStages.WithCoolnessPeriod,
-            UpdateStages.WithSnapshotDirectoryVisible {
+            UpdateStages.WithCoolAccessRetrievalPolicy,
+            UpdateStages.WithSnapshotDirectoryVisible,
+            UpdateStages.WithSmbAccessBasedEnumeration,
+            UpdateStages.WithSmbNonBrowsable {
         /**
          * Executes the update request.
          *
@@ -1239,11 +1278,13 @@ public interface Volume {
              * Specifies the usageThreshold property: usageThreshold
              *
              * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only.
-             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes..
+             * Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on
+             * exceptional basis. Specified in bytes..
              *
              * @param usageThreshold usageThreshold
              *     <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting
-             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+             *     only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
+             *     LargeVolume on exceptional basis. Specified in bytes.
              * @return the next definition stage.
              */
             Update withUsageThreshold(Long usageThreshold);
@@ -1370,6 +1411,27 @@ public interface Volume {
             Update withCoolnessPeriod(Integer coolnessPeriod);
         }
 
+        /** The stage of the Volume update allowing to specify coolAccessRetrievalPolicy. */
+        interface WithCoolAccessRetrievalPolicy {
+            /**
+             * Specifies the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval
+             * behavior from the cool tier to standard storage based on the read pattern for cool access enabled
+             * volumes. The possible values for this field are: Default - Data will be pulled from cool tier to standard
+             * storage on random reads. This policy is the default. OnRead - All client-driven data read is pulled from
+             * cool tier to standard storage on both sequential and random reads. Never - No client-driven data is
+             * pulled from cool tier to standard storage..
+             *
+             * @param coolAccessRetrievalPolicy coolAccessRetrievalPolicy determines the data retrieval behavior from
+             *     the cool tier to standard storage based on the read pattern for cool access enabled volumes. The
+             *     possible values for this field are: Default - Data will be pulled from cool tier to standard storage
+             *     on random reads. This policy is the default. OnRead - All client-driven data read is pulled from cool
+             *     tier to standard storage on both sequential and random reads. Never - No client-driven data is pulled
+             *     from cool tier to standard storage.
+             * @return the next definition stage.
+             */
+            Update withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy);
+        }
+
         /** The stage of the Volume update allowing to specify snapshotDirectoryVisible. */
         interface WithSnapshotDirectoryVisible {
             /**
@@ -1381,6 +1443,36 @@ public interface Volume {
              * @return the next definition stage.
              */
             Update withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible);
+        }
+
+        /** The stage of the Volume update allowing to specify smbAccessBasedEnumeration. */
+        interface WithSmbAccessBasedEnumeration {
+            /**
+             * Specifies the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
+             *
+             * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol
+             * volume.
+             *
+             * @param smbAccessBasedEnumeration smbAccessBasedEnumeration
+             *     <p>Enables access-based enumeration share property for SMB Shares. Only applicable for
+             *     SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            Update withSmbAccessBasedEnumeration(SmbAccessBasedEnumeration smbAccessBasedEnumeration);
+        }
+
+        /** The stage of the Volume update allowing to specify smbNonBrowsable. */
+        interface WithSmbNonBrowsable {
+            /**
+             * Specifies the smbNonBrowsable property: smbNonBrowsable
+             *
+             * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             *
+             * @param smbNonBrowsable smbNonBrowsable
+             *     <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+             * @return the next definition stage.
+             */
+            Update withSmbNonBrowsable(SmbNonBrowsable smbNonBrowsable);
         }
     }
 
@@ -1398,6 +1490,30 @@ public interface Volume {
      * @return the refreshed resource.
      */
     Volume refresh(Context context);
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume populateAvailabilityZone();
+
+    /**
+     * Populate Availability Zone
+     *
+     * <p>This operation will populate availability zone information for a volume.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume populateAvailabilityZone(Context context);
 
     /**
      * Revert a volume to one of its snapshots

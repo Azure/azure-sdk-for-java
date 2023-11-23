@@ -23,6 +23,12 @@ public final class SetVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SetVariableActivityTypeProperties innerTypeProperties = new SetVariableActivityTypeProperties();
 
+    /*
+     * Activity policy.
+     */
+    @JsonProperty(value = "policy")
+    private SecureInputOutputPolicy policy;
+
     /** Creates an instance of SetVariableActivity class. */
     public SetVariableActivity() {
     }
@@ -36,6 +42,26 @@ public final class SetVariableActivity extends ControlActivity {
         return this.innerTypeProperties;
     }
 
+    /**
+     * Get the policy property: Activity policy.
+     *
+     * @return the policy value.
+     */
+    public SecureInputOutputPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Activity policy.
+     *
+     * @param policy the policy value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withPolicy(SecureInputOutputPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public SetVariableActivity withName(String name) {
@@ -47,6 +73,20 @@ public final class SetVariableActivity extends ControlActivity {
     @Override
     public SetVariableActivity withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SetVariableActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SetVariableActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
@@ -111,6 +151,29 @@ public final class SetVariableActivity extends ControlActivity {
     }
 
     /**
+     * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @return the setSystemVariable value.
+     */
+    public Boolean setSystemVariable() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().setSystemVariable();
+    }
+
+    /**
+     * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     *
+     * @param setSystemVariable the setSystemVariable value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withSetSystemVariable(Boolean setSystemVariable) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SetVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSetSystemVariable(setSystemVariable);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -125,6 +188,9 @@ public final class SetVariableActivity extends ControlActivity {
                         "Missing required property innerTypeProperties in model SetVariableActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 

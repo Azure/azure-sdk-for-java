@@ -78,6 +78,15 @@ public final class MicrosoftGraphTimeOffReasonIconType
     public static final MicrosoftGraphTimeOffReasonIconType UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphTimeOffReasonIconType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphTimeOffReasonIconType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphTimeOffReasonIconType from its string representation.
      *
      * @param name a name to look for.

@@ -17,12 +17,12 @@ public final class ServiceConfigurationListTests {
         ServiceConfigurationList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"sprozvcput\",\"port\":7394887039726775075,\"provisioningState\":\"Creating\"},\"id\":\"fdatsc\",\"name\":\"dvpjhulsuuvmk\",\"type\":\"ozkrwfndiodjpslw\"},{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"vwryoqpso\",\"port\":8671483261747232397,\"provisioningState\":\"Creating\"},\"id\":\"akl\",\"name\":\"lahbcryff\",\"type\":\"fdosyg\"},{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"ojakhmsbzjhcrze\",\"port\":5524797481405641879,\"provisioningState\":\"Updating\"},\"id\":\"aolthqtrg\",\"name\":\"jbp\",\"type\":\"zfsinzgvf\"}],\"nextLink\":\"rwzoxxjtfelluwf\"}")
+                    "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"sprozvcput\",\"port\":7394887039726775075,\"provisioningState\":\"Creating\"},\"id\":\"datscmd\",\"name\":\"pjhulsuuvmkj\",\"type\":\"zkrwfn\"},{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jpslwejd\",\"port\":2711659806667039097,\"provisioningState\":\"Succeeded\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"},{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"vdphlxaolthqtr\",\"port\":2607282935918519139,\"provisioningState\":\"Failed\"},\"id\":\"fsinzgvfcjrwzoxx\",\"name\":\"tfell\",\"type\":\"wfzitonpeqfpjk\"}],\"nextLink\":\"xofpdvhpfxxypi\"}")
                 .toObject(ServiceConfigurationList.class);
         Assertions.assertEquals(ServiceName.SSH, model.value().get(0).serviceName());
         Assertions.assertEquals("sprozvcput", model.value().get(0).resourceId());
         Assertions.assertEquals(7394887039726775075L, model.value().get(0).port());
-        Assertions.assertEquals("rwzoxxjtfelluwf", model.nextLink());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,17 +38,17 @@ public final class ServiceConfigurationListTests {
                                 .withPort(7394887039726775075L),
                             new ServiceConfigurationResourceInner()
                                 .withServiceName(ServiceName.WAC)
-                                .withResourceId("vwryoqpso")
-                                .withPort(8671483261747232397L),
+                                .withResourceId("jpslwejd")
+                                .withPort(2711659806667039097L),
                             new ServiceConfigurationResourceInner()
-                                .withServiceName(ServiceName.WAC)
-                                .withResourceId("ojakhmsbzjhcrze")
-                                .withPort(5524797481405641879L)))
-                .withNextLink("rwzoxxjtfelluwf");
+                                .withServiceName(ServiceName.SSH)
+                                .withResourceId("vdphlxaolthqtr")
+                                .withPort(2607282935918519139L)))
+                .withNextLink("xofpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(ServiceConfigurationList.class);
         Assertions.assertEquals(ServiceName.SSH, model.value().get(0).serviceName());
         Assertions.assertEquals("sprozvcput", model.value().get(0).resourceId());
         Assertions.assertEquals(7394887039726775075L, model.value().get(0).port());
-        Assertions.assertEquals("rwzoxxjtfelluwf", model.nextLink());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.nextLink());
     }
 }

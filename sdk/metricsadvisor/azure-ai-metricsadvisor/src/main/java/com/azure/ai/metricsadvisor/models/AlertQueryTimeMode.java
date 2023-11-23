@@ -10,6 +10,15 @@ import java.util.Collection;
 
 /** Defines values for AlertQueryTimeMode. */
 public final class AlertQueryTimeMode extends ExpandableStringEnum<AlertQueryTimeMode> {
+
+    /**
+     * Constructs a AlertQueryTimeMode object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertQueryTimeMode() {
+    }
+
     /** Static value AnomalyTime for AlertQueryTimeMode. */
     public static final AlertQueryTimeMode ANOMALY_TIME = fromString("AnomalyTime");
 
@@ -30,7 +39,10 @@ public final class AlertQueryTimeMode extends ExpandableStringEnum<AlertQueryTim
         return fromString(name, AlertQueryTimeMode.class);
     }
 
-    /** @return known AlertQueryTimeMode values. */
+    /**
+     * Returns the known AlertQueryTimeMode values.
+     * @return known AlertQueryTimeMode values.
+     */
     public static Collection<AlertQueryTimeMode> values() {
         return values(AlertQueryTimeMode.class);
     }

@@ -28,6 +28,9 @@ public final class StartDialogRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of StartDialogRequest class. */
+    public StartDialogRequest() {}
+
     /**
      * Get the dialogOptions property: Defines options for dialog.
      *

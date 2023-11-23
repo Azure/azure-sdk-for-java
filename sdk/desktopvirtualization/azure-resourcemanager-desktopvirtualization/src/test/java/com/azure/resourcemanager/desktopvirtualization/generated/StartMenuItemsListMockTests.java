@@ -32,7 +32,7 @@ public final class StartMenuItemsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"appAlias\":\"jjxundxgke\",\"filePath\":\"zhhzjhfjmhvvmu\",\"commandLineArguments\":\"pmuneqsx\",\"iconPath\":\"hfbuzjyihsasbhud\",\"iconIndex\":1053625203},\"id\":\"hyuemslyn\",\"name\":\"qyrp\",\"type\":\"oobrlttyms\"}]}";
+            "{\"value\":[{\"properties\":{\"appAlias\":\"vwwskondcbr\",\"filePath\":\"muvqejosovyr\",\"commandLineArguments\":\"eaesin\",\"iconPath\":\"tljqobbpih\",\"iconIndex\":1941467727},\"id\":\"ecybmrqbrj\",\"name\":\"bmpxdlvykfrexc\",\"type\":\"s\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,18 +63,12 @@ public final class StartMenuItemsListMockTests {
         PagedIterable<StartMenuItem> response =
             manager
                 .startMenuItems()
-                .list(
-                    "sdtutnwlduyc",
-                    "uzhyrmewipmvekdx",
-                    1888237693,
-                    false,
-                    1994675840,
-                    com.azure.core.util.Context.NONE);
+                .list("whqjjyslurlpshhk", "pedwqsl", 510077945, false, 1919863050, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jjxundxgke", response.iterator().next().appAlias());
-        Assertions.assertEquals("zhhzjhfjmhvvmu", response.iterator().next().filePath());
-        Assertions.assertEquals("pmuneqsx", response.iterator().next().commandLineArguments());
-        Assertions.assertEquals("hfbuzjyihsasbhud", response.iterator().next().iconPath());
-        Assertions.assertEquals(1053625203, response.iterator().next().iconIndex());
+        Assertions.assertEquals("vwwskondcbr", response.iterator().next().appAlias());
+        Assertions.assertEquals("muvqejosovyr", response.iterator().next().filePath());
+        Assertions.assertEquals("eaesin", response.iterator().next().commandLineArguments());
+        Assertions.assertEquals("tljqobbpih", response.iterator().next().iconPath());
+        Assertions.assertEquals(1941467727, response.iterator().next().iconIndex());
     }
 }

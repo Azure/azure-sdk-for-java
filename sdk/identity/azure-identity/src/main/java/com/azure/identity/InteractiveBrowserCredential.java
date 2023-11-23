@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * <p>Interactive browser authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a> that enables users to sign in to applications and services using a web browser. This authentication method is
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * that enables users to sign in to applications and services using a web browser. This authentication method is
  * commonly used for web applications, where users enter their credentials directly into a web page.
  * With interactive browser authentication, the user navigates to a web application and is prompted to enter their
- * username and password credentials. The application then redirects the user to the Azure AD sign-in page, where
- * they are prompted to enter their credentials again. After the user successfully authenticates, Azure AD issues a
+ * username and password credentials. The application then redirects the user to the Microsoft Entra ID sign-in page, where
+ * they are prompted to enter their credentials again. After the user successfully authenticates, Microsoft Entra ID issues a
  * security token that the application can use to authorize the user's access to its resources.
  * The InteractiveBrowserCredential interactively authenticates a user and acquires a token with the default system
  * browser and offers a smooth authentication experience by letting a user use their own credentials to authenticate the
@@ -37,11 +37,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
  * <p><strong>Required configuration:</strong></p>
  *
- * <p>To use InteractiveBrowserCredential, you need to register an application in Azure Active Directory with
+ * <p>To use InteractiveBrowserCredential, you need to register an application in Microsoft Entra ID with
  * permissions to log in on behalf of a user. Follow the steps below to configure your registered application.</p>
  *
  * <ol>
- *     <li>Go to Azure Active Directory in Azure portal and find your app registration.</li>
+ *     <li>Go to Microsoft Entra ID in Azure portal and find your app registration.</li>
  *     <li>Navigate to the Authentication section.</li>
  *     <li>Under Suggested Redirected URIs, check the URI that ends with /common/oauth2/nativeclient.</li>
  *     <li>Under Default Client Type, select yes for Treat application as a public client.</li>
@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * the Redirect URL where STS will callback the application with the security code. It is required if a custom
  * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
  * redirect URL specified during the application registration. You can add the redirect URL to the Redirect URIs
- * subsection under the Authentication section of your registered Azure AD application.</p>
+ * subsection under the Authentication section of your registered Microsoft Entra application.</p>
  *
  * <p><strong>Sample: Construct InteractiveBrowserCredential</strong></p>
  *

@@ -16,41 +16,41 @@ public final class RoutingServiceBusQueueEndpointPropertiesTests {
         RoutingServiceBusQueueEndpointProperties model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"aodsfcpkv\",\"connectionString\":\"dpuozmyz\",\"endpointUri\":\"agfuaxbezyiu\",\"entityPath\":\"ktwh\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"ywqsmbsurexim\"},\"name\":\"ryocfsfksymdd\",\"subscriptionId\":\"tki\",\"resourceGroup\":\"xhqyudxorrqnb\"}")
+                    "{\"id\":\"pazyxoegukg\",\"connectionString\":\"piu\",\"endpointUri\":\"ygevqzntypmrbpiz\",\"entityPath\":\"r\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ydnfyhxdeoejz\"},\"name\":\"cwif\",\"subscriptionId\":\"ttgzfbis\",\"resourceGroup\":\"bkh\"}")
                 .toObject(RoutingServiceBusQueueEndpointProperties.class);
-        Assertions.assertEquals("aodsfcpkv", model.id());
-        Assertions.assertEquals("dpuozmyz", model.connectionString());
-        Assertions.assertEquals("agfuaxbezyiu", model.endpointUri());
-        Assertions.assertEquals("ktwh", model.entityPath());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("ywqsmbsurexim", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("ryocfsfksymdd", model.name());
-        Assertions.assertEquals("tki", model.subscriptionId());
-        Assertions.assertEquals("xhqyudxorrqnb", model.resourceGroup());
+        Assertions.assertEquals("pazyxoegukg", model.id());
+        Assertions.assertEquals("piu", model.connectionString());
+        Assertions.assertEquals("ygevqzntypmrbpiz", model.endpointUri());
+        Assertions.assertEquals("r", model.entityPath());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("ydnfyhxdeoejz", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("cwif", model.name());
+        Assertions.assertEquals("ttgzfbis", model.subscriptionId());
+        Assertions.assertEquals("bkh", model.resourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingServiceBusQueueEndpointProperties model =
             new RoutingServiceBusQueueEndpointProperties()
-                .withId("aodsfcpkv")
-                .withConnectionString("dpuozmyz")
-                .withEndpointUri("agfuaxbezyiu")
-                .withEntityPath("ktwh")
-                .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ywqsmbsurexim"))
-                .withName("ryocfsfksymdd")
-                .withSubscriptionId("tki")
-                .withResourceGroup("xhqyudxorrqnb");
+                .withId("pazyxoegukg")
+                .withConnectionString("piu")
+                .withEndpointUri("ygevqzntypmrbpiz")
+                .withEntityPath("r")
+                .withAuthenticationType(AuthenticationType.IDENTITY_BASED)
+                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("ydnfyhxdeoejz"))
+                .withName("cwif")
+                .withSubscriptionId("ttgzfbis")
+                .withResourceGroup("bkh");
         model = BinaryData.fromObject(model).toObject(RoutingServiceBusQueueEndpointProperties.class);
-        Assertions.assertEquals("aodsfcpkv", model.id());
-        Assertions.assertEquals("dpuozmyz", model.connectionString());
-        Assertions.assertEquals("agfuaxbezyiu", model.endpointUri());
-        Assertions.assertEquals("ktwh", model.entityPath());
-        Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
-        Assertions.assertEquals("ywqsmbsurexim", model.identity().userAssignedIdentity());
-        Assertions.assertEquals("ryocfsfksymdd", model.name());
-        Assertions.assertEquals("tki", model.subscriptionId());
-        Assertions.assertEquals("xhqyudxorrqnb", model.resourceGroup());
+        Assertions.assertEquals("pazyxoegukg", model.id());
+        Assertions.assertEquals("piu", model.connectionString());
+        Assertions.assertEquals("ygevqzntypmrbpiz", model.endpointUri());
+        Assertions.assertEquals("r", model.entityPath());
+        Assertions.assertEquals(AuthenticationType.IDENTITY_BASED, model.authenticationType());
+        Assertions.assertEquals("ydnfyhxdeoejz", model.identity().userAssignedIdentity());
+        Assertions.assertEquals("cwif", model.name());
+        Assertions.assertEquals("ttgzfbis", model.subscriptionId());
+        Assertions.assertEquals("bkh", model.resourceGroup());
     }
 }

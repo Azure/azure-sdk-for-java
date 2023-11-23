@@ -124,4 +124,32 @@ public class EtagIT {
         }
     }
 
+    @Test
+    public void testBulkShouldFailIfEtagDoesNotMatch() {
+        final List<PersonWithEtag> people = new ArrayList<>();
+        people.add(createPersonWithEtag());
+
+        final List<PersonWithEtag> insertedPeople = toList(personWithEtagRepository.saveAll(people));
+        insertedPeople.forEach(person -> Assert.assertNotNull(person.getEtag()));
+
+        final List<PersonWithEtag> updatedPeople = toList(insertedPeople);
+        updatedPeople.get(0).setFirstName(LAST_NAME);
+
+        List<PersonWithEtag> updatedPeopleWithEtag = toList(personWithEtagRepository.saveAll(updatedPeople));
+        updatedPeopleWithEtag.get(0).setEtag(insertedPeople.get(0).getEtag());
+
+        try {
+            List<PersonWithEtag> result = toList(personWithEtagRepository.saveAll(updatedPeopleWithEtag));
+            Assert.assertEquals(result.size(), 0);
+        } catch (CosmosAccessException ex) {
+        }
+
+        try {
+            personWithEtagRepository.deleteAll(updatedPeopleWithEtag);
+            List<PersonWithEtag> result2 = toList(personWithEtagRepository.findAll());
+            Assert.assertEquals(result2.size(), 1);
+        } catch (CosmosAccessException ex) {
+        }
+    }
+
 }

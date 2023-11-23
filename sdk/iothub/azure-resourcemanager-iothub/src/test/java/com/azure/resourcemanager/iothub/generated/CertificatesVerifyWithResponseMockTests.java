@@ -32,10 +32,10 @@ public final class CertificatesVerifyWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"subject\":\"iithtywu\",\"expiry\":\"Sat, 06 Mar 2021 07:21:05"
-                + " GMT\",\"thumbprint\":\"ihwqknfdntwjchr\",\"isVerified\":true,\"created\":\"Tue, 05 Oct 2021"
-                + " 08:32:44 GMT\",\"updated\":\"Fri, 19 Mar 2021 07:37:05"
-                + " GMT\",\"certificate\":\"wct\"},\"etag\":\"dzjlu\",\"id\":\"dfdlwggyts\",\"name\":\"wtovvtgsein\",\"type\":\"fiufx\"}";
+            "{\"properties\":{\"subject\":\"gufhyaomtbg\",\"expiry\":\"Sat, 24 Apr 2021 04:26:41"
+                + " GMT\",\"thumbprint\":\"grvk\",\"isVerified\":true,\"created\":\"Wed, 20 Jan 2021 03:53:05"
+                + " GMT\",\"updated\":\"Tue, 28 Sep 2021 04:32:09"
+                + " GMT\",\"certificate\":\"jbibg\"},\"etag\":\"fxumv\",\"id\":\"cluyovwxnbkf\",\"name\":\"zzxscyhwzdgiruj\",\"type\":\"zbomvzzbtdcqvpni\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,15 +67,15 @@ public final class CertificatesVerifyWithResponseMockTests {
             manager
                 .certificates()
                 .verifyWithResponse(
-                    "hfstotxhojujbyp",
-                    "lmcuvhixb",
-                    "xyfwnylrcool",
-                    "ttpkiwkkbnujrywv",
-                    new CertificateVerificationDescription().withCertificate("lbfpncurd"),
+                    "nopqgikyzirtx",
+                    "yuxzejntpsewgi",
+                    "ilqu",
+                    "rydxtqm",
+                    new CertificateVerificationDescription().withCertificate("ox"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(true, response.properties().isVerified());
-        Assertions.assertEquals("wct", response.properties().certificate());
+        Assertions.assertEquals("jbibg", response.properties().certificate());
     }
 }

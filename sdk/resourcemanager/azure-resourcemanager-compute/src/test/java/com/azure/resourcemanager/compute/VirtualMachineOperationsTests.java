@@ -1753,6 +1753,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(vm2.virtualMachineScaleSetId());
 
         Assertions.assertEquals(1, computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().count());
+        Assertions.assertTrue(vm.id().equalsIgnoreCase(computeManager.virtualMachines().listByVirtualMachineScaleSetId(vmss.id()).stream().iterator().next().id()));
         Assertions.assertEquals(2, computeManager.virtualMachines().listByResourceGroup(rgName).stream().count());
     }
 

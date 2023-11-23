@@ -493,7 +493,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-10-01";
+        this.apiVersion = "2023-06-01";
         this.operations = new OperationsClientImpl(this);
         this.replicationAlertSettings = new ReplicationAlertSettingsClientImpl(this);
         this.replicationAppliances = new ReplicationAppliancesClientImpl(this);

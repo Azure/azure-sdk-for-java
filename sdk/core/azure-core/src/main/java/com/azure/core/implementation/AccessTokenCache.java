@@ -142,11 +142,10 @@ public final class AccessTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(cachedToken);
                     }
-                    return tokenRefresh
-                        .materialize()
+
+                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
                         .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                        .doOnError(sinksOne::tryEmitError)
-                        .doFinally(ignored -> wip.set(null));
+                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
                 } else if (cachedToken != null && !cachedToken.isExpired() && !checkToForceFetchToken) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cachedToken);

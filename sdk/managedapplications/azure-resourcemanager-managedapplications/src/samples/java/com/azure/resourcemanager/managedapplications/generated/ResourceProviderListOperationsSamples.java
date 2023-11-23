@@ -7,7 +7,7 @@ package com.azure.resourcemanager.managedapplications.generated;
 /** Samples for ResourceProvider ListOperations. */
 public final class ResourceProviderListOperationsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Solutions/stable/2018-06-01/examples/listSolutionsOperations.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listSolutionsOperations.json
      */
     /**
      * Sample code: List Solutions operations.

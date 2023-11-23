@@ -11,7 +11,7 @@ import com.azure.resourcemanager.devcenter.models.ScheduledType;
 /** Samples for Schedules CreateOrUpdate. */
 public final class SchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Schedules_CreateDailyShutdownPoolSchedule.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Schedules_CreateDailyShutdownPoolSchedule.json
      */
     /**
      * Sample code: Schedules_CreateDailyShutdownPoolSchedule.

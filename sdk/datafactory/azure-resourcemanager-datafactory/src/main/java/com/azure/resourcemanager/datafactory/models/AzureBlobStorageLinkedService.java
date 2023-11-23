@@ -168,7 +168,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      *
      * @return the serviceEndpoint value.
      */
-    public String serviceEndpoint() {
+    public Object serviceEndpoint() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceEndpoint();
     }
 
@@ -179,7 +179,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withServiceEndpoint(String serviceEndpoint) {
+    public AzureBlobStorageLinkedService withServiceEndpoint(Object serviceEndpoint) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
         }
@@ -296,7 +296,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      *
      * @return the accountKind value.
      */
-    public String accountKind() {
+    public Object accountKind() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().accountKind();
     }
 
@@ -308,7 +308,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
      * @param accountKind the accountKind value to set.
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withAccountKind(String accountKind) {
+    public AzureBlobStorageLinkedService withAccountKind(Object accountKind) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AzureBlobStorageLinkedServiceTypeProperties();
         }
@@ -318,7 +318,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
@@ -328,7 +328,7 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureBlobStorageLinkedService object itself.

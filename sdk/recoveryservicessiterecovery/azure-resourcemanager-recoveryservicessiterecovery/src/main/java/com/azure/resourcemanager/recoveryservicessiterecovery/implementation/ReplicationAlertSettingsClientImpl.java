@@ -62,8 +62,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
     public interface ReplicationAlertSettingsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationAlertSettings")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertCollection>> list(
@@ -77,8 +76,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertInner>> get(
@@ -93,8 +91,7 @@ public final class ReplicationAlertSettingsClientImpl implements ReplicationAler
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAlertSettings/{alertSettingName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertInner>> create(

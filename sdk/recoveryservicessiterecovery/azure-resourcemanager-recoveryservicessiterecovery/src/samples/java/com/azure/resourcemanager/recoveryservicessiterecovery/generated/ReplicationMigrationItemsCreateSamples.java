@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for ReplicationMigrationItems Create. */
 public final class ReplicationMigrationItemsCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_Create.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Create.json
      */
     /**
      * Sample code: Enables migration.

@@ -18,6 +18,10 @@ public final class LoadParameters {
     @JsonProperty(value = "contentPaths", required = true)
     private List<String> contentPaths;
 
+    /** Creates an instance of LoadParameters class. */
+    public LoadParameters() {
+    }
+
     /**
      * Get the contentPaths property: The path to the content to be loaded. Path should be a relative file URL of the
      * origin.

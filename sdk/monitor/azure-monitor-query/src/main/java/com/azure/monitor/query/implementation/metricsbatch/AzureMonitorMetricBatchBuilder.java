@@ -234,7 +234,7 @@ public final class AzureMonitorMetricBatchBuilder
     @Generated
     public AzureMonitorMetricBatch buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-05-01-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-01";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureMonitorMetricBatch client =
@@ -268,7 +268,7 @@ public final class AzureMonitorMetricBatchBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("https://metrics.monitor.azure.com/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

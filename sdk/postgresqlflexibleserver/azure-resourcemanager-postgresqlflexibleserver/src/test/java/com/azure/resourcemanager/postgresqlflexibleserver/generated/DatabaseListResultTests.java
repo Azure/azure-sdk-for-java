@@ -16,26 +16,22 @@ public final class DatabaseListResultTests {
         DatabaseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"charset\":\"wxrjfeallnwsub\",\"collation\":\"njampm\"},\"id\":\"nzscxa\",\"name\":\"wooc\",\"type\":\"cbonqvpk\"},{\"properties\":{\"charset\":\"xnj\",\"collation\":\"seiphe\"},\"id\":\"lokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}],\"nextLink\":\"masxazjpqyegu\"}")
+                    "{\"value\":[{\"properties\":{\"charset\":\"ebmnzbtbhjpglk\",\"collation\":\"ohdneuel\"},\"id\":\"hsd\",\"name\":\"htozfikdow\",\"type\":\"quuvxzxcl\"}],\"nextLink\":\"thhqzonosggbh\"}")
                 .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("wxrjfeallnwsub", model.value().get(0).charset());
-        Assertions.assertEquals("njampm", model.value().get(0).collation());
-        Assertions.assertEquals("masxazjpqyegu", model.nextLink());
+        Assertions.assertEquals("ebmnzbtbhjpglk", model.value().get(0).charset());
+        Assertions.assertEquals("ohdneuel", model.value().get(0).collation());
+        Assertions.assertEquals("thhqzonosggbh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabaseListResult model =
             new DatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner().withCharset("wxrjfeallnwsub").withCollation("njampm"),
-                            new DatabaseInner().withCharset("xnj").withCollation("seiphe")))
-                .withNextLink("masxazjpqyegu");
+                .withValue(Arrays.asList(new DatabaseInner().withCharset("ebmnzbtbhjpglk").withCollation("ohdneuel")))
+                .withNextLink("thhqzonosggbh");
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("wxrjfeallnwsub", model.value().get(0).charset());
-        Assertions.assertEquals("njampm", model.value().get(0).collation());
-        Assertions.assertEquals("masxazjpqyegu", model.nextLink());
+        Assertions.assertEquals("ebmnzbtbhjpglk", model.value().get(0).charset());
+        Assertions.assertEquals("ohdneuel", model.value().get(0).collation());
+        Assertions.assertEquals("thhqzonosggbh", model.nextLink());
     }
 }

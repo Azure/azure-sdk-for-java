@@ -21,6 +21,10 @@ public final class DeliveryRuleServerPortCondition extends DeliveryRuleCondition
     @JsonProperty(value = "parameters", required = true)
     private ServerPortMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleServerPortCondition class. */
+    public DeliveryRuleServerPortCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

@@ -11,8 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.search.documents.models.CaptionResult;
-import com.azure.search.documents.models.DocumentDebugInfo;
+import com.azure.search.documents.models.QueryCaptionResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -29,7 +28,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /*
      * The relevance score computed by the semantic ranker for the top search results. Search results are sorted by the
-     * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type 'semantic'.
+     * RerankerScore first and then by the Score. RerankerScore is only returned for queries of type `semantic`.
      */
     private Double rerankerScore;
 
@@ -41,14 +40,9 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /*
      * Captions are the most representative passages from the document relatively to the search query. They are often
-     * used as document summary. Captions are only returned for queries of type 'semantic'.
+     * used as document summary. Captions are only returned for queries of type `semantic`.
      */
-    private List<CaptionResult> captions;
-
-    /*
-     * Contains debugging information that can be used to further explore your search results.
-     */
-    private List<DocumentDebugInfo> documentDebugInfo;
+    private List<QueryCaptionResult> captions;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
@@ -76,7 +70,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     /**
      * Get the rerankerScore property: The relevance score computed by the semantic ranker for the top search results.
      * Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for
-     * queries of type 'semantic'.
+     * queries of type `semantic`.
      *
      * @return the rerankerScore value.
      */
@@ -96,22 +90,12 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
 
     /**
      * Get the captions property: Captions are the most representative passages from the document relatively to the
-     * search query. They are often used as document summary. Captions are only returned for queries of type 'semantic'.
+     * search query. They are often used as document summary. Captions are only returned for queries of type `semantic`.
      *
      * @return the captions value.
      */
-    public List<CaptionResult> getCaptions() {
+    public List<QueryCaptionResult> getCaptions() {
         return this.captions;
-    }
-
-    /**
-     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your
-     * search results.
-     *
-     * @return the documentDebugInfo value.
-     */
-    public List<DocumentDebugInfo> getDocumentDebugInfo() {
-        return this.documentDebugInfo;
     }
 
     /**
@@ -137,15 +121,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("@search.score", this.score);
-        jsonWriter.writeNumberField("@search.rerankerScore", this.rerankerScore);
-        jsonWriter.writeMapField(
-                "@search.highlights",
-                this.highlights,
-                (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
-        jsonWriter.writeArrayField("@search.captions", this.captions, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField(
-                "@search.documentDebugInfo", this.documentDebugInfo, (writer, element) -> writer.writeJson(element));
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -170,8 +145,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                     double score = 0.0;
                     Double rerankerScore = null;
                     Map<String, List<String>> highlights = null;
-                    List<CaptionResult> captions = null;
-                    List<DocumentDebugInfo> documentDebugInfo = null;
+                    List<QueryCaptionResult> captions = null;
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
@@ -185,9 +159,7 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                         } else if ("@search.highlights".equals(fieldName)) {
                             highlights = reader.readMap(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
                         } else if ("@search.captions".equals(fieldName)) {
-                            captions = reader.readArray(reader1 -> CaptionResult.fromJson(reader1));
-                        } else if ("@search.documentDebugInfo".equals(fieldName)) {
-                            documentDebugInfo = reader.readArray(reader1 -> DocumentDebugInfo.fromJson(reader1));
+                            captions = reader.readArray(reader1 -> QueryCaptionResult.fromJson(reader1));
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -201,7 +173,6 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                         deserializedSearchResult.rerankerScore = rerankerScore;
                         deserializedSearchResult.highlights = highlights;
                         deserializedSearchResult.captions = captions;
-                        deserializedSearchResult.documentDebugInfo = documentDebugInfo;
                         deserializedSearchResult.additionalProperties = additionalProperties;
 
                         return deserializedSearchResult;

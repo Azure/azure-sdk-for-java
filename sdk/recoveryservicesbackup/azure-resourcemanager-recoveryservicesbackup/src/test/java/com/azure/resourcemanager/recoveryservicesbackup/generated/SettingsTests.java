@@ -13,19 +13,19 @@ public final class SettingsTests {
     public void testDeserialize() throws Exception {
         Settings model =
             BinaryData
-                .fromString("{\"timeZone\":\"vleo\",\"issqlcompression\":false,\"isCompression\":true}")
+                .fromString("{\"timeZone\":\"p\",\"issqlcompression\":true,\"isCompression\":false}")
                 .toObject(Settings.class);
-        Assertions.assertEquals("vleo", model.timeZone());
-        Assertions.assertEquals(false, model.issqlcompression());
-        Assertions.assertEquals(true, model.isCompression());
+        Assertions.assertEquals("p", model.timeZone());
+        Assertions.assertEquals(true, model.issqlcompression());
+        Assertions.assertEquals(false, model.isCompression());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Settings model = new Settings().withTimeZone("vleo").withIssqlcompression(false).withIsCompression(true);
+        Settings model = new Settings().withTimeZone("p").withIssqlcompression(true).withIsCompression(false);
         model = BinaryData.fromObject(model).toObject(Settings.class);
-        Assertions.assertEquals("vleo", model.timeZone());
-        Assertions.assertEquals(false, model.issqlcompression());
-        Assertions.assertEquals(true, model.isCompression());
+        Assertions.assertEquals("p", model.timeZone());
+        Assertions.assertEquals(true, model.issqlcompression());
+        Assertions.assertEquals(false, model.isCompression());
     }
 }

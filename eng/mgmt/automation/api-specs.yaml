@@ -96,6 +96,8 @@ service-map:
   service: servicemap
 servicebus:
   suffix: generated
+solutions:
+  service: managedapplications
 sql:
   suffix: generated
 storage:

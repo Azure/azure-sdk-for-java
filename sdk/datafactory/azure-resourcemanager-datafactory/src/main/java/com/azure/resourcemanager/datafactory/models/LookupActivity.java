@@ -66,6 +66,20 @@ public final class LookupActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public LookupActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LookupActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public LookupActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

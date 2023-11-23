@@ -13,15 +13,18 @@ public final class ResourceSettingsTests {
     public void testDeserialize() throws Exception {
         ResourceSettings model =
             BinaryData
-                .fromString("{\"resourceType\":\"ResourceSettings\",\"targetResourceName\":\"mocpc\"}")
+                .fromString(
+                    "{\"resourceType\":\"ResourceSettings\",\"targetResourceName\":\"hm\",\"targetResourceGroupName\":\"u\"}")
                 .toObject(ResourceSettings.class);
-        Assertions.assertEquals("mocpc", model.targetResourceName());
+        Assertions.assertEquals("hm", model.targetResourceName());
+        Assertions.assertEquals("u", model.targetResourceGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSettings model = new ResourceSettings().withTargetResourceName("mocpc");
+        ResourceSettings model = new ResourceSettings().withTargetResourceName("hm").withTargetResourceGroupName("u");
         model = BinaryData.fromObject(model).toObject(ResourceSettings.class);
-        Assertions.assertEquals("mocpc", model.targetResourceName());
+        Assertions.assertEquals("hm", model.targetResourceName());
+        Assertions.assertEquals("u", model.targetResourceGroupName());
     }
 }

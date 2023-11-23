@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class LabVhdInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabVhdInner model = BinaryData.fromString("{\"id\":\"vriibakclacjfr\"}").toObject(LabVhdInner.class);
-        Assertions.assertEquals("vriibakclacjfr", model.id());
+        LabVhdInner model = BinaryData.fromString("{\"id\":\"krtt\"}").toObject(LabVhdInner.class);
+        Assertions.assertEquals("krtt", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LabVhdInner model = new LabVhdInner().withId("vriibakclacjfr");
+        LabVhdInner model = new LabVhdInner().withId("krtt");
         model = BinaryData.fromObject(model).toObject(LabVhdInner.class);
-        Assertions.assertEquals("vriibakclacjfr", model.id());
+        Assertions.assertEquals("krtt", model.id());
     }
 }

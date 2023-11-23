@@ -58,10 +58,7 @@ public final class TargetComputeSizesClientImpl implements TargetComputeSizesCli
     public interface TargetComputeSizesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers"
-                + "/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}"
-                + "/targetComputeSizes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/targetComputeSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TargetComputeSizeCollection>> listByReplicationProtectedItems(

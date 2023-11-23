@@ -390,8 +390,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @return the sourceServerResourceId value.
      */
@@ -401,8 +401,8 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the sourceServerResourceId property: The source server resource ID to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned
-     * only for Replica server.
+     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica'. This property is returned only for Replica
+     * server.
      *
      * @param sourceServerResourceId the sourceServerResourceId value to set.
      * @return the ServerInner object itself.
@@ -417,7 +417,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Get the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @return the pointInTimeUtc value.
      */
@@ -427,7 +427,7 @@ public final class ServerInner extends Resource {
 
     /**
      * Set the pointInTimeUtc property: Restore point creation time (ISO8601 format), specifying the time to restore
-     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore'.
      *
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ServerInner object itself.

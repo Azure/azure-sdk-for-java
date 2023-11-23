@@ -197,4 +197,11 @@ public interface DataFactoryManagementClient {
      * @return the GlobalParametersClient object.
      */
     GlobalParametersClient getGlobalParameters();
+
+    /**
+     * Gets the ChangeDataCapturesClient object to access its operations.
+     *
+     * @return the ChangeDataCapturesClient object.
+     */
+    ChangeDataCapturesClient getChangeDataCaptures();
 }

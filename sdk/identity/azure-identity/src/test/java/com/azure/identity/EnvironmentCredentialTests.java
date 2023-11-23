@@ -10,11 +10,10 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-import static org.junit.Assert.assertThrows;
 
 public class EnvironmentCredentialTests {
     @Test
@@ -32,17 +31,17 @@ public class EnvironmentCredentialTests {
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
             .verifyErrorSatisfies(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
+                Assertions.assertFalse(message != null
                     && message.contains("Cannot create any credentials with the current environment variables"));
             });
 
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
+        Exception e = Assertions.assertThrows(Exception.class,
             () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
 
         String message = e.getMessage();
-        Assert.assertFalse(message != null
+        Assertions.assertFalse(message != null
             && message.contains("Cannot create any credentials with the current environment variables"));
     }
 
@@ -62,16 +61,16 @@ public class EnvironmentCredentialTests {
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
             .verifyErrorSatisfies(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
+                Assertions.assertFalse(message != null
                     && message.contains("Cannot create any credentials with the current environment variables"));
             });
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
+        Exception e = Assertions.assertThrows(Exception.class,
             () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
 
         String message = e.getMessage();
-        Assert.assertFalse(message != null
+        Assertions.assertFalse(message != null
             && message.contains("Cannot create any credentials with the current environment variables"));
     }
 
@@ -90,16 +89,16 @@ public class EnvironmentCredentialTests {
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
             .verifyErrorSatisfies(t -> {
                 String message = t.getMessage();
-                Assert.assertFalse(message != null
+                Assertions.assertFalse(message != null
                     && message.contains("Cannot create any credentials with the current environment variables"));
             });
 
         // Validate Sync flow.
-        Exception e = assertThrows(Exception.class,
+        Exception e = Assertions.assertThrows(Exception.class,
             () -> credential.getTokenSync(new TokenRequestContext().addScopes("qux/.default")));
 
         String message = e.getMessage();
-        Assert.assertFalse(message != null
+        Assertions.assertFalse(message != null
             && message.contains("Cannot create any credentials with the current environment variables"));
     }
 

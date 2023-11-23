@@ -29,6 +29,13 @@ public final class VirtualNetworkConfiguration {
     @JsonProperty(value = "dataManagementPublicIpId", required = true)
     private String dataManagementPublicIpId;
 
+    /*
+     * When enabled, the cluster is deployed into the configured subnet, when disabled it will be removed from the
+     * subnet.
+     */
+    @JsonProperty(value = "state")
+    private VnetState state;
+
     /** Creates an instance of VirtualNetworkConfiguration class. */
     public VirtualNetworkConfiguration() {
     }
@@ -90,6 +97,28 @@ public final class VirtualNetworkConfiguration {
      */
     public VirtualNetworkConfiguration withDataManagementPublicIpId(String dataManagementPublicIpId) {
         this.dataManagementPublicIpId = dataManagementPublicIpId;
+        return this;
+    }
+
+    /**
+     * Get the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
+     * be removed from the subnet.
+     *
+     * @return the state value.
+     */
+    public VnetState state() {
+        return this.state;
+    }
+
+    /**
+     * Set the state property: When enabled, the cluster is deployed into the configured subnet, when disabled it will
+     * be removed from the subnet.
+     *
+     * @param state the state value to set.
+     * @return the VirtualNetworkConfiguration object itself.
+     */
+    public VirtualNetworkConfiguration withState(VnetState state) {
+        this.state = state;
         return this;
     }
 

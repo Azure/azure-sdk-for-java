@@ -12,7 +12,7 @@ import com.azure.resourcemanager.iothub.models.PrivateLinkServiceConnectionStatu
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_updateprivateendpointconnection.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_updateprivateendpointconnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_Update.

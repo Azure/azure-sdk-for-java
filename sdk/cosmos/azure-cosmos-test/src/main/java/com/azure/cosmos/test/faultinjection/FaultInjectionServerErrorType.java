@@ -44,5 +44,10 @@ public enum FaultInjectionServerErrorType {
     /**
      * simulate 410-0 due to staled addresses. The exception will only be cleared if a forceRefresh address refresh happened.
      */
-    STALED_ADDRESSES_SERVER_GONE
+    STALED_ADDRESSES_SERVER_GONE,
+
+    /**
+     * Simulate 410/1000, container recreate scenario
+     */
+    NAME_CACHE_IS_STALE
 }

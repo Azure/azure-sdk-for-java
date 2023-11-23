@@ -7,7 +7,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get_MinimumSet_Gen.
@@ -26,7 +26,7 @@ public final class PrivateEndpointConnectionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateEndpointConnections_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Get_MaximumSet_Gen.

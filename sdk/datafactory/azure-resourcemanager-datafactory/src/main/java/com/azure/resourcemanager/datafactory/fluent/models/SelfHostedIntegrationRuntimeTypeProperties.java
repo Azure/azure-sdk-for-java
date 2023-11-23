@@ -17,6 +17,13 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
+    /*
+     * An alternative option to ensure interactive authoring function when your self-hosted integration runtime is
+     * unable to establish a connection with Azure Relay.
+     */
+    @JsonProperty(value = "selfContainedInteractiveAuthoringEnabled")
+    private Boolean selfContainedInteractiveAuthoringEnabled;
+
     /** Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class. */
     public SelfHostedIntegrationRuntimeTypeProperties() {
     }
@@ -38,6 +45,29 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
      */
     public SelfHostedIntegrationRuntimeTypeProperties withLinkedInfo(LinkedIntegrationRuntimeType linkedInfo) {
         this.linkedInfo = linkedInfo;
+        return this;
+    }
+
+    /**
+     * Get the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @return the selfContainedInteractiveAuthoringEnabled value.
+     */
+    public Boolean selfContainedInteractiveAuthoringEnabled() {
+        return this.selfContainedInteractiveAuthoringEnabled;
+    }
+
+    /**
+     * Set the selfContainedInteractiveAuthoringEnabled property: An alternative option to ensure interactive authoring
+     * function when your self-hosted integration runtime is unable to establish a connection with Azure Relay.
+     *
+     * @param selfContainedInteractiveAuthoringEnabled the selfContainedInteractiveAuthoringEnabled value to set.
+     * @return the SelfHostedIntegrationRuntimeTypeProperties object itself.
+     */
+    public SelfHostedIntegrationRuntimeTypeProperties withSelfContainedInteractiveAuthoringEnabled(
+        Boolean selfContainedInteractiveAuthoringEnabled) {
+        this.selfContainedInteractiveAuthoringEnabled = selfContainedInteractiveAuthoringEnabled;
         return this;
     }
 

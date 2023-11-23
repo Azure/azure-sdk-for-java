@@ -13,7 +13,7 @@ public final class HealthCheckTests {
         HealthCheck model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Running\",\"displayName\":\"krribdeibqi\",\"startDateTime\":\"2021-08-10T16:45:38Z\",\"endDateTime\":\"2021-09-05T16:00:20Z\",\"errorType\":\"xndzwm\",\"recommendedAction\":\"efajpj\",\"additionalDetails\":\"wkqnyhg\"}")
+                    "{\"status\":\"Pending\",\"displayName\":\"tjuewbcihx\",\"startDateTime\":\"2021-03-30T06:07:22Z\",\"endDateTime\":\"2021-04-15T08:04:43Z\",\"errorType\":\"yxccyb\",\"recommendedAction\":\"ayakkudzpx\",\"additionalDetails\":\"jplmagstcy\"}")
                 .toObject(HealthCheck.class);
     }
 

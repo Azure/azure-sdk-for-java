@@ -8,20 +8,15 @@ import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.core.http.HttpClient;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
-import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -30,16 +25,6 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
 
     private MetricsAdvisorAsyncClient client;
 
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
-
     /**
      * Verifies all the dimension values returned for a metric.
      */
@@ -47,10 +32,11 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricDimensionValues(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
-        List<String> actualDimensionValues = new ArrayList<String>();
+        List<String> actualDimensionValues = new ArrayList<>();
         StepVerifier.create(client.listMetricDimensionValues(METRIC_ID, DIMENSION_NAME))
             .thenConsumeWhile(actualDimensionValues::add)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         assertEquals(EXPECTED_DIMENSION_VALUES_COUNT, actualDimensionValues.size());
     }
 
@@ -71,7 +57,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
                 assertNotNull(metricSeriesData.getTimestamps());
                 assertNotNull(metricSeriesData.getMetricValues());
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -85,7 +72,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
             .take(LISTING_SERIES_DEFINITIONS_LIMIT))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -98,11 +86,10 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions = new ArrayList<>();
         StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
             new ListMetricSeriesDefinitionOptions()
-                .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                        put("Dim1", Collections.singletonList("JPN"));
-                    }})))
+                .setDimensionCombinationToFilter(Collections.singletonMap("Dim1", Collections.singletonList("JPN")))))
             .thenConsumeWhile(actualMetricSeriesDefinitions::add)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
             final String dimensionFilterValue = metricSeriesDefinition.getSeriesKey().asMap().get("Dim1");
@@ -124,7 +111,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
                 OffsetDateTime.parse("2021-10-01T00:00:00Z"), OffsetDateTime.parse("2021-10-30T00:00:00Z"),
                 ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         enrichmentStatuses.forEach(MetricsSeriesTestBase::validateEnrichmentStatus);
     }

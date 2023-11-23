@@ -16,22 +16,27 @@ public final class UnresolvedDependencyCollectionTests {
         UnresolvedDependencyCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"count\":996013729,\"id\":\"jnxqbzvddntwn\"}],\"nextLink\":\"icbtwnpzao\",\"summaryCollection\":{\"fieldName\":\"hrhcffcyddglmjth\",\"summary\":[{\"count\":1616692109,\"item\":\"eicxmqciwqvhkhi\"}]},\"totalCount\":918544931908903685}")
+                    "{\"value\":[{\"count\":354708232,\"id\":\"bdlwtgrhpdjpj\"},{\"count\":1984471736,\"id\":\"xazjpqyegual\"},{\"count\":523710647,\"id\":\"hejjz\"}],\"nextLink\":\"dudgwdslfhot\",\"summaryCollection\":{\"fieldName\":\"ynpwlbj\",\"summary\":[{\"count\":1690822953,\"item\":\"tadehxnltyfsopp\"},{\"count\":1329177264,\"item\":\"snzwd\"},{\"count\":876871338,\"item\":\"vorxzdmohct\"}]},\"totalCount\":4704496125022042614}")
                 .toObject(UnresolvedDependencyCollection.class);
-        Assertions.assertEquals(996013729, model.value().get(0).count());
-        Assertions.assertEquals("jnxqbzvddntwn", model.value().get(0).id());
-        Assertions.assertEquals("icbtwnpzao", model.nextLink());
+        Assertions.assertEquals(354708232, model.value().get(0).count());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).id());
+        Assertions.assertEquals("dudgwdslfhot", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UnresolvedDependencyCollection model =
             new UnresolvedDependencyCollection()
-                .withValue(Arrays.asList(new UnresolvedDependencyInner().withCount(996013729).withId("jnxqbzvddntwn")))
-                .withNextLink("icbtwnpzao");
+                .withValue(
+                    Arrays
+                        .asList(
+                            new UnresolvedDependencyInner().withCount(354708232).withId("bdlwtgrhpdjpj"),
+                            new UnresolvedDependencyInner().withCount(1984471736).withId("xazjpqyegual"),
+                            new UnresolvedDependencyInner().withCount(523710647).withId("hejjz")))
+                .withNextLink("dudgwdslfhot");
         model = BinaryData.fromObject(model).toObject(UnresolvedDependencyCollection.class);
-        Assertions.assertEquals(996013729, model.value().get(0).count());
-        Assertions.assertEquals("jnxqbzvddntwn", model.value().get(0).id());
-        Assertions.assertEquals("icbtwnpzao", model.nextLink());
+        Assertions.assertEquals(354708232, model.value().get(0).count());
+        Assertions.assertEquals("bdlwtgrhpdjpj", model.value().get(0).id());
+        Assertions.assertEquals("dudgwdslfhot", model.nextLink());
     }
 }

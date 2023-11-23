@@ -66,6 +66,20 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /** {@inheritDoc} */
     @Override
+    public ExecuteDataFlowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExecuteDataFlowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ExecuteDataFlowActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;

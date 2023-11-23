@@ -31,6 +31,12 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     private Map<String, String> tags;
 
     /*
+     * Availability Zone
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * Volume properties
      */
     @JsonProperty(value = "properties", required = true)
@@ -77,6 +83,26 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      */
     public VolumeGroupVolumeProperties withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the zones property: Availability Zone.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Availability Zone.
+     *
+     * @param zones the zones value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 
@@ -158,7 +184,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -170,7 +197,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -364,7 +392,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @return the networkFeatures value.
      */
@@ -375,7 +403,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -599,7 +627,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbAccessBasedEnumeration value.
      */
@@ -610,7 +638,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -627,7 +655,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbNonBrowsable value.
      */
@@ -638,7 +666,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -831,6 +859,38 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withCoolnessPeriod(coolnessPeriod);
+        return this;
+    }
+
+    /**
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccessRetrievalPolicy();
+    }
+
+    /**
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
+     * @return the VolumeGroupVolumeProperties object itself.
+     */
+    public VolumeGroupVolumeProperties withCoolAccessRetrievalPolicy(
+        CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
         return this;
     }
 

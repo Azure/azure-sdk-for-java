@@ -15,23 +15,23 @@ import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
 /**
  * <p>The ClientCertificateCredential acquires a token via service principal authentication. It is a type of
  * authentication in Azure that enables a non-interactive login to
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
- * </a>, allowing an application or service to authenticate itself with Azure resources.
- * A Service Principal is essentially an identity created for an application in Azure AD that can be used to
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>, allowing
+ * an application or service to authenticate itself with Azure resources.
+ * A Service Principal is essentially an identity created for an application in Microsoft Entra ID that can be used to
  * authenticate with Azure resources. It's like a "user identity" for the application or service, and it provides
  * a way for the application to authenticate itself with Azure resources without needing to use a user's credentials.
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory
- * (Azure AD)</a> allows users to register service principals which can be used as an identity for authentication.
+ * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> allows users
+ * to register service principals which can be used as an identity for authentication.
  * A client certificate associated with the registered service principal is used as the password when authenticating
  * the service principal.
  * The ClientCertificateCredential acquires an access token with a client certificate for a service principal/registered
- * AAD application. The tenantId, clientId and clientCertificate of the service principal are required for this
+ * Microsoft Entra application. The tenantId, clientId and clientCertificate of the service principal are required for this
  * credential to acquire an access token. It can be used both in Azure hosted and local development environments for
  * authentication. For more information refer to the
  * <a href="https://aka.ms/azsdk/java/identity/clientcertificatecredential/docs">conceptual knowledge and configuration
@@ -59,6 +59,25 @@ import java.util.Objects;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.clientcertificatecredential.construct -->
+ *
+ * <p><strong>Sample: Construct a ClientCertificateCredential using {@link ByteArrayInputStream}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.ClientCertificateCredential},
+ * using the {@link com.azure.identity.ClientCertificateCredentialBuilder} to configure it. The {@code tenantId},
+ * {@code clientId} and {@code certificate} parameters are required to create
+ * {@link com.azure.identity.ClientSecretCredential}. The {@code certificate} in this example is configured as
+ * a {@link ByteArrayInputStream}. This is helpful if the certificate is available in memory via a cert store.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
+ * <pre>
+ * ByteArrayInputStream certificateStream = new ByteArrayInputStream&#40;certificateBytes&#41;;
+ * TokenCredential certificateCredentialWithStream = new ClientCertificateCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .pemCertificate&#40;certificateStream&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientcertificatecredential.constructWithStream -->
  *
  * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
  *
@@ -99,7 +118,7 @@ public class ClientCertificateCredential implements TokenCredential {
      * @param certificatePassword the password protecting the PFX file
      * @param identityClientOptions the options to configure the identity client
      */
-    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, InputStream certificate,
+    ClientCertificateCredential(String tenantId, String clientId, String certificatePath, byte[] certificate,
                                 String certificatePassword, IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(certificatePath == null ? certificate : certificatePath,
                 "'certificate' and 'certificatePath' cannot both be null.");

@@ -16,30 +16,31 @@ public final class OperationStatusResultInnerTests {
         OperationStatusResultInner model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"amiheognarxz\",\"name\":\"heotusiv\",\"status\":\"evcciqihnhun\",\"properties\":{\"gxg\":\"jzrnf\",\"fublj\":\"spemvtzfk\",\"aeqjhqjbasvms\":\"fxqeof\",\"gsntnbybkzgcwr\":\"jqul\"}}")
+                    "{\"id\":\"gfgibm\",\"name\":\"gakeqsr\",\"status\":\"yb\",\"properties\":{\"qytbciq\":\"e\",\"mmnkzsmodmgl\":\"ouf\",\"mutduqktaps\":\"ugpbkw\",\"rtumkdosvq\":\"wgcu\"}}")
                 .toObject(OperationStatusResultInner.class);
-        Assertions.assertEquals("amiheognarxz", model.id());
-        Assertions.assertEquals("heotusiv", model.name());
-        Assertions.assertEquals("evcciqihnhun", model.status());
-        Assertions.assertEquals("jzrnf", model.properties().get("gxg"));
+        Assertions.assertEquals("gfgibm", model.id());
+        Assertions.assertEquals("gakeqsr", model.name());
+        Assertions.assertEquals("yb", model.status());
+        Assertions.assertEquals("e", model.properties().get("qytbciq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationStatusResultInner model =
             new OperationStatusResultInner()
-                .withId("amiheognarxz")
-                .withName("heotusiv")
-                .withStatus("evcciqihnhun")
+                .withId("gfgibm")
+                .withName("gakeqsr")
+                .withStatus("yb")
                 .withProperties(
-                    mapOf("gxg", "jzrnf", "fublj", "spemvtzfk", "aeqjhqjbasvms", "fxqeof", "gsntnbybkzgcwr", "jqul"));
+                    mapOf("qytbciq", "e", "mmnkzsmodmgl", "ouf", "mutduqktaps", "ugpbkw", "rtumkdosvq", "wgcu"));
         model = BinaryData.fromObject(model).toObject(OperationStatusResultInner.class);
-        Assertions.assertEquals("amiheognarxz", model.id());
-        Assertions.assertEquals("heotusiv", model.name());
-        Assertions.assertEquals("evcciqihnhun", model.status());
-        Assertions.assertEquals("jzrnf", model.properties().get("gxg"));
+        Assertions.assertEquals("gfgibm", model.id());
+        Assertions.assertEquals("gakeqsr", model.name());
+        Assertions.assertEquals("yb", model.status());
+        Assertions.assertEquals("e", model.properties().get("qytbciq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

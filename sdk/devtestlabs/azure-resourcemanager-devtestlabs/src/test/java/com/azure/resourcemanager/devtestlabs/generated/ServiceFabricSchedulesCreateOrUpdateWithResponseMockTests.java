@@ -40,7 +40,7 @@ public final class ServiceFabricSchedulesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"iubmom\",\"weeklyRecurrence\":{\"weekdays\":[],\"time\":\"jhvvlrlo\"},\"dailyRecurrence\":{\"time\":\"jjmajnkdflqionsw\"},\"hourlyRecurrence\":{\"minute\":768209268},\"timeZoneId\":\"fzqxjo\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1835885258,\"webhookUrl\":\"ryegp\",\"emailRecipient\":\"xrmexznlw\",\"notificationLocale\":\"fokxk\"},\"createdDate\":\"2020-12-29T19:14:52Z\",\"targetResourceId\":\"erufgjblcdrmy\",\"provisioningState\":\"emftzgyyky\",\"uniqueIdentifier\":\"ugekdfqn\"},\"location\":\"ttw\",\"tags\":{\"kmhmnulwempdc\":\"rczfjjnnuxxr\",\"lusnawmhhgzotfr\":\"frhjulrsulwzp\",\"wxxyxhighctx\":\"yrgkoekv\",\"skiczd\":\"xmolpcqydeyk\"},\"id\":\"rjeizik\",\"name\":\"qaboohxbms\",\"type\":\"ycqsxr\"}";
+            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"x\",\"weeklyRecurrence\":{\"weekdays\":[\"zvoikvntwczf\",\"wushlcxpbl\"],\"time\":\"hhezpfkissaidq\"},\"dailyRecurrence\":{\"time\":\"aoq\"},\"hourlyRecurrence\":{\"minute\":1755690497},\"timeZoneId\":\"otxjqfiafcnlrtbf\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1825571960,\"webhookUrl\":\"ijolbuauktwieope\",\"emailRecipient\":\"lxqdwr\",\"notificationLocale\":\"yil\"},\"createdDate\":\"2021-08-05T08:51:23Z\",\"targetResourceId\":\"kgxyxyauxre\",\"provisioningState\":\"obmc\",\"uniqueIdentifier\":\"tmwytkujsqycm\"},\"location\":\"oxfab\",\"tags\":{\"iwrycgnwplrrb\":\"pwbmwhria\"},\"id\":\"hctsbbibti\",\"name\":\"uhqvums\",\"type\":\"bfs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -72,54 +72,52 @@ public final class ServiceFabricSchedulesCreateOrUpdateWithResponseMockTests {
             manager
                 .serviceFabricSchedules()
                 .createOrUpdateWithResponse(
-                    "htfpwpqb",
-                    "ejuwyqwdqigmghgi",
-                    "z",
-                    "xlujkhnjcm",
-                    "nkfm",
+                    "bjop",
+                    "ouhbq",
+                    "zkqxsalu",
+                    "yigfcvcew",
+                    "wqhdgsjsa",
                     new ScheduleInner()
-                        .withLocation("za")
-                        .withTags(
-                            mapOf(
-                                "kneerzztrknsj",
-                                "atmoljiywmpinmzv",
-                                "hkeizcp",
-                                "lugdybnhrxlelf",
-                                "wjekptycaydbj",
-                                "htdm"))
+                        .withLocation("v")
+                        .withTags(mapOf("cmyc", "gzphetxd"))
                         .withStatus(EnableStatus.DISABLED)
-                        .withTaskType("twmlmhjnqtqeah")
-                        .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList()).withTime("r"))
-                        .withDailyRecurrence(new DayDetails().withTime("okddxejhhkvguav"))
-                        .withHourlyRecurrence(new HourDetails().withMinute(996749819))
-                        .withTimeZoneId("ewkq")
+                        .withTaskType("c")
+                        .withWeeklyRecurrence(
+                            new WeekDetails()
+                                .withWeekdays(Arrays.asList("fsq", "hyqmrejparnpv", "rsz", "bwtdr"))
+                                .withTime("gz"))
+                        .withDailyRecurrence(new DayDetails().withTime("xzlh"))
+                        .withHourlyRecurrence(new HourDetails().withMinute(1211463960))
+                        .withTimeZoneId("cfculzj")
                         .withNotificationSettings(
                             new NotificationSettings()
                                 .withStatus(EnableStatus.ENABLED)
-                                .withTimeInMinutes(1360120384)
-                                .withWebhookUrl("offbkkwvdxaexqok")
-                                .withEmailRecipient("rlj")
-                                .withNotificationLocale("lzbnobrqlpbcjt"))
-                        .withTargetResourceId("yudivbxnhsqeaeo"),
+                                .withTimeInMinutes(1821326298)
+                                .withWebhookUrl("vyldqpzfzxsoxin")
+                                .withEmailRecipient("jlzkdrocqsxy")
+                                .withNotificationLocale("qtcmiwdwisv"))
+                        .withTargetResourceId("lajamca"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ttw", response.location());
-        Assertions.assertEquals("rczfjjnnuxxr", response.tags().get("kmhmnulwempdc"));
+        Assertions.assertEquals("oxfab", response.location());
+        Assertions.assertEquals("pwbmwhria", response.tags().get("iwrycgnwplrrb"));
         Assertions.assertEquals(EnableStatus.ENABLED, response.status());
-        Assertions.assertEquals("iubmom", response.taskType());
-        Assertions.assertEquals("jhvvlrlo", response.weeklyRecurrence().time());
-        Assertions.assertEquals("jjmajnkdflqionsw", response.dailyRecurrence().time());
-        Assertions.assertEquals(768209268, response.hourlyRecurrence().minute());
-        Assertions.assertEquals("fzqxjo", response.timeZoneId());
+        Assertions.assertEquals("x", response.taskType());
+        Assertions.assertEquals("zvoikvntwczf", response.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("hhezpfkissaidq", response.weeklyRecurrence().time());
+        Assertions.assertEquals("aoq", response.dailyRecurrence().time());
+        Assertions.assertEquals(1755690497, response.hourlyRecurrence().minute());
+        Assertions.assertEquals("otxjqfiafcnlrtbf", response.timeZoneId());
         Assertions.assertEquals(EnableStatus.ENABLED, response.notificationSettings().status());
-        Assertions.assertEquals(1835885258, response.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("ryegp", response.notificationSettings().webhookUrl());
-        Assertions.assertEquals("xrmexznlw", response.notificationSettings().emailRecipient());
-        Assertions.assertEquals("fokxk", response.notificationSettings().notificationLocale());
-        Assertions.assertEquals("erufgjblcdrmy", response.targetResourceId());
+        Assertions.assertEquals(1825571960, response.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("ijolbuauktwieope", response.notificationSettings().webhookUrl());
+        Assertions.assertEquals("lxqdwr", response.notificationSettings().emailRecipient());
+        Assertions.assertEquals("yil", response.notificationSettings().notificationLocale());
+        Assertions.assertEquals("kgxyxyauxre", response.targetResourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

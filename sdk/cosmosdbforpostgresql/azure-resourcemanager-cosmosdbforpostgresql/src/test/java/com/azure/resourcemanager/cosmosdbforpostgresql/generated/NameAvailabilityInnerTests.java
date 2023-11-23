@@ -14,26 +14,26 @@ public final class NameAvailabilityInnerTests {
         NameAvailabilityInner model =
             BinaryData
                 .fromString(
-                    "{\"message\":\"oo\",\"nameAvailable\":true,\"name\":\"zevgb\",\"type\":\"jqabcypmivkwlzuv\"}")
+                    "{\"message\":\"rjfeallnwsubisnj\",\"nameAvailable\":false,\"name\":\"ngnzscxaqwoochc\",\"type\":\"nqvpkvlrxnje\"}")
                 .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("rjfeallnwsubisnj", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("ngnzscxaqwoochc", model.name());
+        Assertions.assertEquals("nqvpkvlrxnje", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NameAvailabilityInner model =
             new NameAvailabilityInner()
-                .withMessage("oo")
-                .withNameAvailable(true)
-                .withName("zevgb")
-                .withType("jqabcypmivkwlzuv");
+                .withMessage("rjfeallnwsubisnj")
+                .withNameAvailable(false)
+                .withName("ngnzscxaqwoochc")
+                .withType("nqvpkvlrxnje");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals("oo", model.message());
-        Assertions.assertEquals(true, model.nameAvailable());
-        Assertions.assertEquals("zevgb", model.name());
-        Assertions.assertEquals("jqabcypmivkwlzuv", model.type());
+        Assertions.assertEquals("rjfeallnwsubisnj", model.message());
+        Assertions.assertEquals(false, model.nameAvailable());
+        Assertions.assertEquals("ngnzscxaqwoochc", model.name());
+        Assertions.assertEquals("nqvpkvlrxnje", model.type());
     }
 }

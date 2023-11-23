@@ -25,6 +25,15 @@ public final class MicrosoftGraphPermissionClassificationType
         fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphPermissionClassificationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphPermissionClassificationType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphPermissionClassificationType from its string representation.
      *
      * @param name a name to look for.

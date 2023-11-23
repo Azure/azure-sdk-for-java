@@ -192,22 +192,22 @@ public final class AmazonS3LinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonS3LinkedService object itself.
      */
-    public AmazonS3LinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonS3LinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonS3LinkedServiceTypeProperties();
         }

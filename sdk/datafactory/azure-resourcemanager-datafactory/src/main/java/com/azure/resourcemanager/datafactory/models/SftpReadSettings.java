@@ -34,10 +34,10 @@ public final class SftpReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
@@ -148,21 +148,23 @@ public final class SftpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @return the enablePartitionDiscovery value.
      */
-    public Boolean enablePartitionDiscovery() {
+    public Object enablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
+     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery. Type: boolean (or
+     * Expression with resultType boolean).
      *
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the SftpReadSettings object itself.
      */
-    public SftpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+    public SftpReadSettings withEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
     }

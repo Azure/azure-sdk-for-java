@@ -50,7 +50,7 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface LiveTokensService {
+    public interface LiveTokensService {
         @Headers({"Content-Type: application/json"})
         @Post("/{resourceUri}/providers/Microsoft.Insights/generatelivetoken")
         @ExpectedResponses({200})
@@ -135,20 +135,6 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
      * **Gets an access token for live metrics stream data.**.
      *
      * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a live token query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LiveTokenResponseInner get(String resourceUri) {
-        return getAsync(resourceUri).block();
-    }
-
-    /**
-     * **Gets an access token for live metrics stream data.**.
-     *
-     * @param resourceUri The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -158,5 +144,19 @@ public final class LiveTokensClientImpl implements LiveTokensClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LiveTokenResponseInner> getWithResponse(String resourceUri, Context context) {
         return getWithResponseAsync(resourceUri, context).block();
+    }
+
+    /**
+     * **Gets an access token for live metrics stream data.**.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a live token query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveTokenResponseInner get(String resourceUri) {
+        return getWithResponse(resourceUri, Context.NONE).getValue();
     }
 }

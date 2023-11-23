@@ -33,7 +33,7 @@ public final class CheckNameAvailabilityWithLocationsExecuteWithResponseMockTest
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"name\":\"dmovsm\",\"type\":\"xwabmqoe\",\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"tpuqujmq\"}";
+            "{\"name\":\"njwmwkpnbsazejj\",\"type\":\"kagfhsxtt\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"faazpxdtnkdmkqjj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,13 +65,13 @@ public final class CheckNameAvailabilityWithLocationsExecuteWithResponseMockTest
             manager
                 .checkNameAvailabilityWithLocations()
                 .executeWithResponse(
-                    "dsg",
-                    new CheckNameAvailabilityRequest().withName("hmk").withType("grauwjuetaebur"),
+                    "felfktg",
+                    new CheckNameAvailabilityRequest().withName("crpw").withType("eznoig"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
-        Assertions.assertEquals("tpuqujmq", response.message());
+        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
+        Assertions.assertEquals("faazpxdtnkdmkqjj", response.message());
     }
 }

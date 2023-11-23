@@ -99,8 +99,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .receiver()
             .queueName(getQueueName(0))
             .buildClient());
-
-        StepVerifier.setDefaultTimeout(TIMEOUT);
     }
 
     @Override
@@ -115,7 +113,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
         List<ServiceBusMessage> messages = Arrays.asList(message1, message2);
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
@@ -161,7 +160,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     public void receiveAndRenewLockWithDuration() throws InterruptedException {
         ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES);
-        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+        StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
@@ -179,7 +178,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
                 assertClientSpan(renewLock.get(0), Collections.singletonList(msg), "ServiceBus.renewMessageLock", null);
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
     }
 
@@ -205,7 +205,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .queueName(getSessionQueueName(0))
             .buildAsyncClient());
 
-        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+        StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
@@ -224,7 +224,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .addKeyValue("sessionId", msg.getSessionId())
                     .log("message received");
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
@@ -246,7 +247,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         ServiceBusMessage message2 = new ServiceBusMessage(CONTENTS_BYTES);
         List<ServiceBusMessage> messages = Arrays.asList(message1, message2);
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
@@ -284,7 +286,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     batch.tryAddMessage(new ServiceBusMessage(CONTENTS_BYTES));
                 }
             })
-            .flatMap(batch -> sender.sendMessages(batch))).verifyComplete();
+            .flatMap(batch -> sender.sendMessages(batch)))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
@@ -314,7 +318,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     .parallel(messageCount, 1)
                     .runOn(Schedulers.boundedElastic(), 1))
             .expectNextCount(messageCount)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
@@ -348,7 +353,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     batch.tryAddMessage(new ServiceBusMessage(CONTENTS_BYTES));
                 }
             })
-            .flatMap(batch -> sender.sendMessages(batch))).verifyComplete();
+            .flatMap(batch -> sender.sendMessages(batch)))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
@@ -376,7 +383,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .parallel(messageCount, 1)
                 .runOn(Schedulers.boundedElastic(), 1))
             .expectNextCount(messageCount)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
@@ -399,7 +407,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         message.getApplicationProperties().put("traceparent", traceparent);
 
-        StepVerifier.create(sender.sendMessage(message)).verifyComplete();
+        StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
 
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.process") && s.getSpanContext().getTraceId().equals(traceId));
@@ -442,7 +450,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     public void sendReceiveRenewLockAndDeferSync() {
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         ServiceBusReceivedMessage receivedMessage = receiverSync.receiveMessages(1, Duration.ofSeconds(10)).stream().findFirst().get();
 
@@ -472,7 +481,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         messages.add(new ServiceBusMessage(CONTENTS_BYTES));
 
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         List<ServiceBusReceivedMessage> receivedMessages = receiverSync.receiveMessages(2, Duration.ofSeconds(10))
             .stream().collect(Collectors.toList());
@@ -507,7 +517,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Test
     public void peekMessage() {
         StepVerifier.create(sender.sendMessage(new ServiceBusMessage(CONTENTS_BYTES)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         StepVerifier.create(receiver.peekMessage())
             .assertNext(receivedMessage -> {
@@ -524,13 +535,15 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     assertEquals("receive", received.getAttribute(AttributeKey.stringKey("messaging.operation")));
                 }
             })
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test
     public void peekNonExistingMessage() {
         StepVerifier.create(receiver.peekMessage(Long.MAX_VALUE - 1))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         List<ReadableSpan> received = findSpans(spanProcessor.getEndedSpans(), "ServiceBus.peekMessage");
         assertClientSpan(received.get(0), Collections.emptyList(), "ServiceBus.peekMessage", "receive");
@@ -543,7 +556,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .setMessageId(messageId);
 
         StepVerifier.create(sender.sendMessage(message))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         String message1SpanId = message.getApplicationProperties().get("traceparent").toString().substring(36, 52);
         CountDownLatch processFound = new CountDownLatch(1);
@@ -608,7 +622,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     logMessages(batch.getMessages(), sender.getEntityPath(), "sending");
                     return sender.sendMessages(batch);
                 }))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(messageCount * 2);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process") || span.getName().equals("ServiceBus.complete"));
@@ -655,7 +670,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     batch.tryAddMessage(new ServiceBusMessage(CONTENTS_BYTES));
                 }
             })
-            .flatMap(batch -> sender.sendMessages(batch))).verifyComplete();
+            .flatMap(batch -> sender.sendMessages(batch)))
+            .expectComplete()
+            .verify(TIMEOUT);
 
         CountDownLatch processedFound = new CountDownLatch(messageCount);
         spanProcessor.notifyIfCondition(processedFound, span -> span.getName().equals("ServiceBus.process"));
@@ -700,7 +717,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .setMessageId(messageId);
 
         StepVerifier.create(sender.sendMessage(message))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         String message1SpanId = message.getApplicationProperties().get("traceparent").toString().substring(36, 52);
 
@@ -749,7 +767,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         StepVerifier.create(
                 sender.scheduleMessage(message, OffsetDateTime.now().plusSeconds(100))
                 .flatMap(l -> sender.cancelScheduledMessage(l)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
         assertMessageSpan(spans.get(0), message);

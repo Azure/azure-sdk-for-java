@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /** Represents the result of an individual indexer execution. */
 @Immutable
@@ -24,16 +23,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      * The outcome of this indexer execution.
      */
     private final IndexerExecutionStatus status;
-
-    /*
-     * The outcome of this indexer execution.
-     */
-    private IndexerExecutionStatusDetail statusDetail;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    private IndexerCurrentState currentState;
 
     /*
      * The error message indicating the top-level error, if any.
@@ -110,24 +99,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      */
     public IndexerExecutionStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the statusDetail property: The outcome of this indexer execution.
-     *
-     * @return the statusDetail value.
-     */
-    public IndexerExecutionStatusDetail getStatusDetail() {
-        return this.statusDetail;
-    }
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 
     /**
@@ -215,18 +186,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeIntField("itemsProcessed", this.itemCount);
-        jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
-        jsonWriter.writeStringField("statusDetail", Objects.toString(this.statusDetail, null));
-        jsonWriter.writeJsonField("currentState", this.currentState);
-        jsonWriter.writeStringField("errorMessage", this.errorMessage);
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
-        jsonWriter.writeStringField("initialTrackingState", this.initialTrackingState);
-        jsonWriter.writeStringField("finalTrackingState", this.finalTrackingState);
         return jsonWriter.writeEndObject();
     }
 
@@ -252,8 +211,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     int itemCount = 0;
                     boolean failedItemCountFound = false;
                     int failedItemCount = 0;
-                    IndexerExecutionStatusDetail statusDetail = null;
-                    IndexerCurrentState currentState = null;
                     String errorMessage = null;
                     OffsetDateTime startTime = null;
                     OffsetDateTime endTime = null;
@@ -278,10 +235,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                         } else if ("itemsFailed".equals(fieldName)) {
                             failedItemCount = reader.getInt();
                             failedItemCountFound = true;
-                        } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
-                        } else if ("currentState".equals(fieldName)) {
-                            currentState = IndexerCurrentState.fromJson(reader);
                         } else if ("errorMessage".equals(fieldName)) {
                             errorMessage = reader.getString();
                         } else if ("startTime".equals(fieldName)) {
@@ -303,8 +256,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
                         IndexerExecutionResult deserializedIndexerExecutionResult =
                                 new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
-                        deserializedIndexerExecutionResult.statusDetail = statusDetail;
-                        deserializedIndexerExecutionResult.currentState = currentState;
                         deserializedIndexerExecutionResult.errorMessage = errorMessage;
                         deserializedIndexerExecutionResult.startTime = startTime;
                         deserializedIndexerExecutionResult.endTime = endTime;

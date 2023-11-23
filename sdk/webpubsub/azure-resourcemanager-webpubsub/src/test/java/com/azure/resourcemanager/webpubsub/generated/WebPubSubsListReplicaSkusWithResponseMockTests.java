@@ -30,7 +30,7 @@ public final class WebPubSubsListReplicaSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"pbdbzqgqqi\",\"sku\":{\"name\":\"dsvqwt\",\"tier\":\"Free\",\"size\":\"ibcysihsgqc\",\"family\":\"hohsd\",\"capacity\":1273234897},\"capacity\":{\"minimum\":1235671059,\"maximum\":1121231141,\"default\":757345037,\"allowedValues\":[1526999298,1610179215,1206774170],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"muapcvhdbevw\",\"sku\":{\"name\":\"xeyskonqzinkfkbg\",\"tier\":\"Basic\",\"size\":\"wxeqocljmygvkzqk\",\"family\":\"eokbze\",\"capacity\":50022372},\"capacity\":{\"minimum\":204772746,\"maximum\":1829804009,\"default\":1049990644,\"allowedValues\":[22024155,1208921361],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"bkwvzg\",\"sku\":{\"name\":\"v\",\"tier\":\"Basic\",\"size\":\"d\",\"family\":\"zmqpnodawopqhewj\",\"capacity\":1244000330},\"capacity\":{\"minimum\":2086359092,\"maximum\":888576031,\"default\":199675617,\"allowedValues\":[699852565],\"scaleType\":\"None\"}},{\"resourceType\":\"atutmzlbiojlvfhr\",\"sku\":{\"name\":\"pn\",\"tier\":\"Premium\",\"size\":\"wwyyurmoch\",\"family\":\"rprsnm\",\"capacity\":1333760269},\"capacity\":{\"minimum\":139342243,\"maximum\":363300411,\"default\":1340031798,\"allowedValues\":[1170067597],\"scaleType\":\"Manual\"}}],\"nextLink\":\"cpilj\"}";
+            "{\"value\":[{\"resourceType\":\"jeamurv\",\"sku\":{\"name\":\"lovuana\",\"tier\":\"Standard\",\"size\":\"lpmjerb\",\"family\":\"elvidizozsdbccx\",\"capacity\":325656680},\"capacity\":{\"minimum\":1408228263,\"maximum\":204760337,\"default\":258073184,\"allowedValues\":[1054212324,1666658010,961140040,19355637],\"scaleType\":\"None\"}},{\"resourceType\":\"v\",\"sku\":{\"name\":\"jctzenkei\",\"tier\":\"Standard\",\"size\":\"mkdasv\",\"family\":\"yhbxcudchxgs\",\"capacity\":77592298},\"capacity\":{\"minimum\":82172099,\"maximum\":1200485317,\"default\":821548341,\"allowedValues\":[1198748738,2116230034,998979559,447073477],\"scaleType\":\"Manual\"}},{\"resourceType\":\"fovvacqpbtuodxes\",\"sku\":{\"name\":\"bbelawumuaslzk\",\"tier\":\"Standard\",\"size\":\"oycqucwy\",\"family\":\"hnomdrkywuh\",\"capacity\":1524678464},\"capacity\":{\"minimum\":888405116,\"maximum\":382004958,\"default\":1702145471,\"allowedValues\":[1188948288,1618607662,1291593702,1640023676],\"scaleType\":\"Manual\"}},{\"resourceType\":\"iexzsrzpge\",\"sku\":{\"name\":\"tybbwwpgda\",\"tier\":\"Premium\",\"size\":\"yvlixqnrk\",\"family\":\"kjibnxmysuxswqrn\",\"capacity\":790882759},\"capacity\":{\"minimum\":134024740,\"maximum\":1177215499,\"default\":169879542,\"allowedValues\":[607334150,246018660,496912008,382801077],\"scaleType\":\"None\"}}],\"nextLink\":\"yufmhruncuwmq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,8 +61,7 @@ public final class WebPubSubsListReplicaSkusWithResponseMockTests {
         SkuList response =
             manager
                 .webPubSubs()
-                .listReplicaSkusWithResponse(
-                    "cmjkavlgorbmftpm", "tzfjltf", "nzcyjtotp", com.azure.core.util.Context.NONE)
+                .listReplicaSkusWithResponse("cof", "zehtdhgb", "k", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

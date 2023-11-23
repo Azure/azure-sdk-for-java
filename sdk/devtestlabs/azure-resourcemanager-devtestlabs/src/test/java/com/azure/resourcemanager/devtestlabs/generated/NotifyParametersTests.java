@@ -14,18 +14,18 @@ public final class NotifyParametersTests {
     public void testDeserialize() throws Exception {
         NotifyParameters model =
             BinaryData
-                .fromString("{\"eventName\":\"Cost\",\"jsonPayload\":\"mtbghh\"}")
+                .fromString("{\"eventName\":\"Cost\",\"jsonPayload\":\"bfhjxakvvjgsl\"}")
                 .toObject(NotifyParameters.class);
         Assertions.assertEquals(NotificationChannelEventType.COST, model.eventName());
-        Assertions.assertEquals("mtbghh", model.jsonPayload());
+        Assertions.assertEquals("bfhjxakvvjgsl", model.jsonPayload());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotifyParameters model =
-            new NotifyParameters().withEventName(NotificationChannelEventType.COST).withJsonPayload("mtbghh");
+            new NotifyParameters().withEventName(NotificationChannelEventType.COST).withJsonPayload("bfhjxakvvjgsl");
         model = BinaryData.fromObject(model).toObject(NotifyParameters.class);
         Assertions.assertEquals(NotificationChannelEventType.COST, model.eventName());
-        Assertions.assertEquals("mtbghh", model.jsonPayload());
+        Assertions.assertEquals("bfhjxakvvjgsl", model.jsonPayload());
     }
 }

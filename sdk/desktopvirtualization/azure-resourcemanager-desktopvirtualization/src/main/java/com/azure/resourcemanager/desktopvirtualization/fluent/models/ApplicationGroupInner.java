@@ -221,6 +221,29 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
     }
 
     /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.innerProperties() == null ? null : this.innerProperties().showInFeed();
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     *
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupInner object itself.
+     */
+    public ApplicationGroupInner withShowInFeed(Boolean showInFeed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGroupProperties();
+        }
+        this.innerProperties().withShowInFeed(showInFeed);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

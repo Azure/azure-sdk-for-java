@@ -22,6 +22,10 @@ public final class MetricAvailability {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
+    /** Creates an instance of MetricAvailability class. */
+    public MetricAvailability() {
+    }
+
     /**
      * Get the timeGrain property: The timeGrain property.
      *

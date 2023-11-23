@@ -19,6 +19,10 @@ public final class CdnWebApplicationFirewallPolicyPatchParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of CdnWebApplicationFirewallPolicyPatchParameters class. */
+    public CdnWebApplicationFirewallPolicyPatchParameters() {
+    }
+
     /**
      * Get the tags property: CdnWebApplicationFirewallPolicy tags.
      *

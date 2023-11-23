@@ -31,6 +31,7 @@ import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -61,6 +62,19 @@ public class MetricsAdvisorAsyncClientJavaDocCodeSnippets {
                 .endpoint("{endpoint}")
                 .buildAsyncClient();
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating a {@link MetricsAdvisorAsyncClient}
+     */
+    public void createMetricAdvisorAsyncClientWithAAD() {
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.withAAD
+        MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
+            new MetricsAdvisorClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildAsyncClient();
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.withAAD
     }
 
     /**

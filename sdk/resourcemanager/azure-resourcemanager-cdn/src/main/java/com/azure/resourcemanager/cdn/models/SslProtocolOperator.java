@@ -14,6 +14,15 @@ public final class SslProtocolOperator extends ExpandableStringEnum<SslProtocolO
     public static final SslProtocolOperator EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of SslProtocolOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SslProtocolOperator() {
+    }
+
+    /**
      * Creates or finds a SslProtocolOperator from its string representation.
      *
      * @param name a name to look for.

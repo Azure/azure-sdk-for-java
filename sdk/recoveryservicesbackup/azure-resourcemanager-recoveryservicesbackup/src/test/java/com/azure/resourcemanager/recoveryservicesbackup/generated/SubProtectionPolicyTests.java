@@ -22,35 +22,36 @@ public final class SubProtectionPolicyTests {
         SubProtectionPolicy model =
             BinaryData
                 .fromString(
-                    "{\"policyType\":\"CopyOnlyFull\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"qybaryeua\":{\"tieringMode\":\"TierRecommended\",\"duration\":1020341632,\"durationType\":\"Years\"}}}")
+                    "{\"policyType\":\"Incremental\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"czheyd\":{\"tieringMode\":\"TierRecommended\",\"duration\":201456733,\"durationType\":\"Days\"}}}")
                 .toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
-        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
+        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("czheyd").tieringMode());
+        Assertions.assertEquals(201456733, model.tieringPolicy().get("czheyd").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("czheyd").durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubProtectionPolicy model =
             new SubProtectionPolicy()
-                .withPolicyType(PolicyType.COPY_ONLY_FULL)
+                .withPolicyType(PolicyType.INCREMENTAL)
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy())
                 .withTieringPolicy(
                     mapOf(
-                        "qybaryeua",
+                        "czheyd",
                         new TieringPolicy()
                             .withTieringMode(TieringMode.TIER_RECOMMENDED)
-                            .withDuration(1020341632)
-                            .withDurationType(RetentionDurationType.YEARS)));
+                            .withDuration(201456733)
+                            .withDurationType(RetentionDurationType.DAYS)));
         model = BinaryData.fromObject(model).toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.COPY_ONLY_FULL, model.policyType());
-        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("qybaryeua").tieringMode());
-        Assertions.assertEquals(1020341632, model.tieringPolicy().get("qybaryeua").duration());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.tieringPolicy().get("qybaryeua").durationType());
+        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_RECOMMENDED, model.tieringPolicy().get("czheyd").tieringMode());
+        Assertions.assertEquals(201456733, model.tieringPolicy().get("czheyd").duration());
+        Assertions.assertEquals(RetentionDurationType.DAYS, model.tieringPolicy().get("czheyd").durationType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

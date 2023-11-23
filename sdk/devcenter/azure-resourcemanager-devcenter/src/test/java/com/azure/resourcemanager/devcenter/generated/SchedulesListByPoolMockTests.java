@@ -35,7 +35,7 @@ public final class SchedulesListByPoolMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"e\",\"timeZone\":\"jvgcxtx\",\"state\":\"Enabled\"},\"id\":\"eafidltugsresm\",\"name\":\"ssjhoiftxfkf\",\"type\":\"egprhptil\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"cjkgdirazftxej\",\"timeZone\":\"bmdujtmvcopexc\",\"state\":\"Disabled\"},\"id\":\"buhhlkyqlt\",\"name\":\"srogtu\",\"type\":\"kffdjktsys\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,13 +66,12 @@ public final class SchedulesListByPoolMockTests {
         PagedIterable<Schedule> response =
             manager
                 .schedules()
-                .listByPool(
-                    "gtgkylkdghr", "euutlwxezwzh", "kvbwnhhtqlgeh", 1013925837, com.azure.core.util.Context.NONE);
+                .listByPool("ooqjagmditgueio", "kjbsah", "tdtpdelqacslmo", 818366731, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.iterator().next().typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.iterator().next().frequency());
-        Assertions.assertEquals("e", response.iterator().next().time());
-        Assertions.assertEquals("jvgcxtx", response.iterator().next().timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, response.iterator().next().state());
+        Assertions.assertEquals("cjkgdirazftxej", response.iterator().next().time());
+        Assertions.assertEquals("bmdujtmvcopexc", response.iterator().next().timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, response.iterator().next().state());
     }
 }

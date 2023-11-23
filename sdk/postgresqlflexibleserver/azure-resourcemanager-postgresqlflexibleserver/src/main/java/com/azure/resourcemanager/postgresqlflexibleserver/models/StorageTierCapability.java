@@ -7,9 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents capability of a storage tier. */
+/** The StorageTierCapability model. */
 @Immutable
-public final class StorageTierCapability extends CapabilityBase {
+public final class StorageTierCapability {
     /*
      * Name to represent Storage tier capability
      */
@@ -17,10 +17,28 @@ public final class StorageTierCapability extends CapabilityBase {
     private String name;
 
     /*
+     * Storage tier name
+     */
+    @JsonProperty(value = "tierName", access = JsonProperty.Access.WRITE_ONLY)
+    private String tierName;
+
+    /*
      * Supported IOPS for this storage tier
      */
     @JsonProperty(value = "iops", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer iops;
+    private Long iops;
+
+    /*
+     * Indicates if this is a baseline storage tier or not
+     */
+    @JsonProperty(value = "isBaseline", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isBaseline;
+
+    /*
+     * Status os this storage tier
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
 
     /** Creates an instance of StorageTierCapability class. */
     public StorageTierCapability() {
@@ -36,12 +54,39 @@ public final class StorageTierCapability extends CapabilityBase {
     }
 
     /**
+     * Get the tierName property: Storage tier name.
+     *
+     * @return the tierName value.
+     */
+    public String tierName() {
+        return this.tierName;
+    }
+
+    /**
      * Get the iops property: Supported IOPS for this storage tier.
      *
      * @return the iops value.
      */
-    public Integer iops() {
+    public Long iops() {
         return this.iops;
+    }
+
+    /**
+     * Get the isBaseline property: Indicates if this is a baseline storage tier or not.
+     *
+     * @return the isBaseline value.
+     */
+    public Boolean isBaseline() {
+        return this.isBaseline;
+    }
+
+    /**
+     * Get the status property: Status os this storage tier.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
     }
 
     /**
@@ -49,8 +94,6 @@ public final class StorageTierCapability extends CapabilityBase {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

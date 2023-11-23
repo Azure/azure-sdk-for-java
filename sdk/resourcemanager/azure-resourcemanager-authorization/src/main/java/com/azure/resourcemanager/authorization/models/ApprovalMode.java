@@ -23,6 +23,15 @@ public final class ApprovalMode extends ExpandableStringEnum<ApprovalMode> {
     public static final ApprovalMode NO_APPROVAL = fromString("NoApproval");
 
     /**
+     * Creates a new instance of ApprovalMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApprovalMode() {
+    }
+
+    /**
      * Creates or finds a ApprovalMode from its string representation.
      *
      * @param name a name to look for.

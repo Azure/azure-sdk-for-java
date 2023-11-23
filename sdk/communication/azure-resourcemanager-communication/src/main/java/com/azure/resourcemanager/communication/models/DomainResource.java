@@ -145,11 +145,13 @@ public interface DomainResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The DomainResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DomainResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the DomainResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -168,6 +170,7 @@ public interface DomainResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the DomainResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -179,6 +182,7 @@ public interface DomainResource {
              */
             WithCreate withExistingEmailService(String resourceGroupName, String emailServiceName);
         }
+
         /**
          * The stage of the DomainResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -202,6 +206,7 @@ public interface DomainResource {
              */
             DomainResource create(Context context);
         }
+
         /** The stage of the DomainResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -212,6 +217,7 @@ public interface DomainResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the DomainResource definition allowing to specify domainManagement. */
         interface WithDomainManagement {
             /**
@@ -222,6 +228,7 @@ public interface DomainResource {
              */
             WithCreate withDomainManagement(DomainManagement domainManagement);
         }
+
         /** The stage of the DomainResource definition allowing to specify userEngagementTracking. */
         interface WithUserEngagementTracking {
             /**
@@ -234,6 +241,7 @@ public interface DomainResource {
             WithCreate withUserEngagementTracking(UserEngagementTracking userEngagementTracking);
         }
     }
+
     /**
      * Begins update for the DomainResource resource.
      *
@@ -258,6 +266,7 @@ public interface DomainResource {
          */
         DomainResource apply(Context context);
     }
+
     /** The DomainResource update stages. */
     interface UpdateStages {
         /** The stage of the DomainResource update allowing to specify tags. */
@@ -271,6 +280,7 @@ public interface DomainResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the DomainResource update allowing to specify userEngagementTracking. */
         interface WithUserEngagementTracking {
             /**
@@ -283,6 +293,7 @@ public interface DomainResource {
             Update withUserEngagementTracking(UserEngagementTracking userEngagementTracking);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

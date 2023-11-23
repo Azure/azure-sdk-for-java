@@ -71,11 +71,13 @@ public interface StorageClassificationMapping {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The StorageClassificationMapping definition stages. */
     interface DefinitionStages {
         /** The first stage of the StorageClassificationMapping definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the StorageClassificationMapping definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -90,6 +92,7 @@ public interface StorageClassificationMapping {
             WithCreate withExistingReplicationStorageClassification(
                 String resourceName, String resourceGroupName, String fabricName, String storageClassificationName);
         }
+
         /**
          * The stage of the StorageClassificationMapping definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -110,6 +113,7 @@ public interface StorageClassificationMapping {
              */
             StorageClassificationMapping create(Context context);
         }
+
         /** The stage of the StorageClassificationMapping definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -121,6 +125,7 @@ public interface StorageClassificationMapping {
             WithCreate withProperties(StorageMappingInputProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

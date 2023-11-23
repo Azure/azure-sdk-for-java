@@ -22,6 +22,8 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot AzureDeveloperCliCredential authentication issues](#troubleshoot-azuredeveloperclicredential-authentication-issues)
 - [Troubleshoot AzurePowerShellCredential authentication issues](#troubleshoot-azurepowershellcredential-authentication-issues)
 - [Troubleshoot WorkloadIdentityCredential authentication issues](#troubleshoot-workloadidentitycredential-authentication-issues)
+- [Troubleshoot IntelliJCredential authentication issues](#troubleshoot-intellijcredential-authentication-issues)
+- [Troubleshoot authentication timeout issues](#troubleshoot-authentication-timeout-issues)
 - [Get additional help](#get-additional-help)
 
 ## Handle Azure Identity exceptions
@@ -56,7 +58,7 @@ Calls to service clients resulting in `HttpResponseException` with a `StatusCode
 
 ## Find relevant information in exception messages
 
-`ClientAuthenticationException` is thrown when unexpected errors occurred while a credential is authenticating. This can include errors received from requests to the AAD STS and often contains information helpful to diagnosis. Consider the following `ClientAuthenticationException` message.
+`ClientAuthenticationException` is thrown when unexpected errors occurred while a credential is authenticating. This can include errors received from requests to the Microsoft Entra STS and often contains information helpful to diagnosis. Consider the following `ClientAuthenticationException` message.
 
 ![ClientAuthenticationException Message Example](https://raw.githubusercontent.com/Azure/azure-sdk-for-net/main/sdk/identity/Azure.Identity/images/AuthFailedErrorMessageExample.png)
 
@@ -64,7 +66,7 @@ This error contains several pieces of information:
 
 - __Failing Credential Type__: The type of credential that failed to authenticate. This can be helpful when diagnosing issues with chained credential types such as `DefaultAzureCredential` or `ChainedTokenCredential`.
 
-- __STS Error Code and Message__: The error code and message returned from the Azure AD STS. This can give insight into the specific reason the request failed. For instance, in this specific case because the provided client secret is incorrect. More information on STS error codes can be found [here](https://learn.microsoft.com/azure/active-directory/develop/reference-aadsts-error-codes#aadsts-error-codes).
+- __STS Error Code and Message__: The error code and message returned from the Microsoft Entra STS. This can give insight into the specific reason the request failed. For instance, in this specific case because the provided client secret is incorrect. More information on STS error codes can be found [here](https://learn.microsoft.com/azure/active-directory/develop/reference-aadsts-error-codes#aadsts-error-codes).
 
 - __Correlation ID and Timestamp__: The correlation ID and call Timestamp used to identify the request in server-side logs. This information can be useful to support engineers when diagnosing unexpected STS failures.
 
@@ -104,7 +106,7 @@ The underlying MSAL library, MSAL4J, also has detailed logging. It is highly ver
 
 | Error Code | Description | Mitigation |
 |---|---|---|
-|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the AAD application registration. Instructions for uploading certificates to the application registration can be found [here](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
+|AADSTS700027|Client assertion contains an invalid signature.|Ensure the specified certificate has been uploaded to the Microsoft Entra application registration. Instructions for uploading certificates to the application registration can be found [here](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#option-1-upload-a-certificate).|
 |AADSTS700016|The specified application wasn't found in the specified tenant.| Ensure the specified `clientId` and `tenantId` are correct for your application registration. For multi-tenant apps, ensure the application has been added to the desired tenant by a tenant admin. To add a new application in the desired tenant, follow the instructions [here](https://learn.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal).|
 
 ## Troubleshoot `ClientAssertionCredential` authentication issues
@@ -273,7 +275,13 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 
 | Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |  
 |---|---|---|  
-|`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."|The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Azure Active Directory.| <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
+|`CredentialUnavailableException` raised with message. "WorkloadIdentityCredential authentication unavailable. The workload options are not fully configured."|The `WorkloadIdentityCredential` requires `clientId`, `tenantId` and `tokenFilePath` to authenticate with Microsoft Entra ID.| <ul><li>If using `DefaultAzureCredential` then:</li><ul><li>Ensure client ID is specified via `workloadIdentityClientId` setter or `AZURE_CLIENT_ID` env variable.</li><li>Ensure tenant ID is specified via `AZURE_TENANT_ID` env variable.</li><li>Ensure token file path is specified via `AZURE_FEDERATED_TOKEN_FILE` env variable.</li><li>Ensure authority host is specified via `AZURE_AUTHORITY_HOST` env variable.</ul><li>If using `WorkloadIdentityCredential` then:</li><ul><li>Ensure tenant ID is specified via `tenantId` setter on credential builder or `AZURE_TENANT_ID` env variable.</li><li>Ensure client ID is specified via `clientId` setter on the credential builder or `AZURE_CLIENT_ID` env variable.</li><li>Ensure token file path is specified via `tokenFilePath` setter on the credential builder or `AZURE_FEDERATED_TOKEN_FILE` environment variable. </li></ul></li><li>Consult the [product troubleshooting guide](https://azure.github.io/azure-workload-identity/docs/troubleshooting.html) for other issues.</li></ul>
+
+## Troubleshoot `IntelliJCredential` authentication issues
+
+| Error |Description| Mitigation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|---|---|---|
+|`CredentialUnavailableException` raised with message. "IntelliJ Authentication not available. Please log in with Azure Tools for IntelliJ plugin in the IDE."| The Credential was not able to locate the cached token to use for authentication. | Ensure that you login on the  Azure Tools for IntelliJ plugin, that will populate the cache for the credential to pick up.
 
 ## Troubleshoot multi-tenant authentication issues
 `ClientAuthenticationException`
@@ -281,6 +289,44 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 | Error Message |Description| Mitigation |
 |---|---|---|
 |The current credential is not configured to acquire tokens for tenant <tenant ID>|The application must configure the credential to allow acquiring tokens from the requested tenant.|Add the requested tenant ID it to the `additionallyAllowedTenants` on the credential builder, or add \"*\" to `additionallyAllowedTenants` to allow acquiring tokens for any tenant.</p>This exception was added as part of a breaking change to multi tenant authentication in version `1.6.0`. Users experiencing this error after upgrading can find details on the change and migration in [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md) |
+
+## Troubleshoot authentication timeout issues
+
+### Using Thread pool
+The Azure Identity library plays a pivotal role in executing authentication requests. However, a potential concern 
+arises when your application concurrently relies on the common fork-join pool. This concurrency scenario can lead to
+a deadlock situation, wherein both the Azure Identity library and your application compete for threads from the 
+common fork-join pool. In order to prevent such a deadlock and ensure smooth authentication processes, it is 
+strongly recommended that you configure a dedicated thread pool specifically for the credentials. By implementing
+this configuration, you can ensure that the Azure Identity library and your application do not clash over the 
+allocation of threads from the common fork-join pool.
+
+To effectively address this deadlock situation, follow these steps:
+
+* Create a Dedicated Thread Pool: Configure a separate and dedicated thread pool for the credential processes within your application. This ensures that the Azure Identity library does not interfere with your application's use of the common fork-join pool.
+
+* Isolation of Thread Pools: Ensure that the dedicated thread pool for credential operations remains isolated and distinct from the common fork-join pool, which is used by the application.
+
+Here's a code sample below:
+
+```java
+ExecutorService executorService = Executors.newCachedThreadPool();
+
+try {
+    ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+      .clientId("<Client-Id>")
+      .tenantId("<Tenant-Id>")
+      .clientSecret("<Client-Secret>")
+      .executorService(executorService)
+      .build();
+
+} finally {
+   //Shutdown the thread pool once no longer needed.
+   executorService.shutdown();
+}
+```
+
+You can find more info about Fork Join Pool [here](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ForkJoinPool.html).
 
 ## Get additional help
 

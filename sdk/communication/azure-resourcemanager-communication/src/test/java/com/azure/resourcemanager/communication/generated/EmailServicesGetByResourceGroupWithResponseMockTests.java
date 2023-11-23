@@ -31,7 +31,7 @@ public final class EmailServicesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Unknown\",\"dataLocation\":\"napnyiropuhpigv\"},\"location\":\"ylgqgitxmedjvcsl\",\"tags\":{\"rmgucnap\":\"wwncwzzhxgk\",\"oellwp\":\"t\"},\"id\":\"fdygpfqbuaceopz\",\"name\":\"qrhhu\",\"type\":\"opppcqeq\"}";
+            "{\"properties\":{\"provisioningState\":\"Running\",\"dataLocation\":\"gylgqgitxmedjvcs\"},\"location\":\"n\",\"tags\":{\"zhxgktrmgucn\":\"ncw\",\"llwptfdy\":\"pkteo\",\"rhhuaopppcqeqx\":\"pfqbuaceopzf\",\"izpost\":\"lzdahzxctobgbkdm\"},\"id\":\"grcfb\",\"name\":\"nrmfqjhhk\",\"type\":\"bpvjymjhx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class EmailServicesGetByResourceGroupWithResponseMockTests {
         EmailServiceResource response =
             manager
                 .emailServices()
-                .getByResourceGroupWithResponse("hnrztfol", "bnxknalaulppg", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("bnxknalaulppg", "dtpnapnyiropuhp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ylgqgitxmedjvcsl", response.location());
-        Assertions.assertEquals("wwncwzzhxgk", response.tags().get("rmgucnap"));
-        Assertions.assertEquals("napnyiropuhpigv", response.dataLocation());
+        Assertions.assertEquals("n", response.location());
+        Assertions.assertEquals("ncw", response.tags().get("zhxgktrmgucn"));
+        Assertions.assertEquals("gylgqgitxmedjvcs", response.dataLocation());
     }
 }

@@ -36,10 +36,10 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
@@ -127,22 +127,22 @@ public final class AzureDatabricksDetltaLakeLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksDetltaLakeLinkedServiceTypeProperties object itself.
      */
-    public AzureDatabricksDetltaLakeLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureDatabricksDetltaLakeLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

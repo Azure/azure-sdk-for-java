@@ -14,17 +14,18 @@ public final class UpdateResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateResource model =
-            BinaryData.fromString("{\"tags\":{\"wvxysl\":\"cqaqtdoqmcbx\"}}").toObject(UpdateResource.class);
-        Assertions.assertEquals("cqaqtdoqmcbx", model.tags().get("wvxysl"));
+            BinaryData.fromString("{\"tags\":{\"railvpnppfuf\":\"acffgdkzzewkfvhq\"}}").toObject(UpdateResource.class);
+        Assertions.assertEquals("acffgdkzzewkfvhq", model.tags().get("railvpnppfuf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateResource model = new UpdateResource().withTags(mapOf("wvxysl", "cqaqtdoqmcbx"));
+        UpdateResource model = new UpdateResource().withTags(mapOf("railvpnppfuf", "acffgdkzzewkfvhq"));
         model = BinaryData.fromObject(model).toObject(UpdateResource.class);
-        Assertions.assertEquals("cqaqtdoqmcbx", model.tags().get("wvxysl"));
+        Assertions.assertEquals("acffgdkzzewkfvhq", model.tags().get("railvpnppfuf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

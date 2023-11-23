@@ -34,4 +34,13 @@ public final class SchemaFormat extends ExpandableStringEnum<SchemaFormat> {
     public static SchemaFormat fromString(String name) {
         return fromString(name.toLowerCase(Locale.ROOT), SchemaFormat.class);
     }
+
+    /**
+     * Creates a new instance of Schema Format.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SchemaFormat() {
+        super();
+    }
 }

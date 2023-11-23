@@ -43,7 +43,7 @@ Verify no diff
 "
 
 # prevent warning related to EOL differences which triggers an exception for some reason
-git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java"
+git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code -- "*.java" ":(exclude)**/src/test/**" ":(exclude)**/src/samples/**" ":(exclude)**/src/main/**/implementation/**"
 
 if ($LastExitCode -ne 0) {
   $status = git status -s | Out-String
@@ -58,3 +58,7 @@ $status
 Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
     Remove-Item -Path $_.FullName -Recurse -Force
 }
+
+# Clean up generated code, so that next step will not be affected.
+git checkout $sdkPath
+git clean -fd $sdkPath

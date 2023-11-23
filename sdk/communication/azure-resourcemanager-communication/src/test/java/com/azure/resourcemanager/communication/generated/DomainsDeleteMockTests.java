@@ -56,6 +56,6 @@ public final class DomainsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.domains().delete("vo", "bvmeuecivy", "zceuojgjrw", com.azure.core.util.Context.NONE);
+        manager.domains().delete("yriwwroyqb", "xrmcqibycnojvk", "mefqsgzvahapjyzh", com.azure.core.util.Context.NONE);
     }
 }

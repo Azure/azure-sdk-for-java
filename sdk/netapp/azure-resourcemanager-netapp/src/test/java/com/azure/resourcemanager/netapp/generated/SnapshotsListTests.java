@@ -16,15 +16,16 @@ public final class SnapshotsListTests {
         SnapshotsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"xzxcl\",\"properties\":{\"snapshotId\":\"hhqzonosgg\",\"created\":\"2021-07-06T22:10:43Z\",\"provisioningState\":\"hfwdsjnkaljutiis\"},\"id\":\"acffgdkzzewkfvhq\",\"name\":\"railvpnppfuf\",\"type\":\"rwdmhdlxyjrxsa\"}]}")
+                    "{\"value\":[{\"location\":\"zmuvpbttdumorppx\",\"properties\":{\"snapshotId\":\"nzbtbhj\",\"created\":\"2021-10-23T02:17:02Z\",\"provisioningState\":\"fgohdneuelfphs\"},\"id\":\"htozfikdow\",\"name\":\"quuvxzxcl\",\"type\":\"ithhqzon\"}]}")
                 .toObject(SnapshotsList.class);
-        Assertions.assertEquals("xzxcl", model.value().get(0).location());
+        Assertions.assertEquals("zmuvpbttdumorppx", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotsList model = new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("xzxcl")));
+        SnapshotsList model =
+            new SnapshotsList().withValue(Arrays.asList(new SnapshotInner().withLocation("zmuvpbttdumorppx")));
         model = BinaryData.fromObject(model).toObject(SnapshotsList.class);
-        Assertions.assertEquals("xzxcl", model.value().get(0).location());
+        Assertions.assertEquals("zmuvpbttdumorppx", model.value().get(0).location());
     }
 }

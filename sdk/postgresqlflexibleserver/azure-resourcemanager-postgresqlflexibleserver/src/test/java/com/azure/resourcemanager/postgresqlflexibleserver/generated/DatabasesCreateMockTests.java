@@ -31,7 +31,7 @@ public final class DatabasesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"charset\":\"wqkdwytisibi\",\"collation\":\"gpikpzimejza\"},\"id\":\"fzxiavrmb\",\"name\":\"onok\",\"type\":\"xrjqcirgzpfrlazs\"}";
+            "{\"properties\":{\"charset\":\"novqfzge\",\"collation\":\"dftuljltduce\"},\"id\":\"tmczuomejwcwwqi\",\"name\":\"knssxmojm\",\"type\":\"vpkjpr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class DatabasesCreateMockTests {
         Database response =
             manager
                 .databases()
-                .define("eeyebi")
-                .withExistingFlexibleServer("zhjjklffhmouwq", "gzrf")
-                .withCharset("ayuhqlbjbsy")
-                .withCollation("qwrvtldgmfp")
+                .define("aeqphchqnr")
+                .withExistingFlexibleServer("jslb", "wkojgcyztsfmzn")
+                .withCharset("x")
+                .withCollation("uwrykqgaifmvikl")
                 .create();
 
-        Assertions.assertEquals("wqkdwytisibi", response.charset());
-        Assertions.assertEquals("gpikpzimejza", response.collation());
+        Assertions.assertEquals("novqfzge", response.charset());
+        Assertions.assertEquals("dftuljltduce", response.collation());
     }
 }

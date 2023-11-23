@@ -13,6 +13,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.communication.CommunicationManager;
 import com.azure.resourcemanager.communication.models.CommunicationServiceResource;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.communication.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -34,7 +37,7 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"ids\",\"dataLocation\":\"yonobgl\",\"notificationHubId\":\"cq\",\"version\":\"ccm\",\"immutableResourceId\":\"udxytlmoyrx\",\"linkedDomains\":[\"u\",\"wpzntxhdzh\"]},\"location\":\"qj\",\"tags\":{\"pycanuzbpz\":\"kfrlhrxsbky\"},\"id\":\"afkuwb\",\"name\":\"rnwb\",\"type\":\"ehhseyvjusrts\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"sfwxosowzxc\",\"dataLocation\":\"gicjooxdjeb\",\"notificationHubId\":\"ucww\",\"version\":\"ovbvmeueciv\",\"immutableResourceId\":\"zceuojgjrw\",\"linkedDomains\":[\"iotwmcdytdxwit\",\"nrjawgqwg\",\"hniskxfbkpyc\"]},\"identity\":{\"principalId\":\"7d11bc78-0262-45f2-964f-785493c7049d\",\"tenantId\":\"c75b7df9-fd8b-455e-9a76-e0180d88c2ac\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dauwhvylwzbtd\":{\"principalId\":\"4789c494-9a33-42e7-b82a-2a28f26ba62c\",\"clientId\":\"3486de2e-c0e2-471f-8bd7-18b377db937d\"},\"jznb\":{\"principalId\":\"7a35cbba-d98a-4c63-adf4-5b22b1bd7e13\",\"clientId\":\"1e513b04-2baa-4ea2-b0cb-32c6d7a0388e\"}}},\"location\":\"ow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +68,26 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
         CommunicationServiceResource response =
             manager
                 .communicationServices()
-                .define("upedeojnabckhs")
-                .withRegion("cnjbkcnxdhbt")
-                .withExistingResourceGroup("baiuebbaumny")
-                .withTags(mapOf("wpn", "h", "mclfplphoxuscr", "jtoqne"))
-                .withDataLocation("tfhvpesapskrdqmh")
-                .withLinkedDomains(Arrays.asList("upqsx", "nmic", "kvceoveilovnotyf"))
+                .define("kfrlhrxsbky")
+                .withRegion("hcdhmdual")
+                .withExistingResourceGroup("bh")
+                .withTags(mapOf("adm", "qpv", "r", "sr", "fmisg", "vxpvgomz"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("ahvljuaha", new UserAssignedIdentity())))
+                .withDataLocation("z")
+                .withLinkedDomains(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv"))
                 .create();
 
-        Assertions.assertEquals("qj", response.location());
-        Assertions.assertEquals("kfrlhrxsbky", response.tags().get("pycanuzbpz"));
-        Assertions.assertEquals("yonobgl", response.dataLocation());
-        Assertions.assertEquals("u", response.linkedDomains().get(0));
+        Assertions.assertEquals("ow", response.location());
+        Assertions.assertEquals("rzqlveu", response.tags().get("lupj"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("gicjooxdjeb", response.dataLocation());
+        Assertions.assertEquals("iotwmcdytdxwit", response.linkedDomains().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -8,6 +8,7 @@ import com.azure.communication.email.implementation.AzureCommunicationEmailServi
 import com.azure.communication.email.implementation.EmailsImpl;
 import com.azure.communication.email.implementation.models.EmailContent;
 import com.azure.communication.email.implementation.models.EmailRecipients;
+import com.azure.communication.email.models.EmailAddress;
 import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailMessage;
 import com.azure.communication.email.models.EmailSendResult;
@@ -74,6 +75,10 @@ public final class EmailAsyncClient {
             );
         }
 
+        verifyRecipientEmailAddressesNotNull(message.getToRecipients());
+        verifyRecipientEmailAddressesNotNull(message.getCcRecipients());
+        verifyRecipientEmailAddressesNotNull(message.getBccRecipients());
+
         EmailContent content = new EmailContent(message.getSubject())
             .setHtml(message.getBodyHtml())
             .setPlainText(message.getBodyPlainText());
@@ -116,5 +121,14 @@ public final class EmailAsyncClient {
                 context),
             TypeReference.createInstance(EmailSendResult.class),
             TypeReference.createInstance(EmailSendResult.class));
+    }
+
+    void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {
+        if (recipients != null) {
+            for (EmailAddress recipient : recipients) {
+                Objects.requireNonNull(recipient, "recipient 'EmailAddress' cannot be null.");
+                Objects.requireNonNull(recipient.getAddress(), "EmailAddress 'address' cannot be null.");
+            }
+        }
     }
 }

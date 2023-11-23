@@ -26,6 +26,15 @@ public final class MicrosoftGraphPlannerPreviewType extends ExpandableStringEnum
     public static final MicrosoftGraphPlannerPreviewType REFERENCE = fromString("reference");
 
     /**
+     * Creates a new instance of MicrosoftGraphPlannerPreviewType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphPlannerPreviewType() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphPlannerPreviewType from its string representation.
      *
      * @param name a name to look for.

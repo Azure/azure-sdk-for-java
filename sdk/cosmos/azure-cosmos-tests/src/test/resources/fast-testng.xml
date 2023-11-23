@@ -25,7 +25,7 @@
   <test name="fast" group-by-instances="true">
     <groups>
       <run>
-        <include name="simple"/>
+        <include name="fast"/>
       </run>
     </groups>
     <packages>

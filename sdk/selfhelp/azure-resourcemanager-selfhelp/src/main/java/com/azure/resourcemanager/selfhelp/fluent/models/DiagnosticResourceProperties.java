@@ -7,7 +7,7 @@ package com.azure.resourcemanager.selfhelp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.selfhelp.models.Diagnostic;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
-import com.azure.resourcemanager.selfhelp.models.ProvisioningState;
+import com.azure.resourcemanager.selfhelp.models.DiagnosticProvisioningState;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -39,7 +39,7 @@ public final class DiagnosticResourceProperties {
      * Status of diagnostic provisioning.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private DiagnosticProvisioningState provisioningState;
 
     /*
      * Array of Diagnostics.
@@ -105,7 +105,7 @@ public final class DiagnosticResourceProperties {
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public DiagnosticProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

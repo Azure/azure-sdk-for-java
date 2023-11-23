@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
 
@@ -29,6 +30,13 @@ public interface SharedPrivateLinkResource {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the groupId property: The group id from the provider of resource the shared private link resource is for.

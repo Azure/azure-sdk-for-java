@@ -7,21 +7,23 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesListSchedulesByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listSchedulesByPool("myProject", "DevPool", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listSchedules(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"default\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        Map<String, Object> poolData = response.iterator().next().toObject(new TypeReference<Map<String, Object>>() {});
+        Assertions.assertEquals("default", poolData.get("name"));
     }
 }

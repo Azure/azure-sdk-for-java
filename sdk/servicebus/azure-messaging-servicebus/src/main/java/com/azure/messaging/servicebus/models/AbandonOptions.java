@@ -13,13 +13,22 @@ import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import java.util.Map;
 
 /**
- * Options to specify while abandoning message.
+ * Options to specify when abandoning a {@link ServiceBusReceivedMessage message} received via
+ * {@link ServiceBusReceiveMode#PEEK_LOCK}.
  *
  * @see ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage, AbandonOptions)
  * @see ServiceBusReceiverClient#abandon(ServiceBusReceivedMessage, AbandonOptions)
+ * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#peeklock">
+ *     Settling messages</a>
  */
 public final class AbandonOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
+
+    /**
+     * Creates a new instance of options to specify when abandoning messages.
+     */
+    public AbandonOptions() {
+    }
 
     /**
      * Gets the message properties to modify while abandoning the message.

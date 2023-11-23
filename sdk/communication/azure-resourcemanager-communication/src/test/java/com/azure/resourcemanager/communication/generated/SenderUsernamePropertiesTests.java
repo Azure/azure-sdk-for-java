@@ -14,18 +14,17 @@ public final class SenderUsernamePropertiesTests {
         SenderUsernameProperties model =
             BinaryData
                 .fromString(
-                    "{\"dataLocation\":\"th\",\"username\":\"vmezy\",\"displayName\":\"hxmzsbbzoggig\",\"provisioningState\":\"Failed\"}")
+                    "{\"dataLocation\":\"gshwankixz\",\"username\":\"injep\",\"displayName\":\"tmryw\",\"provisioningState\":\"Running\"}")
                 .toObject(SenderUsernameProperties.class);
-        Assertions.assertEquals("vmezy", model.username());
-        Assertions.assertEquals("hxmzsbbzoggig", model.displayName());
+        Assertions.assertEquals("injep", model.username());
+        Assertions.assertEquals("tmryw", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SenderUsernameProperties model =
-            new SenderUsernameProperties().withUsername("vmezy").withDisplayName("hxmzsbbzoggig");
+        SenderUsernameProperties model = new SenderUsernameProperties().withUsername("injep").withDisplayName("tmryw");
         model = BinaryData.fromObject(model).toObject(SenderUsernameProperties.class);
-        Assertions.assertEquals("vmezy", model.username());
-        Assertions.assertEquals("hxmzsbbzoggig", model.displayName());
+        Assertions.assertEquals("injep", model.username());
+        Assertions.assertEquals("tmryw", model.displayName());
     }
 }

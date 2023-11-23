@@ -22,6 +22,10 @@ public final class ClusterSku {
     @JsonProperty(value = "name")
     private ClusterSkuNameEnum name;
 
+    /** Creates an instance of ClusterSku class. */
+    public ClusterSku() {
+    }
+
     /**
      * Get the capacity property: The capacity value.
      *

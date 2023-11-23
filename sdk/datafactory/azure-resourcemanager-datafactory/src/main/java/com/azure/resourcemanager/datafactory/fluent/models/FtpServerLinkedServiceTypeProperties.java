@@ -46,10 +46,10 @@ public final class FtpServerLinkedServiceTypeProperties {
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
     /*
      * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression
@@ -173,22 +173,22 @@ public final class FtpServerLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * using the integration runtime credential manager. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FtpServerLinkedServiceTypeProperties object itself.
      */
-    public FtpServerLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public FtpServerLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }

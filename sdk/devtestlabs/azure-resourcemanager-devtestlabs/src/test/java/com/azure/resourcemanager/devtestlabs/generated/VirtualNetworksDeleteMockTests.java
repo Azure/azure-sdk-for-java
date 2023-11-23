@@ -56,6 +56,6 @@ public final class VirtualNetworksDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.virtualNetworks().delete("zqulptkbv", "pxtzhigqqbtimpk", "blornsih", com.azure.core.util.Context.NONE);
+        manager.virtualNetworks().delete("roigbsfsgsaenwld", "mhljqlxspm", "jc", com.azure.core.util.Context.NONE);
     }
 }

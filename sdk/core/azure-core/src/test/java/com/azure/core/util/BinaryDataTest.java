@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -68,6 +69,7 @@ import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
 import static com.azure.core.CoreTestUtils.readStream;
 import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -1047,6 +1049,68 @@ public class BinaryDataTest {
             BinaryDataAsProperty.class, SerializerEncoding.JSON);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
+    }
+
+    @Test
+    public void emptyFluxByteBufferToReplayable() {
+        BinaryData binaryData = BinaryData.fromFlux(Flux.empty()).block();
+
+        BinaryData replayable = assertDoesNotThrow(() -> binaryData.toReplayableBinaryData());
+        assertEquals("", replayable.toString());
+    }
+
+    @Test
+    public void emptyFluxByteBufferToReplayableAsync() {
+        StepVerifier.create(BinaryData.fromFlux(Flux.empty())
+            .flatMap(BinaryData::toReplayableBinaryDataAsync))
+            .assertNext(replayable -> assertEquals("", replayable.toString()))
+            .verifyComplete();
+    }
+
+    /**
+     * Tests that {@link FluxByteBufferContent#toReplayableContent()} eagerly makes the {@link FluxByteBufferContent}
+     * replayable. Before, this method wouldn't make the content replayable until the return
+     * {@link FluxByteBufferContent} was consumed, which defeated the purpose of the method as the underlying data could
+     * be reclaimed or consumed before it was made replayable.
+     */
+    @Test
+    public void fluxByteBufferToReplayableEagerlyConvertsToReplayable() {
+        byte[] data = new byte[1024];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] expectedData = CoreUtils.clone(data);
+
+        BinaryDataContent binaryDataContent = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
+            .toReplayableContent();
+
+        Arrays.fill(data, (byte) 0);
+
+        assertArraysEqual(expectedData, binaryDataContent.toBytes());
+    }
+
+    /**
+     * Tests that {@link FluxByteBufferContent} returned by {@link FluxByteBufferContent#toReplayableContentAsync()}
+     * won't attempt to access the original {@link Flux Flux&lt;ByteBuffer&gt;} as the initial duplicated is cached as a
+     * stream of {@link ByteBuffer ByteBuffers} that are shared to all subscribers, and duplicated in each subscription
+     * so that the underlying content cannot be modified.
+     */
+    @Test
+    public void multipleSubscriptionsToReplayableAsyncFluxByteBufferAreConsistent() {
+        byte[] data = new byte[1024];
+        ThreadLocalRandom.current().nextBytes(data);
+        byte[] expectedData = CoreUtils.clone(data);
+
+        Mono<BinaryDataContent> binaryDataContentMono = new FluxByteBufferContent(Flux.just(ByteBuffer.wrap(data)))
+            .toReplayableContentAsync();
+
+        StepVerifier.create(binaryDataContentMono)
+            .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
+            .verifyComplete();
+
+        Arrays.fill(data, (byte) 0);
+
+        StepVerifier.create(binaryDataContentMono)
+            .assertNext(binaryDataContent -> assertArraysEqual(expectedData, binaryDataContent.toBytes()))
+            .verifyComplete();
     }
 
     public static final class BinaryDataAsProperty {

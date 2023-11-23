@@ -33,6 +33,15 @@ public final class RequestMethodMatchConditionParametersMatchValuesItem
     public static final RequestMethodMatchConditionParametersMatchValuesItem TRACE = fromString("TRACE");
 
     /**
+     * Creates a new instance of RequestMethodMatchConditionParametersMatchValuesItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestMethodMatchConditionParametersMatchValuesItem() {
+    }
+
+    /**
      * Creates or finds a RequestMethodMatchConditionParametersMatchValuesItem from its string representation.
      *
      * @param name a name to look for.

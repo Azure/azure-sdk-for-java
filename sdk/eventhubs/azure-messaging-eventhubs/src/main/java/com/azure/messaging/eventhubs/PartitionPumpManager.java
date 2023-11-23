@@ -217,9 +217,16 @@ class PartitionPumpManager {
                     /* EventHubConsumer receive() returned an error */
                     ex -> handleError(claimedOwnership, partitionPump, partitionProcessor, ex, partitionContext),
                     () -> {
-                        partitionProcessor.close(new CloseContext(partitionContext,
-                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        cleanup(claimedOwnership, partitionPump);
+                        try {
+                            partitionProcessor.close(new CloseContext(partitionContext,
+                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                        } catch (Throwable e) {
+                            LOGGER.atError()
+                                .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                                .log("Error occurred calling partitionProcessor.close when closing partition pump.", e);
+                        } finally {
+                            cleanup(claimedOwnership, partitionPump);
+                        }
                     });
             //@formatter:on
         } catch (Exception ex) {
@@ -366,13 +373,29 @@ class PartitionPumpManager {
                 .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
                 .log("Error receiving events from partition.", throwable);
 
-            partitionProcessor.processError(new ErrorContext(partitionContext, throwable));
+            try {
+                partitionProcessor.processError(new ErrorContext(partitionContext, throwable));
+            } catch (Throwable e) {
+                LOGGER.atError()
+                    .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                    .log("Error occurred calling partitionProcessor.processError.", e);
+            }
         }
+
         // If there was an error on receive, it also marks the end of the event data stream
         // Any exception while receiving events will result in the processor losing ownership
         CloseReason closeReason = CloseReason.LOST_PARTITION_OWNERSHIP;
-        partitionProcessor.close(new CloseContext(partitionContext, closeReason));
+
+        try {
+            partitionProcessor.close(new CloseContext(partitionContext, closeReason));
+        } catch (Throwable e) {
+            LOGGER.atError()
+                .addKeyValue(PARTITION_ID_KEY, partitionContext.getPartitionId())
+                .log("Error occurred calling partitionProcessor.close.", e);
+        }
+
         cleanup(claimedOwnership, partitionPump);
+
         if (shouldRethrow) {
             PartitionProcessorException exception = (PartitionProcessorException) throwable;
             throw LOGGER.logExceptionAsError(exception);
@@ -387,9 +410,6 @@ class PartitionPumpManager {
 
             partitionPump.close();
         } finally {
-            // finally, remove the partition from partitionPumps map
-            LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, claimedOwnership.getPartitionId())
-                .log("Removing partition from list of processing partitions.");
             partitionPumps.remove(claimedOwnership.getPartitionId());
         }
     }

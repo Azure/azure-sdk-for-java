@@ -8,7 +8,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.LogsQueryAsyncClient;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
+import com.azure.monitor.query.implementation.metricsbatch.models.BatchMetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -180,7 +180,7 @@ public final class MetricsHelper {
             ? null
             : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
         List<AggregationType> supportedAggregationTypes = null;
-        if (CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
+        if (!CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
             supportedAggregationTypes = definition.getSupportedAggregationTypes()
                 .stream()
                 .map(aggregationType -> AggregationType.fromString(aggregationType.toString()))
@@ -210,7 +210,7 @@ public final class MetricsHelper {
     }
 
 
-    public static MetricsQueryResult mapToMetricsQueryResult(MetricResultsResponseValuesItem item) {
+    public static MetricsQueryResult mapToMetricsQueryResult(BatchMetricResultsResponseValuesItem item) {
         List<MetricResult> metrics = item.getValue()
             .stream()
             .map(metric -> mapToMetrics(metric))
@@ -221,9 +221,9 @@ public final class MetricsHelper {
         return metricsQueryResult;
     }
 
-    public static MetricResult mapToMetrics(com.azure.monitor.query.implementation.metricsbatch.models.Metric metric) {
+    public static MetricResult mapToMetrics(com.azure.monitor.query.implementation.metricsbatch.models.SubscriptionScopeMetric metric) {
         List<com.azure.monitor.query.models.TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
-        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().name()),
+        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().toString()),
             metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
             new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
         return metricResult;

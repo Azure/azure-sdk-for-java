@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdOriginGroups ListResourceUsage. */
 public final class AfdOriginGroupsListResourceUsageSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOriginGroups_ListResourceUsage.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOriginGroups_ListResourceUsage.json
      */
     /**
      * Sample code: AFDOriginGroups_ListResourceUsage.
@@ -22,6 +20,6 @@ public final class AfdOriginGroupsListResourceUsageSamples {
             .manager()
             .serviceClient()
             .getAfdOriginGroups()
-            .listResourceUsage("RG", "profile1", "origingroup1", Context.NONE);
+            .listResourceUsage("RG", "profile1", "origingroup1", com.azure.core.util.Context.NONE);
     }
 }

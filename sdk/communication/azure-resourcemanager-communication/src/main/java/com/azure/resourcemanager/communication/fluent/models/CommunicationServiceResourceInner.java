@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,12 @@ public final class CommunicationServiceResourceInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private CommunicationServiceProperties innerProperties;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -38,6 +45,26 @@ public final class CommunicationServiceResourceInner extends Resource {
      */
     private CommunicationServiceProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     *
+     * @param identity the identity value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -163,6 +190,9 @@ public final class CommunicationServiceResourceInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

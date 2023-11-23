@@ -142,23 +142,23 @@ public final class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
+     * provided. Type: string.
      *
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
-    public SapCloudForCustomerLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public SapCloudForCustomerLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new SapCloudForCustomerLinkedServiceTypeProperties();
         }

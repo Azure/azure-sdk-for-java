@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
@@ -12,14 +13,12 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
 
 public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
     private final Class<? extends JsonSerializable<?>> jsonSerializableType;
-    private final MethodHandle readJson;
+    private final ReflectiveInvoker readJson;
 
     /**
      * Creates an instance of {@link JsonSerializableDeserializer}.
@@ -29,8 +28,8 @@ public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializa
     public JsonSerializableDeserializer(Class<? extends JsonSerializable<?>> jsonSerializableType) {
         this.jsonSerializableType = jsonSerializableType;
         try {
-            MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(jsonSerializableType);
-            this.readJson = lookup.unreflect(jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
+            this.readJson = ReflectionUtils.getMethodInvoker(jsonSerializableType,
+                jsonSerializableType.getDeclaredMethod("fromJson", JsonReader.class));
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
         }
@@ -41,13 +40,11 @@ public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializa
         try {
             return jsonSerializableType.cast(readJson.invokeWithArguments(
                 new JacksonJsonReader(p, null, null, false, null)));
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e;
-            } else if (e instanceof Exception) {
-                throw new IOException(e);
+        } catch (Exception exception) {
+            if (exception instanceof IOException) {
+                throw (IOException) exception;
             } else {
-                throw (Error) e;
+                throw new IOException(exception);
             }
         }
     }

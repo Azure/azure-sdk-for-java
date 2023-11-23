@@ -15,6 +15,7 @@ import com.azure.resourcemanager.communication.models.CommunicationServiceResour
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
 import com.azure.resourcemanager.communication.models.LinkNotificationHubParameters;
 import com.azure.resourcemanager.communication.models.LinkedNotificationHub;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.communication.models.RegenerateKeyParameters;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +52,10 @@ public final class CommunicationServiceResourceImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -251,6 +256,16 @@ public final class CommunicationServiceResourceImpl
             return this;
         } else {
             this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public CommunicationServiceResourceImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
             return this;
         }
     }
