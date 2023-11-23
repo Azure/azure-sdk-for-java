@@ -193,6 +193,15 @@ directive:
 - rename-model:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
+ - rename-model:
+    from: StartTranscriptionRequest
+    to: StartTranscriptionRequestInternal
+- rename-model:
+    from: StopTranscriptionRequest
+    to: StopTranscriptionRequestInternal
+- rename-model:
+    from: UpdateTranscriptionDateRequest
+    to: UpdateTranscriptionDataRequestInternal
 - rename-model:
     from: StartDialogRequest
     to: StartDialogRequestInternal

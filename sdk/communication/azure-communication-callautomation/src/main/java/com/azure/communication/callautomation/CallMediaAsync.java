@@ -5,39 +5,9 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
-import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
-import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
-import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
-import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
-import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
-import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
-import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.PlayRequest;
-import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
-import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
-import com.azure.communication.callautomation.models.DtmfTone;
-import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlaySource;
-import com.azure.communication.callautomation.models.RecognizeChoice;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
-import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.implementation.models.*;
+import com.azure.communication.callautomation.models.*;
 import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -695,4 +665,76 @@ public final class CallMediaAsync {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startTranscription() {
+        return startTranscriptionWithResponseAsync(null, null).then();
+    }
+
+    /**
+     * Starts transcription in the call with options.
+     *
+     * @param options Options for the Start Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options) {
+        return withContext(context -> startTranscriptionWithResponseAsync(options, context));
+    }
+
+    Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StartTranscriptionRequest request = new StartTranscriptionRequest();
+            if (options != null) {
+                request.setLocale(options.getLocale());
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .startTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+    /**
+     * Stops transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopTranscription() {
+        return stopTranscriptionWithResponseAsync(null, null).then();
+    }
+
+    /**
+     * Stops transcription in the call with options.
+     *
+     * @param options Options for the Stop Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options) {
+        return withContext(context -> stopTranscriptionWithResponseAsync(options, context));
+    }
+
+    Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StopTranscriptionRequest request = new StopTranscriptionRequest();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .stopTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+
 }
