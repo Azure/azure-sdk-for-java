@@ -724,6 +724,7 @@ public final class JobRouterAdministrationAsyncClient {
      * Convenience method to create a classification policy.
      *
      * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
+     * @param requestOptions  RequestOptions.
      * @return a container for the rules that govern how jobs are classified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

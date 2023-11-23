@@ -1510,6 +1510,7 @@ public final class JobRouterAsyncClient {
      * Convenience method to create a worker.
      *
      * @param createWorkerOptions Container for inputs to create a worker.
+     * @param requestOptions RequestOptions.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
