@@ -43,6 +43,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.4</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.3</jacoco.min.branchcoverage>
     <jacoco.skip>false</jacoco.skip>
   </properties>
   <dependencies>
@@ -93,4 +95,42 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+      <plugins>
+        <plugin>
+          <groupId>com.azure.tools</groupId>
+          <artifactId>codesnippet-maven-plugin</artifactId>
+          <version>1.0.0-beta.8</version>
+          <configuration>
+            <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
+            <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
+            <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
+            <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
+            <includeSource>true</includeSource>
+            <includeReadme>true</includeReadme>
+            <maxLineLength>120</maxLineLength>
+            <skip>false</skip>
+          </configuration>
+          <executions>
+            <execution>
+              <id>update-codesnippet</id>
+              <phase>process-sources</phase>
+              <goals>
+                <goal>update-codesnippet</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>verify-codesnippet</id>
+              <phase>verify</phase>
+              <goals>
+                <goal>verify-codesnippet</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+  </build>
+
+
 </project>

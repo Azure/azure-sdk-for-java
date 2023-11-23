@@ -51,7 +51,25 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
 #### Create a ContentSafetyClient with KeyCredential
-```java com.azure.ai.contentsafety.createClient
+```java com.azure.ai.contentsafety.createcontentsafetyclient
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
+```
+
+#### Create a ContentSafetyClient with TokenCredential
+```java com.azure.ai.contentsafety.createcontentsafetyclient
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
+```
+
+#### Create a BlocklistClient with KeyCredential
+```java com.azure.ai.contentsafety.createblocklistclient
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 

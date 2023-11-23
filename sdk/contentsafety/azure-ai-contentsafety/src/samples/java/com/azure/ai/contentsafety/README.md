@@ -16,6 +16,12 @@ This document explains samples and how to use them.
 
 Following section document various examples.
 
+### Create Content Safety Client Sample
+
+* [CreateContentSafetyClient.java][sample_CreateContentSafetyClient] - Contains samples for following scenarios:
+    * Authenticate client by Key Credential
+    * Authenticate client by Token Credential
+  
 ### Analyze Text Sample
 
 * [AnalyzeText.java][sample_AnalyzeText] - Contains samples for following scenarios:
@@ -58,6 +64,7 @@ Following section document various examples.
 
 <!-- LINKS -->
 <!-- FIX LINK BRANCH AFTER PR MERGE -->
+[sample_CreateContentSafetyClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/CreateContentSafetyClient.java
 [sample_AnalyzeText]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeText.java
 [sample_AnalyzeImage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeImage.java
 [sample_ManageTextBlocklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/ManageTextBlocklist.java

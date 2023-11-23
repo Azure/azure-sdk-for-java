@@ -15,9 +15,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 
 class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
+    protected ContentSafetyClient contentSafetyClientAAD;
     protected ContentSafetyAsyncClient contentSafetyAsyncClient;
     protected BlocklistClient blocklistClient;
     protected BlocklistAsyncClient blocklistAsyncClient;
@@ -26,6 +29,9 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT", "https://fake_cs_resource.cognitiveservices.azure.com");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY", "00000000000000000000000000000000");
+        String tenantId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_TENANT_ID", "00000000000000000000000000000000");
+        String clientId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_ID", "00000000000000000000000000000000");
+        String clientSecret = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_SECRET", "00000000000000000000000000000000");
         ContentSafetyClientBuilder contentSafetyClientBuilder =
             new ContentSafetyClientBuilder()
                 .credential(new KeyCredential(key))
@@ -38,6 +44,24 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
             contentSafetyClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         contentSafetyClient = contentSafetyClientBuilder.buildClient();
+
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .build();
+        ContentSafetyClientBuilder contentSafetyClientAADBuilder =
+            new ContentSafetyClientBuilder()
+                .credential(credential)
+                .endpoint(endpoint)
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            contentSafetyClientAADBuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (getTestMode() == TestMode.RECORD) {
+            contentSafetyClientAADBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        contentSafetyClientAAD = contentSafetyClientAADBuilder.buildClient();
 
         ContentSafetyClientBuilder contentSafetyAsyncClientBuilder =
             new ContentSafetyClientBuilder()

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 public class ManageTextBlocklist {
     public static void main(String[] args) {
-        // BEGIN:com.azure.ai.contentsafety.createClient
+        // BEGIN:com.azure.ai.contentsafety.createblocklistclient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 
@@ -39,7 +39,7 @@ public class ManageTextBlocklist {
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
             .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
-        // END:com.azure.ai.contentsafety.createClient
+        // END:com.azure.ai.contentsafety.createblocklistclient
 
         // BEGIN:com.azure.ai.contentsafety.createtextblocklist
         String blocklistName = "TestBlocklist";

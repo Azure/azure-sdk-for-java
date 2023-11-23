@@ -78,11 +78,14 @@ public final class ManageTextBlocklistAsyncTests extends ContentSafetyClientTest
             blocklistAsyncClient.addOrUpdateBlocklistItems(
                 blocklistName,
                 new AddOrUpdateTextBlocklistItemsOptions(
-                    Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word")))).block();
+                    Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word"),
+                        new TextBlocklistItem("hate").setDescription("hate word"),
+                        new TextBlocklistItem("violence").setDescription("violence word"),
+                        new TextBlocklistItem("sex").setDescription("sex word")))).block();
 
         // response assertion
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.getBlocklistItems().size());
+        Assertions.assertEquals(4, response.getBlocklistItems().size());
 
         List<TextBlocklistItem> responseValue = response.getBlocklistItems();
         TextBlocklistItem responseValueFirstItem = responseValue.get(0);
@@ -99,13 +102,13 @@ public final class ManageTextBlocklistAsyncTests extends ContentSafetyClientTest
     @Order(5)
     public void testGetAllBlockItemsByBlocklistNameTests() {
         // method invocation
-        PagedFlux<TextBlocklistItem> response = blocklistAsyncClient.listTextBlocklistItems(blocklistName, null, null);
+        PagedFlux<TextBlocklistItem> response = blocklistAsyncClient.listTextBlocklistItems(blocklistName, 2, 1);
 
         // response assertion
         TextBlocklistItem firstItem = response.blockFirst();
         Assertions.assertNotNull(firstItem);
-        Assertions.assertEquals("fuck word", firstItem.getDescription());
-        Assertions.assertEquals("fuck", firstItem.getText());
+        Assertions.assertEquals("violence word", firstItem.getDescription());
+        Assertions.assertEquals("violence", firstItem.getText());
     }
 
     @Test
@@ -140,6 +143,6 @@ public final class ManageTextBlocklistAsyncTests extends ContentSafetyClientTest
     @Order(8)
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
-        blocklistAsyncClient.deleteTextBlocklist(blocklistName);
+        blocklistAsyncClient.deleteTextBlocklist(blocklistName).block();
     }
 }

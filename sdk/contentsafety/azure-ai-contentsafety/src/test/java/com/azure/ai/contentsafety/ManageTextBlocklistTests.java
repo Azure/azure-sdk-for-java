@@ -76,11 +76,14 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
             blocklistClient.addOrUpdateBlocklistItems(
                 blocklistName,
                 new AddOrUpdateTextBlocklistItemsOptions(
-                    Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word"))));
+                    Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word"),
+                        new TextBlocklistItem("hate").setDescription("hate word"),
+                        new TextBlocklistItem("violence").setDescription("violence word"),
+                        new TextBlocklistItem("sex").setDescription("sex word"))));
 
         // response assertion
         Assertions.assertNotNull(response);
-        Assertions.assertEquals(1, response.getBlocklistItems().size());
+        Assertions.assertEquals(4, response.getBlocklistItems().size());
 
         List<TextBlocklistItem> responseValue = response.getBlocklistItems();
         TextBlocklistItem responseValueFirstItem = responseValue.get(0);
@@ -97,13 +100,14 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(5)
     public void testGetAllBlockItemsByBlocklistNameTests() {
         // method invocation
-        PagedIterable<TextBlocklistItem> response = blocklistClient.listTextBlocklistItems(blocklistName, null, null);
+        PagedIterable<TextBlocklistItem> response = blocklistClient.listTextBlocklistItems(blocklistName, 2, 1);
 
         // response assertion
+        Assertions.assertEquals(2, response.stream().count());
         Optional<TextBlocklistItem> firstItem = response.stream().findFirst();
         Assertions.assertNotNull(firstItem);
-        Assertions.assertEquals("fuck word", firstItem.get().getDescription());
-        Assertions.assertEquals("fuck", firstItem.get().getText());
+        Assertions.assertEquals("violence word", firstItem.get().getDescription());
+        Assertions.assertEquals("violence", firstItem.get().getText());
     }
 
     @Test
