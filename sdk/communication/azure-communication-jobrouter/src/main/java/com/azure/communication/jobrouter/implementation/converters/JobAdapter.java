@@ -42,35 +42,38 @@ public class JobAdapter {
         Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
             .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
-        List<RouterWorkerSelectorInternal> workerSelectors = createJobOptions.getRequestedWorkerSelectors()
+        List<RouterWorkerSelectorInternal> workerSelectors;
+        workerSelectors = createJobOptions.getRequestedWorkerSelectors() != null ? createJobOptions.getRequestedWorkerSelectors()
             .stream()
             .map(workerSelector ->
                 new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
                     .setValue(getValue(workerSelector.getValue()))
                     .setExpedite(workerSelector.isExpedite())
                     .setExpiresAt(workerSelector.getExpiresAt())
-                    .setExpiresAfterSeconds((double) workerSelector.getExpiresAfter().getSeconds())
+                    .setExpiresAfterSeconds(workerSelector.getExpiresAfter() != null ? Double.valueOf(workerSelector.getExpiresAfter().getSeconds()) : null)
                     .setStatus(workerSelector.getStatus())
             )
-            .collect(Collectors.toList());
-        String jobMatchingModeKind = createJobOptions.getMatchingMode().getKind();
+            .collect(Collectors.toList()) : null;
+        String jobMatchingModeKind;
+        jobMatchingModeKind = createJobOptions.getMatchingMode() != null ? createJobOptions.getMatchingMode().getKind() : null;
         JobMatchingModeInternal jobMatchingModeInternal = null;
 
-        switch (jobMatchingModeKind) {
-            case "scheduleAndSuspend":
-                ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
-                break;
-            case "queueAndMatch":
-                jobMatchingModeInternal = new QueueAndMatchModeInternal();
-                break;
-            case "suspend":
-                jobMatchingModeInternal = new SuspendModeInternal();
-                break;
-            default:
-                throw new IllegalStateException("Unknown kind for JobMatchingMode.");
+        if (jobMatchingModeKind != null) {
+            switch (jobMatchingModeKind) {
+                case "scheduleAndSuspend":
+                    ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
+                    jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+                    break;
+                case "queueAndMatch":
+                    jobMatchingModeInternal = new QueueAndMatchModeInternal();
+                    break;
+                case "suspend":
+                    jobMatchingModeInternal = new SuspendModeInternal();
+                    break;
+                default:
+                    throw new IllegalStateException("Unknown kind for JobMatchingMode.");
+            }
         }
-
 
         return new RouterJobInternal()
             .setChannelId(createJobOptions.getChannelId())

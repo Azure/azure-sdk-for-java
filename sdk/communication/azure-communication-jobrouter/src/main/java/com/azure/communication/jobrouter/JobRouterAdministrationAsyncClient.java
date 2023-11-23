@@ -4,6 +4,10 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
@@ -319,12 +323,14 @@ public final class JobRouterAdministrationAsyncClient {
      * @return response The response instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions,
+    public Mono<DistributionPolicy> createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions,
         RequestOptions requestOptions) {
-        DistributionPolicyInternal distributionPolicy
+        DistributionPolicyInternal distributionPolicyInternal
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
-            BinaryData.fromObject(distributionPolicy), requestOptions).flatMap(FluxUtil::toMono);
+            BinaryData.fromObject(distributionPolicyInternal), requestOptions)
+                .map(response -> response.getValue().toObject(DistributionPolicyInternal.class))
+                .map(internal -> DistributionPolicyConstructorProxy.create(internal));
     }
 
     /**
@@ -725,11 +731,10 @@ public final class JobRouterAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ClassificationPolicy>
-        createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+        createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
         return createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class));
+            .map(response -> response.getValue().toObject(ClassificationPolicyInternal.class))
+            .map(internal -> ClassificationPolicyConstructorProxy.create(internal));
     }
 
     /**
@@ -1132,12 +1137,14 @@ public final class JobRouterAdministrationAsyncClient {
      * @return response The response instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions,
+    public Mono<ExceptionPolicy> createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions,
         RequestOptions requestOptions) {
         ExceptionPolicyInternal exceptionPolicy
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
-            BinaryData.fromObject(exceptionPolicy), requestOptions).flatMap(FluxUtil::toMono);
+            BinaryData.fromObject(exceptionPolicy), requestOptions)
+            .map(response -> response.getValue().toObject(ExceptionPolicyInternal.class))
+            .map(internal -> ExceptionPolicyConstructorProxy.create(internal));
     }
 
     /**
@@ -1506,10 +1513,11 @@ public final class JobRouterAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> createQueue(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
+    public Mono<RouterQueue> createQueue(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         return upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue), requestOptions)
-            .flatMap(FluxUtil::toMono);
+            .map(response -> response.getValue().toObject(RouterQueueInternal.class))
+            .map(internal -> RouterQueueConstructorProxy.create(internal));
     }
 
     /**

@@ -15,6 +15,8 @@ import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
 
+import java.time.Duration;
+
 /**
  * Converts request options for create and update Classification Policy to {@link DistributionPolicy}.
  */
@@ -26,6 +28,7 @@ public class DistributionPolicyAdapter {
      */
     public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicyInternal()
+            .setId(createDistributionPolicyOptions.getDistributionPolicyId())
             .setMode(convertDistributionModeToInternal(createDistributionPolicyOptions.getMode()))
             .setOfferExpiresAfterSeconds((double) createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds())
             .setName(createDistributionPolicyOptions.getName());

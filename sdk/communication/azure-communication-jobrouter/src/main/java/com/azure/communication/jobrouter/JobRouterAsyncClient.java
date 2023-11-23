@@ -4,6 +4,9 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
@@ -14,6 +17,7 @@ import com.azure.communication.jobrouter.implementation.models.CompleteJobOption
 import com.azure.communication.jobrouter.implementation.models.CompleteJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferResultInternal;
+import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
@@ -544,8 +548,9 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createJobWithResponse(createJobOptions, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class));
+        return this.createJobWithResponse(createJobOptions, requestOptions)
+            .map(response -> response.getValue().toObject(RouterJobInternal.class))
+            .map(internal -> RouterJobConstructorProxy.create(internal));
     }
 
     /**
@@ -1511,10 +1516,10 @@ public final class JobRouterAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        return createWorkerWithResponse(createWorkerOptions, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class));
+    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
+        return createWorkerWithResponse(createWorkerOptions, requestOptions)
+            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
+            .map(internal -> RouterWorkerConstructorProxy.create(internal));
     }
 
     /**
@@ -1886,8 +1891,8 @@ public final class JobRouterAsyncClient {
     public Mono<UnassignJobResult> unassignJob(String jobId, String assignmentId) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return unassignJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
+            .map(response -> response.getValue().toObject(UnassignJobResult.class));
     }
 
     /**
@@ -1909,8 +1914,8 @@ public final class JobRouterAsyncClient {
     public Mono<AcceptJobOfferResult> acceptJobOffer(String workerId, String offerId) {
         // Generated convenience method for acceptJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return acceptJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AcceptJobOfferResult.class));
+        return acceptJobOfferWithResponse(workerId, offerId, requestOptions)
+            .map(response -> response.getValue().toObject(AcceptJobOfferResult.class));
     }
 
     /**
@@ -1970,8 +1975,9 @@ public final class JobRouterAsyncClient {
     public Mono<RouterWorker> getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWorkerWithResponse(workerId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class));
+        return getWorkerWithResponse(workerId, requestOptions)
+            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
+            .map(internal -> RouterWorkerConstructorProxy.create(internal));
     }
 
     /**

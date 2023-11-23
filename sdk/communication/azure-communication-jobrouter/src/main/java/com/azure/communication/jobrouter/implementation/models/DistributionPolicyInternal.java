@@ -142,4 +142,24 @@ public final class DistributionPolicyInternal {
         this.mode = mode;
         return this;
     }
+
+    /**
+     * Set id.
+     * @param id id.
+     * @return this.
+     */
+    public DistributionPolicyInternal setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Set etag.
+     * @param etag etag.
+     * @return this
+     */
+    public DistributionPolicyInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 }
