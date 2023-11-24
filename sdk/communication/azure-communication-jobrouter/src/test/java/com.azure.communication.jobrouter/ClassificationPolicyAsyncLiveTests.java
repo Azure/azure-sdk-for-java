@@ -17,7 +17,6 @@ import com.azure.communication.jobrouter.models.StaticRouterRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -50,8 +49,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         )
             .setName(distributionPolicyName);
 
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions,
-            new RequestOptions()).block();
+        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
 
@@ -66,7 +64,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             .setLabels(queueLabels)
             .setName(queueName);
 
-        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions, new RequestOptions()).block();
+        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -110,7 +108,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             .setFallbackQueueId(jobQueue.getId());
 
         // Action
-        ClassificationPolicy result = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions, new RequestOptions()).block();
+        ClassificationPolicy result = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());

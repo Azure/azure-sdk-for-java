@@ -112,4 +112,26 @@ public final class ExceptionPolicyInternal {
         this.exceptionRules = exceptionRules;
         return this;
     }
+
+    /**
+     * Set id.
+     * 
+     * @param id id.
+     * @return this.
+     */
+    public ExceptionPolicyInternal setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Set etag
+     * 
+     * @param etag etag.
+     * @return this.
+     */
+    public ExceptionPolicyInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
 }

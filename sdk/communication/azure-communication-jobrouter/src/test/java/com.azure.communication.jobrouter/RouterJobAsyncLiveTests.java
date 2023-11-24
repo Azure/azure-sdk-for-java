@@ -20,7 +20,6 @@ import com.azure.communication.jobrouter.models.UnassignJobResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
@@ -58,7 +57,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
                 .setMaxConcurrentOffers(10)
         )
             .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions, new RequestOptions()).block();
+        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
         String queueName = String.format("%s-Name", queueId);
@@ -71,7 +70,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
             .setName(queueName);
-        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions, new RequestOptions()).block();
+        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         /**
          * Setup worker

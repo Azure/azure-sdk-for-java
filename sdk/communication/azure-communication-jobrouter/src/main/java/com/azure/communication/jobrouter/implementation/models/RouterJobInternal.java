@@ -475,4 +475,81 @@ public final class RouterJobInternal {
         this.matchingMode = matchingMode;
         return this;
     }
+
+    /**
+     * Set id.
+     * 
+     * @param id id.
+     * @return this.
+     */
+    public RouterJobInternal setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Set etag.
+     * 
+     * @param etag etag.
+     * @return this.
+     */
+    public RouterJobInternal setEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Set enqueuedAt.
+     * 
+     * @param enqueuedAt enqueuedAt.
+     * @return this.
+     */
+    public RouterJobInternal setEnqueuedAt(OffsetDateTime enqueuedAt) {
+        this.enqueuedAt = enqueuedAt;
+        return this;
+    }
+
+    /**
+     * Set status.
+     * 
+     * @param routerJobStatus routerJobStatus.
+     * @return this.
+     */
+    public RouterJobInternal setStatus(RouterJobStatus routerJobStatus) {
+        this.status = routerJobStatus;
+        return this;
+    }
+
+    /**
+     * Set assignments.
+     * 
+     * @param assignments assignments.
+     * @return this.
+     */
+    public RouterJobInternal setAssignments(Map<String, RouterJobAssignment> assignments) {
+        this.assignments = assignments;
+        return this;
+    }
+
+    /**
+     * Set attachedWorkerSelectors.
+     * 
+     * @param attachedWorkerSelectors attachedWorkerSelectors.
+     * @return this.
+     */
+    public RouterJobInternal setAttachedWorkerSelectors(List<RouterWorkerSelectorInternal> attachedWorkerSelectors) {
+        this.attachedWorkerSelectors = attachedWorkerSelectors;
+        return this;
+    }
+
+    /**
+     * Set scheduledAt.
+     * 
+     * @param scheduledAt scheduledAt.
+     * @return this.
+     */
+    public RouterJobInternal setScheduledAt(OffsetDateTime scheduledAt) {
+        this.scheduledAt = scheduledAt;
+        return this;
+    }
 }

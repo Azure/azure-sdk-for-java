@@ -47,7 +47,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
                 .setMaxConcurrentOffers(10)
         )
             .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions, new RequestOptions()).block();
+        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateWorker-Queue", JAVA_LIVE_TESTS);
         String queueName = String.format("%s-Name", queueId);
@@ -60,7 +60,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
             .setName(queueName);
-        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions, new RequestOptions()).block();
+        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         /**
          * Setup worker

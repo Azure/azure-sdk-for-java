@@ -4,7 +4,6 @@ import com.azure.communication.jobrouter.models.BestWorkerMode;
 import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
 import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -34,7 +33,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
             .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions, new RequestOptions()).block();
+        DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());

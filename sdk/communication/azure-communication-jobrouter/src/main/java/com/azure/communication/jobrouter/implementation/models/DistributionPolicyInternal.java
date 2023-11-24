@@ -145,6 +145,7 @@ public final class DistributionPolicyInternal {
 
     /**
      * Set id.
+     * 
      * @param id id.
      * @return this.
      */
@@ -155,6 +156,7 @@ public final class DistributionPolicyInternal {
 
     /**
      * Set etag.
+     * 
      * @param etag etag.
      * @return this
      */

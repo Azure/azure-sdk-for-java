@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -50,7 +49,7 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
             .setName(exceptionPolicyName);
 
         // Action
-        ExceptionPolicy result = administrationAsyncClient.createExceptionPolicy(createExceptionPolicyOptions, new RequestOptions()).block();
+        ExceptionPolicy result = administrationAsyncClient.createExceptionPolicy(createExceptionPolicyOptions).block();
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());

@@ -44,13 +44,13 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous JobRouterClient type.
@@ -515,24 +515,26 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateJob(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions).flatMap(FluxUtil::toMono);
+        return updateJobWithResponse(jobId, resource, requestOptions).map(response -> response.getValue());
     }
 
     /**
      * Create a job.
      *
      * @param createJobOptions Options to create RouterJob.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createJobWithResponse(CreateJobOptions createJobOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<RouterJob>> createJobWithResponse(CreateJobOptions createJobOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions);
+        return upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob), requestOptions)
+            .map(response -> new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
     }
 
     /**
@@ -546,10 +548,7 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterJob> createJob(CreateJobOptions createJobOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        return this.createJobWithResponse(createJobOptions, requestOptions)
-            .map(response -> response.getValue().toObject(RouterJobInternal.class))
-            .map(internal -> RouterJobConstructorProxy.create(internal));
+        return this.createJobWithResponse(createJobOptions).map(response -> response.getValue());
     }
 
     /**
@@ -1483,26 +1482,27 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> updateWorker(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return this.updateWorkerWithResponse(workerId, resource, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Create a worker.
      *
      * @param createWorkerOptions Container for inputs to create a worker.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions,
-        RequestOptions requestOptions) {
+    public Mono<Response<RouterWorker>> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
+        RequestOptions requestOptions = new RequestOptions();
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
-            requestOptions);
+            requestOptions)
+                .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(),
+                    RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
     }
 
     /**
@@ -1517,9 +1517,8 @@ public final class JobRouterAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
-        return createWorkerWithResponse(createWorkerOptions, requestOptions)
-            .map(response -> response.getValue().toObject(RouterWorkerInternal.class))
-            .map(internal -> RouterWorkerConstructorProxy.create(internal));
+        return createWorkerWithResponse(createWorkerOptions)
+            .map(routerWorkerResponse -> routerWorkerResponse.getValue());
     }
 
     /**
@@ -1891,8 +1890,8 @@ public final class JobRouterAsyncClient {
     public Mono<UnassignJobResult> unassignJob(String jobId, String assignmentId) {
         // Generated convenience method for unassignJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return unassignJobWithResponse(jobId, assignmentId, requestOptions)
-            .map(response -> response.getValue().toObject(UnassignJobResult.class));
+        return unassignJobWithResponse(jobId, assignmentId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(UnassignJobResult.class));
     }
 
     /**
@@ -1914,8 +1913,8 @@ public final class JobRouterAsyncClient {
     public Mono<AcceptJobOfferResult> acceptJobOffer(String workerId, String offerId) {
         // Generated convenience method for acceptJobOfferWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return acceptJobOfferWithResponse(workerId, offerId, requestOptions)
-            .map(response -> response.getValue().toObject(AcceptJobOfferResult.class));
+        return acceptJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AcceptJobOfferResult.class));
     }
 
     /**

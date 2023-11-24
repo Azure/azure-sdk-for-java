@@ -85,4 +85,13 @@ public class DistributionPolicyAdapter {
 
         return null;
     }
+
+    public static DistributionPolicyInternal convertDistributionPolicyToInternal(DistributionPolicy distributionPolicy) {
+        return new DistributionPolicyInternal()
+            .setEtag(distributionPolicy.getEtag())
+            .setId(distributionPolicy.getId())
+            .setName(distributionPolicy.getName())
+            .setMode(convertDistributionModeToInternal(distributionPolicy.getMode()))
+            .setOfferExpiresAfterSeconds(Double.valueOf(distributionPolicy.getOfferExpiresAfter().getSeconds()));
+    }
 }

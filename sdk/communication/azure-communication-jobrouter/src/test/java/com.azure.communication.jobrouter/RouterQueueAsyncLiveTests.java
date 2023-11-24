@@ -7,7 +7,6 @@ import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.RequestOptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -39,7 +38,7 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
                 .setMaxConcurrentOffers(10)
         )
             .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions, new RequestOptions()).block();
+        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
 
@@ -54,7 +53,7 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
         CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
             .setLabels(queueLabels)
             .setName(queueName);
-        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions, new RequestOptions()).block();
+        RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         // Verify
         assertEquals(queueId, jobQueue.getId());

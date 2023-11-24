@@ -18,6 +18,8 @@ import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.SuspendMode;
 
+import java.util.AbstractMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -104,5 +106,43 @@ public class JobAdapter {
             return new SuspendMode();
         }
         throw new IllegalStateException(String.format("Unknown type of jobMatchingMode %s", jobMatchingModeInternal.getClass().getTypeName()));
+    }
+
+    public static RouterJobInternal convertRouterJobToInternal(RouterJob routerJob) {
+        return new RouterJobInternal()
+            .setEtag(routerJob.getEtag())
+            .setId(routerJob.getId())
+            .setEnqueuedAt(routerJob.getEnqueuedAt())
+            .setStatus(routerJob.getStatus())
+            .setDispositionCode(routerJob.getDispositionCode())
+            .setNotes(routerJob.getNotes())
+            .setChannelId(routerJob.getChannelId())
+            .setChannelReference(routerJob.getChannelReference())
+            .setLabels(convertRouterValueLabelsToInternal(routerJob.getLabels()))
+            .setTags(convertRouterValueLabelsToInternal(routerJob.getTags()))
+            .setAttachedWorkerSelectors(
+                routerJob.getAttachedWorkerSelectors()
+                    .stream()
+                    .map(ws ->  LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                    .collect(Collectors.toList())
+            )
+            .setRequestedWorkerSelectors(
+                routerJob.getRequestedWorkerSelectors()
+                    .stream()
+                    .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                    .collect(Collectors.toList())
+            )
+            .setScheduledAt(routerJob.getScheduledAt())
+            .setAssignments(routerJob.getAssignments())
+            .setPriority(routerJob.getPriority())
+            .setClassificationPolicyId(routerJob.getClassificationPolicyId());
+    }
+
+    private static Map<String, Object> convertRouterValueLabelsToInternal(Map<String, RouterValue> labels) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        labels.entrySet()
+            .stream()
+            .forEach(entry -> result.put(entry.getKey(), RouterValueAdapter.getValue(entry.getValue())));
+        return result;
     }
 }
