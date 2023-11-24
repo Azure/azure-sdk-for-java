@@ -8,6 +8,7 @@ package com.azure.ai.contentsafety;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -17,6 +18,9 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import reactor.core.publisher.Mono;
+
+import java.time.OffsetDateTime;
 
 class ContentSafetyClientTestBase extends TestProxyTestBase {
     protected ContentSafetyClient contentSafetyClient;
@@ -57,7 +61,8 @@ class ContentSafetyClientTestBase extends TestProxyTestBase {
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            contentSafetyClientAADBuilder.httpClient(interceptorManager.getPlaybackClient());
+            contentSafetyClientAADBuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
             contentSafetyClientAADBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
