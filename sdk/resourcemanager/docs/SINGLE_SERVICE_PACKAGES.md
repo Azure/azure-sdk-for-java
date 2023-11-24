@@ -108,7 +108,7 @@ service
 <details>
 <summary> applicationinsights </summary>
 
-* [package-2022-06-15-java](https://github.com/Azure/azure-rest-api-specs/blob/main/specification/applicationinsights/resource-manager/readme.java.md#tag-package-2022-06-15-java)
+* [package-2022-06-15-java](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager/readme.java.md#tag-package-2022-06-15-java)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.0.0)
 * [package-2022-04-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager#tag-package-2022-04-01)
     * [1.0.0-beta.5](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.0.0-beta.5)
