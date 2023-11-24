@@ -5,6 +5,8 @@ package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
 import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
@@ -294,13 +296,19 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createDistributionPolicyWithResponse(
+    public Response<DistributionPolicy> createDistributionPolicyWithResponse(
         CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
         DistributionPolicyInternal distributionPolicy
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
-        return this.serviceClient.upsertDistributionPolicyWithResponse(
+        Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
             createDistributionPolicyOptions.getDistributionPolicyId(), BinaryData.fromObject(distributionPolicy),
             requestOptions);
+        return new SimpleResponse<DistributionPolicy>(
+            response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            DistributionPolicyConstructorProxy.create(response.getValue().toObject(DistributionPolicyInternal.class))
+        );
     }
 
     /**
@@ -316,8 +324,7 @@ public final class JobRouterAdministrationClient {
     public DistributionPolicy
         createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createDistributionPolicyWithResponse(createDistributionPolicyOptions, requestOptions).getValue()
-            .toObject(DistributionPolicy.class);
+        return this.createDistributionPolicyWithResponse(createDistributionPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -694,13 +701,15 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createClassificationPolicyWithResponse(
+    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(
         CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
         ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
-        return this.serviceClient.upsertClassificationPolicyWithResponse(
+        Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
             createClassificationPolicyOptions.getClassificationPolicyId(), BinaryData.fromObject(classificationPolicy),
             requestOptions);
+        return new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            ClassificationPolicyConstructorProxy.create(response.getValue().toObject(ClassificationPolicyInternal.class)));
     }
 
     /**
@@ -716,10 +725,7 @@ public final class JobRouterAdministrationClient {
     public ClassificationPolicy
         createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        ClassificationPolicyInternal internal
-            = this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions).getValue()
-                .toObject(ClassificationPolicyInternal.class);
-        return ClassificationPolicyConstructorProxy.create(internal);
+        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -1102,12 +1108,18 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createExceptionPolicyWithResponse(
+    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(
         CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
         ExceptionPolicyInternal exceptionPolicy
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
-        return this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
+        Response<BinaryData> response = this.serviceClient.upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions);
+        return new SimpleResponse<ExceptionPolicy>(
+            response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))
+        );
     }
 
     /**
@@ -1122,8 +1134,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExceptionPolicy createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createExceptionPolicyWithResponse(createExceptionPolicyOptions, requestOptions).getValue()
-            .toObject(ExceptionPolicy.class);
+        return this.createExceptionPolicyWithResponse(createExceptionPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -1480,11 +1491,17 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createQueueWithResponse(CreateQueueOptions createQueueOptions,
+    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions,
         RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
-        return this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue),
+        Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(), BinaryData.fromObject(queue),
             requestOptions);
+        return new SimpleResponse<RouterQueue>(
+            response.getRequest(),
+            response.getStatusCode(),
+            response.getHeaders(),
+            RouterQueueConstructorProxy.create(response.getValue().toObject(RouterQueueInternal.class))
+        );
     }
 
     /**
@@ -1499,9 +1516,7 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        BinaryData resource = this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
-        RouterQueueInternal internal = resource.toObject(RouterQueueInternal.class);
-        return RouterQueueConstructorProxy.create(internal);
+        return this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
     }
 
     /**
