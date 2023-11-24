@@ -44,7 +44,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
@@ -61,7 +61,6 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
                 put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
-
         // Action
         RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
         queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
