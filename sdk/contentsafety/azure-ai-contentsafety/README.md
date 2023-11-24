@@ -18,17 +18,15 @@ Various documentation is available to help you get started
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-- You need an [Azure subscription][azure_sub] to use this package.
+- You need an [Azure subscription][azure_subscription] to use this package.
 - An existing [Azure AI Content Safety][contentsafety_overview] instance.
 
 ### Adding the package to your product
-
-[//]: # ({x-version-update-start;com.azure:azure-ai-contentsafety;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentsafety</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -309,5 +307,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_portal]: https://ms.portal.azure.com/
 [azure_cli_endpoint_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_cli_key_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcontentsafety%2Fazure-ai-contentsafety%2FREADME.png)
