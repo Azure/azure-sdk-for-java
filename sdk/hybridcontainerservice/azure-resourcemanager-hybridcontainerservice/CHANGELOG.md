@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.4 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.3 (2023-11-23)
 
 - Azure Resource Manager HybridContainerService client library for Java. This package contains Microsoft Azure SDK for HybridContainerService Management SDK. The Microsoft.HybridContainerService Rest API spec. Package tag package-preview-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
