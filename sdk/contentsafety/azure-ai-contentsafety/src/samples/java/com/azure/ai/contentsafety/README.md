@@ -63,7 +63,7 @@ Following section document various examples.
 
 <!-- LINKS -->
 <!-- FIX LINK BRANCH AFTER PR MERGE -->
-[sample_CreateContentSafetyClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/CreateContentSafetyClient.java
+[sample_CreateContentSafetyClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeText.java
 [sample_AnalyzeText]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeText.java
 [sample_AnalyzeImage]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/AnalyzeImage.java
 [sample_ManageTextBlocklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentsafety/azure-ai-contentsafety/src/samples/java/com/azure/ai/contentsafety/ManageTextBlocklist.java
