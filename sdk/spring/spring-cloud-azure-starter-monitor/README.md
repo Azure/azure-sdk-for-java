@@ -28,43 +28,12 @@ For more information, please read [introduction to Application Insights][applica
 ```
 [//]: # ({x-version-update-end})
 
-#### Disable the JAR signature verification for the native image generation
+#### Azure Spring Cloud set-up
 
-You have to disable the JAR signature verification to be able to generate a native image ([see](https://github.com/Azure/azure-sdk-for-java/issues/30320
-)).
+You have to apply the Azure Spring Cloud set-up described [here](../README.md#spring-aot-and-spring-native-images) for Spring native images.
 
-You can do this in the following way for GraalVM Native Build Tools:
+#### OpenTelemetry version set-up
 
-* Maven
-```xml
-<plugin>
-    <groupId>org.graalvm.buildtools</groupId>
-    <artifactId>native-maven-plugin</artifactId>
-    <configuration>
-        <buildArgs>
-            <arg>-Djava.security.properties=src/main/resources/custom.security</arg>
-        </buildArgs>
-    </configuration>
-</plugin>
-```
-
-* Gradle:
-```groovy
-graalvmNative {
-  binaries {
-    main {
-      buildArgs('-Djava.security.properties=' + file("$rootDir/custom.security").absolutePath)
-    }
-  }  
-}
-```
-
-You have to create a `custom.security file` in `src/main/resources` with the following content:
-```
-jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
-```
-
-#### OpenTelemetry version adjustment
 You may have to align the OpenTelemetry versions of Spring Boot 3 and `spring-cloud-azure-starter-monitor`. If this is the case, you will notice a WARN message during the application start-up:
 ```
 WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
