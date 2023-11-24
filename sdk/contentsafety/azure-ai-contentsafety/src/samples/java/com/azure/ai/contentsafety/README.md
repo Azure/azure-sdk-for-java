@@ -3,9 +3,8 @@ page_type: sample
 languages:
     - java
 products:
-    - azure
     - azure-ai-contentsafety
-urlFragment: developer-loadtesting-samples
+urlFragment: ai-contentsafety-samples
 ---
 
 # Azure AI Content Safety Samples client library for Java
