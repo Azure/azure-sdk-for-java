@@ -14,11 +14,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// A word on customization: the field "content" can be either a string or an array of structured data, from the JSON perspective.
-// Because of the union required in TypeSpec to define this scenario, the generated constructor accepts BinaryData.
-// We've hidden that constructor and supplied the necessary ones with types that are not low level protocol types.
-// In doing so, we also needed to hide `getContent`, as the only option to represent this in a way that reflects what
-// "content" could be, would be by using BinaryData.
 /**
  * A request chat message representing user input to the assistant.
  */
