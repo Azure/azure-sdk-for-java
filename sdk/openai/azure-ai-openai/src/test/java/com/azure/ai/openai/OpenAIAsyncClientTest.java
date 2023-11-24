@@ -13,7 +13,9 @@ import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration
 import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
@@ -39,6 +41,7 @@ import java.util.List;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -757,5 +760,49 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatWithToolCallRunnerForNonAzure((modelId, chatCompletionsOptions) ->
+            StepVerifier.create(
+                client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())
+                    .flatMap(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+                        ChatCompletions chatCompletions = response.getValue();
+                        assertNotNull(chatCompletions);
+
+                        assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+                        ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                        assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.TOOL_CALLS);
+
+                        ChatResponseMessage responseMessage = chatChoice.getMessage();
+                        assertNotNull(responseMessage);
+                        assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
+                        assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
+                        assertEquals(1, responseMessage.getToolCalls().size());
+
+                        ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
+                        assertNotNull(functionToolCall);
+                        assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature"); // see base class
+                        assertFalse(functionToolCall.getFunction().getArguments() == null
+                                || functionToolCall.getFunction().getArguments().isEmpty());
+
+                        return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
+                                functionToolCall, responseMessage.getContent()));
+                    })).assertNext(followUpChatCompletions -> {
+                        assertNotNull(followUpChatCompletions);
+                        assertNotNull(followUpChatCompletions.getChoices());
+                        ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+                        assertNotNull(followUpChatChoice);
+                        assertNotNull(followUpChatChoice.getMessage());
+                        String content = followUpChatChoice.getMessage().getContent();
+                        assertFalse(content == null || content.isEmpty());
+                        assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                        assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+                    }).verifyComplete());
     }
 }

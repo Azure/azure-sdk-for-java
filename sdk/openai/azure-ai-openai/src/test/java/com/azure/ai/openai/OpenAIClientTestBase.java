@@ -4,20 +4,26 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.FutureTemperatureArguments;
 import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.functions.FutureTemperatureParameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
 import com.azure.ai.openai.models.ChatMessageImageUrl;
 import com.azure.ai.openai.models.ChatMessageTextContentItem;
 import com.azure.ai.openai.models.ChatRequestAssistantMessage;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
@@ -241,7 +247,63 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatWithVisionRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
-        testRunner.accept("gpt-4-vision-preview", getChatMessagesWithVision());
+        testRunner.accept("gpt-4-vision-preview", getChatRequestMessagesWithVision());
+    }
+
+    void getChatWithToolCallRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-1106", getChatCompletionsOptionWithToolCall());
+    }
+
+    // openai-sdk-test-automation-account-sweden-central
+    void getChatWithToolCallRunnerForAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4-1106-preview", getChatCompletionsOptionWithToolCall());
+    }
+
+    private List<ChatRequestMessage> getChatRequestMessagesForToolCall() {
+        List<ChatRequestMessage> chatRequestMessages = new ArrayList<>();
+
+        chatRequestMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatRequestMessages.add(new ChatRequestUserMessage("What should I wear in Honolulu next Thursday?"));
+
+        return chatRequestMessages;
+    }
+
+    private ChatCompletionsOptions getChatCompletionsOptionWithToolCall() {
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
+    }
+
+    // Preparation for follow-up with the service
+    // we add:
+    // - All the messages we sent
+    // - The ChatCompletionsFunctionToolCall from the service
+    // - The result of function tool
+    protected ChatCompletionsOptions getChatCompletionsOptionWithToolCallFollowUp(
+            ChatCompletionsFunctionToolCall functionToolCall, String responseMessageContent) {
+        // original messages
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        // function tool call
+        ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage(responseMessageContent);
+        assistantMessage.setToolCalls(Arrays.asList(functionToolCall));
+        chatRequestMessages.add(assistantMessage);
+
+        // tool call result, we pass our function call result as the `content` of the message
+        ChatRequestToolMessage toolMessage = new ChatRequestToolMessage("36 C", functionToolCall.getId());
+        chatRequestMessages.add(toolMessage);
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
     }
 
     private List<ChatRequestMessage> getChatMessages() {
@@ -253,7 +315,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return chatMessages;
     }
 
-    private List<ChatRequestMessage> getChatMessagesWithVision() {
+    private List<ChatRequestMessage> getChatRequestMessagesWithVision() {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
         chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
@@ -265,9 +327,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     private ChatCompletionsOptions getChatMessagesWithFunction() {
-        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
-        Parameters parameters = new Parameters();
-        functionDefinition.setParameters(parameters);
+        FunctionDefinition functionDefinition = getFunctionDefinition();
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
@@ -276,6 +336,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
         return chatCompletionOptions;
+    }
+
+    private FunctionDefinition getFunctionDefinition() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
+        Parameters parameters = new Parameters();
+        functionDefinition.setParameters(parameters);
+        return functionDefinition;
+    }
+
+    private FunctionDefinition getFutureTemperatureFunctionDefinition() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("FutureTemperature");
+        FutureTemperatureParameters parameters = new FutureTemperatureParameters();
+        functionDefinition.setParameters(parameters);
+        return functionDefinition;
     }
 
     static Path openTestResourceFile(String fileName) {
