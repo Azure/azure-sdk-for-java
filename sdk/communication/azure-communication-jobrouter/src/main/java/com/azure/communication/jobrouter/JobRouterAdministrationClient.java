@@ -295,8 +295,8 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DistributionPolicy>
-        createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
+    public Response<DistributionPolicy> createDistributionPolicyWithResponse(
+        CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
         DistributionPolicyInternal distributionPolicy
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
@@ -696,8 +696,8 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ClassificationPolicy>
-        createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
+    public Response<ClassificationPolicy> createClassificationPolicyWithResponse(
+        CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
         ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
@@ -721,7 +721,8 @@ public final class JobRouterAdministrationClient {
     public ClassificationPolicy
         createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions).getValue();
+        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions)
+            .getValue();
     }
 
     /**
@@ -1103,8 +1104,8 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExceptionPolicy>
-        createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
+    public Response<ExceptionPolicy> createExceptionPolicyWithResponse(
+        CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
         ExceptionPolicyInternal exceptionPolicy
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         Response<BinaryData> response
@@ -1472,7 +1473,8 @@ public final class JobRouterAdministrationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
+    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions,
+        RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(),
             BinaryData.fromObject(queue), requestOptions);

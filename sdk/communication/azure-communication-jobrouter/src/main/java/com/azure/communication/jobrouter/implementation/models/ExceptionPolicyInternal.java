@@ -115,7 +115,7 @@ public final class ExceptionPolicyInternal {
 
     /**
      * Set id.
-     * 
+     *
      * @param id id.
      * @return this.
      */
@@ -126,7 +126,7 @@ public final class ExceptionPolicyInternal {
 
     /**
      * Set etag
-     * 
+     *
      * @param etag etag.
      * @return this.
      */

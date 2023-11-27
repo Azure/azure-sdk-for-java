@@ -478,7 +478,7 @@ public final class RouterJobInternal {
 
     /**
      * Set id.
-     * 
+     *
      * @param id id.
      * @return this.
      */
@@ -489,7 +489,7 @@ public final class RouterJobInternal {
 
     /**
      * Set etag.
-     * 
+     *
      * @param etag etag.
      * @return this.
      */
@@ -500,7 +500,7 @@ public final class RouterJobInternal {
 
     /**
      * Set enqueuedAt.
-     * 
+     *
      * @param enqueuedAt enqueuedAt.
      * @return this.
      */
@@ -511,7 +511,7 @@ public final class RouterJobInternal {
 
     /**
      * Set status.
-     * 
+     *
      * @param routerJobStatus routerJobStatus.
      * @return this.
      */
@@ -522,7 +522,7 @@ public final class RouterJobInternal {
 
     /**
      * Set assignments.
-     * 
+     *
      * @param assignments assignments.
      * @return this.
      */
@@ -533,7 +533,7 @@ public final class RouterJobInternal {
 
     /**
      * Set attachedWorkerSelectors.
-     * 
+     *
      * @param attachedWorkerSelectors attachedWorkerSelectors.
      * @return this.
      */
@@ -544,7 +544,7 @@ public final class RouterJobInternal {
 
     /**
      * Set scheduledAt.
-     * 
+     *
      * @param scheduledAt scheduledAt.
      * @return this.
      */

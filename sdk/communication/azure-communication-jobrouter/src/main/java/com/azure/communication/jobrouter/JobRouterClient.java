@@ -1500,7 +1500,8 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
+    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions,
+        RequestOptions requestOptions) {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
             BinaryData.fromObject(routerWorker), requestOptions);
