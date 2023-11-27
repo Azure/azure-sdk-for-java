@@ -2178,8 +2178,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Runnable actualCallback = markE2ETimeoutInRequestContextCallbackHook.get();
             if (actualCallback != null) {
-                // TODO @fabianm Revert log or make trace
-                logger.info("Calling actual Mark E2E timeout callback");
+                logger.trace("Calling actual Mark E2E timeout callback");
                 actualCallback.run();
             }
 
