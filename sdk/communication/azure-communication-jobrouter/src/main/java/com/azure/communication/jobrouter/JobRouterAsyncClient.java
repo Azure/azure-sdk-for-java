@@ -1509,14 +1509,13 @@ public final class JobRouterAsyncClient {
      * Convenience method to create a worker.
      *
      * @param createWorkerOptions Container for inputs to create a worker.
-     * @param requestOptions RequestOptions.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
+    public Mono<RouterWorker> createWorker(CreateWorkerOptions createWorkerOptions) {
         return createWorkerWithResponse(createWorkerOptions)
             .map(routerWorkerResponse -> routerWorkerResponse.getValue());
     }

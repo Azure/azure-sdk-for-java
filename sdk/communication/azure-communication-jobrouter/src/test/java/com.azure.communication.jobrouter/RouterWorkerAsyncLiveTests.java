@@ -100,7 +100,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
             .setQueues(queues);
 
         // Action
-        RouterWorker result = routerAsyncClient.createWorker(createWorkerOptions, new RequestOptions()).block();
+        RouterWorker result = routerAsyncClient.createWorker(createWorkerOptions).block();
 
         // Verify
         assertEquals(workerId, result.getId());
