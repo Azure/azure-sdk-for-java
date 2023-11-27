@@ -38,7 +38,7 @@ import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
@@ -383,7 +383,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendToGroup(String group, String content) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT);
     }
 
     /**
@@ -395,7 +395,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendToGroup(String group, String content, SendToGroupOptions options) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT, options);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT, options);
     }
 
     /**
@@ -406,7 +406,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @param dataType the data type.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType) {
         return sendToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
@@ -419,7 +419,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType,
                                              SendToGroupOptions options) {
         Objects.requireNonNull(group);
         Objects.requireNonNull(content);
@@ -450,7 +450,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @param dataType the data type.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType) {
         return sendEvent(eventName, content, dataType, new SendEventOptions().setAckId(nextAckId()));
     }
 
@@ -463,7 +463,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType,
                                            SendEventOptions options) {
         Objects.requireNonNull(eventName);
         Objects.requireNonNull(content);

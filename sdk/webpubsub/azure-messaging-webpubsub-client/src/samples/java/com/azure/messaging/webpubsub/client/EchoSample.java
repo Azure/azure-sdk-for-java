@@ -8,7 +8,7 @@ import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
@@ -49,7 +49,7 @@ public final class EchoSample {
             String group = event.getGroup();
             if (groupName.equals(event.getGroup())
                 && !userName.equals(event.getFromUserId())
-                && (event.getDataType() == WebPubSubDataType.TEXT || event.getDataType() == WebPubSubDataType.JSON)) {
+                && (event.getDataType() == WebPubSubDataFormat.TEXT || event.getDataType() == WebPubSubDataFormat.JSON)) {
 
                 String text = parseMessageEvent(event);
                 if ("exit".equals(text)) {
@@ -74,7 +74,7 @@ public final class EchoSample {
     }
 
     private static String parseMessageEvent(GroupMessageEvent event) {
-        return event.getDataType() == WebPubSubDataType.TEXT
+        return event.getDataType() == WebPubSubDataFormat.TEXT
             ? event.getData().toString()
             : event.getData().toObject(String.class);
     }

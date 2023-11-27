@@ -8,7 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -60,7 +60,7 @@ public final class HelloWorldSample {
 
         // send custom event to server
         result = client.sendEvent("testEvent",
-            BinaryData.fromString("hello world"), WebPubSubDataType.TEXT);
+            BinaryData.fromString("hello world"), WebPubSubDataFormat.TEXT);
 
         // stop client
         client.stop();

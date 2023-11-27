@@ -8,6 +8,7 @@
 
 ### Breaking Changes
 
+- Renamed `WebPubSubDataType` to `WebPubSubDataFormat`.
 - Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
 - Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
 

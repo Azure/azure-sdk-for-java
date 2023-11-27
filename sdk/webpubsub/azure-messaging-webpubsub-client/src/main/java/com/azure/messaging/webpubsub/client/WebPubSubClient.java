@@ -18,7 +18,7 @@ import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.scheduler.Schedulers;
 
@@ -349,7 +349,7 @@ public class WebPubSubClient implements Closeable {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, String content) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT);
     }
 
     /**
@@ -364,7 +364,7 @@ public class WebPubSubClient implements Closeable {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, String content, SendToGroupOptions options) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT, options);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT, options);
     }
 
     /**
@@ -380,7 +380,7 @@ public class WebPubSubClient implements Closeable {
      * &#47;&#47; it can be any class instance that can be serialized to JSON
      * Map&lt;String, String&gt; jsonObject = new HashMap&lt;&gt;&#40;&#41;;
      * jsonObject.put&#40;&quot;name&quot;, &quot;john&quot;&#41;;
-     * client.sendToGroup&#40;&quot;message-group&quot;, BinaryData.fromObject&#40;jsonObject&#41;, WebPubSubDataType.BINARY&#41;;
+     * client.sendToGroup&#40;&quot;message-group&quot;, BinaryData.fromObject&#40;jsonObject&#41;, WebPubSubDataFormat.BINARY&#41;;
      * </pre>
      * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json -->
      *
@@ -390,7 +390,7 @@ public class WebPubSubClient implements Closeable {
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType) {
         return asyncClient.sendToGroup(group, content, dataType).block();
     }
 
@@ -406,7 +406,7 @@ public class WebPubSubClient implements Closeable {
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType,
                                        SendToGroupOptions options) {
         return asyncClient.sendToGroup(group, content, dataType, options).block();
     }
@@ -422,7 +422,7 @@ public class WebPubSubClient implements Closeable {
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType) {
         return asyncClient.sendEvent(eventName, content, dataType).block();
     }
 
@@ -438,7 +438,7 @@ public class WebPubSubClient implements Closeable {
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType,
                                            SendEventOptions options) {
         return asyncClient.sendEvent(eventName, content, dataType, options).block();
     }

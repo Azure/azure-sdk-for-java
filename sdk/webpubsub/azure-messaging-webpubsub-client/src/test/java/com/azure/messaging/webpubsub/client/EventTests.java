@@ -6,7 +6,7 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.models.SendEventOptions;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -29,12 +29,12 @@ public class EventTests extends TestBase {
         try {
             client.start();
 
-            WebPubSubResult result = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataType.TEXT);
+            WebPubSubResult result = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataFormat.TEXT);
             Assertions.assertNotNull(result.getAckId());
 
             // send with explicit ackId
             long ackId = new Random().nextLong() & Long.MAX_VALUE;
-            result = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataType.TEXT, new SendEventOptions().setAckId(ackId));
+            result = client.sendEvent(EVENT_NAME, HELLO, WebPubSubDataFormat.TEXT, new SendEventOptions().setAckId(ackId));
             Assertions.assertEquals(ackId, result.getAckId());
         } finally {
             client.stop();

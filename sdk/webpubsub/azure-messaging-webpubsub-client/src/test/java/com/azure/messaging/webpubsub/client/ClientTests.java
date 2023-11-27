@@ -15,7 +15,7 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
@@ -83,7 +83,7 @@ public class ClientTests extends TestBase {
         client1.joinGroup(groupName);
         client2.joinGroup(groupName);
 
-        client2.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client2.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         client2.stop();
 
@@ -150,7 +150,7 @@ public class ClientTests extends TestBase {
         // start and stop
         client.start();
         client.joinGroup(groupName);
-        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         Assertions.assertNotNull(client.getConnectionId());
 
@@ -164,7 +164,7 @@ public class ClientTests extends TestBase {
 
         client.start();
         client.joinGroup(groupName);
-        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataType.TEXT);
+        client.sendToGroup(groupName, BinaryData.fromString("hello"), WebPubSubDataFormat.TEXT);
 
         success = latch2.await(10, TimeUnit.SECONDS);
         client.stop();
