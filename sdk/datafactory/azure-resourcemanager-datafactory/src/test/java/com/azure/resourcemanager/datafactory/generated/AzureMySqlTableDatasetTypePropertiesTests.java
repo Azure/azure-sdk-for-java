@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureMySqlTableDatase
 public final class AzureMySqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMySqlTableDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"tableName\":\"datawfsaa\",\"table\":\"datafgb\"}")
+        AzureMySqlTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"datawfsaa\",\"table\":\"datafgb\"}")
                 .toObject(AzureMySqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlTableDatasetTypeProperties model =
-            new AzureMySqlTableDatasetTypeProperties().withTableName("datawfsaa").withTable("datafgb");
+        AzureMySqlTableDatasetTypeProperties model
+            = new AzureMySqlTableDatasetTypeProperties().withTableName("datawfsaa").withTable("datafgb");
         model = BinaryData.fromObject(model).toObject(AzureMySqlTableDatasetTypeProperties.class);
     }
 }

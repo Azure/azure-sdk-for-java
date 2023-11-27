@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class GetDataFactoryOperationStatusResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetDataFactoryOperationStatusResponse model =
-            BinaryData
-                .fromString("{\"status\":\"btyi\",\"\":{\"fqjpnqno\":\"datavpi\"}}")
+        GetDataFactoryOperationStatusResponse model
+            = BinaryData.fromString("{\"status\":\"btyi\",\"\":{\"fqjpnqno\":\"datavpi\"}}")
                 .toObject(GetDataFactoryOperationStatusResponse.class);
         Assertions.assertEquals("btyi", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetDataFactoryOperationStatusResponse model =
-            new GetDataFactoryOperationStatusResponse().withStatus("btyi").withAdditionalProperties(mapOf());
+        GetDataFactoryOperationStatusResponse model
+            = new GetDataFactoryOperationStatusResponse().withStatus("btyi").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(GetDataFactoryOperationStatusResponse.class);
         Assertions.assertEquals("btyi", model.status());
     }

@@ -13,18 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworksPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworksPatch model =
-            BinaryData.fromString("{\"tags\":{\"htwdwrftswibyrcd\":\"ujzra\"}}").toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("ujzra", model.tags().get("htwdwrftswibyrcd"));
+        VirtualNetworksPatch model
+            = BinaryData.fromString("{\"tags\":{\"jhdgqggebdunyga\":\"khly\"}}").toObject(VirtualNetworksPatch.class);
+        Assertions.assertEquals("khly", model.tags().get("jhdgqggebdunyga"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworksPatch model = new VirtualNetworksPatch().withTags(mapOf("htwdwrftswibyrcd", "ujzra"));
+        VirtualNetworksPatch model = new VirtualNetworksPatch().withTags(mapOf("jhdgqggebdunyga", "khly"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("ujzra", model.tags().get("htwdwrftswibyrcd"));
+        Assertions.assertEquals("khly", model.tags().get("jhdgqggebdunyga"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specify the name and value of custom metadata item. */
+/**
+ * Specify the name and value of custom metadata item.
+ */
 @Fluent
 public final class MetadataItem {
     /*
@@ -22,13 +24,15 @@ public final class MetadataItem {
     @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of MetadataItem class. */
+    /**
+     * Creates an instance of MetadataItem class.
+     */
     public MetadataItem() {
     }
 
     /**
      * Get the name property: Metadata item key name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the name value.
      */
     public Object name() {
@@ -37,7 +41,7 @@ public final class MetadataItem {
 
     /**
      * Set the name property: Metadata item key name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param name the name value to set.
      * @return the MetadataItem object itself.
      */
@@ -48,7 +52,7 @@ public final class MetadataItem {
 
     /**
      * Get the value property: Metadata item value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -57,7 +61,7 @@ public final class MetadataItem {
 
     /**
      * Set the value property: Metadata item value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param value the value value to set.
      * @return the MetadataItem object itself.
      */
@@ -68,7 +72,7 @@ public final class MetadataItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

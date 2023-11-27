@@ -1,6 +1,20 @@
 # Release History
 
-## 2.33.0-beta.1 (Unreleased)
+## 2.34.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.33.0 (2023-11-24)
+
+### Bugs Fixed
+
+- Deprecated `RuntimeStack.TOMCAT_10_0_JRE11`. Please use `RuntimeStack.TOMCAT_10_0_JAVA11`.
 
 ### Other Changes
 

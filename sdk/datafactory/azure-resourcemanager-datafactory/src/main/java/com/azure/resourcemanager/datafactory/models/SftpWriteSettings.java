@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Sftp write settings. */
+/**
+ * Sftp write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SftpWriteSettings")
 @Fluent
@@ -28,14 +30,16 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     @JsonProperty(value = "useTempFileRename")
     private Object useTempFileRename;
 
-    /** Creates an instance of SftpWriteSettings class. */
+    /**
+     * Creates an instance of SftpWriteSettings class.
+     */
     public SftpWriteSettings() {
     }
 
     /**
      * Get the operationTimeout property: Specifies the timeout for writing each chunk to SFTP server. Default value:
      * 01:00:00 (one hour). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the operationTimeout value.
      */
     public Object operationTimeout() {
@@ -45,7 +49,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * Set the operationTimeout property: Specifies the timeout for writing each chunk to SFTP server. Default value:
      * 01:00:00 (one hour). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param operationTimeout the operationTimeout value to set.
      * @return the SftpWriteSettings object itself.
      */
@@ -57,7 +61,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * Get the useTempFileRename property: Upload to temporary file(s) and rename. Disable this option if your SFTP
      * server doesn't support rename operation. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useTempFileRename value.
      */
     public Object useTempFileRename() {
@@ -67,7 +71,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
     /**
      * Set the useTempFileRename property: Upload to temporary file(s) and rename. Disable this option if your SFTP
      * server doesn't support rename operation. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useTempFileRename the useTempFileRename value to set.
      * @return the SftpWriteSettings object itself.
      */
@@ -76,21 +80,27 @@ public final class SftpWriteSettings extends StoreWriteSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SftpWriteSettings withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SftpWriteSettings withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SftpWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
@@ -99,7 +109,7 @@ public final class SftpWriteSettings extends StoreWriteSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

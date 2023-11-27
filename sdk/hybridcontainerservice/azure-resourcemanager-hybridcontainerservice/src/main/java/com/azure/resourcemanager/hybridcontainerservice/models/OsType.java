@@ -9,19 +9,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values
- * include: 'Linux', 'Windows'.
+ * The particular KubernetesVersion's Image's OS Type (Linux, Windows).
  */
 public final class OsType extends ExpandableStringEnum<OsType> {
-    /** Static value Linux for OsType. */
-    public static final OsType LINUX = fromString("Linux");
-
-    /** Static value Windows for OsType. */
+    /**
+     * Static value Windows for OsType.
+     */
     public static final OsType WINDOWS = fromString("Windows");
 
     /**
+     * Static value Linux for OsType.
+     */
+    public static final OsType LINUX = fromString("Linux");
+
+    /**
      * Creates a new instance of OsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +33,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
 
     /**
      * Creates or finds a OsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OsType.
      */
@@ -41,7 +44,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
 
     /**
      * Gets known OsType values.
-     *
+     * 
      * @return known OsType values.
      */
     public static Collection<OsType> values() {

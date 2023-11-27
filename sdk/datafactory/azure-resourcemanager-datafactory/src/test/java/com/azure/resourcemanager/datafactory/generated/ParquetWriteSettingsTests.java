@@ -10,17 +10,15 @@ import com.azure.resourcemanager.datafactory.models.ParquetWriteSettings;
 public final class ParquetWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParquetWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"datajldwxdqt\",\"fileNamePrefix\":\"datatgn\",\"\":{\"dymlsuuhwuoxe\":\"datajvmdkgv\",\"izzjotmygzjr\":\"datai\",\"bjxxcruleim\":\"dataslqbaf\"}}")
-                .toObject(ParquetWriteSettings.class);
+        ParquetWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"datajldwxdqt\",\"fileNamePrefix\":\"datatgn\",\"\":{\"dymlsuuhwuoxe\":\"datajvmdkgv\",\"izzjotmygzjr\":\"datai\",\"bjxxcruleim\":\"dataslqbaf\"}}")
+            .toObject(ParquetWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetWriteSettings model =
-            new ParquetWriteSettings().withMaxRowsPerFile("datajldwxdqt").withFileNamePrefix("datatgn");
+        ParquetWriteSettings model
+            = new ParquetWriteSettings().withMaxRowsPerFile("datajldwxdqt").withFileNamePrefix("datatgn");
         model = BinaryData.fromObject(model).toObject(ParquetWriteSettings.class);
     }
 }

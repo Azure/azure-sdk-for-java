@@ -12,8 +12,8 @@ public final class CreateRunResponseImpl implements CreateRunResponse {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    CreateRunResponseImpl(
-        CreateRunResponseInner innerObject, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    CreateRunResponseImpl(CreateRunResponseInner innerObject,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

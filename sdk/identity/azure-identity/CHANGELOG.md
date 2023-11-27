@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- fixed Azure Arc Managed Identiy not being retrived because of a code logic bug (misplaced finally block)
 
 ### Other Changes
 

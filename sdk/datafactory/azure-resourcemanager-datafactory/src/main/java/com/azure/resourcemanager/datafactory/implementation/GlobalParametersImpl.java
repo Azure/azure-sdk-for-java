@@ -21,34 +21,31 @@ public final class GlobalParametersImpl implements GlobalParameters {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public GlobalParametersImpl(
-        GlobalParametersClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public GlobalParametersImpl(GlobalParametersClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<GlobalParameterResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<GlobalParameterResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName);
+        PagedIterable<GlobalParameterResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
         return Utils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GlobalParameterResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<GlobalParameterResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+    public PagedIterable<GlobalParameterResource> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
+        PagedIterable<GlobalParameterResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
         return Utils.mapPage(inner, inner1 -> new GlobalParameterResourceImpl(inner1, this.manager()));
     }
 
-    public Response<GlobalParameterResource> getWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
-        Response<GlobalParameterResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, factoryName, globalParameterName, context);
+    public Response<GlobalParameterResource> getWithResponse(String resourceGroupName, String factoryName,
+        String globalParameterName, Context context) {
+        Response<GlobalParameterResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, factoryName, globalParameterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GlobalParameterResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,8 +53,8 @@ public final class GlobalParametersImpl implements GlobalParameters {
     }
 
     public GlobalParameterResource get(String resourceGroupName, String factoryName, String globalParameterName) {
-        GlobalParameterResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, globalParameterName);
+        GlobalParameterResourceInner inner
+            = this.serviceClient().get(resourceGroupName, factoryName, globalParameterName);
         if (inner != null) {
             return new GlobalParameterResourceImpl(inner, this.manager());
         } else {
@@ -65,8 +62,8 @@ public final class GlobalParametersImpl implements GlobalParameters {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String globalParameterName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, globalParameterName, context);
     }
 
@@ -77,27 +74,18 @@ public final class GlobalParametersImpl implements GlobalParameters {
     public GlobalParameterResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE).getValue();
     }
@@ -105,27 +93,18 @@ public final class GlobalParametersImpl implements GlobalParameters {
     public Response<GlobalParameterResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, globalParameterName, context);
     }
@@ -133,27 +112,18 @@ public final class GlobalParametersImpl implements GlobalParameters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE);
     }
@@ -161,27 +131,18 @@ public final class GlobalParametersImpl implements GlobalParameters {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String globalParameterName = Utils.getValueFromIdByName(id, "globalParameters");
         if (globalParameterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'globalParameters'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, factoryName, globalParameterName, context);
     }

@@ -34,13 +34,16 @@ public final class ChainingTrigger extends Trigger {
     @JsonProperty(value = "typeProperties", required = true)
     private ChainingTriggerTypeProperties innerTypeProperties = new ChainingTriggerTypeProperties();
 
-    /** Creates an instance of ChainingTrigger class. */
+    /**
+     * Creates an instance of ChainingTrigger class.
+     */
     public ChainingTrigger() {
     }
 
     /**
-     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
-     *
+     * Get the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
+     * successfully.
+     * 
      * @return the pipeline value.
      */
     public TriggerPipelineReference pipeline() {
@@ -48,8 +51,9 @@ public final class ChainingTrigger extends Trigger {
     }
 
     /**
-     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete successfully.
-     *
+     * Set the pipeline property: Pipeline for which runs are created when all upstream pipelines complete
+     * successfully.
+     * 
      * @param pipeline the pipeline value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -60,21 +64,25 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Get the innerTypeProperties property: Chaining Trigger properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ChainingTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChainingTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChainingTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -83,7 +91,7 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Get the dependsOn property: Upstream Pipelines.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<PipelineReference> dependsOn() {
@@ -92,7 +100,7 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Set the dependsOn property: Upstream Pipelines.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -106,7 +114,7 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Get the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     *
+     * 
      * @return the runDimension value.
      */
     public String runDimension() {
@@ -115,7 +123,7 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Set the runDimension property: Run Dimension property that needs to be emitted by upstream pipelines.
-     *
+     * 
      * @param runDimension the runDimension value to set.
      * @return the ChainingTrigger object itself.
      */
@@ -129,24 +137,21 @@ public final class ChainingTrigger extends Trigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (pipeline() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property pipeline in model ChainingTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ChainingTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model ChainingTrigger"));
         } else {
             innerTypeProperties().validate();
         }

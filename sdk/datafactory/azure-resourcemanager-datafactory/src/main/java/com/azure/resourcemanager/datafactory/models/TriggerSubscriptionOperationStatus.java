@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.resourcemanager.datafactory.fluent.models.TriggerSubscriptionOperationStatusInner;
 
-/** An immutable client-side representation of TriggerSubscriptionOperationStatus. */
+/**
+ * An immutable client-side representation of TriggerSubscriptionOperationStatus.
+ */
 public interface TriggerSubscriptionOperationStatus {
     /**
      * Gets the triggerName property: Trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     String triggerName();
 
     /**
      * Gets the status property: Event Subscription Status.
-     *
+     * 
      * @return the status value.
      */
     EventSubscriptionStatus status();
@@ -25,7 +27,7 @@ public interface TriggerSubscriptionOperationStatus {
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.TriggerSubscriptionOperationStatusInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     TriggerSubscriptionOperationStatusInner innerModel();
