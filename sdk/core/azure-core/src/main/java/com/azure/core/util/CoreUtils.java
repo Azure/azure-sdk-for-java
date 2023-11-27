@@ -590,6 +590,10 @@ public final class CoreUtils {
 
     /**
      * Converts a {@link Duration} to a string in ISO-8601 format with support for a day component.
+     * <p>
+     * {@link Duration#toString()} doesn't use a day component, so if the duration is greater than 24 hours it would
+     * return an ISO-8601 duration string like {@code PT48H}. This method returns an ISO-8601 duration string with a day
+     * component if the duration is greater than 24 hours, such as {@code P2D} instead of {@code PT48H}.
      *
      * @param duration The {@link Duration} to convert.
      * @return The {@link Duration} as a string in ISO-8601 format with support for a day component, or null if the
@@ -614,7 +618,7 @@ public final class CoreUtils {
         }
 
         long days = duration.toDays();
-        if (days != 0) {
+        if (days > 0) {
             builder.append(days);
             builder.append('D');
             duration = duration.minusDays(days);
