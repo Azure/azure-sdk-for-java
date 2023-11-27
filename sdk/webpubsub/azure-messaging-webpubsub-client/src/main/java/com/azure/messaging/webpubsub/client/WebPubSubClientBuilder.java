@@ -21,6 +21,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * The builder of WebPubSub client.
@@ -68,20 +69,20 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      *
      * <!-- src_embed readme-sample-createClientFromCredential -->
      * <pre>
-     * &#47;&#47; WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
+     * &#47;&#47; WebPubSubServiceClient is from com.azure:azure-messaging-webpubsub
      * &#47;&#47; create WebPubSub service client
-     * WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
+     * WebPubSubServiceClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
      *     .connectionString&#40;&quot;&lt;connection-string&gt;&quot;&#41;
      *     .hub&#40;&quot;&lt;hub&gt;&gt;&quot;&#41;
-     *     .buildAsyncClient&#40;&#41;;
+     *     .buildClient&#40;&#41;;
      *
-     * &#47;&#47; wrap WebPubSubServiceAsyncClient.getClientAccessToken as WebPubSubClientCredential
-     * WebPubSubClientCredential clientCredential = new WebPubSubClientCredential&#40;Mono.defer&#40;&#40;&#41; -&gt;
-     *     serverClient.getClientAccessToken&#40;new GetClientAccessTokenOptions&#40;&#41;
+     * &#47;&#47; wrap WebPubSubServiceClient.getClientAccessToken as WebPubSubClientCredential
+     * WebPubSubClientCredential clientCredential = new WebPubSubClientCredential&#40;
+     *     &#40;&#41; -&gt; serverClient.getClientAccessToken&#40;new GetClientAccessTokenOptions&#40;&#41;
      *             .setUserId&#40;&quot;&lt;user-name&gt;&quot;&#41;
      *             .addRole&#40;&quot;webpubsub.joinLeaveGroup&quot;&#41;
      *             .addRole&#40;&quot;webpubsub.sendToGroup&quot;&#41;&#41;
-     *         .map&#40;WebPubSubClientAccessToken::getUrl&#41;&#41;&#41;;
+     *         .getUrl&#40;&#41;&#41;;
      *
      * &#47;&#47; create WebPubSub client
      * WebPubSubClient client = new WebPubSubClientBuilder&#40;&#41;
@@ -216,15 +217,15 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
         }
 
         // credential
-        Mono<String> clientAccessUrlProvider;
+        Supplier<String> clientAccessUrlSuplier;
         if (credential != null && clientAccessUrl != null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Both credential and clientAccessUrl have been set. "
                     + "Set null to one of them to clear that option."));
         } else if (credential != null) {
-            clientAccessUrlProvider = credential.getClientAccessUrl();
+            clientAccessUrlSuplier = credential.getClientAccessUrlSupplier();
         } else if (clientAccessUrl != null) {
-            clientAccessUrlProvider = Mono.just(clientAccessUrl);
+            clientAccessUrlSuplier = () -> clientAccessUrl;
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Credentials have not been set. "
@@ -239,7 +240,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
             configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
         return new WebPubSubAsyncClient(
-            webSocketClient, clientAccessUrlProvider, webPubSubProtocol,
+            webSocketClient, clientAccessUrlSuplier, webPubSubProtocol,
             applicationId, userAgent,
             retryStrategy, autoReconnect, autoRestoreGroup);
     }

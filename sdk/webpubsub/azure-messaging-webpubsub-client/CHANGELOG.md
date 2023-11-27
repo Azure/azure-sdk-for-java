@@ -12,6 +12,8 @@
 - Removed `WebPubSubProtocol` class and its subclasses.
 - Parameter type changed from `WebPubSubProtocol` to `WebPubSubProtocolType` on `WebPubSubClientBuilder` `protocol` method.
   Please call `.protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)` or `.protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL)`.
+- Parameter type change from `Mono<String>` to `Supplier<String>` on constructor of `WebPubSubClientCredential`.
+  Please call e.g. `new WebPubSubClientCredential(() -> serviceClient.getClientAccessToken(...).getUrl())`.
 - Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
 - Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
 

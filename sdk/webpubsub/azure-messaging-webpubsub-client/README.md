@@ -64,20 +64,20 @@ WebPubSubClient client = new WebPubSubClientBuilder()
 In production, a client usually fetches the Client Access URL from a negotiation server. The server holds the connection string and generates the Client Access URL through `WebPubSubServiceClient`. As a sample, the code snippet below just demonstrates how to generate the Client Access URL inside a single process.
 
 ```java readme-sample-createClientFromCredential
-// WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
+// WebPubSubServiceClient is from com.azure:azure-messaging-webpubsub
 // create WebPubSub service client
-WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder()
+WebPubSubServiceClient serverClient = new WebPubSubServiceClientBuilder()
     .connectionString("<connection-string>")
     .hub("<hub>>")
-    .buildAsyncClient();
+    .buildClient();
 
-// wrap WebPubSubServiceAsyncClient.getClientAccessToken as WebPubSubClientCredential
-WebPubSubClientCredential clientCredential = new WebPubSubClientCredential(Mono.defer(() ->
-    serverClient.getClientAccessToken(new GetClientAccessTokenOptions()
+// wrap WebPubSubServiceClient.getClientAccessToken as WebPubSubClientCredential
+WebPubSubClientCredential clientCredential = new WebPubSubClientCredential(
+    () -> serverClient.getClientAccessToken(new GetClientAccessTokenOptions()
             .setUserId("<user-name>")
             .addRole("webpubsub.joinLeaveGroup")
             .addRole("webpubsub.sendToGroup"))
-        .map(WebPubSubClientAccessToken::getUrl)));
+        .getUrl());
 
 // create WebPubSub client
 WebPubSubClient client = new WebPubSubClientBuilder()

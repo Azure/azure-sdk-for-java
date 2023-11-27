@@ -60,6 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -143,7 +144,7 @@ class WebPubSubAsyncClient implements Closeable {
     private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
 
     WebPubSubAsyncClient(WebSocketClient webSocketClient,
-                         Mono<String> clientAccessUrlProvider,
+                         Supplier<String> clientAccessUrlSupplier,
                          WebPubSubProtocolType webPubSubProtocol,
                          String applicationId, String userAgent,
                          RetryStrategy retryStrategy,
@@ -155,7 +156,9 @@ class WebPubSubAsyncClient implements Closeable {
         this.applicationId = applicationId;
 
         // options
-        this.clientAccessUrlProvider = Objects.requireNonNull(clientAccessUrlProvider);
+        Objects.requireNonNull(clientAccessUrlSupplier);
+        this.clientAccessUrlProvider = Mono.fromSupplier(clientAccessUrlSupplier)
+            .subscribeOn(Schedulers.boundedElastic());
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
