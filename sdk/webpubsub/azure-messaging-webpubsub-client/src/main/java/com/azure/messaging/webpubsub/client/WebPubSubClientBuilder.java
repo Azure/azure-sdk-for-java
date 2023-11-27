@@ -18,7 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
-import reactor.core.publisher.Mono;
 
 import java.util.Map;
 import java.util.function.Supplier;

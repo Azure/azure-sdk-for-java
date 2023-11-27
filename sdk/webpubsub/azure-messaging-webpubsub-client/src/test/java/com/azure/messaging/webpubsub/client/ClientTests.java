@@ -252,7 +252,7 @@ public class ClientTests extends TestBase {
     public void testBothCredential() {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             WebPubSubClient client = new WebPubSubClientBuilder()
-                .credential(new WebPubSubClientCredential(() ->"mock"))
+                .credential(new WebPubSubClientCredential(() -> "mock"))
                 .clientAccessUrl("mock")
                 .buildClient();
         });

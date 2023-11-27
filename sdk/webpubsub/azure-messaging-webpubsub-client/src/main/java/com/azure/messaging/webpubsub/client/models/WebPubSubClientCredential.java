@@ -4,9 +4,7 @@
 package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
 
-import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
 /**

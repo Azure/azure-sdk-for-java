@@ -19,12 +19,10 @@ public class EventTests extends TestBase {
     private static final String EVENT_NAME = "event";
     private static final BinaryData HELLO = BinaryData.fromString("text");
 
-    @Disabled
+    @Disabled("require event handler configured in Azure")
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testSendEvent() {
-        // require event handler configured in Azure
-
         WebPubSubClient client = getClient();
         try {
             client.start();

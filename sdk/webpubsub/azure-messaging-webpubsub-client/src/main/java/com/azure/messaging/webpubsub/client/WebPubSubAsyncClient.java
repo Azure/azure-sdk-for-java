@@ -1112,7 +1112,7 @@ class WebPubSubAsyncClient implements Closeable {
 
         return logger.logExceptionAsWarning(
             new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
-   }
+    }
 
     private static boolean isReliableProtocol(WebPubSubProtocolType webPubSubProtocol) {
         return webPubSubProtocol == WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL;

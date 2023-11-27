@@ -21,6 +21,9 @@
 
 ### Other Changes
 
+- Upgraded `azure-core` from `1.38.0` to version `1.45.0`.
+- Upgraded `netty-codec-http` from `4.1.89.Final` to version `4.1.100.Final`.
+
 ## 1.0.0-beta.1 (2023-04-17)
 
 - Azure WebPubSub Client library for Java. One can use this library on your client side to manage the WebSocket client connections, join group, send message.
