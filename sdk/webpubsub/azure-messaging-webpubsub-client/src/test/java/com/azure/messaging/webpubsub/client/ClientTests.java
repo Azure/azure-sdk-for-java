@@ -96,6 +96,40 @@ public class ClientTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    public void testClientCloseable() {
+        CountDownLatch connectedLatch = new CountDownLatch(1);
+        CountDownLatch stoppedLatch = new CountDownLatch(1);
+        AtomicBoolean stoppedEventReceived = new AtomicBoolean(false);
+        AtomicBoolean disconnectedEventReceived = new AtomicBoolean(false);
+
+        try (WebPubSubClient client = getClientBuilder().buildClient()) {
+            client.addOnStoppedEventHandler(stoppedEvent -> {
+                stoppedEventReceived.set(true);
+                stoppedLatch.countDown();
+            });
+            client.addOnConnectedEventHandler(connectedEvent -> {
+                connectedLatch.countDown();
+            });
+            client.addOnDisconnectedEventHandler(disconnectedEvent -> {
+                disconnectedEventReceived.set(true);
+            });
+
+            client.start();
+
+            connectedLatch.countDown();
+
+            // stop not called explicitly
+        }
+
+        stoppedLatch.countDown();
+
+        // verify client stopped via Closeable
+        Assertions.assertTrue(stoppedEventReceived.get());
+        Assertions.assertTrue(disconnectedEventReceived.get());
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testStopAndStart() throws InterruptedException {
         String groupName = "testStopAndStart";
         CountDownLatch latch1 = new CountDownLatch(1);

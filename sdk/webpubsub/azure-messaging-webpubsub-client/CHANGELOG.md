@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- `WebPubSubClient` implements `Closeable` interface. User can use the "try-with-resources" statement on the client.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -22,6 +22,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Closeable;
 import java.util.function.Consumer;
 
 /**
@@ -56,7 +57,7 @@ import java.util.function.Consumer;
  * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient -->
  */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
-public class WebPubSubClient {
+public class WebPubSubClient implements Closeable {
 
     private final WebPubSubAsyncClient asyncClient;
 
@@ -121,6 +122,17 @@ public class WebPubSubClient {
      */
     public synchronized void stop() {
         asyncClient.stop().block();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
+     */
+    @Override
+    public void close() {
+        this.stop();
     }
 
     /**
