@@ -40,145 +40,124 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AssociationsInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssociationsInterfacesClient.
+ */
 public final class AssociationsInterfacesClientImpl implements AssociationsInterfacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AssociationsInterfacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficControllerManagementClientImpl client;
 
     /**
      * Initializes an instance of AssociationsInterfacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AssociationsInterfacesClientImpl(TrafficControllerManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AssociationsInterfacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AssociationsInterfacesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for TrafficControllerManagementClientAssociationsInterfaces to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for TrafficControllerManagementClientAssociationsInterfaces to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficControllerMan")
     public interface AssociationsInterfacesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssociationListResult>> listByTrafficController(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AssociationListResult>> listByTrafficController(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("trafficControllerName") String trafficControllerName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssociationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AssociationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("associationName") String associationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("associationName") String associationName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
             @PathParam("associationName") String associationName,
-            @BodyParam("application/json") AssociationInner resource,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssociationInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssociationInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AssociationInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
             @PathParam("associationName") String associationName,
-            @BodyParam("application/json") AssociationUpdate properties,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AssociationUpdate properties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("associationName") String associationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("associationName") String associationName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssociationListResult>> listByTrafficControllerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(
-        String resourceGroupName, String trafficControllerName) {
+    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(String resourceGroupName,
+        String trafficControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,31 +170,16 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByTrafficController(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            accept,
-                            context))
-            .<PagedResponse<AssociationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByTrafficController(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context))
+            .<PagedResponse<AssociationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -223,22 +187,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(String resourceGroupName,
+        String trafficControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -251,28 +211,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTrafficController(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTrafficController(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,16 +228,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the response of a Association list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssociationInner> listByTrafficControllerAsync(
-        String resourceGroupName, String trafficControllerName) {
-        return new PagedFlux<>(
-            () -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName),
+    private PagedFlux<AssociationInner> listByTrafficControllerAsync(String resourceGroupName,
+        String trafficControllerName) {
+        return new PagedFlux<>(() -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName),
             nextLink -> listByTrafficControllerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -300,8 +246,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the response of a Association list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssociationInner> listByTrafficControllerAsync(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    private PagedFlux<AssociationInner> listByTrafficControllerAsync(String resourceGroupName,
+        String trafficControllerName, Context context) {
         return new PagedFlux<>(
             () -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName, context),
             nextLink -> listByTrafficControllerNextSinglePageAsync(nextLink, context));
@@ -309,7 +255,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,14 +264,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssociationInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName) {
+    public PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName,
+        String trafficControllerName) {
         return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName));
     }
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -335,14 +281,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssociationInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    public PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName,
+        String trafficControllerName, Context context) {
         return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName, context));
     }
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -352,19 +298,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return a Association along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssociationInner>> getWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName) {
+    private Mono<Response<AssociationInner>> getWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -380,24 +322,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            associationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -408,19 +341,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return a Association along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssociationInner>> getWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    private Mono<Response<AssociationInner>> getWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,21 +365,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                associationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, associationName, accept, context);
     }
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -460,15 +381,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return a Association on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssociationInner> getAsync(
-        String resourceGroupName, String trafficControllerName, String associationName) {
+    private Mono<AssociationInner> getAsync(String resourceGroupName, String trafficControllerName,
+        String associationName) {
         return getWithResponseAsync(resourceGroupName, trafficControllerName, associationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -479,14 +400,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return a Association along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssociationInner> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    public Response<AssociationInner> getWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context) {
         return getWithResponseAsync(resourceGroupName, trafficControllerName, associationName, context).block();
     }
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -502,7 +423,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -511,22 +432,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return association Subresource of Traffic Controller along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -547,25 +464,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            associationName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, resource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -575,26 +482,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return association Subresource of Traffic Controller along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,22 +514,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                associationName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, resource,
+            accept, context);
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -643,21 +534,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, trafficControllerName, associationName, resource);
-        return this
-            .client
-            .<AssociationInner, AssociationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AssociationInner.class,
-                AssociationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, trafficControllerName, associationName, resource);
+        return this.client.<AssociationInner, AssociationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssociationInner.class, AssociationInner.class, this.client.getContext());
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -670,24 +555,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
+        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, trafficControllerName, associationName, resource, context);
-        return this
-            .client
-            .<AssociationInner, AssociationInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AssociationInner.class, AssociationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            trafficControllerName, associationName, resource, context);
+        return this.client.<AssociationInner, AssociationInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssociationInner.class, AssociationInner.class, context);
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -698,16 +577,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource)
+    public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource)
             .getSyncPoller();
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -719,12 +597,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context) {
+    public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource, context)
             .getSyncPoller();
@@ -732,7 +606,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -743,16 +617,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssociationInner> createOrUpdateAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource)
-            .last()
+    private Mono<AssociationInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -764,20 +637,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssociationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context) {
+    private Mono<AssociationInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -788,14 +656,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssociationInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
+    public AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationInner resource) {
         return createOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource).block();
     }
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -807,19 +675,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssociationInner createOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context) {
+    public AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource, context)
             .block();
     }
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -828,22 +692,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return association Subresource of Traffic Controller along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssociationInner>> updateWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationUpdate properties) {
+    private Mono<Response<AssociationInner>> updateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -864,25 +724,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            associationName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, properties,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -892,26 +742,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return association Subresource of Traffic Controller along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssociationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationUpdate properties,
-        Context context) {
+    private Mono<Response<AssociationInner>> updateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -932,22 +774,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                associationName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, associationName, properties, accept, context);
     }
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -958,15 +791,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssociationInner> updateAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationUpdate properties) {
+    private Mono<AssociationInner> updateAsync(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, trafficControllerName, associationName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -978,19 +811,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssociationInner> updateWithResponse(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationUpdate properties,
-        Context context) {
+    public Response<AssociationInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationUpdate properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, trafficControllerName, associationName, properties, context)
             .block();
     }
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1001,15 +830,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssociationInner update(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationUpdate properties) {
+    public AssociationInner update(String resourceGroupName, String trafficControllerName, String associationName,
+        AssociationUpdate properties) {
         return updateWithResponse(resourceGroupName, trafficControllerName, associationName, properties, Context.NONE)
             .getValue();
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1019,19 +848,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1047,24 +872,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            associationName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, associationName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1075,19 +891,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String associationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1103,21 +915,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                associationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, associationName, accept, context);
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1127,19 +931,17 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String trafficControllerName, String associationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, trafficControllerName, associationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String trafficControllerName,
+        String associationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, trafficControllerName, associationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1150,19 +952,18 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, trafficControllerName, associationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, trafficControllerName, associationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1172,14 +973,14 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String associationName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String associationName) {
         return this.beginDeleteAsync(resourceGroupName, trafficControllerName, associationName).getSyncPoller();
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1190,16 +991,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1210,14 +1010,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String trafficControllerName, String associationName) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1228,16 +1027,15 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String trafficControllerName, String associationName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1252,7 +1050,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -1262,21 +1060,22 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context) {
+    public void delete(String resourceGroupName, String trafficControllerName, String associationName,
+        Context context) {
         deleteAsync(resourceGroupName, trafficControllerName, associationName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssociationInner>> listByTrafficControllerNextSinglePageAsync(String nextLink) {
@@ -1284,63 +1083,45 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AssociationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AssociationInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AssociationInner>> listByTrafficControllerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
