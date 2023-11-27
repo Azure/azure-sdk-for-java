@@ -9,6 +9,9 @@
 ### Breaking Changes
 
 - Renamed `WebPubSubDataType` to `WebPubSubDataFormat`.
+- Removed `WebPubSubProtocol` class and its subclasses.
+- Parameter type changed from `WebPubSubProtocol` to `WebPubSubProtocolType` on `WebPubSubClientBuilder` `protocol` method.
+  Please call `.protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)` or `.protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL)`.
 - Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
 - Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
 

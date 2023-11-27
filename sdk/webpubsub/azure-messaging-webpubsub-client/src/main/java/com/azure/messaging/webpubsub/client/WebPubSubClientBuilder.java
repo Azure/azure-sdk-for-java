@@ -17,8 +17,7 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonReliableProtocol;
-import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -43,7 +42,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     private String clientAccessUrl;
 
     // default protocol be WebPubSubJsonReliableProtocol
-    private WebPubSubProtocol webPubSubProtocol = new WebPubSubJsonReliableProtocol();
+    private WebPubSubProtocolType webPubSubProtocol = WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL;
 
     private ClientOptions clientOptions;
     private Configuration configuration;
@@ -126,7 +125,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      * @param webPubSubProtocol the protocol.
      * @return itself.
      */
-    public WebPubSubClientBuilder protocol(WebPubSubProtocol webPubSubProtocol) {
+    public WebPubSubClientBuilder protocol(WebPubSubProtocolType webPubSubProtocol) {
         this.webPubSubProtocol = webPubSubProtocol;
         return this;
     }

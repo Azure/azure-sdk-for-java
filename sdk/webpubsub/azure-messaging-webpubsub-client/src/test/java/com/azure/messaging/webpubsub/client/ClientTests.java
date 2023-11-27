@@ -16,7 +16,7 @@ import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -471,7 +471,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
             .autoReconnect(true)
             .buildClient();
 
@@ -521,7 +521,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
             .autoReconnect(false)
             .buildClient();
 
@@ -575,7 +575,7 @@ public class ClientTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testProtocol() {
         WebPubSubClient client = getClientBuilder()
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
             .buildClient();
 
         client.start();
@@ -583,18 +583,4 @@ public class ClientTests extends TestBase {
         client.sendToGroup("testProtocol", "message");
         client.stop();
     }
-
-//    @Test
-//    @DoNotRecord(skipInPlayback = true)
-//    @Order(1000)    // last
-//    public void testClosed() {
-//        WebPubSubClient client = getClient();
-//
-//        Assertions.assertEquals(WebPubSubClientState.STOPPED, client.getClientState());
-//
-//        client.close();
-//        Assertions.assertEquals(WebPubSubClientState.CLOSED, client.getClientState());
-//
-//        Assertions.assertThrows(IllegalStateException.class, () -> client.joinGroup("group"));
-//    }
 }

@@ -7,7 +7,7 @@ import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonProtocol;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
@@ -50,7 +50,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-createClientWithProtocol
         WebPubSubClient client = new WebPubSubClientBuilder()
             .clientAccessUrl("<client-access-url>")
-            .protocol(new WebPubSubJsonProtocol())
+            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
             .buildClient();
         // END: readme-sample-createClientWithProtocol
     }

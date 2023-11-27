@@ -40,8 +40,8 @@ import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
-import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -74,7 +74,7 @@ class WebPubSubAsyncClient implements Closeable {
 
     // options
     private final Mono<String> clientAccessUrlProvider;
-    private final WebPubSubProtocol webPubSubProtocol;
+    private final WebPubSubProtocolType webPubSubProtocol;
     private final boolean autoReconnect;
     private final boolean autoRestoreGroup;
 
@@ -144,7 +144,7 @@ class WebPubSubAsyncClient implements Closeable {
 
     WebPubSubAsyncClient(WebSocketClient webSocketClient,
                          Mono<String> clientAccessUrlProvider,
-                         WebPubSubProtocol webPubSubProtocol,
+                         WebPubSubProtocolType webPubSubProtocol,
                          String applicationId, String userAgent,
                          RetryStrategy retryStrategy,
                          boolean autoReconnect,
@@ -161,7 +161,7 @@ class WebPubSubAsyncClient implements Closeable {
         this.autoRestoreGroup = autoRestoreGroup;
 
         // websocket configuration and client
-        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.getName(), userAgent);
+        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.toString(), userAgent);
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
 
         this.sendMessageRetrySpec = Retry.from(signals -> {
@@ -686,7 +686,7 @@ class WebPubSubAsyncClient implements Closeable {
             });
         } else {
             // sequence ack task, for reliable protocol
-            if (webPubSubProtocol.isReliable()) {
+            if (isReliableProtocol(webPubSubProtocol)) {
                 Flux<Void> sequenceAckFlux = Flux.interval(SEQUENCE_ACK_DELAY).concatMap(ignored -> {
                     if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
                         WebPubSubConnection connection = this.webPubSubConnection;
@@ -772,7 +772,7 @@ class WebPubSubAsyncClient implements Closeable {
         } else {
             final WebPubSubConnection connection = this.webPubSubConnection;
             final String reconnectionToken = connection == null ? null : connection.getReconnectionToken();
-            if (!webPubSubProtocol.isReliable() || reconnectionToken == null || connectionId == null) {
+            if (!isReliableProtocol(webPubSubProtocol) || reconnectionToken == null || connectionId == null) {
                 clientState.changeState(WebPubSubClientState.DISCONNECTED);
                 // connection close, send DisconnectedEvent
                 handleConnectionClose();
@@ -1109,5 +1109,9 @@ class WebPubSubAsyncClient implements Closeable {
 
         return logger.logExceptionAsWarning(
             new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
+   }
+
+    private static boolean isReliableProtocol(WebPubSubProtocolType webPubSubProtocol) {
+        return webPubSubProtocol == WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL;
     }
 }
