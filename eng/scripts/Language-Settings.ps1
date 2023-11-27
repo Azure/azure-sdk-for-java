@@ -785,8 +785,8 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
   foreach ($directory in $packageDirectories) {
     Push-Location $RepoRoot
     try {
-        $tspLocationFile = Get-ChildItem "sdk/$directory/tsp-location.yaml"
-        $updateScript = Get-ChildItem "sdk/$directory/swagger/Update-Codegeneration.ps1"
+        $tspLocationFile = Get-Item -Path "sdk/$directory/tsp-location.yaml" -ErrorAction SilentlyContinue
+        $updateScript = Get-Item -Path "sdk/$directory/swagger/Update-CodeGeneration.ps1" -ErrorAction SilentlyContinue
 
         if ($tspLocationFile) {
             Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
