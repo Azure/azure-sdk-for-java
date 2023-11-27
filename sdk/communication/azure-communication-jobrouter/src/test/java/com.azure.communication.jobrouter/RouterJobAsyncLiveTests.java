@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
@@ -111,10 +114,12 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         RouterWorker routerWorker = jobRouterAsyncClient.createWorker(createWorkerOptions).block();
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
-        List<RouterWorkerSelector> requestedWorkerSelectors = new ArrayList<RouterWorkerSelector>() {{
-            add(new RouterWorkerSelector("Label", LabelOperator.EQUAL)
-                .setValue(new RouterValue("Value")));
-        }};
+        List<RouterWorkerSelector> requestedWorkerSelectors = new ArrayList<RouterWorkerSelector>() {
+            {
+                add(new RouterWorkerSelector("Label", LabelOperator.EQUAL)
+                    .setValue(new RouterValue("Value")));
+            }
+        };
         CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channel.getChannelId(), queueId)
             .setLabels(labels)
             .setTags(tags)

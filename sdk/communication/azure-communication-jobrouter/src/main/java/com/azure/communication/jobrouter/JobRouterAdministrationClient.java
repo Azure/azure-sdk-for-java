@@ -288,6 +288,7 @@ public final class JobRouterAdministrationClient {
      * Create a distribution policy.
      *
      * @param createDistributionPolicyOptions Container for inputs to create a distribution policy.
+     * @param requestOptions RequestOptions.
      * @return resource The resource instance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -295,8 +296,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DistributionPolicy>
-        createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+        createDistributionPolicyWithResponse(CreateDistributionPolicyOptions createDistributionPolicyOptions, RequestOptions requestOptions) {
         DistributionPolicyInternal distributionPolicy
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertDistributionPolicyWithResponse(
@@ -319,7 +319,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributionPolicy
         createDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        return this.createDistributionPolicyWithResponse(createDistributionPolicyOptions).getValue();
+        RequestOptions requestOptions = new RequestOptions();
+        return this.createDistributionPolicyWithResponse(createDistributionPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -688,6 +689,7 @@ public final class JobRouterAdministrationClient {
      * Create a classification policy.
      *
      * @param createClassificationPolicyOptions Container for inputs to create a classification policy.
+     * @param requestOptions RequestOptions.
      * @return response The response instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -695,8 +697,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ClassificationPolicy>
-        createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+        createClassificationPolicyWithResponse(CreateClassificationPolicyOptions createClassificationPolicyOptions, RequestOptions requestOptions) {
         ClassificationPolicyInternal classificationPolicy = ClassificationPolicyAdapter
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         Response<BinaryData> response = this.serviceClient.upsertClassificationPolicyWithResponse(
@@ -719,7 +720,8 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy
         createClassificationPolicy(CreateClassificationPolicyOptions createClassificationPolicyOptions) {
-        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions).getValue();
+        RequestOptions requestOptions = new RequestOptions();
+        return this.createClassificationPolicyWithResponse(createClassificationPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -1094,6 +1096,7 @@ public final class JobRouterAdministrationClient {
      * Create an exception policy.
      *
      * @param createExceptionPolicyOptions Create options for Exception Policy.
+     * @param requestOptions RequestOptions.
      * @return resource The resource instance
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1101,8 +1104,7 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExceptionPolicy>
-        createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+        createExceptionPolicyWithResponse(CreateExceptionPolicyOptions createExceptionPolicyOptions, RequestOptions requestOptions) {
         ExceptionPolicyInternal exceptionPolicy
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         Response<BinaryData> response
@@ -1124,7 +1126,8 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ExceptionPolicy createExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
-        return this.createExceptionPolicyWithResponse(createExceptionPolicyOptions).getValue();
+        RequestOptions requestOptions = new RequestOptions();
+        return this.createExceptionPolicyWithResponse(createExceptionPolicyOptions, requestOptions).getValue();
     }
 
     /**
@@ -1462,14 +1465,14 @@ public final class JobRouterAdministrationClient {
      * Create a queue.
      *
      * @param createQueueOptions Container for inputs to create a queue.
+     * @param requestOptions RequestOptions.
      * @return a queue that can contain jobs to be routed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+    public Response<RouterQueue> createQueueWithResponse(CreateQueueOptions createQueueOptions, RequestOptions requestOptions) {
         RouterQueueInternal queue = QueueAdapter.convertCreateQueueOptionsToRouterQueueInternal(createQueueOptions);
         Response<BinaryData> response = this.serviceClient.upsertQueueWithResponse(createQueueOptions.getQueueId(),
             BinaryData.fromObject(queue), requestOptions);
@@ -1488,7 +1491,8 @@ public final class JobRouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterQueue createQueue(CreateQueueOptions createQueueOptions) {
-        return this.createQueueWithResponse(createQueueOptions).getValue();
+        RequestOptions requestOptions = new RequestOptions();
+        return this.createQueueWithResponse(createQueueOptions, requestOptions).getValue();
     }
 
     /**

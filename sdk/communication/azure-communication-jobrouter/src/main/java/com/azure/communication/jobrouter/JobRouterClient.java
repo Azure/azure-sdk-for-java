@@ -1493,14 +1493,14 @@ public final class JobRouterClient {
      * Create a worker.
      *
      * @param createWorkerOptions Container for inputs to create a worker.
+     * @param requestOptions RequestOptions.
      * @return an entity for jobs to be routed to.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions) {
-        RequestOptions requestOptions = new RequestOptions();
+    public Response<RouterWorker> createWorkerWithResponse(CreateWorkerOptions createWorkerOptions, RequestOptions requestOptions) {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         Response<BinaryData> response = this.serviceClient.upsertWorkerWithResponse(createWorkerOptions.getWorkerId(),
             BinaryData.fromObject(routerWorker), requestOptions);
@@ -1519,7 +1519,8 @@ public final class JobRouterClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RouterWorker createWorker(CreateWorkerOptions createWorkerOptions) {
-        return this.createWorkerWithResponse(createWorkerOptions).getValue();
+        RequestOptions requestOptions = new RequestOptions();
+        return this.createWorkerWithResponse(createWorkerOptions, requestOptions).getValue();
     }
 
     /**

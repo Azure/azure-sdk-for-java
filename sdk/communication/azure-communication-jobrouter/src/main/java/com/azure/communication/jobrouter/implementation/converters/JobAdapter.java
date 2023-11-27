@@ -18,7 +18,6 @@ import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.ScheduleAndSuspendMode;
 import com.azure.communication.jobrouter.models.SuspendMode;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
