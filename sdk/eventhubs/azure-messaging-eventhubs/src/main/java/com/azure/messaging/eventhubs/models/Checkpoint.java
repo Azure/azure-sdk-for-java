@@ -23,6 +23,7 @@ public class Checkpoint {
     private String partitionId;
     private Long offset;
     private Long sequenceNumber;
+    private Long replicationSegment;
 
     /**
      * Creates a new instance.
@@ -127,6 +128,26 @@ public class Checkpoint {
      */
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
+        return this;
+    }
+
+    /**
+     * Gets the replication segment for the checkpoint.
+     *
+     * @return The replication segment for the checkpoint, null or -1, if geo replication is not enabled.
+     */
+    public Long getReplicationSegment() {
+        return replicationSegment;
+    }
+
+    /**
+     * Sets the replication segment.
+     *
+     * @param replicationSegment The replication segment.
+     * @return The updated {@link Checkpoint} instance.
+     */
+    public Checkpoint setReplicationSegment(Long replicationSegment) {
+        this.replicationSegment = replicationSegment;
         return this;
     }
 
