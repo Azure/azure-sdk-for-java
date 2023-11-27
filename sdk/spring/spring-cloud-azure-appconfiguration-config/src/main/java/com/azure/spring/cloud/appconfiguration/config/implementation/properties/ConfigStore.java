@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
@@ -30,14 +31,17 @@ public final class ConfigStore {
     private List<String> connectionStrings = new ArrayList<>();
 
     // Label values separated by comma in the Azure Config Service, can be empty
+    @NestedConfigurationProperty
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
 
     private boolean failFast = true;
 
+    @NestedConfigurationProperty
     private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
     private boolean enabled = true;
 
+    @NestedConfigurationProperty
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
     private List<String> trimKeyPrefix;
@@ -183,8 +187,7 @@ public final class ConfigStore {
     }
 
     /**
-     * @param trimKeyPrefix the values to be trimmed from key names before being set to
-     *        `@ConfigurationProperties`
+     * @param trimKeyPrefix the values to be trimmed from key names before being set to `@ConfigurationProperties`
      */
     public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
         this.trimKeyPrefix = trimKeyPrefix;

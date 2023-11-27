@@ -14,16 +14,19 @@ public class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
+    // TODO (mametcal) How do I get customer beans
     private final SecretClientCustomizer keyVaultClientProvider;
 
+    // TODO (mametcal) How do I get customer beans
     private final KeyVaultSecretProvider keyVaultSecretProvider;
 
     private final SecretClientBuilderFactory secretClientFactory;
-    
+
+    // TODO (mametcal) This no longer takes KeyVaultSecretProvider/SecretClientCustimizer into account
     private final boolean credentialsConfigured;
 
     private final boolean isConfigured;
-    
+
     private final int timeout;
 
     public AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,

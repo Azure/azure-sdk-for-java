@@ -29,7 +29,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import com.azure.spring.cloud.appconfiguration.config.implementation.config.AppConfigurationBootstrapConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 
 public class AppConfigurationPropertiesTest {
@@ -46,8 +45,7 @@ public class AppConfigurationPropertiesTest {
 
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AppConfigurationBootstrapConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class))
+        .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class))
         .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://test-appconfig.azconfig.io");
 
     @BeforeEach

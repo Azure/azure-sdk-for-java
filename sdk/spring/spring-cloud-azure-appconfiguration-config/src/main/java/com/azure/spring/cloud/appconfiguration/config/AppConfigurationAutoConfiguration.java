@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config;
 
+import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 @Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
+@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 public class AppConfigurationAutoConfiguration {
 
     /**
@@ -33,8 +36,10 @@ public class AppConfigurationAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
-            return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
+            AppConfigurationProviderProperties appProperties, BootstrapContext context) {
+            AppConfigurationReplicaClientFactory replicaClientFactory = context
+                .get(AppConfigurationReplicaClientFactory.class);
+            return new AppConfigurationPullRefresh(replicaClientFactory, properties.getRefreshInterval(),
                 appProperties.getDefaultMinBackoff());
         }
     }
