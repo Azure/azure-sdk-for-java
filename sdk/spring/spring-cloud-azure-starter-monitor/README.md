@@ -30,7 +30,7 @@ For more information, please read [introduction to Application Insights][applica
 
 #### Azure Spring Cloud set-up
 
-You have to apply the Azure Spring Cloud set-up described [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images) for Spring native images.
+[Instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images) for Spring native images.
 
 #### OpenTelemetry version adjustment
 
