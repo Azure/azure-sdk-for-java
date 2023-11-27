@@ -3,6 +3,8 @@ page_type: sample
 languages:
     - java
 products:
+    - azure
+    - azure-cognitive-services
     - azure-ai-content-safety
 urlFragment: ai-contentsafety-samples
 ---
