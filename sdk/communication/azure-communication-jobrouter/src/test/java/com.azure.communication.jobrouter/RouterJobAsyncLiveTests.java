@@ -108,7 +108,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
             .setChannels(channels)
             .setQueues(queues);
 
-        RouterWorker routerWorker = jobRouterAsyncClient.createWorker(createWorkerOptions, new RequestOptions()).block();
+        RouterWorker routerWorker = jobRouterAsyncClient.createWorker(createWorkerOptions).block();
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         List<RouterWorkerSelector> requestedWorkerSelectors = new ArrayList<RouterWorkerSelector>() {{
