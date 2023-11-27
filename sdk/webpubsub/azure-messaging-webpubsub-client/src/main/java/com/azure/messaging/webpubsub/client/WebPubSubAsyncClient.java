@@ -721,9 +721,9 @@ class WebPubSubAsyncClient implements Closeable {
                 List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values().stream()
                     .filter(WebPubSubGroup::isJoined)
                     .map(group -> joinGroup(group.getName()).onErrorResume(error -> {
-                        if (error instanceof Exception) {
+                        if (error instanceof SendMessageFailedException) {
                             tryEmitNext(rejoinGroupFailedEventSink,
-                                new RejoinGroupFailedEvent(group.getName(), (Exception) error));
+                                new RejoinGroupFailedEvent(group.getName(), (SendMessageFailedException) error));
                         }
                         return Mono.empty();
                     }))
