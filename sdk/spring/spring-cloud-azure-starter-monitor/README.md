@@ -28,7 +28,7 @@ For more information, please read [introduction to Application Insights][applica
 ```
 [//]: # ({x-version-update-end})
 
-#### Spring Cloud Azure set-up
+#### Required native image build configuration
 
 [Instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images) for Spring native images.
 
