@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The data type of message.
+ * The data format of message.
  */
 public final class WebPubSubDataFormat extends ExpandableStringEnum<WebPubSubDataFormat> {
     /**

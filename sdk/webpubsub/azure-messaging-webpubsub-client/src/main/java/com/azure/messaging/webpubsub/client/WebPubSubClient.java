@@ -386,12 +386,12 @@ public class WebPubSubClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType) {
-        return asyncClient.sendToGroup(group, content, dataType).block();
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return asyncClient.sendToGroup(group, content, dataFormat).block();
     }
 
     /**
@@ -401,14 +401,14 @@ public class WebPubSubClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType,
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
                                        SendToGroupOptions options) {
-        return asyncClient.sendToGroup(group, content, dataType, options).block();
+        return asyncClient.sendToGroup(group, content, dataFormat, options).block();
     }
 
     /**
@@ -418,12 +418,12 @@ public class WebPubSubClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType) {
-        return asyncClient.sendEvent(eventName, content, dataType).block();
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return asyncClient.sendEvent(eventName, content, dataFormat).block();
     }
 
     /**
@@ -433,14 +433,14 @@ public class WebPubSubClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType,
-                                           SendEventOptions options) {
-        return asyncClient.sendEvent(eventName, content, dataType, options).block();
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
+                                     SendEventOptions options) {
+        return asyncClient.sendEvent(eventName, content, dataFormat, options).block();
     }
 
     // following API is for testing

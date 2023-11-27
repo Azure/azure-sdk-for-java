@@ -47,7 +47,7 @@ public final class EchoSample {
             String group = event.getGroup();
             if (groupName.equals(event.getGroup())
                 && !userName.equals(event.getFromUserId())
-                && (event.getDataType() == WebPubSubDataFormat.TEXT || event.getDataType() == WebPubSubDataFormat.JSON)) {
+                && (event.getDataFormat() == WebPubSubDataFormat.TEXT || event.getDataFormat() == WebPubSubDataFormat.JSON)) {
 
                 String text = parseMessageEvent(event);
                 if ("exit".equals(text)) {
@@ -72,7 +72,7 @@ public final class EchoSample {
     }
 
     private static String parseMessageEvent(GroupMessageEvent event) {
-        return event.getDataType() == WebPubSubDataFormat.TEXT
+        return event.getDataFormat() == WebPubSubDataFormat.TEXT
             ? event.getData().toString()
             : event.getData().toObject(String.class);
     }

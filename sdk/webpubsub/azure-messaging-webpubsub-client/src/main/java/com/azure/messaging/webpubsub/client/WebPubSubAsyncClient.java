@@ -406,11 +406,11 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType) {
-        return sendToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return sendToGroup(group, content, dataFormat, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
     /**
@@ -418,15 +418,15 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataType,
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
                                              SendToGroupOptions options) {
         Objects.requireNonNull(group);
         Objects.requireNonNull(content);
-        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
         Long ackId = options.isFireAndForget()
@@ -436,7 +436,7 @@ class WebPubSubAsyncClient implements Closeable {
         SendToGroupMessage message = new SendToGroupMessage()
             .setGroup(group)
             .setData(content)
-            .setDataType(dataType.toString())
+            .setDataType(dataFormat.toString())
             .setAckId(ackId)
             .setNoEcho(options.isEchoDisabled());
 
@@ -450,11 +450,11 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType) {
-        return sendEvent(eventName, content, dataType, new SendEventOptions().setAckId(nextAckId()));
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return sendEvent(eventName, content, dataFormat, new SendEventOptions().setAckId(nextAckId()));
     }
 
     /**
@@ -462,15 +462,15 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataType,
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
                                            SendEventOptions options) {
         Objects.requireNonNull(eventName);
         Objects.requireNonNull(content);
-        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
         Long ackId = options.isFireAndForget()
@@ -480,7 +480,7 @@ class WebPubSubAsyncClient implements Closeable {
         SendEventMessage message = new SendEventMessage()
             .setEvent(eventName)
             .setData(content)
-            .setDataType(dataType.toString())
+            .setDataType(dataFormat.toString())
             .setAckId(ackId);
 
         Mono<Void> sendMessageMono = sendMessage(message);
