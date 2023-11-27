@@ -790,8 +790,8 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
 
         if ($tspLocationFile) {
             Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
-            ./eng/common/scripts/TypeSpec-Project-Sync.ps1 $directory
-            ./eng/common/scripts/TypeSpec-Project-Generate.ps1 $directory
+            ./eng/common/scripts/TypeSpec-Project-Sync.ps1 "sdk/$directory"
+            ./eng/common/scripts/TypeSpec-Project-Generate.ps1 "sdk/$directory"
         } elseif ($updateScript) {
             Write-Host "Using $updateScript to generate projects"
             & $updateScript.FullName
