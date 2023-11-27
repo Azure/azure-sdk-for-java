@@ -32,7 +32,7 @@ For more information, please read [introduction to Application Insights][applica
 
 You have to apply the Azure Spring Cloud set-up described [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images) for Spring native images.
 
-#### OpenTelemetry version set-up
+#### OpenTelemetry version adjustment
 
 You may have to align the OpenTelemetry versions of Spring Boot 3 and `spring-cloud-azure-starter-monitor`. If this is the case, you will notice a WARN message during the application start-up:
 ```
