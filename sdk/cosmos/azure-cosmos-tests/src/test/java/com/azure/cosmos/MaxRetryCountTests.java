@@ -975,7 +975,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
                             DEFAULT_WAIT_TIME_IN_MS,
                             DEFAULT_MAXIMUM_BACKOFF_TIME_IN_MS,
                             DEFAULT_INITIAL_BACKOFF_TIME_IN_MS,
-                            DEFAULT_BACK_OFF_MULTIPLIER, 
+                            DEFAULT_BACK_OFF_MULTIPLIER,
                             consistencyLevel,
                             operationType,
                             minNetworkRequestTimeoutDuration,
