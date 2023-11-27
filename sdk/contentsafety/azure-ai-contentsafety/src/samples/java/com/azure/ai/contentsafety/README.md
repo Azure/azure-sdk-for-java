@@ -3,7 +3,7 @@ page_type: sample
 languages:
     - java
 products:
-    - azure-ai-contentsafety
+    - azure-ai-content-safety
 urlFragment: ai-contentsafety-samples
 ---
 
