@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerInner;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerListResult;
+import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,34 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficControllerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficControllerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"configurationEndpoints\":[],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Updating\"},\"location\":\"hab\",\"tags\":{\"byscnp\":\"ikxwc\",\"hiv\":\"x\",\"rtfw\":\"qniwbybrkxvdumj\",\"cs\":\"ukxgaud\"},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
-                .toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("hab", model.value().get(0).location());
-        Assertions.assertEquals("ikxwc", model.value().get(0).tags().get("byscnp"));
-        Assertions.assertEquals("ryhtnapczwlokjy", model.nextLink());
+        TrafficControllerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"configurationEndpoints\":[\"th\",\"qhabifpikxwcz\",\"yscnpqxu\"],\"frontends\":[{\"id\":\"y\"}],\"associations\":[{\"id\":\"wby\"},{\"id\":\"rkxvdum\"},{\"id\":\"grtfwvu\"},{\"id\":\"xgaudccs\"}],\"provisioningState\":\"Updating\"},\"location\":\"cnyejhkryhtnapcz\",\"tags\":{\"ni\":\"kjyemkk\",\"ilzyd\":\"joxzjnchgejspodm\"},\"id\":\"h\",\"name\":\"jwyahuxinpmqnja\",\"type\":\"wixjsprozvcp\"}],\"nextLink\":\"eg\"}")
+            .toObject(TrafficControllerListResult.class);
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
+        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
+        Assertions.assertEquals("eg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerListResult model =
-            new TrafficControllerListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TrafficControllerInner()
-                                .withLocation("hab")
-                                .withTags(
-                                    mapOf("byscnp", "ikxwc", "hiv", "x", "rtfw", "qniwbybrkxvdumj", "cs", "ukxgaud"))))
-                .withNextLink("ryhtnapczwlokjy");
+        TrafficControllerListResult model
+            = new TrafficControllerListResult().withValue(Arrays.asList(new TrafficControllerInner()
+                .withLocation("cnyejhkryhtnapcz").withTags(mapOf("ni", "kjyemkk", "ilzyd", "joxzjnchgejspodm"))
+                .withProperties(new TrafficControllerProperties()))).withNextLink("eg");
         model = BinaryData.fromObject(model).toObject(TrafficControllerListResult.class);
-        Assertions.assertEquals("hab", model.value().get(0).location());
-        Assertions.assertEquals("ikxwc", model.value().get(0).tags().get("byscnp"));
-        Assertions.assertEquals("ryhtnapczwlokjy", model.nextLink());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.value().get(0).location());
+        Assertions.assertEquals("kjyemkk", model.value().get(0).tags().get("ni"));
+        Assertions.assertEquals("eg", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

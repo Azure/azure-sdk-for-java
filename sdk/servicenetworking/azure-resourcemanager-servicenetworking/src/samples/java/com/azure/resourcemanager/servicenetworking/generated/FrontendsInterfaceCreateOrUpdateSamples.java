@@ -4,22 +4,24 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-/** Samples for FrontendsInterface CreateOrUpdate. */
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
+
+/**
+ * Samples for FrontendsInterface CreateOrUpdate.
+ */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendPut.json
+     * x-ms-original-file:
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * FrontendPut.json
      */
     /**
      * Sample code: Put Frontend.
-     *
+     * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager
-            .frontendsInterfaces()
-            .define("fe1")
-            .withRegion("NorthCentralUS")
-            .withExistingTrafficController("rg1", "tc1")
-            .create();
+        manager.frontendsInterfaces().define("fe1").withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1").withProperties(new FrontendProperties()).create();
     }
 }
