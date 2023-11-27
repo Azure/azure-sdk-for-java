@@ -435,7 +435,7 @@ class WebPubSubAsyncClient implements Closeable {
             .setData(content)
             .setDataType(dataType.toString())
             .setAckId(ackId)
-            .setNoEcho(options.isNoEcho());
+            .setNoEcho(options.isEchoDisabled());
 
         Mono<Void> sendMessageMono = sendMessage(message);
         Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));

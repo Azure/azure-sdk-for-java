@@ -8,6 +8,9 @@
 
 ### Breaking Changes
 
+- Renamed `setNoEcho` method in `SendToGroupOptions` to `setEchoDisabled`.
+- Renamed `isNoEcho` method in `SendToGroupOptions` to `isEchoDisabled`.
+
 ### Bugs Fixed
 
 ### Other Changes
