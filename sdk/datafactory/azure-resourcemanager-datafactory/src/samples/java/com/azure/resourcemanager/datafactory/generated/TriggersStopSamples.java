@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-/** Samples for Triggers Stop. */
+/**
+ * Samples for Triggers Stop.
+ */
 public final class TriggersStopSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Stop.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Stop.json
      */
     /**
      * Sample code: Triggers_Stop.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStop(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .triggers()
-            .stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
+        manager.triggers().stop("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+            com.azure.core.util.Context.NONE);
     }
 }

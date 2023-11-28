@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SAP Table Resource properties. */
+/**
+ * SAP Table Resource properties.
+ */
 @Fluent
 public final class SapTableResourceDatasetTypeProperties {
     /*
@@ -17,13 +19,15 @@ public final class SapTableResourceDatasetTypeProperties {
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
-    /** Creates an instance of SapTableResourceDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SapTableResourceDatasetTypeProperties class.
+     */
     public SapTableResourceDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -32,7 +36,7 @@ public final class SapTableResourceDatasetTypeProperties {
 
     /**
      * Set the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SapTableResourceDatasetTypeProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class SapTableResourceDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableName in model SapTableResourceDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tableName in model SapTableResourceDatasetTypeProperties"));
         }
     }
 

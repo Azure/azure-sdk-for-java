@@ -139,7 +139,14 @@ function writeMarkdown() {
             if (servicesInvalidUrl.includes(service)) {
                 content += "* " + tag + "\n";
             } else {
-                const readmeUrl = getServiceUrl(spec) + "#tag-" + tag;
+                // For certain GA libs with some preview swaggers, we add a new tag in readme.java.md to remove them.
+                // e.g. https://github.com/Azure/azure-rest-api-specs/pull/26391/files
+                let readmeUrl;
+                if(tag.endsWith("-java")) {
+                    readmeUrl = getServiceUrl(spec) + "/readme.java.md#tag-" + tag;
+                } else {
+                    readmeUrl = getServiceUrl(spec) + "#tag-" + tag;
+                }
                 content += "* [" + tag + "](" + readmeUrl + ")\n";
             }
             const sortedVersions = data[service][tag].sort(function (a, b) {

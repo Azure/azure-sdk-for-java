@@ -32,37 +32,26 @@ public final class GlobalParametersListByFactoryMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"l\":{\"type\":\"Array\",\"value\":\"datahrs\"}},\"name\":\"wfpq\",\"type\":\"sxyugid\",\"etag\":\"sjivdtrtkqqdqxsl\",\"id\":\"tt\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"l\":{\"type\":\"Array\",\"value\":\"datahrs\"}},\"name\":\"wfpq\",\"type\":\"sxyugid\",\"etag\":\"sjivdtrtkqqdqxsl\",\"id\":\"tt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GlobalParameterResource> response =
-            manager.globalParameters().listByFactory("ucrynsqxyowwr", "xe", com.azure.core.util.Context.NONE);
+        PagedIterable<GlobalParameterResource> response
+            = manager.globalParameters().listByFactory("ucrynsqxyowwr", "xe", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tt", response.iterator().next().id());
         Assertions.assertEquals(GlobalParameterType.ARRAY, response.iterator().next().properties().get("l").type());

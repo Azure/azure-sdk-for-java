@@ -64,24 +64,16 @@ public final class LinkedServiceResourceImpl
     }
 
     public LinkedServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, linkedServiceName, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getLinkedServices().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, linkedServiceName, this.innerModel(), createIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public LinkedServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, linkedServiceName, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getLinkedServices().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, linkedServiceName, this.innerModel(), createIfMatch, context).getValue();
         return this;
     }
 
@@ -98,29 +90,20 @@ public final class LinkedServiceResourceImpl
     }
 
     public LinkedServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, linkedServiceName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getLinkedServices().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, linkedServiceName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public LinkedServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, linkedServiceName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getLinkedServices().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, linkedServiceName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    LinkedServiceResourceImpl(
-        LinkedServiceResourceInner innerObject,
+    LinkedServiceResourceImpl(LinkedServiceResourceInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -131,23 +114,16 @@ public final class LinkedServiceResourceImpl
 
     public LinkedServiceResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getLinkedServices()
+            .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LinkedServiceResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinkedServices()
-                .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getLinkedServices()
+            .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, context).getValue();
         return this;
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Amazon RDS for SQL Server dataset properties. */
+/**
+ * The Amazon RDS for SQL Server dataset properties.
+ */
 @Fluent
 public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     /*
@@ -22,14 +24,16 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of AmazonRdsForSqlServerTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AmazonRdsForSqlServerTableDatasetTypeProperties class.
+     */
     public AmazonRdsForSqlServerTableDatasetTypeProperties() {
     }
 
     /**
      * Get the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -39,7 +43,7 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     /**
      * Set the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AmazonRdsForSqlServerTableDatasetTypeProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     /**
      * Get the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -61,7 +65,7 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
     /**
      * Set the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AmazonRdsForSqlServerTableDatasetTypeProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

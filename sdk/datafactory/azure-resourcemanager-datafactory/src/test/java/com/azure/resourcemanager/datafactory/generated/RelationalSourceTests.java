@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.RelationalSource;
 public final class RelationalSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RelationalSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"RelationalSource\",\"query\":\"datazwcxlncohywfvy\",\"additionalColumns\":\"dataawfwws\",\"sourceRetryCount\":\"datakbdozsspfwmf\",\"sourceRetryWait\":\"datartoxsthjyyiryb\",\"maxConcurrentConnections\":\"datamkmwdok\",\"disableMetricsCollection\":\"datayilho\",\"\":{\"hxoyrgvrtcct\":\"datadioxgs\",\"rarukdepsxu\":\"datazglbplqh\",\"xgxbgochpxps\":\"datayqcqfouhye\",\"ugbdkxlwck\":\"datapwwsiooz\"}}")
-                .toObject(RelationalSource.class);
+        RelationalSource model = BinaryData.fromString(
+            "{\"type\":\"RelationalSource\",\"query\":\"dataduldsolbz\",\"additionalColumns\":\"datarufkeylkpvaagrd\",\"sourceRetryCount\":\"datavglqdsphvo\",\"sourceRetryWait\":\"datacryhuohthzfot\",\"maxConcurrentConnections\":\"datafhrjkah\",\"disableMetricsCollection\":\"datafshgmqxwoppn\",\"\":{\"kznyaittbmobrxhw\":\"datamzvnr\"}}")
+            .toObject(RelationalSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationalSource model =
-            new RelationalSource()
-                .withSourceRetryCount("datakbdozsspfwmf")
-                .withSourceRetryWait("datartoxsthjyyiryb")
-                .withMaxConcurrentConnections("datamkmwdok")
-                .withDisableMetricsCollection("datayilho")
-                .withQuery("datazwcxlncohywfvy")
-                .withAdditionalColumns("dataawfwws");
+        RelationalSource model
+            = new RelationalSource().withSourceRetryCount("datavglqdsphvo").withSourceRetryWait("datacryhuohthzfot")
+                .withMaxConcurrentConnections("datafhrjkah").withDisableMetricsCollection("datafshgmqxwoppn")
+                .withQuery("dataduldsolbz").withAdditionalColumns("datarufkeylkpvaagrd");
         model = BinaryData.fromObject(model).toObject(RelationalSource.class);
     }
 }

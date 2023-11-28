@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Integration runtime status response. */
+/**
+ * Integration runtime status response.
+ */
 @Fluent
 public final class IntegrationRuntimeStatusResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class IntegrationRuntimeStatusResponseInner {
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntimeStatus properties;
 
-    /** Creates an instance of IntegrationRuntimeStatusResponseInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeStatusResponseInner class.
+     */
     public IntegrationRuntimeStatusResponseInner() {
     }
 
     /**
      * Get the name property: The integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Get the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     public IntegrationRuntimeStatus properties() {
@@ -48,7 +52,7 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Set the properties property: Integration runtime properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeStatusResponseInner object itself.
      */
@@ -59,15 +63,13 @@ public final class IntegrationRuntimeStatusResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
         } else {
             properties().validate();
         }
