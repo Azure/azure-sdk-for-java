@@ -359,15 +359,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
-
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
-        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
-            getServiceVersion(), getAccountName(), getFileSystemName(),
-            //Utility.urlEncode(pathPrefix + Utility.urlDecode(fileName)),
-            pathPrefix + fileName,
-            blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(pathPrefix + fileName)
+            .buildBlockBlobAsyncClient();
+
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), pathPrefix + fileName, blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
             isTokenCredentialAuthenticated());
     }
 
@@ -749,10 +747,10 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeDirectoryAsyncClient getSubdirectoryAsyncClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
-            .buildBlockBlobAsyncClient();
-
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(pathPrefix + subdirectoryName)
+            .buildBlockBlobAsyncClient();
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
             getAccountName(), getFileSystemName(), pathPrefix + subdirectoryName, blockBlobAsyncClient,

@@ -3158,7 +3158,10 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"dir/file", "dir%2Ffile"})
+    @ValueSource(strings = {
+        "dir/file"
+//        "dir%2Ffile" // no longer supported
+    })
     public void createFileWithPathStructure(String pathName) {
         DataLakeFileClient fileClient = dataLakeFileSystemClient.createFile(pathName);
         // Check that service created underlying directory

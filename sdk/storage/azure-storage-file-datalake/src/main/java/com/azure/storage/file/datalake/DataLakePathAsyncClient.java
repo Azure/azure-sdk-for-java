@@ -1653,6 +1653,7 @@ public class DataLakePathAsyncClient {
         DataLakePathAsyncClient dataLakePathAsyncClient = getPathAsyncClient(destinationFileSystem, destinationPath);
 
         String renameSource = "/" + this.fileSystemName + "/" + Utility.urlEncode(pathName);
+        //String renameSource = "/" + this.fileSystemName + "/" + pathName;
 
         String signature = null;
         if (this.sasToken != null) {
@@ -1713,6 +1714,7 @@ public class DataLakePathAsyncClient {
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .endpoint(newBlobEndpoint)
+            .blobName(destinationPath)
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()));
     }
 
