@@ -5,7 +5,14 @@ package com.azure.spring.data.cosmos.common;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+/*
+ * Schedulers for azure-spring-data-cosmos
+ */
 public class CosmosSchedulers {
+
+    /*
+     * Spring custom parallel scheduler name
+     */
     private final static String COSMOS_SPRING_PARALLEL_THREAD_NAME =  "cosmos-spring-parallel";
 
     // Using a custom parallel scheduler to be able to schedule retries etc.
