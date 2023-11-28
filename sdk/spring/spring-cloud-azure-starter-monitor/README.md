@@ -1,8 +1,10 @@
-# Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application
+# Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application
 
-This Spring Boot starter provides telemetry data to Azure Monitor for Spring Boot applications running on GraalVM native image.
+This project is an Azure distribution of the [OpenTelemetry Spring Boot starter][otel_spring_starter].
 
-For a Spring Boot application running on a JVM (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
+It allows you to get telemetry data on Azure with a [Spring Boot native image application][spring_boot_native].
+
+For a Spring Boot application running on a JVM runtime (not with a GraalVM native image), we recommend using the [Application Insights Java agent][application_insights_java_agent_spring_boot].
 
 [Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation]
 
@@ -30,7 +32,7 @@ For more information, please read [introduction to Application Insights][applica
 
 #### Required native image build configuration
 
-[Instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images) for Spring native images.
+[Instruction][azure_native] for Sring Boot native image applications.
 
 #### OpenTelemetry version adjustment
 
@@ -94,89 +96,9 @@ You can then configure the connection string in two different ways:
 ### Configure the instrumentation
 
 The Spring starter will capture HTTP requests by default. You can also configure additional instrumentation.
-
-#### Configure the database instrumentation
-
-First, add the `opentelemetry-jdbc` library:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.opentelemetry.instrumentation</groupId>
-        <artifactId>opentelemetry-jdbc</artifactId>
-        <version>{version}</version>
-    </dependency>
-</dependencies>
-```
-
-Then wrap your `DataSource` bean in an `io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource`, e.g.
-
-```java
-import io.opentelemetry.instrumentation.jdbc.datasource.OpenTelemetryDataSource;
-
-@Configuration
-public class DataSourceConfig {
-
-    @Bean
-    public DataSource dataSource(OpenTelemetry openTelemetry) {
-        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        // Data source configurations
-        DataSource dataSource = dataSourceBuilder.build();
-        return new OpenTelemetryDataSource(dataSource, openTelemetry);
-    }
-
-}
-```
-
-#### Configure the Logback instrumentation
-
-First, add the following OpenTelemetry library:
-
-```xml
-<dependencies>
-    <dependency>
-        <groupId>io.opentelemetry.instrumentation</groupId>
-        <artifactId>opentelemetry-logback-appender-1.0</artifactId>
-        <version>{version}</version>
-        <scope>runtime</scope>
-    </dependency>
-</dependencies>
-```
-
-Then configure the OpenTelemetry Logback appender, e.g. in your `logback.xml` file:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-
-    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>
-                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
-            </pattern>
-        </encoder>
-    </appender>
-
-    <appender name="OpenTelemetry"
-              class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
-    </appender>
-
-    <root level="INFO">
-        <appender-ref ref="console"/>
-        <appender-ref ref="OpenTelemetry"/>
-    </root>
-
-</configuration>
-```
-    
-You can find additional settings of the OpenTelemetry Logback appender [here](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/logback/logback-appender-1.0/library/README.md#settings-for-the-logback-appender).
-
-#### Additional instrumentations
-
-You can configure additional instrumentations with [OpenTelemetry instrumentations libraries](https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/docs/supported-libraries.md#libraries--frameworks).
     
 ### Build your Spring native application
-At this step, you can build your application as a GraalVM native image and start it:
+At this step, you can build your Spring Boot native image application and start it:
 
 ```
 mvn -Pnative spring-boot:build-image
@@ -217,9 +139,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
+[otel_spring_starter]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
+[spring_boot_native]: https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html
+[azure_native]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
 [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor
-[api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
+[api_reference_doc]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/
 [application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
