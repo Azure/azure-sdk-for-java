@@ -67,7 +67,7 @@ ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .endpoint(endpoint).buildClient();
 ```
 
-#### Create a ContentSafetyClient with TokenCredential
+#### Create a ContentSafetyClient with KeyCredential
 ```java com.azure.ai.contentsafety.createcontentsafetyclient
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
