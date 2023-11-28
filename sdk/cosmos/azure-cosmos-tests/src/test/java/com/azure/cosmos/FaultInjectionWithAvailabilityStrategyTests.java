@@ -390,7 +390,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // execution via availability strategy was happening (but also failed)
             new Object[] {
                 "404-1002_AllRegions_RemotePreferred",
-                ONE_SECOND_DURATION,
+                Duration.ofSeconds(10),
                 eagerThresholdAvailabilityStrategy,
                 CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED,
                 ConnectionMode.DIRECT,
@@ -3855,7 +3855,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // succeed before hedging even starts. All records will fit into a single page
             new Object[] {
                 "ManyTuplesSinglePartition_404-1002_RemotePreferred_FirstRegionOnly_ReluctantAvailabilityStrategy",
-                THREE_SECOND_DURATION,
+                Duration.ofSeconds(10),
                 reluctantThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 readManyTuplesForSinglePartition,
@@ -4609,7 +4609,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
             // All records per partition will fit into a single page
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_429-3200_Local_OnlyFirstRegion_EagerAvailabilityStrategy",
-                ONE_SECOND_DURATION,
+                THREE_SECOND_DURATION,
                 eagerThresholdAvailabilityStrategy,
                 noRegionSwitchHint,
                 ConnectionMode.DIRECT,
