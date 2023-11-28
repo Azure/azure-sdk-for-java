@@ -32,7 +32,7 @@ For more information, please read [introduction to Application Insights][applica
 
 #### Required native image build configuration
 
-[Instruction][azure_native] for Sring Boot native image applications.
+[Instruction][azure_native] for Spring Boot native image applications.
 
 #### OpenTelemetry version adjustment
 
