@@ -95,7 +95,7 @@ You can then configure the connection string in two different ways:
 
 ### Configure the instrumentation
 
-The Spring starter will capture HTTP requests by default. You can also configure additional instrumentation.
+The Spring starter will capture HTTP requests by default. You can find on [this page][otel_spring_starter_instrumentation] how to configure additional instrumentations (JDBC, logging, ...).
     
 ### Build your Spring native application
 At this step, you can build your Spring Boot native image application and start it:
@@ -140,6 +140,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [otel_spring_starter]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
+[otel_spring_starter_instrumentation]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#additional-instrumentations
 [spring_boot_native]: https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html
 [azure_native]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/README.md#spring-aot-and-spring-native-images
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
