@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.5.0 (2023-11-29)
 
 ### Features Added
 - Introduction of new scopes for token generation.
@@ -8,12 +8,6 @@
     - `CHAT_JOIN_LIMITED` (A more limited version of `CHAT_JOIN` that doesn't allow to add or remove participants)
     - `VOIP_JOIN` (Access to Calling APIs but without the authorization to start new calls)
 - Added a new API version `CommunicationIdentityServiceVersion.V2023_10_01` that is now the default API version.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.4.12 (2023-11-20)
 
