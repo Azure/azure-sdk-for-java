@@ -3,9 +3,10 @@
 ## 1.0.0 (Unreleased)
 
 ### Features Added
-
+- Support AAD Authentication
+- Support 8 severity level for text:analyze API
 ### Breaking Changes
-
+- Contract change for AnalyzeText, AnalyzeImage, Blocklist management related methods
 ### Bugs Fixed
 
 ### Other Changes

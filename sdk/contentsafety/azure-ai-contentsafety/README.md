@@ -48,27 +48,31 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 ```bash
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
-#### Create a ContentSafetyClient with KeyCredential
+#### Create a ContentSafetyClient with Azure Active Directory (AAD) token credential
+To use an [Azure Active Directory (AAD) token credential](https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/identity/identity/samples/AzureIdentityExamples.md#authenticating-with-a-pre-fetched-access-token),
+provide an instance of the desired credential type obtained from the
+[@azure/identity](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#credentials) library.
+
+To authenticate with AAD, you must first `npm` install [`@azure/identity`](https://www.npmjs.com/package/@azure/identity)
+
+After setup, you can choose which type of [credential](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#credentials) from `@azure/identity` to use.
+As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#defaultazurecredential)
+can be used to authenticate the client.
+
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
+```java com.azure.ai.contentsafety.createcontentsafetyclienttoken 
+ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .endpoint(endpoint).buildClient();
+```
+
+#### Create a ContentSafetyClient with TokenCredential
 ```java com.azure.ai.contentsafety.createcontentsafetyclient
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new KeyCredential(key))
-    .endpoint(endpoint).buildClient();
-```
-
-#### Create a ContentSafetyClient with TokenCredential
-```java com.azure.ai.contentsafety.createcontentsafetyclienttoken
-String tenantId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_TENANT_ID", "00000000000000000000000000000000");
-String clientId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_ID", "00000000000000000000000000000000");
-String clientSecret = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_SECRET", "00000000000000000000000000000000");
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-    .tenantId(tenantId)
-    .clientId(clientId)
-    .clientSecret(clientSecret)
-    .build();
-ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
-    .credential(credential)
     .endpoint(endpoint).buildClient();
 ```
 

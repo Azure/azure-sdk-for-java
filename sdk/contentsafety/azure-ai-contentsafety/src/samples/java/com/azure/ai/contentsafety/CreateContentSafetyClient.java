@@ -6,8 +6,7 @@ package com.azure.ai.contentsafety;
 
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class CreateContentSafetyClient {
     public static void main(String[] args) {
@@ -20,16 +19,8 @@ public class CreateContentSafetyClient {
         // END:com.azure.ai.contentsafety.createcontentsafetyclient
 
         // BEGIN:com.azure.ai.contentsafety.createcontentsafetyclienttoken
-        String tenantId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_TENANT_ID", "00000000000000000000000000000000");
-        String clientId = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_ID", "00000000000000000000000000000000");
-        String clientSecret = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_CLIENT_SECRET", "00000000000000000000000000000000");
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .clientSecret(clientSecret)
-            .build();
         ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint(endpoint).buildClient();
         // END:com.azure.ai.contentsafety.createcontentsafetyclienttoken
     }
