@@ -21,40 +21,31 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public ChangeDataCapturesImpl(
-        ChangeDataCapturesClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public ChangeDataCapturesImpl(ChangeDataCapturesClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ChangeDataCaptureResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<ChangeDataCaptureResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName);
+        PagedIterable<ChangeDataCaptureResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
         return Utils.mapPage(inner, inner1 -> new ChangeDataCaptureResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ChangeDataCaptureResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<ChangeDataCaptureResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new ChangeDataCaptureResourceImpl(inner1, this.manager()));
-    }
-
-    public Response<ChangeDataCaptureResource> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        String ifNoneMatch,
+    public PagedIterable<ChangeDataCaptureResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
-        Response<ChangeDataCaptureResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, context);
+        PagedIterable<ChangeDataCaptureResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+        return Utils.mapPage(inner, inner1 -> new ChangeDataCaptureResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<ChangeDataCaptureResource> getWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, String ifNoneMatch, Context context) {
+        Response<ChangeDataCaptureResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            factoryName, changeDataCaptureName, ifNoneMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ChangeDataCaptureResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,8 +53,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     }
 
     public ChangeDataCaptureResource get(String resourceGroupName, String factoryName, String changeDataCaptureName) {
-        ChangeDataCaptureResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, changeDataCaptureName);
+        ChangeDataCaptureResourceInner inner
+            = this.serviceClient().get(resourceGroupName, factoryName, changeDataCaptureName);
         if (inner != null) {
             return new ChangeDataCaptureResourceImpl(inner, this.manager());
         } else {
@@ -71,8 +62,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
@@ -80,8 +71,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
         this.serviceClient().delete(resourceGroupName, factoryName, changeDataCaptureName);
     }
 
-    public Response<Void> startWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> startWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return this.serviceClient().startWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
@@ -89,8 +80,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
         this.serviceClient().start(resourceGroupName, factoryName, changeDataCaptureName);
     }
 
-    public Response<Void> stopWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return this.serviceClient().stopWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
@@ -98,8 +89,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
         this.serviceClient().stop(resourceGroupName, factoryName, changeDataCaptureName);
     }
 
-    public Response<String> statusWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<String> statusWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         return this.serviceClient().statusWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
@@ -110,25 +101,18 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     public ChangeDataCaptureResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String changeDataCaptureName = Utils.getValueFromIdByName(id, "adfcdcs");
         if (changeDataCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
         }
         String localIfNoneMatch = null;
         return this
@@ -139,25 +123,18 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     public Response<ChangeDataCaptureResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String changeDataCaptureName = Utils.getValueFromIdByName(id, "adfcdcs");
         if (changeDataCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, context);
     }
@@ -165,25 +142,18 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String changeDataCaptureName = Utils.getValueFromIdByName(id, "adfcdcs");
         if (changeDataCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, Context.NONE);
     }
@@ -191,25 +161,18 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String changeDataCaptureName = Utils.getValueFromIdByName(id, "adfcdcs");
         if (changeDataCaptureName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'adfcdcs'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }

@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed private endpoint resource type. */
+/**
+ * Managed private endpoint resource type.
+ */
 @Fluent
 public final class ManagedPrivateEndpointResourceInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ManagedPrivateEndpointResourceInner class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpointResourceInner class.
+     */
     public ManagedPrivateEndpointResourceInner() {
     }
 
     /**
      * Get the properties property: Managed private endpoint properties.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedPrivateEndpoint properties() {
@@ -52,7 +56,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Set the properties property: Managed private endpoint properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedPrivateEndpointResourceInner object itself.
      */
@@ -63,7 +67,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +76,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,14 +85,16 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedPrivateEndpointResourceInner withId(String id) {
         super.withId(id);
@@ -97,15 +103,13 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ManagedPrivateEndpointResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model ManagedPrivateEndpointResourceInner"));
         } else {
             properties().validate();
         }

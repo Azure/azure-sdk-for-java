@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Rest service source. */
+/**
+ * A copy activity Rest service source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("RestSource")
 @Fluent
@@ -62,14 +64,16 @@ public final class RestSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of RestSource class. */
+    /**
+     * Creates an instance of RestSource class.
+     */
     public RestSource() {
     }
 
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the requestMethod value.
      */
     public Object requestMethod() {
@@ -79,7 +83,7 @@ public final class RestSource extends CopySource {
     /**
      * Set the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the RestSource object itself.
      */
@@ -89,9 +93,9 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @return the requestBody value.
      */
     public Object requestBody() {
@@ -99,9 +103,9 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
-     * Expression with resultType string).
-     *
+     * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string
+     * (or Expression with resultType string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the RestSource object itself.
      */
@@ -113,7 +117,7 @@ public final class RestSource extends CopySource {
     /**
      * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the additionalHeaders value.
      */
     public Object additionalHeaders() {
@@ -123,7 +127,7 @@ public final class RestSource extends CopySource {
     /**
      * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestSource object itself.
      */
@@ -133,9 +137,9 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Get the paginationRules property: The pagination rules to compose next page requests. Type: string (or
+     * Expression with resultType string).
+     * 
      * @return the paginationRules value.
      */
     public Object paginationRules() {
@@ -143,9 +147,9 @@ public final class RestSource extends CopySource {
     }
 
     /**
-     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or Expression
-     * with resultType string).
-     *
+     * Set the paginationRules property: The pagination rules to compose next page requests. Type: string (or
+     * Expression with resultType string).
+     * 
      * @param paginationRules the paginationRules value to set.
      * @return the RestSource object itself.
      */
@@ -158,7 +162,7 @@ public final class RestSource extends CopySource {
      * Get the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object httpRequestTimeout() {
@@ -169,7 +173,7 @@ public final class RestSource extends CopySource {
      * Set the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the RestSource object itself.
      */
@@ -180,7 +184,7 @@ public final class RestSource extends CopySource {
 
     /**
      * Get the requestInterval property: The time to await before sending next page request.
-     *
+     * 
      * @return the requestInterval value.
      */
     public Object requestInterval() {
@@ -189,7 +193,7 @@ public final class RestSource extends CopySource {
 
     /**
      * Set the requestInterval property: The time to await before sending next page request.
-     *
+     * 
      * @param requestInterval the requestInterval value to set.
      * @return the RestSource object itself.
      */
@@ -201,7 +205,7 @@ public final class RestSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object additionalColumns() {
@@ -211,7 +215,7 @@ public final class RestSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the RestSource object itself.
      */
@@ -220,28 +224,36 @@ public final class RestSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -250,7 +262,7 @@ public final class RestSource extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

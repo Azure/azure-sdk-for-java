@@ -10,16 +10,14 @@ import com.azure.resourcemanager.datafactory.models.ParquetFormat;
 public final class ParquetFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParquetFormat model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ParquetFormat\",\"serializer\":\"dataifhb\",\"deserializer\":\"dataldtt\",\"\":{\"iqikvllr\":\"dataclnaihtg\",\"wrqkza\":\"datatpmglxkoikmtr\",\"paklw\":\"databun\"}}")
-                .toObject(ParquetFormat.class);
+        ParquetFormat model = BinaryData.fromString(
+            "{\"type\":\"ParquetFormat\",\"serializer\":\"datarqkzawbunmpak\",\"deserializer\":\"dataz\",\"\":{\"ejzltka\":\"dataepr\",\"xapgrcqebmvrdjom\":\"datazfjsxscbd\",\"vdlsflxkqesdfeds\":\"datanwsb\"}}")
+            .toObject(ParquetFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetFormat model = new ParquetFormat().withSerializer("dataifhb").withDeserializer("dataldtt");
+        ParquetFormat model = new ParquetFormat().withSerializer("datarqkzawbunmpak").withDeserializer("dataz");
         model = BinaryData.fromObject(model).toObject(ParquetFormat.class);
     }
 }

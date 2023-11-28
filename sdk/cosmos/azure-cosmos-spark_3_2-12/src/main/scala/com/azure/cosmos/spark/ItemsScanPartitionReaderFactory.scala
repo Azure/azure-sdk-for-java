@@ -22,7 +22,7 @@ private case class ItemsScanPartitionReaderFactory
 ) extends PartitionReaderFactory {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createReader(partition: InputPartition): PartitionReader[InternalRow] = {
     val feedRange = partition.asInstanceOf[CosmosInputPartition].feedRange

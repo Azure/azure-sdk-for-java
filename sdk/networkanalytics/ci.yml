@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/networkanalytics/ci.yml
+      - sdk/networkanalytics/azure-resourcemanager-networkanalytics/
+    exclude:
+      - sdk/networkanalytics/pom.xml
+      - sdk/networkanalytics/azure-resourcemanager-networkanalytics/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/networkanalytics/ci.yml
+      - sdk/networkanalytics/azure-resourcemanager-networkanalytics/
+    exclude:
+      - sdk/networkanalytics/pom.xml
+      - sdk/networkanalytics/azure-resourcemanager-networkanalytics/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagernetworkanalytics
+    displayName: azure-resourcemanager-networkanalytics
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: networkanalytics
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-networkanalytics
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagernetworkanalytics
+        releaseInBatch: ${{ parameters.release_azureresourcemanagernetworkanalytics }}

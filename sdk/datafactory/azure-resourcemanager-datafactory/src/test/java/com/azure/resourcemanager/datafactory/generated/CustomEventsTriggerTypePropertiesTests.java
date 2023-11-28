@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomEventsTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomEventsTriggerTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"subjectBeginsWith\":\"jbvz\",\"subjectEndsWith\":\"ecisnhtdskenigoh\",\"events\":[\"dataudteowep\"],\"scope\":\"eqgrcnfhcq\"}")
-                .toObject(CustomEventsTriggerTypeProperties.class);
+        CustomEventsTriggerTypeProperties model = BinaryData.fromString(
+            "{\"subjectBeginsWith\":\"jbvz\",\"subjectEndsWith\":\"ecisnhtdskenigoh\",\"events\":[\"dataudteowep\"],\"scope\":\"eqgrcnfhcq\"}")
+            .toObject(CustomEventsTriggerTypeProperties.class);
         Assertions.assertEquals("jbvz", model.subjectBeginsWith());
         Assertions.assertEquals("ecisnhtdskenigoh", model.subjectEndsWith());
         Assertions.assertEquals("eqgrcnfhcq", model.scope());
@@ -24,12 +22,8 @@ public final class CustomEventsTriggerTypePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEventsTriggerTypeProperties model =
-            new CustomEventsTriggerTypeProperties()
-                .withSubjectBeginsWith("jbvz")
-                .withSubjectEndsWith("ecisnhtdskenigoh")
-                .withEvents(Arrays.asList("dataudteowep"))
-                .withScope("eqgrcnfhcq");
+        CustomEventsTriggerTypeProperties model = new CustomEventsTriggerTypeProperties().withSubjectBeginsWith("jbvz")
+            .withSubjectEndsWith("ecisnhtdskenigoh").withEvents(Arrays.asList("dataudteowep")).withScope("eqgrcnfhcq");
         model = BinaryData.fromObject(model).toObject(CustomEventsTriggerTypeProperties.class);
         Assertions.assertEquals("jbvz", model.subjectBeginsWith());
         Assertions.assertEquals("ecisnhtdskenigoh", model.subjectEndsWith());

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.communication.fluent.models.SenderUsernameResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A class representing a Domains SenderUsernames collection. */
+/**
+ * A class representing a Domains SenderUsernames collection.
+ */
 @Fluent
 public final class SenderUsernameResourceCollection {
     /*
@@ -24,13 +26,15 @@ public final class SenderUsernameResourceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SenderUsernameResourceCollection class. */
+    /**
+     * Creates an instance of SenderUsernameResourceCollection class.
+     */
     public SenderUsernameResourceCollection() {
     }
 
     /**
      * Get the value property: List of SenderUsernames.
-     *
+     * 
      * @return the value value.
      */
     public List<SenderUsernameResourceInner> value() {
@@ -39,7 +43,7 @@ public final class SenderUsernameResourceCollection {
 
     /**
      * Set the value property: List of SenderUsernames.
-     *
+     * 
      * @param value the value value to set.
      * @return the SenderUsernameResourceCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class SenderUsernameResourceCollection {
 
     /**
      * Get the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SenderUsernameResourceCollection {
 
     /**
      * Set the nextLink property: The URL the client should use to fetch the next page (per server side paging).
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SenderUsernameResourceCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class SenderUsernameResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

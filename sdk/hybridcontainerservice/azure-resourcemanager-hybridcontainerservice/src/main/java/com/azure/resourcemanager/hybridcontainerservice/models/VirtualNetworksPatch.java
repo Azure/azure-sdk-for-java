@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The virtualNetworks resource patch definition. */
+/**
+ * The virtualNetworks resource patch definition.
+ */
 @Fluent
 public final class VirtualNetworksPatch {
     /*
@@ -19,13 +21,15 @@ public final class VirtualNetworksPatch {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of VirtualNetworksPatch class. */
+    /**
+     * Creates an instance of VirtualNetworksPatch class.
+     */
     public VirtualNetworksPatch() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class VirtualNetworksPatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the VirtualNetworksPatch object itself.
      */
@@ -45,7 +49,7 @@ public final class VirtualNetworksPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

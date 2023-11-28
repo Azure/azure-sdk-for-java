@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.MySqlSource;
 public final class MySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MySqlSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MySqlSource\",\"query\":\"dataulslfiuzytxeaq\",\"queryTimeout\":\"datamqntutetdtgci\",\"additionalColumns\":\"datarjwiwou\",\"sourceRetryCount\":\"dataaqnfyhgrcm\",\"sourceRetryWait\":\"datappledxyect\",\"maxConcurrentConnections\":\"databtwelutr\",\"disableMetricsCollection\":\"datazhwpxpsc\",\"\":{\"yavysfmndrdqq\":\"datatslfc\",\"gbmldkcih\":\"datak\",\"h\":\"datarz\"}}")
-                .toObject(MySqlSource.class);
+        MySqlSource model = BinaryData.fromString(
+            "{\"type\":\"MySqlSource\",\"query\":\"dataqpsquou\",\"queryTimeout\":\"datazgdtu\",\"additionalColumns\":\"dataoimojcm\",\"sourceRetryCount\":\"datacd\",\"sourceRetryWait\":\"datavorzhzfoc\",\"maxConcurrentConnections\":\"datayltornv\",\"disableMetricsCollection\":\"datauy\",\"\":{\"bv\":\"dataifbdwyvvcyw\",\"okeqeowbp\":\"datathrexzvejqzyuik\",\"tgwerbpobvj\":\"dataiehvgchsg\",\"vvmdtkllqhznutrx\":\"dataunicgrxce\"}}")
+            .toObject(MySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlSource model =
-            new MySqlSource()
-                .withSourceRetryCount("dataaqnfyhgrcm")
-                .withSourceRetryWait("datappledxyect")
-                .withMaxConcurrentConnections("databtwelutr")
-                .withDisableMetricsCollection("datazhwpxpsc")
-                .withQueryTimeout("datamqntutetdtgci")
-                .withAdditionalColumns("datarjwiwou")
-                .withQuery("dataulslfiuzytxeaq");
+        MySqlSource model = new MySqlSource().withSourceRetryCount("datacd").withSourceRetryWait("datavorzhzfoc")
+            .withMaxConcurrentConnections("datayltornv").withDisableMetricsCollection("datauy")
+            .withQueryTimeout("datazgdtu").withAdditionalColumns("dataoimojcm").withQuery("dataqpsquou");
         model = BinaryData.fromObject(model).toObject(MySqlSource.class);
     }
 }

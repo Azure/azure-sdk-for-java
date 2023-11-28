@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The dataset points to a HTML table in the web page. */
+/**
+ * The dataset points to a HTML table in the web page.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("WebTable")
 @Fluent
@@ -24,62 +26,78 @@ public final class WebTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private WebTableDatasetTypeProperties innerTypeProperties = new WebTableDatasetTypeProperties();
 
-    /** Creates an instance of WebTableDataset class. */
+    /**
+     * Creates an instance of WebTableDataset class.
+     */
     public WebTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Web table dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private WebTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -89,7 +107,7 @@ public final class WebTableDataset extends Dataset {
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @return the index value.
      */
     public Object index() {
@@ -99,7 +117,7 @@ public final class WebTableDataset extends Dataset {
     /**
      * Set the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @param index the index value to set.
      * @return the WebTableDataset object itself.
      */
@@ -114,7 +132,7 @@ public final class WebTableDataset extends Dataset {
     /**
      * Get the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -124,7 +142,7 @@ public final class WebTableDataset extends Dataset {
     /**
      * Set the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the WebTableDataset object itself.
      */
@@ -138,17 +156,15 @@ public final class WebTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model WebTableDataset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model WebTableDataset"));
         } else {
             innerTypeProperties().validate();
         }

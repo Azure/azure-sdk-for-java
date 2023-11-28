@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeleteDataFlowDebugSessionRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeleteDataFlowDebugSessionRequest model =
-            BinaryData.fromString("{\"sessionId\":\"pnwjfujq\"}").toObject(DeleteDataFlowDebugSessionRequest.class);
+        DeleteDataFlowDebugSessionRequest model
+            = BinaryData.fromString("{\"sessionId\":\"pnwjfujq\"}").toObject(DeleteDataFlowDebugSessionRequest.class);
         Assertions.assertEquals("pnwjfujq", model.sessionId());
     }
 

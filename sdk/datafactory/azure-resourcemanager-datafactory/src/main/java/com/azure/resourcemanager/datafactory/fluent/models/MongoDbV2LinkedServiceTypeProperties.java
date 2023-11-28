@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MongoDB linked service properties. */
+/**
+ * MongoDB linked service properties.
+ */
 @Fluent
 public final class MongoDbV2LinkedServiceTypeProperties {
     /*
@@ -24,14 +26,16 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     @JsonProperty(value = "database", required = true)
     private Object database;
 
-    /** Creates an instance of MongoDbV2LinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of MongoDbV2LinkedServiceTypeProperties class.
+     */
     public MongoDbV2LinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -41,7 +45,7 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MongoDbV2LinkedServiceTypeProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     /**
      * Get the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -63,7 +67,7 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     /**
      * Set the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the MongoDbV2LinkedServiceTypeProperties object itself.
      */
@@ -74,21 +78,17 @@ public final class MongoDbV2LinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model MongoDbV2LinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model MongoDbV2LinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model MongoDbV2LinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property database in model MongoDbV2LinkedServiceTypeProperties"));
         }
     }
 

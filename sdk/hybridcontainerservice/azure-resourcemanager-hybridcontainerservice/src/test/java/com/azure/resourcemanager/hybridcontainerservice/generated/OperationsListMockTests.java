@@ -13,11 +13,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProviderOperation;
+import com.azure.resourcemanager.hybridcontainerservice.models.Operation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,42 +30,25 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"isDataAction\":\"jlyjtlvofq\",\"name\":\"vfcibyfmowux\",\"display\":{\"provider\":\"pvdwxf\",\"resource\":\"iivwzjbhyzsxjrka\",\"operation\":\"trnegvmnvuqeqvld\",\"description\":\"astjbkkdmflvestm\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"rfmluiqtq\",\"isDataAction\":true,\"display\":{\"provider\":\"vnqqybaryeua\",\"resource\":\"kq\",\"operation\":\"qgzsles\",\"description\":\"bhernntiew\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HybridContainerServiceManager manager =
-            HybridContainerServiceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ResourceProviderOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jlyjtlvofq", response.iterator().next().isDataAction());
-        Assertions.assertEquals("vfcibyfmowux", response.iterator().next().name());
-        Assertions.assertEquals("pvdwxf", response.iterator().next().display().provider());
-        Assertions.assertEquals("iivwzjbhyzsxjrka", response.iterator().next().display().resource());
-        Assertions.assertEquals("trnegvmnvuqeqvld", response.iterator().next().display().operation());
-        Assertions.assertEquals("astjbkkdmflvestm", response.iterator().next().display().description());
     }
 }

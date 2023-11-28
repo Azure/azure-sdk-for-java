@@ -34,175 +34,140 @@ import com.azure.resourcemanager.datafactory.fluent.models.ChangeDataCaptureReso
 import com.azure.resourcemanager.datafactory.models.ChangeDataCaptureListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChangeDataCapturesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChangeDataCapturesClient.
+ */
 public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ChangeDataCapturesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of ChangeDataCapturesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ChangeDataCapturesClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ChangeDataCapturesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ChangeDataCapturesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DataFactoryManagementClientChangeDataCaptures to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DataFactoryManagementClientChangeDataCaptures to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface ChangeDataCapturesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangeDataCaptureListResponse>> listByFactory(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ChangeDataCaptureListResponse>> listByFactory(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/json") ChangeDataCaptureResourceInner changeDataCapture,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangeDataCaptureResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ChangeDataCaptureResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/start")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/start")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> start(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> start(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/stop")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/stop")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> stop(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> stop(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/status")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs/{changeDataCaptureName}/status")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<String>> status(
-            @HostParam("$host") String endpoint,
+        Mono<Response<String>> status(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @PathParam("changeDataCaptureName") String changeDataCaptureName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChangeDataCaptureListResponse>> listByFactoryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of change data capture resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName) {
+    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,32 +178,16 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFactory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ChangeDataCaptureResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ChangeDataCaptureResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -246,22 +195,18 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of change data capture resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactorySinglePageAsync(
-        String resourceGroupName, String factoryName, Context context) {
+    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactorySinglePageAsync(String resourceGroupName,
+        String factoryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -273,28 +218,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFactory(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,14 +236,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChangeDataCaptureResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -321,16 +252,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a list of change data capture resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ChangeDataCaptureResourceInner> listByFactoryAsync(
-        String resourceGroupName, String factoryName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
+    private PagedFlux<ChangeDataCaptureResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFactorySinglePageAsync(resourceGroupName, factoryName, context),
             nextLink -> listByFactoryNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,7 +275,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -355,43 +285,36 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a list of change data capture resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChangeDataCaptureResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
+    public PagedIterable<ChangeDataCaptureResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
         return new PagedIterable<>(listByFactoryAsync(resourceGroupName, factoryName, context));
     }
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param changeDataCapture Change data capture resource definition.
      * @param ifMatch ETag of the change data capture entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * match existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return change data capture resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture,
+    private Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture,
         String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -412,32 +335,21 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            ifMatch,
-                            changeDataCapture,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, changeDataCaptureName, this.client.getApiVersion(), ifMatch,
+                changeDataCapture, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param changeDataCapture Change data capture resource definition.
      * @param ifMatch ETag of the change data capture entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -445,24 +357,16 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return change data capture resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture,
-        String ifMatch,
-        Context context) {
+    private Mono<Response<ChangeDataCaptureResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String factoryName, String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,23 +387,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                ifMatch,
-                changeDataCapture,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, changeDataCaptureName, this.client.getApiVersion(), ifMatch, changeDataCapture, accept,
+            context);
     }
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -510,26 +405,22 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return change data capture resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ChangeDataCaptureResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture) {
+    private Mono<ChangeDataCaptureResourceInner> createOrUpdateAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture, ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture,
+            ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param changeDataCapture Change data capture resource definition.
      * @param ifMatch ETag of the change data capture entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -537,21 +428,16 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return change data capture resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangeDataCaptureResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture, ifMatch, context)
-            .block();
+    public Response<ChangeDataCaptureResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String factoryName, String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture,
+        String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture,
+            ifMatch, context).block();
     }
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -562,44 +448,36 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return change data capture resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangeDataCaptureResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture) {
+    public ChangeDataCaptureResourceInner createOrUpdate(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture, ifMatch, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, changeDataCapture,
+            ifMatch, Context.NONE).getValue();
     }
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a change data capture along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangeDataCaptureResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, String ifNoneMatch) {
+    private Mono<Response<ChangeDataCaptureResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String factoryName, String changeDataCaptureName, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,29 +493,19 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            ifNoneMatch,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    factoryName, changeDataCaptureName, this.client.getApiVersion(), ifNoneMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -645,23 +513,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a change data capture along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChangeDataCaptureResourceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        String ifNoneMatch,
-        Context context) {
+    private Mono<Response<ChangeDataCaptureResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String factoryName, String changeDataCaptureName, String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -676,22 +536,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                ifNoneMatch,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+            changeDataCaptureName, this.client.getApiVersion(), ifNoneMatch, accept, context);
     }
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -701,8 +552,8 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a change data capture on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ChangeDataCaptureResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    private Mono<ChangeDataCaptureResourceInner> getAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -710,12 +561,12 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -723,19 +574,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a change data capture along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChangeDataCaptureResourceInner> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        String ifNoneMatch,
-        Context context) {
+    public Response<ChangeDataCaptureResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, context)
             .block();
     }
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -745,8 +592,8 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return a change data capture.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangeDataCaptureResourceInner get(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    public ChangeDataCaptureResourceInner get(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         final String ifNoneMatch = null;
         return getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, Context.NONE)
             .getValue();
@@ -754,7 +601,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -764,19 +611,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -791,24 +634,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -819,19 +652,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -846,21 +675,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -877,7 +698,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -888,14 +709,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, context).block();
     }
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -910,7 +731,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -920,19 +741,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> startWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    private Mono<Response<Void>> startWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -947,24 +764,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .start(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -975,19 +782,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> startWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    private Mono<Response<Void>> startWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,21 +805,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .start(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.start(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+            changeDataCaptureName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1033,7 +828,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1044,14 +839,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> startWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return startWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, context).block();
     }
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1066,7 +861,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1076,19 +871,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    private Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1103,24 +894,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stop(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1131,19 +912,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> stopWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    private Mono<Response<Void>> stopWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1158,21 +935,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stop(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stop(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, factoryName,
+            changeDataCaptureName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1189,7 +958,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1200,14 +969,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context) {
         return stopWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, context).block();
     }
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1222,7 +991,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1230,22 +999,18 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status for the change data capture resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> statusWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName) {
+    private Mono<Response<String>> statusWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1260,24 +1025,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .status(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            changeDataCaptureName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.status(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1286,22 +1041,18 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status for the change data capture resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<String>> statusWithResponseAsync(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    private Mono<Response<String>> statusWithResponseAsync(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1316,21 +1067,13 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .status(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                changeDataCaptureName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.status(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            factoryName, changeDataCaptureName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1347,7 +1090,7 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1358,14 +1101,14 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
      * @return the current status for the change data capture resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> statusWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context) {
+    public Response<String> statusWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, Context context) {
         return statusWithResponseAsync(resourceGroupName, factoryName, changeDataCaptureName, context).block();
     }
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -1381,14 +1124,15 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of change data capture resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactoryNextSinglePageAsync(String nextLink) {
@@ -1396,62 +1140,44 @@ public final class ChangeDataCapturesClientImpl implements ChangeDataCapturesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ChangeDataCaptureResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ChangeDataCaptureResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of change data capture resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactoryNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ChangeDataCaptureResourceInner>> listByFactoryNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFactoryNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
