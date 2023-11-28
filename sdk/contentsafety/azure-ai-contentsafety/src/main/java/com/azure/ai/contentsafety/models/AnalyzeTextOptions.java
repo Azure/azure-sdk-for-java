@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The analysis request of the text. */
+/**
+ * The analysis request of the text.
+ */
 @Fluent
 public final class AnalyzeTextOptions {
     /*
@@ -45,7 +47,7 @@ public final class AnalyzeTextOptions {
 
     /**
      * Creates an instance of AnalyzeTextOptions class.
-     *
+     * 
      * @param text the text value to set.
      */
     @Generated
@@ -57,7 +59,7 @@ public final class AnalyzeTextOptions {
     /**
      * Get the text property: The text needs to be scanned. We support at most 1000 characters (unicode code points) in
      * text of one request.
-     *
+     * 
      * @return the text value.
      */
     @Generated
@@ -68,7 +70,7 @@ public final class AnalyzeTextOptions {
     /**
      * Get the categories property: The categories will be analyzed. If not assigned, a default set of the categories'
      * analysis results will be returned.
-     *
+     * 
      * @return the categories value.
      */
     @Generated
@@ -79,7 +81,7 @@ public final class AnalyzeTextOptions {
     /**
      * Set the categories property: The categories will be analyzed. If not assigned, a default set of the categories'
      * analysis results will be returned.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the AnalyzeTextOptions object itself.
      */
@@ -91,7 +93,7 @@ public final class AnalyzeTextOptions {
 
     /**
      * Get the blocklistNames property: The names of blocklists.
-     *
+     * 
      * @return the blocklistNames value.
      */
     @Generated
@@ -101,7 +103,7 @@ public final class AnalyzeTextOptions {
 
     /**
      * Set the blocklistNames property: The names of blocklists.
-     *
+     * 
      * @param blocklistNames the blocklistNames value to set.
      * @return the AnalyzeTextOptions object itself.
      */
@@ -115,7 +117,7 @@ public final class AnalyzeTextOptions {
      * Get the breakByBlocklists property: When set to true, further analyses of harmful content will not be performed
      * in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether
      * or not blocklists are hit.
-     *
+     * 
      * @return the breakByBlocklists value.
      */
     @Generated
@@ -127,7 +129,7 @@ public final class AnalyzeTextOptions {
      * Set the breakByBlocklists property: When set to true, further analyses of harmful content will not be performed
      * in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether
      * or not blocklists are hit.
-     *
+     * 
      * @param breakByBlocklists the breakByBlocklists value to set.
      * @return the AnalyzeTextOptions object itself.
      */

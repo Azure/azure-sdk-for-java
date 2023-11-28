@@ -33,14 +33,17 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ContentSafetyClient type. */
+/**
+ * Initializes a new instance of the asynchronous ContentSafetyClient type.
+ */
 @ServiceClient(builder = ContentSafetyClientBuilder.class, isAsync = true)
 public final class ContentSafetyAsyncClient {
-    @Generated private final ContentSafetyClientImpl serviceClient;
+    @Generated
+    private final ContentSafetyClientImpl serviceClient;
 
     /**
      * Initializes an instance of ContentSafetyAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -50,12 +53,12 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Analyze Text
-     *
-     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm, Sexual,
+     * Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -68,9 +71,9 @@ public final class ContentSafetyAsyncClient {
      *     breakByBlocklists: Boolean (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistsMatchResults (Optional): [
@@ -91,7 +94,7 @@ public final class ContentSafetyAsyncClient {
      *     violenceResult (Optional): (recursive schema, see violenceResult above)
      * }
      * }</pre>
-     *
+     * 
      * @param body The request of text analysis.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -108,12 +111,12 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Analyze Image
-     *
-     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm, Sexual,
+     * Violence.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     image (Required): {
@@ -125,9 +128,9 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     hateResult (Optional): {
@@ -139,7 +142,7 @@ public final class ContentSafetyAsyncClient {
      *     violenceResult (Optional): (recursive schema, see violenceResult above)
      * }
      * }</pre>
-     *
+     * 
      * @param body The analysis request of the image.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -156,18 +159,18 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Returns text blocklist details.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -178,34 +181,34 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTextBlocklistWithResponse(
-            String blocklistName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTextBlocklistWithResponse(String blocklistName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTextBlocklistWithResponseAsync(blocklistName, requestOptions);
     }
 
     /**
      * Create Or Update Text Blocklist
-     *
-     * <p>Updates a text blocklist, if blocklistName does not exist, create a new blocklist.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * Updates a text blocklist, if blocklistName does not exist, create a new blocklist.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -217,8 +220,8 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(
-            String blocklistName, BinaryData resource, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(String blocklistName, BinaryData resource,
+        RequestOptions requestOptions) {
         // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
         // 'application/merge-patch+json'
         return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(blocklistName, resource, requestOptions);
@@ -226,9 +229,9 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
+     * 
+     * Deletes a text blocklist.
+     * 
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -245,18 +248,18 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Get all text blocklists details.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -272,11 +275,11 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Add BlockItems To Text Blocklist
-     *
-     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blockItems (Required): [
@@ -287,9 +290,9 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -301,7 +304,7 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -310,22 +313,22 @@ public final class ContentSafetyAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response of adding blockItems to text blocklist along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> addBlockItemsWithResponse(
-            String blocklistName, BinaryData addBlockItemsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> addBlockItemsWithResponse(String blocklistName, BinaryData addBlockItemsOptions,
+        RequestOptions requestOptions) {
         return this.serviceClient.addBlockItemsWithResponseAsync(blocklistName, addBlockItemsOptions, requestOptions);
     }
 
     /**
      * Remove BlockItems From Text Blocklist
-     *
-     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * 
+     * Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blockItemIds (Required): [
@@ -333,7 +336,7 @@ public final class ContentSafetyAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -345,19 +348,19 @@ public final class ContentSafetyAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeBlockItemsWithResponse(
-            String blocklistName, BinaryData removeBlockItemsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.removeBlockItemsWithResponseAsync(
-                blocklistName, removeBlockItemsOptions, requestOptions);
+    public Mono<Response<Void>> removeBlockItemsWithResponse(String blocklistName, BinaryData removeBlockItemsOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.removeBlockItemsWithResponseAsync(blocklistName, removeBlockItemsOptions,
+            requestOptions);
     }
 
     /**
      * Get BlockItem By blocklistName And blockItemId
-     *
-     * <p>Get blockItem By blockItemId from a text blocklist.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * 
+     * Get blockItem By blockItemId from a text blocklist.
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blockItemId: String (Required)
@@ -365,7 +368,7 @@ public final class ContentSafetyAsyncClient {
      *     text: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param blockItemId Block Item Id. It will be uuid.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -374,34 +377,53 @@ public final class ContentSafetyAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return blockItem By blockItemId from a text blocklist along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTextBlocklistItemWithResponse(
-            String blocklistName, String blockItemId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTextBlocklistItemWithResponse(String blocklistName, String blockItemId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTextBlocklistItemWithResponseAsync(blocklistName, blockItemId, requestOptions);
     }
 
     /**
      * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * 
+     * Get all blockItems in a text blocklist.
+     * <p>
+     * <strong>Query Parameters</strong>
+     * </p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
-     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
-     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr>
+     * <th>Name</th>
+     * <th>Type</th>
+     * <th>Required</th>
+     * <th>Description</th>
+     * </tr>
+     * <tr>
+     * <td>top</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to return.</td>
+     * </tr>
+     * <tr>
+     * <td>skip</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The number of result items to skip.</td>
+     * </tr>
+     * <tr>
+     * <td>maxpagesize</td>
+     * <td>Integer</td>
+     * <td>No</td>
+     * <td>The maximum number of result items per page.</td>
+     * </tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     blockItemId: String (Required)
@@ -409,7 +431,7 @@ public final class ContentSafetyAsyncClient {
      *     text: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param blocklistName Text blocklist name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -426,10 +448,10 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Analyze Text
-     *
-     * <p>A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
-     *
+     * 
+     * A sync API for harmful content analysis for text. Currently, we support four categories: Hate, SelfHarm, Sexual,
+     * Violence.
+     * 
      * @param body The request of text analysis.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -444,17 +466,16 @@ public final class ContentSafetyAsyncClient {
     public Mono<AnalyzeTextResult> analyzeText(AnalyzeTextOptions body) {
         // Generated convenience method for analyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeTextResult.class));
+        return analyzeTextWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeTextResult.class));
     }
 
     /**
      * Analyze Image
-     *
-     * <p>A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm,
-     * Sexual, Violence.
-     *
+     * 
+     * A sync API for harmful content analysis for image. Currently, we support four categories: Hate, SelfHarm, Sexual,
+     * Violence.
+     * 
      * @param body The analysis request of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -469,16 +490,15 @@ public final class ContentSafetyAsyncClient {
     public Mono<AnalyzeImageResult> analyzeImage(AnalyzeImageOptions body) {
         // Generated convenience method for analyzeImageWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
+        return analyzeImageWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeImageResult.class));
     }
 
     /**
      * Get Text Blocklist By blocklistName
-     *
-     * <p>Returns text blocklist details.
-     *
+     * 
+     * Returns text blocklist details.
+     * 
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -493,16 +513,15 @@ public final class ContentSafetyAsyncClient {
     public Mono<TextBlocklist> getTextBlocklist(String blocklistName) {
         // Generated convenience method for getTextBlocklistWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistWithResponse(blocklistName, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
+        return getTextBlocklistWithResponse(blocklistName, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
     }
 
     /**
      * Delete Text Blocklist By blocklistName
-     *
-     * <p>Deletes a text blocklist.
-     *
+     * 
+     * Deletes a text blocklist.
+     * 
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -522,9 +541,9 @@ public final class ContentSafetyAsyncClient {
 
     /**
      * Get All Text Blocklists
-     *
-     * <p>Get all text blocklists details.
-     *
+     * 
+     * Get all text blocklists details.
+     * 
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -538,35 +557,23 @@ public final class ContentSafetyAsyncClient {
         // Generated convenience method for listTextBlocklists
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklists(requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlocklist>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlocklist.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklist>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Add BlockItems To Text Blocklist
-     *
-     * <p>Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
-     *
+     * 
+     * Add blockItems to a text blocklist. You can add at most 100 BlockItems in one request.
+     * 
      * @param blocklistName Text blocklist name.
      * @param addBlockItemsOptions The request of adding blockItems to text blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -583,15 +590,15 @@ public final class ContentSafetyAsyncClient {
         // Generated convenience method for addBlockItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addBlockItemsWithResponse(blocklistName, BinaryData.fromObject(addBlockItemsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(AddBlockItemsResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AddBlockItemsResult.class));
     }
 
     /**
      * Remove BlockItems From Text Blocklist
-     *
-     * <p>Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
-     *
+     * 
+     * Remove blockItems from a text blocklist. You can remove at most 100 BlockItems in one request.
+     * 
      * @param blocklistName Text blocklist name.
      * @param removeBlockItemsOptions The request of removing blockItems from text blocklist.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,16 +614,15 @@ public final class ContentSafetyAsyncClient {
     public Mono<Void> removeBlockItems(String blocklistName, RemoveBlockItemsOptions removeBlockItemsOptions) {
         // Generated convenience method for removeBlockItemsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return removeBlockItemsWithResponse(
-                        blocklistName, BinaryData.fromObject(removeBlockItemsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono);
+        return removeBlockItemsWithResponse(blocklistName, BinaryData.fromObject(removeBlockItemsOptions),
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Get BlockItem By blocklistName And blockItemId
-     *
-     * <p>Get blockItem By blockItemId from a text blocklist.
-     *
+     * 
+     * Get blockItem By blockItemId from a text blocklist.
+     * 
      * @param blocklistName Text blocklist name.
      * @param blockItemId Block Item Id. It will be uuid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -632,16 +638,15 @@ public final class ContentSafetyAsyncClient {
     public Mono<TextBlockItem> getTextBlocklistItem(String blocklistName, String blockItemId) {
         // Generated convenience method for getTextBlocklistItemWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions)
-                .flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(TextBlockItem.class));
+        return getTextBlocklistItemWithResponse(blocklistName, blockItemId, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TextBlockItem.class));
     }
 
     /**
      * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
+     * 
+     * Get all blockItems in a text blocklist.
+     * 
      * @param blocklistName Text blocklist name.
      * @param top The number of result items to return.
      * @param skip The number of result items to skip.
@@ -665,35 +670,23 @@ public final class ContentSafetyAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlockItem>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlockItem.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlockItem>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(TextBlockItem.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 
     /**
      * Get All BlockItems By blocklistName
-     *
-     * <p>Get all blockItems in a text blocklist.
-     *
+     * 
+     * Get all blockItems in a text blocklist.
+     * 
      * @param blocklistName Text blocklist name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -709,27 +702,15 @@ public final class ContentSafetyAsyncClient {
         // Generated convenience method for listTextBlocklistItems
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(blocklistName, requestOptions);
-        return PagedFlux.create(
-                () ->
-                        (continuationToken, pageSize) -> {
-                            Flux<PagedResponse<BinaryData>> flux =
-                                    (continuationToken == null)
-                                            ? pagedFluxResponse.byPage().take(1)
-                                            : pagedFluxResponse.byPage(continuationToken).take(1);
-                            return flux.map(
-                                    pagedResponse ->
-                                            new PagedResponseBase<Void, TextBlockItem>(
-                                                    pagedResponse.getRequest(),
-                                                    pagedResponse.getStatusCode(),
-                                                    pagedResponse.getHeaders(),
-                                                    pagedResponse.getValue().stream()
-                                                            .map(
-                                                                    protocolMethodData ->
-                                                                            protocolMethodData.toObject(
-                                                                                    TextBlockItem.class))
-                                                            .collect(Collectors.toList()),
-                                                    pagedResponse.getContinuationToken(),
-                                                    null));
-                        });
+        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationToken).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlockItem>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(TextBlockItem.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
     }
 }
