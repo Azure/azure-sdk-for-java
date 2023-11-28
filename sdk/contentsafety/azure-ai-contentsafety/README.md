@@ -84,9 +84,6 @@ String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 BlocklistClient blocklistClient = new BlocklistClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
-ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new KeyCredential(key))
-    .endpoint(endpoint).buildClient();
 ```
 
 ## Key concepts
@@ -156,8 +153,11 @@ for (TextCategoriesAnalysis result : response.getCategoriesAnalysis()) {
 #### Analyze text with blocklists
 ```java com.azure.ai.contentsafety.analyzetextwithblocklist
 // After you edit your blocklist, it usually takes effect in 5 minutes, please wait some time before analyzing with blocklist after editing.
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
 AnalyzeTextOptions request = new AnalyzeTextOptions("I h*te you and I want to k*ll you");
-request.getBlocklistNames().add(blocklistName);
+request.setBlocklistNames(new ArrayList<>(Collections.singleton(blocklistName)));
 request.setHaltOnBlocklistHit(true);
 
 AnalyzeTextResult analyzeTextResult;
