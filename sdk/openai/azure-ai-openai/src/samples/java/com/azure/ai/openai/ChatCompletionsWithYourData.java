@@ -11,6 +11,7 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ public class ChatCompletionsWithYourData {
                 azureSearchEndpoint,
                 azureSearchIndexName
         );
-        searchParameters.setKey(azureSearchAdminKey);
+        searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(azureSearchAdminKey));
         AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
                         searchParameters

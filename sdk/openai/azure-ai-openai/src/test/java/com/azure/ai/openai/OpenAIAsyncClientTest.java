@@ -24,6 +24,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCallConfig;
+import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -435,7 +436,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
-            searchParameters.setKey(getAzureCognitiveSearchKey());
+            searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                     new AzureCognitiveSearchChatExtensionConfiguration(
                             searchParameters
@@ -459,7 +460,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
-            searchParameters.setKey(getAzureCognitiveSearchKey());
+            searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
             AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                     new AzureCognitiveSearchChatExtensionConfiguration(
                             searchParameters
