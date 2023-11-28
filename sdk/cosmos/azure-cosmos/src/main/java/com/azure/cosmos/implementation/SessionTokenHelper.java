@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -111,9 +112,13 @@ public class SessionTokenHelper {
     }
 
     static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey,
-                                                               ConcurrentHashMap<PartitionKeyMetadata, ISessionToken> partitionKeyToTokenMap) {
+                                                               ConcurrentHashMap<String, SessionTokenMetadata> partitionKeyToTokenMap) {
         if (partitionKeyToTokenMap != null) {
-            return partitionKeyToTokenMap.get(new PartitionKeyMetadata(null, partitionKey, null));
+            SessionTokenMetadata sessionTokenMetadata = partitionKeyToTokenMap.get(partitionKey);
+            sessionTokenMetadata.setLastAccessedTimestamp(Instant.now());
+            // TODO: Evaluate whether SessionTokenMetadata should be mutable?
+            // partitionKeyToTokenMap.put(partitionKey, new SessionTokenMetadata(sessionTokenMetadata.getSessionToken(), Instant.now(), sessionTokenMetadata.getPkRangeId()));
+            return sessionTokenMetadata.getSessionToken();
         }
 
         return null;
