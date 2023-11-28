@@ -2,19 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.properties;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder.ENDPOINT_ERR_MSG;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.CONN_STRING_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.CONN_STRING_PROP_NEW;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FAIL_FAST_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.KEY_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.LABEL_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.REFRESH_INTERVAL_PROP;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.STORE_ENDPOINT_PROP;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT_GEO;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.propPair;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -22,15 +12,8 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-
-import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 
 public class AppConfigurationPropertiesTest {
 
@@ -57,7 +40,6 @@ public class AppConfigurationPropertiesTest {
     public void validInputShouldCreatePropertiesBean() {
         ConfigStore store = properties.getStores().get(0);
         store.setConnectionString(TEST_CONN_STRING);
-        store.setFailFast(false);
         store.validateAndInit();
     }
 
@@ -100,7 +82,6 @@ public class AppConfigurationPropertiesTest {
         ConfigStore store = properties.getStores().get(0);
         store.setConnectionString(TEST_CONN_STRING);
         store.setEndpoint("");
-        store.setFailFast(false);
         store.validateAndInit();
         assertEquals(1, properties.getStores().size());
         assertEquals("https://fake.test.config.io", properties.getStores().get(0).getEndpoint());

@@ -20,8 +20,6 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
 
 class AppConfigurationBootstrapRegistrar {
 
-    private static final String RETRY_MODE_PROPERTY_NAME = "retry.mode";
-
     static void register(ConfigDataLocationResolverContext context, Binder binder,
         AppConfigurationProperties properties, AppConfigurationProviderProperties appProperties) {
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory = appConfigurationKeyVaultClientFactory(appProperties, context,

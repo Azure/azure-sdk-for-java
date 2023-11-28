@@ -34,8 +34,6 @@ public final class ConfigStore {
     @NestedConfigurationProperty
     private List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
 
-    private boolean failFast = true;
-
     @NestedConfigurationProperty
     private FeatureFlagStore featureFlags = new FeatureFlagStore();
 
@@ -100,20 +98,6 @@ public final class ConfigStore {
      */
     public void setConnectionStrings(List<String> connectionStrings) {
         this.connectionStrings = connectionStrings;
-    }
-
-    /**
-     * @return the failFast
-     */
-    public boolean isFailFast() {
-        return failFast;
-    }
-
-    /**
-     * @param failFast the failFast to set
-     */
-    public void setFailFast(boolean failFast) {
-        this.failFast = failFast;
     }
 
     /**

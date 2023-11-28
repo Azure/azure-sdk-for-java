@@ -115,9 +115,9 @@ class AppConfigurationRefreshUtil {
     }
 
     static boolean checkStoreAfterRefreshFailed(AppConfigurationReplicaClient client,
-        AppConfigurationReplicaClientFactory clientFactory, FeatureFlagStore featureStore, List<String> profiles) {
+        AppConfigurationReplicaClientFactory clientFactory, AppConfigDataResource resource) {
         return refreshStoreCheck(client, clientFactory.findOriginForEndpoint(client.getEndpoint()))
-            || refreshStoreFeatureFlagCheck(featureStore, client, profiles);
+            || refreshStoreFeatureFlagCheck(resource, client);
     }
 
     /**
@@ -143,14 +143,14 @@ class AppConfigurationRefreshUtil {
      * @param client Client checking for refresh
      * @return true if a refresh should be triggered.
      */
-    private static boolean refreshStoreFeatureFlagCheck(FeatureFlagStore featureStore,
-        AppConfigurationReplicaClient client, List<String> profiles) {
+    private static boolean refreshStoreFeatureFlagCheck(AppConfigDataResource resource,
+        AppConfigurationReplicaClient client) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
-        if (featureStore.getEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint)) {
-            refreshWithoutTimeFeatureFlags(client, featureStore,
-                StateHolder.getStateFeatureFlag(endpoint).getWatchKeys(), eventData, profiles);
+        if (resource.isFeatureFlagsEnabled() && StateHolder.getLoadStateFeatureFlag(endpoint)) {
+            refreshWithoutTimeFeatureFlags(client, resource.getFeatureFlagSelects(),
+                StateHolder.getStateFeatureFlag(endpoint).getWatchKeys(), eventData, resource.getProfiles().getActive());
         } else {
             LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
         }
@@ -258,9 +258,9 @@ class AppConfigurationRefreshUtil {
 
 
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client,
-        FeatureFlagStore featureStore, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
+        List<FeatureFlagKeyValueSelector> featureFlagSelects, List<ConfigurationSetting> watchKeys, RefreshEventData eventData,
         List<String> profiles) throws AppConfigurationStatusException {
-        for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
+        for (FeatureFlagKeyValueSelector watchKey : featureFlagSelects) {
             String keyFilter = SELECT_ALL_FEATURE_FLAGS;
 
             if (StringUtils.hasText(watchKey.getKeyFilter())) {

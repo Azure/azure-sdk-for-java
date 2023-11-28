@@ -8,132 +8,134 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
 import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+import org.springframework.boot.logging.DeferredLog;
+import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreTrigger;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
 public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResource> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigDataLoader.class);
+    private Log logger = new DeferredLog();
 
     private Duration refreshInterval;
+    
+    private AppConfigDataResource resource;
+    
+    private AppConfigurationReplicaClientFactory replicaClientFactory;
+    
+    private AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
+    
+    private StateHolder storeState = new StateHolder();
+    
+    private List<AppConfigurationPropertySource> sources;
+
+    public AppConfigDataLoader(DeferredLogFactory logFactory) {
+        this.logger = logFactory.getLog(getClass());
+    }
 
     @Override
     public ConfigData load(ConfigDataLoaderContext context, AppConfigDataResource resource)
         throws IOException, ConfigDataResourceNotFoundException {
-
-        List<String> profiles = resource.getProfiles().getActive();
-        ConfigStore configStore = resource.getConfigStore();
-
-        StateHolder newState = new StateHolder();
-        newState.setNextForcedRefresh(refreshInterval);
+        this.resource = resource;
+        storeState.setNextForcedRefresh(refreshInterval);
 
         List<AppConfigurationPropertySource> sources = new ArrayList<>();
 
-        AppConfigurationReplicaClientFactory replicaClientFactory = context.getBootstrapContext()
-            .get(AppConfigurationReplicaClientFactory.class);
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory = context.getBootstrapContext()
-            .get(AppConfigurationKeyVaultClientFactory.class);
-
-        if (configStore.isEnabled()) {
+        if (resource.isConfigStoreEnabled()) {
+            replicaClientFactory = context.getBootstrapContext()
+                .get(AppConfigurationReplicaClientFactory.class);
+            keyVaultClientFactory = context.getBootstrapContext()
+                .get(AppConfigurationKeyVaultClientFactory.class);
             // There is only one Feature Set for all AppConfigurationPropertySources
 
             List<AppConfigurationReplicaClient> clients = replicaClientFactory
-                .getAvailableClients(configStore.getEndpoint(), true);
+                .getAvailableClients(resource.getEndpoint(), true);
 
-            boolean generatedPropertySources = false;
-
-            List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
             boolean reloadFailed = false;
 
             for (AppConfigurationReplicaClient client : clients) {
-                sourceList = new ArrayList<>();
+                sources = new ArrayList<>();
 
+                // TODO (mametcal) This should only trigger on refresh
                 if (reloadFailed
                     && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, replicaClientFactory,
-                        configStore.getFeatureFlags(), profiles)) {
+                        resource)) {
                     // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                     continue;
                 }
 
                 // Reverse in order to add Profile specific properties earlier, and last profile comes first
                 try {
-                    sources.addAll(create(client, configStore, profiles, keyVaultClientFactory));
-                    sourceList.addAll(sources);
+                    sources.addAll(create(client));
 
-                    LOGGER.debug("PropertySource context.");
-                    setupMonitoring(configStore, client, sources, newState);
-
-                    generatedPropertySources = true;
+                    logger.debug("PropertySource context.");
+                    setupMonitoring(client);
                 } catch (AppConfigurationStatusException e) {
                     reloadFailed = true;
-                    replicaClientFactory.backoffClientClient(configStore.getEndpoint(), client.getEndpoint());
+                    replicaClientFactory.backoffClientClient(resource.getEndpoint(), client.getEndpoint());
                 } catch (Exception e) {
-                    newState = failedToGeneratePropertySource(configStore, newState, e, resource);
+                    storeState = failedToGeneratePropertySource(e);
 
                     // Not a retiable error
                     break;
                 }
-                if (generatedPropertySources) {
+                if (sources.size() > 0) {
                     break;
                 }
             }
 
-            if (!generatedPropertySources && configStore.isFailFast()) {
-                String message = "Failed to generate property sources for " + configStore.getEndpoint();
+            if (sources.size() == 0) {
+                String message = "Failed to generate property sources for " + resource.getEndpoint();
 
                 // Refresh failed for a config store ending attempt
-                failedToGeneratePropertySource(configStore, newState, new RuntimeException(message), resource);
+                failedToGeneratePropertySource(new RuntimeException(message));
             }
 
-        } else if (!configStore.isEnabled()) {
-            LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());
+        } else if (!resource.isConfigStoreEnabled()) {
+            logger.info(
+                String.format("Not loading configurations from {} as it is not enabled.", resource.getEndpoint()));
         } else {
-            LOGGER.warn("Not loading configurations from {} as it failed on startup.", configStore.getEndpoint());
+            logger.warn(String.format("Not loading configurations from {} as it failed on startup.",
+                resource.getEndpoint()));
         }
 
-        StateHolder.updateState(newState);
+        StateHolder.updateState(storeState);
 
-        ConfigData data = new ConfigData(sources);
-        return data;
+        return new ConfigData(sources);
     }
 
-    private void setupMonitoring(ConfigStore configStore, AppConfigurationReplicaClient client,
-        List<AppConfigurationPropertySource> sources, StateHolder newState) {
-        AppConfigurationStoreMonitoring monitoring = configStore.getMonitoring();
+    private void setupMonitoring(AppConfigurationReplicaClient client) {
+        AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
 
-        if (configStore.getFeatureFlags().getEnabled()) {
-            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys(configStore, sources);
-            newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
+        if (resource.isFeatureFlagsEnabled()) {
+            List<ConfigurationSetting> watchKeysFeatures = getFeatureFlagWatchKeys();
+            storeState.setStateFeatureFlag(resource.getEndpoint(), watchKeysFeatures,
                 monitoring.getFeatureFlagRefreshInterval());
         }
 
         if (monitoring.isEnabled()) {
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client, monitoring.getTriggers());
+            List<ConfigurationSetting> watchKeysSettings = getWatchKeys(client);
 
-            newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
+            storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
-        newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
-        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), configStore.getFeatureFlags().getEnabled(),
-            configStore.isFailFast());
+        storeState.setLoadState(resource.getEndpoint(), true);
+        storeState.setLoadStateFeatureFlag(resource.getEndpoint(), resource.isFeatureFlagsEnabled());
     }
 
-    private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
-        List<AppConfigurationStoreTrigger> triggers) {
+    private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client) {
         List<ConfigurationSetting> watchKeysSettings = new ArrayList<>();
-        for (AppConfigurationStoreTrigger trigger : triggers) {
+        for (AppConfigurationStoreTrigger trigger : resource.getMonitoring().getTriggers()) {
             ConfigurationSetting watchKey = client.getWatchKey(trigger.getKey(), trigger.getLabel());
             if (watchKey != null) {
                 watchKeysSettings.add(watchKey);
@@ -144,10 +146,9 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
         return watchKeysSettings;
     }
 
-    private List<ConfigurationSetting> getFeatureFlagWatchKeys(ConfigStore configStore,
-        List<AppConfigurationPropertySource> sources) {
+    private List<ConfigurationSetting> getFeatureFlagWatchKeys() {
         List<ConfigurationSetting> watchKeysFeatures = new ArrayList<>();
-        if (configStore.getFeatureFlags().getEnabled()) {
+        if (resource.isFeatureFlagsEnabled()) {
             for (AppConfigurationPropertySource propertySource : sources) {
                 if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
                     watchKeysFeatures.addAll(
@@ -158,21 +159,11 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
         return watchKeysFeatures;
     }
 
-    private StateHolder failedToGeneratePropertySource(ConfigStore configStore, StateHolder newState, Exception e,
-        AppConfigDataResource resource) {
-        String message = "Failed to generate property sources for " + configStore.getEndpoint();
-        if (configStore.isFailFast()) {
-            LOGGER.error("Fail fast is set and there was an error reading configuration from Azure App "
-                + "Configuration store " + configStore.getEndpoint() + ".");
-            delayException(resource);
-            throw new RuntimeException(message, e);
-        } else {
-            LOGGER.warn(
-                "Unable to load configuration from Azure AppConfiguration store " + configStore.getEndpoint() + ".", e);
-            newState.setLoadState(configStore.getEndpoint(), false, configStore.isFailFast());
-            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false, configStore.isFailFast());
-        }
-        return newState;
+    private StateHolder failedToGeneratePropertySource(Exception e) {
+        logger.error("Fail fast is set and there was an error reading configuration from Azure App "
+            + "Configuration store " + resource.getEndpoint() + ".");
+        delayException();
+        throw new RuntimeException("Failed to generate property sources for " + resource.getEndpoint(), e);
     }
 
     /**
@@ -184,16 +175,15 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
      * @return a list of AppConfigurationPropertySources
      * @throws Exception creating a property source failed
      */
-    private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client, ConfigStore store,
-        List<String> profiles, AppConfigurationKeyVaultClientFactory keyVaultClientFactory) throws Exception {
+    private List<AppConfigurationPropertySource> create(AppConfigurationReplicaClient client) throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
-        List<AppConfigurationKeyValueSelector> selects = store.getSelects();
+        List<AppConfigurationKeyValueSelector> selects = resource.getSelects();
 
-        if (store.getFeatureFlags().getEnabled()) {
-            for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
+        if (resource.isFeatureFlagsEnabled()) {
+            for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
                 AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    resource.getEndpoint(), client,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(resource.getProfiles().getActive()));
 
                 propertySource.initProperties(null);
                 sourceList.add(propertySource);
@@ -205,14 +195,14 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
 
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
-                    selectedKeys.getSnapshotName() + "/" + store.getEndpoint(), client, keyVaultClientFactory,
+                    selectedKeys.getSnapshotName() + "/" + resource.getEndpoint(), client, keyVaultClientFactory,
                     selectedKeys.getSnapshotName());
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
-                    selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(resource.getProfiles().getActive()));
             }
-            propertySource.initProperties(store.getTrimKeyPrefix());
+            propertySource.initProperties(resource.getTrimKeyPrefix());
             sourceList.add(propertySource);
 
         }
@@ -220,7 +210,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
         return sourceList;
     }
 
-    private void delayException(AppConfigDataResource resource) {
+    private void delayException() {
         Instant currentDate = Instant.now();
         Instant preKillTIme = resource.getAppProperties().getStartDate()
             .plusSeconds(resource.getAppProperties().getPrekillTime());
@@ -229,7 +219,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
             try {
                 Thread.sleep(diffInMillies);
             } catch (InterruptedException e) {
-                LOGGER.error("Failed to wait before fast fail.");
+                logger.error("Failed to wait before fast fail.");
             }
         }
     }

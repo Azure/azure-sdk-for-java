@@ -168,8 +168,8 @@ public class StateHolderTest {
     private void loadStateTest(TestInfo testInfo) {
         String endpoint = testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc" + ".azconfig.io";
         StateHolder testStateHolder = new StateHolder();
-        testStateHolder.setLoadState(endpoint, true, false);
-        testStateHolder.setLoadStateFeatureFlag(endpoint, true, false);
+        testStateHolder.setLoadState(endpoint, true);
+        testStateHolder.setLoadStateFeatureFlag(endpoint, true);
         StateHolder.updateState(testStateHolder);
         assertEquals(testStateHolder.getLoadState().get(endpoint), StateHolder.getLoadState(endpoint));
         assertTrue(StateHolder.getLoadStateFeatureFlag(endpoint));
