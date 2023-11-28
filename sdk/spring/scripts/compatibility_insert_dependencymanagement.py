@@ -150,6 +150,7 @@ def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependenci
                   '<artifactId>spring-boot-starter-parent</artifactId>\n<version>{}</version>'.format(spring_boot_dependencies_version))
               updated_pom_file.writelines(new_content)
 
+
 def get_dependency_management_content():
     return """
   <dependencyManagement>
@@ -172,6 +173,7 @@ def get_dependency_management_content():
   </dependencyManagement>
 """
 
+
 def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version):
     return """
   <properties>
@@ -180,11 +182,13 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
+
 def get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version):
     return """
     <spring.boot.version>{}</spring.boot.version>
     <spring.cloud.version>{}</spring.cloud.version>
   """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+
 
 if __name__ == '__main__':
     main()
