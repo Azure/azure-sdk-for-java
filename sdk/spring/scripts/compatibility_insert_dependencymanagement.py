@@ -60,9 +60,14 @@ def get_repo_position(pom_file_content):
 def get_repo_content_without_tag():
     return """
     <repository>
+      <id>repository.springframework.maven.snapshot</id>
+      <name>Spring Framework Maven SNAPSHOT Repository</name>
+      <url>https://repo.spring.io/snapshot/</url>
+    </repository>
+    <repository>
       <id>repository.springframework.maven.milestone</id>
       <name>Spring Framework Maven Milestone Repository</name>
-      <url>https://repo.spring.io/snapshot/</url>
+      <url>https://repo.spring.io/milestone/</url>
     </repository>
   """
 
@@ -113,7 +118,7 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
         prop_content = dependency_content[:insert_position] + insert_content + dependency_content[insert_position:]
         with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
             updated_pom_file.writelines(prop_content)
-    if spring_cloud_version.endswith("-SNAPSHOT"):
+    if spring_cloud_version.endswith("-SNAPSHOT") or "-RC" in spring_cloud_version:
         with open(file_path, 'r', encoding = 'utf-8') as pom_file:
             pom_file_content = pom_file.read()
             insert_position = get_repo_position(pom_file_content)
