@@ -10,11 +10,14 @@
 * Fixed a bug resulting in `CosmosDiagnosticsContext.getStatusCode()` always returning `0` for `readMany` operations. - See [PR 37394](https://github.com/Azure/azure-sdk-for-java/pull/37394)
 * Fixed an issue where PartitionKeyRange request will not do cross region retry. - See [PR 37403](https://github.com/Azure/azure-sdk-for-java/pull/37403)
 * Fixed an issue where Session consistency was not honored when the consistency level on the `CosmosClientBuilder.consistencyLevel` was not explicitly set to `ConsistencyLevel.SESSION` but the default account consistency level is session. If not enforcing session consistency is the intended behavior, you can set the `CosmsoClientBuilder.consistencyLevel` to `ConsistencyLevel.EVENTUAL`. - See [PR 37377](https://github.com/Azure/azure-sdk-for-java/pull/37377)
-* Fixed an issue where client level `EndToEndOperationLatencyPolicyConfig` is not being applied for `query` - See [PR 37511](https://github.com/Azure/azure-sdk-for-java/pull/37511)
-* 
+* Fixed an issue where client level `EndToEndOperationLatencyPolicyConfig.availabilityStrategy` is not being applied for `query` - See [PR 37511](https://github.com/Azure/azure-sdk-for-java/pull/37511)
+* Fixed an issue where operation is not cancelled based on `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` when `429` happens - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
+* Fixed an issue where `CosmosEndToEndOperationLatencyPolicyConfig.endToEndOperationTimeout` is not applied for `ReadMany` - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
+
 #### Other Changes
 * Modified the event payload when diagnostic details are traced (vis Open telemetry traces). The diagnostics can exceed the max. attribute size of 8KB. This PR will split the diagnostics and trace them in multiple events (ordered by `SequenceNumber` attribute) to ensure the full diagnostics message is available in logged events. - See [PR 37376](https://github.com/Azure/azure-sdk-for-java/pull/37376)
 * Added `sessionRetryCfg` to the diagnostic string and modified `proactiveInit` key name to `proactiveInitCfg` in the diagnostic string. - See [PR 36711](https://github.com/Azure/azure-sdk-for-java/pull/36711)
+* Modified `429` retry backoff time when `retryAfter` is not being returned from server. For `429/3200`, SDK will retry immediately, for others SDK will backoff 100ms - See [PR 37764](https://github.com/Azure/azure-sdk-for-java/pull/37764)
 
 ### 4.52.0 (2023-10-24)
 #### Features Added
