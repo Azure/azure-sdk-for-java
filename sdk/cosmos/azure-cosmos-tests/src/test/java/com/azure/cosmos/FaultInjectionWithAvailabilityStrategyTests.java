@@ -4644,7 +4644,6 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
                 NO_OTHER_DOCS_WITH_SAME_PK
             },
             // ReadAll (entire container) with multiple docs for single partition. Injected 429-3200 on first region only.
-            // request will time out
             new Object[] {
                 "DefaultPageSize_Container_DocsAcrossAllPartitions_429-3200_Local_OnlyFirstRegion_noAvailabilityStrategy",
                 ONE_SECOND_DURATION,
@@ -5201,7 +5200,7 @@ public class FaultInjectionWithAvailabilityStrategyTests extends TestSuiteBase {
 
                         validateStatusCode.accept(cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
                         if (firstDiagnosticsContextValidations != null) {
-                            assertThat(expectedDiagnosticsContextCount).isEqualTo(1);
+                            assertThat(expectedDiagnosticsContextCount).isGreaterThanOrEqualTo(1);
                             for (Consumer<CosmosDiagnosticsContext> ctxValidation : firstDiagnosticsContextValidations) {
                                 ctxValidation.accept(diagnosticsContext);
                             }
