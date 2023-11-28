@@ -81,12 +81,13 @@ public final class TypeUtil {
      */
     public static Type getSuperType(final Type type) {
         Type superType = SUPER_TYPE_MAP.get(type);
+
         if (superType != null) {
             return superType;
         }
 
         return SUPER_TYPE_MAP.computeIfAbsent(type, _type -> {
-            if (type instanceof ParameterizedType) {
+            if (type instanceof ParameterizedType) { // Like Response<?>
                 final ParameterizedType parameterizedType = (ParameterizedType) type;
                 final Type genericSuperClass = ((Class<?>) parameterizedType.getRawType()).getGenericSuperclass();
 
@@ -113,8 +114,18 @@ public final class TypeUtil {
                 } else {
                     return genericSuperClass;
                 }
+            } else if (((Class<?>) type).isInterface()) {
+                Type[] types = ((Class<?>) type).getGenericInterfaces();
+
+                for (Type t : types) {
+                    if (t instanceof ParameterizedType) { // Look if there's something like Response<?>
+                        return t;
+                    }
+                }
+
+                return null; // Return null for this interface
             } else {
-                return ((Class<?>) type).getGenericSuperclass();
+                return ((Class<?>) type).getGenericSuperclass(); // Returns null for an interface
             }
         });
     }

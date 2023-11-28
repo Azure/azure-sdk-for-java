@@ -4,12 +4,12 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
-import com.generic.core.http.StreamResponse;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
+import com.generic.core.implementation.http.SimpleStreamResponse;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
@@ -125,7 +125,7 @@ public class RestProxyImpl extends RestProxyBase {
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
                                                 SwaggerMethodParser methodParser, Type entityType) {
         if (methodParser.isStreamResponse()) {
-            return new StreamResponse(response.getSourceResponse());
+            return new SimpleStreamResponse(response.getSourceResponse());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 

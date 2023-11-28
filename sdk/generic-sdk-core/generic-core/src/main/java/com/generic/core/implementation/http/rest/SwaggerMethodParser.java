@@ -689,7 +689,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     boolean isStreamResponseType(Type type) {
-        return TypeUtil.getRawClass(type).equals(StreamResponse.class);
+        return type instanceof StreamResponse;
     }
 
     /**

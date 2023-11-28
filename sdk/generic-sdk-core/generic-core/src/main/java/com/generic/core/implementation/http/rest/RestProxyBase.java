@@ -10,7 +10,7 @@ import com.generic.core.exception.ResourceModifiedException;
 import com.generic.core.exception.ResourceNotFoundException;
 import com.generic.core.exception.TooManyRedirectsException;
 import com.generic.core.http.Response;
-import com.generic.core.http.SimpleResponse;
+import com.generic.core.http.StreamResponse;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -19,6 +19,8 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.SimpleResponse;
+import com.generic.core.implementation.http.SimpleStreamResponse;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
@@ -122,6 +124,9 @@ public abstract class RestProxyBase {
         if (cls.equals(Response.class)) {
             // For Response return a new instance of SimpleResponse cast to the class.
             return cls.cast(new SimpleResponse<>(request, statusCode, headers, bodyAsObject));
+        } else if (cls.equals(StreamResponse.class)) {
+            // For StreamResponse return a new instance of SimpleStreamResponse cast to the class.
+            return cls.cast(new SimpleStreamResponse(httpResponse));
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response

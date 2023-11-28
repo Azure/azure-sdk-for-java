@@ -3,6 +3,11 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.annotation.ServiceInterface;
+import com.generic.core.exception.HttpResponseException;
+import com.generic.core.http.Response;
+import com.generic.core.http.RestProxy;
+import com.generic.core.http.StreamResponse;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
 import com.generic.core.http.annotation.ExpectedResponses;
@@ -16,12 +21,7 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.Post;
 import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
-import com.generic.core.exception.HttpResponseException;
-import com.generic.core.http.Response;
-import com.generic.core.http.RestProxy;
-import com.generic.core.http.StreamResponse;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
@@ -43,7 +43,6 @@ import com.generic.core.models.RequestOptions;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -53,6 +52,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -84,14 +84,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Generic test suite for {@link HttpClient HttpClients}.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public abstract class HttpClientTests {
+    private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
-
     private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
@@ -102,10 +103,8 @@ public abstract class HttpClientTests {
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+
     protected static final String ECHO_RESPONSE = "echo";
-
-    private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
-
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -118,6 +117,7 @@ public abstract class HttpClientTests {
      * Gets the dynamic URI the server is using to properly route the request.
      *
      * @param secure Flag indicating if the URI should be for a secure connection or not.
+     *
      * @return The URI the server is using.
      */
     protected abstract String getServerUri(boolean secure);
@@ -275,7 +275,6 @@ public abstract class HttpClientTests {
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody);
-
         Supplier<HttpResponse> responseSupplier = () -> createHttpClient().send(request);
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBody().toString());
@@ -321,7 +320,6 @@ public abstract class HttpClientTests {
         Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
         HttpRequest request =
             new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody, context);
-
 
         try (HttpResponse response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
@@ -382,48 +380,50 @@ public abstract class HttpClientTests {
             .flatMap(size -> {
                 try {
                     byte[] bytes = new byte[size];
+
                     ThreadLocalRandom.current().nextBytes(bytes);
 
                     BinaryData byteArrayData = BinaryData.fromBytes(bytes);
-
                     String randomString = new String(bytes, StandardCharsets.UTF_8);
                     byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
                     BinaryData stringBinaryData = BinaryData.fromString(randomString);
-
                     BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
-
                     List<ByteBuffer> bufferList = new ArrayList<>();
                     int bufferSize = 1023;
+
                     for (int startIndex = 0; startIndex < bytes.length; startIndex += bufferSize) {
                         bufferList.add(ByteBuffer.wrap(bytes, startIndex,
                             Math.min(bytes.length - startIndex, bufferSize)));
                     }
 
                     BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
-
-
                     Path wholeFile = Files.createTempFile("http-client-tests", null);
+
                     wholeFile.toFile().deleteOnExit();
+
                     Files.write(wholeFile, bytes);
                     BinaryData fileData = BinaryData.fromFile(wholeFile);
-
                     Path sliceFile = Files.createTempFile("http-client-tests", null);
+
                     sliceFile.toFile().deleteOnExit();
                     Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
                     Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
                     Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+
                     BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
 
-
                     return Stream.of(
-                        Arguments.of(Named.named("byte[]", byteArrayData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("byte[]", byteArrayData),
+                            Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("String", stringBinaryData),
                             Named.named(String.valueOf(randomStringBytes.length), randomStringBytes)),
                         Arguments.of(Named.named("InputStream",
                             streamData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("Object", objectBinaryData), Named.named(String.valueOf(size), bytes)),
+                        Arguments.of(Named.named("Object", objectBinaryData),
+                            Named.named(String.valueOf(size), bytes)),
                         Arguments.of(Named.named("File", fileData), Named.named(String.valueOf(size), bytes)),
-                        Arguments.of(Named.named("File slice", sliceFileData), Named.named(String.valueOf(size), bytes))
+                        Arguments.of(Named.named("File slice", sliceFileData),
+                            Named.named(String.valueOf(size), bytes))
                     );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -442,7 +442,9 @@ public abstract class HttpClientTests {
      * Gets the request URL for given path.
      *
      * @param requestPath The path.
+     *
      * @return The request URL for given path.
+     *
      * @throws RuntimeException if url is invalid.
      */
     protected URL getRequestUrl(String requestPath) {
@@ -454,7 +456,6 @@ public abstract class HttpClientTests {
     }
 
     private static class ByteArraySerializer implements ObjectSerializer {
-
         @Override
         public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
             return null;
@@ -503,7 +504,7 @@ public abstract class HttpClientTests {
         @Get("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
-            @PathParam("numberOfBytes") int numberOfBytes);
+                            @PathParam("numberOfBytes") int numberOfBytes);
     }
 
     /**
@@ -563,7 +564,7 @@ public abstract class HttpClientTests {
         @Get("anything/{path}")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncodedPathParam(@HostParam("url") String url,
-            @PathParam(value = "path", encoded = true) String pathParam);
+                                                    @PathParam(value = "path", encoded = true) String pathParam);
     }
 
     @Test
@@ -646,7 +647,7 @@ public abstract class HttpClientTests {
         @Get("anything")
         @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncoded(@HostParam("url") String url,
-            @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
+                                           @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
     }
 
     @Test
@@ -700,6 +701,7 @@ public abstract class HttpClientTests {
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
+
         final Headers headers = new Headers().setAll(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
@@ -728,7 +730,7 @@ public abstract class HttpClientTests {
         @Post("post")
         @ExpectedResponses({200})
         HttpBinJSON post(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
+                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
     }
 
@@ -759,39 +761,39 @@ public abstract class HttpClientTests {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
-            @HeaderParam("Content-Length") long contentLength);
+                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
+                                            @HeaderParam("Content-Length") long contentLength);
 
         @Put("put")
         @ExpectedResponses({201})
         HttpBinJSON putWithUnexpectedResponse(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+                                              @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+                                                              @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+                                                                        @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+                                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+                                                                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
     }
 
@@ -821,6 +823,7 @@ public abstract class HttpClientTests {
             createService(Service9.class).putBodyAndContentLength(getRequestUri(), body, 5L);
             body.clear();
         });
+
         assertTrue(unexpectedLengthException.getMessage().contains("less than"));
     }
 
@@ -831,6 +834,7 @@ public abstract class HttpClientTests {
             createService(Service9.class).putBodyAndContentLength(getRequestUri(), body, 3L);
             body.clear();
         });
+
         assertTrue(unexpectedLengthException.getMessage().contains("more than"));
     }
 
@@ -843,7 +847,9 @@ public abstract class HttpClientTests {
         assertNotNull(e.getValue());
         assertTrue(e.getValue() instanceof LinkedHashMap);
 
-        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+        @SuppressWarnings("unchecked") final LinkedHashMap<String, String> expectedBody =
+            (LinkedHashMap<String, String>) e.getValue();
+
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
@@ -862,18 +868,19 @@ public abstract class HttpClientTests {
         @Head("anything")
         @ExpectedResponses({200})
         void voidHead(@HostParam("url") String url);
-
     }
 
     @Test
     public void headRequest() {
         final Void body = createService(Service10.class).head(getRequestUri()).getValue();
+
         assertNull(body);
     }
 
     @Test
     public void headBooleanRequest() {
         final boolean result = createService(Service10.class).headBoolean(getRequestUri());
+
         assertTrue(result);
     }
 
@@ -888,8 +895,7 @@ public abstract class HttpClientTests {
         @Delete("delete")
         @ExpectedResponses({200})
         HttpBinJSON delete(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
-
+                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
 
     @Test
@@ -906,9 +912,8 @@ public abstract class HttpClientTests {
         @Patch("patch")
         @ExpectedResponses({200})
         HttpBinJSON patch(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
-
-        }
+                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
+    }
 
     @Test
     public void patchRequest() {
@@ -933,10 +938,13 @@ public abstract class HttpClientTests {
     @Test
     public void headersRequest() {
         final HttpBinJSON json = createService(Service13.class).get(getRequestUri());
+
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
+
         final Headers headers = new Headers().setAll(json.headers());
+
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
         assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
@@ -958,7 +966,7 @@ public abstract class HttpClientTests {
         @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON putByteArray(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
+                                 @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
 
     @Test
@@ -972,6 +980,7 @@ public abstract class HttpClientTests {
 
         final String base64String = (String) httpBinJSON.data();
         final byte[] actualBytes = base64String.getBytes();
+
         assertArrayEquals(expectedBytes, actualBytes);
     }
 
@@ -981,7 +990,7 @@ public abstract class HttpClientTests {
         @Get("get")
         @ExpectedResponses({200})
         HttpBinJSON get(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
-            @HostParam("hostPart2") String hostPart2);
+                        @HostParam("hostPart2") String hostPart2);
     }
 
     @Test
@@ -1069,93 +1078,93 @@ public abstract class HttpClientTests {
     private interface Service19 {
         @Put("put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+                                                      @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
         HttpBinJSON putWithNoContentTypeAndByteArrayBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
         @Put("put")
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_JSON) String body);
+                                                                         @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @Put("put")
         @com.generic.core.http.annotation.Headers({"Content-Type: application/json"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+                                                                            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @Put("put")
         @com.generic.core.http.annotation.Headers({"Content-Type: application/json; charset=utf-8"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+                                                                                   @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
         @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+                                                                                @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
         @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+                                                                                   @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
         @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_JSON) String body);
+                                                                            @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
+                                                                                      @BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
 
         @Put("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+                                                                               @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @Put("put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+                                                                                   @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @Put("put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+                                                                                      @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            null);
+        final HttpBinJSON result =
+            createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "");
+        final HttpBinJSON result =
+            createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(),
-            "hello");
+        final HttpBinJSON result =
+            createService(Service19.class).putWithNoContentTypeAndStringBody(getRequestUri(), "hello");
 
         assertEquals("hello", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            null);
+        final HttpBinJSON result =
+            createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
-        final HttpBinJSON result = createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(),
-            new byte[0]);
+        final HttpBinJSON result =
+            createService(Service19.class).putWithNoContentTypeAndByteArrayBody(getRequestUri(), new byte[0]);
 
         assertEquals("", result.data());
     }
@@ -1447,6 +1456,7 @@ public abstract class HttpClientTests {
     @Test
     public void service20GetVoidResponse() {
         final Response<Void> response = createService(Service20.class).getVoidResponse(getRequestUri());
+
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -1454,15 +1464,18 @@ public abstract class HttpClientTests {
     @Test
     public void service20GetResponseBody() {
         final Response<HttpBinJSON> response = createService(Service20.class).putBody(getRequestUri(), "body string");
+
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
         final HttpBinJSON body = response.getValue();
+
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.url());
         assertEquals("body string", body.data());
 
         final Headers headers = response.getHeaders();
+
         assertNotNull(headers);
     }
 
@@ -1501,24 +1514,28 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "DownloadService")
     interface DownloadService {
-
         @Get("/bytes/30720")
         StreamResponse getBytes(@HostParam("url") String url, Context context);
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
-    public void simpleDownloadTest(Context context) {
+    public void simpleDownloadTest(Context context) throws IOException {
         StreamResponse response = createService(DownloadService.class).getBytes(getRequestUri(), context);
-        ByteBuffer byteBuffer = response.getValue();
+        InputStream inputStream = response.getValue();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-        assertEquals(30720, byteBuffer.remaining());
+        inputStreamToOutputStream(inputStream, byteArrayOutputStream);
+
+        assertEquals(30720, byteArrayOutputStream.toByteArray().length);
 
         StreamResponse otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
-        ByteBuffer otherByteBuffer = otherResponse.getValue();
-        byte[] bytes = new byte[otherByteBuffer.remaining()];
+        InputStream otherInputStream = otherResponse.getValue();
+        ByteArrayOutputStream otherByteArrayOutputStream = new ByteArrayOutputStream();
 
-        otherByteBuffer.get(bytes, 0, byteBuffer.remaining());
+        inputStreamToOutputStream(otherInputStream, otherByteArrayOutputStream);
+
+        byte[] bytes = otherByteArrayOutputStream.toByteArray();
 
         String contentHash = md5(bytes);
         String eTag = otherResponse.getHeaders().getValue(HttpHeaderName.ETAG);
@@ -1536,7 +1553,7 @@ public abstract class HttpClientTests {
     interface BinaryDataUploadService {
         @Put("/put")
         Response<HttpBinJSON> put(@HostParam("url") String host, @BodyParam("text/plain") BinaryData content,
-            @HeaderParam("Content-Length") long contentLength);
+                                  @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
@@ -1546,17 +1563,17 @@ public abstract class HttpClientTests {
 
         final HttpClient httpClient = createHttpClient();
         // Scenario: Log the body so that body buffering/replay behavior is exercised.
-        //
+
         // Order in which policies applied will be the order in which they added to builder
-        //
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(
                 new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
-        //
-        Response<HttpBinJSON> response = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new DefaultJsonSerializer())
-            .put(getServerUri(isSecure()), data, Files.size(filePath));
+
+        Response<HttpBinJSON> response =
+            RestProxy.create(BinaryDataUploadService.class, httpPipeline, new DefaultJsonSerializer())
+                .put(getServerUri(isSecure()), data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
@@ -1571,6 +1588,7 @@ public abstract class HttpClientTests {
     @Test
     public void service22GetBytes() {
         final byte[] bytes = createService(Service22.class).getBytes(getRequestUri() + "/bytes/27");
+
         assertNotNull(bytes);
         assertEquals(27, bytes.length);
     }
@@ -1600,9 +1618,12 @@ public abstract class HttpClientTests {
     @Test
     public void service24Put() {
         final Map<String, String> headerCollection = new HashMap<>();
+
         headerCollection.put("DEF", "GHIJ");
         headerCollection.put("123", "45");
+
         final HttpBinJSON result = createService(Service24.class).put(getRequestUri(), headerCollection);
+
         assertNotNull(result.headers());
 
         final Headers resultHeaders = new Headers().setAll(result.headers());
@@ -1666,22 +1687,23 @@ public abstract class HttpClientTests {
         @Put("put")
         @ExpectedResponses({200})
         HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
-            RequestOptions requestOptions);
+                        RequestOptions requestOptions);
 
         @Put("put")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
-            @HeaderParam("Content-Length") long contentLength, RequestOptions requestOptions);
+                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
+                                            @HeaderParam("Content-Length") long contentLength,
+                                            RequestOptions requestOptions);
     }
 
     @Test
     public void requestOptionsChangesBody() {
         Service27 service = createService(Service27.class);
+        HttpBinJSON response =
+            service.put(getServerUri(isSecure()), 42, new RequestOptions().setBody(BinaryData.fromString("24")));
 
-        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("24")));
         assertNotNull(response);
         assertNotNull(response.data());
         assertTrue(response.data() instanceof String);
@@ -1691,9 +1713,9 @@ public abstract class HttpClientTests {
     @Test
     public void requestOptionsChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
-
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
+
         assertNotNull(response);
         assertNotNull(response.data());
         assertTrue(response.data() instanceof String);
@@ -1706,9 +1728,9 @@ public abstract class HttpClientTests {
     @Test
     public void requestOptionsAddAHeader() {
         Service27 service = createService(Service27.class);
-
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             new RequestOptions().addHeader(RANDOM_HEADER, "randomValue"));
+
         assertNotNull(response);
         assertNotNull(response.data());
         assertTrue(response.data() instanceof String);
@@ -1719,9 +1741,9 @@ public abstract class HttpClientTests {
     @Test
     public void requestOptionsSetsAHeader() {
         Service27 service = createService(Service27.class);
-
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
             new RequestOptions().addHeader(RANDOM_HEADER, "randomValue").setHeader(RANDOM_HEADER, "randomValue2"));
+
         assertNotNull(response);
         assertNotNull(response.data());
         assertTrue(response.data() instanceof String);
@@ -1795,6 +1817,7 @@ public abstract class HttpClientTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
+
         return createService(serviceClass, httpClient);
     }
 
@@ -1808,13 +1831,26 @@ public abstract class HttpClientTests {
 
     private static void assertMatchWithHttpOrHttps(String url1, String url2) {
         final String s1 = "http://" + url1;
+
         if (s1.equalsIgnoreCase(url2)) {
             return;
         }
+
         final String s2 = "https://" + url1;
+
         if (s2.equalsIgnoreCase(url2)) {
             return;
         }
-        Assertions.fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
+
+        fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
+    }
+
+    private static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
+        byte[] buf = new byte[8192];
+        int length;
+
+        while ((length = source.read(buf)) != -1) {
+            target.write(buf, 0, length);
+        }
     }
 }
