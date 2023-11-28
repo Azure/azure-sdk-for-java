@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The analysis response of the image. */
+/**
+ * The analysis response of the image.
+ */
 @Immutable
 public final class AnalyzeImageResult {
     /*
@@ -39,13 +41,16 @@ public final class AnalyzeImageResult {
     @JsonProperty(value = "violenceResult")
     private ImageAnalyzeSeverityResult violenceResult;
 
-    /** Creates an instance of AnalyzeImageResult class. */
+    /**
+     * Creates an instance of AnalyzeImageResult class.
+     */
     @Generated
-    private AnalyzeImageResult() {}
+    private AnalyzeImageResult() {
+    }
 
     /**
      * Get the hateResult property: Analysis result for Hate category.
-     *
+     * 
      * @return the hateResult value.
      */
     @Generated
@@ -55,7 +60,7 @@ public final class AnalyzeImageResult {
 
     /**
      * Get the selfHarmResult property: Analysis result for SelfHarm category.
-     *
+     * 
      * @return the selfHarmResult value.
      */
     @Generated
@@ -65,7 +70,7 @@ public final class AnalyzeImageResult {
 
     /**
      * Get the sexualResult property: Analysis result for Sexual category.
-     *
+     * 
      * @return the sexualResult value.
      */
     @Generated
@@ -75,7 +80,7 @@ public final class AnalyzeImageResult {
 
     /**
      * Get the violenceResult property: Analysis result for Violence category.
-     *
+     * 
      * @return the violenceResult value.
      */
     @Generated

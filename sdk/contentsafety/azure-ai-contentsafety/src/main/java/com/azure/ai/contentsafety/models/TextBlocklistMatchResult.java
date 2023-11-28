@@ -9,7 +9,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of blocklist match. */
+/**
+ * The result of blocklist match.
+ */
 @Immutable
 public final class TextBlocklistMatchResult {
     /*
@@ -49,7 +51,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Creates an instance of TextBlocklistMatchResult class.
-     *
+     * 
      * @param blocklistName the blocklistName value to set.
      * @param blockItemId the blockItemId value to set.
      * @param blockItemText the blockItemText value to set.
@@ -58,12 +60,10 @@ public final class TextBlocklistMatchResult {
      */
     @Generated
     @JsonCreator
-    private TextBlocklistMatchResult(
-            @JsonProperty(value = "blocklistName") String blocklistName,
-            @JsonProperty(value = "blockItemId") String blockItemId,
-            @JsonProperty(value = "blockItemText") String blockItemText,
-            @JsonProperty(value = "offset") int offset,
-            @JsonProperty(value = "length") int length) {
+    private TextBlocklistMatchResult(@JsonProperty(value = "blocklistName") String blocklistName,
+        @JsonProperty(value = "blockItemId") String blockItemId,
+        @JsonProperty(value = "blockItemText") String blockItemText, @JsonProperty(value = "offset") int offset,
+        @JsonProperty(value = "length") int length) {
         this.blocklistName = blocklistName;
         this.blockItemId = blockItemId;
         this.blockItemText = blockItemText;
@@ -73,7 +73,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Get the blocklistName property: The name of matched blocklist.
-     *
+     * 
      * @return the blocklistName value.
      */
     @Generated
@@ -83,7 +83,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Get the blockItemId property: The id of matched item.
-     *
+     * 
      * @return the blockItemId value.
      */
     @Generated
@@ -93,7 +93,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Get the blockItemText property: The content of matched item.
-     *
+     * 
      * @return the blockItemText value.
      */
     @Generated
@@ -103,7 +103,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Get the offset property: The character offset of matched text in original input.
-     *
+     * 
      * @return the offset value.
      */
     @Generated
@@ -113,7 +113,7 @@ public final class TextBlocklistMatchResult {
 
     /**
      * Get the length property: The length of matched text in original input.
-     *
+     * 
      * @return the length value.
      */
     @Generated

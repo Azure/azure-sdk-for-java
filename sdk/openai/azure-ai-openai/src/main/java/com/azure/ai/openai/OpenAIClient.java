@@ -14,7 +14,6 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.implementation.models.BatchImageGenerationOperationResponse;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -26,6 +25,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.ImageOperationResponse;
 import com.azure.ai.openai.models.ImageResponse;
 import com.azure.core.annotation.Generated;
@@ -42,6 +42,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -760,13 +761,7 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -788,8 +783,7 @@ public final class OpenAIClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1480,12 +1474,11 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
+    SyncPoller<PollOperationDetails, ImageGenerations>
         beginBeginAzureBatchImageGeneration(ImageGenerationOptions imageGenerationOptions) {
         // Generated convenience method for beginBeginAzureBatchImageGenerationWithModel
         RequestOptions requestOptions = new RequestOptions();

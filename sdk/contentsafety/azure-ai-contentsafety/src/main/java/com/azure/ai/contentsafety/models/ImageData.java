@@ -30,13 +30,16 @@ public final class ImageData {
     @JsonProperty(value = "blobUrl")
     private String blobUrl;
 
-    /** Creates an instance of ImageData class. */
+    /**
+     * Creates an instance of ImageData class.
+     */
     @Generated
-    public ImageData() {}
+    public ImageData() {
+    }
 
     /**
      * Get the content property: Base64 encoding of image.
-     *
+     * 
      * @return the content value.
      */
     @Generated
@@ -46,7 +49,7 @@ public final class ImageData {
 
     /**
      * Set the content property: Base64 encoding of image.
-     *
+     * 
      * @param content the content value to set.
      * @return the ImageData object itself.
      */
@@ -58,7 +61,7 @@ public final class ImageData {
 
     /**
      * Get the blobUrl property: The blob url of image.
-     *
+     * 
      * @return the blobUrl value.
      */
     @Generated
@@ -68,7 +71,7 @@ public final class ImageData {
 
     /**
      * Set the blobUrl property: The blob url of image.
-     *
+     * 
      * @param blobUrl the blobUrl value to set.
      * @return the ImageData object itself.
      */

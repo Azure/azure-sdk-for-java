@@ -5,7 +5,7 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.OpenAIServiceVersion;
-import com.azure.ai.openai.implementation.models.BatchImageGenerationOperationResponse;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -32,10 +32,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.DefaultPollingStrategy;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -1612,13 +1611,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1640,8 +1633,8 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a polling status update or final response payload for an image operation along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return status details for long running operations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> beginAzureBatchImageGenerationWithResponseAsync(
@@ -1671,13 +1664,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1699,7 +1686,7 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a polling status update or final response payload for an image operation along with {@link Response}.
+     * @return status details for long running operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> beginAzureBatchImageGenerationWithResponse(BinaryData imageGenerationOptions,
@@ -1729,13 +1716,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1757,19 +1738,19 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData>
         beginBeginAzureBatchImageGenerationAsync(BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.beginAzureBatchImageGenerationWithResponseAsync(imageGenerationOptions, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext() : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1793,13 +1774,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1821,19 +1796,19 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(BinaryData imageGenerationOptions,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.beginAzureBatchImageGenerationWithResponse(imageGenerationOptions, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext() : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -1857,13 +1832,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1885,22 +1854,21 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link PollerFlux} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
-        beginBeginAzureBatchImageGenerationWithModelAsync(BinaryData imageGenerationOptions,
-            RequestOptions requestOptions) {
+    public PollerFlux<PollOperationDetails, ImageGenerations> beginBeginAzureBatchImageGenerationWithModelAsync(
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.beginAzureBatchImageGenerationWithResponseAsync(imageGenerationOptions, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BatchImageGenerationOperationResponse.class),
-            TypeReference.createInstance(BatchImageGenerationOperationResponse.class));
+            new com.azure.core.experimental.util.polling.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext() : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(PollOperationDetails.class),
+            TypeReference.createInstance(ImageGenerations.class));
     }
 
     /**
@@ -1923,13 +1891,7 @@ public final class OpenAIClientImpl {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
+     *     status: String (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -1951,21 +1913,21 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the {@link SyncPoller} for polling of status details for long running operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
+    public SyncPoller<PollOperationDetails, ImageGenerations>
         beginBeginAzureBatchImageGenerationWithModel(BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.beginAzureBatchImageGenerationWithResponse(imageGenerationOptions, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(BatchImageGenerationOperationResponse.class),
-            TypeReference.createInstance(BatchImageGenerationOperationResponse.class));
+            new com.azure.core.experimental.util.polling.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/openai".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext() : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion())),
+            TypeReference.createInstance(PollOperationDetails.class),
+            TypeReference.createInstance(ImageGenerations.class));
     }
 
     /**
