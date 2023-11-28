@@ -15,9 +15,11 @@ public class CosmosSchedulers {
      */
     private static final String COSMOS_SPRING_PARALLEL_THREAD_NAME =  "cosmos-spring-parallel";
 
-    // Using a custom parallel scheduler to be able to schedule retries etc.
-    // without being vulnerable to scenarios where applications abuse the
-    // Parallel scheduler and cause thread starvation on Reactor Core parallel scheduler
+    /**
+     * Using a custom parallel scheduler to be able to schedule retries etc.
+     *     without being vulnerable to scenarios where applications abuse the
+     *     Parallel scheduler and cause thread starvation on Reactor Core parallel scheduler
+     */
     public static final Scheduler COSMOS_SPRING_PARALLEL = Schedulers.newParallel(
         COSMOS_SPRING_PARALLEL_THREAD_NAME,
         Schedulers.DEFAULT_POOL_SIZE,
