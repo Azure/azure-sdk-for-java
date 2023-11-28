@@ -32,6 +32,7 @@ public class Configs {
     public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
     public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
+    private final SslContext sslContextForHttpClient;
 
     // The names we use are consistent with the:
     // * Azure environment variable naming conventions documented at https://azure.github.io/azure-sdk/java_implementation.html and
@@ -159,6 +160,7 @@ public class Configs {
 
     public Configs() {
         this.sslContext = sslContextInit();
+        this.sslContextForHttpClient = sslContextInitForHttpClient();
     }
 
     public static int getCPUCnt() {
@@ -166,6 +168,17 @@ public class Configs {
     }
 
     private SslContext sslContextInit() {
+        try {
+            SslProvider sslProvider = SslContext.defaultClientProvider();
+            // return SslContextBuilder.forClient().sslProvider(sslProvider).protocols("TLSv1.3", "TLSv1.2").build();
+            return SslContextBuilder.forClient().sslProvider(sslProvider).protocols("TLSv1.3").build();
+        } catch (SSLException sslException) {
+            logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
+            throw new IllegalStateException(sslException);
+        }
+    }
+
+    private SslContext sslContextInitForHttpClient() {
         try {
             SslProvider sslProvider = SslContext.defaultClientProvider();
             return SslContextBuilder.forClient().sslProvider(sslProvider).build();
@@ -177,6 +190,10 @@ public class Configs {
 
     public SslContext getSslContext() {
         return this.sslContext;
+    }
+
+    public SslContext getSslContextForHttpClient() {
+        return this.sslContextForHttpClient;
     }
 
     public Protocol getProtocol() {

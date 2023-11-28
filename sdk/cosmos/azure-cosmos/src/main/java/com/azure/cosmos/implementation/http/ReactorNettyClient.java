@@ -134,7 +134,7 @@ public class ReactorNettyClient implements HttpClient {
             this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
         }
 
-        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
+        this.httpClient = this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContextForHttpClient()))
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
             .httpResponseDecoder(httpResponseDecoderSpec ->
                 httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
