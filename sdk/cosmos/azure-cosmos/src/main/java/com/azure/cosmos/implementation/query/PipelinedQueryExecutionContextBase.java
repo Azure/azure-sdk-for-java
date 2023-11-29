@@ -95,35 +95,26 @@ public abstract class PipelinedQueryExecutionContextBase<T>
             createSkipComponentFunction = createBaseComponent;
         }
 
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
-        if (queryInfo.hasTop()) {
-            createTopComponentFunction =
-                (continuationToken, documentQueryParams) ->
-                    TopDocumentQueryExecutionContext.createAsync(createSkipComponentFunction,
-                        queryInfo.getTop(),
-                        queryInfo.getTop(),
-                        continuationToken,
-                        documentQueryParams);
-        } else {
-            createTopComponentFunction = createSkipComponentFunction;
-        }
-
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createTakeComponentFunction;
+        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createLimitComponentFunction;
         if (queryInfo.hasLimit()) {
-            return (continuationToken, documentQueryParams) -> {
-                int totalLimit = queryInfo.getLimit();
-                if (queryInfo.hasOffset()) {
-                    // This is being done to match the limit from rewritten query
-                    totalLimit = queryInfo.getOffset() + queryInfo.getLimit();
-                }
-                return TopDocumentQueryExecutionContext.createAsync(createTopComponentFunction,
+            createLimitComponentFunction =
+                (continuationToken, documentQueryParams) ->
+                    TakeDocumentQueryExecutionContext.createLimitAsync(createSkipComponentFunction,
                     queryInfo.getLimit(),
-                    totalLimit,
                     continuationToken,
                     documentQueryParams);
-            };
         } else {
-            return createTopComponentFunction;
+            createLimitComponentFunction = createSkipComponentFunction;
+        }
+
+        if (queryInfo.hasTop()) {
+            return (continuationToken, documentQueryParams) ->
+                TakeDocumentQueryExecutionContext.createTopAsync(createLimitComponentFunction,
+                queryInfo.getTop(),
+                continuationToken,
+                documentQueryParams);
+        } else {
+            return createLimitComponentFunction;
         }
     }
 
