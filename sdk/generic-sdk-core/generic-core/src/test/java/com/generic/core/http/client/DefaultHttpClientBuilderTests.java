@@ -1,14 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.httpurlconnection;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
-import com.generic.core.models.Context;
 import com.generic.core.util.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
@@ -25,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests {@link HttpUrlConnectionClientBuilder}.
+ * Tests {@link DefaultHttpClientBuilder}.
  */
-public class HttpUrlConnectionClientBuilderTests {
+public class DefaultHttpClientBuilderTests {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
@@ -68,7 +66,7 @@ public class HttpUrlConnectionClientBuilderTests {
                 new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()))
                 .setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
 
-            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+            HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(clientProxyOptions)
                 .build();
 
@@ -94,7 +92,7 @@ public class HttpUrlConnectionClientBuilderTests {
 //                        .put("java.net.useSystemProxies", "true"))
 //                .build();
 //
-//            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+//            HttpClient httpClient = new DefaultHttpClientBuilder()
 //                .configuration(configuration)
 //                .build();
 //
@@ -118,7 +116,7 @@ public class HttpUrlConnectionClientBuilderTests {
                 .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
                 .build();
 
-            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+            HttpClient httpClient = new DefaultHttpClientBuilder()
                 .configuration(configuration)
                 .build();
 
@@ -142,7 +140,7 @@ public class HttpUrlConnectionClientBuilderTests {
             Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
             Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
 
-            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+            HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(mockPoxyOptions)
                 .build();
 
@@ -163,7 +161,7 @@ public class HttpUrlConnectionClientBuilderTests {
         ProxyOptions clientProxyOptions = new ProxyOptions(mockProxyType,
             new InetSocketAddress("test.com", 8080));
 
-        assertThrows(IllegalArgumentException.class, () -> new HttpUrlConnectionClientBuilder()
+        assertThrows(IllegalArgumentException.class, () -> new DefaultHttpClientBuilder()
             .proxy(clientProxyOptions)
             .build());
     }
@@ -180,7 +178,7 @@ public class HttpUrlConnectionClientBuilderTests {
             Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
             Mockito.when(mockPoxyOptions.getAddress()).thenReturn(new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
-            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+            HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(mockPoxyOptions)
                 .build();
 
@@ -205,7 +203,7 @@ public class HttpUrlConnectionClientBuilderTests {
             ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
                 new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
-            HttpClient httpClient = new HttpUrlConnectionClientBuilder()
+            HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(clientProxyOptions)
                 .build();
 

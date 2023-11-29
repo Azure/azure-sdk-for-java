@@ -14,7 +14,6 @@ module com.generic.core {
 
     exports com.generic.core.http;
     exports com.generic.core.http.client;
-    exports com.generic.core.http.client.httpurlconnection;
     exports com.generic.core.http.models;
     exports com.generic.core.http.pipeline;
     exports com.generic.core.http.policy.credential;
@@ -24,10 +23,6 @@ module com.generic.core {
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
     exports com.generic.core.http.annotation;
-
-    // Service Provider Interfaces
-    provides com.generic.core.http.client.HttpClientProvider
-        with com.generic.core.http.client.httpurlconnection.HttpUrlConnectionClientProvider;
 
     uses com.generic.core.http.client.HttpClientProvider;
 }

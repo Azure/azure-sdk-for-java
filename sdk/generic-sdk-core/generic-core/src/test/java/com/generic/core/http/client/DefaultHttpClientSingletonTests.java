@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.httpurlconnection;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.util.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
@@ -17,22 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @Execution(ExecutionMode.SAME_THREAD) // Avoiding race conditions caused by singleton
-public class HttpUrlConnectionClientSingletonTests {
+public class DefaultHttpClientSingletonTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
 
     @Test
     public void testSingletonClientInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance();
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance();
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance();
         assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
         Configuration configuration = getConfiguration(false);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance();
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance();
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance();
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance();
         assertNotEquals(client1, client2);
     }
 
@@ -40,16 +39,16 @@ public class HttpUrlConnectionClientSingletonTests {
     public void testCustomizedClientInstanceCreationNotShared() {
         Configuration configuration = getConfiguration(false);
         HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance(clientOptions);
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance(clientOptions);
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance(clientOptions);
         assertNotEquals(client1, client2);
     }
 
     @Test
     public void testNullHttpClientOptionsInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new HttpUrlConnectionClientProvider(configuration).createInstance(null);
-        HttpClient client2 = new HttpUrlConnectionClientProvider(configuration).createInstance(null);
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance(null);
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance(null);
         assertEquals(client1, client2);
     }
 

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.generic.core.util;
 
-
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
@@ -15,6 +14,7 @@ import java.util.function.Function;
 
 /**
  * Helper class that unifies SPI instances creation.
+ *
  * @param <TProvider> Service Provider interface.
  * @param <TInstance> Service interface type.
  */
@@ -31,6 +31,7 @@ public final class Providers<TProvider, TInstance> {
 
     /**
      * Resolves available providers.
+     *
      * @param providerClass Provider class.
      * @param defaultImplementationName Explicit name of implementation provider class to use.
      * @param noProviderErrorMessage Error message to throw and log in case no providers are found.
@@ -43,14 +44,15 @@ public final class Providers<TProvider, TInstance> {
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load TProvider classes.
         ServiceLoader<TProvider> serviceLoader = ServiceLoader.load(providerClass, Providers.class.getClassLoader());
-
         availableProviders = new HashMap<>();
         // Use the first provider found in the service loader iterator.
         Iterator<TProvider> it = serviceLoader.iterator();
+
         if (it.hasNext()) {
             defaultProvider = it.next();
             defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
+
             LOGGER.log(LogLevel.VERBOSE, () -> String.format("Using {%s} as the default {%s}.",
                 defaultProviderName, providerClass.getName()));
         } else {
@@ -61,6 +63,7 @@ public final class Providers<TProvider, TInstance> {
         while (it.hasNext()) {
             TProvider additionalProvider = it.next();
             String additionalProviderName = additionalProvider.getClass().getName();
+
             availableProviders.put(additionalProviderName, additionalProvider);
             LOGGER.log(LogLevel.VERBOSE, () -> String.format("Additional provider found on the classpath: {%s}",
                 additionalProviderName));
@@ -77,27 +80,32 @@ public final class Providers<TProvider, TInstance> {
                 + "including the dependency that provides the specific implementation. If you're including the "
                 + "specific implementation ensure that the %s service it supplies is being included in the "
                 + "'META-INF/services' file '%s'. The requested provider was: %s.",
-                providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
+            providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(),
+            selectedImplementation);
     }
 
     /**
      * Creates instance of service.
      *
-     * @param createInstance callback that creates service instance with resolved provider.
-     * @param fallbackInstance service instance to return if provider is not found. Usually a no-op implementation.
-     *                         If null and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}
-     * @param selectedImplementation Explicit provider implementation class. It still must be registered in META-INF/services.
-     * @return created service instance.
+     * @param createInstance Callback that creates service instance with resolved provider.
+     * @param fallbackInstance Service instance to return if provider is not found. Usually a no-op implementation. If
+     * {@code null} and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}.
+     * @param selectedImplementation Explicit provider implementation class. It still must be registered in
+     * META-INF/services.
      *
-     * @throws IllegalStateException when requested provider cannot be found and fallback instance is null.
+     * @return Created service instance.
+     *
+     * @throws IllegalStateException when requested provider cannot be found and fallback instance is {@code null}.
      */
-    public TInstance create(Function<TProvider, TInstance> createInstance,
-                                TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
+    public TInstance create(Function<TProvider, TInstance> createInstance, TInstance fallbackInstance,
+                            Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
         String implementationName;
+
         if (selectedImplementation == null && noDefaultImplementation) {
             implementationName = defaultProviderName;
             provider = defaultProvider;
+
             if (provider == null) {
                 if (fallbackInstance == null) {
                     throw LOGGER.logThrowableAsError(new IllegalStateException(noProviderMessage));
@@ -106,18 +114,22 @@ public final class Providers<TProvider, TInstance> {
                 return fallbackInstance;
             }
         } else {
-            implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
+            implementationName = selectedImplementation == null ? defaultImplementation
+                : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
+
             if (provider == null) {
-                // no fallback here - user requested specific implementation, and it was not found
-                throw LOGGER.logThrowableAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
+                // No fallback here - user requested specific implementation, and it was not found.
+                throw LOGGER.logThrowableAsError(
+                    new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
             }
         }
 
         try {
             return createInstance.apply(provider);
         } catch (ClassCastException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName), ex));
         }
     }
 }

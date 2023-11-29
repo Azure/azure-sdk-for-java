@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.httpurlconnection;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
@@ -38,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
-public class HttpUrlConnectionClientTest {
+public class DefaultHttpClientTest {
     static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
@@ -95,7 +94,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
@@ -108,7 +107,7 @@ public class HttpUrlConnectionClientTest {
     @Test
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
 
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
@@ -129,7 +128,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void validateHeadersReturnAsIs() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -161,7 +160,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testBufferedResponse() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
@@ -170,7 +169,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testEmptyBufferResponse() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client,"/empty", Context.NONE)) {
             assertEquals(0L, response.getBody().getLength());
@@ -179,7 +178,7 @@ public class HttpUrlConnectionClientTest {
 
     @Test
     public void testRequestBodyPost() {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
@@ -217,7 +216,7 @@ public class HttpUrlConnectionClientTest {
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = new HttpUrlConnectionClientBuilder().build();
+        HttpClient client = new DefaultHttpClientBuilder().build();
         byte[] response = doRequest(client, path).getBody().toBytes();
         assertArrayEquals(expectedBody, response);
     }

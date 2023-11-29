@@ -1,24 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.httpurlconnection;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.util.configuration.Configuration;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
- * Builder to configure and build an instance of the generic-core {@link HttpClient} type using the JDK HttpURLConnection,
- * first introduced in JDK 1.1.
+ * Builder to configure and build an instance of the generic-core {@link HttpClient} type using the JDK
+ * HttpURLConnection, first introduced in JDK 1.1.
  */
-public class HttpUrlConnectionClientBuilder {
+class DefaultHttpClientBuilder {
 
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
@@ -32,7 +28,7 @@ public class HttpUrlConnectionClientBuilder {
     /**
      * HttpUrlConnectionAsyncClientBuilder.
      */
-    public HttpUrlConnectionClientBuilder() {
+    public DefaultHttpClientBuilder() {
     }
 
     /**
@@ -50,7 +46,7 @@ public class HttpUrlConnectionClientBuilder {
      * @param connectionTimeout Connect timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public DefaultHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         this.connectionTimeout = connectionTimeout;
         return this;
     }
@@ -69,7 +65,7 @@ public class HttpUrlConnectionClientBuilder {
      * @param readTimeout Read timeout duration.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionClientBuilder readTimeout(Duration readTimeout) {
+    public DefaultHttpClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
@@ -106,7 +102,7 @@ public class HttpUrlConnectionClientBuilder {
      * @param proxyOptions The proxy configuration to use.
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionClientBuilder proxy(ProxyOptions proxyOptions) {
+    public DefaultHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -120,7 +116,7 @@ public class HttpUrlConnectionClientBuilder {
      * @param configuration The configuration store used to
      * @return The updated HttpUrlConnectionAsyncClientBuilder object.
      */
-    public HttpUrlConnectionClientBuilder configuration(Configuration configuration) {
+    public DefaultHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -149,7 +145,7 @@ public class HttpUrlConnectionClientBuilder {
             throw new IllegalArgumentException("Invalid proxy");
         }
 
-        return new HttpUrlConnectionClient(
+        return new DefaultHttpClient(
             getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
             getTimeout(readTimeout, DEFAULT_READ_TIMEOUT),
             buildProxyOptions);

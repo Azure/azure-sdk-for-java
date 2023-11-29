@@ -1,15 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.httpurlconnection;
+package com.generic.core.http.client;
 
-import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.HttpClientTests;
-import com.generic.core.http.client.HttpClientTestsServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
+public class DefaultHttpClientTests extends HttpClientTests {
 
     private static LocalTestServer server;
     @BeforeAll
@@ -26,7 +23,7 @@ public class HttpUrlConnectionClientHttpClientTests extends HttpClientTests {
     }
     @Override
     protected HttpClient createHttpClient() {
-        return new HttpUrlConnectionClientProvider().createInstance();
+        return new DefaultHttpClientProvider().createInstance();
     }
 
     @Override

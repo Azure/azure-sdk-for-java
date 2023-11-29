@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.client.httpurlconnection.LocalTestServer;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.DateTimeRfc1123;
