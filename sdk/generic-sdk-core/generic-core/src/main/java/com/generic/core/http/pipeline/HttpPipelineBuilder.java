@@ -44,12 +44,16 @@ public class HttpPipelineBuilder {
     }
 
     /**
-     * Creates a new {@link HttpPipeline} instance.
+     * Creates a default {@link HttpPipeline} instance.
      *
-     * @return A new {@link HttpPipeline} instance.
+     * @return A default {@link HttpPipeline} instance.
      */
-    public HttpPipeline createDefaultPipeline() {
-        return null;
+    public static HttpPipeline createDefaultPipeline() {
+        // TODO(vcolin7): Revisit this method. What policies should we add? (Retry, Redirect, Logging, etc.)
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        HttpClient client = HttpClient.createDefault();
+
+        return new HttpPipeline(client, policies);
     }
 
     /**

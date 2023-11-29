@@ -31,7 +31,7 @@ public class HttpPipelineTests {
                 }
             }).build();
 
-        assertEquals(0, pipeline.getPolicyCount());
+        assertEquals(0, pipeline.getPolicies().size());
         assertNotNull(pipeline.getHttpClient());
     }
 
@@ -47,8 +47,8 @@ public class HttpPipelineTests {
                 }
             }).build();
 
-        assertEquals(1, pipeline.getPolicyCount());
-        assertEquals(RetryPolicy.class, pipeline.getPolicy(0).getClass());
+        assertEquals(1, pipeline.getPolicies().size());
+        assertEquals(RetryPolicy.class, pipeline.getPolicies().get(0).getClass());
         assertNotNull(pipeline.getHttpClient());
     }
 

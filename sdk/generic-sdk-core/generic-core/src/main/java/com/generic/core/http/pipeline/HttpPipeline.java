@@ -9,6 +9,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 import com.generic.core.models.Context;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,41 +23,32 @@ import java.util.Objects;
  */
 public final class HttpPipeline {
     private final HttpClient httpClient;
-    private final HttpPipelinePolicy[] pipelinePolicies;
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
-     * {@link HttpPipeline#send(HttpRequest, Context)} and it's response.
+     * Creates an {@link HttpPipeline} holding a list of policies that gets applied to all requests initiated through
+     * {@link HttpPipeline#send(HttpRequest, Context)} and its responses.
      *
-     * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
-     * hence changing the original array after the creation of pipeline will not  mutate the pipeline
+     * @param httpClient The {@link HttpClient} to write requests to the wire and receive a responses from it.
+     * @param pipelinePolicies {@link HttpPipelinePolicy Pipeline policies} in the order they need to be applied, a copy
+     * of this list will be made hence changing the original after the creation of the pipeline will not mutate the
+     * pipeline.
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         Objects.requireNonNull(pipelinePolicies, "'pipelinePolicies' cannot be null.");
+
         this.httpClient = httpClient;
-        this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
+        this.pipelinePolicies = Collections.unmodifiableList(pipelinePolicies);
     }
 
     /**
-     * Get the policy at the passed index in the pipeline.
+     * Get an immutable list of this pipeline's policies.
      *
-     * @param index index of the policy to retrieve.
-     *
-     * @return The policy stored at that index.
+     * @return An immutable list of this pipeline's policies.
      */
-    public HttpPipelinePolicy getPolicy(final int index) {
-        return this.pipelinePolicies[index];
-    }
-
-    /**
-     * Get the count of policies in the pipeline.
-     *
-     * @return Count of policies.
-     */
-    public int getPolicyCount() {
-        return this.pipelinePolicies.length;
+    public List<HttpPipelinePolicy> getPolicies() {
+        return this.pipelinePolicies;
     }
 
     /**

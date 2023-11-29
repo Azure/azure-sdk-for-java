@@ -36,7 +36,7 @@ public class HttpPipelineCallState implements Cloneable {
      * @throws IllegalStateException when there are no more policies to execute.
      */
     public HttpPipelinePolicy getNextPolicy() {
-        final int size = this.pipeline.getPolicyCount();
+        final int size = this.pipeline.getPolicies().size();
 
         this.currentPolicyIndex++;
 
@@ -45,7 +45,7 @@ public class HttpPipelineCallState implements Cloneable {
         } else if (this.currentPolicyIndex == size) {
             return null;
         } else {
-            return this.pipeline.getPolicy(this.currentPolicyIndex);
+            return this.pipeline.getPolicies().get(this.currentPolicyIndex);
         }
     }
 
@@ -64,7 +64,7 @@ public class HttpPipelineCallState implements Cloneable {
      * @return The current {@link HttpPipelinePolicy} in queue in the {@link HttpPipeline}.
      */
     public HttpPipelinePolicy getCurrentPolicy() {
-        return this.pipeline.getPolicy(this.currentPolicyIndex);
+        return this.pipeline.getPolicies().get(this.currentPolicyIndex);
     }
 
     /**
