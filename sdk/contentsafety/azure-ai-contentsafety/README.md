@@ -22,6 +22,8 @@ Various documentation is available to help you get started
 - An existing [Azure AI Content Safety][contentsafety_overview] instance.
 
 ### Adding the package to your product
+
+[//]: # ({x-version-update-start;com.azure:azure-ai-contentsafety;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -48,19 +50,19 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 ```bash
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
-#### Create a ContentSafetyClient with Azure Active Directory (AAD) token credential
-To use an [Azure Active Directory (AAD) token credential](https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/identity/identity/samples/AzureIdentityExamples.md#authenticating-with-a-pre-fetched-access-token),
-provide an instance of the desired credential type obtained from the
-[@azure/identity](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#credentials) library.
+#### Create a ContentSafetyClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
+- Step 1: Enable AAD for your resource
+  Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
 
-To authenticate with AAD, you must first `npm` install [`@azure/identity`](https://www.npmjs.com/package/@azure/identity)
+  The main steps are:
+    - Create resource with a custom subdomain.
+    - Create Service Principal and assign Cognitive Services User role to it.
 
-After setup, you can choose which type of [credential](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#credentials) from `@azure/identity` to use.
-As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/identity/identity#defaultazurecredential)
+- Step 2: Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
+
+After setup, you can choose which type of [credential](https://learn.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) from TokenCredential Interface to use.
+As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#authenticate-with-defaultazurecredential)
 can be used to authenticate the client.
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`
 ```java com.azure.ai.contentsafety.createcontentsafetyclienttoken 
 ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -157,7 +159,7 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
 AnalyzeTextOptions request = new AnalyzeTextOptions("I h*te you and I want to k*ll you");
-request.setBlocklistNames(new ArrayList<>(Collections.singleton(blocklistName)));
+request.setBlocklistNames(Arrays.asList(blocklistName));
 request.setHaltOnBlocklistHit(true);
 
 AnalyzeTextResult analyzeTextResult;
@@ -311,5 +313,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_portal]: https://ms.portal.azure.com/
 [azure_cli_endpoint_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_cli_key_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
-
+[authenticate_with_microsoft_entra_id]: https://learn.microsoft.com/azure/ai-services/authentication?tabs=powershell#authenticate-with-microsoft-entra-id
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcontentsafety%2Fazure-ai-contentsafety%2FREADME.png)

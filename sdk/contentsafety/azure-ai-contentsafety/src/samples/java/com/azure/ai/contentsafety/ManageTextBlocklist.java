@@ -21,7 +21,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
@@ -76,7 +75,7 @@ public class ManageTextBlocklist {
             .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
         AnalyzeTextOptions request = new AnalyzeTextOptions("I h*te you and I want to k*ll you");
-        request.setBlocklistNames(new ArrayList<>(Collections.singleton(blocklistName)));
+        request.setBlocklistNames(Arrays.asList(blocklistName));
         request.setHaltOnBlocklistHit(true);
 
         AnalyzeTextResult analyzeTextResult;

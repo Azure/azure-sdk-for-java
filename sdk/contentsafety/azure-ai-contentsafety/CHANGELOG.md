@@ -4,7 +4,7 @@
 
 ### Features Added
 - Support AAD Authentication
-- Support 8 severity level for text:analyze API
+- Support 8 severity level for AnalyzeText
 ### Breaking Changes
 Contract change for AnalyzeText, AnalyzeImage, Blocklist management related methods
 #### AnalyzeText
