@@ -251,6 +251,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGenerateImageLegacy(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getImageGenerationLegacyRunner((modelId, imageGenerationOptions) ->
+                StepVerifier.create(client.getImageGenerations(modelId, imageGenerationOptions))
+                        .assertNext(OpenAIClientTestBase::assertImageGenerations)
+                        .verifyComplete());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
