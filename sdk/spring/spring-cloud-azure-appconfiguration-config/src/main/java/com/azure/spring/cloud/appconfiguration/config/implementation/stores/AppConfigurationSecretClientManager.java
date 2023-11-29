@@ -7,13 +7,12 @@ import java.time.Duration;
 
 import org.springframework.util.StringUtils;
 
-import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.spring.cloud.appconfiguration.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
-import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 
 /**
  * Client for connecting to and getting secrets from a Key Vault
@@ -27,10 +26,6 @@ public final class AppConfigurationSecretClientManager {
     private final String endpoint;
 
     private final KeyVaultSecretProvider keyVaultSecretProvider;
-
-    private final SecretClientBuilderFactory secretClientFactory;
-
-    private final boolean credentialConfigured;
     
     private final int timeout;
 
@@ -40,27 +35,20 @@ public final class AppConfigurationSecretClientManager {
      * @param keyVaultClientProvider optional provider for overriding the Key Vault Client
      * @param keyVaultSecretProvider optional provider for providing Secrets instead of connecting to Key Vault
      * @param secretClientFactory Factory for building clients to Key Vault
-     * @param credentialConfigured Is a credential configured with Global Configurations or Service Configurations
-     * @param timeout How long the connection to key vault is kept open without a response.
      */
     public AppConfigurationSecretClientManager(String endpoint, SecretClientCustomizer keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
-        boolean credentialConfigured, int timeout) {
+        KeyVaultSecretProvider keyVaultSecretProvider, int timeout) {
         this.endpoint = endpoint;
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
-        this.secretClientFactory = secretClientFactory;
-        this.credentialConfigured = credentialConfigured;
         this.timeout = timeout;
     }
 
     AppConfigurationSecretClientManager build() {
-        SecretClientBuilder builder = secretClientFactory.build();
+        SecretClientBuilder builder = getBuilder();
 
-        if (!credentialConfigured) {
-            // System Assigned Identity.
-            builder.credential(new ManagedIdentityCredentialBuilder().build());
-        }
+        builder.credential(new DefaultAzureCredentialBuilder().build());
+        
         builder.vaultUrl(endpoint);
 
         if (keyVaultClientProvider != null) {
@@ -70,6 +58,10 @@ public final class AppConfigurationSecretClientManager {
         secretClient = builder.buildAsyncClient();
 
         return this;
+    }
+    
+    SecretClientBuilder getBuilder() {
+        return new SecretClientBuilder();
     }
 
     /**

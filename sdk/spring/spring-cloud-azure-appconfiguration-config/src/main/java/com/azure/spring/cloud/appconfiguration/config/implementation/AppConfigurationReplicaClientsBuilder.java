@@ -5,15 +5,12 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 import org.springframework.boot.context.config.Profiles;
-import org.springframework.boot.convert.DurationStyle;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
@@ -22,17 +19,11 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
-import com.azure.spring.cloud.core.service.AzureServiceType;
-import com.azure.spring.cloud.core.service.AzureServiceType.AppConfiguration;
-import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientsBuilder {
 
@@ -70,24 +61,14 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private ConfigurationClientCustomizer clientProvider;
 
-    private final ConfigurationClientBuilderFactory clientFactory;
-
     private boolean isDev = false;
 
     private boolean isKeyVaultConfigured = false;
 
-    private final boolean credentialConfigured;
-
     private final int defaultMaxRetries;
 
-    private final ConfigDataLocationResolverContext context;
-
-    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
-        boolean credentialConfigured, ConfigDataLocationResolverContext context) {
+    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries) {
         this.defaultMaxRetries = defaultMaxRetries;
-        this.clientFactory = clientFactory;
-        this.credentialConfigured = credentialConfigured;
-        this.context = context;
     }
 
     /**
@@ -141,14 +122,6 @@ public class AppConfigurationReplicaClientsBuilder {
                 "More than 1 Connection method was set for connecting to App Configuration.");
         }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-            || configStore.getConnectionStrings().size() > 0;
-
-        if (credentialConfigured && connectionStringIsPresent) {
-            throw new IllegalArgumentException(
-                "More than 1 Connection method was set for connecting to App Configuration.");
-        }
-
         List<String> connectionStrings = configStore.getConnectionStrings();
         List<String> endpoints = configStore.getEndpoints();
 
@@ -162,31 +135,25 @@ public class AppConfigurationReplicaClientsBuilder {
 
         if (connectionStrings.size() > 0) {
             for (String connectionString : connectionStrings) {
-                clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString));
                 String endpoint = getEndpointFromConnectionString(connectionString);
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
                 ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
 
                 clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
             }
-        } else {
-            for (String endpoint : endpoints) {
-                ConfigurationClientBuilder builder = this.createBuilderInstance();
-                if (!credentialConfigured) {
-                    // System Assigned Identity. Needs to be checked last as all of the above should
-                    // have an Endpoint.
-                    LOGGER.debug(
-                        "Connecting to {} using Azure System Assigned Identity or Azure User Assigned Identity.",
-                        endpoint);
-                    ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
-                    builder.credential(micBuilder.build());
-                }
-
-                builder.endpoint(endpoint);
-
-                clients.add(modifyAndBuildClient(builder, endpoint, endpoints.size() - 1));
-            }
+            return clients;
         }
+        for (String endpoint : endpoints) {
+            ConfigurationClientBuilder builder = this.createBuilderInstance();
+
+            // By default we just use a
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+
+            builder.endpoint(endpoint);
+
+            clients.add(modifyAndBuildClient(builder, endpoint, endpoints.size() - 1));
+        }
+
         return clients;
     }
 
@@ -212,29 +179,10 @@ public class AppConfigurationReplicaClientsBuilder {
     }
 
     protected ConfigurationClientBuilder createBuilderInstance() {
-        RetryStrategy retryStatagy = null;
+        RetryStrategy retryStatagy = new ExponentialBackoff(defaultMaxRetries, DEFAULT_MIN_RETRY_POLICY,
+            DEFAULT_MAX_RETRY_POLICY);
 
-        String mode = context.getBinder()
-            .bind(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME, String.class).orElse(null);
-        String modeService = context.getBinder()
-            .bind(AzureAppConfigurationProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME, String.class).orElse(null);
-
-        if ("exponential".equals(mode) || "exponential".equals(modeService) || (mode == null && modeService == null)) {
-            Function<String, Integer> checkPropertyInt = parameter -> (Integer.parseInt(parameter));
-            Function<String, Duration> checkPropertyDuration = parameter -> (DurationStyle.detectAndParse(parameter));
-
-            int retries = checkProperty(MAX_RETRIES_PROPERTY_NAME, defaultMaxRetries,
-                " isn't a valid integer, using default value.", checkPropertyInt);
-
-            Duration baseDelay = checkProperty(BASE_DELAY_PROPERTY_NAME, DEFAULT_MIN_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-            Duration maxDelay = checkProperty(MAX_DELAY_PROPERTY_NAME, DEFAULT_MAX_RETRY_POLICY,
-                " isn't a valid Duration, using default value.", checkPropertyDuration);
-
-            retryStatagy = new ExponentialBackoff(retries, baseDelay, maxDelay);
-        }
-
-        ConfigurationClientBuilder builder = clientFactory.build();
+        ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
 
         if (retryStatagy != null) {
             builder.retryPolicy(new RetryPolicy(retryStatagy));
@@ -243,47 +191,4 @@ public class AppConfigurationReplicaClientsBuilder {
         return builder;
     }
 
-    private <T> T checkProperty(String propertyName, T defaultValue, String errMsg, Function<String, T> fn) {
-        String envValue = context.getBinder().bind(AzureGlobalProperties.PREFIX + "." + propertyName, String.class)
-            .orElse(null);
-        String envServiceValue = context.getBinder()
-            .bind(AzureAppConfigurationProperties.PREFIX + "." + propertyName, String.class).orElse(null);
-        T value = defaultValue;
-
-        if (envServiceValue != null) {
-            try {
-                value = fn.apply(envServiceValue);
-            } catch (Exception e) {
-                LOGGER.warn("{}.{} {}", AzureAppConfigurationProperties.PREFIX, propertyName, errMsg);
-            }
-        } else if (envValue != null) {
-            try {
-                value = fn.apply(envValue);
-            } catch (Exception e) {
-                LOGGER.warn("{}.{} {}", AzureGlobalProperties.PREFIX, propertyName, errMsg);
-            }
-        }
-
-        return value;
-    }
-
-    private static class ConnectionStringConnector
-        implements ServiceConnectionStringProvider<AzureServiceType.AppConfiguration> {
-
-        private final String connectionString;
-
-        ConnectionStringConnector(String connectionString) {
-            this.connectionString = connectionString;
-        }
-
-        @Override
-        public String getConnectionString() {
-            return connectionString;
-        }
-
-        @Override
-        public AppConfiguration getServiceType() {
-            return null;
-        }
-    }
 }

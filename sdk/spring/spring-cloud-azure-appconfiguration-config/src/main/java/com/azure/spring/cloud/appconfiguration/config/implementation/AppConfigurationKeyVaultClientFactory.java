@@ -8,36 +8,25 @@ import java.util.Map;
 import com.azure.spring.cloud.appconfiguration.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.stores.AppConfigurationSecretClientManager;
-import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 
 public class AppConfigurationKeyVaultClientFactory {
 
     private final Map<String, AppConfigurationSecretClientManager> keyVaultClients;
 
-    // TODO (mametcal) How do I get customer beans
     private final SecretClientCustomizer keyVaultClientProvider;
 
-    // TODO (mametcal) How do I get customer beans
     private final KeyVaultSecretProvider keyVaultSecretProvider;
-
-    private final SecretClientBuilderFactory secretClientFactory;
-
-    // TODO (mametcal) This no longer takes KeyVaultSecretProvider/SecretClientCustimizer into account
-    private final boolean credentialsConfigured;
 
     private final boolean isConfigured;
 
     private final int timeout;
 
     public AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,
-        KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
-        boolean credentialsConfigured, int timeout) {
+        KeyVaultSecretProvider keyVaultSecretProvider, int timeout) {
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
-        this.secretClientFactory = secretClientFactory;
         keyVaultClients = new HashMap<>();
-        this.credentialsConfigured = credentialsConfigured;
-        isConfigured = keyVaultClientProvider != null || credentialsConfigured;
+        isConfigured = keyVaultClientProvider != null;
         this.timeout = timeout;
     }
 
@@ -46,7 +35,7 @@ public class AppConfigurationKeyVaultClientFactory {
         // one
         if (!keyVaultClients.containsKey(host)) {
             AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(host,
-                keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured, timeout);
+                keyVaultClientProvider, keyVaultSecretProvider, timeout);
             keyVaultClients.put(host, client);
         }
         return keyVaultClients.get(host);

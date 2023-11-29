@@ -23,13 +23,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientBuilderTest {
 
@@ -45,12 +43,6 @@ public class AppConfigurationReplicaClientBuilderTest {
     AppConfigurationReplicaClientsBuilder clientBuilder;
 
     private ConfigStore configStore;
-    
-    @Mock
-    private ConfigurationClientBuilderFactory clientFactoryMock;
-    
-    @Mock
-    private ConfigDataLocationResolverContext contextMock;
 
     @BeforeEach
     public void setup() {
@@ -62,12 +54,11 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.validateAndInit();
 
         clientBuilder = null;
-        when(clientFactoryMock.build()).thenReturn(builderMock);
     }
 
     @Test
     public void buildClientFromEndpointTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -88,11 +79,10 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-        
-        when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
 
+        when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
 
         List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
 
@@ -105,7 +95,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         clientBuilder.setClientProvider(modifierMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
@@ -121,7 +111,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
         assertEquals(0, replicaClient.getFailedAttempts());
 
-        verify(modifierMock, times(1)).customize(Mockito.eq(builderMock), Mockito.eq(TEST_ENDPOINT));
+        verify(modifierMock, times(1)).customize(Mockito.any(), Mockito.eq(TEST_ENDPOINT));
     }
 
     @Test
@@ -136,7 +126,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -161,7 +151,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -185,7 +175,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false, contextMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
