@@ -7,6 +7,7 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
+import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.rest.ResponseConstructorsCache;
 import com.generic.core.models.Headers;

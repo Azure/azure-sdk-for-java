@@ -3,16 +3,15 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.annotation.ServiceInterface;
+import com.generic.core.http.MockHttpResponse;
+import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.ExpectedResponses;
 import com.generic.core.http.annotation.Get;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.Post;
-import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.MockHttpResponse;
-import com.generic.core.http.Response;
-import com.generic.core.http.RestProxy;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
@@ -20,6 +19,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
+import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;

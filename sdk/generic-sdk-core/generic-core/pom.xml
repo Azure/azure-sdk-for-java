@@ -55,8 +55,8 @@
       --add-opens com.generic.core/com.generic.core.http.policy.retry=ALL-UNNAMED
 
       --add-opens com.generic.core/com.generic.core.implementation=ALL-UNNAMED
-      --add-opens com.generic.core/com.generic.core.implementation.http.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.http=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.implementation.http.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.configuration=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.logging=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.serializer=ALL-UNNAMED

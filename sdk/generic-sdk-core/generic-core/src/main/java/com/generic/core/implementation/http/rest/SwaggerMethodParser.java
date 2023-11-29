@@ -3,6 +3,9 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.exception.HttpResponseException;
+import com.generic.core.http.Response;
+import com.generic.core.http.StreamResponse;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
 import com.generic.core.http.annotation.ExpectedResponses;
@@ -19,14 +22,11 @@ import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.ReturnValueWireType;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
-import com.generic.core.exception.HttpResponseException;
-import com.generic.core.http.Response;
-import com.generic.core.http.RestProxy;
-import com.generic.core.http.StreamResponse;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.Base64Url;

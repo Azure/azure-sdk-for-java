@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http;
+package com.generic.core.implementation.http;
 
 import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.implementation.http.rest.RestProxyUtils;
-import com.generic.core.models.RequestOptions;
 import com.generic.core.implementation.http.rest.RestProxyImpl;
+import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
+import com.generic.core.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.lang.reflect.InvocationHandler;
