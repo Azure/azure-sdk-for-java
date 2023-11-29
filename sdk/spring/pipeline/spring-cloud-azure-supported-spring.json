@@ -413,7 +413,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "2.7.18",
-    "spring-cloud-version" : "2021.0.8"
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
   {
     "current" : false,
