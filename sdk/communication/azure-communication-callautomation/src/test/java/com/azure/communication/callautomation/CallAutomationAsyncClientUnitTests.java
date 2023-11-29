@@ -63,6 +63,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createGroupCallWithResponse(callOptions).block();
 
@@ -79,11 +80,11 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                 new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
-        //List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         CreateCallOptions callOptions = new CreateCallOptions(callInvite, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
         callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
 
@@ -115,7 +116,9 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
+            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
             answerCallOptions).block();
 

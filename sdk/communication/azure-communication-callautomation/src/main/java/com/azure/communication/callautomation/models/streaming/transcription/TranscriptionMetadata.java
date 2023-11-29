@@ -31,6 +31,13 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     private final String correlationId;
 
+    /**
+     * Creates an instance of TranscriptionMetadata class.
+     * @param transcriptionSubscriptionId Transcription Subscription Id.
+     * @param locale The target locale in which the translated text needs to be
+     * @param callConnectionId Call connection id
+     * @param correlationId Correlation id
+     */
     public TranscriptionMetadata(String transcriptionSubscriptionId, String locale, String callConnectionId, String correlationId) {
         this.transcriptionSubscriptionId = transcriptionSubscriptionId;
         this.locale = locale;

@@ -6,6 +6,7 @@ package com.azure.communication.callautomation.models.streaming.transcription;
 import com.azure.communication.callautomation.models.streaming.StreamingData;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public final class TranscriptionData extends StreamingData {
 
+    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionData.class);
 
     /*
      * The display form of the recognized word
@@ -50,6 +52,17 @@ public final class TranscriptionData extends StreamingData {
      */
     private final ResultStatus resultStatus;
 
+    /**
+     * The TranscriptionData constructor
+     *
+     * @param text The display form of the recognized word
+     * @param format The format of text
+     * @param confidence Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
+     * @param offset The position of this payload
+     * @param words The result for each word of the phrase
+     * @param participantRawID The identified speaker based on participant raw ID
+     * @param resultStatus Status of the result of transcription
+     */
     public TranscriptionData(String text, String format, double confidence, long offset, List<Word> words, String participantRawID, String resultStatus) {
         this.text = text;
         this.format = convertToTextFormatEnum(format);
@@ -70,7 +83,8 @@ public final class TranscriptionData extends StreamingData {
         } else if ("Final".equalsIgnoreCase(resultStatus)) {
             return ResultStatus.FINAL;
         } else {
-            throw new IllegalArgumentException(resultStatus);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(resultStatus));
+
         }
     }
 
@@ -78,7 +92,7 @@ public final class TranscriptionData extends StreamingData {
         if ("Display".equalsIgnoreCase(format)) {
             return TextFormat.DISPLAY;
         } else {
-            throw new IllegalArgumentException(format);
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(format));
         }
     }
 

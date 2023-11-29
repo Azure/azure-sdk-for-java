@@ -86,7 +86,8 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
+            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
             answerCallOptions, Context.NONE);

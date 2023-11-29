@@ -200,13 +200,16 @@ directive:
     from: SendDtmfRequest
     to: SendDtmfRequestInternal
 - rename-model:
+    from: TranscriptionConfiguration
+    to: TranscriptionConfigurationInternal
+- rename-model:
     from: StartTranscriptionRequest
     to: StartTranscriptionRequestInternal
 - rename-model:
     from: StopTranscriptionRequest
     to: StopTranscriptionRequestInternal
 - rename-model:
-    from: UpdateTranscriptionDateRequest
+    from: UpdateTranscriptionDataRequest
     to: UpdateTranscriptionDataRequestInternal
 - rename-model:
     from: StartDialogRequest
@@ -367,13 +370,22 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportType
+### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingTransportTypeInternal";
+```
+
+### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
+  transform: >
+    $.name = "TranscriptionTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal

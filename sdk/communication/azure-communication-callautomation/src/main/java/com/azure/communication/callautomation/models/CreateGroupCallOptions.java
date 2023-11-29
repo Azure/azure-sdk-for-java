@@ -31,6 +31,16 @@ public final class CreateGroupCallOptions {
     private String operationContext;
 
     /**
+     * Media Streaming Configuration.
+     */
+    private MediaStreamingOptions mediaStreamingOptions;
+
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -44,11 +54,6 @@ public final class CreateGroupCallOptions {
      * AI options for the call
      */
     private CallIntelligenceOptions callIntelligenceOptions;
-
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
 
     /**
      * Custom Context
@@ -97,6 +102,24 @@ public final class CreateGroupCallOptions {
     }
 
     /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+    /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
+    /**
      * get caller's display name
      * @return display name for caller
      */
@@ -120,6 +143,40 @@ public final class CreateGroupCallOptions {
      */
     public CreateGroupCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingOptions The media streaming configuration.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateGroupCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 

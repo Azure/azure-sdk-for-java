@@ -10,6 +10,39 @@ import com.azure.communication.callautomation.implementation.models.ContinuousDt
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
+import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
+import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.PlayRequest;
+import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
+import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
+import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
+import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
+import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionDataRequestInternal;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
+import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -40,6 +73,10 @@ import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.SsmlSource;
+import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -733,7 +770,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startTranscription() {
-        return startTranscriptionWithResponseAsync(null, null).then();
+        return startTranscriptionWithResponseAsync(null).then();
     }
 
     /**
@@ -744,13 +781,13 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options) {
-        return withContext(context -> startTranscriptionWithResponseAsync(options, context));
+        return withContext(context -> startTranscriptionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options, Context context) {
+    Mono<Response<Void>> startTranscriptionWithResponseInternal(StartTranscriptionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            StartTranscriptionRequest request = new StartTranscriptionRequest();
+            StartTranscriptionRequestInternal request = new StartTranscriptionRequestInternal();
             if (options != null) {
                 request.setLocale(options.getLocale());
                 request.setOperationContext(options.getOperationContext());
@@ -761,6 +798,7 @@ public final class CallMediaAsync {
             return monoError(logger, ex);
         }
     }
+
     /**
      * Stops transcription in the call.
      *
@@ -768,7 +806,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopTranscription() {
-        return stopTranscriptionWithResponseAsync(null, null).then();
+        return stopTranscriptionWithResponseAsync(null).then();
     }
 
     /**
@@ -779,18 +817,41 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options) {
-        return withContext(context -> stopTranscriptionWithResponseAsync(options, context));
+        return withContext(context -> stopTranscriptionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options, Context context) {
+    Mono<Response<Void>> stopTranscriptionWithResponseInternal(StopTranscriptionOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            StopTranscriptionRequest request = new StopTranscriptionRequest();
+            StopTranscriptionRequestInternal request = new StopTranscriptionRequestInternal();
             if (options != null) {
                 request.setOperationContext(options.getOperationContext());
             }
             return contentsInternal
                 .stopTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates transcription language
+     *
+     * @param locale Defines new locale for transcription.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTranscription(String locale) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(locale, context)).then();
+    }
+
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            UpdateTranscriptionDataRequestInternal request = new UpdateTranscriptionDataRequestInternal();
+            request.setLocale(locale);
+            return contentsInternal
+                .updateTranscriptionDataWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

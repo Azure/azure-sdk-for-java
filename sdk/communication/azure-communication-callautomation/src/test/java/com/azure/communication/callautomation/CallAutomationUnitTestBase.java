@@ -20,6 +20,8 @@ import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -55,6 +57,13 @@ public class CallAutomationUnitTestBase {
         MediaStreamingTransport.WEBSOCKET,
         MediaStreamingContent.AUDIO,
         MediaStreamingAudioChannel.MIXED
+    );
+
+    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
+        "https://websocket.url.com",
+        TranscriptionTransportType.WEBSOCKET,
+        "en-US",
+        true
     );
 
     public static String generateDownloadResult(String content) {

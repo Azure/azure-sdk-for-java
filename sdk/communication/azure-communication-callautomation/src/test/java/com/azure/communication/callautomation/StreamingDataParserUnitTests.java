@@ -160,29 +160,29 @@ public class StreamingDataParserUnitTests {
     @Test
     public void parseTranscriptionData() {
         String transcriptionJson =
-        "{" +
-            "\"kind\":\"TranscriptionData\"," +
-            "\"transcriptionData\":" +
-            "{" +
-                "\"text\":\"Hello World!\"," +
-                "\"format\":\"display\"," +
-                "\"confidence\":0.98," +
-                "\"offset\":1," +
-                "\"words\":" +
-                "[" +
-                    "{" +
-                        "\"text\":\"Hello\"," +
-                        "\"offset\":1" +
-                    "}," +
-                    "{" +
-                        "\"text\":\"World\"," +
-                        "\"offset\":6" +
-                    "}" +
-                "]," +
-                "\"participantRawID\":\"abc12345\"," +
-                "\"resultStatus\":\"final\"" +
-            "}" +
-        "}";
+            "{"
+               + "\"kind\":\"TranscriptionData\","
+                + "\"transcriptionData\":"
+                + "{"
+                    + "\"text\":\"Hello World!\","
+                    + "\"format\":\"display\","
+                    + "\"confidence\":0.98,"
+                    + "\"offset\":1,"
+                    + "\"words\":"
+                    + "["
+                        + "{"
+                            + "\"text\":\"Hello\","
+                            + "\"offset\":1"
+                        + "},"
+                        + "{"
+                            + "\"text\":\"World\","
+                            + "\"offset\":6"
+                        + "}"
+                    + "],"
+                    + "\"participantRawID\":\"abc12345\","
+                    + "\"resultStatus\":\"final\""
+                + "}"
+            + "}";
         TranscriptionData transcriptionData = (TranscriptionData) StreamingDataParser.parse(transcriptionJson);
         assertNotNull(transcriptionData);
         validateTranscriptionData(transcriptionData);
@@ -191,16 +191,16 @@ public class StreamingDataParserUnitTests {
     @Test
     public void parseTranscriptionMetadata() {
         String transcriptionMetadataJson =
-        "{" +
-            "\"kind\":\"TranscriptionMetadata\"," +
-            "\"transcriptionMetadata\":" +
-            "{" +
-                "\"subscriptionId\":\"subscriptionId\"," +
-                "\"locale\":\"en-US\"," +
-                "\"callConnectionId\":\"callConnectionId\"," +
-                "\"correlationId\":\"correlationId\"" +
-            "}" +
-        "}";
+            "{"
+                + "\"kind\":\"TranscriptionMetadata\","
+                + "\"transcriptionMetadata\":"
+                + "{"
+                + "\"subscriptionId\":\"subscriptionId\","
+                + "\"locale\":\"en-US\","
+                + "\"callConnectionId\":\"callConnectionId\","
+                + "\"correlationId\":\"correlationId\""
+                + "}"
+                + "}";
         TranscriptionMetadata transcriptionMetadata = (TranscriptionMetadata) StreamingDataParser.parse(transcriptionMetadataJson);
         assertNotNull(transcriptionMetadata);
         validateTranscriptionMetadata(transcriptionMetadata);

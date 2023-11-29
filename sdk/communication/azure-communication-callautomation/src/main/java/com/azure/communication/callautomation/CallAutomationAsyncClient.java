@@ -19,6 +19,12 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
+import com.azure.communication.callautomation.models.AnswerCallOptions;
+import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallInvite;
+import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
@@ -34,6 +40,7 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -231,6 +238,12 @@ public final class CallAutomationAsyncClient {
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
+        if (createCallOptions.getTranscriptionConfiguration() != null) {
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                getTranscriptionConfigurationInternal(createCallOptions.getTranscriptionConfiguration());
+            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        }
+
         return request;
     }
 
@@ -266,6 +279,12 @@ public final class CallAutomationAsyncClient {
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
+        if (createCallGroupOptions.getTranscriptionConfiguration() != null) {
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                getTranscriptionConfigurationInternal(createCallGroupOptions.getTranscriptionConfiguration());
+            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        }
+
         return request;
     }
 
@@ -282,6 +301,17 @@ public final class CallAutomationAsyncClient {
             .setTransportType(
                 MediaStreamingTransportTypeInternal.fromString(
                     mediaStreamingOptions.getTransportType().toString()));
+    }
+
+    private TranscriptionConfigurationInternal getTranscriptionConfigurationInternal(
+        TranscriptionOptions transcriptionOptions) {
+        return new TranscriptionConfigurationInternal()
+            .setTransportUrl(transcriptionOptions.getTransportUrl())
+            .setTransportType(
+                TranscriptionTransportTypeInternal.fromString(
+                    transcriptionOptions.getTransportType().toString()))
+            .setLocale(transcriptionOptions.getLocale())
+            .setStartTranscription(transcriptionOptions.getStartTranscription());
     }
 
     /**
@@ -332,9 +362,15 @@ public final class CallAutomationAsyncClient {
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
                     getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
-
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
+
+            if (answerCallOptions.getTranscriptionConfiguration() != null) {
+                TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                    getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
+                request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+            }
+
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
                     context)

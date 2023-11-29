@@ -4,7 +4,6 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Configuration of live transcription.
  */
 @Fluent
-public final class TranscriptionConfiguration {
+public final class TranscriptionConfigurationInternal {
     /*
      * Transport URL for live transcription
      */
@@ -23,7 +22,7 @@ public final class TranscriptionConfiguration {
      * The type of transport to be used for live transcription, eg. Websocket
      */
     @JsonProperty(value = "transportType", required = true)
-    private TranscriptionTransportType transportType;
+    private TranscriptionTransportTypeInternal transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -38,9 +37,9 @@ public final class TranscriptionConfiguration {
     private boolean startTranscription;
 
     /**
-     * Creates an instance of TranscriptionConfiguration class.
+     * Creates an instance of TranscriptionConfigurationInternal class.
      */
-    public TranscriptionConfiguration() {
+    public TranscriptionConfigurationInternal() {
     }
 
     /**
@@ -56,9 +55,9 @@ public final class TranscriptionConfiguration {
      * Set the transportUrl property: Transport URL for live transcription.
      * 
      * @param transportUrl the transportUrl value to set.
-     * @return the TranscriptionConfiguration object itself.
+     * @return the TranscriptionConfigurationInternal object itself.
      */
-    public TranscriptionConfiguration setTransportUrl(String transportUrl) {
+    public TranscriptionConfigurationInternal setTransportUrl(String transportUrl) {
         this.transportUrl = transportUrl;
         return this;
     }
@@ -68,7 +67,7 @@ public final class TranscriptionConfiguration {
      * 
      * @return the transportType value.
      */
-    public TranscriptionTransportType getTransportType() {
+    public TranscriptionTransportTypeInternal getTransportType() {
         return this.transportType;
     }
 
@@ -76,9 +75,9 @@ public final class TranscriptionConfiguration {
      * Set the transportType property: The type of transport to be used for live transcription, eg. Websocket.
      * 
      * @param transportType the transportType value to set.
-     * @return the TranscriptionConfiguration object itself.
+     * @return the TranscriptionConfigurationInternal object itself.
      */
-    public TranscriptionConfiguration setTransportType(TranscriptionTransportType transportType) {
+    public TranscriptionConfigurationInternal setTransportType(TranscriptionTransportTypeInternal transportType) {
         this.transportType = transportType;
         return this;
     }
@@ -96,9 +95,9 @@ public final class TranscriptionConfiguration {
      * Set the locale property: Defines the locale for the data e.g en-CA, en-AU.
      * 
      * @param locale the locale value to set.
-     * @return the TranscriptionConfiguration object itself.
+     * @return the TranscriptionConfigurationInternal object itself.
      */
-    public TranscriptionConfiguration setLocale(String locale) {
+    public TranscriptionConfigurationInternal setLocale(String locale) {
         this.locale = locale;
         return this;
     }
@@ -118,9 +117,9 @@ public final class TranscriptionConfiguration {
      * answered or not.
      * 
      * @param startTranscription the startTranscription value to set.
-     * @return the TranscriptionConfiguration object itself.
+     * @return the TranscriptionConfigurationInternal object itself.
      */
-    public TranscriptionConfiguration setStartTranscription(boolean startTranscription) {
+    public TranscriptionConfigurationInternal setStartTranscription(boolean startTranscription) {
         this.startTranscription = startTranscription;
         return this;
     }
