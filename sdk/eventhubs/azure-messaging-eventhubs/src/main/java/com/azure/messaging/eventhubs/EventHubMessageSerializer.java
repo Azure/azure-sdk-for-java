@@ -36,6 +36,7 @@ import java.util.Objects;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
@@ -223,13 +224,15 @@ class EventHubMessageSerializer implements MessageSerializer {
         final long offset = getAsLong(messageAnnotations, OFFSET_ANNOTATION_NAME.getValue());
         final long sequenceNumber = getAsLong(messageAnnotations, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
+        final Long replicationSegment = (Long) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
+
         // Put the properly converted time back into the dictionary.
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
 
         final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime,
-            sequenceNumber, partitionKey);
+            sequenceNumber, partitionKey, replicationSegment);
         final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
 
         message.clear();
@@ -248,10 +251,12 @@ class EventHubMessageSerializer implements MessageSerializer {
             getValue(amqpBody, ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, String.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_PARTITION_NAME_KEY, String.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER, Long.class),
-            getValue(amqpBody, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class));
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Long.class),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class));
     }
 
     /**
@@ -266,6 +271,7 @@ class EventHubMessageSerializer implements MessageSerializer {
      */
     private long getAsLong(Map<String, Object> amqpBody, String key) {
         final Object object = amqpBody.get(key);
+
         final long value;
         if (object instanceof String) {
             try {
@@ -277,9 +283,9 @@ class EventHubMessageSerializer implements MessageSerializer {
         } else if (object instanceof Long) {
             value = (Long) object;
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format(Locale.US, "'" + key + "' value is not a known type. Value: %s. Type: %s",
-                    object, object.getClass()))));
+                    object, object.getClass())));
         }
 
         return value;
