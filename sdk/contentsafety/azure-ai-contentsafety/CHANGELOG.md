@@ -33,7 +33,6 @@ Contract change for AnalyzeText, AnalyzeImage, Blocklist management related meth
 #### Dependency Updates
 - Upgraded `azure-core` from `1.43.0` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.10`.
-- Upgraded `azure-core-test` from `1.20.0` to version `1.22.0`
 - Upgraded `azure-identity` from `1.10.1` to version `1.11.0`
 ## 1.0.0-beta.1 (2023-09-28)
 

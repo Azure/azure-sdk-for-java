@@ -60,7 +60,7 @@ As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-j
 can be used to authenticate the client.
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET
+`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`
 ```java com.azure.ai.contentsafety.createcontentsafetyclienttoken 
 ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
@@ -311,3 +311,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_portal]: https://ms.portal.azure.com/
 [azure_cli_endpoint_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_cli_key_lookup]: https://docs.microsoft.com/cli/azure/cognitiveservices/account/keys?view=azure-cli-latest#az-cognitiveservices-account-keys-list
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcontentsafety%2Fazure-ai-contentsafety%2FREADME.png)
