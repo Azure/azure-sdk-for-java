@@ -4,7 +4,6 @@ package com.azure.compute.batch;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.compute.batch.models.*;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
@@ -556,6 +555,40 @@ public class TaskTests extends BatchClientTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
+        }
+    }
+
+    @Test
+    public void testCreateTasks() throws Exception {
+        String jobId = getStringIdWithUserNamePrefix("-testCreateTasks");
+        BatchPoolInfo poolInfo = new BatchPoolInfo();
+        poolInfo.setPoolId(livePoolId);
+        batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
+
+        try {
+            // Prepare tasks to add
+            int taskCount = 10; // Adjust the number of tasks as needed
+            List<BatchTaskCreateParameters> tasksToAdd = new ArrayList<>();
+            for (int i = 0; i < taskCount; i++) {
+                String taskId = "task" + i;
+                String commandLine = String.format("cmd /c echo Task %d", i);
+                tasksToAdd.add(new BatchTaskCreateParameters(taskId, commandLine));
+            }
+
+            // Call createTasks method
+            batchClient.createTasks(jobId, tasksToAdd);
+
+            // Verify tasks are created
+            PagedIterable<BatchTask> tasks = batchClient.listTasks(jobId);
+            int createdTaskCount = 0;
+            for (BatchTask task : tasks) {
+                createdTaskCount++;
+            }
+            Assertions.assertEquals(taskCount, createdTaskCount);
+
+        } finally {
+            // Clean up
+            batchClient.deleteJob(jobId);
         }
     }
 

@@ -4,32 +4,17 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.task.AsyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
-import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
-import com.azure.compute.batch.models.DeleteBatchTaskOptions;
 import com.azure.compute.batch.models.BatchApplication;
-import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
 import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.ListBatchSubTasksOptions;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
-import com.azure.compute.batch.models.RebootBatchNodeOptions;
-import com.azure.compute.batch.models.GetBatchNodeOptions;
-import com.azure.compute.batch.models.ReimageBatchNodeOptions;
-import com.azure.compute.batch.models.DeleteBatchNodeUserOptions;
-import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
-import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
-import com.azure.compute.batch.models.TerminateBatchTaskOptions;
-import com.azure.compute.batch.models.DisableBatchNodeSchedulingOptions;
-import com.azure.compute.batch.models.ListBatchNodeExtensionsOptions;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
-import com.azure.compute.batch.models.GetBatchNodeExtensionOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteDesktopFileOptions;
-import com.azure.compute.batch.models.ListBatchNodesOptions;
 import com.azure.compute.batch.models.BatchJobDisableParameters;
-import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
-import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
@@ -66,19 +51,25 @@ import com.azure.compute.batch.models.CancelBatchCertificateDeletionOptions;
 import com.azure.compute.batch.models.CreateBatchCertificateOptions;
 import com.azure.compute.batch.models.CreateBatchJobOptions;
 import com.azure.compute.batch.models.CreateBatchJobScheduleOptions;
+import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
 import com.azure.compute.batch.models.CreateBatchPoolOptions;
+import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
 import com.azure.compute.batch.models.CreateBatchTaskOptions;
 import com.azure.compute.batch.models.DeleteBatchCertificateOptions;
 import com.azure.compute.batch.models.DeleteBatchJobOptions;
 import com.azure.compute.batch.models.DeleteBatchJobScheduleOptions;
 import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
+import com.azure.compute.batch.models.DeleteBatchNodeUserOptions;
 import com.azure.compute.batch.models.DeleteBatchPoolOptions;
 import com.azure.compute.batch.models.DeleteBatchTaskFileOptions;
+import com.azure.compute.batch.models.DeleteBatchTaskOptions;
 import com.azure.compute.batch.models.DisableBatchJobOptions;
 import com.azure.compute.batch.models.DisableBatchJobScheduleOptions;
+import com.azure.compute.batch.models.DisableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.DisableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EnableBatchJobOptions;
 import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
+import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.GetApplicationOptions;
@@ -86,8 +77,12 @@ import com.azure.compute.batch.models.GetBatchCertificateOptions;
 import com.azure.compute.batch.models.GetBatchJobOptions;
 import com.azure.compute.batch.models.GetBatchJobScheduleOptions;
 import com.azure.compute.batch.models.GetBatchJobTaskCountsOptions;
+import com.azure.compute.batch.models.GetBatchNodeExtensionOptions;
 import com.azure.compute.batch.models.GetBatchNodeFileOptions;
 import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
+import com.azure.compute.batch.models.GetBatchNodeOptions;
+import com.azure.compute.batch.models.GetBatchNodeRemoteDesktopFileOptions;
+import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
 import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
@@ -96,28 +91,37 @@ import com.azure.compute.batch.models.ImageInfo;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
-import com.azure.compute.batch.models.ListBatchJobsFromScheduleOptions;
 import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
+import com.azure.compute.batch.models.ListBatchJobsFromScheduleOptions;
 import com.azure.compute.batch.models.ListBatchJobsOptions;
+import com.azure.compute.batch.models.ListBatchNodeExtensionsOptions;
 import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
+import com.azure.compute.batch.models.ListBatchNodesOptions;
 import com.azure.compute.batch.models.ListBatchPoolNodeCountsOptions;
 import com.azure.compute.batch.models.ListBatchPoolUsageMetricsOptions;
 import com.azure.compute.batch.models.ListBatchPoolsOptions;
+import com.azure.compute.batch.models.ListBatchSubTasksOptions;
 import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
 import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
+import com.azure.compute.batch.models.RebootBatchNodeOptions;
+import com.azure.compute.batch.models.ReimageBatchNodeOptions;
 import com.azure.compute.batch.models.RemoveBatchNodesOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobScheduleOptions;
+import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
 import com.azure.compute.batch.models.ReplaceBatchPoolPropertiesOptions;
+import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
 import com.azure.compute.batch.models.ResizeBatchPoolOptions;
 import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
 import com.azure.compute.batch.models.TerminateBatchJobOptions;
 import com.azure.compute.batch.models.TerminateBatchJobScheduleOptions;
+import com.azure.compute.batch.models.TerminateBatchTaskOptions;
 import com.azure.compute.batch.models.UpdateBatchJobOptions;
 import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.UpdateBatchPoolOptions;
+import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
 import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.core.annotation.Generated;
@@ -159,6 +163,49 @@ public final class BatchAsyncClient {
     @Generated
     BatchAsyncClient(BatchClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Adds multiple tasks to a job.
+     *
+     * @param jobId The ID of the job to which to add the task.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
+     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
+     *     network exception.
+     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
+     */
+    public void createTasks(String jobId, List<BatchTaskCreateParameters> taskList) throws InterruptedException {
+        createTasks(jobId, taskList, null);
+    }
+
+    /**
+     * Creates a collection of Tasks to the specified Job.
+     *
+     * <p>Note that each Task must have a unique ID.This method can work with multiple threads. The parallel degree can
+     * be specified by the user. If the server times out or the connection is closed during the request, the request may
+     * have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note
+     * that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the
+     * same Task IDs during a retry so that if the prior operation succeeded, the retry will not create extra Tasks
+     * unexpectedly. If the response contains any Tasks which failed to add, a client can retry the request. In a retry,
+     * it is most efficient to resubmit only Tasks that failed to add, and to omit Tasks that were successfully added on
+     * the first attempt. The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not
+     * completed within 180 days of being added it will be terminated by the Batch service and left in whatever state it
+     * was in at that time.
+     *
+     * @param jobId The ID of the job to which to add the task.
+     * @param taskList A list of {@link BatchTaskCreateParameters tasks} to add.
+     * @param batchClientParallelOptions Option that configure the parallelization of the method.
+     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
+     *     network exception.
+     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
+     */
+    public void createTasks(
+            String jobId,
+            List<BatchTaskCreateParameters> taskList,
+            BatchClientParallelOptions batchClientParallelOptions)
+            throws InterruptedException {
+        TaskSubmitter taskSubmitter = new AsyncTaskSubmitter(this);
+        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
     }
 
     /**
@@ -265,12 +312,11 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
         return listPoolUsageMetricsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getStartTime(),
-            options.getEndTime(),
-            options.getFilter()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getStartTime(),
+                options.getEndTime(),
+                options.getFilter());
     }
 
     /**
@@ -347,12 +393,11 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchPool> listPools(ListBatchPoolsOptions options) {
         return listPoolsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -468,15 +513,14 @@ public final class BatchAsyncClient {
      */
     public Mono<BatchPool> getPool(String poolId, GetBatchPoolOptions options) {
         return getPoolInternal(
-            poolId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                poolId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
-        /**
+    /**
      * Gets information about the specified Pool.
      *
      * @param poolId The ID of the Pool to get.
@@ -637,7 +681,7 @@ public final class BatchAsyncClient {
         return evaluatePoolAutoScaleInternal(poolId, body, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Gets the result of evaluating an automatic scaling formula on the Pool.
      *
      * <p>This API is primarily for validating an autoscale formula, as it simply returns the result without applying
@@ -768,7 +812,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replacePoolProperties(String poolId, BatchPoolReplaceParameters body, ReplaceBatchPoolPropertiesOptions options) {
+    public Mono<Void> replacePoolProperties(
+            String poolId, BatchPoolReplaceParameters body, ReplaceBatchPoolPropertiesOptions options) {
         return replacePoolPropertiesInternal(poolId, body, options.getTimeOutInSeconds());
     }
 
@@ -961,12 +1006,11 @@ public final class BatchAsyncClient {
      */
     public Mono<BatchJob> getJob(String jobId, GetBatchJobOptions options) {
         return getJobInternal(
-            jobId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -1269,12 +1313,11 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchJob> listJobs(ListBatchJobsOptions options) {
         return listJobsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -1308,13 +1351,12 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, ListBatchJobsFromScheduleOptions options) {
         return listJobsFromScheduleInternal(
-            jobScheduleId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                jobScheduleId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -1356,12 +1398,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(
             String jobId, ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
         return listJobPreparationAndReleaseTaskStatusInternal(
-            jobId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect()
-        );
+                jobId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
     /**
@@ -1563,7 +1604,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteCertificate(String thumbprintAlgorithm, String thumbprint, DeleteBatchCertificateOptions options) {
+    public Mono<Void> deleteCertificate(
+            String thumbprintAlgorithm, String thumbprint, DeleteBatchCertificateOptions options) {
         return deleteCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
     }
 
@@ -1609,7 +1651,7 @@ public final class BatchAsyncClient {
     public Mono<BatchCertificate> getCertificate(
             String thumbprintAlgorithm, String thumbprint, GetBatchCertificateOptions options) {
         return getCertificateInternal(
-            thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(), options.getSelect());
+                thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -1719,12 +1761,11 @@ public final class BatchAsyncClient {
      */
     public Mono<BatchJobSchedule> getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options) {
         return getJobScheduleInternal(
-            jobScheduleId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobScheduleId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -1765,7 +1806,7 @@ public final class BatchAsyncClient {
     public Mono<Void> updateJobSchedule(
             String jobScheduleId, BatchJobScheduleUpdateParameters body, UpdateBatchJobScheduleOptions options) {
         return updateJobScheduleInternal(
-            jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
+                jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -1809,9 +1850,10 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceJobSchedule(String jobScheduleId, BatchJobSchedule body, ReplaceBatchJobScheduleOptions options) {
+    public Mono<Void> replaceJobSchedule(
+            String jobScheduleId, BatchJobSchedule body, ReplaceBatchJobScheduleOptions options) {
         return replaceJobScheduleInternal(
-            jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
+                jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
     /**
@@ -1872,7 +1914,6 @@ public final class BatchAsyncClient {
     public Mono<Void> disableJobSchedule(String jobScheduleId) {
         return disableJobScheduleInternal(jobScheduleId);
     }
-
 
     /**
      * Enables a Job Schedule.
@@ -1989,12 +2030,11 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
         return listJobSchedulesInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -2072,13 +2112,12 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
         return listTasksInternal(
-            jobId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                jobId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -2224,13 +2263,12 @@ public final class BatchAsyncClient {
      */
     public Mono<BatchTask> getTask(String jobId, String taskId, GetBatchTaskOptions options) {
         return getTaskInternal(
-            jobId,
-            taskId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobId,
+                taskId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -2309,7 +2347,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the subtasks of a Task on successful completion of {@link Mono}.
      */
-    public Mono<BatchTaskListSubtasksResult> listSubTasks(String jobId, String taskId, ListBatchSubTasksOptions options) {
+    public Mono<BatchTaskListSubtasksResult> listSubTasks(
+            String jobId, String taskId, ListBatchSubTasksOptions options) {
         return listSubTasksInternal(jobId, taskId, options.getTimeOutInSeconds(), options.getSelect());
     }
 
@@ -2477,14 +2516,13 @@ public final class BatchAsyncClient {
      */
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
         return getTaskFileInternal(
-            jobId,
-            taskId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince(),
-            options.getOcpRange()
-        );
+                jobId,
+                taskId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
     /**
@@ -2524,13 +2562,12 @@ public final class BatchAsyncClient {
     public Mono<Void> getTaskFileProperties(
             String jobId, String taskId, String filePath, GetBatchTaskFilePropertiesOptions options) {
         return getTaskFilePropertiesInternal(
-            jobId,
-            taskId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince()
-        );
+                jobId,
+                taskId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
     /**
@@ -2547,8 +2584,7 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Task file on successful completion of {@link Mono}.
      */
-    public Mono<Void> getTaskFileProperties(
-            String jobId, String taskId, String filePath) {
+    public Mono<Void> getTaskFileProperties(String jobId, String taskId, String filePath) {
         return getTaskFilePropertiesInternal(jobId, taskId, filePath);
     }
 
@@ -2569,13 +2605,12 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(
-            jobId,
-            taskId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getRecursive()
-        );
+                jobId,
+                taskId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 
     /**
@@ -2655,7 +2690,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> deleteNodeUser(String poolId, String nodeId, String userName, DeleteBatchNodeUserOptions options) {
+    public Mono<Void> deleteNodeUser(
+            String poolId, String nodeId, String userName, DeleteBatchNodeUserOptions options) {
         return deleteNodeUserInternal(poolId, nodeId, userName, options.getTimeOutInSeconds());
     }
 
@@ -2699,7 +2735,12 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters body, ReplaceBatchNodeUserOptions options) {
+    public Mono<Void> replaceNodeUser(
+            String poolId,
+            String nodeId,
+            String userName,
+            BatchNodeUserUpdateParameters body,
+            ReplaceBatchNodeUserOptions options) {
         return replaceNodeUserInternal(poolId, nodeId, userName, body, options.getTimeOutInSeconds());
     }
 
@@ -2722,7 +2763,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    public Mono<Void> replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters body) {
+    public Mono<Void> replaceNodeUser(
+            String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters body) {
         return replaceNodeUserInternal(poolId, nodeId, userName, body);
     }
 
@@ -2863,7 +2905,10 @@ public final class BatchAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     public Mono<Void> disableNodeScheduling(
-            String poolId, String nodeId, DisableBatchNodeSchedulingOptions options, BatchNodeDisableSchedulingParameters body) {
+            String poolId,
+            String nodeId,
+            DisableBatchNodeSchedulingOptions options,
+            BatchNodeDisableSchedulingParameters body) {
         return disableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
@@ -2987,7 +3032,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represent a byte array on successful completion of {@link Mono}.
      */
-    public Mono<byte[]> getNodeRemoteDesktopFile(String poolId, String nodeId, GetBatchNodeRemoteDesktopFileOptions options) {
+    public Mono<byte[]> getNodeRemoteDesktopFile(
+            String poolId, String nodeId, GetBatchNodeRemoteDesktopFileOptions options) {
         return getNodeRemoteDesktopFileInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
@@ -3056,7 +3102,8 @@ public final class BatchAsyncClient {
      * @return the result of uploading Batch service log files from a specific Compute Node on successful completion of
      *     {@link Mono}.
      */
-    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(String poolId, String nodeId, UploadBatchServiceLogsParameters body) {
+    public Mono<UploadBatchServiceLogsResult> uploadNodeLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsParameters body) {
         return uploadNodeLogsInternal(poolId, nodeId, body);
     }
 
@@ -3075,12 +3122,11 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
         return listNodesInternal(
-            poolId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect()
-        );
+                poolId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
     /**
@@ -3117,8 +3163,7 @@ public final class BatchAsyncClient {
     public Mono<BatchNodeVMExtension> getNodeExtension(
             String poolId, String nodeId, String extensionName, GetBatchNodeExtensionOptions options) {
         return getNodeExtensionInternal(
-            poolId, nodeId, extensionName, options.getTimeOutInSeconds(), options.getSelect()
-        );
+                poolId, nodeId, extensionName, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -3153,10 +3198,10 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Compute Node extensions in a Node as paginated response with {@link PagedFlux}.
      */
-    public PagedFlux<BatchNodeVMExtension> listNodeExtensions(String poolId, String nodeId, ListBatchNodeExtensionsOptions options) {
+    public PagedFlux<BatchNodeVMExtension> listNodeExtensions(
+            String poolId, String nodeId, ListBatchNodeExtensionsOptions options) {
         return listNodeExtensionsInternal(
-            poolId, nodeId, options.getMaxresults(), options.getTimeOutInSeconds(), options.getSelect()
-        );
+                poolId, nodeId, options.getMaxresults(), options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -3232,14 +3277,13 @@ public final class BatchAsyncClient {
      */
     public Mono<byte[]> getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
         return getNodeFileInternal(
-            poolId,
-            nodeId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince(),
-            options.getOcpRange()
-        );
+                poolId,
+                nodeId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
     /**
@@ -3279,16 +3323,15 @@ public final class BatchAsyncClient {
     public Mono<Void> getNodeFileProperties(
             String poolId, String nodeId, String filePath, GetBatchNodeFilePropertiesOptions options) {
         return getNodeFilePropertiesInternal(
-            poolId,
-            nodeId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince()
-        );
+                poolId,
+                nodeId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
-        /**
+    /**
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -3323,13 +3366,12 @@ public final class BatchAsyncClient {
      */
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(
-            poolId,
-            nodeId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getRecursive()
-        );
+                poolId,
+                nodeId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 
     /**
@@ -3481,8 +3523,7 @@ public final class BatchAsyncClient {
      * @return contains information about an application in an Azure Batch Account along with {@link Response} on
      *     successful completion of {@link Mono}.
      */
-    public Mono<Response<BinaryData>> getApplicationWithResponse(
-            String applicationId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getApplicationWithResponse(String applicationId, RequestOptions requestOptions) {
         return this.getApplicationInternalWithResponse(applicationId, requestOptions);
     }
 
@@ -4581,7 +4622,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.poolExistsInternalWithResponseAsync(poolId, requestOptions);
     }
 
-        /**
+    /**
      * Gets basic properties of a Pool.
      *
      * <p><strong>Query Parameters</strong>
@@ -5475,7 +5516,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.updatePoolInternalWithResponseAsync(poolId, pool, requestOptions);
     }
 
-        /**
+    /**
      * Updates the properties of the specified Pool.
      *
      * <p>This only replaces the Pool properties specified in the request. For example, if the Pool has a StartTask
@@ -5596,8 +5637,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> updatePoolWithResponse(
-            String poolId, BinaryData pool, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         return this.updatePoolInternalWithResponse(poolId, pool, requestOptions);
     }
 
@@ -5629,7 +5669,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.disablePoolAutoScaleInternalWithResponseAsync(poolId, requestOptions);
     }
 
-        /**
+    /**
      * Disables automatic scaling for a Pool.
      *
      * <p><strong>Query Parameters</strong>
@@ -7583,7 +7623,6 @@ public final class BatchAsyncClient {
         return this.getJobInternalWithResponse(jobId, requestOptions);
     }
 
-
     /**
      * Updates the properties of the specified Job.
      *
@@ -8199,8 +8238,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> updateJobWithResponse(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<Void>> updateJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.updateJobInternalWithResponse(jobId, job, requestOptions);
     }
 
@@ -9083,8 +9121,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> replaceJobWithResponse(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public Mono<Response<Void>> replaceJobWithResponse(String jobId, BinaryData job, RequestOptions requestOptions) {
         return this.replaceJobInternalWithResponse(jobId, job, requestOptions);
     }
 
@@ -11121,8 +11158,7 @@ public final class BatchAsyncClient {
      * @return the Task and TaskSlot counts for a Job along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
-    public Mono<Response<BinaryData>> getJobTaskCountsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobTaskCountsWithResponse(String jobId, RequestOptions requestOptions) {
         return this.getJobTaskCountsInternalWithResponse(jobId, requestOptions);
     }
 
@@ -11183,7 +11219,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.createCertificateInternalWithResponseAsync(certificate, requestOptions);
     }
 
-        /**
+    /**
      * Creates a Certificate to the specified Account.
      *
      * <p><strong>Query Parameters</strong>
@@ -11233,8 +11269,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> createCertificateWithResponse(
-            BinaryData certificate, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createCertificateWithResponse(BinaryData certificate, RequestOptions requestOptions) {
         return this.createCertificateInternalWithResponse(certificate, requestOptions);
     }
 
@@ -11335,7 +11370,7 @@ public final class BatchAsyncClient {
                 thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
-        /**
+    /**
      * Cancels a failed deletion of a Certificate from the specified Account.
      *
      * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
@@ -11366,10 +11401,8 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> cancelCertificateDeletionWithResponse(
             String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions) {
-        return this.cancelCertificateDeletionInternalWithResponse(
-                thumbprintAlgorithm, thumbprint, requestOptions);
+        return this.cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
-
 
     /**
      * Deletes a Certificate from the specified Account.
@@ -11443,8 +11476,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> deleteCertificateWithResponse(
             String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions) {
-        return this.deleteCertificateInternalWithResponse(
-                thumbprintAlgorithm, thumbprint, requestOptions);
+        return this.deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
     /**
@@ -11508,7 +11540,7 @@ public final class BatchAsyncClient {
                 thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
-        /**
+    /**
      * Gets information about the specified Certificate.
      *
      * <p><strong>Query Parameters</strong>
@@ -11563,8 +11595,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<BinaryData>> getCertificateWithResponse(
             String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions) {
-        return this.getCertificateInternalWithResponse(
-            thumbprintAlgorithm, thumbprint, requestOptions);
+        return this.getCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
     /**
@@ -11622,7 +11653,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.jobScheduleExistsInternalWithResponseAsync(jobScheduleId, requestOptions);
     }
 
-        /**
+    /**
      * Checks the specified Job Schedule exists.
      *
      * <p><strong>Query Parameters</strong>
@@ -11670,11 +11701,9 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Boolean>> jobScheduleExistsWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions);
     }
-
 
     /**
      * Deletes a Job Schedule from the specified Account.
@@ -11779,8 +11808,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> deleteJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.deleteJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -12665,11 +12693,9 @@ public final class BatchAsyncClient {
      * @return information about the specified Job Schedule along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
-    public Mono<Response<BinaryData>> getJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.getJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
-
 
     /**
      * Updates the properties of the specified Job Schedule.
@@ -13493,8 +13519,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> updateJobScheduleWithResponse(
             String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions) {
-        return this.updateJobScheduleInternalWithResponse(
-            jobScheduleId, jobSchedule, requestOptions);
+        return this.updateJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
     }
 
     /**
@@ -14387,8 +14412,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> replaceJobScheduleWithResponse(
             String jobScheduleId, BinaryData jobSchedule, RequestOptions requestOptions) {
-        return this.replaceJobScheduleInternalWithResponse(
-                jobScheduleId, jobSchedule, requestOptions);
+        return this.replaceJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
     }
 
     /**
@@ -14488,8 +14512,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> disableJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> disableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.disableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -14586,8 +14609,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> enableJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> enableJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.enableJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -14684,8 +14706,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> terminateJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -15458,8 +15479,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> createJobScheduleWithResponse(
-            BinaryData jobSchedule, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createJobScheduleWithResponse(BinaryData jobSchedule, RequestOptions requestOptions) {
         return this.createJobScheduleInternalWithResponse(jobSchedule, requestOptions);
     }
 
@@ -16200,8 +16220,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> createTaskWithResponse(
-            String jobId, BinaryData task, RequestOptions requestOptions) {
+    public Mono<Response<Void>> createTaskWithResponse(String jobId, BinaryData task, RequestOptions requestOptions) {
         return this.createTaskInternalWithResponse(jobId, task, requestOptions);
     }
 
@@ -16826,7 +16845,6 @@ public final class BatchAsyncClient {
         return this.createTaskCollectionInternalWithResponse(jobId, taskCollection, requestOptions);
     }
 
-
     /**
      * Deletes a Task from the specified Job.
      *
@@ -16930,8 +16948,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> deleteTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.deleteTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -17410,8 +17427,7 @@ public final class BatchAsyncClient {
      *     failure. Retries due to recovery operations are independent of and are not counted against the
      *     maxTaskRetryCount along with {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<BinaryData>> getTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.getTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -17881,7 +17897,6 @@ public final class BatchAsyncClient {
         return this.replaceTaskInternalWithResponse(jobId, taskId, task, requestOptions);
     }
 
-
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance Task.
      *
@@ -18139,8 +18154,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> terminateTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.terminateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -18251,8 +18265,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> reactivateTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.reactivateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -18378,7 +18391,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.getTaskFileInternalWithResponseAsync(jobId, taskId, filePath, requestOptions);
     }
 
-        /**
+    /**
      * Returns the content of the specified Task file.
      *
      * <p><strong>Query Parameters</strong>
@@ -18429,7 +18442,6 @@ public final class BatchAsyncClient {
             String jobId, String taskId, String filePath, RequestOptions requestOptions) {
         return this.getTaskFileInternalWithResponse(jobId, taskId, filePath, requestOptions);
     }
-
 
     /**
      * Gets the properties of the specified Task file.
@@ -18521,8 +18533,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> getTaskFilePropertiesWithResponse(
             String jobId, String taskId, String filePath, RequestOptions requestOptions) {
-        return this.getTaskFilePropertiesInternalWithResponse(
-                jobId, taskId, filePath, requestOptions);
+        return this.getTaskFilePropertiesInternalWithResponse(jobId, taskId, filePath, requestOptions);
     }
 
     /**
@@ -18818,8 +18829,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> replaceNodeUserWithResponse(
             String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions) {
-        return this.replaceNodeUserInternalWithResponse(
-                poolId, nodeId, userName, parameters, requestOptions);
+        return this.replaceNodeUserInternalWithResponse(poolId, nodeId, userName, parameters, requestOptions);
     }
 
     /**
@@ -19191,8 +19201,7 @@ public final class BatchAsyncClient {
      * @return information about the specified Compute Node along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
-    public Mono<Response<BinaryData>> getNodeWithResponse(
-            String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.getNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -19480,7 +19489,7 @@ public final class BatchAsyncClient {
         return this.serviceClient.uploadNodeLogsInternalWithResponseAsync(poolId, nodeId, parameters, requestOptions);
     }
 
-        /**
+    /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.
      *
      * <p>This is for gathering Azure Batch service log files in an automated fashion from Compute Nodes if you are
@@ -19799,7 +19808,7 @@ public final class BatchAsyncClient {
                 poolId, nodeId, extensionName, requestOptions);
     }
 
-        /**
+    /**
      * Gets information about the specified Compute Node Extension.
      *
      * <p><strong>Query Parameters</strong>
@@ -19867,8 +19876,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<BinaryData>> getNodeExtensionWithResponse(
             String poolId, String nodeId, String extensionName, RequestOptions requestOptions) {
-        return this.getNodeExtensionInternalWithResponse(
-                poolId, nodeId, extensionName, requestOptions);
+        return this.getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions);
     }
 
     /**
@@ -20208,8 +20216,7 @@ public final class BatchAsyncClient {
      */
     public Mono<Response<Void>> getNodeFilePropertiesWithResponse(
             String poolId, String nodeId, String filePath, RequestOptions requestOptions) {
-        return this.getNodeFilePropertiesInternalWithResponse(
-                poolId, nodeId, filePath, requestOptions);
+        return this.getNodeFilePropertiesInternalWithResponse(poolId, nodeId, filePath, requestOptions);
     }
 
     /**
@@ -26077,8 +26084,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> rebootNodeWithResponse(
-            String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> rebootNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.rebootNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -26157,8 +26163,7 @@ public final class BatchAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    public Mono<Response<Void>> reimageNodeWithResponse(
-            String poolId, String nodeId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reimageNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.reimageNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -26239,7 +26244,6 @@ public final class BatchAsyncClient {
             String poolId, String nodeId, RequestOptions requestOptions) {
         return this.disableNodeSchedulingInternalWithResponse(poolId, nodeId, requestOptions);
     }
-
 
     /**
      * Terminates the specified Job, marking it as completed.
