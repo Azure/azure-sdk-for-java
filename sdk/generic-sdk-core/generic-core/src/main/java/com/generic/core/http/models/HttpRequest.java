@@ -12,7 +12,6 @@ import com.generic.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Optional;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
@@ -57,148 +56,6 @@ public class HttpRequest {
 
         this.headers = new Headers();
         this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers) {
-        this.httpMethod = httpMethod;
-        this.url = url;
-        this.headers = headers;
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     */
-    public HttpRequest(HttpMethod httpMethod, String url, Headers headers) {
-        this.httpMethod = httpMethod;
-
-        setUrl(url);
-
-        this.headers = headers;
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method
-     * @param url The target address to send the request to
-     *
-     * @throws IllegalArgumentException If {@code url} is null or it cannot be parsed into a valid URL.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, BinaryData body) {
-        this.httpMethod = httpMethod;
-        this.url = url;
-
-        setBody(body);
-
-        this.headers = new Headers();
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method
-     * @param url The target address to send the request to
-     *
-     * @throws IllegalArgumentException If {@code url} is null or it cannot be parsed into a valid URL.
-     */
-    public HttpRequest(HttpMethod httpMethod, String url, BinaryData body) {
-        this.httpMethod = httpMethod;
-
-        setUrl(url);
-        setBody(body);
-
-        this.headers = new Headers();
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     * @param body The request content.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers, BinaryData body) {
-        this.httpMethod = httpMethod;
-        this.url = url;
-        this.headers = headers;
-
-        setBody(body);
-
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     * @param body The request content.
-     */
-    public HttpRequest(HttpMethod httpMethod, String url, Headers headers, BinaryData body) {
-        this.httpMethod = httpMethod;
-
-        setUrl(url);
-
-        this.headers = headers;
-
-        setBody(body);
-
-        this.context = Context.NONE;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     * @param body The request content.
-     */
-    public HttpRequest(HttpMethod httpMethod, URL url, Headers headers, BinaryData body, Context context) {
-        this.httpMethod = httpMethod;
-        this.url = url;
-        this.headers = headers;
-
-        setBody(body);
-
-        this.context = context;
-    }
-
-    /**
-     * Create a new HttpRequest instance.
-     *
-     * @param httpMethod The HTTP request method.
-     * @param url The target address to send the request to.
-     * @param headers The HTTP headers to use with this request.
-     * @param body The request content.
-     */
-    public HttpRequest(HttpMethod httpMethod, String url, Headers headers, BinaryData body, Context context) {
-        this.httpMethod = httpMethod;
-
-        setUrl(url);
-
-        this.headers = headers;
-
-        setBody(body);
-
-        this.context = context;
     }
 
     /**
@@ -386,29 +243,6 @@ public class HttpRequest {
     }
 
     /**
-     * Gets a value with the given key stored in the context.
-     *
-     * @param key The key to find in the context.
-     *
-     * @return The value associated with the key.
-     */
-    public Optional<Object> getData(String key) {
-        return this.context.getData(key);
-    }
-
-    /**
-     * Stores a key-value data in the context.
-     *
-     * @param key The key to add.
-     * @param value The value to associate with that key.
-     */
-    public HttpRequest setData(String key, Object value) {
-        this.context = this.context.addData(key, value);
-
-        return this;
-    }
-
-    /**
      * Creates a copy of the request.
      * <p>
      * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
@@ -420,6 +254,9 @@ public class HttpRequest {
     public HttpRequest copy() {
         final Headers bufferedHeaders = new Headers(headers);
 
-        return new HttpRequest(httpMethod, url, bufferedHeaders, body, context);
+        return new HttpRequest(httpMethod, url)
+            .setHeaders(bufferedHeaders)
+            .setBody(body)
+            .setContext(context);
     }
 }

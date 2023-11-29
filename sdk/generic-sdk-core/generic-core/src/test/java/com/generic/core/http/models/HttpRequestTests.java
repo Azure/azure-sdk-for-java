@@ -40,12 +40,13 @@ public class HttpRequestTests {
 
     @Test
     public void constructorWithHeaders() throws MalformedURLException {
-        final Headers Headers = new Headers();
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"), Headers);
+        final Headers headers = new Headers();
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"))
+            .setHeaders(headers);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(createUrl("http://request.url"), request.getUrl());
-        assertSame(Headers, request.getHeaders());
+        assertSame(headers, request.getHeaders());
         assertNull(request.getBody());
     }
 
@@ -54,8 +55,7 @@ public class HttpRequestTests {
     public void constructorWithBinaryDataBody(BinaryData data, Long expectedContentLength)
         throws MalformedURLException {
 
-        final HttpRequest request = new HttpRequest(
-            HttpMethod.POST, createUrl("http://request.url"), new Headers(), data);
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url")).setBody(data);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(createUrl("http://request.url"), request.getUrl());
@@ -116,8 +116,7 @@ public class HttpRequestTests {
             .set(HttpHeaderName.fromString("my-header"), "my-value")
             .set(HttpHeaderName.fromString("other-header"), "other-value");
 
-        final HttpRequest request = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"), headers,
-            null);
+        final HttpRequest request =new HttpRequest(HttpMethod.PUT, createUrl("http://request.url")).setHeaders(headers);
 
         final HttpRequest bufferedRequest = request.copy();
 

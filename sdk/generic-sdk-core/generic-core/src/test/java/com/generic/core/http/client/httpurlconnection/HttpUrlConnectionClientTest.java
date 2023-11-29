@@ -142,7 +142,8 @@ public class HttpUrlConnectionClientTest {
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         try (HttpResponse response =
-                 client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH), headers))) {
+                 client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
+                     .setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             Headers responseHeaders = response.getHeaders();

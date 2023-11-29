@@ -274,7 +274,7 @@ public abstract class HttpClientTests {
     @Test
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
         Supplier<HttpResponse> responseSupplier = () -> createHttpClient().send(request);
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBody().toString());
@@ -292,8 +292,9 @@ public abstract class HttpClientTests {
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         Context context = Context.NONE.addData("eagerly-read-response", true);
-        HttpRequest request =
-            new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody, context);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
+            .setBody(requestBody)
+            .setContext(context);
 
         try (HttpResponse response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -318,8 +319,9 @@ public abstract class HttpClientTests {
     public void eagerlyConvertedHeadersAreHeaders() {
         BinaryData requestBody = BinaryData.fromString("test body");
         Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
-        HttpRequest request =
-            new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody, context);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
+            .setBody(requestBody)
+            .setContext(context);
 
         try (HttpResponse response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
@@ -336,7 +338,7 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new Headers(), requestBody);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
 
         try (HttpResponse response = createHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
