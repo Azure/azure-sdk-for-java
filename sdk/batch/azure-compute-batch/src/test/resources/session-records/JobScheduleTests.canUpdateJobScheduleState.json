@@ -6,19 +6,19 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "5d370fa9-be56-49cf-9ac8-89110a6d3557",
+        "client-request-id": "ec7da10d-f7d4-4617-adc8-19b9fc3bb1fd",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:11 GMT",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "e136cc63-abfe-46ab-a29e-e517447fb373",
+        "request-id": "538aa426-43af-4f5f-99f7-02a6b0affe65",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -32,20 +32,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0c805eff-eace-4b95-91bc-5a5f62b6111a",
+        "client-request-id": "f271a1f1-0e1f-4410-b254-04692fd52b03",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:11 GMT",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "d5953696-b8e5-4982-9fcf-03f6764ba74c",
+        "request-id": "d5ebf600-a3c6-460b-bc41-05658531c567",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -107,17 +107,17 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "024a3355-64dd-4488-817f-d99f2468269d",
+        "client-request-id": "9617bb21-6a56-43b3-beb0-fea30eae5719",
         "Content-Length": "257",
         "Content-Type": "application/json; odata=minimalmetadata",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": {
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -131,11 +131,11 @@
       "ResponseHeaders": {
         "DataServiceId": "https://sanjbatch.eastus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:11 GMT",
-        "ETag": "0x8DBE49141A96C5F",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "ETag": "0x8DBF0C6386B43BA",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:34 GMT",
         "Location": "https://sanjbatch.eastus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState",
-        "request-id": "22202ea2-3a6f-40fb-8176-72fc33509ab9",
+        "request-id": "4d2dec6e-143f-4785-842b-9f28d55029bb",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -149,20 +149,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "cfdb6103-45db-4f4c-8bac-05766a550ddb",
+        "client-request-id": "2168cda1-336a-496a-a2b8-9073b61cbef3",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE49141A96C5F",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "request-id": "0648dcaa-6c31-413a-8ca4-7fd46ce655a7",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "ETag": "0x8DBF0C6386B43BA",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "request-id": "417ad9f0-9825-4447-9c69-f3461b2f38cd",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -172,14 +172,14 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE49141A96C5F",
-        "lastModified": "2023-11-13T21:41:12.6070367Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C6386B43BA",
+        "lastModified": "2023-11-29T10:30:34.3801786Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "active",
-        "stateTransitionTime": "2023-11-13T21:41:12.6070367Z",
+        "stateTransitionTime": "2023-11-29T10:30:34.3801786Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -211,10 +211,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0e092424-527e-4a54-be9a-0019b46d1e1a",
+        "client-request-id": "8473f536-708a-4368-9575-d6d489f8b876",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 204,
@@ -222,10 +222,10 @@
         "Content-Length": "0",
         "DataServiceId": "https://sanjbatch.eastus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/disable",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE49141C706AD",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "request-id": "8ffae396-fa67-43db-9ac6-03b63bbf3c02",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "ETag": "0x8DBF0C6387BBE80",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "request-id": "73d0014c-e3cf-4d7d-989b-560e063c62b4",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -238,20 +238,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "149e3a3f-1aff-40ba-80bc-0f9635f33b23",
+        "client-request-id": "f49761ba-eee3-453f-95ca-a94e0c4258f0",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE49141C706AD",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "request-id": "50d4c1e2-90b5-43ec-b74f-4bcb5c1e97b7",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "ETag": "0x8DBF0C6387BBE80",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "request-id": "32c26e8a-0d13-437e-bf5a-cefac814a924",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -261,16 +261,16 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE49141C706AD",
-        "lastModified": "2023-11-13T21:41:12.8010413Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C6387BBE80",
+        "lastModified": "2023-11-29T10:30:34.4881792Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "disabled",
-        "stateTransitionTime": "2023-11-13T21:41:12.8010413Z",
+        "stateTransitionTime": "2023-11-29T10:30:34.4881792Z",
         "previousState": "active",
-        "previousStateTransitionTime": "2023-11-13T21:41:12.6070367Z",
+        "previousStateTransitionTime": "2023-11-29T10:30:34.3801786Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -302,10 +302,43 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "e15664bf-57dc-4b9b-9fa1-7f7789ae6520",
+        "client-request-id": "20d46ed5-c94e-480d-ac83-85ec0cd788c8",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:33 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 429,
+      "ResponseHeaders": {
+        "Content-Length": "372",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "request-id": "d412993d-d76d-452e-8d1f-d3def3fcc5b9",
+        "Retry-After": "30",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "TooManyRequests",
+        "message": {
+          "lang": "en-US",
+          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:d412993d-d76d-452e-8d1f-d3def3fcc5b9\nTime:2023-11-29T10:30:34.5965850Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/enable?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "20d46ed5-c94e-480d-ac83-85ec0cd788c8",
+        "Content-Length": "0",
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 204,
@@ -313,10 +346,10 @@
         "Content-Length": "0",
         "DataServiceId": "https://sanjbatch.eastus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/enable",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE49141E479A2",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "request-id": "3061a119-f644-479b-8dfb-6ce65826dd8e",
+        "Date": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "ETag": "0x8DBF0C6390D20EE",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "request-id": "a2009612-5d09-4c72-acbf-2617d868349e",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -329,20 +362,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "54269f33-7f9e-47d2-86b8-f6d0788bef3e",
+        "client-request-id": "6ffdfc37-a3e0-4da9-abb1-2b38466fe431",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE49141E479A2",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "request-id": "2e3f8f50-32c4-48fa-959d-1a19b130fd0f",
+        "Date": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "ETag": "0x8DBF0C6390D20EE",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "request-id": "41302b8f-6f25-4f0b-849f-599ba3a1c505",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -352,16 +385,16 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE49141E479A2",
-        "lastModified": "2023-11-13T21:41:12.9940386Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C6390D20EE",
+        "lastModified": "2023-11-29T10:30:35.440971Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "active",
-        "stateTransitionTime": "2023-11-13T21:41:12.9940386Z",
+        "stateTransitionTime": "2023-11-29T10:30:35.440971Z",
         "previousState": "disabled",
-        "previousStateTransitionTime": "2023-11-13T21:41:12.8010413Z",
+        "previousStateTransitionTime": "2023-11-29T10:30:34.4881792Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -393,20 +426,53 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0e37fc17-d1e2-421a-a08b-90386b902699",
+        "client-request-id": "af7971ee-4207-4cb0-9053-a29f187f4f43",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:34 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 429,
+      "ResponseHeaders": {
+        "Content-Length": "372",
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "request-id": "bba05e94-840a-4650-bc27-3595ffa4319f",
+        "Retry-After": "30",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element",
+        "code": "TooManyRequests",
+        "message": {
+          "lang": "en-US",
+          "value": "Request failed as server encountered too many requests. Please try again.\nRequestId:bba05e94-840a-4650-bc27-3595ffa4319f\nTime:2023-11-29T10:30:35.5242591Z"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/terminate?api-version=2023-05-01.17.0",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "client-request-id": "af7971ee-4207-4cb0-9053-a29f187f4f43",
+        "Content-Length": "0",
+        "Date": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "DataServiceId": "https://sanjbatch.eastus.batch.azure.com/jobschedules/BatchUser-JobSchedule-updateJobScheduleState/terminate",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE4914200B452",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "request-id": "cb46bf61-cabb-4554-82d9-559409d90d02",
+        "Date": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "ETag": "0x8DBF0C639A11E5E",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "request-id": "79b67cd2-4686-4909-b776-5fae8c69f132",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -420,20 +486,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "e182a65f-366c-4f93-8eeb-e6476cd07dc0",
+        "client-request-id": "4e44a7a5-d59d-4eb5-8145-e0bf78f448be",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:35 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:12 GMT",
-        "ETag": "0x8DBE4914200B452",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "request-id": "86a68016-9738-4cca-9359-185afe517b92",
+        "Date": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "ETag": "0x8DBF0C639A11E5E",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "request-id": "77591db3-aef4-4290-b28f-0a4549068b3b",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -443,16 +509,16 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE4914200B452",
-        "lastModified": "2023-11-13T21:41:13.1790418Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C639A11E5E",
+        "lastModified": "2023-11-29T10:30:36.4108382Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "terminating",
-        "stateTransitionTime": "2023-11-13T21:41:13.1790418Z",
+        "stateTransitionTime": "2023-11-29T10:30:36.4108382Z",
         "previousState": "active",
-        "previousStateTransitionTime": "2023-11-13T21:41:12.9940386Z",
+        "previousStateTransitionTime": "2023-11-29T10:30:35.440971Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -484,20 +550,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "7ddbfdeb-5654-4e9a-925d-def1f47dbec0",
+        "client-request-id": "2cfe1937-d313-4fc1-b26c-d6e4d8693b15",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:15 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:37 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:14 GMT",
-        "ETag": "0x8DBE4914200B452",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "request-id": "10fd7e34-5a6e-49bd-9387-5bb2ce40a9a2",
+        "Date": "Wed, 29 Nov 2023 10:30:38 GMT",
+        "ETag": "0x8DBF0C639A11E5E",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "request-id": "45f1e2f9-e16d-4d81-9674-4482475e36e8",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -507,16 +573,16 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE4914200B452",
-        "lastModified": "2023-11-13T21:41:13.1790418Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C639A11E5E",
+        "lastModified": "2023-11-29T10:30:36.4108382Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "completed",
-        "stateTransitionTime": "2023-11-13T21:41:13.8872371Z",
+        "stateTransitionTime": "2023-11-29T10:30:37.4328729Z",
         "previousState": "active",
-        "previousStateTransitionTime": "2023-11-13T21:41:12.9940386Z",
+        "previousStateTransitionTime": "2023-11-29T10:30:35.440971Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -539,7 +605,7 @@
             "url": "REDACTED",
             "id": "BatchUser-JobSchedule-updateJobScheduleState:job-1"
           },
-          "endTime": "2023-11-13T21:41:13.8872371Z"
+          "endTime": "2023-11-29T10:30:37.4328729Z"
         }
       }
     },
@@ -549,17 +615,17 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "5e793824-5bee-4471-b885-be90525912b6",
+        "client-request-id": "dfa47b57-ef6e-4696-9416-5153d02c9245",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:15 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:37 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 202,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:14 GMT",
-        "request-id": "25fe262e-f319-4409-bf72-accd614b74b0",
+        "Date": "Wed, 29 Nov 2023 10:30:38 GMT",
+        "request-id": "a8bfea5d-d1ce-4782-986b-d785051476f6",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -573,20 +639,20 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "fe78b588-ea08-4e46-9022-ef4e0dcfaf74",
+        "client-request-id": "8c54a742-be14-4188-bdf8-45212188833f",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:15 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:37 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:14 GMT",
-        "ETag": "0x8DBE4914200B452",
-        "Last-Modified": "Mon, 13 Nov 2023 21:41:13 GMT",
-        "request-id": "7ed868cb-4597-4b4e-a185-13a34fab0dd2",
+        "Date": "Wed, 29 Nov 2023 10:30:38 GMT",
+        "ETag": "0x8DBF0C639A11E5E",
+        "Last-Modified": "Wed, 29 Nov 2023 10:30:36 GMT",
+        "request-id": "64c5a101-5e08-41f8-bcc8-14dab524bafe",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -596,16 +662,16 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#jobschedules/@Element",
         "id": "BatchUser-JobSchedule-updateJobScheduleState",
         "url": "REDACTED",
-        "eTag": "0x8DBE4914200B452",
-        "lastModified": "2023-11-13T21:41:13.1790418Z",
-        "creationTime": "2023-11-13T21:41:12.6070367Z",
+        "eTag": "0x8DBF0C639A11E5E",
+        "lastModified": "2023-11-29T10:30:36.4108382Z",
+        "creationTime": "2023-11-29T10:30:34.3801786Z",
         "state": "deleting",
-        "stateTransitionTime": "2023-11-13T21:41:15.4829008Z",
+        "stateTransitionTime": "2023-11-29T10:30:38.5752253Z",
         "previousState": "completed",
-        "previousStateTransitionTime": "2023-11-13T21:41:13.8872371Z",
+        "previousStateTransitionTime": "2023-11-29T10:30:37.4328729Z",
         "schedule": {
-          "doNotRunUntil": "2023-11-13T21:41:12.605113Z",
-          "doNotRunAfter": "2023-11-14T02:41:12.605113Z",
+          "doNotRunUntil": "2023-11-29T10:30:33.435439Z",
+          "doNotRunAfter": "2023-11-29T15:30:33.435439Z",
           "startWindow": "P5D"
         },
         "jobSpecification": {
@@ -637,10 +703,10 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "8eb70ca0-a062-4dba-83bf-b5ec02899b59",
+        "client-request-id": "5f101071-3239-4cac-8fd7-7a81c665be39",
         "Content-Length": "0",
-        "Date": "Mon, 13 Nov 2023 21:41:15 GMT",
-        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.20; Windows 11; 10.0)"
+        "Date": "Wed, 29 Nov 2023 10:30:37 GMT",
+        "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (11.0.21; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 409,
@@ -648,8 +714,8 @@
         "Content-Length": "386",
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Mon, 13 Nov 2023 21:41:15 GMT",
-        "request-id": "ca2eabce-c1bc-49bb-a76e-70ba8cd8ac16",
+        "Date": "Wed, 29 Nov 2023 10:30:38 GMT",
+        "request-id": "630e7aba-a980-43d2-8d78-bd884d2b9739",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "X-Content-Type-Options": "nosniff"
@@ -659,7 +725,7 @@
         "code": "JobScheduleBeingDeleted",
         "message": {
           "lang": "en-US",
-          "value": "The specified job schedule has been marked for deletion and is being reclaimed.\nRequestId:ca2eabce-c1bc-49bb-a76e-70ba8cd8ac16\nTime:2023-11-13T21:41:15.6636563Z"
+          "value": "The specified job schedule has been marked for deletion and is being reclaimed.\nRequestId:630e7aba-a980-43d2-8d78-bd884d2b9739\nTime:2023-11-29T10:30:38.6718169Z"
         }
       }
     }
