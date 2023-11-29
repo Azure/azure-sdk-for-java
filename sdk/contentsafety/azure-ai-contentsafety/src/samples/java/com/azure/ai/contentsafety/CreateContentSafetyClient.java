@@ -4,27 +4,24 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.AnalyzeTextOptions;
-import com.azure.ai.contentsafety.models.AnalyzeTextResult;
-import com.azure.ai.contentsafety.models.TextCategoriesAnalysis;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
-
-public class AnalyzeText {
+public class CreateContentSafetyClient {
     public static void main(String[] args) {
-        // BEGIN:com.azure.ai.contentsafety.analyzetext
+        // BEGIN:com.azure.ai.contentsafety.createcontentsafetyclient
         String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
         String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
         ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
             .credential(new KeyCredential(key))
             .endpoint(endpoint).buildClient();
+        // END:com.azure.ai.contentsafety.createcontentsafetyclient
 
-        AnalyzeTextResult response = contentSafetyClient.analyzeText(new AnalyzeTextOptions("This is text example"));
-
-        for (TextCategoriesAnalysis result : response.getCategoriesAnalysis()) {
-            System.out.println(result.getCategory() + " severity: " + result.getSeverity());
-        }
-        // END:com.azure.ai.contentsafety.analyzetext
+        // BEGIN:com.azure.ai.contentsafety.createcontentsafetyclienttoken
+        ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .endpoint(endpoint).buildClient();
+        // END:com.azure.ai.contentsafety.createcontentsafetyclienttoken
     }
 }

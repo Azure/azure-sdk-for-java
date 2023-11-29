@@ -9,19 +9,22 @@ import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsResult;
 import com.azure.ai.contentsafety.models.RemoveTextBlocklistItemsOptions;
 import com.azure.ai.contentsafety.models.TextBlocklist;
 import com.azure.ai.contentsafety.models.TextBlocklistItem;
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase {
-    private static String blocklistName = "blocklistTest";
+public final class ManageTextBlocklistAsyncTests extends ContentSafetyClientTestBase {
+    private static String blocklistName = "blocklistTestAsync";
     private static String blocklistItemId = "";
 
     @Test
@@ -30,7 +33,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
         BinaryData resource = BinaryData.fromString("{\"description\":\"Test Blocklist\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-            blocklistClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions);
+            blocklistAsyncClient.createOrUpdateTextBlocklistWithResponse(blocklistName, resource, requestOptions).block();
         Assertions.assertEquals(201, response.getStatusCode());
     }
 
@@ -39,11 +42,10 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(2)
     public void testGetAllTextBlocklistsTests() {
         // method invocation
-        PagedIterable<TextBlocklist> response = blocklistClient.listTextBlocklists();
+        PagedFlux<TextBlocklist> response = blocklistAsyncClient.listTextBlocklists();
 
         // response assertion
-        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        TextBlocklist firstItem = response.iterator().next();
+        TextBlocklist firstItem = response.blockFirst();
         Assertions.assertNotNull(firstItem);
 
         String firstItemBlocklistName = firstItem.getName();
@@ -57,7 +59,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(3)
     public void testGetTextBlocklistByBlocklistNameTests() {
         // method invocation
-        TextBlocklist response = blocklistClient.getTextBlocklist(blocklistName);
+        TextBlocklist response = blocklistAsyncClient.getTextBlocklist(blocklistName).block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -73,13 +75,13 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     public void testAddBlockItemsToTextBlocklistTests() {
         // method invocation
         AddOrUpdateTextBlocklistItemsResult response =
-            blocklistClient.addOrUpdateBlocklistItems(
+            blocklistAsyncClient.addOrUpdateBlocklistItems(
                 blocklistName,
                 new AddOrUpdateTextBlocklistItemsOptions(
                     Arrays.asList(new TextBlocklistItem("fuck").setDescription("fuck word"),
                         new TextBlocklistItem("hate").setDescription("hate word"),
                         new TextBlocklistItem("violence").setDescription("violence word"),
-                        new TextBlocklistItem("sex").setDescription("sex word"))));
+                        new TextBlocklistItem("sex").setDescription("sex word")))).block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -100,14 +102,13 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(5)
     public void testGetAllBlockItemsByBlocklistNameTests() {
         // method invocation
-        PagedIterable<TextBlocklistItem> response = blocklistClient.listTextBlocklistItems(blocklistName, 2, 1);
+        PagedFlux<TextBlocklistItem> response = blocklistAsyncClient.listTextBlocklistItems(blocklistName, 2, 1);
 
         // response assertion
-        Assertions.assertEquals(2, response.stream().count());
-        Optional<TextBlocklistItem> firstItem = response.stream().findFirst();
+        TextBlocklistItem firstItem = response.blockFirst();
         Assertions.assertNotNull(firstItem);
-        Assertions.assertEquals("violence word", firstItem.get().getDescription());
-        Assertions.assertEquals("violence", firstItem.get().getText());
+        Assertions.assertEquals("violence word", firstItem.getDescription());
+        Assertions.assertEquals("violence", firstItem.getText());
     }
 
     @Test
@@ -116,7 +117,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
         // method invocation
         System.out.println("debug blocklistItemId: " + blocklistItemId);
         TextBlocklistItem response =
-            blocklistClient.getTextBlocklistItem(blocklistName, blocklistItemId);
+            blocklistAsyncClient.getTextBlocklistItem(blocklistName, blocklistItemId).block();
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -134,7 +135,7 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     public void testRemoveBlockItemsFromTextBlocklistTests() {
         // method invocation
         System.out.println("debug blocklistItemId: " + blocklistItemId);
-        blocklistClient.removeBlocklistItems(
+        blocklistAsyncClient.removeBlocklistItems(
             blocklistName, new RemoveTextBlocklistItemsOptions(Arrays.asList(blocklistItemId)));
     }
 
@@ -142,6 +143,6 @@ public final class ManageTextBlocklistTests extends ContentSafetyClientTestBase 
     @Order(8)
     public void testDeleteTextBlocklistByBlocklistNameTests() {
         // method invocation
-        blocklistClient.deleteTextBlocklist(blocklistName);
+        blocklistAsyncClient.deleteTextBlocklist(blocklistName).block();
     }
 }
