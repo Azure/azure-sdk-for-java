@@ -50,6 +50,16 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 ```bash
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
+
+#### Create a ContentSafetyClient with KeyCredential
+```java com.azure.ai.contentsafety.createcontentsafetyclient
+String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
+ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
+```
+
 #### Create a ContentSafetyClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
 - Step 1: Enable AAD for your resource
   Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
@@ -71,14 +81,6 @@ ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .endpoint(endpoint).buildClient();
 ```
 
-#### Create a ContentSafetyClient with KeyCredential
-```java com.azure.ai.contentsafety.createcontentsafetyclient
-String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
-String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
-ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
-    .credential(new KeyCredential(key))
-    .endpoint(endpoint).buildClient();
-```
 
 #### Create a BlocklistClient with KeyCredential
 ```java com.azure.ai.contentsafety.createblocklistclient
