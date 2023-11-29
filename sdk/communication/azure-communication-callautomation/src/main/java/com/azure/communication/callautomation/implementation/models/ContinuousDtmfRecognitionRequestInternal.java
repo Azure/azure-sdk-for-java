@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContinuousDtmfRecognitionRequestInternal model. */
+/**
+ * The ContinuousDtmfRecognitionRequestInternal model.
+ */
 @Fluent
 public final class ContinuousDtmfRecognitionRequestInternal {
     /*
@@ -29,8 +31,14 @@ public final class ContinuousDtmfRecognitionRequestInternal {
     private String callbackUri;
 
     /**
+     * Creates an instance of ContinuousDtmfRecognitionRequestInternal class.
+     */
+    public ContinuousDtmfRecognitionRequestInternal() {
+    }
+
+    /**
      * Get the targetParticipant property: Defines options for recognition.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -39,19 +47,19 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the targetParticipant property: Defines options for recognition.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
-    public ContinuousDtmfRecognitionRequestInternal setTargetParticipant(
-            CommunicationIdentifierModel targetParticipant) {
+    public ContinuousDtmfRecognitionRequestInternal
+        setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
         return this;
     }
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -60,7 +68,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */
@@ -71,7 +79,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -80,7 +88,7 @@ public final class ContinuousDtmfRecognitionRequestInternal {
 
     /**
      * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the ContinuousDtmfRecognitionRequestInternal object itself.
      */

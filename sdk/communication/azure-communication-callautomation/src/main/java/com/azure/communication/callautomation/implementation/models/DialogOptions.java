@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DialogOptions model. */
+/**
+ * The DialogOptions model.
+ */
 @Fluent
 public final class DialogOptions {
     /*
@@ -24,8 +26,14 @@ public final class DialogOptions {
     private Map<String, Object> dialogContext;
 
     /**
+     * Creates an instance of DialogOptions class.
+     */
+    public DialogOptions() {
+    }
+
+    /**
      * Get the botAppId property: Bot identifier.
-     *
+     * 
      * @return the botAppId value.
      */
     public String getBotAppId() {
@@ -34,7 +42,7 @@ public final class DialogOptions {
 
     /**
      * Set the botAppId property: Bot identifier.
-     *
+     * 
      * @param botAppId the botAppId value to set.
      * @return the DialogOptions object itself.
      */
@@ -45,7 +53,7 @@ public final class DialogOptions {
 
     /**
      * Get the dialogContext property: Dialog context.
-     *
+     * 
      * @return the dialogContext value.
      */
     public Map<String, Object> getDialogContext() {
@@ -54,7 +62,7 @@ public final class DialogOptions {
 
     /**
      * Set the dialogContext property: Dialog context.
-     *
+     * 
      * @param dialogContext the dialogContext value to set.
      * @return the DialogOptions object itself.
      */

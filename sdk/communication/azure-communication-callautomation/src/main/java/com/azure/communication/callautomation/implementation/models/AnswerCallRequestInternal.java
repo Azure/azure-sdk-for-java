@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for answering the call. */
+/**
+ * The request payload for answering the call.
+ */
 @Fluent
 public final class AnswerCallRequestInternal {
     /*
@@ -38,7 +40,7 @@ public final class AnswerCallRequestInternal {
      * Live Transcription Configuration.
      */
     @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfiguration transcriptionConfiguration;
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
@@ -53,8 +55,14 @@ public final class AnswerCallRequestInternal {
     private CommunicationUserIdentifierModel answeredByIdentifier;
 
     /**
+     * Creates an instance of AnswerCallRequestInternal class.
+     */
+    public AnswerCallRequestInternal() {
+    }
+
+    /**
      * Get the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -63,7 +71,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -74,7 +82,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the callbackUri property: The callback uri.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -83,7 +91,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callbackUri property: The callback uri.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -94,7 +102,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the operationContext property: A customer set value used to track the answering of a call.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -103,7 +111,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the operationContext property: A customer set value used to track the answering of a call.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -114,7 +122,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @return the mediaStreamingConfiguration value.
      */
     public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
@@ -123,33 +131,33 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
+     * 
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public AnswerCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
 
     /**
      * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
+     * 
      * @return the transcriptionConfiguration value.
      */
-    public TranscriptionConfiguration getTranscriptionConfiguration() {
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
         return this.transcriptionConfiguration;
     }
 
     /**
      * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
+     * 
      * @param transcriptionConfiguration the transcriptionConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfiguration transcriptionConfiguration) {
+    public AnswerCallRequestInternal
+        setTranscriptionConfiguration(TranscriptionConfigurationInternal transcriptionConfiguration) {
         this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
@@ -157,7 +165,7 @@ public final class AnswerCallRequestInternal {
     /**
      * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
-     *
+     * 
      * @return the azureCognitiveServicesEndpointUrl value.
      */
     public String getAzureCognitiveServicesEndpointUrl() {
@@ -167,7 +175,7 @@ public final class AnswerCallRequestInternal {
     /**
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
-     *
+     * 
      * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -178,7 +186,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
-     *
+     * 
      * @return the answeredByIdentifier value.
      */
     public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
@@ -187,7 +195,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
-     *
+     * 
      * @param answeredByIdentifier the answeredByIdentifier value to set.
      * @return the AnswerCallRequestInternal object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PlayRequest model. */
+/**
+ * The PlayRequest model.
+ */
 @Fluent
 public final class PlayRequest {
     /*
@@ -43,8 +45,14 @@ public final class PlayRequest {
     private String callbackUri;
 
     /**
+     * Creates an instance of PlayRequest class.
+     */
+    public PlayRequest() {
+    }
+
+    /**
      * Get the playSourceInfo property: The source of the audio to be played.
-     *
+     * 
      * @return the playSourceInfo value.
      */
     public PlaySourceInternal getPlaySourceInfo() {
@@ -53,7 +61,7 @@ public final class PlayRequest {
 
     /**
      * Set the playSourceInfo property: The source of the audio to be played.
-     *
+     * 
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the PlayRequest object itself.
      */
@@ -63,9 +71,9 @@ public final class PlayRequest {
     }
 
     /**
-     * Get the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Get the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @return the playTo value.
      */
     public List<CommunicationIdentifierModel> getPlayTo() {
@@ -73,9 +81,9 @@ public final class PlayRequest {
     }
 
     /**
-     * Set the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Set the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @param playTo the playTo value to set.
      * @return the PlayRequest object itself.
      */
@@ -86,7 +94,7 @@ public final class PlayRequest {
 
     /**
      * Get the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @return the playOptions value.
      */
     public PlayOptionsInternal getPlayOptions() {
@@ -95,7 +103,7 @@ public final class PlayRequest {
 
     /**
      * Set the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
@@ -106,7 +114,7 @@ public final class PlayRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -115,7 +123,7 @@ public final class PlayRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the PlayRequest object itself.
      */
@@ -126,7 +134,7 @@ public final class PlayRequest {
 
     /**
      * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -135,7 +143,7 @@ public final class PlayRequest {
 
     /**
      * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the PlayRequest object itself.
      */

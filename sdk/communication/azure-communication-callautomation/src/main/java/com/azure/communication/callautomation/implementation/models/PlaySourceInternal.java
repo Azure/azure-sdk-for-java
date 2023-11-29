@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PlaySourceInternal model. */
+/**
+ * The PlaySourceInternal model.
+ */
 @Fluent
 public final class PlaySourceInternal {
     /*
@@ -35,15 +37,20 @@ public final class PlaySourceInternal {
     private TextSourceInternal textSource;
 
     /*
-     * Defines the ssml(Speech Synthesis Markup Language) source info to be
-     * used for play
+     * Defines the ssml(Speech Synthesis Markup Language) source info to be used for play
      */
     @JsonProperty(value = "ssmlSource")
     private SsmlSourceInternal ssmlSource;
 
     /**
+     * Creates an instance of PlaySourceInternal class.
+     */
+    public PlaySourceInternal() {
+    }
+
+    /**
      * Get the sourceType property: Defines the type of the play source.
-     *
+     * 
      * @return the sourceType value.
      */
     public PlaySourceTypeInternal getSourceType() {
@@ -52,7 +59,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the sourceType property: Defines the type of the play source.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -63,7 +70,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the playSourceId property: Defines the identifier to be used for caching related media.
-     *
+     * 
      * @return the playSourceId value.
      */
     public String getPlaySourceId() {
@@ -72,7 +79,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the playSourceId property: Defines the identifier to be used for caching related media.
-     *
+     * 
      * @param playSourceId the playSourceId value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -83,7 +90,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the fileSource property: Defines the file source info to be used for play.
-     *
+     * 
      * @return the fileSource value.
      */
     public FileSourceInternal getFileSource() {
@@ -92,7 +99,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the fileSource property: Defines the file source info to be used for play.
-     *
+     * 
      * @param fileSource the fileSource value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -103,7 +110,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the textSource property: Defines the text source info to be used for play.
-     *
+     * 
      * @return the textSource value.
      */
     public TextSourceInternal getTextSource() {
@@ -112,7 +119,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the textSource property: Defines the text source info to be used for play.
-     *
+     * 
      * @param textSource the textSource value to set.
      * @return the PlaySourceInternal object itself.
      */
@@ -123,7 +130,7 @@ public final class PlaySourceInternal {
 
     /**
      * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
-     *
+     * 
      * @return the ssmlSource value.
      */
     public SsmlSourceInternal getSsmlSource() {
@@ -132,7 +139,7 @@ public final class PlaySourceInternal {
 
     /**
      * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
-     *
+     * 
      * @param ssmlSource the ssmlSource value to set.
      * @return the PlaySourceInternal object itself.
      */

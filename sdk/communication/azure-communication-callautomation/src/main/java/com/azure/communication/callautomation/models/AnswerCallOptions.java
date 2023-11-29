@@ -25,11 +25,16 @@ public final class AnswerCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String azureCognitiveServicesUrl;
-    
+
     /**
      * The operational context
      */
@@ -82,7 +87,16 @@ public final class AnswerCallOptions {
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
     }
-    
+
+    /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
     /**
      * Get the operationContext.
      *
@@ -104,6 +118,17 @@ public final class AnswerCallOptions {
     }
 
     /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+    /**
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
@@ -114,7 +139,7 @@ public final class AnswerCallOptions {
         this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
-    
+
      /**
      * Set the operationContext.
      *

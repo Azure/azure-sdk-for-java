@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for transferring call to a participant. */
+/**
+ * The request payload for transferring call to a participant.
+ */
 @Fluent
 public final class TransferToParticipantRequestInternal {
     /*
@@ -23,8 +25,7 @@ public final class TransferToParticipantRequestInternal {
     private CustomContext customContext;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -42,8 +43,14 @@ public final class TransferToParticipantRequestInternal {
     private String callbackUri;
 
     /**
+     * Creates an instance of TransferToParticipantRequestInternal class.
+     */
+    public TransferToParticipantRequestInternal() {
+    }
+
+    /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -52,7 +59,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -63,7 +70,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the customContext property: Used by customer to send custom context to targets.
-     *
+     * 
      * @return the customContext value.
      */
     public CustomContext getCustomContext() {
@@ -72,7 +79,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the customContext property: Used by customer to send custom context to targets.
-     *
+     * 
      * @param customContext the customContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -84,7 +91,7 @@ public final class TransferToParticipantRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -94,7 +101,7 @@ public final class TransferToParticipantRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -105,7 +112,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the transferee property: Transferee is the participant who is transferring the call.
-     *
+     * 
      * @return the transferee value.
      */
     public CommunicationIdentifierModel getTransferee() {
@@ -114,7 +121,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the transferee property: Transferee is the participant who is transferring the call.
-     *
+     * 
      * @param transferee the transferee value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -125,7 +132,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -134,7 +141,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StartDialogRequestInternal model. */
+/**
+ * The StartDialogRequestInternal model.
+ */
 @Fluent
 public final class StartDialogRequestInternal {
     /*
@@ -29,8 +31,14 @@ public final class StartDialogRequestInternal {
     private String operationContext;
 
     /**
+     * Creates an instance of StartDialogRequestInternal class.
+     */
+    public StartDialogRequestInternal() {
+    }
+
+    /**
      * Get the dialogOptions property: Defines options for dialog.
-     *
+     * 
      * @return the dialogOptions value.
      */
     public DialogOptions getDialogOptions() {
@@ -39,7 +47,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the dialogOptions property: Defines options for dialog.
-     *
+     * 
      * @param dialogOptions the dialogOptions value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -50,7 +58,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the dialogInputType property: Determines the type of the dialog.
-     *
+     * 
      * @return the dialogInputType value.
      */
     public DialogInputType getDialogInputType() {
@@ -59,7 +67,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the dialogInputType property: Determines the type of the dialog.
-     *
+     * 
      * @param dialogInputType the dialogInputType value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -70,7 +78,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -79,7 +87,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartDialogRequestInternal object itself.
      */

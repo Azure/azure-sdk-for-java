@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GenderTypeInternal. */
+/**
+ * Voice gender type.
+ */
 public final class GenderTypeInternal extends ExpandableStringEnum<GenderTypeInternal> {
-    /** Static value male for GenderTypeInternal. */
+    /**
+     * Static value male for GenderTypeInternal.
+     */
     public static final GenderTypeInternal MALE = fromString("male");
 
-    /** Static value female for GenderTypeInternal. */
+    /**
+     * Static value female for GenderTypeInternal.
+     */
     public static final GenderTypeInternal FEMALE = fromString("female");
 
     /**
+     * Creates a new instance of GenderTypeInternal value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GenderTypeInternal() {
+    }
+
+    /**
      * Creates or finds a GenderTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GenderTypeInternal.
      */
@@ -27,7 +42,11 @@ public final class GenderTypeInternal extends ExpandableStringEnum<GenderTypeInt
         return fromString(name, GenderTypeInternal.class);
     }
 
-    /** @return known GenderTypeInternal values. */
+    /**
+     * Gets known GenderTypeInternal values.
+     * 
+     * @return known GenderTypeInternal values.
+     */
     public static Collection<GenderTypeInternal> values() {
         return values(GenderTypeInternal.class);
     }

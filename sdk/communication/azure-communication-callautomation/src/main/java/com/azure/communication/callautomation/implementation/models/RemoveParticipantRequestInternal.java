@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The remove participant by identifier request. */
+/**
+ * The remove participant by identifier request.
+ */
 @Fluent
 public final class RemoveParticipantRequestInternal {
     /*
@@ -17,8 +19,7 @@ public final class RemoveParticipantRequestInternal {
     private CommunicationIdentifierModel participantToRemove;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -30,8 +31,14 @@ public final class RemoveParticipantRequestInternal {
     private String callbackUri;
 
     /**
+     * Creates an instance of RemoveParticipantRequestInternal class.
+     */
+    public RemoveParticipantRequestInternal() {
+    }
+
+    /**
      * Get the participantToRemove property: The participants to be removed from the call.
-     *
+     * 
      * @return the participantToRemove value.
      */
     public CommunicationIdentifierModel getParticipantToRemove() {
@@ -40,7 +47,7 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Set the participantToRemove property: The participants to be removed from the call.
-     *
+     * 
      * @param participantToRemove the participantToRemove value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -52,7 +59,7 @@ public final class RemoveParticipantRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -62,7 +69,7 @@ public final class RemoveParticipantRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -73,7 +80,7 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -82,7 +89,7 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */

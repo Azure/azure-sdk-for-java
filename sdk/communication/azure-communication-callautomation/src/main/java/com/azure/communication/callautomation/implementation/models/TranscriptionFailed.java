@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TranscriptionFailed model. */
+/**
+ * The TranscriptionFailed model.
+ */
 @Fluent
 public final class TranscriptionFailed {
     /*
@@ -23,15 +25,13 @@ public final class TranscriptionFailed {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
-     * Used by customers when calling answerCall action to correlate the
-     * request to the response event.
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -43,15 +43,20 @@ public final class TranscriptionFailed {
     private ResultInformation resultInformation;
 
     /*
-     * Defines the result for TranscriptionUpdate with the current status and
-     * the details about the status
+     * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
     @JsonProperty(value = "transcriptionUpdateResult", access = JsonProperty.Access.WRITE_ONLY)
     private TranscriptionUpdate transcriptionUpdateResult;
 
     /**
+     * Creates an instance of TranscriptionFailed class.
+     */
+    public TranscriptionFailed() {
+    }
+
+    /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -60,7 +65,7 @@ public final class TranscriptionFailed {
 
     /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -69,7 +74,7 @@ public final class TranscriptionFailed {
 
     /**
      * Set the serverCallId property: Server call ID.
-     *
+     * 
      * @param serverCallId the serverCallId value to set.
      * @return the TranscriptionFailed object itself.
      */
@@ -79,9 +84,9 @@ public final class TranscriptionFailed {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
@@ -89,9 +94,9 @@ public final class TranscriptionFailed {
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
+     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
+     * 
      * @param correlationId the correlationId value to set.
      * @return the TranscriptionFailed object itself.
      */
@@ -103,7 +108,7 @@ public final class TranscriptionFailed {
     /**
      * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -112,7 +117,7 @@ public final class TranscriptionFailed {
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
-     *
+     * 
      * @return the resultInformation value.
      */
     public ResultInformation getResultInformation() {
@@ -122,7 +127,7 @@ public final class TranscriptionFailed {
     /**
      * Get the transcriptionUpdateResult property: Defines the result for TranscriptionUpdate with the current status
      * and the details about the status.
-     *
+     * 
      * @return the transcriptionUpdateResult value.
      */
     public TranscriptionUpdate getTranscriptionUpdateResult() {

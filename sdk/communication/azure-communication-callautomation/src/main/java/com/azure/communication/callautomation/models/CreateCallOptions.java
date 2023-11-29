@@ -35,6 +35,12 @@ public final class CreateCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
+
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
     /**
      * Constructor
      * @param callInvite Call invitee information.
@@ -85,6 +91,15 @@ public final class CreateCallOptions {
         return mediaStreamingOptions;
     }
 
+    /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
 
     /**
      * Set the operationContext: A customer set value used to track the answering of a call.
@@ -105,6 +120,17 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 

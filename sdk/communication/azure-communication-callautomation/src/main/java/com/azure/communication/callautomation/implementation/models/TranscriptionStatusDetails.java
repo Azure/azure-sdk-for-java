@@ -8,42 +8,71 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TranscriptionStatusDetails. */
+/**
+ * Defines values for TranscriptionStatusDetails.
+ */
 public final class TranscriptionStatusDetails extends ExpandableStringEnum<TranscriptionStatusDetails> {
-    /** Static value subscriptionStarted for TranscriptionStatusDetails. */
+    /**
+     * Static value subscriptionStarted for TranscriptionStatusDetails.
+     */
     public static final TranscriptionStatusDetails SUBSCRIPTION_STARTED = fromString("subscriptionStarted");
 
-    /** Static value streamConnectionReestablished for TranscriptionStatusDetails. */
-    public static final TranscriptionStatusDetails STREAM_CONNECTION_REESTABLISHED =
-            fromString("streamConnectionReestablished");
+    /**
+     * Static value streamConnectionReestablished for TranscriptionStatusDetails.
+     */
+    public static final TranscriptionStatusDetails STREAM_CONNECTION_REESTABLISHED
+        = fromString("streamConnectionReestablished");
 
-    /** Static value streamConnectionUnsuccessful for TranscriptionStatusDetails. */
-    public static final TranscriptionStatusDetails STREAM_CONNECTION_UNSUCCESSFUL =
-            fromString("streamConnectionUnsuccessful");
+    /**
+     * Static value streamConnectionUnsuccessful for TranscriptionStatusDetails.
+     */
+    public static final TranscriptionStatusDetails STREAM_CONNECTION_UNSUCCESSFUL
+        = fromString("streamConnectionUnsuccessful");
 
-    /** Static value streamUrlMissing for TranscriptionStatusDetails. */
+    /**
+     * Static value streamUrlMissing for TranscriptionStatusDetails.
+     */
     public static final TranscriptionStatusDetails STREAM_URL_MISSING = fromString("streamUrlMissing");
 
-    /** Static value serviceShutdown for TranscriptionStatusDetails. */
+    /**
+     * Static value serviceShutdown for TranscriptionStatusDetails.
+     */
     public static final TranscriptionStatusDetails SERVICE_SHUTDOWN = fromString("serviceShutdown");
 
-    /** Static value streamConnectionInterrupted for TranscriptionStatusDetails. */
-    public static final TranscriptionStatusDetails STREAM_CONNECTION_INTERRUPTED =
-            fromString("streamConnectionInterrupted");
+    /**
+     * Static value streamConnectionInterrupted for TranscriptionStatusDetails.
+     */
+    public static final TranscriptionStatusDetails STREAM_CONNECTION_INTERRUPTED
+        = fromString("streamConnectionInterrupted");
 
-    /** Static value speechServicesConnectionError for TranscriptionStatusDetails. */
-    public static final TranscriptionStatusDetails SPEECH_SERVICES_CONNECTION_ERROR =
-            fromString("speechServicesConnectionError");
+    /**
+     * Static value speechServicesConnectionError for TranscriptionStatusDetails.
+     */
+    public static final TranscriptionStatusDetails SPEECH_SERVICES_CONNECTION_ERROR
+        = fromString("speechServicesConnectionError");
 
-    /** Static value subscriptionStopped for TranscriptionStatusDetails. */
+    /**
+     * Static value subscriptionStopped for TranscriptionStatusDetails.
+     */
     public static final TranscriptionStatusDetails SUBSCRIPTION_STOPPED = fromString("subscriptionStopped");
 
-    /** Static value unspecifiedError for TranscriptionStatusDetails. */
+    /**
+     * Static value unspecifiedError for TranscriptionStatusDetails.
+     */
     public static final TranscriptionStatusDetails UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
     /**
+     * Creates a new instance of TranscriptionStatusDetails value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TranscriptionStatusDetails() {
+    }
+
+    /**
      * Creates or finds a TranscriptionStatusDetails from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TranscriptionStatusDetails.
      */
@@ -52,7 +81,11 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
         return fromString(name, TranscriptionStatusDetails.class);
     }
 
-    /** @return known TranscriptionStatusDetails values. */
+    /**
+     * Gets known TranscriptionStatusDetails values.
+     * 
+     * @return known TranscriptionStatusDetails values.
+     */
     public static Collection<TranscriptionStatusDetails> values() {
         return values(TranscriptionStatusDetails.class);
     }

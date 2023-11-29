@@ -4,10 +4,13 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration of live transcription. */
+/**
+ * Configuration of live transcription.
+ */
 @Fluent
 public final class TranscriptionConfiguration {
     /*
@@ -29,11 +32,16 @@ public final class TranscriptionConfiguration {
     private String locale;
 
     /*
-     * Determines if the transcription should be started immediately after call
-     * is answered or not.
+     * Determines if the transcription should be started immediately after call is answered or not.
      */
     @JsonProperty(value = "startTranscription", required = true)
     private boolean startTranscription;
+
+    /**
+     * Creates an instance of TranscriptionConfiguration class.
+     */
+    public TranscriptionConfiguration() {
+    }
 
     /**
      * Get the transportUrl property: Transport URL for live transcription.

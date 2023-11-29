@@ -41,6 +41,11 @@ public final class CreateGroupCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -119,6 +124,15 @@ public final class CreateGroupCallOptions {
     }
 
     /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
+    /**
      * get caller's display name
      * @return display name for caller
      */
@@ -157,10 +171,21 @@ public final class CreateGroupCallOptions {
      * Set the media streaming configuration.
      *
      * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
+     * @return the CreateGroupCallOptions object itself.
      */
     public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
