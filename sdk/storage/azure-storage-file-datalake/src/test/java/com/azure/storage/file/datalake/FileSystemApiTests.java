@@ -1909,6 +1909,18 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsCreationTimeParse() {
+        // this test is ensuring that we're handling the date format that the service returns for the creation time
+        // it can be returned in two formats: RFC 1123 date string or Windows file time
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+
+        // assert that NumberFormatException is not thrown
+        assertDoesNotThrow(() -> dataLakeFileSystemClient.listPaths(options, null));
+    }
+
+    @Test
     public void listPathsReturnUpn() {
         dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
         dataLakeFileSystemClient.getFileClient(generatePathName()).create();

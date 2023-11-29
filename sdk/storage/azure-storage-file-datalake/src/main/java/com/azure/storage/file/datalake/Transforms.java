@@ -381,10 +381,20 @@ class Transforms {
             parseDateOrNull(path.getLastModified()), path.getContentLength() == null ? 0 : path.getContentLength(),
             path.getGroup(), path.isDirectory() != null && path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions(),
-            path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
-            path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
+            parseWindowsFileTimeOrDateString(path.getCreationTime()),
+            parseWindowsFileTimeOrDateString(path.getExpiryTime()));
 
         return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
+    }
+
+    private static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
+        try {
+            // First try to parse as a long (Windows file time)
+            return fromWindowsFileTimeOrNull(Long.parseLong(date));
+        } catch (NumberFormatException ex) {
+            // If parsing as long fails, try to parse as a date string
+            return parseDateOrNull(date);
+        }
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -395,7 +405,7 @@ class Transforms {
         if (fileTime == 0) {
             return null;
         }
-        long fileTimeMs = fileTime / 10000; // fileTime is given in 100ns intervals. Convert to ms
+        long fileTimeMs = fileTime / 10000; // fileTime is given in 100ms intervals. Convert to ms
         long fileTimeUnixEpoch = fileTimeMs - EPOCH_CONVERSION; // Remove difference between Unix and Windows FileTime epochs
 
         return Instant.ofEpochMilli(fileTimeUnixEpoch).atOffset(ZoneOffset.UTC);
