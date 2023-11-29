@@ -32,6 +32,7 @@ import org.junit.jupiter.params.provider.Arguments;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -84,8 +85,10 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
             credential = new MockTokenCredential();
 
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
-            customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            customMatchers.add(new CustomMatcher()
+                .setComparingBodies(false)
+                .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+                .setExcludedHeaders(Arrays.asList("Authorization", "Accept-Language")));
             interceptorManager.addMatchers(customMatchers);
         }
 
