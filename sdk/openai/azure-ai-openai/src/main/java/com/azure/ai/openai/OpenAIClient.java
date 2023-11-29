@@ -39,6 +39,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -1518,17 +1519,30 @@ public final class OpenAIClient {
         return new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class));
     }
 
-    // @Generated
+    /**
+     * Creates an image given a prompt.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a successful image generation operation.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageGenerations getImageGenerations(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions) {
+        // Restore @Generated when we remove LRO support entirely
         // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
         // was available through an LRO
-        if ((deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank())
-            && openAIServiceClient == null) {
+        if (CoreUtils.isNullOrEmpty(deploymentOrModelName) && openAIServiceClient == null) {
             return serviceClient.beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
                 .getFinalResult().toObject(BatchImageGenerationOperationResponse.class).getResult();
         } else {
