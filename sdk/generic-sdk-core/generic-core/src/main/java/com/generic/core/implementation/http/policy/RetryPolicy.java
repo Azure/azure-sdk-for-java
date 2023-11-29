@@ -1,15 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy.retry;
+package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.http.policy.retry.RetryOptions;
-import com.generic.core.implementation.http.policy.logging.HttpLoggingPolicy;
+import com.generic.core.http.policy.RetryOptions;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.Headers;

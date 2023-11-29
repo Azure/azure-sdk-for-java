@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.redirect;
+package com.generic.core.http.policy;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
@@ -12,8 +12,8 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.implementation.http.policy.redirect.DefaultRedirectStrategy;
-import com.generic.core.implementation.http.policy.redirect.RedirectPolicy;
+import com.generic.core.implementation.http.policy.DefaultRedirectStrategy;
+import com.generic.core.implementation.http.policy.RedirectPolicy;
 import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Test;

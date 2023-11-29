@@ -16,10 +16,7 @@ module com.generic.core {
     exports com.generic.core.http.client;
     exports com.generic.core.http.models;
     exports com.generic.core.http.pipeline;
-    exports com.generic.core.http.policy.credential;
-    exports com.generic.core.http.policy.logging;
-    exports com.generic.core.http.policy.redirect;
-    exports com.generic.core.http.policy.retry;
+    exports com.generic.core.http.policy;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
     exports com.generic.core.http.annotation;

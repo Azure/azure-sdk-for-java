@@ -5,10 +5,10 @@ package com.generic.core.implementation.util;
 
 
 import com.generic.core.http.models.HttpHeaderName;
-import com.generic.core.http.policy.retry.RetryOptions;
-import com.generic.core.implementation.http.policy.retry.ExponentialBackoff;
-import com.generic.core.implementation.http.policy.retry.FixedDelay;
-import com.generic.core.implementation.http.policy.retry.RetryStrategy;
+import com.generic.core.http.policy.RetryOptions;
+import com.generic.core.implementation.http.policy.ExponentialBackoff;
+import com.generic.core.implementation.http.policy.FixedDelay;
+import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
 

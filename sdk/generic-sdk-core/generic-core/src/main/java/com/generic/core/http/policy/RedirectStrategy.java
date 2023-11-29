@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.redirect;
+package com.generic.core.http.policy;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.policy.redirect.RedirectPolicy;
+import com.generic.core.implementation.http.policy.RedirectPolicy;
 
 import java.util.Set;
 

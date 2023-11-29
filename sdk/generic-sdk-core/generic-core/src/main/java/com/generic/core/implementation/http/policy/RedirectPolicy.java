@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy.redirect;
+package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.http.policy.redirect.RedirectStrategy;
+import com.generic.core.http.policy.RedirectStrategy;
 
 import java.util.HashSet;
 import java.util.Objects;

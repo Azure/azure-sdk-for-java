@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy.retry;
+package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.policy.retry.FixedDelayOptions;
+import com.generic.core.http.policy.FixedDelayOptions;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.time.Duration;

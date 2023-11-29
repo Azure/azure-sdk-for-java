@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.credential;
+package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
 import com.generic.core.http.models.HttpHeaderName;

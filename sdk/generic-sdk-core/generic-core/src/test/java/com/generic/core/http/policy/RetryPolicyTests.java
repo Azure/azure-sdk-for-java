@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.retry;
+package com.generic.core.http.policy;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
@@ -11,10 +11,10 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.implementation.http.policy.retry.ExponentialBackoff;
-import com.generic.core.implementation.http.policy.retry.FixedDelay;
-import com.generic.core.implementation.http.policy.retry.RetryPolicy;
-import com.generic.core.implementation.http.policy.retry.RetryStrategy;
+import com.generic.core.implementation.http.policy.ExponentialBackoff;
+import com.generic.core.implementation.http.policy.FixedDelay;
+import com.generic.core.implementation.http.policy.RetryPolicy;
+import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.models.Context;
 import com.generic.core.models.Headers;

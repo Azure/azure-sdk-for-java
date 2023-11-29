@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy.retry;
+package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.policy.retry.ExponentialBackoffOptions;
+import com.generic.core.http.policy.ExponentialBackoffOptions;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.ObjectsUtil;
 import com.generic.core.util.configuration.Configuration;

@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.policy.retry;
+package com.generic.core.http.policy;
 
-import com.generic.core.http.policy.retry.FixedDelayOptions;
-import com.generic.core.implementation.http.policy.retry.FixedDelay;
+import com.generic.core.implementation.http.policy.FixedDelay;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

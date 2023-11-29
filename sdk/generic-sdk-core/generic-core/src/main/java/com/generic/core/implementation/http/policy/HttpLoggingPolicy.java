@@ -1,15 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy.logging;
+package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.http.policy.logging.HttpLogDetailLevel;
-import com.generic.core.http.policy.logging.HttpLogOptions;
+import com.generic.core.http.policy.HttpLogOptions;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
@@ -49,7 +48,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
 
-    private final HttpLogDetailLevel httpLogDetailLevel;
+    private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
@@ -70,7 +69,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
-            this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
+            this.httpLogDetailLevel = HttpLogOptions.HttpLogDetailLevel.NONE;
             this.allowedHeaderNames = Collections.emptySet();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.requestLogger = new DefaultHttpRequestLogger();
@@ -97,7 +96,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // No logging will be performed, trigger a no-op.
-        if (httpLogDetailLevel == HttpLogDetailLevel.NONE) {
+        if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return next.process();
         }
 
