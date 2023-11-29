@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;

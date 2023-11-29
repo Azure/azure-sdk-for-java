@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class DiskEncryptionSetTests extends ComputeManagementTest {

@@ -108,7 +108,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             .setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-meta-encryptiondata", "x-ms-encryption-key-sha256",
                 "x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since", "If-Unmodified-Since", "Accept"))
-            .setExcludedHeaders(Collections.singletonList("Accept-Language"))
+            .setExcludedHeaders(Arrays.asList("Accept-Language", "Content-Type"))
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
     }
