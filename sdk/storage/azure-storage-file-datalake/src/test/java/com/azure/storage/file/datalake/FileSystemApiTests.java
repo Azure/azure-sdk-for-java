@@ -46,6 +46,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1909,18 +1912,6 @@ public class FileSystemApiTests extends DataLakeTestBase {
     }
 
     @Test
-    public void listPathsCreationTimeParse() {
-        // this test is ensuring that we're handling the date format that the service returns for the creation time
-        // it can be returned in two formats: RFC 1123 date string or Windows file time
-        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
-        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
-
-        // assert that NumberFormatException is not thrown
-        assertDoesNotThrow(() -> dataLakeFileSystemClient.listPaths(options, null));
-    }
-
-    @Test
     public void listPathsReturnUpn() {
         dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
         dataLakeFileSystemClient.getFileClient(generatePathName()).create();
@@ -2002,6 +1993,37 @@ public class FileSystemApiTests extends DataLakeTestBase {
         assertFalse(filePath.isDirectory());
 
         assertFalse(response.hasNext());
+    }
+
+    @Test
+    public void listPathsCreationTimeParse() {
+        // this test is ensuring that we're handling the date format that the service returns for the creation time
+        // it can be returned in two formats: RFC 1123 date string or Windows file time
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        dataLakeFileSystemClient.getFileClient(generatePathName()).create();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+
+        // assert that NumberFormatException is not thrown
+        assertDoesNotThrow(() -> dataLakeFileSystemClient.listPaths(options, null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("creationTimeDateParseSupplier")
+    public void creationTimeDateParse(String dateString, OffsetDateTime expectedDateTime) {
+        OffsetDateTime dateTime = Transforms.parseWindowsFileTimeOrDateString(dateString);
+        assertEquals(expectedDateTime, dateTime);
+    }
+
+    private static Stream<Arguments> creationTimeDateParseSupplier() {
+        return Stream.of(
+            Arguments.of("133349422459014187", OffsetDateTime.parse("2023-07-27T14:37:25.901Z")),
+            Arguments.of("Wed, 29 Nov 2023 03:08:19 GMT", OffsetDateTime.parse("Wed, 29 Nov 2023 03:08:19 GMT", DateTimeFormatter.RFC_1123_DATE_TIME)),
+            Arguments.of(null, null));
+    }
+
+    @Test
+    public void creationTimeDateParseBadData() {
+        assertThrows(DateTimeParseException.class, () -> Transforms.parseWindowsFileTimeOrDateString("bad date string"));
     }
 
     @ParameterizedTest

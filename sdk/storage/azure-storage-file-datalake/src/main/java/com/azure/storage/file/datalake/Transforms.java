@@ -387,7 +387,7 @@ class Transforms {
         return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
     }
 
-    private static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
+    static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
         try {
             // First try to parse as a long (Windows file time)
             return fromWindowsFileTimeOrNull(Long.parseLong(date));
