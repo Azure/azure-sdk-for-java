@@ -12,7 +12,8 @@ public final class NodeImageSelectionStatusTests {
     public void testDeserialize() throws Exception {
         NodeImageSelectionStatus model =
             BinaryData
-                .fromString("{\"selectedNodeImageVersions\":[{\"version\":\"czfc\"},{\"version\":\"aaxdbabphlwrq\"}]}")
+                .fromString(
+                    "{\"selectedNodeImageVersions\":[{\"version\":\"fbebrjcxer\"},{\"version\":\"wutttxfvjrbi\"},{\"version\":\"hxepcyvahfnlj\"}]}")
                 .toObject(NodeImageSelectionStatus.class);
     }
 

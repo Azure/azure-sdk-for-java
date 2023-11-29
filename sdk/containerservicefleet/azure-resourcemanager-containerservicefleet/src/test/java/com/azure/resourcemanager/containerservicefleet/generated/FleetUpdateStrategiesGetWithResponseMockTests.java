@@ -31,7 +31,7 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"q\",\"groups\":[{\"name\":\"doamciodhkha\"},{\"name\":\"xkhnzbonlwnto\"},{\"name\":\"gokdwbwhks\"},{\"name\":\"zcmrvexztvb\"}],\"afterStageWaitInSeconds\":991988200},{\"name\":\"sfraoyzko\",\"groups\":[{\"name\":\"lmnguxaw\"},{\"name\":\"aldsy\"}],\"afterStageWaitInSeconds\":1439928585},{\"name\":\"imerqfobwyznk\",\"groups\":[{\"name\":\"utwpfhp\"},{\"name\":\"gmhrskdsnfdsdoak\"}],\"afterStageWaitInSeconds\":323713899},{\"name\":\"lmkk\",\"groups\":[{\"name\":\"dlhewp\"},{\"name\":\"sdsttwvog\"},{\"name\":\"bbejdcngqqm\"},{\"name\":\"akufgmjz\"}],\"afterStageWaitInSeconds\":1463483261}]}},\"eTag\":\"grtwae\",\"id\":\"uzkopbminrfd\",\"name\":\"oyuhhziui\",\"type\":\"fozbhdmsmlmzqhof\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"uukzclewyhmlw\",\"groups\":[{\"name\":\"tzpofncckwyfzq\"}],\"afterStageWaitInSeconds\":1576078570},{\"name\":\"xbuy\",\"groups\":[{\"name\":\"zfeqztppri\"}],\"afterStageWaitInSeconds\":2094175875},{\"name\":\"or\",\"groups\":[{\"name\":\"tolmncwsobqw\"}],\"afterStageWaitInSeconds\":1051180868},{\"name\":\"bnwdcfh\",\"groups\":[{\"name\":\"dpfuvg\"},{\"name\":\"sbjjc\"},{\"name\":\"nvxbvt\"},{\"name\":\"udutnco\"}],\"afterStageWaitInSeconds\":175295404}]}},\"eTag\":\"xqtvcofu\",\"id\":\"lvkgju\",\"name\":\"gdknnqv\",\"type\":\"aznqntoru\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
         FleetUpdateStrategy response =
             manager
                 .fleetUpdateStrategies()
-                .getWithResponse("dcpzfoqo", "i", "ybxarzgszu", com.azure.core.util.Context.NONE)
+                .getWithResponse("jnsjervtiagxsd", "zuempsbzkf", "beyvpnqicvinvkjj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("q", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("doamciodhkha", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(991988200, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("uukzclewyhmlw", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("tzpofncckwyfzq", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1576078570, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

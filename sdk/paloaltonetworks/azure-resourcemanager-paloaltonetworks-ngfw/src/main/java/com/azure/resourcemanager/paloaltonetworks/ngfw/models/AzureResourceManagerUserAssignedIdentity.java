@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A managed identity assigned by the user. */
+/**
+ * A managed identity assigned by the user.
+ */
 @Fluent
 public final class AzureResourceManagerUserAssignedIdentity {
     /*
@@ -22,13 +24,15 @@ public final class AzureResourceManagerUserAssignedIdentity {
     @JsonProperty(value = "principalId")
     private String principalId;
 
-    /** Creates an instance of AzureResourceManagerUserAssignedIdentity class. */
+    /**
+     * Creates an instance of AzureResourceManagerUserAssignedIdentity class.
+     */
     public AzureResourceManagerUserAssignedIdentity() {
     }
 
     /**
      * Get the clientId property: The active directory client identifier for this principal.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -37,7 +41,7 @@ public final class AzureResourceManagerUserAssignedIdentity {
 
     /**
      * Set the clientId property: The active directory client identifier for this principal.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AzureResourceManagerUserAssignedIdentity object itself.
      */
@@ -48,7 +52,7 @@ public final class AzureResourceManagerUserAssignedIdentity {
 
     /**
      * Get the principalId property: The active directory identifier for this principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -57,7 +61,7 @@ public final class AzureResourceManagerUserAssignedIdentity {
 
     /**
      * Set the principalId property: The active directory identifier for this principal.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AzureResourceManagerUserAssignedIdentity object itself.
      */
@@ -68,7 +72,7 @@ public final class AzureResourceManagerUserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

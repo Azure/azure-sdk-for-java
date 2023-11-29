@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.LabelOperator;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterQueue;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorkerSelector;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -39,7 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 class JobRouterTestBase extends TestProxyTestBase {
-    protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
+    protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TEST";
 
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
@@ -59,6 +60,16 @@ class JobRouterTestBase extends TestProxyTestBase {
         return jobRouterAdministrationClient;
     }
 
+    protected JobRouterAdministrationAsyncClient getRouterAdministrationAsyncClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+        JobRouterAdministrationAsyncClient jobRouterAdministrationAsyncClient = new JobRouterAdministrationClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAdministrationAsyncClient;
+    }
+
     protected JobRouterClient getRouterClient(HttpClient client) {
         CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
 
@@ -68,6 +79,17 @@ class JobRouterTestBase extends TestProxyTestBase {
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;
+    }
+
+    protected JobRouterAsyncClient getRouterAsyncClient(HttpClient client) {
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        JobRouterAsyncClient jobRouterAsyncClient = new JobRouterClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAsyncClient;
     }
 
     private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
@@ -111,9 +133,9 @@ class JobRouterTestBase extends TestProxyTestBase {
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {
         String queueName = String.format("%s-Name", queueId);
-        Map<String, Object> queueLabels = new HashMap<String, Object>() {
+        Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", "Value_1");
+                put("Label_1", new RouterValue("Value_1"));
             }
         };
 
@@ -147,7 +169,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                 new ArrayList<RouterWorkerSelector>() {
                     {
                         new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(10);
+                            .setValue(new RouterValue(10));
                     }
                 }
             );

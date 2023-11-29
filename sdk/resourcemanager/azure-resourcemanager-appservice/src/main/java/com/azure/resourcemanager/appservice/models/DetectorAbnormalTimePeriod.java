@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Class representing Abnormal Time Period detected. */
+/**
+ * Class representing Abnormal Time Period detected.
+ */
 @Fluent
 public final class DetectorAbnormalTimePeriod {
     /*
@@ -60,13 +62,15 @@ public final class DetectorAbnormalTimePeriod {
     @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
-    /** Creates an instance of DetectorAbnormalTimePeriod class. */
+    /**
+     * Creates an instance of DetectorAbnormalTimePeriod class.
+     */
     public DetectorAbnormalTimePeriod() {
     }
 
     /**
      * Get the startTime property: Start time of the correlated event.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -75,7 +79,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the startTime property: Start time of the correlated event.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -86,7 +90,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the endTime property: End time of the correlated event.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -95,7 +99,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the endTime property: End time of the correlated event.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -106,7 +110,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the message property: Message describing the event.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -115,7 +119,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the message property: Message describing the event.
-     *
+     * 
      * @param message the message value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -126,7 +130,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the source property: Represents the name of the Detector.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -135,7 +139,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the source property: Represents the name of the Detector.
-     *
+     * 
      * @param source the source value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -146,7 +150,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the priority property: Represents the rank of the Detector.
-     *
+     * 
      * @return the priority value.
      */
     public Double priority() {
@@ -155,7 +159,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the priority property: Represents the rank of the Detector.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -166,7 +170,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the metadata property: Downtime metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<List<NameValuePair>> metadata() {
@@ -175,7 +179,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the metadata property: Downtime metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -186,7 +190,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the type property: Represents the type of the Detector.
-     *
+     * 
      * @return the type value.
      */
     public IssueType type() {
@@ -195,7 +199,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the type property: Represents the type of the Detector.
-     *
+     * 
      * @param type the type value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -206,7 +210,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the solutions property: List of proposed solutions.
-     *
+     * 
      * @return the solutions value.
      */
     public List<Solution> solutions() {
@@ -215,7 +219,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the solutions property: List of proposed solutions.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -226,7 +230,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

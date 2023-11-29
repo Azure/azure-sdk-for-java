@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for PrefixListGlobalRulestack List. */
+/**
+ * Samples for PrefixListGlobalRulestack List.
+ */
 public final class PrefixListGlobalRulestackListSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * PrefixListGlobalRulestack_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackListMaximumSetGen(
@@ -20,11 +24,13 @@ public final class PrefixListGlobalRulestackListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * PrefixListGlobalRulestack_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListGlobalRulestack_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListGlobalRulestackListMinimumSetGen(

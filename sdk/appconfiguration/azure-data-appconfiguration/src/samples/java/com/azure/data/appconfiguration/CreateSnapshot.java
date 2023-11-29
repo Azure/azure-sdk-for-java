@@ -3,8 +3,8 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingsFilter;
@@ -49,7 +49,7 @@ public class CreateSnapshot {
 
         // Create a snapshot
         String snapshotName = "{snapshotName}";
-        SyncPoller<PollResult, ConfigurationSnapshot> poller =
+        SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
             client.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
         poller.setPollInterval(Duration.ofSeconds(10));
         poller.waitForCompletion();

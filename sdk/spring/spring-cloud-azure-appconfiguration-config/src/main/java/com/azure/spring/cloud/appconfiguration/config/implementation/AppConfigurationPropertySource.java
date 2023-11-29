@@ -2,40 +2,39 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.springframework.core.env.EnumerablePropertySource;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
  *
  * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
+ * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
+ * created.
  * </p>
  */
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
-    protected final String keyFilter;
-
-    protected final String[] labelFilter;
-
     protected final Map<String, Object> properties = new LinkedHashMap<>();
+
+    protected final List<ConfigurationSetting> featureConfigurationSettings = new ArrayList<>();
 
     protected final AppConfigurationReplicaClient replicaClient;
 
-    AppConfigurationPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient, String keyFilter,
-        String[] labelFilter) {
+    AppConfigurationPropertySource(String name, AppConfigurationReplicaClient replicaClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
-        super(
-            keyFilter + originEndpoint + "/" + getLabelName(labelFilter));
+        super(name);
         this.replicaClient = replicaClient;
-        this.keyFilter = keyFilter;
-        this.labelFilter = labelFilter;
     }
 
     @Override
@@ -49,12 +48,12 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return properties.get(name);
     }
 
-    private static String getLabelName(String[] labelFilter) {
-        StringBuilder labelName = new StringBuilder();
-        for (String label : labelFilter) {
-
-            labelName.append((labelName.length() == 0) ? label : "," + label);
+    protected static String getLabelName(String[] labelFilters) {
+        if (labelFilters == null) {
+            return "";
         }
-        return labelName.toString();
+        return String.join(",", labelFilters);
     }
+
+    protected abstract void initProperties(List<String> trim) throws JsonProcessingException;
 }

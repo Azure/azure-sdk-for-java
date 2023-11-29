@@ -1341,8 +1341,6 @@ public class ClientMetricsTest extends BatchTestBase {
             if (this.getEffectiveMetricCategories().contains(MetricCategory.RequestDetails)) {
                 this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
             }
-
-            this.assertMetrics("cosmos.client.req.rntbd", false);
         }
     }
 

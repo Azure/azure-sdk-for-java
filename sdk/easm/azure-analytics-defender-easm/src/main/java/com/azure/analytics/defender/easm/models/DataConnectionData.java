@@ -10,17 +10,18 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The DataConnectionData model. */
+/**
+ * The DataConnectionData model.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = DataConnectionData.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = DataConnectionData.class)
 @JsonTypeName("DataConnectionData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnectionData.class),
-    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnectionData.class)
-})
+    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnectionData.class) })
 @Fluent
 public class DataConnectionData {
 
@@ -52,9 +53,12 @@ public class DataConnectionData {
     @JsonProperty(value = "frequencyOffset")
     private Integer frequencyOffset;
 
-    /** Creates an instance of DataConnectionData class. */
+    /**
+     * Creates an instance of DataConnectionData class.
+     */
     @Generated
-    public DataConnectionData() {}
+    public DataConnectionData() {
+    }
 
     /**
      * Get the name property: The name of data connection.

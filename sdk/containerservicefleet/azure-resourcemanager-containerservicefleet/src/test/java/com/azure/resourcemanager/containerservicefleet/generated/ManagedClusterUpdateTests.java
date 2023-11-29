@@ -18,11 +18,11 @@ public final class ManagedClusterUpdateTests {
         ManagedClusterUpdate model =
             BinaryData
                 .fromString(
-                    "{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"oczvy\"},\"nodeImageSelection\":{\"type\":\"Latest\"}}")
+                    "{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"zvdudgwdslfhotwm\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}}")
                 .toObject(ManagedClusterUpdate.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
-        Assertions.assertEquals("oczvy", model.upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.nodeImageSelection().type());
+        Assertions.assertEquals("zvdudgwdslfhotwm", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT, model.nodeImageSelection().type());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,11 +32,11 @@ public final class ManagedClusterUpdateTests {
                 .withUpgrade(
                     new ManagedClusterUpgradeSpec()
                         .withType(ManagedClusterUpgradeType.FULL)
-                        .withKubernetesVersion("oczvy"))
-                .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST));
+                        .withKubernetesVersion("zvdudgwdslfhotwm"))
+                .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT));
         model = BinaryData.fromObject(model).toObject(ManagedClusterUpdate.class);
         Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.upgrade().type());
-        Assertions.assertEquals("oczvy", model.upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.LATEST, model.nodeImageSelection().type());
+        Assertions.assertEquals("zvdudgwdslfhotwm", model.upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT, model.nodeImageSelection().type());
     }
 }

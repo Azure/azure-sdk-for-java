@@ -31,21 +31,6 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         this.serviceManager = serviceManager;
     }
 
-    public List<ApplicationInsightsComponentExportConfiguration> list(String resourceGroupName, String resourceName) {
-        List<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<ApplicationInsightsComponentExportConfiguration>> listWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<List<ApplicationInsightsComponentExportConfigurationInner>> inner =
@@ -65,10 +50,9 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public List<ApplicationInsightsComponentExportConfiguration> create(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
+    public List<ApplicationInsightsComponentExportConfiguration> list(String resourceGroupName, String resourceName) {
         List<ApplicationInsightsComponentExportConfigurationInner> inner =
-            this.serviceClient().create(resourceGroupName, resourceName, exportProperties);
+            this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
             return Collections
                 .unmodifiableList(
@@ -103,14 +87,19 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public ApplicationInsightsComponentExportConfiguration delete(
-        String resourceGroupName, String resourceName, String exportId) {
-        ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, exportId);
+    public List<ApplicationInsightsComponentExportConfiguration> create(
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentExportRequest exportProperties) {
+        List<ApplicationInsightsComponentExportConfigurationInner> inner =
+            this.serviceClient().create(resourceGroupName, resourceName, exportProperties);
         if (inner != null) {
-            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new ApplicationInsightsComponentExportConfigurationImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -129,10 +118,10 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public ApplicationInsightsComponentExportConfiguration get(
+    public ApplicationInsightsComponentExportConfiguration delete(
         String resourceGroupName, String resourceName, String exportId) {
         ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, exportId);
+            this.serviceClient().delete(resourceGroupName, resourceName, exportId);
         if (inner != null) {
             return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
         } else {
@@ -155,13 +144,10 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
         }
     }
 
-    public ApplicationInsightsComponentExportConfiguration update(
-        String resourceGroupName,
-        String resourceName,
-        String exportId,
-        ApplicationInsightsComponentExportRequest exportProperties) {
+    public ApplicationInsightsComponentExportConfiguration get(
+        String resourceGroupName, String resourceName, String exportId) {
         ApplicationInsightsComponentExportConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, exportId, exportProperties);
+            this.serviceClient().get(resourceGroupName, resourceName, exportId);
         if (inner != null) {
             return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
         } else {
@@ -185,6 +171,20 @@ public final class ExportConfigurationsImpl implements ExportConfigurations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentExportConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentExportConfiguration update(
+        String resourceGroupName,
+        String resourceName,
+        String exportId,
+        ApplicationInsightsComponentExportRequest exportProperties) {
+        ApplicationInsightsComponentExportConfigurationInner inner =
+            this.serviceClient().update(resourceGroupName, resourceName, exportId, exportProperties);
+        if (inner != null) {
+            return new ApplicationInsightsComponentExportConfigurationImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for TrustedAccessRoleBindings Delete. */
 public final class TrustedAccessRoleBindingsDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-09-01/examples/TrustedAccessRoleBindings_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/TrustedAccessRoleBindings_Delete.json
      */
     /**
      * Sample code: Delete a trusted access role binding.

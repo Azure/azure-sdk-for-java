@@ -4,7 +4,6 @@
 
 package com.azure.developer.devcenter;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -14,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 class EnvironmentTests extends DevCenterClientTestBase {
     @Test
     public void testCreateEnvironment() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-kjqdmrwdctddo");
-        String environmentTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-environment-type-kzu6evjkw76k6");
-        String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
-        String catalogItemName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_ITEM_NAME", "Sandbox");
 
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString(
-            "{\"catalogItemName\":\"" + catalogItemName
-            + "\", \"catalogName\":\"" + catalogName
-            + "\", \"environmentType\":\"" + environmentTypeName  + "\"}");
+             "{ \"catalogName\":\"" + catalogName
+            + "\",\"environmentDefinitionName\":\"" + envDefinitionName
+            + "\", \"environmentType\":\"" + envTypeName  + "\"}");
         SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                setPlaybackSyncPollerPollInterval(environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null));
+                setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
 
         // Delete the environment when we're finished:
         SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                        setPlaybackSyncPollerPollInterval(environmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null));
+                        setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
     }

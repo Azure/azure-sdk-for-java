@@ -4,39 +4,37 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-/** Samples for Usages Get. */
+/**
+ * Samples for Usages Get.
+ */
 public final class UsagesGetSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getNetworkOneSkuUsages.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getNetworkOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
-     *
+     * 
      * @param manager Entry point to QuotaManager.
      */
     public static void quotasUsagesRequestForNetwork(com.azure.resourcemanager.quota.QuotaManager manager) {
-        manager
-            .usages()
-            .getWithResponse(
-                "MinPublicIpInterNetworkPrefixLength",
-                "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
-                com.azure.core.util.Context.NONE);
+        manager.usages().getWithResponse("MinPublicIpInterNetworkPrefixLength",
+            "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getComputeOneSkuUsages.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2023-02-01/examples/getComputeOneSkuUsages.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForCompute.
-     *
+     * 
      * @param manager Entry point to QuotaManager.
      */
     public static void quotasUsagesRequestForCompute(com.azure.resourcemanager.quota.QuotaManager manager) {
-        manager
-            .usages()
-            .getWithResponse(
-                "standardNDSFamily",
-                "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
-                com.azure.core.util.Context.NONE);
+        manager.usages().getWithResponse("standardNDSFamily",
+            "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus",
+            com.azure.core.util.Context.NONE);
     }
 }

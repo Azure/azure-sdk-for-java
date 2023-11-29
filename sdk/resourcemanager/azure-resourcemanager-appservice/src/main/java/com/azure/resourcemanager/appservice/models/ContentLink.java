@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The content link. */
+/**
+ * The content link.
+ */
 @Fluent
 public final class ContentLink {
     /*
@@ -40,13 +42,15 @@ public final class ContentLink {
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private Object metadata;
 
-    /** Creates an instance of ContentLink class. */
+    /**
+     * Creates an instance of ContentLink class.
+     */
     public ContentLink() {
     }
 
     /**
      * Get the uri property: The content link URI.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -55,7 +59,7 @@ public final class ContentLink {
 
     /**
      * Set the uri property: The content link URI.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ContentLink object itself.
      */
@@ -66,7 +70,7 @@ public final class ContentLink {
 
     /**
      * Get the contentVersion property: The content version.
-     *
+     * 
      * @return the contentVersion value.
      */
     public String contentVersion() {
@@ -75,7 +79,7 @@ public final class ContentLink {
 
     /**
      * Get the contentSize property: The content size.
-     *
+     * 
      * @return the contentSize value.
      */
     public Long contentSize() {
@@ -84,7 +88,7 @@ public final class ContentLink {
 
     /**
      * Get the contentHash property: The content hash.
-     *
+     * 
      * @return the contentHash value.
      */
     public ContentHash contentHash() {
@@ -93,7 +97,7 @@ public final class ContentLink {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -102,7 +106,7 @@ public final class ContentLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

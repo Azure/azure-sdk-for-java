@@ -9,34 +9,30 @@ import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParamet
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
 import java.util.Arrays;
 
-/** Samples for DomainTopicEventSubscriptions Update. */
+/**
+ * Samples for DomainTopicEventSubscriptions Update.
+ */
 public final class DomainTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopicEventSubscriptions_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * DomainTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void domainTopicEventSubscriptionsUpdate(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .domainTopicEventSubscriptions()
-            .update(
-                "examplerg",
-                "exampleDomain1",
-                "exampleDomainTopic1",
-                "exampleEventSubscriptionName1",
-                new EventSubscriptionUpdateParameters()
-                    .withDestination(
-                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-                    .withFilter(
-                        new EventSubscriptionFilter()
-                            .withSubjectBeginsWith("existingPrefix")
-                            .withSubjectEndsWith("newSuffix")
-                            .withIsSubjectCaseSensitive(true))
-                    .withLabels(Arrays.asList("label1", "label2")),
-                com.azure.core.util.Context.NONE);
+    public static void
+        domainTopicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.domainTopicEventSubscriptions().update("examplerg", "exampleDomain1", "exampleDomainTopic1",
+            "exampleEventSubscriptionName1",
+            new EventSubscriptionUpdateParameters()
+                .withDestination(
+                    new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix")
+                    .withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true))
+                .withLabels(Arrays.asList("label1", "label2")),
+            com.azure.core.util.Context.NONE);
     }
 }

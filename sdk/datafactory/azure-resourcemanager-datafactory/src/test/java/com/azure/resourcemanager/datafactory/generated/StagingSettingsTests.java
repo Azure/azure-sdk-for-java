@@ -14,27 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class StagingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StagingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"linkedServiceName\":{\"referenceName\":\"lgrenuqsgertx\",\"parameters\":{\"aedbsl\":\"datamgsncbbdokp\",\"k\":\"datanunpxswmcc\"}},\"path\":\"dataiaaepxlxbofdc\",\"enableCompression\":\"dataoacfskzw\",\"\":{\"j\":\"datatutqjs\",\"v\":\"dataoixtrnakytzcma\",\"kaarqhpx\":\"datal\"}}")
-                .toObject(StagingSettings.class);
-        Assertions.assertEquals("lgrenuqsgertx", model.linkedServiceName().referenceName());
+        StagingSettings model = BinaryData.fromString(
+            "{\"linkedServiceName\":{\"referenceName\":\"fawhoosrsol\",\"parameters\":{\"bgiqhjpelnudifie\":\"datamfoe\"}},\"path\":\"dataxorsdvu\",\"enableCompression\":\"dataqfksjll\",\"\":{\"sqcivm\":\"datadoaihlv\"}}")
+            .toObject(StagingSettings.class);
+        Assertions.assertEquals("fawhoosrsol", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StagingSettings model =
-            new StagingSettings()
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("lgrenuqsgertx")
-                        .withParameters(mapOf("aedbsl", "datamgsncbbdokp", "k", "datanunpxswmcc")))
-                .withPath("dataiaaepxlxbofdc")
-                .withEnableCompression("dataoacfskzw")
-                .withAdditionalProperties(mapOf());
+        StagingSettings model = new StagingSettings()
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fawhoosrsol")
+                .withParameters(mapOf("bgiqhjpelnudifie", "datamfoe")))
+            .withPath("dataxorsdvu").withEnableCompression("dataqfksjll").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(StagingSettings.class);
-        Assertions.assertEquals("lgrenuqsgertx", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("fawhoosrsol", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

@@ -12,28 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MarketplaceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarketplaceDetails model =
-            BinaryData
-                .fromString(
-                    "{\"marketplaceSubscriptionId\":\"kpzi\",\"offerId\":\"ejzanlfz\",\"publisherId\":\"iavrm\",\"marketplaceSubscriptionStatus\":\"FulfillmentRequested\"}")
-                .toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("ejzanlfz", model.offerId());
-        Assertions.assertEquals("iavrm", model.publisherId());
-        Assertions
-            .assertEquals(MarketplaceSubscriptionStatus.FULFILLMENT_REQUESTED, model.marketplaceSubscriptionStatus());
+        MarketplaceDetails model = BinaryData.fromString(
+            "{\"marketplaceSubscriptionId\":\"curdoiwiitht\",\"offerId\":\"wubxc\",\"publisherId\":\"ihwqknfdntwjchr\",\"marketplaceSubscriptionStatus\":\"NotStarted\"}")
+            .toObject(MarketplaceDetails.class);
+        Assertions.assertEquals("wubxc", model.offerId());
+        Assertions.assertEquals("ihwqknfdntwjchr", model.publisherId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.NOT_STARTED, model.marketplaceSubscriptionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarketplaceDetails model =
-            new MarketplaceDetails()
-                .withOfferId("ejzanlfz")
-                .withPublisherId("iavrm")
-                .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.FULFILLMENT_REQUESTED);
+        MarketplaceDetails model = new MarketplaceDetails().withOfferId("wubxc").withPublisherId("ihwqknfdntwjchr")
+            .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.NOT_STARTED);
         model = BinaryData.fromObject(model).toObject(MarketplaceDetails.class);
-        Assertions.assertEquals("ejzanlfz", model.offerId());
-        Assertions.assertEquals("iavrm", model.publisherId());
-        Assertions
-            .assertEquals(MarketplaceSubscriptionStatus.FULFILLMENT_REQUESTED, model.marketplaceSubscriptionStatus());
+        Assertions.assertEquals("wubxc", model.offerId());
+        Assertions.assertEquals("ihwqknfdntwjchr", model.publisherId());
+        Assertions.assertEquals(MarketplaceSubscriptionStatus.NOT_STARTED, model.marketplaceSubscriptionStatus());
     }
 }

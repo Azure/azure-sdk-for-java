@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 /** Samples for FleetUpdateStrategies Get. */
 public final class FleetUpdateStrategiesGetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2023-08-15-preview/examples/UpdateStrategies_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateStrategies_Get.json
      */
     /**
      * Sample code: Get a FleetUpdateStrategy resource.

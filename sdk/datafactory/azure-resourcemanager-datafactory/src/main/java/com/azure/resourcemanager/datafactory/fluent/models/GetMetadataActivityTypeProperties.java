@@ -12,7 +12,9 @@ import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** GetMetadata activity properties. */
+/**
+ * GetMetadata activity properties.
+ */
 @Fluent
 public final class GetMetadataActivityTypeProperties {
     /*
@@ -39,13 +41,15 @@ public final class GetMetadataActivityTypeProperties {
     @JsonProperty(value = "formatSettings")
     private FormatReadSettings formatSettings;
 
-    /** Creates an instance of GetMetadataActivityTypeProperties class. */
+    /**
+     * Creates an instance of GetMetadataActivityTypeProperties class.
+     */
     public GetMetadataActivityTypeProperties() {
     }
 
     /**
      * Get the dataset property: GetMetadata activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -54,7 +58,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Set the dataset property: GetMetadata activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the GetMetadataActivityTypeProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Get the fieldList property: Fields of metadata to get from dataset.
-     *
+     * 
      * @return the fieldList value.
      */
     public List<Object> fieldList() {
@@ -74,7 +78,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Set the fieldList property: Fields of metadata to get from dataset.
-     *
+     * 
      * @param fieldList the fieldList value to set.
      * @return the GetMetadataActivityTypeProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Get the storeSettings property: GetMetadata activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings storeSettings() {
@@ -94,7 +98,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Set the storeSettings property: GetMetadata activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the GetMetadataActivityTypeProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Get the formatSettings property: GetMetadata activity format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public FormatReadSettings formatSettings() {
@@ -114,7 +118,7 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Set the formatSettings property: GetMetadata activity format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the GetMetadataActivityTypeProperties object itself.
      */
@@ -125,15 +129,13 @@ public final class GetMetadataActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataset in model GetMetadataActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataset in model GetMetadataActivityTypeProperties"));
         } else {
             dataset().validate();
         }

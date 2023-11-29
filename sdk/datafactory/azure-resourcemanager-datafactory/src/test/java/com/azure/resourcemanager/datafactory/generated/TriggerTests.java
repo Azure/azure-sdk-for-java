@@ -14,21 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Trigger model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Trigger\",\"description\":\"rtalmet\",\"runtimeState\":\"Started\",\"annotations\":[\"dataslqxi\",\"datahrmooi\",\"dataqseypxiutcxa\",\"datazhyrpeto\"],\"\":{\"rqnkkzjcjbtr\":\"datajoxslhvnhla\",\"eitpkxztmo\":\"dataaehvvibrxjjstoq\"}}")
-                .toObject(Trigger.class);
+        Trigger model = BinaryData.fromString(
+            "{\"type\":\"Trigger\",\"description\":\"rtalmet\",\"runtimeState\":\"Started\",\"annotations\":[\"dataslqxi\",\"datahrmooi\",\"dataqseypxiutcxa\",\"datazhyrpeto\"],\"\":{\"rqnkkzjcjbtr\":\"datajoxslhvnhla\",\"eitpkxztmo\":\"dataaehvvibrxjjstoq\"}}")
+            .toObject(Trigger.class);
         Assertions.assertEquals("rtalmet", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Trigger model =
-            new Trigger()
-                .withDescription("rtalmet")
-                .withAnnotations(Arrays.asList("dataslqxi", "datahrmooi", "dataqseypxiutcxa", "datazhyrpeto"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started"));
+        Trigger model = new Trigger().withDescription("rtalmet")
+            .withAnnotations(Arrays.asList("dataslqxi", "datahrmooi", "dataqseypxiutcxa", "datazhyrpeto"))
+            .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started"));
         model = BinaryData.fromObject(model).toObject(Trigger.class);
         Assertions.assertEquals("rtalmet", model.description());
     }

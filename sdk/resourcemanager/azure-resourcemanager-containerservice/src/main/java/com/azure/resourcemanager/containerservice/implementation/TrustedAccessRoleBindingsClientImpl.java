@@ -170,7 +170,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -230,7 +230,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -359,7 +359,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
                     new IllegalArgumentException(
                         "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -417,7 +417,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
                     new IllegalArgumentException(
                         "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -536,7 +536,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -608,7 +608,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
         } else {
             trustedAccessRoleBinding.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -878,7 +878,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
                     new IllegalArgumentException(
                         "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -936,7 +936,7 @@ public final class TrustedAccessRoleBindingsClientImpl implements TrustedAccessR
                     new IllegalArgumentException(
                         "Parameter trustedAccessRoleBindingName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-10-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

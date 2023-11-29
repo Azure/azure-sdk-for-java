@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The Banner model. */
+/**
+ * The Banner model.
+ */
 @Immutable
 public final class Banner {
 
@@ -83,9 +85,12 @@ public final class Banner {
     @JsonProperty(value = "sources")
     private List<Source> sources;
 
-    /** Creates an instance of Banner class. */
+    /**
+     * Creates an instance of Banner class.
+     */
     @Generated
-    private Banner() {}
+    private Banner() {
+    }
 
     /**
      * Get the port property: The port property.

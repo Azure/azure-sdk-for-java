@@ -99,7 +99,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource".  </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+     * -->
      * <pre>
      * SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;;
      * dataSource.setContainer&#40;new SearchIndexerDataContainer&#40;&quot;updatecontainer&quot;&#41;&#41;;
@@ -109,7 +111,9 @@ public class SearchIndexerAsyncClient {
      * System.out.printf&#40;&quot;The dataSource name is %s. The container name of dataSource is %s.%n&quot;,
      *     updateDataSource.getName&#40;&#41;, updateDataSource.getContainer&#40;&#41;.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
+     * -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @return the data source that was created or updated.
@@ -127,7 +131,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
      *     .flatMap&#40;dataSource -&gt; &#123;
@@ -139,7 +145,9 @@ public class SearchIndexerAsyncClient {
      *             + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
      *         updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+     * -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create or update.
      * @param onlyIfUnchanged {@code true} to update if the {@code dataSource} is the same as the current service value.
@@ -149,8 +157,8 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, boolean onlyIfUnchanged) {
-        return withContext(context ->
-            createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, null, context));
+        return withContext(
+            context -> createOrUpdateDataSourceConnectionWithResponse(dataSource, onlyIfUnchanged, null, context));
     }
 
     /**
@@ -160,7 +168,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer data source connection named "dataSource". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
      *     .flatMap&#40;dataSource -&gt; &#123;
@@ -175,10 +185,12 @@ public class SearchIndexerAsyncClient {
      *                 + &quot;The container name of dataSource is %s.%n&quot;, updateDataSource.getStatusCode&#40;&#41;,
      *             updateDataSource.getValue&#40;&#41;.getName&#40;&#41;, updateDataSource.getValue&#40;&#41;.getContainer&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
+     * -->
      *
-     * @param options The options used to create or update the {@link SearchIndexerDataSourceConnection data source
-     * connection}.
+     * @param options The options used to create or update the
+     * {@link SearchIndexerDataSourceConnection data source connection}.
      * @return a data source response.
      * @throws NullPointerException If {@code options} is null.
      */
@@ -206,8 +218,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getDataSources()
                 .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null,
-                    ignoreResetRequirements, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper);
+                    ignoreResetRequirements, null, context).onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -220,7 +231,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer data source connection named "dataSource".  </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+     * -->
      * <pre>
      * SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection&#40;&quot;dataSource&quot;,
      *     com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, &quot;&#123;connectionString&#125;&quot;,
@@ -230,7 +243,9 @@ public class SearchIndexerAsyncClient {
      *         System.out.printf&#40;&quot;The data source name is %s. The ETag of data source is %s.%n&quot;,
      *             dataSourceFromService.getName&#40;&#41;, dataSourceFromService.getETag&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
+     * -->
      *
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
@@ -248,7 +263,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer data source connection named "dataSource". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection
+     * -->
      * <pre>
      * SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection&#40;&quot;dataSource&quot;,
      *     SearchIndexerDataSourceType.AZURE_BLOB, &quot;&#123;connectionString&#125;&quot;,
@@ -258,7 +275,9 @@ public class SearchIndexerAsyncClient {
      *         System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
      *         dataSourceFromService.getStatusCode&#40;&#41;, dataSourceFromService.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection
+     * -->
      *
      * @param dataSource The definition of the {@link SearchIndexerDataSourceConnection} to create.
      * @return a Mono which performs the network request upon subscription.
@@ -272,8 +291,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerDataSourceConnection>> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, Context context) {
         try {
-            return restClient.getDataSources()
-                .createWithResponseAsync(dataSource, null, context)
+            return restClient.getDataSources().createWithResponseAsync(dataSource, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -311,14 +329,16 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer data source connection named "dataSource". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnectionWithResponse&#40;&quot;dataSource&quot;&#41;
      *     .subscribe&#40;dataSource -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %s. The data source name is %s.%n&quot;,
      *         dataSource.getStatusCode&#40;&#41;, dataSource.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String -->
+     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String
+     * -->
      *
      * @param dataSourceName the name of the {@link SearchIndexerDataSourceConnection} to retrieve.
      * @return a response containing the DataSource.
@@ -332,8 +352,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerDataSourceConnection>> getDataSourceConnectionWithResponse(String dataSourceName,
         Context context) {
         try {
-            return restClient.getDataSources()
-                .getWithResponseAsync(dataSourceName, null, context)
+            return restClient.getDataSources().getWithResponseAsync(dataSourceName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -362,9 +381,8 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerDataSourceConnection> listDataSourceConnections() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourceConnectionsWithResponse(null, context))
-                    .map(MappingUtils::mappingPagingDataSource));
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listDataSourceConnectionsWithResponse(null, context)).map(MappingUtils::mappingPagingDataSource));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -389,9 +407,9 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listDataSourceConnectionNames() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourceConnectionsWithResponse("name", context))
-                    .map(MappingUtils::mappingPagingDataSourceNames));
+            return new PagedFlux<>(
+                () -> withContext(context -> this.listDataSourceConnectionsWithResponse("name", context)).map(
+                    MappingUtils::mappingPagingDataSourceNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -399,8 +417,7 @@ public class SearchIndexerAsyncClient {
 
     private Mono<Response<ListDataSourcesResult>> listDataSourceConnectionsWithResponse(String select,
         Context context) {
-        return restClient.getDataSources()
-            .listWithResponseAsync(select, null, context)
+        return restClient.getDataSources().listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -423,8 +440,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteDataSourceConnection(String dataSourceName) {
-        return withContext(context -> deleteDataSourceConnectionWithResponse(dataSourceName, null, context)
-            .flatMap(FluxUtil::toMono));
+        return withContext(context -> deleteDataSourceConnectionWithResponse(dataSourceName, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -434,14 +450,18 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete the search indexer data source connection named "dataSource". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection&#40;&quot;dataSource&quot;&#41;
      *     .flatMap&#40;dataSource -&gt; SEARCH_INDEXER_ASYNC_CLIENT.deleteDataSourceConnectionWithResponse&#40;dataSource, true&#41;&#41;
      *     .subscribe&#40;deleteResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
+     * -->
      *
      * @param dataSource The {@link SearchIndexerDataSourceConnection} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code dataSource} is the same as the current service value.
@@ -460,10 +480,8 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> deleteDataSourceConnectionWithResponse(String dataSourceName, String eTag, Context context) {
         try {
-            return restClient.getDataSources()
-                .deleteWithResponseAsync(dataSourceName, eTag, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
+            return restClient.getDataSources().deleteWithResponseAsync(dataSourceName, eTag, null, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -502,7 +520,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer named "searchIndexer". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer -->
      * <pre>
      * SearchIndexer searchIndexer = new SearchIndexer&#40;&quot;searchIndexer&quot;, &quot;dataSource&quot;,
      *     &quot;searchIndex&quot;&#41;;
@@ -523,8 +542,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer, Context context) {
         try {
-            return restClient.getIndexers()
-                .createWithResponseAsync(indexer, null, context)
+            return restClient.getIndexers().createWithResponseAsync(indexer, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -538,7 +556,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer -->
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
      *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
@@ -567,7 +586,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
      *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
@@ -581,7 +602,9 @@ public class SearchIndexerAsyncClient {
      *         indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
      *         indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
+     * -->
      *
      * @param indexer the definition of the {@link SearchIndexer} to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code indexer} is the same as the current service value.
@@ -601,7 +624,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer named "searchIndexer". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
      *     .flatMap&#40;searchIndexerFromService -&gt; &#123;
@@ -619,7 +644,9 @@ public class SearchIndexerAsyncClient {
      *             indexerFromService.getValue&#40;&#41;.getName&#40;&#41;,
      *             indexerFromService.getValue&#40;&#41;.getFieldMappings&#40;&#41;.get&#40;0&#41;.getTargetFieldName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
+     * -->
      *
      * @param options The options used to create or update the {@link SearchIndexer indexer}.
      * @return a response containing the created Indexer.
@@ -631,9 +658,10 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return withContext(context -> createOrUpdateIndexerWithResponse(options.getIndexer(),
-            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
-            options.isCacheResetRequirementsIgnored(), context));
+        return withContext(
+            context -> createOrUpdateIndexerWithResponse(options.getIndexer(), options.isOnlyIfUnchanged(),
+                options.isCacheReprocessingChangeDetectionDisabled(), options.isCacheResetRequirementsIgnored(),
+                context));
     }
 
     Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
@@ -643,8 +671,7 @@ public class SearchIndexerAsyncClient {
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
-            return restClient.getIndexers()
-                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null,
+            return restClient.getIndexers().createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null,
                     disableCacheReprocessingChangeDetection, ignoreResetRequirements, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
@@ -702,8 +729,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, Context context) {
         try {
-            return restClient.getIndexers()
-                .getWithResponseAsync(indexerName, null, context)
+            return restClient.getIndexers().getWithResponseAsync(indexerName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -731,9 +757,8 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexer> listIndexers() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexersWithResponse(null, context))
-                    .map(MappingUtils::mappingPagingSearchIndexer));
+            return new PagedFlux<>(() -> withContext(context -> this.listIndexersWithResponse(null, context)).map(
+                MappingUtils::mappingPagingSearchIndexer));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -758,17 +783,15 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listIndexerNames() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexersWithResponse("name", context))
-                    .map(MappingUtils::mappingPagingSearchIndexerNames));
+            return new PagedFlux<>(() -> withContext(context -> this.listIndexersWithResponse("name", context)).map(
+                MappingUtils::mappingPagingSearchIndexerNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
     private Mono<Response<ListIndexersResult>> listIndexersWithResponse(String select, Context context) {
-        return restClient.getIndexers()
-            .listWithResponseAsync(select, null, context)
+        return restClient.getIndexers().listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -791,8 +814,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteIndexer(String indexerName) {
-        return withContext(context -> deleteIndexerWithResponse(indexerName, null, context)
-            .flatMap(FluxUtil::toMono));
+        return withContext(context -> deleteIndexerWithResponse(indexerName, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -802,7 +824,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer named "searchIndexer".  </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
      *     .flatMap&#40;searchIndexer -&gt;
@@ -810,7 +833,8 @@ public class SearchIndexerAsyncClient {
      *     .subscribe&#40;deleteResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean -->
      *
      * @param indexer the {@link SearchIndexer} to delete
      * @param onlyIfUnchanged {@code true} to delete if the {@code indexer} is the same as the current service value.
@@ -836,10 +860,8 @@ public class SearchIndexerAsyncClient {
      */
     Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String eTag, Context context) {
         try {
-            return restClient.getIndexers()
-                .deleteWithResponseAsync(indexerName, eTag, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
+            return restClient.getIndexers().deleteWithResponseAsync(indexerName, eTag, null, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -892,10 +914,8 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> resetIndexerWithResponse(String indexerName, Context context) {
         try {
-            return restClient.getIndexers()
-                .resetWithResponseAsync(indexerName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
+            return restClient.getIndexers().resetWithResponseAsync(indexerName, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -949,8 +969,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<Void>> runIndexerWithResponse(String indexerName, Context context) {
         try {
             return restClient.getIndexers().runWithResponseAsync(indexerName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
+                .onErrorMap(MappingUtils::exceptionMapper).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -986,7 +1005,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Get search indexer status.  </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String -->
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexerStatusWithResponse&#40;&quot;searchIndexer&quot;&#41;
      *     .subscribe&#40;response -&gt;
@@ -1005,8 +1025,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName, Context context) {
         try {
-            return restClient.getIndexers()
-                .getStatusWithResponseAsync(indexerName, null, context)
+            return restClient.getIndexers().getStatusWithResponseAsync(indexerName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1016,7 +1035,8 @@ public class SearchIndexerAsyncClient {
     /**
      * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List -->
      * <pre>
      * &#47;&#47; Reset the documents with keys 1234 and 4321.
      * SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments&#40;&quot;searchIndexer&quot;, false, Arrays.asList&#40;&quot;1234&quot;, &quot;4321&quot;&#41;, null&#41;
@@ -1036,15 +1056,16 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetDocuments(String indexerName, Boolean overwrite, List<String> documentKeys,
         List<String> datasourceDocumentIds) {
-        return withContext(context -> resetDocumentsWithResponse(indexerName, overwrite, documentKeys,
-            datasourceDocumentIds, context))
-            .map(Response::getValue);
+        return withContext(
+            context -> resetDocumentsWithResponse(indexerName, overwrite, documentKeys, datasourceDocumentIds, context)).map(Response::getValue);
     }
 
     /**
      * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getIndexer&#40;&quot;searchIndexer&quot;&#41;
      *     .flatMap&#40;searchIndexer -&gt; SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse&#40;searchIndexer, false,
@@ -1061,7 +1082,9 @@ public class SearchIndexerAsyncClient {
      *         System.out.printf&#40;&quot;Overwriting the documents to be reset completed with status code %d.%n&quot;,
      *             resetDocsResult.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
+     * -->
      *
      * @param indexer The indexer to reset documents for.
      * @param overwrite If false, keys or IDs will be appended to existing ones. If true, only the keys or IDs in this
@@ -1078,15 +1101,15 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'indexer' cannot be null."));
         }
 
-        return withContext(context -> resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys,
-            datasourceDocumentIds, context));
+        return withContext(
+            context -> resetDocumentsWithResponse(indexer.getName(), overwrite, documentKeys, datasourceDocumentIds,
+                context));
     }
 
     Mono<Response<Void>> resetDocumentsWithResponse(String indexerName, Boolean overwrite, List<String> documentKeys,
         List<String> datasourceDocumentIds, Context context) {
         try {
-            DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds()
-                .setDocumentKeys(documentKeys)
+            DocumentKeysOrIds documentKeysOrIds = new DocumentKeysOrIds().setDocumentKeys(documentKeys)
                 .setDatasourceDocumentIds(datasourceDocumentIds);
 
             return restClient.getIndexers()
@@ -1103,7 +1126,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset -->
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset
+     * -->
      * <pre>
      * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
      *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
@@ -1145,7 +1169,8 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
      * <pre>
      * List&lt;InputFieldMappingEntry&gt; inputs = Collections.singletonList&#40;
      *     new InputFieldMappingEntry&#40;&quot;image&quot;&#41;
@@ -1170,7 +1195,8 @@ public class SearchIndexerAsyncClient {
      *         System.out.printf&#40;&quot;The status code of the response is %s. The indexer skillset name is %s.%n&quot;,
      *         skillsetWithResponse.getStatusCode&#40;&#41;, skillsetWithResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset -->
      *
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return a response containing the created Skillset.
@@ -1185,8 +1211,7 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'skillset' cannot be null."));
         }
         try {
-            return restClient.getSkillsets()
-                .createWithResponseAsync(skillset, null, context)
+            return restClient.getSkillsets().createWithResponseAsync(skillset, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1243,8 +1268,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName, Context context) {
         try {
-            return this.restClient.getSkillsets()
-                .getWithResponseAsync(skillsetName, null, context)
+            return this.restClient.getSkillsets().getWithResponseAsync(skillsetName, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1272,9 +1296,8 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SearchIndexerSkillset> listSkillsets() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> listSkillsetsWithResponse(null, context))
-                    .map(MappingUtils::mappingPagingSkillset));
+            return new PagedFlux<>(() -> withContext(context -> listSkillsetsWithResponse(null, context)).map(
+                MappingUtils::mappingPagingSkillset));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -1299,17 +1322,15 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listSkillsetNames() {
         try {
-            return new PagedFlux<>(() ->
-                withContext(context -> listSkillsetsWithResponse("name", context))
-                    .map(MappingUtils::mappingPagingSkillsetNames));
+            return new PagedFlux<>(() -> withContext(context -> listSkillsetsWithResponse("name", context)).map(
+                MappingUtils::mappingPagingSkillsetNames));
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
     }
 
     private Mono<Response<ListSkillsetsResult>> listSkillsetsWithResponse(String select, Context context) {
-        return this.restClient.getSkillsets()
-            .listWithResponseAsync(select, null, context)
+        return this.restClient.getSkillsets().listWithResponseAsync(select, null, context)
             .onErrorMap(MappingUtils::exceptionMapper);
     }
 
@@ -1320,7 +1341,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
      *     .flatMap&#40;indexerSkillset -&gt; &#123;
@@ -1330,7 +1353,9 @@ public class SearchIndexerAsyncClient {
      *         System.out.printf&#40;&quot;The indexer skillset name is %s. The description of indexer skillset is %s.%n&quot;,
      *         updateSkillset.getName&#40;&#41;, updateSkillset.getDescription&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
+     * -->
      *
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
@@ -1347,7 +1372,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
      *     .flatMap&#40;indexerSkillset -&gt; &#123;
@@ -1360,7 +1387,9 @@ public class SearchIndexerAsyncClient {
      *         updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *         updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
+     * -->
      *
      * @param skillset the definition of the skillset to create or update
      * @param onlyIfUnchanged {@code true} to update if the {@code skillset} is the same as the current service value.
@@ -1370,8 +1399,7 @@ public class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged) {
-        return withContext(context -> createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null,
-            context));
+        return withContext(context -> createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, null, null, context));
     }
 
     /**
@@ -1381,7 +1409,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Create or update search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
      *     .flatMap&#40;indexerSkillset -&gt; &#123;
@@ -1398,7 +1428,9 @@ public class SearchIndexerAsyncClient {
      *             updateSkillsetResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *             updateSkillsetResponse.getValue&#40;&#41;.getDescription&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
+     * -->
      *
      * @param options The options used to create or update the {@link SearchIndexerSkillset skillset}.
      * @return a response containing the skillset that was created or updated.
@@ -1411,9 +1443,9 @@ public class SearchIndexerAsyncClient {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
 
-        return withContext(context -> createOrUpdateSkillsetWithResponse(options.getSkillset(),
-            options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
-            options.isCacheResetRequirementsIgnored(), context));
+        return withContext(
+            context -> createOrUpdateSkillsetWithResponse(options.getSkillset(), options.isOnlyIfUnchanged(), options.isCacheReprocessingChangeDetectionDisabled(),
+                options.isCacheResetRequirementsIgnored(), context));
     }
 
     Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
@@ -1452,8 +1484,7 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSkillset(String skillsetName) {
-        return withContext(context -> deleteSkillsetWithResponse(skillsetName, null, context)
-            .flatMap(FluxUtil::toMono));
+        return withContext(context -> deleteSkillsetWithResponse(skillsetName, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -1463,7 +1494,9 @@ public class SearchIndexerAsyncClient {
      *
      * <p> Delete search indexer skillset "searchIndexerSkillset". </p>
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
      *     .flatMap&#40;searchIndexerSkillset -&gt;
@@ -1471,7 +1504,9 @@ public class SearchIndexerAsyncClient {
      *     .subscribe&#40;deleteResponse -&gt;
      *         System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
+     * -->
      *
      * @param skillset the {@link SearchIndexerSkillset} to delete.
      * @param onlyIfUnchanged {@code true} to delete if the {@code skillset} is the same as the current service value.
@@ -1489,10 +1524,8 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String eTag, Context context) {
         try {
-            return restClient.getSkillsets()
-                .deleteWithResponseAsync(skillsetName, eTag, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
+            return restClient.getSkillsets().deleteWithResponseAsync(skillsetName, eTag, null, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper).map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1515,14 +1548,15 @@ public class SearchIndexerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetSkills(String skillsetName, List<String> skillNames) {
-        return withContext(context -> resetSkillsWithResponse(skillsetName, skillNames, context)
-            .flatMap(FluxUtil::toMono));
+        return withContext(context -> resetSkillsWithResponse(skillsetName, skillNames, context).flatMap(FluxUtil::toMono));
     }
 
     /**
      * Resets skills in an existing skillset in an Azure Cognitive Search service.
      *
-     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List -->
+     * <!-- src_embed
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
+     * -->
      * <pre>
      * SEARCH_INDEXER_ASYNC_CLIENT.getSkillset&#40;&quot;searchIndexerSkillset&quot;&#41;
      *     .flatMap&#40;searchIndexerSkillset -&gt; SEARCH_INDEXER_ASYNC_CLIENT.resetSkillsWithResponse&#40;searchIndexerSkillset,
@@ -1530,7 +1564,9 @@ public class SearchIndexerAsyncClient {
      *     .subscribe&#40;resetSkillsResponse -&gt; System.out.printf&#40;&quot;Resetting skills completed with status code %d.%n&quot;,
      *         resetSkillsResponse.getStatusCode&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List -->
+     * <!-- end
+     * com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
+     * -->
      *
      * @param skillset The skillset to reset.
      * @param skillNames The skills to reset.
@@ -1552,6 +1588,7 @@ public class SearchIndexerAsyncClient {
                 .resetSkillsWithResponseAsync(skillsetName, new SkillNames().setSkillNames(skillNames), null, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
+
         }
     }
 }

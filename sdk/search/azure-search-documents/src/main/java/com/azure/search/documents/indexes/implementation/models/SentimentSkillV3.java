@@ -25,12 +25,7 @@ import java.util.List;
 @Fluent
 public final class SentimentSkillV3 extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.V3.SentimentSkill";
-
-    /*
-     * A value indicating which language code to use. Default is en.
+     * A value indicating which language code to use. Default is `en`.
      */
     private String defaultLanguageCode;
 
@@ -57,7 +52,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
     }
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @return the defaultLanguageCode value.
      */
@@ -66,7 +61,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkillV3 object itself.
@@ -148,7 +143,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.V3.SentimentSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -189,11 +184,9 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Text.V3.SentimentSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.V3.SentimentSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devtestlabs.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.models.ApplyArtifactsRequest;
 import com.azure.resourcemanager.devtestlabs.models.ArtifactInstallProperties;
+import com.azure.resourcemanager.devtestlabs.models.ArtifactParameterProperties;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -17,14 +18,16 @@ public final class ApplyArtifactsRequestTests {
         ApplyArtifactsRequest model =
             BinaryData
                 .fromString(
-                    "{\"artifacts\":[{\"artifactId\":\"bimhtmwwinhe\",\"artifactTitle\":\"qpofvwbc\",\"parameters\":[],\"status\":\"b\",\"deploymentStatusMessage\":\"bwvqvxkdi\",\"vmExtensionStatusMessage\":\"ihebwtsw\",\"installTime\":\"2021-08-25T07:52:53Z\"}]}")
+                    "{\"artifacts\":[{\"artifactId\":\"lpu\",\"artifactTitle\":\"py\",\"parameters\":[{\"name\":\"zjcpeogk\",\"value\":\"mgbro\"},{\"name\":\"ddbhf\",\"value\":\"fpazjzoywjxhpd\"},{\"name\":\"ontacnpq\",\"value\":\"ehtuevrhr\"},{\"name\":\"yoogw\",\"value\":\"nsduugwbsre\"}],\"status\":\"fqkfuarenl\",\"deploymentStatusMessage\":\"htkln\",\"vmExtensionStatusMessage\":\"afvvk\",\"installTime\":\"2021-04-06T11:17:07Z\"},{\"artifactId\":\"ev\",\"artifactTitle\":\"oslc\",\"parameters\":[{\"name\":\"okkhminq\",\"value\":\"mczngn\"}],\"status\":\"xxewu\",\"deploymentStatusMessage\":\"nvudbchaqdtvqecr\",\"vmExtensionStatusMessage\":\"tmxxdtddmflhuy\",\"installTime\":\"2021-10-16T00:35:13Z\"},{\"artifactId\":\"tznapxbannovv\",\"artifactTitle\":\"czytprwn\",\"parameters\":[{\"name\":\"ev\",\"value\":\"lyokrrrou\"},{\"name\":\"vnsasbcrymodi\",\"value\":\"xkl\"}],\"status\":\"d\",\"deploymentStatusMessage\":\"azpmkmlmv\",\"vmExtensionStatusMessage\":\"f\",\"installTime\":\"2021-07-13T20:29:03Z\"}]}")
                 .toObject(ApplyArtifactsRequest.class);
-        Assertions.assertEquals("bimhtmwwinhe", model.artifacts().get(0).artifactId());
-        Assertions.assertEquals("qpofvwbc", model.artifacts().get(0).artifactTitle());
-        Assertions.assertEquals("b", model.artifacts().get(0).status());
-        Assertions.assertEquals("bwvqvxkdi", model.artifacts().get(0).deploymentStatusMessage());
-        Assertions.assertEquals("ihebwtsw", model.artifacts().get(0).vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T07:52:53Z"), model.artifacts().get(0).installTime());
+        Assertions.assertEquals("lpu", model.artifacts().get(0).artifactId());
+        Assertions.assertEquals("py", model.artifacts().get(0).artifactTitle());
+        Assertions.assertEquals("zjcpeogk", model.artifacts().get(0).parameters().get(0).name());
+        Assertions.assertEquals("mgbro", model.artifacts().get(0).parameters().get(0).value());
+        Assertions.assertEquals("fqkfuarenl", model.artifacts().get(0).status());
+        Assertions.assertEquals("htkln", model.artifacts().get(0).deploymentStatusMessage());
+        Assertions.assertEquals("afvvk", model.artifacts().get(0).vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T11:17:07Z"), model.artifacts().get(0).installTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,19 +38,58 @@ public final class ApplyArtifactsRequestTests {
                     Arrays
                         .asList(
                             new ArtifactInstallProperties()
-                                .withArtifactId("bimhtmwwinhe")
-                                .withArtifactTitle("qpofvwbc")
-                                .withParameters(Arrays.asList())
-                                .withStatus("b")
-                                .withDeploymentStatusMessage("bwvqvxkdi")
-                                .withVmExtensionStatusMessage("ihebwtsw")
-                                .withInstallTime(OffsetDateTime.parse("2021-08-25T07:52:53Z"))));
+                                .withArtifactId("lpu")
+                                .withArtifactTitle("py")
+                                .withParameters(
+                                    Arrays
+                                        .asList(
+                                            new ArtifactParameterProperties().withName("zjcpeogk").withValue("mgbro"),
+                                            new ArtifactParameterProperties()
+                                                .withName("ddbhf")
+                                                .withValue("fpazjzoywjxhpd"),
+                                            new ArtifactParameterProperties()
+                                                .withName("ontacnpq")
+                                                .withValue("ehtuevrhr"),
+                                            new ArtifactParameterProperties()
+                                                .withName("yoogw")
+                                                .withValue("nsduugwbsre")))
+                                .withStatus("fqkfuarenl")
+                                .withDeploymentStatusMessage("htkln")
+                                .withVmExtensionStatusMessage("afvvk")
+                                .withInstallTime(OffsetDateTime.parse("2021-04-06T11:17:07Z")),
+                            new ArtifactInstallProperties()
+                                .withArtifactId("ev")
+                                .withArtifactTitle("oslc")
+                                .withParameters(
+                                    Arrays
+                                        .asList(
+                                            new ArtifactParameterProperties().withName("okkhminq").withValue("mczngn")))
+                                .withStatus("xxewu")
+                                .withDeploymentStatusMessage("nvudbchaqdtvqecr")
+                                .withVmExtensionStatusMessage("tmxxdtddmflhuy")
+                                .withInstallTime(OffsetDateTime.parse("2021-10-16T00:35:13Z")),
+                            new ArtifactInstallProperties()
+                                .withArtifactId("tznapxbannovv")
+                                .withArtifactTitle("czytprwn")
+                                .withParameters(
+                                    Arrays
+                                        .asList(
+                                            new ArtifactParameterProperties().withName("ev").withValue("lyokrrrou"),
+                                            new ArtifactParameterProperties()
+                                                .withName("vnsasbcrymodi")
+                                                .withValue("xkl")))
+                                .withStatus("d")
+                                .withDeploymentStatusMessage("azpmkmlmv")
+                                .withVmExtensionStatusMessage("f")
+                                .withInstallTime(OffsetDateTime.parse("2021-07-13T20:29:03Z"))));
         model = BinaryData.fromObject(model).toObject(ApplyArtifactsRequest.class);
-        Assertions.assertEquals("bimhtmwwinhe", model.artifacts().get(0).artifactId());
-        Assertions.assertEquals("qpofvwbc", model.artifacts().get(0).artifactTitle());
-        Assertions.assertEquals("b", model.artifacts().get(0).status());
-        Assertions.assertEquals("bwvqvxkdi", model.artifacts().get(0).deploymentStatusMessage());
-        Assertions.assertEquals("ihebwtsw", model.artifacts().get(0).vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-25T07:52:53Z"), model.artifacts().get(0).installTime());
+        Assertions.assertEquals("lpu", model.artifacts().get(0).artifactId());
+        Assertions.assertEquals("py", model.artifacts().get(0).artifactTitle());
+        Assertions.assertEquals("zjcpeogk", model.artifacts().get(0).parameters().get(0).name());
+        Assertions.assertEquals("mgbro", model.artifacts().get(0).parameters().get(0).value());
+        Assertions.assertEquals("fqkfuarenl", model.artifacts().get(0).status());
+        Assertions.assertEquals("htkln", model.artifacts().get(0).deploymentStatusMessage());
+        Assertions.assertEquals("afvvk", model.artifacts().get(0).vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T11:17:07Z"), model.artifacts().get(0).installTime());
     }
 }

@@ -31,7 +31,7 @@ public final class LabsListVhdsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"olhbhlvb\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"xk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,8 @@ public final class LabsListVhdsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LabVhd> response =
-            manager.labs().listVhds("imkrsrrmouc", "ofldpuviyfcaa", com.azure.core.util.Context.NONE);
+            manager.labs().listVhds("rkphyjdxr", "vjuqdbrxmrgchb", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("olhbhlvb", response.iterator().next().id());
+        Assertions.assertEquals("xk", response.iterator().next().id());
     }
 }

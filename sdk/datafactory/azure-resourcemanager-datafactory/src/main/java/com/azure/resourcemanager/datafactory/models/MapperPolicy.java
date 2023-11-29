@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CDC Policy. */
+/**
+ * CDC Policy.
+ */
 @Fluent
 public final class MapperPolicy {
     /*
@@ -22,13 +24,15 @@ public final class MapperPolicy {
     @JsonProperty(value = "recurrence")
     private MapperPolicyRecurrence recurrence;
 
-    /** Creates an instance of MapperPolicy class. */
+    /**
+     * Creates an instance of MapperPolicy class.
+     */
     public MapperPolicy() {
     }
 
     /**
      * Get the mode property: Mode of running the CDC: batch vs continuous.
-     *
+     * 
      * @return the mode value.
      */
     public String mode() {
@@ -37,7 +41,7 @@ public final class MapperPolicy {
 
     /**
      * Set the mode property: Mode of running the CDC: batch vs continuous.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the MapperPolicy object itself.
      */
@@ -48,7 +52,7 @@ public final class MapperPolicy {
 
     /**
      * Get the recurrence property: Defines the frequency and interval for running the CDC for batch mode.
-     *
+     * 
      * @return the recurrence value.
      */
     public MapperPolicyRecurrence recurrence() {
@@ -57,7 +61,7 @@ public final class MapperPolicy {
 
     /**
      * Set the recurrence property: Defines the frequency and interval for running the CDC for batch mode.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the MapperPolicy object itself.
      */
@@ -68,7 +72,7 @@ public final class MapperPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

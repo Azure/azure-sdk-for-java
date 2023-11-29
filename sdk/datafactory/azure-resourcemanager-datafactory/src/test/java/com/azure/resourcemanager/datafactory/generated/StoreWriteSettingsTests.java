@@ -12,21 +12,16 @@ import java.util.Map;
 public final class StoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StoreWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datayxegklywdlxmyoqm\",\"disableMetricsCollection\":\"dataascqqtqzwn\",\"copyBehavior\":\"datalyrpbmdwiaxs\",\"\":{\"knybfsoayatqk\":\"dataorgcufiphnroizz\",\"djsa\":\"datazuxpldzkvbe\"}}")
-                .toObject(StoreWriteSettings.class);
+        StoreWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataisxqmmxjd\",\"disableMetricsCollection\":\"datayzil\",\"copyBehavior\":\"datafgowvvxjqr\",\"\":{\"ewfuwg\":\"datambqyfecnsq\"}}")
+            .toObject(StoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreWriteSettings model =
-            new StoreWriteSettings()
-                .withMaxConcurrentConnections("datayxegklywdlxmyoqm")
-                .withDisableMetricsCollection("dataascqqtqzwn")
-                .withCopyBehavior("datalyrpbmdwiaxs")
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
+        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("dataisxqmmxjd")
+            .withDisableMetricsCollection("datayzil").withCopyBehavior("datafgowvvxjqr")
+            .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
         model = BinaryData.fromObject(model).toObject(StoreWriteSettings.class);
     }
 

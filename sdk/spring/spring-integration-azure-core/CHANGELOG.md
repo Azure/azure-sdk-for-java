@@ -1,6 +1,6 @@
 # Release History
 
-## 4.13.0-beta.1 (Unreleased)
+## 4.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.13.0 (2023-11-07)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4130-2023-11-07) for more details.
 
 ## 4.12.0 (2023-10-23)
 

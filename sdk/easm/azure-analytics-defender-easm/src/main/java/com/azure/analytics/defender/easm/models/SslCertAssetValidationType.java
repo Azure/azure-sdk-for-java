@@ -8,18 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SslCertAssetValidationType. */
+/**
+ * Defines values for SslCertAssetValidationType.
+ */
 public final class SslCertAssetValidationType extends ExpandableStringEnum<SslCertAssetValidationType> {
 
-    /** Static value domainValidation for SslCertAssetValidationType. */
-    @Generated public static final SslCertAssetValidationType DOMAIN_VALIDATION = fromString("domainValidation");
+    /**
+     * Static value domainValidation for SslCertAssetValidationType.
+     */
+    @Generated
+    public static final SslCertAssetValidationType DOMAIN_VALIDATION = fromString("domainValidation");
 
-    /** Static value organizationValidation for SslCertAssetValidationType. */
+    /**
+     * Static value organizationValidation for SslCertAssetValidationType.
+     */
     @Generated
     public static final SslCertAssetValidationType ORGANIZATION_VALIDATION = fromString("organizationValidation");
 
-    /** Static value extendedValidation for SslCertAssetValidationType. */
-    @Generated public static final SslCertAssetValidationType EXTENDED_VALIDATION = fromString("extendedValidation");
+    /**
+     * Static value extendedValidation for SslCertAssetValidationType.
+     */
+    @Generated
+    public static final SslCertAssetValidationType EXTENDED_VALIDATION = fromString("extendedValidation");
 
     /**
      * Creates a new instance of SslCertAssetValidationType value.
@@ -28,7 +38,8 @@ public final class SslCertAssetValidationType extends ExpandableStringEnum<SslCe
      */
     @Generated
     @Deprecated
-    public SslCertAssetValidationType() {}
+    public SslCertAssetValidationType() {
+    }
 
     /**
      * Creates or finds a SslCertAssetValidationType from its string representation.

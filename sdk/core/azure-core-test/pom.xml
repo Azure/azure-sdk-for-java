@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.22.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.45.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.46.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.32</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.33</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -152,7 +152,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.32]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.33]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>io.projectreactor.netty:reactor-netty-http:[1.0.38]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ApiKeys Delete. */
 public final class ApiKeysDeleteSamples {
     /*
@@ -20,6 +18,9 @@ public final class ApiKeysDeleteSamples {
         manager
             .apiKeys()
             .deleteWithResponse(
-                "my-resource-group", "my-component", "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a", Context.NONE);
+                "my-resource-group",
+                "my-component",
+                "bb820f1b-3110-4a8b-ba2c-8c1129d7eb6a",
+                com.azure.core.util.Context.NONE);
     }
 }

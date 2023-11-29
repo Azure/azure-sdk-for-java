@@ -6,22 +6,23 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
 
-/** Samples for FrontendsInterface Update. */
+/**
+ * Samples for FrontendsInterface Update.
+ */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/FrontendPatch.json
+     * x-ms-original-file:
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.
-     *
+     * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void updateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        Frontend resource =
-            manager
-                .frontendsInterfaces()
-                .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE)
-                .getValue();
+        Frontend resource = manager.frontendsInterfaces()
+            .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
 }

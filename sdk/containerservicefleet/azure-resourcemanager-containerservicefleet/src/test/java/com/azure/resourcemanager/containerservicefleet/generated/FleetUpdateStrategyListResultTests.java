@@ -18,10 +18,10 @@ public final class FleetUpdateStrategyListResultTests {
         FleetUpdateStrategyListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"twwrqp\"}]}},\"eTag\":\"dckzywbiexz\",\"id\":\"yueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\",\"type\":\"zjancuxr\"}],\"nextLink\":\"wbavxbniwdj\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"idokgjlj\"},{\"name\":\"oxgvclt\"},{\"name\":\"gsncghkjeszz\"},{\"name\":\"bijhtxfvgxbf\"}]}},\"eTag\":\"xnehmpvec\",\"id\":\"odebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"qzahmgkbrp\"},{\"name\":\"y\"},{\"name\":\"hibnuqqkpika\"},{\"name\":\"rgvtqag\"}]}},\"eTag\":\"uynhijg\",\"id\":\"ebf\",\"name\":\"iarbutrcvpna\",\"type\":\"zmhjrunmp\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"hrbnlankxmyskpbh\"}]}},\"eTag\":\"btkcxywnytnrsyn\",\"id\":\"idybyxczf\",\"name\":\"lhaaxdbabp\",\"type\":\"lwrq\"},{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"thsu\"},{\"name\":\"ocmnyyazttbtwwrq\"}]}},\"eTag\":\"edckzywbiexzfey\",\"id\":\"axibxujw\",\"name\":\"hqwa\",\"type\":\"muzyoxaepdk\"}],\"nextLink\":\"ancuxrhd\"}")
                 .toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("twwrqp", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("wbavxbniwdj", model.nextLink());
+        Assertions.assertEquals("idokgjlj", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("ancuxrhd", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,10 +34,38 @@ public final class FleetUpdateStrategyListResultTests {
                             new FleetUpdateStrategyInner()
                                 .withStrategy(
                                     new UpdateRunStrategy()
-                                        .withStages(Arrays.asList(new UpdateStage().withName("twwrqp"))))))
-                .withNextLink("wbavxbniwdj");
+                                        .withStages(
+                                            Arrays
+                                                .asList(
+                                                    new UpdateStage().withName("idokgjlj"),
+                                                    new UpdateStage().withName("oxgvclt"),
+                                                    new UpdateStage().withName("gsncghkjeszz"),
+                                                    new UpdateStage().withName("bijhtxfvgxbf")))),
+                            new FleetUpdateStrategyInner()
+                                .withStrategy(
+                                    new UpdateRunStrategy()
+                                        .withStages(
+                                            Arrays
+                                                .asList(
+                                                    new UpdateStage().withName("qzahmgkbrp"),
+                                                    new UpdateStage().withName("y"),
+                                                    new UpdateStage().withName("hibnuqqkpika"),
+                                                    new UpdateStage().withName("rgvtqag")))),
+                            new FleetUpdateStrategyInner()
+                                .withStrategy(
+                                    new UpdateRunStrategy()
+                                        .withStages(Arrays.asList(new UpdateStage().withName("hrbnlankxmyskpbh")))),
+                            new FleetUpdateStrategyInner()
+                                .withStrategy(
+                                    new UpdateRunStrategy()
+                                        .withStages(
+                                            Arrays
+                                                .asList(
+                                                    new UpdateStage().withName("thsu"),
+                                                    new UpdateStage().withName("ocmnyyazttbtwwrq"))))))
+                .withNextLink("ancuxrhd");
         model = BinaryData.fromObject(model).toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("twwrqp", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("wbavxbniwdj", model.nextLink());
+        Assertions.assertEquals("idokgjlj", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("ancuxrhd", model.nextLink());
     }
 }

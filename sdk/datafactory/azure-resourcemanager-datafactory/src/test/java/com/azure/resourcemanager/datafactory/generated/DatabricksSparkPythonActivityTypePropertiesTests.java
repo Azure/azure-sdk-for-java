@@ -13,33 +13,20 @@ import java.util.Map;
 public final class DatabricksSparkPythonActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabricksSparkPythonActivityTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"pythonFile\":\"datacgmfklqswwdbs\",\"parameters\":[\"dataysedqrbevobqrwng\"],\"libraries\":[{\"ycou\":\"dataquzxmtmsyi\",\"sdjkrosq\":\"dataks\",\"jgyjoklngjsglz\":\"datavffrncsw\",\"wsqdnasjup\":\"datai\"},{\"zbdtvrg\":\"dataakks\",\"iotvfcbgffd\":\"dataebvqslikeuqv\"},{\"lixhapvwacwrc\":\"dataffatyqawtfyzqop\"}]}")
-                .toObject(DatabricksSparkPythonActivityTypeProperties.class);
+        DatabricksSparkPythonActivityTypeProperties model = BinaryData.fromString(
+            "{\"pythonFile\":\"datacgmfklqswwdbs\",\"parameters\":[\"dataysedqrbevobqrwng\"],\"libraries\":[{\"ycou\":\"dataquzxmtmsyi\",\"sdjkrosq\":\"dataks\",\"jgyjoklngjsglz\":\"datavffrncsw\",\"wsqdnasjup\":\"datai\"},{\"zbdtvrg\":\"dataakks\",\"iotvfcbgffd\":\"dataebvqslikeuqv\"},{\"lixhapvwacwrc\":\"dataffatyqawtfyzqop\"}]}")
+            .toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkPythonActivityTypeProperties model =
-            new DatabricksSparkPythonActivityTypeProperties()
-                .withPythonFile("datacgmfklqswwdbs")
-                .withParameters(Arrays.asList("dataysedqrbevobqrwng"))
-                .withLibraries(
-                    Arrays
-                        .asList(
-                            mapOf(
-                                "ycou",
-                                "dataquzxmtmsyi",
-                                "sdjkrosq",
-                                "dataks",
-                                "jgyjoklngjsglz",
-                                "datavffrncsw",
-                                "wsqdnasjup",
-                                "datai"),
-                            mapOf("zbdtvrg", "dataakks", "iotvfcbgffd", "dataebvqslikeuqv"),
-                            mapOf("lixhapvwacwrc", "dataffatyqawtfyzqop")));
+        DatabricksSparkPythonActivityTypeProperties model = new DatabricksSparkPythonActivityTypeProperties()
+            .withPythonFile("datacgmfklqswwdbs").withParameters(Arrays.asList("dataysedqrbevobqrwng"))
+            .withLibraries(Arrays.asList(
+                mapOf("ycou", "dataquzxmtmsyi", "sdjkrosq", "dataks", "jgyjoklngjsglz", "datavffrncsw", "wsqdnasjup",
+                    "datai"),
+                mapOf("zbdtvrg", "dataakks", "iotvfcbgffd", "dataebvqslikeuqv"),
+                mapOf("lixhapvwacwrc", "dataffatyqawtfyzqop")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 

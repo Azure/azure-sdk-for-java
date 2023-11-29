@@ -1313,6 +1313,7 @@ public class BlobApiTests extends BlobTestBase {
         assertEquals(properties.getTagCount(), 1);
         assertNull(properties.getRehydratePriority()); // tested in setTier rehydrate priority
         assertNull(properties.isSealed()); // tested in AppendBlob. "seal blob"
+        assertNotNull(properties.getRequestId());
 //        properties.getLastAccessedTime() /* TODO: re-enable when last access time enabled. */
     }
 

@@ -74,7 +74,7 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
      */
     Boolean enabled;
 
-    /*
+    /**
      * Indicates if the private key can be exported.
      */
     Boolean exportable;
@@ -138,10 +138,15 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
      */
     Integer recoverableDays;
 
-    /*
+    /**
      * The policy rules under which the key can be exported.
      */
     KeyReleasePolicy releasePolicy;
+
+    /**
+     * The underlying HSM Platform the key was generated with.
+     */
+    private String hsmPlatform;
 
     /**
      * Creates a new instance of {@link KeyProperties}.
@@ -355,6 +360,15 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
         return this.version;
     }
 
+    /**
+     * Get the underlying HSM Platform the key was generated with.
+     *
+     * @return The key's underlying HSM Platform.
+     */
+    public String getHsmPlatform() {
+        return hsmPlatform;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
@@ -366,11 +380,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
 
     /**
      * Reads a JSON stream into a {@link KeyProperties}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return An instance of {@link KeyProperties} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link KeyProperties} fails to be read from the {@code jsonReader}.
-     */
+    *
+    * @param jsonReader The {@link JsonReader} being read.
+    * @return An instance of {@link KeyProperties} that the JSON stream represented, may return null.
+    * @throws IOException If a {@link KeyProperties} fails to be read from the {@code jsonReader}.
+    */
     public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KeyProperties properties = new KeyProperties();
@@ -412,6 +426,8 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
                             properties.recoveryLevel = reader.getString();
                         } else if ("recoverableDays".equals(fieldName)) {
                             properties.recoverableDays = reader.getNullable(JsonReader::getInt);
+                        } else if ("hsmPlatform".equals(fieldName)) {
+                            properties.hsmPlatform = reader.getString();
                         } else {
                             reader.skipChildren();
                         }

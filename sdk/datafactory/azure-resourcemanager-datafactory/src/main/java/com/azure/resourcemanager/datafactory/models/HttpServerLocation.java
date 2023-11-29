@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of http server. */
+/**
+ * The location of http server.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpServerLocation")
 @Fluent
@@ -20,14 +22,16 @@ public final class HttpServerLocation extends DatasetLocation {
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
-    /** Creates an instance of HttpServerLocation class. */
+    /**
+     * Creates an instance of HttpServerLocation class.
+     */
     public HttpServerLocation() {
     }
 
     /**
-     * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the relativeUrl value.
      */
     public Object relativeUrl() {
@@ -35,9 +39,9 @@ public final class HttpServerLocation extends DatasetLocation {
     }
 
     /**
-     * Set the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpServerLocation object itself.
      */
@@ -46,14 +50,18 @@ public final class HttpServerLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpServerLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpServerLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -62,7 +70,7 @@ public final class HttpServerLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

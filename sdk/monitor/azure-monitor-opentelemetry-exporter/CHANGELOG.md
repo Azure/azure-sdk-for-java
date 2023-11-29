@@ -1,14 +1,23 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.15 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+- [Fix flush on JVM shutdown](https://github.com/Azure/azure-sdk-for-java/pull/37618)
 
 ### Other Changes
+
+## 1.0.0-beta.14 (2023-11-09)
+
+### Breaking Changes
+- [Rename build to install](https://github.com/Azure/azure-sdk-for-java/pull/37602)
+
+### Bugs Fixed
+- [Fix null HttpPipeline](https://github.com/Azure/azure-sdk-for-java/pull/37574)
 
 ## 1.0.0-beta.13 (2023-10-24)
 

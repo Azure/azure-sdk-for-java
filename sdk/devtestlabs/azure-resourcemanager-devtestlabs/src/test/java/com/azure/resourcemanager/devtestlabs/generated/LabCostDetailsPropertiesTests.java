@@ -15,24 +15,23 @@ public final class LabCostDetailsPropertiesTests {
     public void testDeserialize() throws Exception {
         LabCostDetailsProperties model =
             BinaryData
-                .fromString(
-                    "{\"date\":\"2021-05-26T19:07:11Z\",\"cost\":29.97563487024707,\"costType\":\"Unavailable\"}")
+                .fromString("{\"date\":\"2021-08-17T09:35:24Z\",\"cost\":49.06806584477157,\"costType\":\"Reported\"}")
                 .toObject(LabCostDetailsProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T19:07:11Z"), model.date());
-        Assertions.assertEquals(29.97563487024707D, model.cost());
-        Assertions.assertEquals(CostType.UNAVAILABLE, model.costType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T09:35:24Z"), model.date());
+        Assertions.assertEquals(49.06806584477157D, model.cost());
+        Assertions.assertEquals(CostType.REPORTED, model.costType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabCostDetailsProperties model =
             new LabCostDetailsProperties()
-                .withDate(OffsetDateTime.parse("2021-05-26T19:07:11Z"))
-                .withCost(29.97563487024707D)
-                .withCostType(CostType.UNAVAILABLE);
+                .withDate(OffsetDateTime.parse("2021-08-17T09:35:24Z"))
+                .withCost(49.06806584477157D)
+                .withCostType(CostType.REPORTED);
         model = BinaryData.fromObject(model).toObject(LabCostDetailsProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T19:07:11Z"), model.date());
-        Assertions.assertEquals(29.97563487024707D, model.cost());
-        Assertions.assertEquals(CostType.UNAVAILABLE, model.costType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-17T09:35:24Z"), model.date());
+        Assertions.assertEquals(49.06806584477157D, model.cost());
+        Assertions.assertEquals(CostType.REPORTED, model.costType());
     }
 }

@@ -7,7 +7,12 @@ package com.azure.resourcemanager.devtestlabs.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ApplicableSchedulePropertiesInner;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
+import com.azure.resourcemanager.devtestlabs.models.DayDetails;
 import com.azure.resourcemanager.devtestlabs.models.EnableStatus;
+import com.azure.resourcemanager.devtestlabs.models.HourDetails;
+import com.azure.resourcemanager.devtestlabs.models.NotificationSettings;
+import com.azure.resourcemanager.devtestlabs.models.WeekDetails;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -18,20 +23,38 @@ public final class ApplicableSchedulePropertiesInnerTests {
         ApplicableSchedulePropertiesInner model =
             BinaryData
                 .fromString(
-                    "{\"labVmsShutdown\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"mq\",\"timeZoneId\":\"lajrnwxacevehj\",\"createdDate\":\"2021-05-11T20:12:40Z\",\"targetResourceId\":\"afgaoqlt\",\"provisioningState\":\"eyl\",\"uniqueIdentifier\":\"mfgvxirpghriypo\"},\"location\":\"eyhlqhykprl\",\"tags\":{\"fuxtyasiibmiybnn\":\"nuciqdsmexiit\",\"hnmgixhcm\":\"stgnl\",\"rhc\":\"vmqfoud\"},\"id\":\"yyprotwyp\",\"name\":\"ndm\",\"type\":\"xhugcm\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"gorbmftpm\",\"timeZoneId\":\"ltfvnz\",\"createdDate\":\"2021-02-22T19:45:43Z\",\"targetResourceId\":\"tpvopvpbdb\",\"provisioningState\":\"gqqihedsvqwt\",\"uniqueIdentifier\":\"ky\"},\"location\":\"bcysih\",\"tags\":{\"hohsd\":\"cw\",\"mcmuapc\":\"mcdzsufcohdxbz\"},\"id\":\"hdbevwqqxeyskon\",\"name\":\"zinkfkbgbzbowxeq\",\"type\":\"clj\"}}")
+                    "{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"svth\",\"weeklyRecurrence\":{\"weekdays\":[\"tekovmri\"],\"time\":\"attgplu\"},\"dailyRecurrence\":{\"time\":\"tangcfhnykzcu\"},\"hourlyRecurrence\":{\"minute\":1514018500},\"timeZoneId\":\"wlmzqwmvtxnjmxmc\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":386890050,\"webhookUrl\":\"clxyn\",\"emailRecipient\":\"k\",\"notificationLocale\":\"fabuiyjibu\"},\"createdDate\":\"2021-07-04T05:28:17Z\",\"targetResourceId\":\"ugneikn\",\"provisioningState\":\"oxgjiuqhibt\",\"uniqueIdentifier\":\"ipq\"},\"location\":\"jedmurrxxgewp\",\"tags\":{\"cgwgcloxoebqinji\":\"qylkmqpzoyhlf\",\"qlafcbahhpzpofoi\":\"nwjfu\",\"kholvd\":\"jwpfilkm\",\"uartvti\":\"dviauogp\"},\"id\":\"kyefchnmnahmnxhk\",\"name\":\"jqirwrw\",\"type\":\"ooxf\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"wrsnewmozqvbu\",\"weeklyRecurrence\":{\"weekdays\":[\"m\",\"sycxhxzgaz\",\"taboidvmf\",\"hppubowsepdfgkmt\"],\"time\":\"erngbtcjuahokqto\"},\"dailyRecurrence\":{\"time\":\"uxofshfphwpnulai\"},\"hourlyRecurrence\":{\"minute\":102187695},\"timeZoneId\":\"ywhslwkojpllndnp\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":211402317,\"webhookUrl\":\"gfugsnnfhyet\",\"emailRecipient\":\"ypococtfjgtixr\",\"notificationLocale\":\"zuyt\"},\"createdDate\":\"2021-03-14T11:53:49Z\",\"targetResourceId\":\"muowolbauiro\",\"provisioningState\":\"ons\",\"uniqueIdentifier\":\"nw\"},\"location\":\"ngajinnixjawrtmj\",\"tags\":{\"vnekhenlusfnrdtj\":\"yccxlzhcox\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\"},\"id\":\"wkasiziesf\",\"name\":\"ughtuqfecjxeygtu\",\"type\":\"xu\"}}")
                 .toObject(ApplicableSchedulePropertiesInner.class);
-        Assertions.assertEquals("eyhlqhykprl", model.labVmsShutdown().location());
-        Assertions.assertEquals("nuciqdsmexiit", model.labVmsShutdown().tags().get("fuxtyasiibmiybnn"));
-        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().status());
-        Assertions.assertEquals("mq", model.labVmsShutdown().taskType());
-        Assertions.assertEquals("lajrnwxacevehj", model.labVmsShutdown().timeZoneId());
-        Assertions.assertEquals("afgaoqlt", model.labVmsShutdown().targetResourceId());
-        Assertions.assertEquals("bcysih", model.labVmsStartup().location());
-        Assertions.assertEquals("cw", model.labVmsStartup().tags().get("hohsd"));
+        Assertions.assertEquals("jedmurrxxgewp", model.labVmsShutdown().location());
+        Assertions.assertEquals("qylkmqpzoyhlf", model.labVmsShutdown().tags().get("cgwgcloxoebqinji"));
+        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsShutdown().status());
+        Assertions.assertEquals("svth", model.labVmsShutdown().taskType());
+        Assertions.assertEquals("tekovmri", model.labVmsShutdown().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("attgplu", model.labVmsShutdown().weeklyRecurrence().time());
+        Assertions.assertEquals("tangcfhnykzcu", model.labVmsShutdown().dailyRecurrence().time());
+        Assertions.assertEquals(1514018500, model.labVmsShutdown().hourlyRecurrence().minute());
+        Assertions.assertEquals("wlmzqwmvtxnjmxmc", model.labVmsShutdown().timeZoneId());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().notificationSettings().status());
+        Assertions.assertEquals(386890050, model.labVmsShutdown().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("clxyn", model.labVmsShutdown().notificationSettings().webhookUrl());
+        Assertions.assertEquals("k", model.labVmsShutdown().notificationSettings().emailRecipient());
+        Assertions.assertEquals("fabuiyjibu", model.labVmsShutdown().notificationSettings().notificationLocale());
+        Assertions.assertEquals("ugneikn", model.labVmsShutdown().targetResourceId());
+        Assertions.assertEquals("ngajinnixjawrtmj", model.labVmsStartup().location());
+        Assertions.assertEquals("yccxlzhcox", model.labVmsStartup().tags().get("vnekhenlusfnrdtj"));
         Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsStartup().status());
-        Assertions.assertEquals("gorbmftpm", model.labVmsStartup().taskType());
-        Assertions.assertEquals("ltfvnz", model.labVmsStartup().timeZoneId());
-        Assertions.assertEquals("tpvopvpbdb", model.labVmsStartup().targetResourceId());
+        Assertions.assertEquals("wrsnewmozqvbu", model.labVmsStartup().taskType());
+        Assertions.assertEquals("m", model.labVmsStartup().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("erngbtcjuahokqto", model.labVmsStartup().weeklyRecurrence().time());
+        Assertions.assertEquals("uxofshfphwpnulai", model.labVmsStartup().dailyRecurrence().time());
+        Assertions.assertEquals(102187695, model.labVmsStartup().hourlyRecurrence().minute());
+        Assertions.assertEquals("ywhslwkojpllndnp", model.labVmsStartup().timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsStartup().notificationSettings().status());
+        Assertions.assertEquals(211402317, model.labVmsStartup().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("gfugsnnfhyet", model.labVmsStartup().notificationSettings().webhookUrl());
+        Assertions.assertEquals("ypococtfjgtixr", model.labVmsStartup().notificationSettings().emailRecipient());
+        Assertions.assertEquals("zuyt", model.labVmsStartup().notificationSettings().notificationLocale());
+        Assertions.assertEquals("muowolbauiro", model.labVmsStartup().targetResourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -40,35 +63,87 @@ public final class ApplicableSchedulePropertiesInnerTests {
             new ApplicableSchedulePropertiesInner()
                 .withLabVmsShutdown(
                     new ScheduleInner()
-                        .withLocation("eyhlqhykprl")
-                        .withTags(mapOf("fuxtyasiibmiybnn", "nuciqdsmexiit", "hnmgixhcm", "stgnl", "rhc", "vmqfoud"))
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTaskType("mq")
-                        .withTimeZoneId("lajrnwxacevehj")
-                        .withTargetResourceId("afgaoqlt"))
+                        .withLocation("jedmurrxxgewp")
+                        .withTags(
+                            mapOf(
+                                "cgwgcloxoebqinji",
+                                "qylkmqpzoyhlf",
+                                "qlafcbahhpzpofoi",
+                                "nwjfu",
+                                "kholvd",
+                                "jwpfilkm",
+                                "uartvti",
+                                "dviauogp"))
+                        .withStatus(EnableStatus.DISABLED)
+                        .withTaskType("svth")
+                        .withWeeklyRecurrence(
+                            new WeekDetails().withWeekdays(Arrays.asList("tekovmri")).withTime("attgplu"))
+                        .withDailyRecurrence(new DayDetails().withTime("tangcfhnykzcu"))
+                        .withHourlyRecurrence(new HourDetails().withMinute(1514018500))
+                        .withTimeZoneId("wlmzqwmvtxnjmxmc")
+                        .withNotificationSettings(
+                            new NotificationSettings()
+                                .withStatus(EnableStatus.ENABLED)
+                                .withTimeInMinutes(386890050)
+                                .withWebhookUrl("clxyn")
+                                .withEmailRecipient("k")
+                                .withNotificationLocale("fabuiyjibu"))
+                        .withTargetResourceId("ugneikn"))
                 .withLabVmsStartup(
                     new ScheduleInner()
-                        .withLocation("bcysih")
-                        .withTags(mapOf("hohsd", "cw", "mcmuapc", "mcdzsufcohdxbz"))
+                        .withLocation("ngajinnixjawrtmj")
+                        .withTags(mapOf("vnekhenlusfnrdtj", "yccxlzhcox", "ttgepuslvyjtcv", "txrdcqtjvi"))
                         .withStatus(EnableStatus.ENABLED)
-                        .withTaskType("gorbmftpm")
-                        .withTimeZoneId("ltfvnz")
-                        .withTargetResourceId("tpvopvpbdb"));
+                        .withTaskType("wrsnewmozqvbu")
+                        .withWeeklyRecurrence(
+                            new WeekDetails()
+                                .withWeekdays(Arrays.asList("m", "sycxhxzgaz", "taboidvmf", "hppubowsepdfgkmt"))
+                                .withTime("erngbtcjuahokqto"))
+                        .withDailyRecurrence(new DayDetails().withTime("uxofshfphwpnulai"))
+                        .withHourlyRecurrence(new HourDetails().withMinute(102187695))
+                        .withTimeZoneId("ywhslwkojpllndnp")
+                        .withNotificationSettings(
+                            new NotificationSettings()
+                                .withStatus(EnableStatus.DISABLED)
+                                .withTimeInMinutes(211402317)
+                                .withWebhookUrl("gfugsnnfhyet")
+                                .withEmailRecipient("ypococtfjgtixr")
+                                .withNotificationLocale("zuyt"))
+                        .withTargetResourceId("muowolbauiro"));
         model = BinaryData.fromObject(model).toObject(ApplicableSchedulePropertiesInner.class);
-        Assertions.assertEquals("eyhlqhykprl", model.labVmsShutdown().location());
-        Assertions.assertEquals("nuciqdsmexiit", model.labVmsShutdown().tags().get("fuxtyasiibmiybnn"));
-        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().status());
-        Assertions.assertEquals("mq", model.labVmsShutdown().taskType());
-        Assertions.assertEquals("lajrnwxacevehj", model.labVmsShutdown().timeZoneId());
-        Assertions.assertEquals("afgaoqlt", model.labVmsShutdown().targetResourceId());
-        Assertions.assertEquals("bcysih", model.labVmsStartup().location());
-        Assertions.assertEquals("cw", model.labVmsStartup().tags().get("hohsd"));
+        Assertions.assertEquals("jedmurrxxgewp", model.labVmsShutdown().location());
+        Assertions.assertEquals("qylkmqpzoyhlf", model.labVmsShutdown().tags().get("cgwgcloxoebqinji"));
+        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsShutdown().status());
+        Assertions.assertEquals("svth", model.labVmsShutdown().taskType());
+        Assertions.assertEquals("tekovmri", model.labVmsShutdown().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("attgplu", model.labVmsShutdown().weeklyRecurrence().time());
+        Assertions.assertEquals("tangcfhnykzcu", model.labVmsShutdown().dailyRecurrence().time());
+        Assertions.assertEquals(1514018500, model.labVmsShutdown().hourlyRecurrence().minute());
+        Assertions.assertEquals("wlmzqwmvtxnjmxmc", model.labVmsShutdown().timeZoneId());
+        Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsShutdown().notificationSettings().status());
+        Assertions.assertEquals(386890050, model.labVmsShutdown().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("clxyn", model.labVmsShutdown().notificationSettings().webhookUrl());
+        Assertions.assertEquals("k", model.labVmsShutdown().notificationSettings().emailRecipient());
+        Assertions.assertEquals("fabuiyjibu", model.labVmsShutdown().notificationSettings().notificationLocale());
+        Assertions.assertEquals("ugneikn", model.labVmsShutdown().targetResourceId());
+        Assertions.assertEquals("ngajinnixjawrtmj", model.labVmsStartup().location());
+        Assertions.assertEquals("yccxlzhcox", model.labVmsStartup().tags().get("vnekhenlusfnrdtj"));
         Assertions.assertEquals(EnableStatus.ENABLED, model.labVmsStartup().status());
-        Assertions.assertEquals("gorbmftpm", model.labVmsStartup().taskType());
-        Assertions.assertEquals("ltfvnz", model.labVmsStartup().timeZoneId());
-        Assertions.assertEquals("tpvopvpbdb", model.labVmsStartup().targetResourceId());
+        Assertions.assertEquals("wrsnewmozqvbu", model.labVmsStartup().taskType());
+        Assertions.assertEquals("m", model.labVmsStartup().weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("erngbtcjuahokqto", model.labVmsStartup().weeklyRecurrence().time());
+        Assertions.assertEquals("uxofshfphwpnulai", model.labVmsStartup().dailyRecurrence().time());
+        Assertions.assertEquals(102187695, model.labVmsStartup().hourlyRecurrence().minute());
+        Assertions.assertEquals("ywhslwkojpllndnp", model.labVmsStartup().timeZoneId());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.labVmsStartup().notificationSettings().status());
+        Assertions.assertEquals(211402317, model.labVmsStartup().notificationSettings().timeInMinutes());
+        Assertions.assertEquals("gfugsnnfhyet", model.labVmsStartup().notificationSettings().webhookUrl());
+        Assertions.assertEquals("ypococtfjgtixr", model.labVmsStartup().notificationSettings().emailRecipient());
+        Assertions.assertEquals("zuyt", model.labVmsStartup().notificationSettings().notificationLocale());
+        Assertions.assertEquals("muowolbauiro", model.labVmsStartup().targetResourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

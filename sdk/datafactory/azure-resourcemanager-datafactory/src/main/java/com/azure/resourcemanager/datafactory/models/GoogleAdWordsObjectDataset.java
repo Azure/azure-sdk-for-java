@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Google AdWords service dataset. */
+/**
+ * Google AdWords service dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleAdWordsObject")
 @Fluent
@@ -23,62 +25,78 @@ public final class GoogleAdWordsObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of GoogleAdWordsObjectDataset class. */
+    /**
+     * Creates an instance of GoogleAdWordsObjectDataset class.
+     */
     public GoogleAdWordsObjectDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private GenericDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleAdWordsObjectDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class GoogleAdWordsObjectDataset extends Dataset {
 
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -96,7 +114,7 @@ public final class GoogleAdWordsObjectDataset extends Dataset {
 
     /**
      * Set the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the GoogleAdWordsObjectDataset object itself.
      */
@@ -110,7 +128,7 @@ public final class GoogleAdWordsObjectDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

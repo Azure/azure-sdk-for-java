@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ActivityRuns. */
+/**
+ * Resource collection API of ActivityRuns.
+ */
 public interface ActivityRuns {
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -22,16 +24,12 @@ public interface ActivityRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list activity runs along with {@link Response}.
      */
-    Response<ActivityRunsQueryResponse> queryByPipelineRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String runId,
-        RunFilterParameters filterParameters,
-        Context context);
+    Response<ActivityRunsQueryResponse> queryByPipelineRunWithResponse(String resourceGroupName, String factoryName,
+        String runId, RunFilterParameters filterParameters, Context context);
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -41,6 +39,6 @@ public interface ActivityRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list activity runs.
      */
-    ActivityRunsQueryResponse queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters);
+    ActivityRunsQueryResponse queryByPipelineRun(String resourceGroupName, String factoryName, String runId,
+        RunFilterParameters filterParameters);
 }

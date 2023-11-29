@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ChainingTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChainingTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ChainingTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"imcfmdh\",\"name\":\"lliscyxcluvjppuj\"},\"parameters\":{\"obltoargc\":\"datathshcjg\",\"gvfs\":\"datatgqyqwmzzcg\",\"ybxmuehfkbhymd\":\"dataabuurtuqw\"}},\"typeProperties\":{\"dependsOn\":[{\"referenceName\":\"s\",\"name\":\"j\"},{\"referenceName\":\"chhrnfa\",\"name\":\"e\"}],\"runDimension\":\"iww\"},\"description\":\"kxz\",\"runtimeState\":\"Started\",\"annotations\":[\"datalhmvc\",\"databiagwu\"],\"\":{\"ywtaufm\":\"datayi\"}}")
-                .toObject(ChainingTrigger.class);
+        ChainingTrigger model = BinaryData.fromString(
+            "{\"type\":\"ChainingTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"imcfmdh\",\"name\":\"lliscyxcluvjppuj\"},\"parameters\":{\"obltoargc\":\"datathshcjg\",\"gvfs\":\"datatgqyqwmzzcg\",\"ybxmuehfkbhymd\":\"dataabuurtuqw\"}},\"typeProperties\":{\"dependsOn\":[{\"referenceName\":\"s\",\"name\":\"j\"},{\"referenceName\":\"chhrnfa\",\"name\":\"e\"}],\"runDimension\":\"iww\"},\"description\":\"kxz\",\"runtimeState\":\"Started\",\"annotations\":[\"datalhmvc\",\"databiagwu\"],\"\":{\"ywtaufm\":\"datayi\"}}")
+            .toObject(ChainingTrigger.class);
         Assertions.assertEquals("kxz", model.description());
         Assertions.assertEquals("imcfmdh", model.pipeline().pipelineReference().referenceName());
         Assertions.assertEquals("lliscyxcluvjppuj", model.pipeline().pipelineReference().name());
@@ -31,28 +29,16 @@ public final class ChainingTriggerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChainingTrigger model =
-            new ChainingTrigger()
-                .withDescription("kxz")
-                .withAnnotations(Arrays.asList("datalhmvc", "databiagwu"))
-                .withPipeline(
-                    new TriggerPipelineReference()
-                        .withPipelineReference(
-                            new PipelineReference().withReferenceName("imcfmdh").withName("lliscyxcluvjppuj"))
-                        .withParameters(
-                            mapOf(
-                                "obltoargc",
-                                "datathshcjg",
-                                "gvfs",
-                                "datatgqyqwmzzcg",
-                                "ybxmuehfkbhymd",
-                                "dataabuurtuqw")))
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new PipelineReference().withReferenceName("s").withName("j"),
-                            new PipelineReference().withReferenceName("chhrnfa").withName("e")))
-                .withRunDimension("iww");
+        ChainingTrigger model = new ChainingTrigger().withDescription("kxz")
+            .withAnnotations(Arrays.asList("datalhmvc", "databiagwu"))
+            .withPipeline(new TriggerPipelineReference()
+                .withPipelineReference(
+                    new PipelineReference().withReferenceName("imcfmdh").withName("lliscyxcluvjppuj"))
+                .withParameters(
+                    mapOf("obltoargc", "datathshcjg", "gvfs", "datatgqyqwmzzcg", "ybxmuehfkbhymd", "dataabuurtuqw")))
+            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("s").withName("j"),
+                new PipelineReference().withReferenceName("chhrnfa").withName("e")))
+            .withRunDimension("iww");
         model = BinaryData.fromObject(model).toObject(ChainingTrigger.class);
         Assertions.assertEquals("kxz", model.description());
         Assertions.assertEquals("imcfmdh", model.pipeline().pipelineReference().referenceName());
