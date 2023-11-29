@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class OnYourDataEmbeddingModelIdDependency extends OnYourDataEmbeddingDependency {
 
     /*
-     * The embedding model id build inside the search service. Currently only supported by Elasticsearch.
+     * The embedding model ID build inside the search service. Currently only supported by Elasticsearch.
      */
     @Generated
     @JsonProperty(value = "modelId")
@@ -37,7 +37,7 @@ public final class OnYourDataEmbeddingModelIdDependency extends OnYourDataEmbedd
     }
 
     /**
-     * Get the modelId property: The embedding model id build inside the search service. Currently only supported by
+     * Get the modelId property: The embedding model ID build inside the search service. Currently only supported by
      * Elasticsearch.
      *
      * @return the modelId value.

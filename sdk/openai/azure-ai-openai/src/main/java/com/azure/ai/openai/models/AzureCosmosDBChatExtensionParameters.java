@@ -67,7 +67,7 @@ public final class AzureCosmosDBChatExtensionParameters {
     private String containerName;
 
     /*
-     * The index name name of Azure Cosmos DB.
+     * The index name of Azure Cosmos DB.
      */
     @Generated
     @JsonProperty(value = "indexName")
@@ -244,7 +244,7 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Get the indexName property: The index name name of Azure Cosmos DB.
+     * Get the indexName property: The index name of Azure Cosmos DB.
      *
      * @return the indexName value.
      */

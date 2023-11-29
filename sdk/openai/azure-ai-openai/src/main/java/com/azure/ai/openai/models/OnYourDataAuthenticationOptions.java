@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The authentication options for Azure OpenAI on your data.
+ * The authentication options for Azure OpenAI On Your Data.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,

@@ -53,7 +53,7 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     private String roleInformation;
 
     /*
-     * The resource id of the Azure Machine Learning project.
+     * The resource ID of the Azure Machine Learning project.
      */
     @Generated
     @JsonProperty(value = "projectResourceId")
@@ -215,7 +215,7 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the projectResourceId property: The resource id of the Azure Machine Learning project.
+     * Get the projectResourceId property: The resource ID of the Azure Machine Learning project.
      *
      * @return the projectResourceId value.
      */
