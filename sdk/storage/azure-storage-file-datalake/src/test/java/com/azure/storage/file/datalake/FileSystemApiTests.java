@@ -2023,7 +2023,7 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
     @Test
     public void creationTimeDateParseBadData() {
-        assertThrows(DateTimeParseException.class, () -> Transforms.parseWindowsFileTimeOrDateString("bad date string"));
+        assertThrows(RuntimeException.class, () -> Transforms.parseWindowsFileTimeOrDateString("bad date string"));
     }
 
     @ParameterizedTest

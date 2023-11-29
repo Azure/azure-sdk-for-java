@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -112,6 +113,7 @@ import java.util.stream.Collectors;
 
 class Transforms {
 
+    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
     private static final String SERIALIZATION_MESSAGE = String.format("'serialization' must be one of %s, %s, %s or "
             + "%s.", FileQueryJsonSerialization.class.getSimpleName(),
         FileQueryDelimitedSerialization.class.getSimpleName(), FileQueryArrowSerialization.class.getSimpleName(),
@@ -392,8 +394,13 @@ class Transforms {
             // First try to parse as a long (Windows file time)
             return fromWindowsFileTimeOrNull(Long.parseLong(date));
         } catch (NumberFormatException ex) {
-            // If parsing as long fails, try to parse as a date string
-            return parseDateOrNull(date);
+            // If parsing as a long fails, try to parse as a date string in the format DAYOFTHEWEEK, DD MMMM YYYY HH:MM:SS ZONE
+            try {
+                return parseDateOrNull(date);
+            } catch (Exception e) {
+                // Reaching here means we got a format from the service we did not expect
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date));
+            }
         }
     }
 
