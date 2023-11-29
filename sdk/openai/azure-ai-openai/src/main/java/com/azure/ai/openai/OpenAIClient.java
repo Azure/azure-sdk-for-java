@@ -39,6 +39,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -1488,7 +1489,7 @@ public final class OpenAIClient {
      * @return the result of a successful image generation operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
+    Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
             ? this.openAIServiceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
@@ -1511,7 +1512,7 @@ public final class OpenAIClient {
      * @return the result of a successful image generation operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
+    Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         Response<BinaryData> response = getImageGenerationsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(imageGenerationOptions), requestOptions);
@@ -1532,14 +1533,22 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a successful image generation operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ImageGenerations getImageGenerations(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions) {
+        // Restore @Generated when we remove LRO support entirely
         // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
-            requestOptions).getValue().toObject(ImageGenerations.class);
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
+        // was available through an LRO
+        if (CoreUtils.isNullOrEmpty(deploymentOrModelName) && openAIServiceClient == null) {
+            return serviceClient.beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
+                .getFinalResult().toObject(BatchImageGenerationOperationResponse.class).getResult();
+        } else {
+            return getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptionsBinaryData,
+                requestOptions).getValue().toObject(ImageGenerations.class);
+        }
     }
 
     /**

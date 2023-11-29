@@ -4,9 +4,8 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.FutureTemperatureArguments;
-import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.functions.FutureTemperatureParameters;
+import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -63,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -200,9 +200,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
+    void getImageGenerationLegacyRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
+        testRunner.accept("dall-e-2", new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"));
+    }
+
     void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
         testRunner.accept("dall-e-3",
-            new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
+                new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
         );
     }
 
