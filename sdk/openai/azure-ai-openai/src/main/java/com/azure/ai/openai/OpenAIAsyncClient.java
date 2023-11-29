@@ -1568,21 +1568,7 @@ public final class OpenAIAsyncClient {
                 .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class)));
     }
 
-    /**
-     * Creates an image given a prompt.
-     *
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a successful image generation operation on successful completion of {@link Mono}.
-     */
-//    @Generated
+    // @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageGenerations> getImageGenerations(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions) {
@@ -1592,11 +1578,10 @@ public final class OpenAIAsyncClient {
         // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
         // was available through an LRO
         if ((deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank())
-                && openAIServiceClient == null) {
-            return beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
-                    .last()
-                    .flatMap(AsyncPollResponse::getFinalResult)
-                    .map(it -> it.toObject(BatchImageGenerationOperationResponse.class).getResult());
+            && openAIServiceClient == null) {
+            return beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions).last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .map(it -> it.toObject(BatchImageGenerationOperationResponse.class).getResult());
         } else {
             return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
                 requestOptions).flatMap(FluxUtil::toMono)

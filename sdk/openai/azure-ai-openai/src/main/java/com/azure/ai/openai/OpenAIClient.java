@@ -1530,8 +1530,7 @@ public final class OpenAIClient {
         if ((deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank())
             && openAIServiceClient == null) {
             return serviceClient.beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
-                    .getFinalResult().toObject(BatchImageGenerationOperationResponse.class)
-                    .getResult();
+                .getFinalResult().toObject(BatchImageGenerationOperationResponse.class).getResult();
         } else {
             return getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptionsBinaryData,
                 requestOptions).getValue().toObject(ImageGenerations.class);
