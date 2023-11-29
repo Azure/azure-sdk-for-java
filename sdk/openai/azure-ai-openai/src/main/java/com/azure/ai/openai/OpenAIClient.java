@@ -1527,13 +1527,11 @@ public final class OpenAIClient {
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
         // was available through an LRO
-        if (deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank()) {
-            return openAIServiceClient != null
-                ? openAIServiceClient.getImageGenerationsWithResponse(deploymentOrModelName,
-                    imageGenerationOptionsBinaryData, requestOptions).getValue().toObject(ImageGenerations.class)
-                : this.serviceClient
-                    .beginBeginImageGenerationsWithModel(imageGenerationOptionsBinaryData, requestOptions)
-                    .getFinalResult().getResult();
+        if ((deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank())
+            && openAIServiceClient == null) {
+            return serviceClient.beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
+                    .getFinalResult().toObject(BatchImageGenerationOperationResponse.class)
+                    .getResult();
         } else {
             return getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptionsBinaryData,
                 requestOptions).getValue().toObject(ImageGenerations.class);

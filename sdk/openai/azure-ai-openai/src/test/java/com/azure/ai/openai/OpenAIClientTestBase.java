@@ -4,9 +4,8 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.FutureTemperatureArguments;
-import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.functions.FutureTemperatureParameters;
+import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranslation;

@@ -42,6 +42,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -1536,7 +1537,7 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
+    Mono<Response<BinaryData>> getImageGenerationsWithResponse(String deploymentOrModelName,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         return this.openAIServiceClient != null
             ? this.openAIServiceClient.getImageGenerationsWithResponseAsync(deploymentOrModelName,
@@ -1560,7 +1561,7 @@ public final class OpenAIAsyncClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ImageGenerations>> getImageGenerationsWithResponse(String deploymentOrModelName,
+    Mono<Response<ImageGenerations>> getImageGenerationsWithResponse(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
         return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
             requestOptions)
@@ -1581,15 +1582,26 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a successful image generation operation on successful completion of {@link Mono}.
      */
-    @Generated
+//    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageGenerations> getImageGenerations(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions) {
         // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
-            requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
+        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
+        // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
+        // was available through an LRO
+        if ((deploymentOrModelName == null || deploymentOrModelName.isEmpty() || deploymentOrModelName.isBlank())
+                && openAIServiceClient == null) {
+            return beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions)
+                    .last()
+                    .flatMap(AsyncPollResponse::getFinalResult)
+                    .map(it -> it.toObject(BatchImageGenerationOperationResponse.class).getResult());
+        } else {
+            return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+                requestOptions).flatMap(FluxUtil::toMono)
+                    .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
+        }
     }
 
     /**
