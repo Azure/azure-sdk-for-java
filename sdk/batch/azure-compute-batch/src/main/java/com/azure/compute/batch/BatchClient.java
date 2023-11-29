@@ -4,36 +4,17 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
-import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
-import com.azure.compute.batch.models.DeleteBatchTaskOptions;
 import com.azure.compute.batch.models.BatchApplication;
-import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
-import com.azure.compute.batch.models.BatchTaskAddStatus;
 import com.azure.compute.batch.models.BatchCertificate;
-import com.azure.compute.batch.models.ListBatchSubTasksOptions;
-import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.RebootBatchNodeOptions;
-import com.azure.compute.batch.models.GetBatchNodeOptions;
-import com.azure.compute.batch.models.BatchTaskAddResult;
-import com.azure.compute.batch.models.CreateTasksErrorException;
-import com.azure.compute.batch.models.ReimageBatchNodeOptions;
-import com.azure.compute.batch.models.DeleteBatchNodeUserOptions;
-import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
-import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
-import com.azure.compute.batch.models.TerminateBatchTaskOptions;
-import com.azure.compute.batch.models.DisableBatchNodeSchedulingOptions;
-import com.azure.compute.batch.models.ListBatchNodeExtensionsOptions;
+import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateParameters;
-import com.azure.compute.batch.models.GetBatchNodeExtensionOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteDesktopFileOptions;
-import com.azure.compute.batch.models.ListBatchNodesOptions;
 import com.azure.compute.batch.models.BatchJobDisableParameters;
-import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
-import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
-import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateParameters;
 import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
@@ -70,19 +51,25 @@ import com.azure.compute.batch.models.CancelBatchCertificateDeletionOptions;
 import com.azure.compute.batch.models.CreateBatchCertificateOptions;
 import com.azure.compute.batch.models.CreateBatchJobOptions;
 import com.azure.compute.batch.models.CreateBatchJobScheduleOptions;
+import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
 import com.azure.compute.batch.models.CreateBatchPoolOptions;
+import com.azure.compute.batch.models.CreateBatchTaskCollectionOptions;
 import com.azure.compute.batch.models.CreateBatchTaskOptions;
 import com.azure.compute.batch.models.DeleteBatchCertificateOptions;
 import com.azure.compute.batch.models.DeleteBatchJobOptions;
 import com.azure.compute.batch.models.DeleteBatchJobScheduleOptions;
 import com.azure.compute.batch.models.DeleteBatchNodeFileOptions;
+import com.azure.compute.batch.models.DeleteBatchNodeUserOptions;
 import com.azure.compute.batch.models.DeleteBatchPoolOptions;
 import com.azure.compute.batch.models.DeleteBatchTaskFileOptions;
+import com.azure.compute.batch.models.DeleteBatchTaskOptions;
 import com.azure.compute.batch.models.DisableBatchJobOptions;
 import com.azure.compute.batch.models.DisableBatchJobScheduleOptions;
+import com.azure.compute.batch.models.DisableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.DisableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EnableBatchJobOptions;
 import com.azure.compute.batch.models.EnableBatchJobScheduleOptions;
+import com.azure.compute.batch.models.EnableBatchNodeSchedulingOptions;
 import com.azure.compute.batch.models.EnableBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.EvaluateBatchPoolAutoScaleOptions;
 import com.azure.compute.batch.models.GetApplicationOptions;
@@ -90,8 +77,12 @@ import com.azure.compute.batch.models.GetBatchCertificateOptions;
 import com.azure.compute.batch.models.GetBatchJobOptions;
 import com.azure.compute.batch.models.GetBatchJobScheduleOptions;
 import com.azure.compute.batch.models.GetBatchJobTaskCountsOptions;
+import com.azure.compute.batch.models.GetBatchNodeExtensionOptions;
 import com.azure.compute.batch.models.GetBatchNodeFileOptions;
 import com.azure.compute.batch.models.GetBatchNodeFilePropertiesOptions;
+import com.azure.compute.batch.models.GetBatchNodeOptions;
+import com.azure.compute.batch.models.GetBatchNodeRemoteDesktopFileOptions;
+import com.azure.compute.batch.models.GetBatchNodeRemoteLoginSettingsOptions;
 import com.azure.compute.batch.models.GetBatchPoolOptions;
 import com.azure.compute.batch.models.GetBatchTaskFileOptions;
 import com.azure.compute.batch.models.GetBatchTaskFilePropertiesOptions;
@@ -100,28 +91,37 @@ import com.azure.compute.batch.models.ImageInfo;
 import com.azure.compute.batch.models.ListBatchApplicationsOptions;
 import com.azure.compute.batch.models.ListBatchCertificatesOptions;
 import com.azure.compute.batch.models.ListBatchJobPreparationAndReleaseTaskStatusOptions;
-import com.azure.compute.batch.models.ListBatchJobsFromScheduleOptions;
 import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
+import com.azure.compute.batch.models.ListBatchJobsFromScheduleOptions;
 import com.azure.compute.batch.models.ListBatchJobsOptions;
+import com.azure.compute.batch.models.ListBatchNodeExtensionsOptions;
 import com.azure.compute.batch.models.ListBatchNodeFilesOptions;
+import com.azure.compute.batch.models.ListBatchNodesOptions;
 import com.azure.compute.batch.models.ListBatchPoolNodeCountsOptions;
 import com.azure.compute.batch.models.ListBatchPoolUsageMetricsOptions;
 import com.azure.compute.batch.models.ListBatchPoolsOptions;
+import com.azure.compute.batch.models.ListBatchSubTasksOptions;
 import com.azure.compute.batch.models.ListBatchTaskFilesOptions;
 import com.azure.compute.batch.models.ListBatchTasksOptions;
 import com.azure.compute.batch.models.ListSupportedBatchImagesOptions;
 import com.azure.compute.batch.models.ReactivateBatchTaskOptions;
+import com.azure.compute.batch.models.RebootBatchNodeOptions;
+import com.azure.compute.batch.models.ReimageBatchNodeOptions;
 import com.azure.compute.batch.models.RemoveBatchNodesOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobOptions;
 import com.azure.compute.batch.models.ReplaceBatchJobScheduleOptions;
+import com.azure.compute.batch.models.ReplaceBatchNodeUserOptions;
 import com.azure.compute.batch.models.ReplaceBatchPoolPropertiesOptions;
+import com.azure.compute.batch.models.ReplaceBatchTaskOptions;
 import com.azure.compute.batch.models.ResizeBatchPoolOptions;
 import com.azure.compute.batch.models.StopBatchPoolResizeOptions;
 import com.azure.compute.batch.models.TerminateBatchJobOptions;
 import com.azure.compute.batch.models.TerminateBatchJobScheduleOptions;
+import com.azure.compute.batch.models.TerminateBatchTaskOptions;
 import com.azure.compute.batch.models.UpdateBatchJobOptions;
 import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.UpdateBatchPoolOptions;
+import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
 import com.azure.compute.batch.models.UploadBatchServiceLogsParameters;
 import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
 import com.azure.core.annotation.Generated;
@@ -139,18 +139,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.logging.ClientLogger;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /** Initializes a new instance of the synchronous BatchClient type. */
@@ -182,131 +173,6 @@ public final class BatchClient {
         createTasks(jobId, taskList, null);
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(BatchClient.class);
-    private static class WorkingThread implements Runnable {
-
-        static final int MAX_TASKS_PER_REQUEST = 100;
-
-        private static final AtomicInteger CURRENT_MAX_TASKS = new AtomicInteger(MAX_TASKS_PER_REQUEST);
-
-        final BatchClient client;
-
-        final String jobId;
-
-        final Queue<BatchTaskCreateParameters> pendingList;
-
-        final List<BatchTaskAddResult> failures;
-
-        volatile Exception exception;
-
-        final Object lock;
-
-        WorkingThread(
-                BatchClient client,
-                String jobId,
-                Queue<BatchTaskCreateParameters> pendingList,
-                List<BatchTaskAddResult> failures,
-                Object lock) {
-            this.client = client;
-            this.jobId = jobId;
-            this.pendingList = pendingList;
-            this.failures = failures;
-            this.exception = null;
-            this.lock = lock;
-        }
-
-        public Exception getException() {
-            return this.exception;
-        }
-
-        /**
-         * Submits one chunk of tasks to a job.
-         *
-         * @param taskList A list of {@link BatchTask tasks} to add.
-         */
-        private void submitChunk(List<BatchTaskCreateParameters> taskList) {
-            try {
-                BatchTaskAddCollectionResult response =
-                        this.client.createTaskCollectionInternal(this.jobId, new BatchTaskCollection(taskList));
-                if (response != null && response.getValue() != null) {
-                    for (BatchTaskAddResult result : response.getValue()) {
-                        if (result.getError() != null) {
-                            if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
-                                // Server error will be retried
-                                for (BatchTaskCreateParameters batchTaskToCreate : taskList) {
-                                    if (batchTaskToCreate.getId().equals(result.getTaskId())) {
-                                        pendingList.add(batchTaskToCreate);
-                                        break;
-                                    }
-                                }
-                            } else if (result.getStatus() == BatchTaskAddStatus.CLIENT_ERROR
-                                    && !result.getError().getMessage().getValue().contains("Status code 409")) {
-                                // Client error will be recorded
-                                failures.add(result);
-                            }
-                        }
-                    }
-                }
-            } catch (HttpResponseException e) {
-                // TODO (custom exception): Track 1 SDK had an autogenerated BatchErrorException which encapsulated a {@link BatchError} - Investigate why custom exception type is not generated
-
-                // If we get RequestBodyTooLarge could be that we chunked the tasks too large.
-                // Try decreasing the size unless caused by 1 task.
-                if (e.getResponse().getStatusCode() == 413 && taskList.size() > 1) {
-                    // Use binary reduction to decrease size of submitted chunks
-                    int midpoint = taskList.size() / 2;
-                    // If the midpoint is less than the CURRENT_MAX_TASKS used to create new chunks,
-                    // attempt to atomically reduce CURRENT_MAX_TASKS.
-                    // In the case where compareAndSet fails, that means that CURRENT_MAX_TASKS which
-                    // was the goal
-                    int max = CURRENT_MAX_TASKS.get();
-                    while (midpoint < max) {
-                        CURRENT_MAX_TASKS.compareAndSet(max, midpoint);
-                        max = CURRENT_MAX_TASKS.get();
-                    }
-                    // Resubmit chunk as a smaller list and requeue remaining tasks.
-                    pendingList.addAll(taskList.subList(midpoint, taskList.size()));
-                    submitChunk(taskList.subList(0, midpoint));
-                } else {
-                    // Any exception will stop further call
-                    exception = e;
-                    pendingList.addAll(taskList);
-                }
-            } catch (RuntimeException e) {
-                // Any exception will stop further call
-                exception = e;
-                pendingList.addAll(taskList);
-            }
-        }
-
-        @Override
-        public void run() {
-            try {
-                List<BatchTaskCreateParameters> taskList = new LinkedList<>();
-                // Take the task from the queue up to MAX_TASKS_PER_REQUEST
-                int count = 0;
-                int maxAmount = CURRENT_MAX_TASKS.get();
-                while (count < maxAmount) {
-                    BatchTaskCreateParameters param = pendingList.poll();
-                    if (param != null) {
-                        taskList.add(param);
-                        count++;
-                    } else {
-                        break;
-                    }
-                }
-                if (taskList.size() > 0) {
-                    submitChunk(taskList);
-                }
-            } finally {
-                synchronized (lock) {
-                    // Notify main thread that sub thread finished
-                    lock.notifyAll();
-                }
-            }
-        }
-    }
-
     /**
      * Creates a collection of Tasks to the specified Job.
      *
@@ -327,89 +193,14 @@ public final class BatchClient {
      * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any
      *     network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
-     * @throws CreateTasksErrorException Exception thrown if the create tasks operation is terminated.
      */
     public void createTasks(
             String jobId,
             List<BatchTaskCreateParameters> taskList,
             BatchClientParallelOptions batchClientParallelOptions)
             throws InterruptedException {
-        int threadNumber = 1;
-        // Get user defined thread number
-        if (batchClientParallelOptions != null) {
-            threadNumber = batchClientParallelOptions.maxDegreeOfParallelism();
-        }
-        final Object lock = new Object();
-        ConcurrentLinkedQueue<BatchTaskCreateParameters> pendingList = new ConcurrentLinkedQueue<>(taskList);
-        CopyOnWriteArrayList<BatchTaskAddResult> failures = new CopyOnWriteArrayList<>();
-        Map<Thread, WorkingThread> threads = new HashMap<>();
-        Exception innerException = null;
-        synchronized (lock) {
-            while (!pendingList.isEmpty()) {
-                if (threads.size() < threadNumber) {
-                    // Kick as many as possible add tasks requests by max allowed threads
-                    WorkingThread worker = new WorkingThread(this, jobId, pendingList, failures, lock);
-                    Thread thread = new Thread(worker);
-                    thread.start();
-                    threads.put(thread, worker);
-                } else {
-                    lock.wait();
-                    List<Thread> finishedThreads = new ArrayList<>();
-                    for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                        if (entry.getKey().getState() == Thread.State.TERMINATED) {
-                            finishedThreads.add(entry.getKey());
-                            // If any exception is encountered, then stop immediately without waiting for
-                            // remaining active threads.
-                            innerException = entry.getValue().getException();
-                            if (innerException != null) {
-                                break;
-                            }
-                        }
-                    }
-                    // Free the thread pool so we can start more threads to send the remaining add
-                    // tasks requests.
-                    threads.keySet().removeAll(finishedThreads);
-                    // Any errors happened, we stop.
-                    if (innerException != null || !failures.isEmpty()) {
-                        break;
-                    }
-                }
-            }
-        }
-        // Wait for all remaining threads to finish.
-        for (Thread t : threads.keySet()) {
-            t.join();
-        }
-        if (innerException == null) {
-            // Check for errors in any of the threads.
-            for (Map.Entry<Thread, WorkingThread> entry : threads.entrySet()) {
-                innerException = entry.getValue().getException();
-                if (innerException != null) {
-                    break;
-                }
-            }
-        }
-        if (innerException != null) {
-            // If an exception happened in any of the threads, throw it.
-            if (innerException instanceof HttpResponseException) {
-                throw LOGGER.logExceptionAsError((HttpResponseException) innerException);
-            } else if (innerException instanceof RuntimeException) {
-                // WorkingThread will only catch and store a BatchErrorException or a
-                // RuntimeException in its run() method.
-                // WorkingThread.getException() should therefore only return one of these two
-                // types, making the cast safe.
-                throw LOGGER.logExceptionAsError((RuntimeException) innerException);
-            }
-        }
-        if (!failures.isEmpty()) {
-            // Report any client error with leftover request
-            List<BatchTaskCreateParameters> notFinished = new ArrayList<>();
-            for (BatchTaskCreateParameters param : pendingList) {
-                notFinished.add(param);
-            }
-            throw LOGGER.logExceptionAsError(new CreateTasksErrorException("At least one task failed to be added.", failures, notFinished));
-        }
-        // We succeed here
+        TaskSubmitter taskSubmitter = new SyncTaskSubmitter(this);
+        TaskManager.createTasks(taskSubmitter, jobId, taskList, batchClientParallelOptions);
     }
 
     /**
@@ -475,7 +266,7 @@ public final class BatchClient {
         return this.getApplicationInternal(applicationId, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Gets information about the specified Application.
      *
      * <p>This operation returns only Applications and versions that are available for use on Compute Nodes; that is,
@@ -516,12 +307,11 @@ public final class BatchClient {
      */
     public PagedIterable<BatchPoolUsageMetrics> listPoolUsageMetrics(ListBatchPoolUsageMetricsOptions options) {
         return this.listPoolUsageMetricsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getStartTime(),
-            options.getEndTime(),
-            options.getFilter()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getStartTime(),
+                options.getEndTime(),
+                options.getFilter());
     }
 
     /**
@@ -597,12 +387,11 @@ public final class BatchClient {
      */
     public PagedIterable<BatchPool> listPools(ListBatchPoolsOptions options) {
         return listPoolsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -698,12 +487,11 @@ public final class BatchClient {
      */
     public BatchPool getPool(String poolId, GetBatchPoolOptions options) {
         return getPoolInternal(
-            poolId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                poolId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -834,8 +622,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void enablePoolAutoScale(
-            String poolId, BatchPoolEnableAutoScaleParameters body) {
+    public void enablePoolAutoScale(String poolId, BatchPoolEnableAutoScaleParameters body) {
         enablePoolAutoScaleInternal(poolId, body);
     }
 
@@ -877,8 +664,7 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results and errors from an execution of a Pool autoscale formula.
      */
-    public AutoScaleRun evaluatePoolAutoScale(
-            String poolId, BatchPoolEvaluateAutoScaleParameters body) {
+    public AutoScaleRun evaluatePoolAutoScale(String poolId, BatchPoolEvaluateAutoScaleParameters body) {
         return evaluatePoolAutoScaleInternal(poolId, body);
     }
 
@@ -971,7 +757,8 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void replacePoolProperties(String poolId, BatchPoolReplaceParameters body, ReplaceBatchPoolPropertiesOptions options) {
+    public void replacePoolProperties(
+            String poolId, BatchPoolReplaceParameters body, ReplaceBatchPoolPropertiesOptions options) {
         replacePoolPropertiesInternal(poolId, body, options.getTimeOutInSeconds());
     }
 
@@ -1115,7 +902,7 @@ public final class BatchClient {
         deleteJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Deletes a Job.
      *
      * <p>Deleting a Job also deletes all Tasks that are part of that Job, and all Job statistics. This also overrides
@@ -1152,12 +939,11 @@ public final class BatchClient {
      */
     public BatchJob getJob(String jobId, GetBatchJobOptions options) {
         return getJobInternal(
-            jobId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -1196,7 +982,7 @@ public final class BatchClient {
         updateJobInternal(jobId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Updates the properties of the specified Job.
      *
      * <p>This replaces only the Job properties specified in the request. For example, if the Job has constraints, and a
@@ -1324,7 +1110,7 @@ public final class BatchClient {
         enableJobInternal(jobId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Enables the specified Job, allowing new Tasks to run.
      *
      * <p>When you call this API, the Batch service sets a disabled Job to the enabling state. After the this operation
@@ -1411,7 +1197,7 @@ public final class BatchClient {
         createJobInternal(body, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Creates a Job to the specified Account.
      *
      * <p>The Batch service supports two ways to control the work done as part of a Job. In the first approach, the user
@@ -1448,12 +1234,11 @@ public final class BatchClient {
      */
     public PagedIterable<BatchJob> listJobs(ListBatchJobsOptions options) {
         return listJobsInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -1485,15 +1270,15 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of listing the Jobs in an Account as paginated response with {@link PagedIterable}.
      */
-    public PagedIterable<BatchJob> listJobsFromSchedule(String jobScheduleId, ListBatchJobsFromScheduleOptions options) {
+    public PagedIterable<BatchJob> listJobsFromSchedule(
+            String jobScheduleId, ListBatchJobsFromScheduleOptions options) {
         return listJobsFromScheduleInternal(
-            jobScheduleId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                jobScheduleId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -1535,15 +1320,14 @@ public final class BatchClient {
     public PagedIterable<BatchJobPreparationAndReleaseTaskStatus> listJobPreparationAndReleaseTaskStatus(
             String jobId, ListBatchJobPreparationAndReleaseTaskStatusOptions options) {
         return listJobPreparationAndReleaseTaskStatusInternal(
-            jobId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect()
-        );
+                jobId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
-        /**
+    /**
      * Lists the execution status of the Job Preparation and Job Release Task for the specified Job across the Compute
      * Nodes where the Job has run.
      *
@@ -1652,10 +1436,10 @@ public final class BatchClient {
      */
     public PagedIterable<BatchCertificate> listCertificates(ListBatchCertificatesOptions options) {
         return listCertificatesInternal(
-            options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
+                options.getMaxresults(), options.getTimeOutInSeconds(), options.getFilter(), options.getSelect());
     }
 
-        /**
+    /**
      * Lists all of the Certificates that have been added to the specified Account.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1689,7 +1473,8 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void cancelCertificateDeletion(String thumbprintAlgorithm, String thumbprint, CancelBatchCertificateDeletionOptions options) {
+    public void cancelCertificateDeletion(
+            String thumbprintAlgorithm, String thumbprint, CancelBatchCertificateDeletionOptions options) {
         cancelCertificateDeletionInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
     }
 
@@ -1736,7 +1521,8 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void deleteCertificate(String thumbprintAlgorithm, String thumbprint, DeleteBatchCertificateOptions options) {
+    public void deleteCertificate(
+            String thumbprintAlgorithm, String thumbprint, DeleteBatchCertificateOptions options) {
         deleteCertificateInternal(thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds());
     }
 
@@ -1778,10 +1564,10 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified Certificate.
      */
-    public BatchCertificate getCertificate(String thumbprintAlgorithm, String thumbprint, GetBatchCertificateOptions options) {
+    public BatchCertificate getCertificate(
+            String thumbprintAlgorithm, String thumbprint, GetBatchCertificateOptions options) {
         return getCertificateInternal(
-            thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(), options.getSelect()
-        );
+                thumbprintAlgorithm, thumbprint, options.getTimeOutInSeconds(), options.getSelect());
     }
 
     /**
@@ -1889,12 +1675,11 @@ public final class BatchClient {
      */
     public BatchJobSchedule getJobSchedule(String jobScheduleId, GetBatchJobScheduleOptions options) {
         return getJobScheduleInternal(
-            jobScheduleId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobScheduleId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
     /**
@@ -1944,8 +1729,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void updateJobSchedule(
-            String jobScheduleId, BatchJobScheduleUpdateParameters body) {
+    public void updateJobSchedule(String jobScheduleId, BatchJobScheduleUpdateParameters body) {
         // Use the values from options to call the original method or handle them accordingly
         updateJobScheduleInternal(jobScheduleId, body);
     }
@@ -1963,11 +1747,12 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void replaceJobSchedule(String jobScheduleId, BatchJobSchedule body, ReplaceBatchJobScheduleOptions options) {
+    public void replaceJobSchedule(
+            String jobScheduleId, BatchJobSchedule body, ReplaceBatchJobScheduleOptions options) {
         replaceJobScheduleInternal(jobScheduleId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Updates the properties of the specified Job Schedule.
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
@@ -2001,7 +1786,7 @@ public final class BatchClient {
         disableJobScheduleInternal(jobScheduleId, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Disables a Job Schedule.
      *
      * <p>No new Jobs will be created until the Job Schedule is enabled again.
@@ -2126,12 +1911,11 @@ public final class BatchClient {
      */
     public PagedIterable<BatchJobSchedule> listJobSchedules(ListBatchJobSchedulesOptions options) {
         return listJobSchedulesInternal(
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -2169,7 +1953,7 @@ public final class BatchClient {
         createTaskInternal(jobId, body, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Creates a Task to the specified Job.
      *
      * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
@@ -2207,13 +1991,12 @@ public final class BatchClient {
      */
     public PagedIterable<BatchTask> listTasks(String jobId, ListBatchTasksOptions options) {
         return listTasksInternal(
-            jobId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect(),
-            options.getExpand()
-        );
+                jobId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect(),
+                options.getExpand());
     }
 
     /**
@@ -2357,16 +2140,15 @@ public final class BatchClient {
      */
     public BatchTask getTask(String jobId, String taskId, GetBatchTaskOptions options) {
         return getTaskInternal(
-            jobId,
-            taskId,
-            options.getTimeOutInSeconds(),
-            options.getSelect(),
-            options.getExpand(),
-            options.getRequestConditions()
-        );
+                jobId,
+                taskId,
+                options.getTimeOutInSeconds(),
+                options.getSelect(),
+                options.getExpand(),
+                options.getRequestConditions());
     }
 
-        /**
+    /**
      * Gets information about the specified Task.
      *
      * <p>For multi-instance Tasks, information such as affinityId, executionInfo, and nodeInfo refer to the primary
@@ -2407,7 +2189,7 @@ public final class BatchClient {
         replaceTaskInternal(jobId, taskId, body, options.getTimeOutInSeconds(), options.getRequestConditions());
     }
 
-        /**
+    /**
      * Updates the properties of the specified Task.
      *
      * @param jobId The ID of the Job containing the Task.
@@ -2602,14 +2384,13 @@ public final class BatchClient {
      */
     public BinaryData getTaskFile(String jobId, String taskId, String filePath, GetBatchTaskFileOptions options) {
         return getTaskFileInternal(
-            jobId,
-            taskId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince(),
-            options.getOcpRange()
-        );
+                jobId,
+                taskId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
     /**
@@ -2648,13 +2429,12 @@ public final class BatchClient {
     public void getTaskFileProperties(
             String jobId, String taskId, String filePath, GetBatchTaskFilePropertiesOptions options) {
         getTaskFilePropertiesInternal(
-            jobId,
-            taskId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince()
-        );
+                jobId,
+                taskId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
     /**
@@ -2691,16 +2471,15 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNodeFile> listTaskFiles(String jobId, String taskId, ListBatchTaskFilesOptions options) {
         return listTaskFilesInternal(
-            jobId,
-            taskId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getRecursive()
-        );
+                jobId,
+                taskId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 
-        /**
+    /**
      * Lists the files in a Task's directory on its Compute Node.
      *
      * @param jobId The ID of the Job that contains the Task.
@@ -2739,7 +2518,7 @@ public final class BatchClient {
         createNodeUserInternal(poolId, nodeId, body, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Adds a user Account to the specified Compute Node.
      *
      * <p>You can add a user Account to a Compute Node only when it is in the idle or running state.
@@ -2816,7 +2595,12 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void replaceNodeUser(String poolId, String nodeId, String userName, BatchNodeUserUpdateParameters body, ReplaceBatchNodeUserOptions options) {
+    public void replaceNodeUser(
+            String poolId,
+            String nodeId,
+            String userName,
+            BatchNodeUserUpdateParameters body,
+            ReplaceBatchNodeUserOptions options) {
         replaceNodeUserInternal(poolId, nodeId, userName, body, options.getTimeOutInSeconds());
     }
 
@@ -2893,11 +2677,12 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void rebootNode(String poolId, String nodeId, RebootBatchNodeOptions options, BatchNodeRebootParameters body) {
+    public void rebootNode(
+            String poolId, String nodeId, RebootBatchNodeOptions options, BatchNodeRebootParameters body) {
         rebootNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
-        /**
+    /**
      * Restarts the specified Compute Node.
      *
      * <p>You can restart a Compute Node only if it is in an idle or running state.
@@ -2932,7 +2717,8 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    public void reimageNode(String poolId, String nodeId, ReimageBatchNodeOptions options, BatchNodeReimageParameters body) {
+    public void reimageNode(
+            String poolId, String nodeId, ReimageBatchNodeOptions options, BatchNodeReimageParameters body) {
         reimageNodeInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
@@ -2972,7 +2758,10 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     public void disableNodeScheduling(
-            String poolId, String nodeId, DisableBatchNodeSchedulingOptions options, BatchNodeDisableSchedulingParameters body) {
+            String poolId,
+            String nodeId,
+            DisableBatchNodeSchedulingOptions options,
+            BatchNodeDisableSchedulingParameters body) {
         disableNodeSchedulingInternal(poolId, nodeId, options.getTimeOutInSeconds(), body);
     }
 
@@ -3054,7 +2843,7 @@ public final class BatchClient {
         return getNodeRemoteLoginSettingsInternal(poolId, nodeId, options.getTimeOutInSeconds());
     }
 
-        /**
+    /**
      * Gets the settings required for remote login to a Compute Node.
      *
      * <p>Before you can remotely login to a Compute Node using the remote login settings, you must create a user
@@ -3160,7 +2949,8 @@ public final class BatchClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of uploading Batch service log files from a specific Compute Node.
      */
-    public UploadBatchServiceLogsResult uploadNodeLogs(String poolId, String nodeId, UploadBatchServiceLogsParameters body) {
+    public UploadBatchServiceLogsResult uploadNodeLogs(
+            String poolId, String nodeId, UploadBatchServiceLogsParameters body) {
         return uploadNodeLogsInternal(poolId, nodeId, body);
     }
 
@@ -3179,15 +2969,14 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNode> listNodes(String poolId, ListBatchNodesOptions options) {
         return listNodesInternal(
-            poolId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getSelect()
-        );
+                poolId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getSelect());
     }
 
-        /**
+    /**
      * Lists the Compute Nodes in the specified Pool.
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
@@ -3334,17 +3123,16 @@ public final class BatchClient {
      */
     public byte[] getNodeFile(String poolId, String nodeId, String filePath, GetBatchNodeFileOptions options) {
         return getNodeFileInternal(
-            poolId,
-            nodeId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince(),
-            options.getOcpRange()
-        );
+                poolId,
+                nodeId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince(),
+                options.getOcpRange());
     }
 
-        /**
+    /**
      * Returns the content of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -3380,16 +3168,15 @@ public final class BatchClient {
     public void getNodeFileProperties(
             String poolId, String nodeId, String filePath, GetBatchNodeFilePropertiesOptions options) {
         getNodeFilePropertiesInternal(
-            poolId,
-            nodeId,
-            filePath,
-            options.getTimeOutInSeconds(),
-            options.getIfModifiedSince(),
-            options.getIfUnmodifiedSince()
-        );
+                poolId,
+                nodeId,
+                filePath,
+                options.getTimeOutInSeconds(),
+                options.getIfModifiedSince(),
+                options.getIfUnmodifiedSince());
     }
 
-        /**
+    /**
      * Gets the properties of the specified Compute Node file.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -3423,16 +3210,15 @@ public final class BatchClient {
      */
     public PagedIterable<BatchNodeFile> listNodeFiles(String poolId, String nodeId, ListBatchNodeFilesOptions options) {
         return listNodeFilesInternal(
-            poolId,
-            nodeId,
-            options.getMaxresults(),
-            options.getTimeOutInSeconds(),
-            options.getFilter(),
-            options.getRecursive()
-        );
+                poolId,
+                nodeId,
+                options.getMaxresults(),
+                options.getTimeOutInSeconds(),
+                options.getFilter(),
+                options.getRecursive());
     }
 
-        /**
+    /**
      * Lists all of the files in Task directories on the specified Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
@@ -3579,8 +3365,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return contains information about an application in an Azure Batch Account along with {@link Response}.
      */
-    public Response<BinaryData> getApplicationWithResponse(
-            String applicationId, RequestOptions requestOptions) {
+    public Response<BinaryData> getApplicationWithResponse(String applicationId, RequestOptions requestOptions) {
         return this.getApplicationInternalWithResponse(applicationId, requestOptions);
     }
 
@@ -5693,11 +5478,9 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> updatePoolWithResponse(
-            String poolId, BinaryData pool, RequestOptions requestOptions) {
+    public Response<Void> updatePoolWithResponse(String poolId, BinaryData pool, RequestOptions requestOptions) {
         return this.updatePoolInternalWithResponse(poolId, pool, requestOptions);
     }
-
 
     /**
      * Disables automatic scaling for a Pool.
@@ -5999,7 +5782,6 @@ public final class BatchClient {
         return this.evaluatePoolAutoScaleInternalWithResponse(poolId, parameters, requestOptions);
     }
 
-
     /**
      * Changes the number of Compute Nodes that are assigned to a Pool.
      *
@@ -6129,8 +5911,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> resizePoolWithResponse(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Response<Void> resizePoolWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.resizePoolInternalWithResponse(poolId, parameters, requestOptions);
     }
 
@@ -6579,8 +6360,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> removeNodesWithResponse(
-            String poolId, BinaryData parameters, RequestOptions requestOptions) {
+    public Response<Void> removeNodesWithResponse(String poolId, BinaryData parameters, RequestOptions requestOptions) {
         return this.removeNodesInternalWithResponse(poolId, parameters, requestOptions);
     }
 
@@ -9307,8 +9087,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> disableJobWithResponse(
-            String jobId, BinaryData parameters, RequestOptions requestOptions) {
+    public Response<Void> disableJobWithResponse(String jobId, BinaryData parameters, RequestOptions requestOptions) {
         return this.disableJobInternalWithResponse(jobId, parameters, requestOptions);
     }
 
@@ -11423,7 +11202,7 @@ public final class BatchClient {
                 thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
-        /**
+    /**
      * Cancels a failed deletion of a Certificate from the specified Account.
      *
      * <p>If you try to delete a Certificate that is being used by a Pool or Compute Node, the status of the Certificate
@@ -11454,8 +11233,7 @@ public final class BatchClient {
      */
     public Response<Void> cancelCertificateDeletionWithResponse(
             String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions) {
-        return this.cancelCertificateDeletionInternalWithResponse(
-                thumbprintAlgorithm, thumbprint, requestOptions);
+        return this.cancelCertificateDeletionInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
     /**
@@ -11497,7 +11275,7 @@ public final class BatchClient {
                 thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
-        /**
+    /**
      * Deletes a Certificate from the specified Account.
      *
      * <p>You cannot delete a Certificate if a resource (Pool or Compute Node) is using it. Before you can delete a
@@ -11530,8 +11308,7 @@ public final class BatchClient {
      */
     public Response<Void> deleteCertificateWithResponse(
             String thumbprintAlgorithm, String thumbprint, RequestOptions requestOptions) {
-        return this.deleteCertificateInternalWithResponse(
-                thumbprintAlgorithm, thumbprint, requestOptions);
+        return this.deleteCertificateInternalWithResponse(thumbprintAlgorithm, thumbprint, requestOptions);
     }
 
     /**
@@ -11705,7 +11482,7 @@ public final class BatchClient {
         return this.serviceClient.jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions);
     }
 
-        /**
+    /**
      * Checks the specified Job Schedule exists.
      *
      * <p><strong>Query Parameters</strong>
@@ -11753,8 +11530,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return whether resource exists along with {@link Response}.
      */
-    public Response<Boolean> jobScheduleExistsWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Boolean> jobScheduleExistsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.jobScheduleExistsInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -12743,8 +12519,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Job Schedule along with {@link Response}.
      */
-    public Response<BinaryData> getJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Response<BinaryData> getJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.getJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -14019,7 +13794,7 @@ public final class BatchClient {
         return this.serviceClient.replaceJobScheduleInternalWithResponse(jobScheduleId, jobSchedule, requestOptions);
     }
 
-        /**
+    /**
      * Updates the properties of the specified Job Schedule.
      *
      * <p>This fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property is
@@ -14753,8 +14528,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> terminateJobScheduleWithResponse(
-            String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Void> terminateJobScheduleWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.terminateJobScheduleInternalWithResponse(jobScheduleId, requestOptions);
     }
 
@@ -16943,7 +16717,7 @@ public final class BatchClient {
         return this.serviceClient.deleteTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
-        /**
+    /**
      * Deletes a Task from the specified Job.
      *
      * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
@@ -17236,7 +17010,7 @@ public final class BatchClient {
         return this.serviceClient.getTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
-        /**
+    /**
      * Gets information about the specified Task.
      *
      * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
@@ -17470,8 +17244,7 @@ public final class BatchClient {
      *     failure. Retries due to recovery operations are independent of and are not counted against the
      *     maxTaskRetryCount along with {@link Response}.
      */
-    public Response<BinaryData> getTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Response<BinaryData> getTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.getTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -18018,7 +17791,7 @@ public final class BatchClient {
         return this.serviceClient.listSubTasksInternalWithResponse(jobId, taskId, requestOptions);
     }
 
-        /**
+    /**
      * Lists all of the subtasks that are associated with the specified multi-instance Task.
      *
      * <p>If the Task is not a multi-instance Task then this returns an empty collection.
@@ -18088,8 +17861,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the result of listing the subtasks of a Task along with {@link Response}.
      */
-    public Response<BinaryData> listSubTasksWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Response<BinaryData> listSubTasksWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.listSubTasksInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -18148,7 +17920,7 @@ public final class BatchClient {
         return this.serviceClient.terminateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
-        /**
+    /**
      * Terminates the specified Task.
      *
      * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
@@ -18196,11 +17968,9 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> terminateTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Response<Void> terminateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.terminateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
-
 
     /**
      * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
@@ -18259,7 +18029,7 @@ public final class BatchClient {
         return this.serviceClient.reactivateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
-        /**
+    /**
      * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
      *
      * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
@@ -18309,8 +18079,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
-    public Response<Void> reactivateTaskWithResponse(
-            String jobId, String taskId, RequestOptions requestOptions) {
+    public Response<Void> reactivateTaskWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.reactivateTaskInternalWithResponse(jobId, taskId, requestOptions);
     }
 
@@ -18534,7 +18303,7 @@ public final class BatchClient {
         return this.serviceClient.getTaskFilePropertiesInternalWithResponse(jobId, taskId, filePath, requestOptions);
     }
 
-        /**
+    /**
      * Gets the properties of the specified Task file.
      *
      * <p><strong>Query Parameters</strong>
@@ -18871,8 +18640,7 @@ public final class BatchClient {
      */
     public Response<Void> replaceNodeUserWithResponse(
             String poolId, String nodeId, String userName, BinaryData parameters, RequestOptions requestOptions) {
-        return this.replaceNodeUserInternalWithResponse(
-                poolId, nodeId, userName, parameters, requestOptions);
+        return this.replaceNodeUserInternalWithResponse(poolId, nodeId, userName, parameters, requestOptions);
     }
 
     /**
@@ -19242,8 +19010,7 @@ public final class BatchClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return information about the specified Compute Node along with {@link Response}.
      */
-    public Response<BinaryData> getNodeWithResponse(
-            String poolId, String nodeId, RequestOptions requestOptions) {
+    public Response<BinaryData> getNodeWithResponse(String poolId, String nodeId, RequestOptions requestOptions) {
         return this.getNodeInternalWithResponse(poolId, nodeId, requestOptions);
     }
 
@@ -19913,7 +19680,6 @@ public final class BatchClient {
             String poolId, String nodeId, String extensionName, RequestOptions requestOptions) {
         return this.getNodeExtensionInternalWithResponse(poolId, nodeId, extensionName, requestOptions);
     }
-
 
     /**
      * Lists the Compute Nodes Extensions in the specified Pool.
