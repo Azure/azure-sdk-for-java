@@ -400,7 +400,7 @@ class Transforms {
                     return parseDateOrNull(date);
                 } catch (Exception e) {
                     // Reaching here means we got a format from the service we did not expect
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, e));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
                 }
             }
             // Reaching here means we got a format from the service we did not expect
