@@ -6,6 +6,7 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * chat completion.
  */
 @JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
+    use = JsonTypeInfo.Id.DEDUCTION,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = ChatCompletionsToolCall.class)
@@ -32,6 +33,9 @@ public class ChatCompletionsToolCall {
     @JsonProperty(value = "id")
     private String id;
 
+    @JsonProperty("type")
+    private String type;
+
     /**
      * Creates an instance of ChatCompletionsToolCall class.
      *
@@ -39,8 +43,9 @@ public class ChatCompletionsToolCall {
      */
     @Generated
     @JsonCreator
-    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id) {
+    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") String type) {
         this.id = id;
+        this.type = type;
     }
 
     /**
@@ -51,5 +56,10 @@ public class ChatCompletionsToolCall {
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    @JsonGetter
+    public String getType() {
+        return this.type;
     }
 }
