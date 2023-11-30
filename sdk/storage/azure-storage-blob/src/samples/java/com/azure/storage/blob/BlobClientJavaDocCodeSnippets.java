@@ -36,7 +36,7 @@ import java.util.Map;
  */
 @SuppressWarnings("unused")
 public class BlobClientJavaDocCodeSnippets {
-    private BlobClient client = JavaDocCodeSnippetsHelpers.getBlobClient("blobName");
+    private BlobClient client = new BlobClientBuilder().blobName("blobName").buildClient();
     private String leaseId = "leaseId";
     private String copyId = "copyId";
     private String url = "https://sample.com";
