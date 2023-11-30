@@ -10,6 +10,7 @@ import static com.azure.spring.cloud.appconfiguration.config.web.implementation.
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.DefaultBootstrapContext;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -28,9 +29,10 @@ public class AppConfigurationWebAutoConfigurationTest {
     private static final ApplicationContextRunner CONTEXT_RUNNER = new ApplicationContextRunner()
         .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING),
             propPair(STORE_ENDPOINT_PROP, TEST_STORE_NAME))
-        .withConfiguration(AutoConfigurations.of(AppConfigurationAutoConfiguration.class, AppConfigurationWebAutoConfiguration.class,
-            RefreshAutoConfiguration.class, PathDestinationFactory.class, AzureGlobalPropertiesAutoConfiguration.class))
-        .withUserConfiguration(BusProperties.class);
+        .withConfiguration(AutoConfigurations.of(
+            AppConfigurationAutoConfiguration.class, AppConfigurationWebAutoConfiguration.class,
+            RefreshAutoConfiguration.class, PathDestinationFactory.class, AzureGlobalPropertiesAutoConfiguration.class, DefaultBootstrapContext.class))
+        .withUserConfiguration(BusProperties.class, DefaultBootstrapContext.class);
 
     @Test
     public void refreshMissing() {

@@ -23,7 +23,6 @@ public class AppConfigurationProviderProperties {
 
     private static final Instant START_DATE = Instant.now();
 
-    // TODO (mametcal) Need to figure out how to get library configuration loaded.
     @Value("${version:1.0}")
     private String version = "1.0";
 
@@ -132,7 +131,7 @@ public class AppConfigurationProviderProperties {
     public void setDefaultMaxBackoff(Long defaultMaxBackoff) {
         this.defaultMaxBackoff = defaultMaxBackoff;
     }
-    
+
     @PostConstruct
     public void validateAndInit() {
         Assert.hasLength(version, "A version of app configuration should be set.");

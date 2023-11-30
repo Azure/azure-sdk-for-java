@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config;
 
 import org.springframework.boot.BootstrapContext;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,10 +21,10 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 /**
  * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
  */
-@Configuration
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
+@AutoConfiguration
 public class AppConfigurationAutoConfiguration {
 
     /**

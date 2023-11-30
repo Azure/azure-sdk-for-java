@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.Ordered;
+import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -30,14 +33,16 @@ public class AppConfigurationDataLocationResolver
         if (!location.hasPrefix(PREFIX)) {
             return false;
         }
-        Boolean properties = context.getBinder()
-            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".enabled", Boolean.class)
-            .orElse(false);
-        // TODO (mametcal) Need to figure out how to get library configuration loaded.
-        // Boolean appProperties = context.getBinder().bind(AppConfigurationProviderProperties.CONFIG_PREFIX +
-        // ".version", Boolean.class)
-        // .orElse(false);
-        return properties && true;
+        Boolean hasEndpoint =  StringUtils.hasText(context.getBinder()
+            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].endpoint", String.class)
+            .orElse(""));
+        Boolean  hasConnectionString = StringUtils.hasText(context.getBinder()
+            .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
+            .orElse(""));
+        Boolean hasClientConfigs = StringUtils.hasText(context.getBinder().bind("spring.cloud.appconfiguration.version", String.class)
+            .orElse(""));
+
+        return (hasEndpoint || hasConnectionString);// && hasClientConfigs;
     }
 
     @Override
