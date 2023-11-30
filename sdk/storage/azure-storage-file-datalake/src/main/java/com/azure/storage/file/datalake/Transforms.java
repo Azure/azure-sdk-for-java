@@ -394,14 +394,9 @@ class Transforms {
             // First try to parse as a long (Windows file time)
             return fromWindowsFileTimeOrNull(Long.parseLong(date));
         } catch (Exception ex) {
-            // If parsing as a long fails, try to parse as a date string in the format DAYOFTHEWEEK, DD MMMM YYYY HH:MM:SS ZONE
             if (ex instanceof NumberFormatException) {
-                try {
-                    return parseDateOrNull(date);
-                } catch (Exception e) {
-                    // Reaching here means we got a format from the service we did not expect
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
-                }
+                // If parsing as a long fails, try to parse as a date string in the format DAYOFTHEWEEK, DD MMMM YYYY HH:MM:SS ZONE
+                return parseDateOrNull(date);
             }
             // Reaching here means we got a format from the service we did not expect
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
@@ -409,7 +404,11 @@ class Transforms {
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
-        return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+        try {
+            return date == null ? null : OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
+        } catch (Exception ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse date string: " + date, ex));
+        }
     }
 
     private static OffsetDateTime fromWindowsFileTimeOrNull(long fileTime) {
