@@ -1,5 +1,13 @@
 # Release History
 
+## 2.8.13 (2023-11-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
+
 ## 2.8.12 (2023-11-03)
 
 ### Other Changes
@@ -20,6 +28,14 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.42.0` to `1.44.1`.
+
+## 2.8.12 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
 
 ## 2.8.11 (2023-10-18)
 

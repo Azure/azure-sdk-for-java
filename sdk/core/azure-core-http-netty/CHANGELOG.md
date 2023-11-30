@@ -1,5 +1,22 @@
 # Release History
 
+## 1.13.11 (2023-11-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
+- Upgraded `netty-handler` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-handler-proxy` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-buffer` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-codec` from `4.1.100.Final`` to `4.1.101.Final`
+- Upgraded `netty-codec-http` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-codec-http2` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-transport-native-unix-common` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `netty-common` from `4.1.100.Final` to `4.1.101.Final`.
+- Upgraded `reactor-netty-http` from `1.0.38` to `1.0.39`.
+
 ## 1.13.10 (2023-11-03)
 
 ### Other Changes
@@ -48,14 +65,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.41.0` to `1.42.0`.
-
-## 1.14.0-beta.1 (2023-07-24)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.41.0` to `1.42.0-beta.1`.
 
 ## 1.13.5 (2023-07-06)
 
