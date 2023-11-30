@@ -130,7 +130,7 @@
 #### BestWorkerMode
 - Added setters to `ScoringRule` and `ScoringRuleOptions`
 
-## 1.0.0-beta.2
+## 1.0.0-beta.2 (2023-07-27)
 
 ### Features Added
 
