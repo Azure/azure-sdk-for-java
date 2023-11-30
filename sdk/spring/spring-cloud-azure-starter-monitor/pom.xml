@@ -149,7 +149,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
-                <include>io.opentelemetry.instrumentation:opentelemetry-jdbc:[1.32.0-alpha]</include> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-jdbc:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
