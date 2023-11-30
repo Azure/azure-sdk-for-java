@@ -488,39 +488,6 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Test
-    public void findBlobsByPageAsync() {
-        BlobContainerAsyncClient containerAsyncClient =
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        containerAsyncClient.create().block();
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        for (int i = 0; i < 15; i++) {
-            cc.getBlobClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
-        }
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
-        String query = String.format("\"%s\"='%s'", tagKey, tagValue);
-        FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
-
-        List<TaggedBlobItem> list = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage(10) // byPage should take precedence
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
-
-        assertEquals(10, list.size());
-
-        List<TaggedBlobItem> list2 = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage() // since no number is specified, it should use the max number specified in options
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
-
-        assertEquals(12, list2.size());
-    }
-
     @Test
     public void findBlobsError() {
         assertThrows(BlobStorageException.class, () ->
@@ -1015,65 +982,6 @@ public class ServiceApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
-    public void restoreContainerAsync() {
-        BlobContainerAsyncClient cc1 =
-            primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        String blobName = generateBlobName();
-        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
-
-        Mono<BlobContainerItem> blobContainerItemMono = cc1.create()
-            .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), new ParallelTransferOptions()))
-            .then(cc1.delete())
-            .then(Mono.delay(Duration.ofMillis(delay)))
-            .then(primaryBlobServiceAsyncClient.listBlobContainers(
-                new ListBlobContainersOptions()
-                    .setPrefix(cc1.getBlobContainerName())
-                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
-            ).next());
-
-        Mono<BlobContainerAsyncClient> restoredContainerClientMono = blobContainerItemMono.flatMap(blobContainerItem ->
-            primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(),
-                blobContainerItem.getVersion()));
-
-        StepVerifier.create(restoredContainerClientMono.flatMap(restoredContainerClient ->
-            restoredContainerClient.listBlobs().collectList()))
-            .assertNext(it -> {
-                assertEquals(1, it.size());
-                assertEquals(blobName, it.get(0).getName());
-            }).verifyComplete();
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Test
-    public void restoreContainerAsyncWithResponse() {
-        BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        String blobName = generateBlobName();
-        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
-
-        Mono<BlobContainerItem> blobContainerItemMono = cc1.create()
-            .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), new ParallelTransferOptions()))
-            .then(cc1.delete())
-            .then(Mono.delay(Duration.ofMillis(delay)))
-            .then(primaryBlobServiceAsyncClient.listBlobContainers(
-                new ListBlobContainersOptions()
-                    .setPrefix(cc1.getBlobContainerName())
-                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
-            ).next());
-
-        Mono<Response<BlobContainerAsyncClient>> responseMono = blobContainerItemMono.flatMap(blobContainerItem ->
-            primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())));
-
-        StepVerifier.create(responseMono).assertNext(it -> {
-            assertNotNull(it);
-            assertEquals(201, it.getStatusCode());
-            assertNotNull(it.getValue());
-            assertEquals(cc1.getBlobContainerName(), it.getValue().getBlobContainerName());
-        }).verifyComplete();
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
-    @Test
     public void restoreContainerError() {
         assertThrows(BlobStorageException.class,
             () -> primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652"));
@@ -1230,7 +1138,7 @@ public class ServiceApiTests extends BlobTestBase {
             .audience(null)
             .buildClient();
 
-        assertNotNull(aadService.getProperties() != null);
+        assertNotNull(aadService.getProperties());
     }
 
     @Test
@@ -1239,7 +1147,7 @@ public class ServiceApiTests extends BlobTestBase {
             .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
             .buildClient();
 
-        assertNotNull(aadService.getProperties() != null);
+        assertNotNull(aadService.getProperties());
     }
 
     @Test
@@ -1263,7 +1171,7 @@ public class ServiceApiTests extends BlobTestBase {
             .audience(audience)
             .buildClient();
 
-        assertNotNull(aadService.getProperties() != null);
+        assertNotNull(aadService.getProperties());
     }
 
 //    public void renameBlob() container() {

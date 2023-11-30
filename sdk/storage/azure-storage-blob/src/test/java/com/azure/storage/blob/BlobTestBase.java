@@ -150,11 +150,14 @@ public class BlobTestBase extends TestProxyTestBase {
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
+    protected BlobServiceAsyncClient alternateBlobServiceAsyncClient;
+
     protected BlobServiceClient premiumBlobServiceClient;
     protected BlobServiceAsyncClient premiumBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
     protected BlobServiceAsyncClient versionedBlobServiceAsyncClient;
     protected BlobServiceClient softDeleteServiceClient;
+    protected BlobServiceAsyncClient softDeleteServiceAsyncClient;
 
     protected String containerName;
 
@@ -187,16 +190,19 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
+        alternateBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSecondaryAccount());
         premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
         premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
         versionedBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getVersionedAccount());
         softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
+        softDeleteServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSoftDeleteAccount());
 
         containerName = generateContainerName();
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName);
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         cc.createIfNotExists();
+        ccAsync.createIfNotExists().block();
     }
 
     /**
@@ -493,6 +499,15 @@ public class BlobTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+
+        instrument(builder);
+
+        return setOauthCredentials(builder).buildAsyncClient();
+    }
+
     protected BlobServiceClientBuilder setOauthCredentials(BlobServiceClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -527,6 +542,20 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint()).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, (HttpPipelinePolicy) null).sasToken(sasToken).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(String endpoint) {
+        return getServiceAsyncClient(null, endpoint, (HttpPipelinePolicy) null);
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+                                                 HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies)
+            .buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -688,6 +717,17 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder.credential(credential).buildAsyncClient();
     }
 
+    protected BlobAsyncClient getBlobAsyncClient(String sasToken, String endpoint, String blobName, String snapshotId) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .snapshot(snapshotId);
+
+        instrument(builder);
+
+        return builder.sasToken(sasToken).buildAsyncClient();
+    }
+
     protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
         return getBlobClient(sasToken, endpoint, blobName, null);
     }
@@ -767,6 +807,17 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.sasToken(sasToken);
         }
         return builder.buildClient();
+    }
+
+    protected BlobAsyncClient getBlobAsyncClient(String endpoint, String sasToken) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint);
+        instrument(builder);
+
+        if (!CoreUtils.isNullOrEmpty(sasToken)) {
+            builder.sasToken(sasToken);
+        }
+        return builder.buildAsyncClient();
     }
 
     protected BlobClientBuilder getBlobClientBuilder(String endpoint) {

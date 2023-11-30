@@ -1440,7 +1440,6 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    //todo isbr: is there a better way to do this
     public void startIncrementalCopy() {
         ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();

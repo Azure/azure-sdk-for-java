@@ -1008,7 +1008,6 @@ public class ContainerApiTests extends BlobTestBase {
         }
     }
 
-    //todo isbr
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
     public void listBlobsFlatOptionsDeletedWithVersions() {
@@ -1144,9 +1143,6 @@ public class ContainerApiTests extends BlobTestBase {
             blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         }
 
-        long test = cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10)).streamByPage().count();
-
         // when: "Consume results by page, then still have paging functionality"
         assertDoesNotThrow(() -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults),
             Duration.ofSeconds(10)).streamByPage().count());
@@ -1171,7 +1167,7 @@ public class ContainerApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    //todo isbr
+
     //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Disabled("Need to re-record once account is setup properly.")
     @Test

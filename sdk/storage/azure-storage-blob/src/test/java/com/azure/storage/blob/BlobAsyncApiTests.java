@@ -24,7 +24,6 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
-import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
@@ -79,7 +78,6 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -151,8 +149,9 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         bc.upload(input, null, true).block();
 
-        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null, false)
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null,
+            false)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
     }
@@ -181,8 +180,9 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         bc.upload(input, null, true).block();
 
-        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null, false)
-                .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
+        StepVerifier.create(bc.downloadStreamWithResponse(null, null, null,
+            false)
+            .flatMap(r -> FluxUtil.collectBytesInByteBufferStream(r.getValue())))
             .assertNext(r -> TestUtils.assertArraysEqual(r, randomData))
             .verifyComplete();
     }
@@ -267,14 +267,15 @@ public class BlobAsyncApiTests extends BlobTestBase {
     public void uploadInputStreamBadLength() {
         long[] badLengths = {0, -100, DATA.getDefaultDataSize() - 1, DATA.getDefaultDataSize() + 1};
         for (long length : badLengths) {
-            assertThrows(Exception.class, () -> bc.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(), length)).block());
+            assertThrows(Exception.class, () -> bc.uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), length)).block());
         }
     }
 
     @Test
     public void uploadSuccessfulRetry() {
-        BlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy());
+        BlobAsyncClient clientWithFailure = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), new TransientFailureInjectingHttpPipelinePolicy());
 
         assertNotNull(clientWithFailure);
         clientWithFailure.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream())).block();
@@ -620,12 +621,13 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void downloadMd5() throws NoSuchAlgorithmException {
-        StepVerifier.create(bc.downloadStreamWithResponse(new BlobRange(0, 3L), null, null, true))
+        StepVerifier.create(bc.downloadStreamWithResponse(new BlobRange(0, 3L), null,
+            null, true))
             .assertNext(r -> {
                 byte[] contentMD5 = r.getDeserializedHeaders().getContentMd5();
                 try {
-                    TestUtils.assertArraysEqual(MessageDigest.getInstance("MD5").digest(DATA.getDefaultText().substring(0, 3).getBytes()),
-                        contentMD5);
+                    TestUtils.assertArraysEqual(MessageDigest.getInstance("MD5")
+                        .digest(DATA.getDefaultText().substring(0, 3).getBytes()), contentMD5);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
                 }
@@ -635,8 +637,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void downloadRetryDefault() {
-        BlobAsyncClient failureBlobClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(), bc.getBlobUrl(),
-            new MockFailureResponsePolicy(5));
+        BlobAsyncClient failureBlobClient = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            bc.getBlobUrl(), new MockFailureResponsePolicy(5));
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(failureBlobClient.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r))
@@ -780,7 +782,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         Files.deleteIfExists(outFile.toPath());
 
         StepVerifier.create(bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-                new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null, false))
+            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null,
+            false))
             .assertNext(r -> {
                 assertEquals(r.getValue().getBlobType(), BlobType.BLOCK_BLOB);
                 assertNotNull(r.getValue().getCreationTime());
@@ -846,7 +849,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         createdFiles.add(outFile);
         Files.deleteIfExists(outFile.toPath());
 
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null, null, false).block();
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), range, null, null,
+            null, false).block();
 
         assertTrue(compareFiles(file, outFile, range.getOffset(), range.getCount()));
     }
@@ -880,7 +884,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         Files.deleteIfExists(outFile.toPath());
 
         StepVerifier.create(bc.downloadToFileWithResponse(outFile.toPath().toString(),
-            new BlobRange(DATA.getDefaultDataSize() + 1), null, null, null, false))
+            new BlobRange(DATA.getDefaultDataSize() + 1), null, null,
+            null, false))
             .verifyError(BlobStorageException.class);
     }
 
@@ -896,7 +901,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         createdFiles.add(outFile);
         Files.deleteIfExists(outFile.toPath());
 
-        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null, null, null, false).block();
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), new BlobRange(0), null,
+            null, null, false).block();
 
         assertTrue(compareFiles(file, outFile, 0, DATA.getDefaultDataSize()));
     }
@@ -958,8 +964,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified).setIfMatch(match).setIfNoneMatch(noneMatch)
             .setLeaseId(leaseID);
 
-        StepVerifier.create(bc.downloadToFileWithResponse(outFile.toPath().toString(), null, null,
-            null, bro, false))
+        StepVerifier.create(bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            null, null, bro, false))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertTrue(e.getErrorCode() == BlobErrorCode.CONDITION_NOT_MET
@@ -1021,8 +1027,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
          * dropped.
          */
         Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
-        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
-            null, false)).verifyErrorSatisfies(it -> {
+        StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options,
+            null, null, false)).verifyErrorSatisfies(it -> {
             /*
              * If an operation is running on multiple threads and multiple return an exception Reactor will combine
              * them into a CompositeException which needs to be unwrapped. If there is only a single exception
@@ -1230,7 +1236,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertAsyncResponseStatusCode(bc.getPropertiesWithResponse(null), 200);
+        assertAsyncResponseStatusCode(bc.getPropertiesWithResponse(null),
+            200);
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
@@ -1272,32 +1279,41 @@ public class BlobAsyncApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
      */
-
-    //todo isbr:
+    @Test
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     public void getPropertiesORS() throws MalformedURLException {
-        BlobClient sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
-            .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
-        BlobClient destBlob = alternateBlobServiceClient.getBlobContainerClient("test2")
-            .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
+        BlobAsyncClient sourceBlob = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("test1")
+            .getBlobAsyncClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
+        BlobAsyncClient destBlob = alternateBlobServiceAsyncClient.getBlobContainerAsyncClient("test2")
+            .getBlobAsyncClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b");
 
-        BlobProperties sourceProperties = sourceBlob.getProperties();
-        BlobDownloadResponse sourceDownloadHeaders = sourceBlob.downloadWithResponse(new ByteArrayOutputStream(), null,
-            null, null, false, null, null);
-        BlobProperties destProperties = destBlob.getProperties();
-        BlobDownloadResponse destDownloadHeaders = destBlob.downloadWithResponse(new ByteArrayOutputStream(), null,
-            null, null, false, null, null);
-
-        assertTrue(validateOR(sourceProperties.getObjectReplicationSourcePolicies(),
-            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
-        validateOR(sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
-            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca");
+        StepVerifier.create(sourceBlob.getProperties())
+            .assertNext(r -> assertTrue(validateOR(r.getObjectReplicationSourcePolicies(),
+                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")))
+            .verifyComplete();
+        StepVerifier.create(sourceBlob.downloadWithResponse(null, null, null,
+            false))
+            .assertNext(r -> assertTrue( validateOR(r.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
+                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")))
+            .verifyComplete();
 
         // There is a sas token attached at the end. Only check that the path is the same.
-        assertTrue(destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath()));
-        assertEquals(destProperties.getObjectReplicationDestinationPolicyId(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
-        assertEquals(destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId(),
-            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
+        StepVerifier.create(destBlob.getProperties())
+            .assertNext(r -> {
+                try {
+                    assertTrue(r.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath()));
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+                assertEquals(r.getObjectReplicationDestinationPolicyId(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
+            })
+            .verifyComplete();
+
+        StepVerifier.create(destBlob.downloadWithResponse(null, null, null,
+            false))
+            .assertNext(r -> assertEquals(r.getDeserializedHeaders().getObjectReplicationDestinationPolicyId(),
+                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"))
+            .verifyComplete();
     }
 
     private static boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
@@ -1367,7 +1383,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc.setHttpHeaders(putHeaders).block();
 
         StepVerifier.create(bc.getPropertiesWithResponse(null))
-            .assertNext(r -> assertTrue(validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)))
+            .assertNext(r -> assertTrue(validateBlobProperties(r, cacheControl, contentDisposition, contentEncoding,
+                contentLanguage, contentMD5, contentType)))
             .verifyComplete();
     }
 
@@ -1545,7 +1562,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void setTagsAllNull() {
-        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<>())), 204);
+        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(new HashMap<>())),
+            204);
         StepVerifier.create(bc.getTags())
             .assertNext(r -> assertEquals(0, r.size()))
             .verifyComplete();
@@ -1596,7 +1614,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         t = new HashMap<>();
         t.put("fizz", "buzz");
 
-        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(new BlobRequestConditions().setTagsConditions(tags))), 204);
+        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(t)
+            .setRequestConditions(new BlobRequestConditions().setTagsConditions(tags))), 204);
     }
 
     private static Stream<Arguments> setTagsACSupplier() {
@@ -1656,7 +1675,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         tags.put("foo", "bar");
         String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
         BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID);
-        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac)), 204);
+        assertAsyncResponseStatusCode(bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac)),
+            204);
 
         StepVerifier.create(bc.getTags())
             .assertNext(r -> assertEquals(tags, r))
@@ -1709,7 +1729,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void snapshotMin() {
-        assertAsyncResponseStatusCode(bc.createSnapshotWithResponse(null, null), 201);
+        assertAsyncResponseStatusCode(bc.createSnapshotWithResponse(null,
+            null), 201);
     }
 
     @Test
@@ -1813,7 +1834,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @Test
     public void copy() {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(),
+            getPollingDuration(1000));
 
         AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
         BlobProperties properties = copyDestBlob.getProperties().block();
@@ -1833,7 +1855,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
     public void copyMin() {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(),
+            getPollingDuration(1000));
         StepVerifier.create(poller.take(1))
             .assertNext(it -> {
                 assertNotNull(it.getValue());
@@ -1853,7 +1876,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
         PollerFlux<BlobCopyInfo, Void> poller = copyDestBlob.beginCopy(bc.getBlobUrl(), null, null,
-            null, null, null, getPollingDuration(1000));
+            null, null, null,
+            getPollingDuration(1000));
 
         AsyncPollResponse<BlobCopyInfo, Void> lastResponse = poller.doOnNext(it -> {
             assertNotNull(it.getValue());
@@ -2026,8 +2050,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
-            getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null,
+            null, bac, getPollingDuration(1000));
         AsyncPollResponse<BlobCopyInfo, Void> response = poller.blockLast();
         assertNotNull(response);
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
@@ -2049,8 +2073,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
-            getPollingDuration(1000));
+        PollerFlux<BlobCopyInfo, Void> poller = bu2.beginCopy(bc.getBlobUrl(), null, null, null,
+            null, bac, getPollingDuration(1000));
         assertThrows(BlobStorageException.class, poller::blockLast);
     }
 
@@ -2070,7 +2094,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void deleteMin() {
-        assertAsyncResponseStatusCode(bc.deleteWithResponse(null, null), 202);
+        assertAsyncResponseStatusCode(bc.deleteWithResponse(null,
+            null), 202);
     }
 
     @ParameterizedTest
@@ -2112,7 +2137,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac), 202);
+        assertAsyncResponseStatusCode(bc.deleteWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac),
+            202);
     }
 
     @ParameterizedTest
@@ -2165,7 +2191,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void deleteIfExistsMin() {
-        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(null, null), 202);
+        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(null,
+            null), 202);
     }
 
     @Test
@@ -2229,7 +2256,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac), 202);
+        assertAsyncResponseStatusCode(bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac),
+            202);
     }
 
     @ParameterizedTest
@@ -2568,7 +2596,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         String secondSas = ccAsync.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusHours(1),
             new BlobSasPermission().setReadPermission(true)));
-        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + secondSas, null, tier2, null, null).block();
+        bcCopy.copyFromUrlWithResponse(bc.getBlobUrl() + "?" + secondSas, null, tier2,
+            null, null).block();
 
         StepVerifier.create(bcCopy.getProperties())
             .assertNext(r -> assertEquals(r.getAccessTier(), tier2))
@@ -2604,7 +2633,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getAccountInfoMin() {
-        assertAsyncResponseStatusCode(bc.getAccountInfoWithResponse(), 200);
+        assertAsyncResponseStatusCode(bc.getAccountInfoWithResponse(),
+            200);
     }
 
     @Test
@@ -2712,7 +2742,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     @Test
     public void storageAccountAudience() {
         BlobAsyncClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
-            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
+            .audience(BlobAudience.createBlobServiceAccountAudience(ccAsync.getAccountName()))
             .buildAsyncClient();
 
         StepVerifier.create(aadBlob.exists())
@@ -2736,7 +2766,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
         BlobAsyncClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())

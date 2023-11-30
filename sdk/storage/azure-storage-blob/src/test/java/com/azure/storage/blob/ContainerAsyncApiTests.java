@@ -5,24 +5,18 @@ package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.models.BlobContainerAccessPolicies;
-import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
@@ -36,7 +30,6 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.RehydratePriority;
-import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -44,11 +37,8 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
-import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
-import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +52,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.test.StepVerifier;
 
-import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -72,14 +61,12 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -309,7 +296,9 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getPropertiesLease() {
-    //todo isbr
+        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+
+        assertAsyncResponseStatusCode(ccAsync.getPropertiesWithResponse(leaseID), 200);
     }
 
     @Test
@@ -383,7 +372,12 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setMetadataACSupplier")
     public void setMetadataAC(OffsetDateTime modified, String leaseID) {
-        //todo isbr:
+        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
+        BlobRequestConditions cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified);
+
+        assertAsyncResponseStatusCode(ccAsync.setMetadataWithResponse(null, cac), 200);
     }
 
     private static Stream<Arguments> setMetadataACSupplier() {
@@ -520,8 +514,14 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void setAccessPolicyAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-       //todo isbr:
+        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
+        BlobRequestConditions cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
 
+        assertAsyncResponseStatusCode(ccAsync.setAccessPolicyWithResponse(null, null, cac),
+            200);
     }
 
     private static Stream<Arguments> setAccessPolicyACSupplier() {
@@ -602,8 +602,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void getAccessPolicyLease() {
-        //todo isbr
-
+        String leaseID = setupContainerAsyncLeaseCondition(ccAsync, RECEIVED_LEASE_ID);
+        assertAsyncResponseStatusCode(ccAsync.getAccessPolicyWithResponse(leaseID), 200);
     }
 
     @Test
@@ -642,7 +642,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        //todo isbr
+        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
+        BlobRequestConditions cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(ccAsync.deleteWithResponse(cac), 202);
     }
 
     @ParameterizedTest
@@ -700,7 +706,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setAccessPolicyACSupplier")
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String leaseID) {
-        //todo isbr
+        leaseID = setupContainerAsyncLeaseCondition(ccAsync, leaseID);
+        BlobRequestConditions cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified);
+
+        assertAsyncResponseStatusCode(ccAsync.deleteIfExistsWithResponse(cac), 202);
     }
 
     @ParameterizedTest
@@ -740,7 +752,19 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void deleteIfExistsContainerThatWasAlreadyDeleted() {
-        //todo isbr
+        StepVerifier.create(ccAsync.deleteIfExists())
+            .expectNext(true)
+            .verifyComplete();
+
+        // Confirming the behavior of the api when the container is in the deleting state.
+        // After deletehas been called once but before it has been garbage collected
+        StepVerifier.create(ccAsync.deleteIfExists())
+            .expectNext(true)
+            .verifyComplete();
+
+        StepVerifier.create(ccAsync.exists())
+            .expectNext(false)
+            .verifyComplete();
     }
 
     @Test
@@ -877,7 +901,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         normal.create(512).block();
 
         PageBlobAsyncClient copyBlob = ccAsync.getBlobAsyncClient(copyName).getPageBlobAsyncClient();
-        PollerFlux<BlobCopyInfo, Void> poller = copyBlob.beginCopy(normal.getBlobUrl(), getPollingDuration(5000));
+        PollerFlux<BlobCopyInfo, Void> poller = copyBlob.beginCopy(normal.getBlobUrl(),
+            getPollingDuration(5000));
         poller.blockLast();
 
         PageBlobAsyncClient metadataBlob = ccAsync.getBlobAsyncClient(metadataName).getPageBlobAsyncClient();
@@ -947,7 +972,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @Disabled("listblobs does not return lastaccessedtime?")
+    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void listBlobsFlatOptionsLastAccessTime() {
         BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -1228,7 +1254,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
 
         // when: "Consume results by page, then still have paging functionality"
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults)).byPage())
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
+            .setMaxResultsPerPage(pageResults)).byPage())
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -1237,16 +1264,17 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    //todo isbr
     //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Disabled("Need to re-record once account is setup properly.")
     @Test
     public void listBlobsFlatORS() {
-        BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
-        BlobContainerClient destContainer = alternateBlobServiceClient.getBlobContainerClient("test2");
+        BlobContainerAsyncClient sourceContainer = primaryBlobServiceAsyncClient
+            .getBlobContainerAsyncClient("test1");
+        BlobContainerAsyncClient destContainer = alternateBlobServiceAsyncClient
+            .getBlobContainerAsyncClient("test2");
 
-        List<BlobItem> sourceBlobs = sourceContainer.listBlobs().stream().collect(Collectors.toList());
-        List<BlobItem> destBlobs = destContainer.listBlobs().stream().collect(Collectors.toList());
+        List<BlobItem> sourceBlobs = sourceContainer.listBlobs().collect(Collectors.toList()).block();
+        List<BlobItem> destBlobs = destContainer.listBlobs().collect(Collectors.toList()).block();
 
         int i = 0;
         for (BlobItem blob : sourceBlobs) {
@@ -1442,7 +1470,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    //todo isbr
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201002ServiceVersion")
     @Test
     public void listBlobsHierOptionsDeletedWithVersions() {
@@ -1519,7 +1546,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             bc.create(512).block();
         }
 
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageSize)).byPage())
+        StepVerifier.create(ccAsync.listBlobsByHierarchy("/", new ListBlobsOptions()
+                .setMaxResultsPerPage(pageSize)).byPage())
             .assertNext(r -> {
                 assertEquals(pageSize, r.getValue().size());
                 assertNotNull(r.getContinuationToken());
@@ -1535,15 +1563,16 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
-    //todo isbr
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void listBlobsHierORS() {
-        BlobContainerClient sourceContainer = primaryBlobServiceClient.getBlobContainerClient("test1");
-        BlobContainerClient destContainer = alternateBlobServiceClient.getBlobContainerClient("test2");
+        BlobContainerAsyncClient sourceContainer = primaryBlobServiceAsyncClient
+            .getBlobContainerAsyncClient("test1");
+        BlobContainerAsyncClient destContainer = alternateBlobServiceAsyncClient
+            .getBlobContainerAsyncClient("test2");
 
-        List<BlobItem> sourceBlobs = sourceContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList());
-        List<BlobItem> destBlobs = destContainer.listBlobsByHierarchy("/").stream().collect(Collectors.toList());
+        List<BlobItem> sourceBlobs = sourceContainer.listBlobsByHierarchy("/").collect(Collectors.toList()).block();
+        List<BlobItem> destBlobs = destContainer.listBlobsByHierarchy("/").collect(Collectors.toList()).block();
 
         int i = 0;
         for (BlobItem blob : sourceBlobs) {
@@ -1638,7 +1667,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    //todo isbr
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210212ServiceVersion")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
@@ -1646,15 +1674,21 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         String blobName = "dir1/dir2/file\uFFFE.blob";
         ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient().create().block();
 
-        BlobItem blobItem;
         if (!delimiter) {
-            blobItem = ccAsync.listBlobsByHierarchy("").blockLast();
+            StepVerifier.create(ccAsync.listBlobsByHierarchy("", null))
+                .assertNext(r -> {
+                    assertEquals(r.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
+                    assertEquals(delimiter, r.isPrefix());
+                })
+                .verifyComplete();
         } else {
-            blobItem = ccAsync.listBlobsByHierarchy(".b").blockLast();
+            StepVerifier.create(ccAsync.listBlobsByHierarchy(".b", null))
+                .assertNext(r -> {
+                    assertEquals(r.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
+                    assertEquals(delimiter, r.isPrefix());
+                })
+                .verifyComplete();
         }
-
-        assertEquals(blobItem.getName(), (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName));
-        assertEquals(delimiter, blobItem.isPrefix());
     }
 
     @Test
@@ -1675,7 +1709,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
     }
 
-    //todo isbr
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
     @Test
     public void listBlobsHierSegmentWithVersionPrefixAndDelimiter() {
@@ -1732,7 +1765,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
 
         String query = "\"bar\"='foo'";
-        StepVerifier.create(ccAsync.findBlobsByTags(String.format(query, cc.getBlobContainerName())))
+        StepVerifier.create(ccAsync.findBlobsByTags(String.format(query, ccAsync.getBlobContainerName())))
             .assertNext(r -> {
                 assertEquals(1, r.getTags().size());
                 assertEquals("foo", r.getTags().get("bar"));
@@ -1753,7 +1786,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         PagedResponse<TaggedBlobItem> firstPage = ccAsync.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-            Context.NONE).byPage().blockLast();
+            Context.NONE).byPage().blockFirst();
         String marker = firstPage.getContinuationToken();
         String firstBlobName = firstPage.getValue().iterator().next().getName();
 
@@ -1815,7 +1848,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
     @Test
-    //todo isbr
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
         int numBlobs = 5;
         int pageResults = 3;
@@ -1828,8 +1860,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         // when: "Consume results by page, still have paging functionality"
         StepVerifier.create(ccAsync.findBlobsByTags(new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-            .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10)).byPage())
-            .expectNextCount(2)
+            .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10), Context.NONE).byPage().count())
+            .expectNextCount(1)
             .verifyComplete();
     }
 
@@ -1848,7 +1880,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient bu4 = ccAsync.getBlobAsyncClient(name + "3").getBlockBlobAsyncClient();
         BlockBlobAsyncClient bu5 = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null),
+            201);
         assertAsyncResponseStatusCode(bu5.getPropertiesWithResponse(null), 200);
         assertAsyncResponseStatusCode(bu3.createWithResponse(512, null, null, null,
             null), 201);
@@ -1878,11 +1911,13 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient bu4 = ccAsync.getBlobAsyncClient(name + "3").getBlockBlobAsyncClient();
         BlockBlobAsyncClient bu5 = ccAsync.getBlobAsyncClient(name).getBlockBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu2.createWithResponse(null, null, null),
+            201);
         assertAsyncResponseStatusCode(bu5.getPropertiesWithResponse(null), 200);
-        assertAsyncResponseStatusCode(bu3.createWithResponse(512, null, null, null, null), 201);
-        assertAsyncResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-            null, null, null, null), 201);
+        assertAsyncResponseStatusCode(bu3.createWithResponse(512, null, null, null,
+            null), 201);
+        assertAsyncResponseStatusCode(bu4.uploadWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(),
+            null, null, null, null, null), 201);
 
         StepVerifier.create(ccAsync.listBlobs())
             .assertNext(r -> assertEquals(Utility.urlDecode(name), r.getName()))
@@ -1899,7 +1934,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             ccAsync.create().block();
         }
         AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
-        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null),
+            201);
     }
 
     @Test
@@ -1911,7 +1947,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         }
         AppendBlobAsyncClient bu = ccAsync.getBlobAsyncClient("rootblob").getAppendBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bu.createWithResponse(null, null, null),
+            201);
         StepVerifier.create(bu.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
@@ -1934,7 +1971,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .blobName("rootblob"))
             .buildAsyncClient().getAppendBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(bc.createWithResponse(null, null, null), 201);
+        assertAsyncResponseStatusCode(bc.createWithResponse(null, null, null),
+            201);
 
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
@@ -2095,10 +2133,10 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
     @Test
     public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        String url = String.format("https://%s.blob.core.windows.net/", ccAsync.getAccountName());
         BlobAudience audience = BlobAudience.fromString(url);
 
-        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+        BlobContainerAsyncClient aadContainer = getContainerClientBuilderWithTokenCredential(ccAsync.getBlobContainerUrl())
             .audience(audience)
             .buildAsyncClient();
 

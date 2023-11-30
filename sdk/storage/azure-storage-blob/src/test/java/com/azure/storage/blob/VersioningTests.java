@@ -105,8 +105,8 @@ public class VersioningTests extends BlobTestBase {
 
         ByteArrayOutputStream outputV1 = new ByteArrayOutputStream();
         ByteArrayOutputStream outputV2 = new ByteArrayOutputStream();
-        blobClient.getVersionClient(blobItemV1.getVersionId()).downloadStream(outputV1);
-        blobClient.getVersionClient(blobItemV2.getVersionId()).downloadStream(outputV2);
+        blobClient.getVersionClient(blobItemV1.getVersionId()).download(outputV1);
+        blobClient.getVersionClient(blobItemV2.getVersionId()).download(outputV2);
 
         TestUtils.assertArraysEqual(outputV1.toByteArray(), contentV1.getBytes(StandardCharsets.UTF_8));
         TestUtils.assertArraysEqual(outputV2.toByteArray(), contentV2.getBytes(StandardCharsets.UTF_8));
