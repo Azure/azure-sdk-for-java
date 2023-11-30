@@ -130,18 +130,6 @@
 #### BestWorkerMode
 - Added setters to `ScoringRule` and `ScoringRuleOptions`
 
-## 1.0.0-beta.2 (2023-07-27)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-### Other Changes
-
 ## 1.0.0-beta.1 (2023-07-27)
 This is the beta release of Azure Communication Service JobRouter Java SDK. For more information, please see the [README][read_me].
 
