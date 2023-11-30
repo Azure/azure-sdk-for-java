@@ -1,8 +1,9 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (Unreleased)
 
 ### Features Added
+- Added `ChatAttachment` object that contains properties for attachments incoming from Teams Chat Threads.
 
 ### Breaking Changes
 
