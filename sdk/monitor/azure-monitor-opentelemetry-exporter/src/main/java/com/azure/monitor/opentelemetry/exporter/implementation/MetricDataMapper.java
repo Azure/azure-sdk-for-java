@@ -155,7 +155,7 @@ public class MetricDataMapper {
         // To emit JMX metrics with spaces in the name to Breeze, we need to use the schema
         // url as the metric name that is reported to Breeze.
         String schemaUrl = metricData.getResource().getSchemaUrl();
-        String prefix = "app_insights_";
+        String prefix = "internal_metric_name_";
         if (schemaUrl.startsWith(prefix)) {
             pointBuilder.setName(schemaUrl.substring(prefix.length()));
         } else {
