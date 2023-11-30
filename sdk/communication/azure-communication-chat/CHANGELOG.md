@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `ChatAttachment` object that contains properties for attachments incoming from Teams Chat Threads.
+
 ### Breaking Changes
 
 ### Bugs Fixed
