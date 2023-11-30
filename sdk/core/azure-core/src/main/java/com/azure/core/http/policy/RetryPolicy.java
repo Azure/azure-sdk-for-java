@@ -16,8 +16,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -132,14 +134,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
             context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
             BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
             if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-                request = originalRequestBody.toReplayableBinaryDataAsync()
-                    .flatMap(bufferedBody -> {
-                        context.getHttpRequest().setBody(bufferedBody);
-                        return next.clone().process();
-                    });
-            } else {
-                request = next.clone().process();
+                Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+                context.getHttpRequest().setBody(bufferedBody);
             }
+
+            request = next.clone().process();
         } else {
             request = next.process();
         }
