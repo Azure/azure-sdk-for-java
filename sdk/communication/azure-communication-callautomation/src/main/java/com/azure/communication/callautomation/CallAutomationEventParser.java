@@ -33,6 +33,10 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.TranscriptionFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionResumed;
+import com.azure.communication.callautomation.models.events.TranscriptionStarted;
+import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.core.models.CloudEvent;
@@ -160,6 +164,14 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, DialogTransfer.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
                 ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
+                ret = mapper.convertValue(eventData, TranscriptionStarted.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
+                ret = mapper.convertValue(eventData, TranscriptionFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionResumed")) {
+                ret = mapper.convertValue(eventData, TranscriptionResumed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStopped")) {
+                ret = mapper.convertValue(eventData, TranscriptionStopped.class);
             }
             return ret;
         } catch (RuntimeException e) {
