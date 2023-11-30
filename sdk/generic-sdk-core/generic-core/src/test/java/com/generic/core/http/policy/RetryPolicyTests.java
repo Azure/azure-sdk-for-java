@@ -356,7 +356,7 @@ public class RetryPolicyTests {
     }
 
     static HttpResponse sendRequest(HttpPipeline pipeline) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"), Context.NONE);
+        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
     }
 
     static RetryStrategy createStatusCodeRetryStrategy(int... retriableErrorCodes) {

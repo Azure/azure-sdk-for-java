@@ -3,7 +3,7 @@
 package com.generic.core.http.client;
 
 import com.generic.core.http.models.HttpClientOptions;
-import com.generic.core.util.Providers;
+import com.generic.core.implementation.util.Providers;
 import com.generic.core.util.configuration.Configuration;
 
 /**

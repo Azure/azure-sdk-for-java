@@ -17,7 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -127,8 +126,7 @@ public class RestProxyUtilsTests {
 
             UnexpectedLengthException thrown =
                 assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest),
-                    "Expected validateLengthSync() to throw, but it didn't");
-
+                    "Expected validateLength() to throw, but it didn't");
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, more than the expected "
                 + (EXPECTED.length - 1) + " bytes.", thrown.getMessage());
         }
@@ -143,7 +141,7 @@ public class RestProxyUtilsTests {
 
             UnexpectedLengthException thrown =
                 assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest),
-                    "Expected validateLengthSync() to throw, but it didn't");
+                    "Expected validateLength() to throw, but it didn't");
 
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, less than the expected "
                 + (EXPECTED.length + 1) + " bytes.", thrown.getMessage());
@@ -151,18 +149,7 @@ public class RestProxyUtilsTests {
     }
 
     @Test
-    public void emptyRequestBodySync() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
-
-        try {
-            RestProxyUtils.validateLength(httpRequest);
-        } catch (Exception e) {
-            fail("The test Should not have thrown any exception.");
-        }
-    }
-
-    @Test
-    public void expectedBodyLengthSync() throws IOException {
+    public void expectedBodyLength() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length))

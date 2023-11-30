@@ -5,7 +5,6 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
-import com.generic.core.http.StreamResponse;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
 import com.generic.core.http.annotation.ExpectedResponses;
@@ -96,7 +95,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final UnexpectedResponseExceptionType[] unexpectedResponseExceptionTypes;
     private final int contextPosition;
     private final int requestOptionsPosition;
-    private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
     private final boolean ignoreResponseBody;
@@ -261,8 +259,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
-
-        this.isStreamResponse = isStreamResponseType(returnType);
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
@@ -686,19 +682,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         return exceptionHashMap;
-    }
-
-    boolean isStreamResponseType(Type type) {
-        return type instanceof StreamResponse;
-    }
-
-    /**
-     * Indicates whether the swagger method is of Stream Response type or not.
-     *
-     * @return the boolean flag indicating whether the swagger method is Stream Response return type or not.
-     */
-    public boolean isStreamResponse() {
-        return isStreamResponse;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class HttpPipelinePolicyTests {
             .build();
 
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
+        pipeline.send(new HttpRequest(HttpMethod.GET, url));
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
@@ -51,7 +51,7 @@ public class HttpPipelinePolicyTests {
             .policies(policyWithDefaultSyncImplementation)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
+        pipeline.send(new HttpRequest(HttpMethod.GET, url));
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -100,7 +100,7 @@ public class HttpPipelinePolicyTests {
             .policies(policy1, badPolicy1, badPolicy2)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, url), Context.NONE);
+        pipeline.send(new HttpRequest(HttpMethod.GET, url));
     }
 
 

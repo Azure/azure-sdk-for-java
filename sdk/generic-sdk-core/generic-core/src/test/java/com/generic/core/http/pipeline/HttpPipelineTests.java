@@ -83,7 +83,7 @@ public class HttpPipelineTests {
                 }
             })
             .build();
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
+        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -105,7 +105,7 @@ public class HttpPipelineTests {
                 }
             })
             .build();
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
+        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());

@@ -83,32 +83,6 @@ public class RedirectPolicyTest {
         }
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {308, 307, 301, 302})
-    public void defaultRedirectExpectedStatusCodesSync(int statusCode) throws Exception {
-        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-            if (request.getUrl().toString().equals("http://localhost/")) {
-                Headers httpHeader = new Headers()
-                    .set(HttpHeaderName.LOCATION, "http://redirecthost/")
-                    .set(HttpHeaderName.AUTHORIZATION, "12345");
-
-                return new MockHttpResponse(request, statusCode, httpHeader);
-            } else {
-                return new MockHttpResponse(request, 200);
-            }
-        });
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .policies(new RedirectPolicy(DEFAULT_REDIRECT_STRATEGY))
-            .build();
-
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
-            assertEquals(200, response.getStatusCode());
-            assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
-        }
-    }
-
     @Test
     public void redirectForNAttempts() throws Exception {
         final int[] requestCount = {1};
@@ -360,7 +334,7 @@ public class RedirectPolicyTest {
     }
 
     private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/")), Context.NONE);
+        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/")));
     }
 
     static class RecordingHttpClient implements HttpClient {

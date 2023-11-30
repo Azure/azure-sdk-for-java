@@ -34,6 +34,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -77,7 +78,7 @@ public class RestProxyTests {
 
         @Get("my/url/path")
         @ExpectedResponses({200})
-        Void testMethodReturnsMonoVoid();
+        Void testMethodReturnsVoid();
 
         @Get("my/url/path")
         @ExpectedResponses({200})
@@ -85,15 +86,11 @@ public class RestProxyTests {
 
         @Get("my/url/path")
         @ExpectedResponses({200})
-        Response<Void> testMethodReturnsMonoResponseVoid();
-
-        @Get("my/url/path")
-        @ExpectedResponses({200})
         Response<Void> testMethodReturnsResponseVoid();
 
         @Get("my/url/path")
         @ExpectedResponses({200})
-        StreamResponse testDownload();
+        Response<InputStream> testDownload();
     }
 
     @Test
@@ -111,8 +108,9 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
-    @Test
-    public void streamResponseShouldHaveHttpResponseReferenceSync() {
+    // TODO (vcolin7): Re-enable this test if we ever compose HttpResponse into a stream Response type.
+    /*@Test
+    public void streamResponseShouldHaveHttpResponseReference() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -125,7 +123,7 @@ public class RestProxyTests {
 
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
-    }
+    }*/
 
     @ParameterizedTest
     @MethodSource("knownLengthBinaryDataIsPassthroughArgumentProvider")
@@ -181,20 +179,6 @@ public class RestProxyTests {
     }
 
     @Test
-    public void monoVoidReturningApiClosesResponse() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testMethodReturnsMonoVoid();
-
-        assertTrue(client.closeCalledOnResponse);
-    }
-
-    @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -203,7 +187,7 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
-        testInterface.testVoidMethod();
+        testInterface.testMethodReturnsVoid();
 
         assertTrue(client.closeCalledOnResponse);
     }
@@ -218,38 +202,6 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 
         testInterface.testVoidMethod();
-
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
-    }
-
-    @Test
-    public void monoVoidReturningApiIgnoresResponseBody() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testMethodReturnsMonoVoid();
-
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
-    }
-
-    @Test
-    public void monoResponseVoidReturningApiIgnoresResponseBody() {
-        LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
-
-        testInterface.testMethodReturnsMonoResponseVoid();
 
         assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
         assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
@@ -273,12 +225,11 @@ public class RestProxyTests {
     }
 
     @Test
-    public void streamResponseDoesNotEagerlyReadsResponse() {
+    public void streamingResponseDoesNotEagerlyReadsResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
 

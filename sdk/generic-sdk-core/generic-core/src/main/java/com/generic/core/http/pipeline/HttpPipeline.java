@@ -27,7 +27,7 @@ public final class HttpPipeline {
 
     /**
      * Creates an {@link HttpPipeline} holding a list of policies that gets applied to all requests initiated through
-     * {@link HttpPipeline#send(HttpRequest, Context)} and its responses.
+     * {@link HttpPipeline#send(HttpRequest)} and its responses.
      *
      * @param httpClient The {@link HttpClient} to write requests to the wire and receive a responses from it.
      * @param pipelinePolicies {@link HttpPipelinePolicy Pipeline policies} in the order they need to be applied, a copy
@@ -54,24 +54,20 @@ public final class HttpPipeline {
     /**
      * Get the {@link HttpClient} associated with the pipeline.
      *
-     * @return the {@link HttpClient} associated with the pipeline
+     * @return The {@link HttpClient} associated with the pipeline.
      */
     public HttpClient getHttpClient() {
         return this.httpClient;
     }
 
     /**
-     * Wraps the request in a context with additional metadata and sends it through the pipeline.
+     * Sends the request through the pipeline.
      *
      * @param request THe HTTP request to send.
-     * @param context Additional metadata to pass along with the request.
      *
-     * @return A publisher upon subscription flows the context through policies, sends the request, and emits response
-     * upon completion.
+     * @return An {@link HttpResponse}.
      */
-    public HttpResponse send(HttpRequest request, Context context) {
-        request.setContext(Context.mergeContexts(request.getContext(), context));
-
+    public HttpResponse send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();

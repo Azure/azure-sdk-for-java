@@ -109,7 +109,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             HttpResponse response = next.process();
 
             if (response != null) {
-                response = responseLogger.logResponseSync(
+                response = responseLogger.logResponse(
                     logger, getResponseLoggingOptions(response, startNs, httpRequest));
             }
 
@@ -230,7 +230,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
+        public HttpResponse logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
             final LogLevel logLevel = getLogLevel(loggingOptions);
             final HttpResponse response = loggingOptions.getHttpResponse();
 

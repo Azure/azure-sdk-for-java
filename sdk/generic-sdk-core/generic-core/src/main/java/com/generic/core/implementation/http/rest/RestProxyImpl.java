@@ -9,11 +9,9 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.SimpleStreamResponse;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
@@ -46,19 +44,17 @@ public class RestProxyImpl extends RestProxyBase {
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      *
      * @param request the HTTP request to send.
-     * @param context the context.
      *
      * @return A {@link HttpResponse} that emits HttpResponse asynchronously.
      */
-    HttpResponse send(HttpRequest request, Context context) {
-        return httpPipeline.send(request, context);
+    HttpResponse send(HttpRequest request) {
+        return httpPipeline.send(request);
     }
 
     @SuppressWarnings({"try", "unused"})
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request,
-                         Context context) {
+                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse;
 
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
@@ -71,13 +67,12 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final HttpResponse response = send(request, context);
+        final HttpResponse response = send(request);
         decodedResponse = this.decoder.decode(response, methodParser);
 
         int statusCode = decodedResponse.getSourceResponse().getStatusCode();
 
-        return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
-            errorOptions);
+        return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), options, errorOptions);
     }
 
     /**
@@ -124,9 +119,7 @@ public class RestProxyImpl extends RestProxyBase {
 
     private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
                                                 SwaggerMethodParser methodParser, Type entityType) {
-        if (methodParser.isStreamResponse()) {
-            return new SimpleStreamResponse(response.getSourceResponse());
-        } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
@@ -193,12 +186,11 @@ public class RestProxyImpl extends RestProxyBase {
      * @param httpDecodedResponse The asynchronous HTTP response to the original HTTP request.
      * @param methodParser The SwaggerMethodParser that the request originates from.
      * @param returnType The type of value that will be returned.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The deserialized result.
      */
     private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-                                        SwaggerMethodParser methodParser, Type returnType, Context context,
+                                        SwaggerMethodParser methodParser, Type returnType,
                                         RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
@@ -208,6 +200,7 @@ public class RestProxyImpl extends RestProxyBase {
             Void.class)) {
             // ProxyMethod ReturnType: Void
             expectedResponse.close();
+
             result = null;
         } else {
             // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
@@ -218,8 +211,9 @@ public class RestProxyImpl extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration,
-                              ObjectSerializer serializerAdapter) throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter)
+        throws IOException {
+
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();

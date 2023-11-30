@@ -6,7 +6,6 @@ package com.generic.core.http.client;
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
-import com.generic.core.http.StreamResponse;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
 import com.generic.core.http.annotation.ExpectedResponses;
@@ -352,7 +351,7 @@ public abstract class HttpClientTests {
      */
     /*@ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryDataWithProgressReportingSync(BinaryData requestBody, byte[] expectedResponseBody) {
+    public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
             getRequestUrl(ECHO_RESPONSE),
@@ -1485,7 +1484,7 @@ public abstract class HttpClientTests {
     interface UnexpectedOKService {
         @Get("/bytes/1024")
         @ExpectedResponses({400})
-        StreamResponse getBytes(@HostParam("url") String url);
+        Response<InputStream> getBytes(@HostParam("url") String url);
     }
 
     @Test
@@ -1516,13 +1515,13 @@ public abstract class HttpClientTests {
     @ServiceInterface(name = "DownloadService")
     interface DownloadService {
         @Get("/bytes/30720")
-        StreamResponse getBytes(@HostParam("url") String url, Context context);
+        Response<InputStream> getBytes(@HostParam("url") String url, Context context);
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) throws IOException {
-        StreamResponse response = createService(DownloadService.class).getBytes(getRequestUri(), context);
+        Response<InputStream> response = createService(DownloadService.class).getBytes(getRequestUri(), context);
         InputStream inputStream = response.getValue();
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -1530,7 +1529,7 @@ public abstract class HttpClientTests {
 
         assertEquals(30720, byteArrayOutputStream.toByteArray().length);
 
-        StreamResponse otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
+        Response<InputStream> otherResponse = createService(DownloadService.class).getBytes(getRequestUri(), context);
         InputStream otherInputStream = otherResponse.getValue();
         ByteArrayOutputStream otherByteArrayOutputStream = new ByteArrayOutputStream();
 

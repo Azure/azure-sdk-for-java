@@ -22,7 +22,8 @@ public final class TypeUtil {
      * Find all super classes including provided class.
      *
      * @param clazz the raw class to find super types for
-     * @return the list of super classes
+     *
+     * @return The list of super classes
      */
     public static List<Class<?>> getAllClasses(Class<?> clazz) {
         List<Class<?>> types = new ArrayList<>();
@@ -36,34 +37,39 @@ public final class TypeUtil {
     /**
      * Get the generic arguments for a type.
      *
-     * @param type the type to get arguments
-     * @return the generic arguments, empty if type is not parameterized
+     * @param type The type to get arguments.
+     *
+     * @return The generic arguments, empty if type is not parameterized.
      */
     public static Type[] getTypeArguments(Type type) {
         if (!(type instanceof ParameterizedType)) {
             return new Type[0];
         }
+
         return ((ParameterizedType) type).getActualTypeArguments();
     }
 
     /**
      * Get the generic argument, or the first if the type has more than one.
      *
-     * @param type the type to get arguments
-     * @return the generic argument, null if type is not parameterized
+     * @param type The type to get arguments.
+     *
+     * @return The generic argument, null if type is not parameterized.
      */
     public static Type getTypeArgument(Type type) {
         if (!(type instanceof ParameterizedType)) {
             return null;
         }
+
         return ((ParameterizedType) type).getActualTypeArguments()[0];
     }
 
     /**
      * Get the raw class for a given type.
      *
-     * @param type the input type
-     * @return the raw class
+     * @param type The input type.
+     *
+     * @return The raw class.
      */
     public static Class<?> getRawClass(Type type) {
         if (type instanceof ParameterizedType) {
@@ -76,8 +82,9 @@ public final class TypeUtil {
     /**
      * Get the super type for a given type.
      *
-     * @param type the input type
-     * @return the direct super type
+     * @param type The input type.
+     *
+     * @return The direct super type.
      */
     public static Type getSuperType(final Type type) {
         Type superType = SUPER_TYPE_MAP.get(type);
@@ -105,10 +112,12 @@ public final class TypeUtil {
                         for (int j = 0; i < typeParameters.length; j++) {
                             if (typeParameters[j].equals(superTypeArguments[i])) {
                                 superTypeArguments[i] = parameterizedType.getActualTypeArguments()[k++];
+
                                 break;
                             }
                         }
                     }
+
                     return createParameterizedType(((ParameterizedType) genericSuperClass).getRawType(),
                         superTypeArguments);
                 } else {
@@ -135,6 +144,7 @@ public final class TypeUtil {
      *
      * @param type Type to check if it implements an interface.
      * @param interfaceClass The interface.
+     *
      * @return Whether the type implements the interface.
      */
     public static boolean typeImplementsInterface(Type type, Class<?> interfaceClass) {
@@ -144,18 +154,19 @@ public final class TypeUtil {
             return typeImplementsInterface(((ParameterizedType) type).getRawType(), interfaceClass);
         } else {
             Class<?> clazz = (Class<?>) type;
+
             return Arrays.stream(clazz.getInterfaces())
                 .anyMatch(implementedInterface -> implementedInterface == interfaceClass);
         }
     }
 
     /**
-     * Get the super type for a type in its super type chain, which has
-     * a raw class that matches the specified class.
+     * Get the super type for a type in its super type chain, which has a raw class that matches the specified class.
      *
-     * @param subType the sub type to find super type for
-     * @param rawSuperType the raw class for the super type
-     * @return the super type that matches the requirement
+     * @param subType The subtype to find super type for.
+     * @param rawSuperType The raw class for the super type.
+     *
+     * @return The super type that matches the requirement.
      */
     public static Type getSuperType(Type subType, Class<?> rawSuperType) {
         while (subType != null && getRawClass(subType) != rawSuperType) {
@@ -167,9 +178,10 @@ public final class TypeUtil {
     /**
      * Determines if a type is the same or a subtype for another type.
      *
-     * @param subType the supposed sub type
-     * @param superType the supposed super type
-     * @return true if the first type is the same or a subtype for the second type
+     * @param subType The supposed subtype.
+     * @param superType The supposed super type.
+     *
+     * @return {@code true} if the first type is the same or a subtype for the second type.
      */
     public static boolean isTypeOrSubTypeOf(Type subType, Type superType) {
         return getRawClass(superType).isAssignableFrom(getRawClass(subType));
@@ -178,9 +190,10 @@ public final class TypeUtil {
     /**
      * Create a parameterized type from a raw class and its type arguments.
      *
-     * @param rawClass the raw class to construct the parameterized type
-     * @param genericTypes the generic arguments
-     * @return the parameterized type
+     * @param rawClass The raw class to construct the parameterized type.
+     * @param genericTypes The generic arguments.
+     *
+     * @return The parameterized type.
      */
     public static ParameterizedType createParameterizedType(Type rawClass, Type... genericTypes) {
         return new ParameterizedType() {
@@ -204,7 +217,7 @@ public final class TypeUtil {
     /**
      * Returns the body type expected in the REST response.
      *
-     * @param restResponseReturnType The RestResponse subtype containing the type arguments we are inspecting.
+     * @param restResponseReturnType The REST response subtype containing the type arguments we are inspecting.
      *
      * @return The type of the body.
      */

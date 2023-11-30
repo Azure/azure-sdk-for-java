@@ -40,15 +40,16 @@ public abstract class HttpResponse implements Closeable {
     /**
      * Get the response status code.
      *
-     * @return The response status code
+     * @return The response status code.
      */
     public abstract int getStatusCode();
 
     /**
      * Lookup a response header with the provider {@link HttpHeaderName}.
      *
-     * @param headerName the name of the header to lookup.
-     * @return the value of the header, or null if the header doesn't exist in the response.
+     * @param headerName The name of the header to lookup.
+     *
+     * @return The value of the header, or {@code null} if the header doesn't exist in the response.
      */
     public String getHeaderValue(HttpHeaderName headerName) {
         return getHeaders().getValue(headerName);
@@ -63,8 +64,8 @@ public abstract class HttpResponse implements Closeable {
 
     /**
      * Gets the {@link BinaryData} that represents the body of the response.
-     * <p>
-     * Subclasses should override this method.
+     *
+     * <p>Subclasses should override this method.</p>
      *
      * @return The {@link BinaryData} response body.
      */
@@ -92,5 +93,4 @@ public abstract class HttpResponse implements Closeable {
     @Override
     public void close() {
     }
-
 }

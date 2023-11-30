@@ -32,5 +32,5 @@ public interface HttpResponseLogger {
      * @param loggingOptions The information available during response logging.
      * @return A response that returns the HTTP response that was logged.
      */
-    HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
+    HttpResponse logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
 }
