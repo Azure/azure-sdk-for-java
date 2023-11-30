@@ -12,6 +12,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Improved DirectTcp config Defaults for Spark workloads - transit timeout health checks as well as request and connect timeout are too aggressive considering that many Spark jobs unlike latency sensitive apps is throughput optimized and executors will often hit CPU usage >70%. - See [PR 37878](https://github.com/Azure/azure-sdk-for-java/pull/37878)
 
 ### 4.23.0 (2023-10-09)
 
