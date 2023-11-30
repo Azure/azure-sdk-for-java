@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0
+## 1.0.0 (Unreleased)
 
 ### Features Added
 
@@ -130,7 +130,7 @@
 #### BestWorkerMode
 - Added setters to `ScoringRule` and `ScoringRuleOptions`
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2
 
 ### Features Added
 
