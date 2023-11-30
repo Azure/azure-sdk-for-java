@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -192,5 +193,28 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
             "operationalContext", Context.NONE);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void startTranscriptionWithResponse() {
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        Response<Void> response = callMedia.startTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void stopTranscriptionWithResponse() {
+        StopTranscriptionOptions options = new StopTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.stopTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionWithResponse() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
     }
 }

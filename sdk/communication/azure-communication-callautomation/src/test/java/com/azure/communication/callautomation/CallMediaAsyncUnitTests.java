@@ -15,10 +15,13 @@ import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,6 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CallMediaAsyncUnitTests {
 
@@ -366,5 +370,36 @@ public class CallMediaAsyncUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", expectedStatusCode)))
             );
         return callConnection.getCallMediaAsync();
+    }
+
+    @Test
+    public void startTranscriptionWithResponse() {
+        callMedia = getMockCallMedia(202);
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        StepVerifier.create(
+                callMedia.startTranscriptionWithResponseAsync(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
+            )
+            .verifyComplete();
+    }
+    @Test
+    public void stopTranscriptionWithResponse() {
+        callMedia = getMockCallMedia(202);
+        StopTranscriptionOptions options = new StopTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        StepVerifier.create(
+                callMedia.stopTranscriptionWithResponseAsync(options)
+            )
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+    @Test
+    public void updateTranscriptionWithResponse() {
+        callMedia = getMockCallMedia(202);
+        StepVerifier.create(
+                callMedia.updateTranscription("en-US")
+            ).verifyComplete();
     }
 }
