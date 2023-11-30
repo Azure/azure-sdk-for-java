@@ -151,7 +151,11 @@ public class MetricDataMapper {
         pointBuilder.setValue(pointDataValue);
         // TODO (heya) why give it the same name as otel metric?
         //  it seems this field doesn't matter and only _MS.MetricId property matters?
-        pointBuilder.setName(metricData.getName());
+        if (metricData.getInstrumentationScopeInfo().getName().equals("jmx")) {
+            pointBuilder.setName(metricData.getResource().getSchemaUrl());
+        } else {
+            pointBuilder.setName(metricData.getName());
+        }
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
 
         Attributes attributes = pointData.getAttributes();
