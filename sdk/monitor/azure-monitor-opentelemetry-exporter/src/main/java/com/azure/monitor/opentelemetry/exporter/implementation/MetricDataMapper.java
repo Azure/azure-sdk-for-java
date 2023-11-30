@@ -151,8 +151,12 @@ public class MetricDataMapper {
         pointBuilder.setValue(pointDataValue);
         // TODO (heya) why give it the same name as otel metric?
         //  it seems this field doesn't matter and only _MS.MetricId property matters?
-        if (metricData.getInstrumentationScopeInfo().getName().equals("jmx")) {
-            pointBuilder.setName(metricData.getResource().getSchemaUrl());
+
+        // To emit JMX metrics with spaces in the name to Breeze, we need to use the schema
+        // url as the metric name that is reported to Breeze.
+        String schemaUrl = metricData.getResource().getSchemaUrl();
+        if (schemaUrl.startsWith("app_insights_")) {
+            pointBuilder.setName(schemaUrl.substring(schemaUrl.length() -1));
         } else {
             pointBuilder.setName(metricData.getName());
         }
