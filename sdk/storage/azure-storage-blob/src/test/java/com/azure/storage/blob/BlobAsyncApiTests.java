@@ -387,35 +387,35 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc.setTags(Collections.singletonMap("foo", "bar")).block();
         StepVerifier.create(bc.downloadContentWithResponse(null, null))
                 .assertNext(r -> {
-                BlobDownloadHeaders headers = r.getDeserializedHeaders();
-                assertTrue(CoreUtils.isNullOrEmpty(headers.getMetadata()));
-                assertEquals(1, headers.getTagCount());
-                assertNotNull(headers.getContentLength());
-                assertNotNull(headers.getContentType());
-                assertNull(headers.getContentRange());
-                assertNotNull(headers.getContentMd5());
-                assertNull(headers.getContentEncoding());
-                assertNull(headers.getCacheControl());
-                assertNull(headers.getContentDisposition());
-                assertNull(headers.getContentLanguage());
-                assertNull(headers.getBlobSequenceNumber());
-                assertEquals(BlobType.BLOCK_BLOB, headers.getBlobType());
-                assertNull(headers.getCopyCompletionTime());
-                assertNull(headers.getCopyStatusDescription());
-                assertNull(headers.getCopyId());
-                assertNull(headers.getCopyProgress());
-                assertNull(headers.getCopySource());
-                assertNull(headers.getCopyStatus());
-                assertNull(headers.getLeaseDuration());
-                assertEquals(LeaseStateType.AVAILABLE, headers.getLeaseState());
-                assertEquals(LeaseStatusType.UNLOCKED, headers.getLeaseStatus());
-                assertEquals("bytes", headers.getAcceptRanges());
-                assertNull(headers.getBlobCommittedBlockCount());
-                assertNotNull(headers.isServerEncrypted());
-                assertNull(headers.getBlobContentMD5());
-                assertNotNull(headers.getCreationTime());
-                //headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
-                TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r.getValue().toBytes());
+                    BlobDownloadHeaders headers = r.getDeserializedHeaders();
+                    assertTrue(CoreUtils.isNullOrEmpty(headers.getMetadata()));
+                    assertEquals(1, headers.getTagCount());
+                    assertNotNull(headers.getContentLength());
+                    assertNotNull(headers.getContentType());
+                    assertNull(headers.getContentRange());
+                    assertNotNull(headers.getContentMd5());
+                    assertNull(headers.getContentEncoding());
+                    assertNull(headers.getCacheControl());
+                    assertNull(headers.getContentDisposition());
+                    assertNull(headers.getContentLanguage());
+                    assertNull(headers.getBlobSequenceNumber());
+                    assertEquals(BlobType.BLOCK_BLOB, headers.getBlobType());
+                    assertNull(headers.getCopyCompletionTime());
+                    assertNull(headers.getCopyStatusDescription());
+                    assertNull(headers.getCopyId());
+                    assertNull(headers.getCopyProgress());
+                    assertNull(headers.getCopySource());
+                    assertNull(headers.getCopyStatus());
+                    assertNull(headers.getLeaseDuration());
+                    assertEquals(LeaseStateType.AVAILABLE, headers.getLeaseState());
+                    assertEquals(LeaseStatusType.UNLOCKED, headers.getLeaseStatus());
+                    assertEquals("bytes", headers.getAcceptRanges());
+                    assertNull(headers.getBlobCommittedBlockCount());
+                    assertNotNull(headers.isServerEncrypted());
+                    assertNull(headers.getBlobContentMD5());
+                    assertNotNull(headers.getCreationTime());
+                    //headers.getLastAccessedTime() /* TODO (gapra): re-enable when last access time enabled. */
+                    TestUtils.assertArraysEqual(DATA.getDefaultBytes(), r.getValue().toBytes());
                 })
             .verifyComplete();
     }
@@ -1028,7 +1028,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
          */
         Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
         StepVerifier.create(bacDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options,
-            null, null, false)).verifyErrorSatisfies(it -> {
+            null, null, false))
+            .verifyErrorSatisfies(it -> {
             /*
              * If an operation is running on multiple threads and multiple return an exception Reactor will combine
              * them into a CompositeException which needs to be unwrapped. If there is only a single exception
@@ -1038,15 +1039,15 @@ public class BlobAsyncApiTests extends BlobTestBase {
              * ReactiveException that needs to be unwrapped. If the passed exception isn't a 'ReactiveException' it
              * will be returned unmodified by 'Exceptions.unwrap'.
              */
-            assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
-                Throwable exception = Exceptions.unwrap(it2);
-                if (exception instanceof BlobStorageException) {
-                    assertEquals(412, ((BlobStorageException) exception).getStatusCode());
-                    return true;
-                }
-                return false;
-            }));
-        });
+                assertTrue(Exceptions.unwrapMultiple(it).stream().anyMatch(it2 -> {
+                    Throwable exception = Exceptions.unwrap(it2);
+                    if (exception instanceof BlobStorageException) {
+                        assertEquals(412, ((BlobStorageException) exception).getStatusCode());
+                        return true;
+                    }
+                    return false;
+                }));
+            });
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
         sleepIfRunningAgainstService(500);
@@ -1293,7 +1294,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
         StepVerifier.create(sourceBlob.downloadWithResponse(null, null, null,
             false))
-            .assertNext(r -> assertTrue( validateOR(r.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
+            .assertNext(r -> assertTrue(validateOR(r.getDeserializedHeaders().getObjectReplicationSourcePolicies(),
                 "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca")))
             .verifyComplete();
 
@@ -1430,7 +1431,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        StepVerifier.create( bc.setHttpHeadersWithResponse(null, bac))
+        StepVerifier.create(bc.setHttpHeadersWithResponse(null, bac))
             .verifyError(BlobStorageException.class);
     }
 

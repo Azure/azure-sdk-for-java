@@ -1746,8 +1746,8 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")
     @Test
     public void findBlobsMin() {
-       StepVerifier.create(ccAsync.findBlobsByTags("\"key\"='value'"))
-           .verifyComplete();
+        StepVerifier.create(ccAsync.findBlobsByTags("\"key\"='value'"))
+            .verifyComplete();
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210410ServiceVersion")

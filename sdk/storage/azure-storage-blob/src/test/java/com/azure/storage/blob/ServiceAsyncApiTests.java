@@ -287,18 +287,16 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             container.delete().block();
         }
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(
-            new BlobContainerListDetails().setRetrieveDeleted(true))))
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))))
             .thenConsumeWhile(r -> {
                 assertTrue(r.isDeleted());
                 return true;
             })
             .verifyComplete();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(
-            new BlobContainerListDetails().setRetrieveDeleted(true))).count())
+        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+            .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).count())
             .assertNext(r -> assertEquals(numContainers, r))
             .verifyComplete();
     }
@@ -820,7 +818,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     public void getPropsAnonymous() {
         StepVerifier.create(anonymousClient.getProperties())
-            .verifyError(IllegalStateException.class);;
+            .verifyError(IllegalStateException.class);
     }
 
     @Test
