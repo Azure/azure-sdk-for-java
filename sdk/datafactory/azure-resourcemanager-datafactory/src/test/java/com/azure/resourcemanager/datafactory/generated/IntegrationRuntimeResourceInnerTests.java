@@ -14,24 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"yoxa\",\"\":{\"bniwdj\":\"datakzjancuxrhdwbav\",\"s\":\"datawz\",\"xytxhpzxbz\":\"databpg\"}},\"name\":\"zabglcuhxwt\",\"type\":\"yqiklbbovplwzb\",\"etag\":\"gy\",\"id\":\"uosvmkfssxqukk\"}")
-                .toObject(IntegrationRuntimeResourceInner.class);
+        IntegrationRuntimeResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"yoxa\",\"\":{\"bniwdj\":\"datakzjancuxrhdwbav\",\"s\":\"datawz\",\"xytxhpzxbz\":\"databpg\"}},\"name\":\"zabglcuhxwt\",\"type\":\"yqiklbbovplwzb\",\"etag\":\"gy\",\"id\":\"uosvmkfssxqukk\"}")
+            .toObject(IntegrationRuntimeResourceInner.class);
         Assertions.assertEquals("uosvmkfssxqukk", model.id());
         Assertions.assertEquals("yoxa", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeResourceInner model =
-            new IntegrationRuntimeResourceInner()
-                .withId("uosvmkfssxqukk")
-                .withProperties(
-                    new IntegrationRuntime()
-                        .withDescription("yoxa")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeResourceInner model
+            = new IntegrationRuntimeResourceInner().withId("uosvmkfssxqukk").withProperties(new IntegrationRuntime()
+                .withDescription("yoxa").withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeResourceInner.class);
         Assertions.assertEquals("uosvmkfssxqukk", model.id());
         Assertions.assertEquals("yoxa", model.properties().description());

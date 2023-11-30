@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Snowflake linked service. */
+/**
+ * Snowflake linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Snowflake")
 @Fluent
@@ -24,41 +26,51 @@ public final class SnowflakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SnowflakeLinkedServiceTypeProperties innerTypeProperties = new SnowflakeLinkedServiceTypeProperties();
 
-    /** Creates an instance of SnowflakeLinkedService class. */
+    /**
+     * Creates an instance of SnowflakeLinkedService class.
+     */
     public SnowflakeLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Snowflake linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SnowflakeLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -67,7 +79,7 @@ public final class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Get the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -76,7 +88,7 @@ public final class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -90,7 +102,7 @@ public final class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference password() {
@@ -99,7 +111,7 @@ public final class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -112,9 +124,9 @@ public final class SnowflakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -122,9 +134,9 @@ public final class SnowflakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeLinkedService object itself.
      */
@@ -138,17 +150,15 @@ public final class SnowflakeLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SnowflakeLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SnowflakeLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

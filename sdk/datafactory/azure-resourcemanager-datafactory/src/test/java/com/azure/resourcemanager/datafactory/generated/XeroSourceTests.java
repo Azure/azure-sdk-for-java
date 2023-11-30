@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.XeroSource;
 public final class XeroSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        XeroSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"XeroSource\",\"query\":\"datalwhtfscoupsf\",\"queryTimeout\":\"datawb\",\"additionalColumns\":\"datahawkwc\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"dataxdwecvkwwjj\",\"maxConcurrentConnections\":\"datafunsd\",\"disableMetricsCollection\":\"datajx\",\"\":{\"qedofuobx\":\"dataale\",\"fjibbl\":\"datalainzvhl\",\"egzyzlslvgqlexw\":\"dataihvzdaycme\",\"t\":\"datawbbellcjd\"}}")
-                .toObject(XeroSource.class);
+        XeroSource model = BinaryData.fromString(
+            "{\"type\":\"XeroSource\",\"query\":\"datast\",\"queryTimeout\":\"datafbyfjslehgee\",\"additionalColumns\":\"datasoj\",\"sourceRetryCount\":\"dataarliig\",\"sourceRetryWait\":\"datav\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datajhxxxuuqcmunhfa\",\"\":{\"oxh\":\"datanyvypu\",\"gejytqnzrcbh\":\"datawwerwywlxhiuwvq\",\"zgzf\":\"datayhctjvlwf\",\"fuhsmuclxgcedus\":\"datafyvytydrdcwbaiaq\"}}")
+            .toObject(XeroSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XeroSource model =
-            new XeroSource()
-                .withSourceRetryCount("datac")
-                .withSourceRetryWait("dataxdwecvkwwjj")
-                .withMaxConcurrentConnections("datafunsd")
-                .withDisableMetricsCollection("datajx")
-                .withQueryTimeout("datawb")
-                .withAdditionalColumns("datahawkwc")
-                .withQuery("datalwhtfscoupsf");
+        XeroSource model = new XeroSource().withSourceRetryCount("dataarliig").withSourceRetryWait("datav")
+            .withMaxConcurrentConnections("datai").withDisableMetricsCollection("datajhxxxuuqcmunhfa")
+            .withQueryTimeout("datafbyfjslehgee").withAdditionalColumns("datasoj").withQuery("datast");
         model = BinaryData.fromObject(model).toObject(XeroSource.class);
     }
 }

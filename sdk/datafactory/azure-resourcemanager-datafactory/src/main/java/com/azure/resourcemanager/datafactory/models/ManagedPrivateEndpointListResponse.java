@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.ManagedPrivateEndpoin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of managed private endpoint resources. */
+/**
+ * A list of managed private endpoint resources.
+ */
 @Fluent
 public final class ManagedPrivateEndpointListResponse {
     /*
@@ -25,13 +27,15 @@ public final class ManagedPrivateEndpointListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ManagedPrivateEndpointListResponse class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpointListResponse class.
+     */
     public ManagedPrivateEndpointListResponse() {
     }
 
     /**
      * Get the value property: List of managed private endpoints.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedPrivateEndpointResourceInner> value() {
@@ -40,7 +44,7 @@ public final class ManagedPrivateEndpointListResponse {
 
     /**
      * Set the value property: List of managed private endpoints.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedPrivateEndpointListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class ManagedPrivateEndpointListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ManagedPrivateEndpointListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ManagedPrivateEndpointListResponse object itself.
      */
@@ -71,15 +75,13 @@ public final class ManagedPrivateEndpointListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ManagedPrivateEndpointListResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ManagedPrivateEndpointListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

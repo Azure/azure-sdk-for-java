@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinuxProfilePropertiesSshPublicKeysItem model. */
+/**
+ * The LinuxProfilePropertiesSshPublicKeysItem model.
+ */
 @Fluent
 public final class LinuxProfilePropertiesSshPublicKeysItem {
     /*
@@ -17,14 +19,16 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
     @JsonProperty(value = "keyData")
     private String keyData;
 
-    /** Creates an instance of LinuxProfilePropertiesSshPublicKeysItem class. */
+    /**
+     * Creates an instance of LinuxProfilePropertiesSshPublicKeysItem class.
+     */
     public LinuxProfilePropertiesSshPublicKeysItem() {
     }
 
     /**
      * Get the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
      * certificate must be in PEM format with or without headers.
-     *
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -34,7 +38,7 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
     /**
      * Set the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
      * certificate must be in PEM format with or without headers.
-     *
+     * 
      * @param keyData the keyData value to set.
      * @return the LinuxProfilePropertiesSshPublicKeysItem object itself.
      */
@@ -45,7 +49,7 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

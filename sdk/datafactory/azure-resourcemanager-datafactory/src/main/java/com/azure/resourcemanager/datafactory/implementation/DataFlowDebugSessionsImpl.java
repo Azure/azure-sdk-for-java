@@ -31,17 +31,16 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public DataFlowDebugSessionsImpl(
-        DataFlowDebugSessionsClient innerClient,
+    public DataFlowDebugSessionsImpl(DataFlowDebugSessionsClient innerClient,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public CreateDataFlowDebugSessionResponse create(
-        String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
-        CreateDataFlowDebugSessionResponseInner inner =
-            this.serviceClient().create(resourceGroupName, factoryName, request);
+    public CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request) {
+        CreateDataFlowDebugSessionResponseInner inner
+            = this.serviceClient().create(resourceGroupName, factoryName, request);
         if (inner != null) {
             return new CreateDataFlowDebugSessionResponseImpl(inner, this.manager());
         } else {
@@ -49,10 +48,10 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         }
     }
 
-    public CreateDataFlowDebugSessionResponse create(
-        String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context) {
-        CreateDataFlowDebugSessionResponseInner inner =
-            this.serviceClient().create(resourceGroupName, factoryName, request, context);
+    public CreateDataFlowDebugSessionResponse create(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request, Context context) {
+        CreateDataFlowDebugSessionResponseInner inner
+            = this.serviceClient().create(resourceGroupName, factoryName, request, context);
         if (inner != null) {
             return new CreateDataFlowDebugSessionResponseImpl(inner, this.manager());
         } else {
@@ -61,37 +60,34 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
     }
 
     public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<DataFlowDebugSessionInfoInner> inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName);
+        PagedIterable<DataFlowDebugSessionInfoInner> inner
+            = this.serviceClient().queryByFactory(resourceGroupName, factoryName);
         return Utils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<DataFlowDebugSessionInfoInner> inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, context);
+    public PagedIterable<DataFlowDebugSessionInfo> queryByFactory(String resourceGroupName, String factoryName,
+        Context context) {
+        PagedIterable<DataFlowDebugSessionInfoInner> inner
+            = this.serviceClient().queryByFactory(resourceGroupName, factoryName, context);
         return Utils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
     }
 
-    public Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context) {
-        Response<AddDataFlowToDebugSessionResponseInner> inner =
-            this.serviceClient().addDataFlowWithResponse(resourceGroupName, factoryName, request, context);
+    public Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(String resourceGroupName,
+        String factoryName, DataFlowDebugPackage request, Context context) {
+        Response<AddDataFlowToDebugSessionResponseInner> inner
+            = this.serviceClient().addDataFlowWithResponse(resourceGroupName, factoryName, request, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AddDataFlowToDebugSessionResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AddDataFlowToDebugSessionResponse addDataFlow(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
-        AddDataFlowToDebugSessionResponseInner inner =
-            this.serviceClient().addDataFlow(resourceGroupName, factoryName, request);
+    public AddDataFlowToDebugSessionResponse addDataFlow(String resourceGroupName, String factoryName,
+        DataFlowDebugPackage request) {
+        AddDataFlowToDebugSessionResponseInner inner
+            = this.serviceClient().addDataFlow(resourceGroupName, factoryName, request);
         if (inner != null) {
             return new AddDataFlowToDebugSessionResponseImpl(inner, this.manager());
         } else {
@@ -99,8 +95,8 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
+        DeleteDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, request, context);
     }
 
@@ -108,10 +104,10 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         this.serviceClient().delete(resourceGroupName, factoryName, request);
     }
 
-    public DataFlowDebugCommandResponse executeCommand(
-        String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
-        DataFlowDebugCommandResponseInner inner =
-            this.serviceClient().executeCommand(resourceGroupName, factoryName, request);
+    public DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request) {
+        DataFlowDebugCommandResponseInner inner
+            = this.serviceClient().executeCommand(resourceGroupName, factoryName, request);
         if (inner != null) {
             return new DataFlowDebugCommandResponseImpl(inner, this.manager());
         } else {
@@ -119,10 +115,10 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         }
     }
 
-    public DataFlowDebugCommandResponse executeCommand(
-        String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context) {
-        DataFlowDebugCommandResponseInner inner =
-            this.serviceClient().executeCommand(resourceGroupName, factoryName, request, context);
+    public DataFlowDebugCommandResponse executeCommand(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request, Context context) {
+        DataFlowDebugCommandResponseInner inner
+            = this.serviceClient().executeCommand(resourceGroupName, factoryName, request, context);
         if (inner != null) {
             return new DataFlowDebugCommandResponseImpl(inner, this.manager());
         } else {

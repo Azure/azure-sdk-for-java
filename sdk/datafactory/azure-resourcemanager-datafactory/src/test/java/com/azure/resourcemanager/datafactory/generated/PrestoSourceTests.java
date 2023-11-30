@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.PrestoSource;
 public final class PrestoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrestoSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PrestoSource\",\"query\":\"datast\",\"queryTimeout\":\"datafbyfjslehgee\",\"additionalColumns\":\"datasoj\",\"sourceRetryCount\":\"dataarliig\",\"sourceRetryWait\":\"datav\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datajhxxxuuqcmunhfa\",\"\":{\"oxh\":\"datanyvypu\",\"gejytqnzrcbh\":\"datawwerwywlxhiuwvq\",\"zgzf\":\"datayhctjvlwf\",\"fuhsmuclxgcedus\":\"datafyvytydrdcwbaiaq\"}}")
-                .toObject(PrestoSource.class);
+        PrestoSource model = BinaryData.fromString(
+            "{\"type\":\"PrestoSource\",\"query\":\"dataqpifzavct\",\"queryTimeout\":\"dataappaczprz\",\"additionalColumns\":\"dataq\",\"sourceRetryCount\":\"datagvnpgsqlanuh\",\"sourceRetryWait\":\"datarnpsoagho\",\"maxConcurrentConnections\":\"dataiwpdx\",\"disableMetricsCollection\":\"datalsoaj\",\"\":{\"bwl\":\"dataplhstopy\",\"gqjdoglec\":\"datasvpi\"}}")
+            .toObject(PrestoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoSource model =
-            new PrestoSource()
-                .withSourceRetryCount("dataarliig")
-                .withSourceRetryWait("datav")
-                .withMaxConcurrentConnections("datai")
-                .withDisableMetricsCollection("datajhxxxuuqcmunhfa")
-                .withQueryTimeout("datafbyfjslehgee")
-                .withAdditionalColumns("datasoj")
-                .withQuery("datast");
+        PrestoSource model
+            = new PrestoSource().withSourceRetryCount("datagvnpgsqlanuh").withSourceRetryWait("datarnpsoagho")
+                .withMaxConcurrentConnections("dataiwpdx").withDisableMetricsCollection("datalsoaj")
+                .withQueryTimeout("dataappaczprz").withAdditionalColumns("dataq").withQuery("dataqpifzavct");
         model = BinaryData.fromObject(model).toObject(PrestoSource.class);
     }
 }

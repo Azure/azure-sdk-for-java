@@ -7,7 +7,9 @@ package com.azure.resourcemanager.communication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class representing the access keys of a CommunicationService. */
+/**
+ * A class representing the access keys of a CommunicationService.
+ */
 @Fluent
 public final class CommunicationServiceKeysInner {
     /*
@@ -34,13 +36,15 @@ public final class CommunicationServiceKeysInner {
     @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
-    /** Creates an instance of CommunicationServiceKeysInner class. */
+    /**
+     * Creates an instance of CommunicationServiceKeysInner class.
+     */
     public CommunicationServiceKeysInner() {
     }
 
     /**
      * Get the primaryKey property: The primary access key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -49,7 +53,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Set the primaryKey property: The primary access key.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the CommunicationServiceKeysInner object itself.
      */
@@ -60,7 +64,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Get the secondaryKey property: The secondary access key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -69,7 +73,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Set the secondaryKey property: The secondary access key.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the CommunicationServiceKeysInner object itself.
      */
@@ -80,7 +84,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Get the primaryConnectionString property: CommunicationService connection string constructed via the primaryKey.
-     *
+     * 
      * @return the primaryConnectionString value.
      */
     public String primaryConnectionString() {
@@ -89,7 +93,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Set the primaryConnectionString property: CommunicationService connection string constructed via the primaryKey.
-     *
+     * 
      * @param primaryConnectionString the primaryConnectionString value to set.
      * @return the CommunicationServiceKeysInner object itself.
      */
@@ -101,7 +105,7 @@ public final class CommunicationServiceKeysInner {
     /**
      * Get the secondaryConnectionString property: CommunicationService connection string constructed via the
      * secondaryKey.
-     *
+     * 
      * @return the secondaryConnectionString value.
      */
     public String secondaryConnectionString() {
@@ -111,7 +115,7 @@ public final class CommunicationServiceKeysInner {
     /**
      * Set the secondaryConnectionString property: CommunicationService connection string constructed via the
      * secondaryKey.
-     *
+     * 
      * @param secondaryConnectionString the secondaryConnectionString value to set.
      * @return the CommunicationServiceKeysInner object itself.
      */
@@ -122,7 +126,7 @@ public final class CommunicationServiceKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

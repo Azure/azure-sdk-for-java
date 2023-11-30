@@ -5,18 +5,20 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualNetworksListResult model. */
+/**
+ * The VirtualNetworksListResult model.
+ */
 @Fluent
 public final class VirtualNetworksListResult {
     /*
      * The value property.
      */
     @JsonProperty(value = "value")
-    private List<VirtualNetworksInner> value;
+    private List<VirtualNetworkInner> value;
 
     /*
      * The nextLink property.
@@ -24,33 +26,35 @@ public final class VirtualNetworksListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworksListResult class. */
+    /**
+     * Creates an instance of VirtualNetworksListResult class.
+     */
     public VirtualNetworksListResult() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
-    public List<VirtualNetworksInner> value() {
+    public List<VirtualNetworkInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworksListResult object itself.
      */
-    public VirtualNetworksListResult withValue(List<VirtualNetworksInner> value) {
+    public VirtualNetworksListResult withValue(List<VirtualNetworkInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VirtualNetworksListResult {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworksListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class VirtualNetworksListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

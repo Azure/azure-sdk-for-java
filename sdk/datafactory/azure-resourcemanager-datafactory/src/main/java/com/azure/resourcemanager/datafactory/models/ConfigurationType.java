@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the spark config. */
+/**
+ * The type of the spark config.
+ */
 public final class ConfigurationType extends ExpandableStringEnum<ConfigurationType> {
-    /** Static value Default for ConfigurationType. */
+    /**
+     * Static value Default for ConfigurationType.
+     */
     public static final ConfigurationType DEFAULT = fromString("Default");
 
-    /** Static value Customized for ConfigurationType. */
+    /**
+     * Static value Customized for ConfigurationType.
+     */
     public static final ConfigurationType CUSTOMIZED = fromString("Customized");
 
-    /** Static value Artifact for ConfigurationType. */
+    /**
+     * Static value Artifact for ConfigurationType.
+     */
     public static final ConfigurationType ARTIFACT = fromString("Artifact");
 
     /**
      * Creates a new instance of ConfigurationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
 
     /**
      * Creates or finds a ConfigurationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConfigurationType.
      */
@@ -41,7 +49,7 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
 
     /**
      * Gets known ConfigurationType values.
-     *
+     * 
      * @return known ConfigurationType values.
      */
     public static Collection<ConfigurationType> values() {

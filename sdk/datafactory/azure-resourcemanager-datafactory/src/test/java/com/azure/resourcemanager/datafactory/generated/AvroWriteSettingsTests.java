@@ -11,23 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AvroWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvroWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AvroWriteSettings\",\"recordName\":\"gadrvxbcye\",\"recordNamespace\":\"jbcbrtiqpj\",\"maxRowsPerFile\":\"datakamhdqluicrqxqj\",\"fileNamePrefix\":\"dataosmlhcppfgtns\",\"\":{\"mfhde\":\"datahztnjpkpmdlt\",\"xpebsxcnhq\":\"dataliaaiqyxlro\",\"rdamyumr\":\"datacbtyor\",\"ygj\":\"databbaxnym\"}}")
-                .toObject(AvroWriteSettings.class);
+        AvroWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"AvroWriteSettings\",\"recordName\":\"gadrvxbcye\",\"recordNamespace\":\"jbcbrtiqpj\",\"maxRowsPerFile\":\"datakamhdqluicrqxqj\",\"fileNamePrefix\":\"dataosmlhcppfgtns\",\"\":{\"mfhde\":\"datahztnjpkpmdlt\",\"xpebsxcnhq\":\"dataliaaiqyxlro\",\"rdamyumr\":\"datacbtyor\",\"ygj\":\"databbaxnym\"}}")
+            .toObject(AvroWriteSettings.class);
         Assertions.assertEquals("gadrvxbcye", model.recordName());
         Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroWriteSettings model =
-            new AvroWriteSettings()
-                .withRecordName("gadrvxbcye")
-                .withRecordNamespace("jbcbrtiqpj")
-                .withMaxRowsPerFile("datakamhdqluicrqxqj")
-                .withFileNamePrefix("dataosmlhcppfgtns");
+        AvroWriteSettings model = new AvroWriteSettings().withRecordName("gadrvxbcye").withRecordNamespace("jbcbrtiqpj")
+            .withMaxRowsPerFile("datakamhdqluicrqxqj").withFileNamePrefix("dataosmlhcppfgtns");
         model = BinaryData.fromObject(model).toObject(AvroWriteSettings.class);
         Assertions.assertEquals("gadrvxbcye", model.recordName());
         Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());

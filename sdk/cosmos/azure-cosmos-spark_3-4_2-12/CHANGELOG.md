@@ -3,6 +3,8 @@
 ### 4.24.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added hierarchical partition key support. See [PR 37184](https://github.com/Azure/azure-sdk-for-java/pull/37184)
+* Added `bytesWritten`, `recordsWritten` and `cosmos.totalRequestCharge` metrics in the sink of the Azure Cosmos DB connector. - See [PR 37510](https://github.com/Azure/azure-sdk-for-java/pull/37510)
 
 #### Breaking Changes
 

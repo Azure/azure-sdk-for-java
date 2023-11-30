@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.TeradataTableDatasetT
 public final class TeradataTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TeradataTableDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"database\":\"datas\",\"table\":\"datazbevgbnrommkiqh\"}")
+        TeradataTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"database\":\"datas\",\"table\":\"datazbevgbnrommkiqh\"}")
                 .toObject(TeradataTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TeradataTableDatasetTypeProperties model =
-            new TeradataTableDatasetTypeProperties().withDatabase("datas").withTable("datazbevgbnrommkiqh");
+        TeradataTableDatasetTypeProperties model
+            = new TeradataTableDatasetTypeProperties().withDatabase("datas").withTable("datazbevgbnrommkiqh");
         model = BinaryData.fromObject(model).toObject(TeradataTableDatasetTypeProperties.class);
     }
 }

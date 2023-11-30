@@ -17,8 +17,8 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceThrottleRetryPolicy.class);
 
-    private final static Duration DEFAULT_MAX_WAIT_TIME_IN_SECONDS = Duration.ofSeconds(60);
-    private final static Duration DEFAULT_RETRY_IN_SECONDS = Duration.ofSeconds(5);
+    private final static Duration DEFAULT_RETRY_IN_SECONDS_FOR_3200 = Duration.ofSeconds(0);
+    private final static Duration DEFAULT_RETRY_IN_SECONDS_FOR_OTHERS = Duration.ofMillis(100);
     private final int backoffDelayFactor;
     private final int maxAttemptCount;
     private final Duration maxWaitTime;
@@ -46,14 +46,6 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         boolean retryOnClientSideThrottledBatchRequests) {
 
         this(maxAttemptCount, maxWaitTime, 1, retryOnClientSideThrottledBatchRequests);
-    }
-
-    public ResourceThrottleRetryPolicy(int maxAttemptCount, boolean retryOnClientSideThrottledBatchRequests) {
-        this(
-            maxAttemptCount,
-            DEFAULT_MAX_WAIT_TIME_IN_SECONDS,
-            1,
-            retryOnClientSideThrottledBatchRequests);
     }
 
     public ResourceThrottleRetryPolicy(
@@ -100,6 +92,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     this.currentAttemptCount,
                     this.cumulativeRetryDelay,
                     exception);
+
             return Mono.just(ShouldRetryResult.retryAfter(retryDelay));
         } else {
             if (retryDelay != null) {
@@ -128,7 +121,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         return this.retryContext;
     }
 
-    // if retry not needed reaturns null
+    // if retry not needed returns null
     /// <summary>
     /// Returns True if the given exception <paramref name="exception"/> is retriable
     /// </summary>
@@ -144,15 +137,21 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                     retryDelay = Duration.ofNanos(retryDelay.toNanos() * this.backoffDelayFactor);
                 }
 
+                if (retryDelay.isNegative()) {
+                    // There is no server returned retryAfter
+                    if (Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.USER_REQUEST_RATE_TOO_LARGE)) {
+                        // for 429/3200, server should have returned retry after. If not, then retry immediately
+                        retryDelay = DEFAULT_RETRY_IN_SECONDS_FOR_3200;
+                    } else {
+                        // retryAfter will not always be returned, for example 429/3089
+                        // in this case, wait for a minimum time then retry
+                        retryDelay = DEFAULT_RETRY_IN_SECONDS_FOR_OTHERS;
+                    }
+                }
+
                 if (retryDelay.toMillis() < this.maxWaitTime.toMillis() &&
                         this.maxWaitTime.toMillis() >= (this.cumulativeRetryDelay = retryDelay.plus(this.cumulativeRetryDelay)).toMillis())
                 {
-                    if (retryDelay == Duration.ZERO){
-                        // we should never reach here as BE should turn non-zero of retryDelay
-                        logger.trace("Received retryDelay of 0 with Http 429", dce);
-                        retryDelay = DEFAULT_RETRY_IN_SECONDS;
-                    }
-
                     return retryDelay;
                 }
             }

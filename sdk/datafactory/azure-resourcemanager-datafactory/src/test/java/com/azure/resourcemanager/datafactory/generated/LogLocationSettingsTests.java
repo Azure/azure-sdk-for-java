@@ -14,34 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LogLocationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogLocationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"linkedServiceName\":{\"referenceName\":\"x\",\"parameters\":{\"fapfbmrwhknefcoo\":\"datavgtoinozsmyv\",\"pdd\":\"datatmd\",\"laxuybxjwny\":\"datagupiosibg\",\"fiksjpkig\":\"dataskyrttnrikss\"}},\"path\":\"datatoqtui\"}")
-                .toObject(LogLocationSettings.class);
-        Assertions.assertEquals("x", model.linkedServiceName().referenceName());
+        LogLocationSettings model = BinaryData.fromString(
+            "{\"linkedServiceName\":{\"referenceName\":\"vhcbu\",\"parameters\":{\"qaawyyszw\":\"dataifzfjtock\"}},\"path\":\"dataqljl\"}")
+            .toObject(LogLocationSettings.class);
+        Assertions.assertEquals("vhcbu", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogLocationSettings model =
-            new LogLocationSettings()
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("x")
-                        .withParameters(
-                            mapOf(
-                                "fapfbmrwhknefcoo",
-                                "datavgtoinozsmyv",
-                                "pdd",
-                                "datatmd",
-                                "laxuybxjwny",
-                                "datagupiosibg",
-                                "fiksjpkig",
-                                "dataskyrttnrikss")))
-                .withPath("datatoqtui");
+        LogLocationSettings model = new LogLocationSettings().withLinkedServiceName(
+            new LinkedServiceReference().withReferenceName("vhcbu").withParameters(mapOf("qaawyyszw", "dataifzfjtock")))
+            .withPath("dataqljl");
         model = BinaryData.fromObject(model).toObject(LogLocationSettings.class);
-        Assertions.assertEquals("x", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("vhcbu", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

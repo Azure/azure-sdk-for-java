@@ -67,24 +67,16 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, globalParameterName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getGlobalParameters().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, globalParameterName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public GlobalParameterResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, globalParameterName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGlobalParameters()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -99,29 +91,20 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, globalParameterName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getGlobalParameters().createOrUpdateWithResponse(resourceGroupName,
+                factoryName, globalParameterName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public GlobalParameterResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, globalParameterName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGlobalParameters()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, globalParameterName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    GlobalParameterResourceImpl(
-        GlobalParameterResourceInner innerObject,
+    GlobalParameterResourceImpl(GlobalParameterResourceInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -131,22 +114,14 @@ public final class GlobalParameterResourceImpl
     }
 
     public GlobalParameterResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGlobalParameters()
+            .getWithResponse(resourceGroupName, factoryName, globalParameterName, Context.NONE).getValue();
         return this;
     }
 
     public GlobalParameterResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGlobalParameters()
-                .getWithResponse(resourceGroupName, factoryName, globalParameterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGlobalParameters()
+            .getWithResponse(resourceGroupName, factoryName, globalParameterName, context).getValue();
         return this;
     }
 

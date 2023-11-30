@@ -1055,13 +1055,8 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev"
-      ]
-    },
-    {
-      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
-      "words": [
-        "Djava"
+        "Pdev",
+	"Djava"
       ]
     },
     {
