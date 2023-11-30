@@ -652,4 +652,32 @@ public class RetryPolicyTests {
                 new RuntimeException(), new RuntimeException()}, RuntimeException.class)
         );
     }
+
+    @Test
+    public void nothingIsClonedIfThereIsNoRetry() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 400 : 200)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void requestIsClonedIfThereIsRetry() {
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(1, Duration.ofMillis(1))))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 200 : 400)))
+            .build();
+
+        StepVerifier.create(pipeline.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
 }

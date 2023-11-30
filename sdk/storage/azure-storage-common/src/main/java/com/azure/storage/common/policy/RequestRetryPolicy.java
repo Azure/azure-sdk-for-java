@@ -96,23 +96,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // Select the correct host and delay.
         long delayMs = getDelayMs(primaryTry, tryingPrimary);
 
-        /*
-         * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
-         * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
-         * stream, the buffers that were emitted will have already been consumed (their position set to their limit),
-         * so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-         * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-         * duplicates the ByteBuffer object, not the underlying data.
-         */
-        context.setHttpRequest(originalRequest.copy());
-        BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
-        if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-            // Replayable bodies don't require this transformation.
-            // TODO (kasobol-msft) Remove this transformation in favor of
-            // BinaryData.toReplayableBinaryData()
-            // But this should be done together with removal of buffering in chunked uploads.
-            Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
-            context.getHttpRequest().setBody(bufferedBody);
+        if (requestRetryOptions.getMaxTries() > 1) {
+            context.setHttpRequest(originalRequest.copy());
         }
 
         try {
@@ -126,7 +111,29 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
         // We want to send the request with a given timeout, but we don't want to kick off that timeout-bound operation
         // until after the retry backoff delay, so we call delaySubscription.
-        Mono<HttpResponse> responseMono = next.clone().process();
+        Mono<HttpResponse> responseMono;
+        if (requestRetryOptions.getMaxTries() > 1) {
+            /*
+             * Clone the original request to ensure that each try starts with the original (unmutated) request. We
+             * cannot simply call httpRequest.copy() because although the body will start emitting from the beginning of
+             * the stream, the buffers that were emitted will have already been consumed (their position set to their
+             * limit), so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+             * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
+             * duplicates the ByteBuffer object, not the underlying data.
+             */
+            BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
+            if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
+                responseMono = originalRequestBody.toReplayableBinaryDataAsync()
+                    .flatMap(bufferedBody -> {
+                        context.getHttpRequest().setBody(bufferedBody);
+                        return next.clone().process();
+                    });
+            } else {
+                responseMono = next.clone().process();
+            }
+        } else {
+            responseMono = next.process();
+        }
 
         // Default try timeout is Integer.MAX_VALUE seconds, if it's that don't set a timeout as that's about 68 years
         // and would likely never complete.
@@ -226,29 +233,42 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // Select the correct host and delay.
         long delayMs = getDelayMs(primaryTry, tryingPrimary);
 
-        /*
-         * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
-         * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
-         * stream, the buffers that were emitted will have already been consumed (their position set to their limit),
-         * so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-         * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-         * duplicates the ByteBuffer object, not the underlying data.
-         */
-        context.setHttpRequest(originalRequest.copy());
-        BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
-        if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-            context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
+        if (requestRetryOptions.getMaxTries() > 1) {
+            /*
+             * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
+             * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
+             * stream, the buffers that were emitted will have already been consumed (their position set to their limit),
+             * so it is not a true reset. By adding the map function, we ensure that anything which consumes the
+             * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
+             * duplicates the ByteBuffer object, not the underlying data.
+             */
+            context.setHttpRequest(originalRequest.copy());
+            BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
+            if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
+                context.getHttpRequest().setBody(originalRequestBody.toReplayableBinaryData());
+            }
         }
+
         updateUrlToSecondaryHost(tryingPrimary, this.requestRetryOptions.getSecondaryHost(), context);
         updateRetryCountContext(context, attempt);
         resetProgress(context);
 
         try {
+            // Only add delaySubscription if there is going to be a delay.
+            if (delayMs > 0) {
+                try {
+                    Thread.sleep(delayMs);
+                } catch (InterruptedException ie) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                }
+            }
+
             /*
-             We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
-             until after the retry backoff delay, so we call delaySubscription.
+             * We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound
+             * operation until after the retry backoff delay, so we call delaySubscription.
              */
-            HttpResponse response = next.clone().processSync();
+            HttpResponse response = (requestRetryOptions.getMaxTries() > 1)
+                ? next.clone().processSync() : next.processSync();
 
             // Default try timeout is Integer.MAX_VALUE seconds, if it's that don't set a timeout as that's about 68 years
             // and would likely never complete.
@@ -256,15 +276,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             if (this.requestRetryOptions.getTryTimeoutDuration().getSeconds() != Integer.MAX_VALUE) {
                 try {
                     Thread.sleep(this.requestRetryOptions.getTryTimeoutDuration().toMillis());
-                } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
-                }
-            }
-
-            // Only add delaySubscription if there is going to be a delay.
-            if (delayMs > 0) {
-                try {
-                    Thread.sleep(delayMs);
                 } catch (InterruptedException ie) {
                     throw LOGGER.logExceptionAsError(new RuntimeException(ie));
                 }
