@@ -81,6 +81,7 @@ spec:
           export TRY_TIMEOUT_SECONDS={{ default 60 .Stress.tryTimeout }}
           export ABANDON_RATIO={{ default 0 .Stress.abandonRatio }}
           export NO_DISPOSITION_RATIO={{ default 0 .Stress.noDispositionRatio }}
+          export LOCK_DURATION_IN_SEC={{ default 5 .Stress.lockDurationInSec }}
           export LOCK_RENEWAL_NEEDED_RATIO={{ default 0 .Stress.lockRenewalNeededRatio }}
           export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
           export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 0 .Stress.processCallbackDurationMaxInMs }}
@@ -115,9 +116,10 @@ spec:
           export TRY_TIMEOUT_SECONDS={{ default 60 .Stress.tryTimeout }}
           export ABANDON_RATIO={{ default 0 .Stress.abandonRatio }}
           export NO_DISPOSITION_RATIO={{ default 0 .Stress.noDispositionRatio }}
+          export LOCK_DURATION_IN_SEC={{ default 5 .Stress.lockDurationInSec }}
           export LOCK_RENEWAL_NEEDED_RATIO={{ default 0 .Stress.lockRenewalNeededRatio }}
           export AUTO_RENEW_LOCK={{ default "true" .Stress.autoRenewLock }}
-          export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 10 .Stress.processCallbackDurationMaxInMs }}
+          export PROCESS_CALLBACK_DURATION_MAX_IN_MS={{ default 0 .Stress.processCallbackDurationMaxInMs }}
           export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
           export ANNOTATION={{ default .Stress.Scenario .Stress.annotation }}
           export APPLICATIONINSIGHTS_ROLE_INSTANCE=receiver2 &&

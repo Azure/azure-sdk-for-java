@@ -47,8 +47,8 @@ public class MessageProcessor extends ServiceBusScenario {
     @Value("${LOCK_RENEWAL_NEEDED_RATIO:0}")
     private double lockRenewalNeededRatio;
 
-    @Value("${LOCK_DURATION_IN_MS:30000}")
-    private int lockDurationInMs;
+    @Value("${LOCK_DURATION_IN_SEC:30}")
+    private int lockDurationInSec;
 
     @Value("${AUTO_RENEW_LOCK:true}")
     private boolean renewLock;
@@ -90,7 +90,7 @@ public class MessageProcessor extends ServiceBusScenario {
         span.setAttribute(AttributeKey.doubleKey("abandonRatio"), abandonRatio);
         span.setAttribute(AttributeKey.doubleKey("noDispositionRatio"), noDispositionRatio);
         span.setAttribute(AttributeKey.doubleKey("lockRenewalNeededRatio"), lockRenewalNeededRatio);
-        span.setAttribute(AttributeKey.longKey("lockDurationInMs"), lockDurationInMs);
+        span.setAttribute(AttributeKey.longKey("lockDurationInSec"), lockDurationInSec);
         span.setAttribute(AttributeKey.booleanKey("renewLock"), renewLock);
     }
 
@@ -105,7 +105,7 @@ public class MessageProcessor extends ServiceBusScenario {
     private int getWaitTime() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         if (random.nextDouble(1) < lockRenewalNeededRatio) {
-            return lockDurationInMs + 1000;
+            return (lockDurationInSec + 1) * 1000;
         } else if (processMessageDurationMaxInMs != 0) {
             return random.nextInt(processMessageDurationMaxInMs);
         }
