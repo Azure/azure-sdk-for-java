@@ -937,6 +937,7 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -1269,6 +1270,7 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -1310,6 +1312,7 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -1373,6 +1376,7 @@ public final class OpenAIAsyncClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
