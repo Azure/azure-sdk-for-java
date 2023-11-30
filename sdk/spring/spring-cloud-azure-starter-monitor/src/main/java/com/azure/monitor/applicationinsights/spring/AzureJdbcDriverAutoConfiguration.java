@@ -14,7 +14,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// Waiting for fix on OTel side
+/**
+ * Workaround waiting for OTel release: https://github.com/open-telemetry/opentelemetry-java-instrumentation/pull/9978
+ */
 @ConditionalOnClass(OpenTelemetryDriver.class)
 @ConditionalOnProperty(
     name = "spring.datasource.driver-class-name",
