@@ -99,20 +99,22 @@ public abstract class PipelinedQueryExecutionContextBase<T>
         if (queryInfo.hasLimit()) {
             createLimitComponentFunction =
                 (continuationToken, documentQueryParams) ->
-                    TakeDocumentQueryExecutionContext.createLimitAsync(createSkipComponentFunction,
+                    TakeDocumentQueryExecutionContext.createAsync(createSkipComponentFunction,
                     queryInfo.getLimit(),
                     continuationToken,
-                    documentQueryParams);
+                    documentQueryParams,
+                    TakeDocumentQueryExecutionContext.TakeEnum.LIMIT);
         } else {
             createLimitComponentFunction = createSkipComponentFunction;
         }
 
         if (queryInfo.hasTop()) {
             return (continuationToken, documentQueryParams) ->
-                TakeDocumentQueryExecutionContext.createTopAsync(createLimitComponentFunction,
+                TakeDocumentQueryExecutionContext.createAsync(createLimitComponentFunction,
                 queryInfo.getTop(),
                 continuationToken,
-                documentQueryParams);
+                documentQueryParams,
+                TakeDocumentQueryExecutionContext.TakeEnum.TOP);
         } else {
             return createLimitComponentFunction;
         }

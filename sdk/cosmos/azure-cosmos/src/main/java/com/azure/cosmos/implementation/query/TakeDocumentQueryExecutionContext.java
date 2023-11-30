@@ -32,7 +32,25 @@ public class TakeDocumentQueryExecutionContext<T>
         this.takeEnum = takeEnum;
     }
 
-    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createTopAsync(BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+                                                                            int takeCount,
+                                                                            String takeContinuationTokenString,
+                                                                            PipelinedDocumentQueryParams<T> documentQueryParams,
+                                                                            TakeEnum takeEnum) {
+        switch (takeEnum) {
+            case LIMIT:
+                return createLimitAsync(createSourceComponentFunction, takeCount, takeContinuationTokenString,
+                    documentQueryParams);
+            case TOP:
+                return createTopAsync(createSourceComponentFunction, takeCount, takeContinuationTokenString,
+                    documentQueryParams);
+            default:
+                throw new IllegalArgumentException("Unknown take enum: " + takeEnum);
+        }
+
+    }
+
+    private static <T> Flux<IDocumentQueryExecutionComponent<T>> createTopAsync(BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
                                                                                int topCount,
                                                                                String topContinuationTokenString,
                                                                                PipelinedDocumentQueryParams<T> documentQueryParams) {
@@ -70,7 +88,7 @@ public class TakeDocumentQueryExecutionContext<T>
                 topContinuationToken.getTopCount(), TakeEnum.TOP));
     }
 
-    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createLimitAsync(
+    private static <T> Flux<IDocumentQueryExecutionComponent<T>> createLimitAsync(
             BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
             int limit,
             String limitContinuationTokenString,
@@ -188,7 +206,7 @@ public class TakeDocumentQueryExecutionContext<T>
         });
     }
 
-    private enum TakeEnum {
+    enum TakeEnum {
         LIMIT,
         TOP
     }
