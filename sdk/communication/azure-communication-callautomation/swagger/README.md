@@ -209,8 +209,8 @@ directive:
     from: StopTranscriptionRequest
     to: StopTranscriptionRequestInternal
 - rename-model:
-    from: UpdateTranscriptionDataRequest
-    to: UpdateTranscriptionDataRequestInternal
+    from: UpdateTranscriptionRequest
+    to: UpdateTranscriptionRequestInternal
 - rename-model:
     from: StartDialogRequest
     to: StartDialogRequestInternal

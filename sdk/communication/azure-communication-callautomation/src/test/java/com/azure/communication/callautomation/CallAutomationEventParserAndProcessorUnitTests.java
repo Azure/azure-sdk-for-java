@@ -35,8 +35,12 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
-import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionResumed;
+import com.azure.communication.callautomation.models.events.TranscriptionStarted;
+import com.azure.communication.callautomation.models.events.TranscriptionStatus;
+import com.azure.communication.callautomation.models.events.TranscriptionStatusDetails;
+import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -1024,5 +1028,178 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         assertEquals("Success Result", event.getResultInformation().getMessage());
         assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
         assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseTranscriptionStartedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionStarted\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 500,\n"
+            + "            \"subCode\": 9999,\n"
+            + "            \"message\": \"Unknown internal server error.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionStarted\",\n"
+            + "            \"transcriptionStatusDetails\": \"subscriptionStarted\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionStarted\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionStarted event = (TranscriptionStarted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Unknown internal server error.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionResumedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionResumed\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 500,\n"
+            + "            \"subCode\": 9999,\n"
+            + "            \"message\": \"Unknown internal server error.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionResumed\",\n"
+            + "            \"transcriptionStatusDetails\": \"streamConnectionReestablished\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionResumed\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionResumed event = (TranscriptionResumed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Unknown internal server error.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_RESUMED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.STREAM_CONNECTION_REESTABLISHED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionStoppedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionStopped\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 500,\n"
+            + "            \"subCode\": 9999,\n"
+            + "            \"message\": \"Unknown internal server error.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionStopped\",\n"
+            + "            \"transcriptionStatusDetails\": \"subscriptionStopped\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionStopped\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionStopped event = (TranscriptionStopped) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Unknown internal server error.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_STOPPED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STOPPED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionFailedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionFailed\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 500,\n"
+            + "            \"subCode\": 9999,\n"
+            + "            \"message\": \"Unknown internal server error.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionFailed\",\n"
+            + "            \"transcriptionStatusDetails\": \"unspecifiedError\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionFailed\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionFailed event = (TranscriptionFailed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Unknown internal server error.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_FAILED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.UNSPECIFIED_ERROR, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
     }
 }

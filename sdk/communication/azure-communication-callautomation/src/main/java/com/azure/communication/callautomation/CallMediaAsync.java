@@ -27,7 +27,7 @@ import com.azure.communication.callautomation.implementation.models.StartTranscr
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
-import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionDataRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
@@ -848,10 +848,10 @@ public final class CallMediaAsync {
     Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-            UpdateTranscriptionDataRequestInternal request = new UpdateTranscriptionDataRequestInternal();
+            UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
             request.setLocale(locale);
             return contentsInternal
-                .updateTranscriptionDataWithResponseAsync(callConnectionId, request, context);
+                .updateTranscriptionWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

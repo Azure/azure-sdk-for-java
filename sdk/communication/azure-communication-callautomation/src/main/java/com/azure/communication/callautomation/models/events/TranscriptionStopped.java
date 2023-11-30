@@ -22,7 +22,7 @@ public final class TranscriptionStopped extends CallAutomationEventBase {
     /*
      * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
-    @JsonProperty(value = "transcriptionUpdateResult", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private final TranscriptionUpdate transcriptionUpdateResult;
 
     /**

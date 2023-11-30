@@ -8,10 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The UpdateTranscriptionDataRequestInternal model.
+ * The UpdateTranscriptionRequestInternal model.
  */
 @Fluent
-public final class UpdateTranscriptionDataRequestInternal {
+public final class UpdateTranscriptionRequestInternal {
     /*
      * Defines new locale for transcription.
      */
@@ -19,9 +19,9 @@ public final class UpdateTranscriptionDataRequestInternal {
     private String locale;
 
     /**
-     * Creates an instance of UpdateTranscriptionDataRequestInternal class.
+     * Creates an instance of UpdateTranscriptionRequestInternal class.
      */
-    public UpdateTranscriptionDataRequestInternal() {
+    public UpdateTranscriptionRequestInternal() {
     }
 
     /**
@@ -37,9 +37,9 @@ public final class UpdateTranscriptionDataRequestInternal {
      * Set the locale property: Defines new locale for transcription.
      * 
      * @param locale the locale value to set.
-     * @return the UpdateTranscriptionDataRequestInternal object itself.
+     * @return the UpdateTranscriptionRequestInternal object itself.
      */
-    public UpdateTranscriptionDataRequestInternal setLocale(String locale) {
+    public UpdateTranscriptionRequestInternal setLocale(String locale) {
         this.locale = locale;
         return this;
     }
