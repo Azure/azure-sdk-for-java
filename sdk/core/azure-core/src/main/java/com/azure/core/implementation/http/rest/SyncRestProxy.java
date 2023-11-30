@@ -80,7 +80,7 @@ public class SyncRestProxy extends RestProxyBase {
             decodedResponse = this.decoder.decodeSync(response, methodParser);
 
             int statusCode = decodedResponse.getSourceResponse().getStatusCode();
-            tracer.end(statusCode >= 400 ? "" : null, null, context);
+            tracer.end(statusCode >= 400 ? String.valueOf(statusCode) : null, null, context);
 
             return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
                 errorOptions);

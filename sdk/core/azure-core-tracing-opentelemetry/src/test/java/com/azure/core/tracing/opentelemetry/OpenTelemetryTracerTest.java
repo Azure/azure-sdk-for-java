@@ -100,7 +100,7 @@ public class OpenTelemetryTracerTest {
     private final HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
         {
             put("messaging.destination.name", ENTITY_PATH_VALUE);
-            put("net.peer.name", HOSTNAME_VALUE);
+            put("server.address", HOSTNAME_VALUE);
             put("az.namespace", AZ_NAMESPACE_VALUE);
         }
     };
@@ -1050,8 +1050,8 @@ public class OpenTelemetryTracerTest {
         openTelemetryTracer.setAttribute("outer2", "bar", outer);
         openTelemetryTracer.setAttribute("innerSuppressed", "foo", innerSuppressed);
 
-        openTelemetryTracer.end("ok", null, innerSuppressed);
-        openTelemetryTracer.end("ok", null, outer);
+        openTelemetryTracer.end("success", null, innerSuppressed);
+        openTelemetryTracer.end("success", null, outer);
 
         SpanData outerSpan = testExporter.getFinishedSpanItems().get(0);
         assertEquals("outer", outerSpan.getName());
@@ -1168,6 +1168,7 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
         assertEquals("foo", spanData.getStatus().getDescription());
     }
 
@@ -1178,6 +1179,7 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
         assertEquals("", spanData.getStatus().getDescription());
     }
 
@@ -1195,6 +1197,7 @@ public class OpenTelemetryTracerTest {
         EventData exceptionEvent = spanData.getEvents().get(0);
         assertTrue(exceptionEvent instanceof ExceptionEventData);
         assertSame(error, ((ExceptionEventData) exceptionEvent).getException());
+        assertEquals(IOException.class.getName(), spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -1205,7 +1208,8 @@ public class OpenTelemetryTracerTest {
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
-        assertEquals("foo", spanData.getStatus().getDescription());
+        assertEquals("bar", spanData.getStatus().getDescription());
+        assertEquals("foo", spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
         assertEquals(1, spanData.getEvents().size());
     }
 

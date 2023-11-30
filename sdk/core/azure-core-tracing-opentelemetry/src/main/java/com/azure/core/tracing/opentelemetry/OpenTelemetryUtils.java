@@ -21,7 +21,7 @@ class OpenTelemetryUtils {
 
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
-
+    static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
 
     public static Attributes convert(Map<String, Object> attributeMap, OpenTelemetrySchemaVersion schemaVersion) {
         if (attributeMap == null || attributeMap.isEmpty()) {
@@ -41,20 +41,20 @@ class OpenTelemetryUtils {
     }
 
     private static String mapAttributeName(String name, OpenTelemetrySchemaVersion version) {
-        if (version == OpenTelemetrySchemaVersion.V1_17_0) {
-            return mapAttributeNameV1170(name);
+        if (version == OpenTelemetrySchemaVersion.V1_23_1) {
+            return mapAttributeNameV1231(name);
         }
 
         LOGGER.verbose("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
-        return mapAttributeNameV1170(name);
+        return mapAttributeNameV1231(name);
     }
 
-    private static String mapAttributeNameV1170(String name) {
+    private static String mapAttributeNameV1231(String name) {
         if (ENTITY_PATH_KEY.equals(name)) {
             return "messaging.destination.name";
         }
         if (HOST_NAME_KEY.equals(name)) {
-            return "net.peer.name";
+            return "server.address";
         }
         if (CLIENT_REQUEST_ID_ATTRIBUTE.equals(name)) {
             return "az.client_request_id";
@@ -140,14 +140,21 @@ class OpenTelemetryUtils {
      * @return the corresponding OpenTelemetry {@link Span}.
      */
     static Span setError(Span span, String statusMessage, Throwable throwable) {
-        if (throwable != null) {
-            span.recordException(throwable);
-            return span.setStatus(StatusCode.ERROR, statusMessage == null ? throwable.getMessage() : statusMessage);
+        // "success" is needed for back compat with older Event Hubs and Service Bus, don't use it.
+        if ("success".equals(statusMessage)) {
+            statusMessage = null;
         }
 
-        // "success" is needed for back compat with older Event Hubs and Service Bus, don't use it.
-        if (statusMessage == null || "success".equals(statusMessage)) {
+        if (statusMessage == null && throwable == null) {
             return span;
+        }
+
+        span.setAttribute(ERROR_TYPE_ATTRIBUTE,
+            statusMessage != null ? statusMessage : throwable.getClass().getName());
+
+        if (throwable != null) {
+            span.recordException(throwable);
+            return span.setStatus(StatusCode.ERROR, throwable.getMessage());
         }
 
         return span.setStatus(StatusCode.ERROR, statusMessage);

@@ -89,7 +89,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             tracerBuilder.setInstrumentationVersion(libraryVersion);
         }
 
-        this.tracer =  tracerBuilder
+        this.tracer = tracerBuilder
             .setSchemaUrl("https://opentelemetry.io/schemas/" + otelSchemaVersion.toString())
             .build();
     }

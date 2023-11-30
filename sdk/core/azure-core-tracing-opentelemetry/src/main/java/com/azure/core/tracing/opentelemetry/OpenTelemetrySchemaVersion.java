@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * OpenTelemetry schema version.
  */
-public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemetrySchemaVersion> {
+class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemetrySchemaVersion> {
     @SuppressWarnings("deprecation")
     OpenTelemetrySchemaVersion() {
         super();
@@ -17,13 +17,13 @@ public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemet
     /**
      * 1.12.0 version.
      */
-    public static final OpenTelemetrySchemaVersion V1_17_0 = fromString("1.17.0", OpenTelemetrySchemaVersion.class);
+    public static final OpenTelemetrySchemaVersion V1_23_1 = fromString("1.23.1", OpenTelemetrySchemaVersion.class);
 
     /**
      * Gets latest version.
      * @return latest supported schema version.
      */
     public static final OpenTelemetrySchemaVersion getLatest() {
-        return V1_17_0;
+        return V1_23_1;
     }
 }

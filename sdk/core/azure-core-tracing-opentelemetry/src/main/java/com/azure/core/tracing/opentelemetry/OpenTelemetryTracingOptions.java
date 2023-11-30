@@ -76,15 +76,4 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
     public OpenTelemetrySchemaVersion getSchemaVersion() {
         return schemaVersion;
     }
-
-    /**
-     * Sets schema version.
-     *
-     * @param schemaVersion schema version.
-     * @return updated OpenTelemetryTracingOptions.
-     */
-    public OpenTelemetryTracingOptions setSchemaVersion(OpenTelemetrySchemaVersion schemaVersion) {
-        this.schemaVersion = schemaVersion;
-        return this;
-    }
 }

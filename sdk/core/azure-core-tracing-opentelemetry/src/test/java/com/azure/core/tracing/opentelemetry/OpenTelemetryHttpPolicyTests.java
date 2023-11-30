@@ -123,16 +123,17 @@ public class OpenTelemetryHttpPolicyTests {
 
         assertEquals(request.getHeaders().getValue(TRACEPARENT), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
         assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
-        assertEquals("HTTP POST", httpSpan.getName());
+        assertEquals("POST", httpSpan.getName());
 
         Map<String, Object> httpAttributes = getAttributes(httpSpan);
 
-        assertEquals(6, httpAttributes.size());
-        assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("http.url"));
-        assertEquals("POST", httpAttributes.get("http.method"));
-        assertEquals("user-agent", httpAttributes.get("http.user_agent"));
+        assertEquals(7, httpAttributes.size());
+        assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("url.full"));
+        assertEquals("httpbin.org", httpAttributes.get("server.address"));
+        assertEquals(443L, httpAttributes.get("server.port"));
+        assertEquals("POST", httpAttributes.get("http.request.method"));
         assertEquals("foo", httpAttributes.get("az.namespace"));
-        assertEquals((long) RESPONSE_STATUS_CODE, httpAttributes.get("http.status_code"));
+        assertEquals((long) RESPONSE_STATUS_CODE, httpAttributes.get("http.response.status_code"));
         assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("az.service_request_id"));
     }
 
@@ -144,17 +145,12 @@ public class OpenTelemetryHttpPolicyTests {
                 @Override
                 public SamplingResult shouldSample(io.opentelemetry.context.Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
                     samplerCalled.set(true);
-                    assertEquals(2, attributes.size());
-                    assertEquals("HTTP DELETE", name);
-                    attributes.forEach((k, v) -> {
-                        if ("http.url".equals(k.getKey())) {
-                            assertEquals("https://httpbin.org/hello?there#otel", v);
-                        } else {
-                            assertEquals("http.method", k.getKey());
-                            assertEquals("DELETE", v);
-                        }
-                    });
-
+                    assertEquals(4, attributes.size());
+                    assertEquals("DELETE", name);
+                    assertEquals("DELETE", attributes.get(AttributeKey.stringKey("http.request.method")));
+                    assertEquals("https://httpbin.org/hello?there#otel", attributes.get(AttributeKey.stringKey("url.full")));
+                    assertEquals("httpbin.org", attributes.get(AttributeKey.stringKey("server.address")));
+                    assertEquals(443, attributes.get(AttributeKey.longKey("server.port")));
                     return SamplingResult.create(SamplingDecision.DROP);
                 }
 
@@ -190,17 +186,19 @@ public class OpenTelemetryHttpPolicyTests {
             List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
             assertEquals(1, exportedSpans.size());
 
-            assertEquals("HTTP PUT", exportedSpans.get(0).getName());
+            assertEquals("PUT", exportedSpans.get(0).getName());
 
             Map<String, Object> httpAttributes = getAttributes(exportedSpans.get(0));
-            assertEquals(5, httpAttributes.size());
+            assertEquals(7, httpAttributes.size());
 
             assertEquals(response.getRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID), httpAttributes.get("az.client_request_id"));
             assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("az.service_request_id"));
 
-            assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("http.url"));
-            assertEquals("PUT", httpAttributes.get("http.method"));
-            assertEquals((long) RESPONSE_STATUS_CODE, httpAttributes.get("http.status_code"));
+            assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("url.full"));
+            assertEquals("httpbin.org", httpAttributes.get("server.address"));
+            assertEquals(443L, httpAttributes.get("server.port"));
+            assertEquals("PUT", httpAttributes.get("http.request.method"));
+            assertEquals((long) RESPONSE_STATUS_CODE, httpAttributes.get("http.response.status_code"));
         }
     }
 
@@ -261,16 +259,18 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(traceparentTry503.get(), String.format("00-%s-%s-01", try503.getTraceId(), try503.getSpanId()));
         assertEquals(traceparentTry200.get(), String.format("00-%s-%s-01", try200.getTraceId(), try200.getSpanId()));
 
-        assertEquals("HTTP GET", try503.getName());
+        assertEquals("GET", try503.getName());
         Map<String, Object> httpAttributes503 = getAttributes(try503);
-        assertEquals(5, httpAttributes503.size());
-        assertEquals(503L, httpAttributes503.get("http.status_code"));
+        assertEquals(9, httpAttributes503.size());
+        assertEquals("503", httpAttributes503.get("error.type"));
+        assertEquals(503L, httpAttributes503.get("http.response.status_code"));
         assertEquals(X_MS_REQUEST_ID_1, httpAttributes503.get("az.service_request_id"));
 
-        assertEquals("HTTP GET", try503.getName());
+        assertEquals("GET", try503.getName());
         Map<String, Object> httpAttributes200 = getAttributes(try200);
-        assertEquals(5, httpAttributes200.size());
-        assertEquals(200L, httpAttributes200.get("http.status_code"));
+        assertEquals(8, httpAttributes200.size());
+        assertEquals(2L, httpAttributes200.get("http.request.resend_count"));
+        assertEquals(200L, httpAttributes200.get("http.response.status_code"));
         assertEquals(X_MS_REQUEST_ID_2, httpAttributes200.get("az.service_request_id"));
     }
 
@@ -302,7 +302,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(1, exportedSpans.size());
 
         SpanData span = exportedSpans.get(0);
-        assertEquals(Long.valueOf(statusCode), span.getAttributes().get(AttributeKey.longKey("http.status_code")));
+        assertEquals(Long.valueOf(statusCode), span.getAttributes().get(AttributeKey.longKey("http.response.status_code")));
         assertEquals(status, span.getStatus().getStatusCode());
     }
 
@@ -329,7 +329,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(1, exportedSpans.size());
 
         SpanData span = exportedSpans.get(0);
-        assertNull(span.getAttributes().get(AttributeKey.longKey("http.status_code")));
+        assertNull(span.getAttributes().get(AttributeKey.longKey("http.response.status_code")));
         assertEquals(StatusCode.ERROR, span.getStatus().getStatusCode());
 
         List<EventData> events = span.getEvents();
@@ -384,9 +384,10 @@ public class OpenTelemetryHttpPolicyTests {
 
         SpanData tryTimeout = exportedSpans.get(0);
         Map<String, Object> httpAttributesTimeout = getAttributes(tryTimeout);
-        assertNull(httpAttributesTimeout.get("http.status_code"));
+        assertNull(httpAttributesTimeout.get("http.response.status_code"));
         assertEquals(StatusCode.ERROR, tryTimeout.getStatus().getStatusCode());
         assertEquals("timeout", tryTimeout.getStatus().getDescription());
+        assertEquals(TimeoutException.class.getName(), tryTimeout.getAttributes().get(AttributeKey.stringKey("error.type")));
 
         List<EventData> events = tryTimeout.getEvents();
         assertEquals(1, events.size());
@@ -451,7 +452,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         SpanData cancelled = exportedSpans.get(0);
         Map<String, Object> httpAttributesTimeout = getAttributes(cancelled);
-        assertNull(httpAttributesTimeout.get("http.status_code"));
+        assertNull(httpAttributesTimeout.get("http.response.status_code"));
         assertEquals(StatusCode.ERROR, cancelled.getStatus().getStatusCode());
         assertEquals("cancelled", cancelled.getStatus().getDescription());
     }
