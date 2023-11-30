@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,24 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"fqdn\":\"tqxln\",\"provisioningState\":\"Deleting\"},\"location\":\"fgugnxkrxdqmid\",\"tags\":{\"bhj\":\"zrvqdr\",\"h\":\"big\"},\"id\":\"qfbow\",\"name\":\"kanyktzlcuiywg\",\"type\":\"ywgndrv\"}")
-                .toObject(FrontendInner.class);
-        Assertions.assertEquals("fgugnxkrxdqmid", model.location());
-        Assertions.assertEquals("zrvqdr", model.tags().get("bhj"));
+        FrontendInner model = BinaryData.fromString(
+            "{\"properties\":{\"fqdn\":\"norcjxvsnbyxqab\",\"provisioningState\":\"Accepted\"},\"location\":\"pcyshu\",\"tags\":{\"gpbtoqcjmklj\":\"fblj\",\"qajzyulpkudjkr\":\"vbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}")
+            .toObject(FrontendInner.class);
+        Assertions.assertEquals("pcyshu", model.location());
+        Assertions.assertEquals("fblj", model.tags().get("gpbtoqcjmklj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendInner model =
-            new FrontendInner().withLocation("fgugnxkrxdqmid").withTags(mapOf("bhj", "zrvqdr", "h", "big"));
+        FrontendInner model = new FrontendInner().withLocation("pcyshu")
+            .withTags(mapOf("gpbtoqcjmklj", "fblj", "qajzyulpkudjkr", "vbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
+            .withProperties(new FrontendProperties());
         model = BinaryData.fromObject(model).toObject(FrontendInner.class);
-        Assertions.assertEquals("fgugnxkrxdqmid", model.location());
-        Assertions.assertEquals("zrvqdr", model.tags().get("bhj"));
+        Assertions.assertEquals("pcyshu", model.location());
+        Assertions.assertEquals("fblj", model.tags().get("gpbtoqcjmklj"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

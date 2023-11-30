@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupStatusResponseInner;
+import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAccountLock;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FabricName;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
@@ -55,6 +56,14 @@ public final class BackupStatusResponseImpl implements BackupStatusResponse {
 
     public String registrationStatus() {
         return this.innerModel().registrationStatus();
+    }
+
+    public Integer protectedItemsCount() {
+        return this.innerModel().protectedItemsCount();
+    }
+
+    public AcquireStorageAccountLock acquireStorageAccountLock() {
+        return this.innerModel().acquireStorageAccountLock();
     }
 
     public BackupStatusResponseInner innerModel() {

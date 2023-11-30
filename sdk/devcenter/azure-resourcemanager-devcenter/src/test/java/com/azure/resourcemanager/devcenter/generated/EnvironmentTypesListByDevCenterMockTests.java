@@ -32,7 +32,7 @@ public final class EnvironmentTypesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"tags\":{\"qqfkuv\":\"iopid\",\"rxkpmloazuruoc\":\"cxkdmligovi\"},\"id\":\"oorb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"displayName\":\"exrxzbujrtrhq\"},\"tags\":{\"nlnzonzlrpi\":\"evkh\",\"cvjtszcofiz\":\"yw\",\"gbjkvreljeamur\":\"htd\"},\"id\":\"mlovuanashcxl\",\"name\":\"mjerbdk\",\"type\":\"lvidizozs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,9 @@ public final class EnvironmentTypesListByDevCenterMockTests {
         PagedIterable<EnvironmentType> response =
             manager
                 .environmentTypes()
-                .listByDevCenter("dzf", "azivjlfrqttbajl", 337338297, com.azure.core.util.Context.NONE);
+                .listByDevCenter("mjqfrddgamquhio", "rsjuivfcdisyir", 302141530, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iopid", response.iterator().next().tags().get("qqfkuv"));
+        Assertions.assertEquals("evkh", response.iterator().next().tags().get("nlnzonzlrpi"));
+        Assertions.assertEquals("exrxzbujrtrhq", response.iterator().next().displayName());
     }
 }

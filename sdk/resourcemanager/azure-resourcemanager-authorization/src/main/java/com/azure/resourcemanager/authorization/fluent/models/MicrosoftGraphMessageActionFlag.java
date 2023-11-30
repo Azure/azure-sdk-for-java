@@ -44,6 +44,15 @@ public final class MicrosoftGraphMessageActionFlag extends ExpandableStringEnum<
     public static final MicrosoftGraphMessageActionFlag REVIEW = fromString("review");
 
     /**
+     * Creates a new instance of MicrosoftGraphMessageActionFlag value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphMessageActionFlag() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphMessageActionFlag from its string representation.
      *
      * @param name a name to look for.

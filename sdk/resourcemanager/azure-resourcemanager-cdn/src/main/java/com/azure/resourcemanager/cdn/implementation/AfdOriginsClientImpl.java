@@ -65,11 +65,10 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientA")
-    private interface AfdOriginsService {
+    public interface AfdOriginsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdOriginListResult>> listByOriginGroup(
@@ -84,8 +83,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AfdOriginInner>> get(
@@ -101,8 +99,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -119,8 +116,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -137,8 +133,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
-                + "/{profileName}/originGroups/{originGroupName}/origins/{originName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/origins/{originName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -517,24 +512,6 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AfdOriginInner get(String resourceGroupName, String profileName, String originGroupName, String originName) {
-        return getAsync(resourceGroupName, profileName, originGroupName, originName).block();
-    }
-
-    /**
-     * Gets an existing origin within an origin group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group.
-     * @param originGroupName Name of the origin group which is unique within the profile.
-     * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -545,6 +522,24 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     public Response<AfdOriginInner> getWithResponse(
         String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, originGroupName, originName, context).block();
+    }
+
+    /**
+     * Gets an existing origin within an origin group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
+     * @param originGroupName Name of the origin group which is unique within the profile.
+     * @param originName Name of the origin which is unique within the profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing origin within an origin group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AfdOriginInner get(String resourceGroupName, String profileName, String originGroupName, String originName) {
+        return getWithResponse(resourceGroupName, profileName, originGroupName, originName, Context.NONE).getValue();
     }
 
     /**
@@ -559,8 +554,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -632,8 +627,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -702,7 +697,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(
@@ -736,7 +732,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(
@@ -767,7 +764,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
@@ -776,7 +774,9 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         String originGroupName,
         String originName,
         AfdOriginInner origin) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin)
+            .getSyncPoller();
     }
 
     /**
@@ -792,7 +792,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
@@ -802,7 +803,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         String originName,
         AfdOriginInner origin,
         Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context)
+        return this
+            .beginCreateAsync(resourceGroupName, profileName, originGroupName, originName, origin, context)
             .getSyncPoller();
     }
 
@@ -818,7 +820,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdOriginInner> createAsync(
@@ -845,7 +848,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdOriginInner> createAsync(
@@ -872,7 +876,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginInner create(
@@ -897,7 +901,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginInner create(
@@ -922,8 +926,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -997,8 +1001,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1069,7 +1073,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(
@@ -1104,7 +1109,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(
@@ -1136,7 +1142,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
@@ -1145,7 +1152,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         String originGroupName,
         String originName,
         AfdOriginUpdateParameters originUpdateProperties) {
-        return beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
+        return this
+            .beginUpdateAsync(resourceGroupName, profileName, originGroupName, originName, originUpdateProperties)
             .getSyncPoller();
     }
 
@@ -1162,7 +1170,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of azure Front Door origin is the source of the content being
+     *     delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
@@ -1172,7 +1181,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
         String originName,
         AfdOriginUpdateParameters originUpdateProperties,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceGroupName, profileName, originGroupName, originName, originUpdateProperties, context)
             .getSyncPoller();
     }
@@ -1189,7 +1199,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdOriginInner> updateAsync(
@@ -1216,7 +1227,8 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdOriginInner> updateAsync(
@@ -1244,7 +1256,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginInner update(
@@ -1269,7 +1281,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return azure Front Door origin is the source of the content being delivered via Azure Front Door.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdOriginInner update(
@@ -1466,7 +1478,7 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName, String originName) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName).getSyncPoller();
     }
 
     /**
@@ -1486,7 +1498,9 @@ public final class AfdOriginsClientImpl implements AfdOriginsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName, String originName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, profileName, originGroupName, originName, context)
+            .getSyncPoller();
     }
 
     /**

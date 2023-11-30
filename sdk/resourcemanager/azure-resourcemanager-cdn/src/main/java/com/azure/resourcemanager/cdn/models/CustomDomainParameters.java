@@ -17,6 +17,10 @@ public final class CustomDomainParameters {
     @JsonProperty(value = "properties")
     private CustomDomainPropertiesParameters innerProperties;
 
+    /** Creates an instance of CustomDomainParameters class. */
+    public CustomDomainParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the custom domain to create.
      *

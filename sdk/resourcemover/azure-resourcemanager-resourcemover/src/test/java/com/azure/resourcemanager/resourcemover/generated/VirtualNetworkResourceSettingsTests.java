@@ -9,6 +9,8 @@ import com.azure.resourcemanager.resourcemover.models.NsgReference;
 import com.azure.resourcemanager.resourcemover.models.SubnetResourceSettings;
 import com.azure.resourcemanager.resourcemover.models.VirtualNetworkResourceSettings;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkResourceSettingsTests {
@@ -17,53 +19,74 @@ public final class VirtualNetworkResourceSettingsTests {
         VirtualNetworkResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"enableDdosProtection\":true,\"addressSpace\":[\"ocipazyxoeg\",\"kgjn\",\"iucgygevqzn\",\"yp\"],\"dnsServers\":[\"p\",\"zcdrqjsdpydnfyhx\",\"eoejzic\",\"ifsjttgzfbishcb\"],\"subnets\":[{\"name\":\"deyeamdphagalpbu\",\"addressPrefix\":\"gipwhonowkg\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"wankixzbi\"}},{\"name\":\"eputtmrywnuzoqf\",\"addressPrefix\":\"yqzrnkcqvyxlw\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"lsicohoqqnwv\"}},{\"name\":\"yav\",\"addressPrefix\":\"heun\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"qhgyxzkonocukok\"}},{\"name\":\"axuconuq\",\"addressPrefix\":\"fkbey\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"wrmjmwvvjektc\"}}],\"targetResourceName\":\"senhwlrs\"}")
+                    "{\"resourceType\":\"Microsoft.Network/virtualNetworks\",\"tags\":{\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"enableDdosProtection\":true,\"addressSpace\":[\"fbxzpuzycisp\",\"qzahmgkbrp\",\"y\",\"hibnuqqkpika\"],\"dnsServers\":[\"vtq\",\"gnbuy\",\"hijggme\"],\"subnets\":[{\"name\":\"arbu\",\"addressPrefix\":\"cvpnazzmhjrunmpx\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"dbhrbnlankxm\"}},{\"name\":\"k\",\"addressPrefix\":\"henbtkcxywnytn\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"yn\"}},{\"name\":\"idybyxczf\",\"addressPrefix\":\"haaxdbabphl\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"qlfktsths\"}}],\"targetResourceName\":\"ocmnyyazttbtwwrq\",\"targetResourceGroupName\":\"edckzywbiexzfey\"}")
                 .toObject(VirtualNetworkResourceSettings.class);
-        Assertions.assertEquals("senhwlrs", model.targetResourceName());
+        Assertions.assertEquals("ocmnyyazttbtwwrq", model.targetResourceName());
+        Assertions.assertEquals("edckzywbiexzfey", model.targetResourceGroupName());
+        Assertions.assertEquals("wutttxfvjrbi", model.tags().get("phxepcyvahf"));
         Assertions.assertEquals(true, model.enableDdosProtection());
-        Assertions.assertEquals("ocipazyxoeg", model.addressSpace().get(0));
-        Assertions.assertEquals("p", model.dnsServers().get(0));
-        Assertions.assertEquals("deyeamdphagalpbu", model.subnets().get(0).name());
-        Assertions.assertEquals("gipwhonowkg", model.subnets().get(0).addressPrefix());
-        Assertions.assertEquals("wankixzbi", model.subnets().get(0).networkSecurityGroup().sourceArmResourceId());
+        Assertions.assertEquals("fbxzpuzycisp", model.addressSpace().get(0));
+        Assertions.assertEquals("vtq", model.dnsServers().get(0));
+        Assertions.assertEquals("arbu", model.subnets().get(0).name());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.subnets().get(0).addressPrefix());
+        Assertions.assertEquals("dbhrbnlankxm", model.subnets().get(0).networkSecurityGroup().sourceArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkResourceSettings model =
             new VirtualNetworkResourceSettings()
-                .withTargetResourceName("senhwlrs")
+                .withTargetResourceName("ocmnyyazttbtwwrq")
+                .withTargetResourceGroupName("edckzywbiexzfey")
+                .withTags(
+                    mapOf(
+                        "phxepcyvahf",
+                        "wutttxfvjrbi",
+                        "gidokgjljyoxgvcl",
+                        "ljkyqxjvuuj",
+                        "jhtxfvgxbfsmxne",
+                        "bgsncghkjeszzhb",
+                        "rbmpukgri",
+                        "mpvecxgodebfqk"))
                 .withEnableDdosProtection(true)
-                .withAddressSpace(Arrays.asList("ocipazyxoeg", "kgjn", "iucgygevqzn", "yp"))
-                .withDnsServers(Arrays.asList("p", "zcdrqjsdpydnfyhx", "eoejzic", "ifsjttgzfbishcb"))
+                .withAddressSpace(Arrays.asList("fbxzpuzycisp", "qzahmgkbrp", "y", "hibnuqqkpika"))
+                .withDnsServers(Arrays.asList("vtq", "gnbuy", "hijggme"))
                 .withSubnets(
                     Arrays
                         .asList(
                             new SubnetResourceSettings()
-                                .withName("deyeamdphagalpbu")
-                                .withAddressPrefix("gipwhonowkg")
-                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("wankixzbi")),
+                                .withName("arbu")
+                                .withAddressPrefix("cvpnazzmhjrunmpx")
+                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("dbhrbnlankxm")),
                             new SubnetResourceSettings()
-                                .withName("eputtmrywnuzoqf")
-                                .withAddressPrefix("yqzrnkcqvyxlw")
-                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("lsicohoqqnwv")),
+                                .withName("k")
+                                .withAddressPrefix("henbtkcxywnytn")
+                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("yn")),
                             new SubnetResourceSettings()
-                                .withName("yav")
-                                .withAddressPrefix("heun")
-                                .withNetworkSecurityGroup(
-                                    new NsgReference().withSourceArmResourceId("qhgyxzkonocukok")),
-                            new SubnetResourceSettings()
-                                .withName("axuconuq")
-                                .withAddressPrefix("fkbey")
-                                .withNetworkSecurityGroup(
-                                    new NsgReference().withSourceArmResourceId("wrmjmwvvjektc"))));
+                                .withName("idybyxczf")
+                                .withAddressPrefix("haaxdbabphl")
+                                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("qlfktsths"))));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkResourceSettings.class);
-        Assertions.assertEquals("senhwlrs", model.targetResourceName());
+        Assertions.assertEquals("ocmnyyazttbtwwrq", model.targetResourceName());
+        Assertions.assertEquals("edckzywbiexzfey", model.targetResourceGroupName());
+        Assertions.assertEquals("wutttxfvjrbi", model.tags().get("phxepcyvahf"));
         Assertions.assertEquals(true, model.enableDdosProtection());
-        Assertions.assertEquals("ocipazyxoeg", model.addressSpace().get(0));
-        Assertions.assertEquals("p", model.dnsServers().get(0));
-        Assertions.assertEquals("deyeamdphagalpbu", model.subnets().get(0).name());
-        Assertions.assertEquals("gipwhonowkg", model.subnets().get(0).addressPrefix());
-        Assertions.assertEquals("wankixzbi", model.subnets().get(0).networkSecurityGroup().sourceArmResourceId());
+        Assertions.assertEquals("fbxzpuzycisp", model.addressSpace().get(0));
+        Assertions.assertEquals("vtq", model.dnsServers().get(0));
+        Assertions.assertEquals("arbu", model.subnets().get(0).name());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.subnets().get(0).addressPrefix());
+        Assertions.assertEquals("dbhrbnlankxm", model.subnets().get(0).networkSecurityGroup().sourceArmResourceId());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

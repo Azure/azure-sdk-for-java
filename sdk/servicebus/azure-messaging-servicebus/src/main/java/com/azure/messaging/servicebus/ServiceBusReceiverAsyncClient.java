@@ -56,10 +56,29 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
- * queue or topic subscription.
+ * <p>An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from an
+ * Azure Service Bus queue or topic/subscription.</p>
  *
- * <p><strong>Create an instance of receiver</strong></p>
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Creating a {@link ServiceBusReceiverAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient}.  The {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.
+ * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment
+ * and development and chooses the credential to used based on its running environment.
+ * {@link ServiceBusReceiveMode#PEEK_LOCK} (the default receive mode) and
+ * {@link ServiceBusClientBuilder.ServiceBusReceiverClientBuilder#disableAutoComplete() disableAutoComplete()} are
+ * <strong>strongly</strong> recommended so users have control over message settlement.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -73,35 +92,57 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *     .queueName&#40;queueName&#41;
  *     .buildAsyncClient&#40;&#41;;
  *
- * &#47;&#47; Use the receiver and finally close it.
+ * &#47;&#47; When users are done with the receiver, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they require resources
+ * &#47;&#47; and time to establish a connection to the service.
  * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation -->
  *
- * <p><strong>Receive all messages from Service Bus resource</strong></p>
+ * <p><strong>Sample: Receive all messages from Service Bus resource</strong></p>
+ *
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
  * <pre>
  * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving messages, call
  * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching messages from the Service Bus.
  * &#47;&#47; Consider using Flux.usingWhen to scope the creation, usage, and cleanup of the receiver.
  * Disposable subscription = asyncReceiver.receiveMessages&#40;&#41;
- *     .subscribe&#40;message -&gt; &#123;
+ *     .flatMap&#40;message -&gt; &#123;
  *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
  *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;&#41;;
- *     &#125;,
- *         error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *
+ *         &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return asyncReceiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return asyncReceiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;
+ *     .subscribe&#40;unused -&gt; &#123;
+ *     &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
  *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  *
- * &#47;&#47; When program ends, or you're done receiving all messages.
- * subscription.dispose&#40;&#41;;
+ * &#47;&#47; When program ends, or you're done receiving all messages, dispose of the receiver.
+ * &#47;&#47; Clients should be long-lived objects as they
+ * &#47;&#47; require resources and time to establish a connection to the service.
  * asyncReceiver.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveMessages -->
  *
- * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
+ * <p><strong>Sample: Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
  * entity</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link ServiceBusReceiverAsyncClient} using {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}.  The
+ * {@code fullyQualifiedNamespace} is the Service Bus namespace's host name.  It is listed under the "Essentials" panel
+ * after navigating to the Event Hubs Namespace via Azure Portal.  The credential used is {@code DefaultAzureCredential}
+ * because it combines commonly used credentials in deployment  and development and chooses the credential to used based
+ * on its running environment.  See {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} docs for more information about
+ * receiving messages using this mode.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -124,17 +165,25 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *             return Mono.fromRunnable&#40;&#40;&#41; -&gt; receiver.close&#40;&#41;&#41;;
  *         &#125;&#41;
  *     .subscribe&#40;message -&gt; &#123;
+ *             &#47;&#47; Messages received in RECEIVE_AND_DELETE mode do not have to be settled because they are automatically
+ *             &#47;&#47; removed from the queue.
  *         System.out.printf&#40;&quot;Received Seq #: %s%n&quot;, message.getSequenceNumber&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;.toString&#40;&#41;&#41;;
- *     &#125;, error -&gt; System.err.print&#40;error&#41;&#41;;
+ *         System.out.printf&#40;&quot;Contents of message as string: %s%n&quot;, message.getBody&#40;&#41;&#41;;
+ *     &#125;,
+ *         error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *         &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
+ *
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode -->
  *
- * <p><strong>Receive messages from a specific session</strong></p>
+ * <p><strong>Sample: Receive messages from a specific session</strong></p>
+ *
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
- * a session-bound {@link ServiceBusReceiverAsyncClient}.
- * </p>
+ * a session-bound {@link ServiceBusReceiverAsyncClient}.  The sample assumes that Service Bus sessions were
+ * <a href="https://learn.microsoft.com/azure/service-bus-messaging/enable-message-sessions">enabled at the time of
+ * the queue creation</a>.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -150,16 +199,27 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *
  * &#47;&#47; acceptSession&#40;String&#41; completes successfully with a receiver when &quot;&lt;&lt;my-session-id&gt;&gt;&quot; session is
  * &#47;&#47; successfully locked.
- * &#47;&#47; `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages&#40;&#41;` completes.
- * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure only returns a single item.
- * Flux&lt;ServiceBusReceivedMessage&gt; sessionMessages = Flux.usingWhen&#40;
+ * &#47;&#47; `Flux.usingWhen` is used, so we dispose of the receiver resource after `receiveMessages&#40;&#41;` and the settlement
+ * &#47;&#47; operations complete.
+ * &#47;&#47; `Mono.usingWhen` can also be used if the resource closure returns a single item.
+ * Flux&lt;Void&gt; sessionMessages = Flux.usingWhen&#40;
  *     sessionReceiver.acceptSession&#40;&quot;&lt;&lt;my-session-id&gt;&gt;&quot;&#41;,
  *     receiver -&gt; &#123;
  *         &#47;&#47; Receive messages from &lt;&lt;my-session-id&gt;&gt; session.
- *         return receiver.receiveMessages&#40;&#41;;
+ *         return receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
+ *             System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;, message.getSequenceNumber&#40;&#41;,
+ *                 message.getBody&#40;&#41;&#41;;
+ *
+ *             &#47;&#47; Explicitly settle the message using complete, abandon, defer, dead-letter, etc.
+ *             if &#40;isMessageProcessed&#41; &#123;
+ *                 return receiver.complete&#40;message&#41;;
+ *             &#125; else &#123;
+ *                 return receiver.abandon&#40;message&#41;;
+ *             &#125;
+ *         &#125;&#41;;
  *     &#125;,
  *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
- *         &#47;&#47; Dispose of
+ *         &#47;&#47; Dispose of resources.
  *         receiver.close&#40;&#41;;
  *         sessionReceiver.close&#40;&#41;;
  *     &#125;&#41;&#41;;
@@ -167,18 +227,19 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; When program ends, or you're done receiving all messages, the `subscription` can be disposed of. This code
  * &#47;&#47; is non-blocking and kicks off the operation.
  * Disposable subscription = sessionMessages.subscribe&#40;
- *     message -&gt; System.out.printf&#40;&quot;Received Sequence #: %s. Contents: %s%n&quot;,
- *         message.getSequenceNumber&#40;&#41;, message.getBody&#40;&#41;&#41;,
- *     error -&gt; System.err.print&#40;error&#41;,
+ *     unused -&gt; &#123;
+ *     &#125;, error -&gt; System.err.print&#40;&quot;Error receiving message from session: &quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Completed receiving from session.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId -->
  *
- * <p><strong>Receive messages from the first available session</strong></p>
+ * <p><strong>Sample:  Receive messages from the first available session</strong></p>
+ *
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
  * and build the session receiver client. Use
  * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
  * session to process messages from.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -197,22 +258,37 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * &#47;&#47; completes with a retriable error. Otherwise, a receiver is returned when a lock on the session is acquired.
  * Mono&lt;ServiceBusReceiverAsyncClient&gt; receiverMono = sessionReceiver.acceptNextSession&#40;&#41;;
  *
- * Disposable disposable = Flux.usingWhen&#40;receiverMono,
- *         receiver -&gt; receiver.receiveMessages&#40;&#41;,
- *         receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
- *             &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
- *             receiver.close&#40;&#41;;
- *             sessionReceiver.close&#40;&#41;;
- *         &#125;&#41;&#41;
- *     .subscribe&#40;message -&gt; &#123;
+ * Flux&lt;Void&gt; receiveMessagesFlux = Flux.usingWhen&#40;receiverMono,
+ *     receiver -&gt; receiver.receiveMessages&#40;&#41;.flatMap&#40;message -&gt; &#123;
  *         System.out.println&#40;&quot;Received message: &quot; + message.getBody&#40;&#41;&#41;;
- *     &#125;&#41;;
+ *
+ *         &#47;&#47; Explicitly settle the message via complete, abandon, defer, dead-letter, etc.
+ *         if &#40;isMessageProcessed&#41; &#123;
+ *             return receiver.complete&#40;message&#41;;
+ *         &#125; else &#123;
+ *             return receiver.abandon&#40;message&#41;;
+ *         &#125;
+ *     &#125;&#41;,
+ *     receiver -&gt; Mono.fromRunnable&#40;&#40;&#41; -&gt; &#123;
+ *         &#47;&#47; Dispose of the receiver and sessionReceiver when done receiving messages.
+ *         receiver.close&#40;&#41;;
+ *         sessionReceiver.close&#40;&#41;;
+ *     &#125;&#41;&#41;;
+ *
+ * &#47;&#47; This is a non-blocking call that moves onto the next line of code after setting up and starting the receive
+ * &#47;&#47; operation. Customers can keep a reference to `subscription` and dispose of it when they want to stop
+ * &#47;&#47; receiving messages.
+ * Disposable subscription = receiveMessagesFlux.subscribe&#40;unused -&gt; &#123;
+ * &#125;, error -&gt; System.out.println&#40;&quot;Error occurred: &quot; + error&#41;,
+ *     &#40;&#41; -&gt; System.out.println&#40;&quot;Receiving complete.&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession -->
  *
- * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ * <p><strong>Sample:  Rate limiting consumption of messages from a Service Bus entity</strong></p>
+ *
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
+ *
  * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber -->
  * <pre>
  * &#47;&#47; This is a non-blocking call. The program will move to the next line of code after setting up the operation.

@@ -29,6 +29,7 @@ import com.azure.resourcemanager.elasticsan.fluent.PrivateEndpointConnectionsCli
 import com.azure.resourcemanager.elasticsan.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.elasticsan.fluent.SkusClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
+import com.azure.resourcemanager.elasticsan.fluent.VolumeSnapshotsClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -198,6 +199,18 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         return this.privateLinkResources;
     }
 
+    /** The VolumeSnapshotsClient object to access its operations. */
+    private final VolumeSnapshotsClient volumeSnapshots;
+
+    /**
+     * Gets the VolumeSnapshotsClient object to access its operations.
+     *
+     * @return the VolumeSnapshotsClient object.
+     */
+    public VolumeSnapshotsClient getVolumeSnapshots() {
+        return this.volumeSnapshots;
+    }
+
     /**
      * Initializes an instance of ElasticSanManagement client.
      *
@@ -220,7 +233,7 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-12-01-preview";
+        this.apiVersion = "2023-01-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.elasticSans = new ElasticSansClientImpl(this);
@@ -228,6 +241,7 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         this.volumes = new VolumesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.volumeSnapshots = new VolumeSnapshotsClientImpl(this);
     }
 
     /**

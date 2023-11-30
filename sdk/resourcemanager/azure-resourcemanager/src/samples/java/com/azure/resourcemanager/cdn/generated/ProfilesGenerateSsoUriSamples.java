@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Profiles GenerateSsoUri. */
 public final class ProfilesGenerateSsoUriSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Profiles_GenerateSsoUri.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Profiles_GenerateSsoUri.json
      */
     /**
      * Sample code: Profiles_GenerateSsoUri.
@@ -22,6 +20,6 @@ public final class ProfilesGenerateSsoUriSamples {
             .manager()
             .serviceClient()
             .getProfiles()
-            .generateSsoUriWithResponse("RG", "profile1", Context.NONE);
+            .generateSsoUriWithResponse("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

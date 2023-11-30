@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.statsbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHelper;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.SystemInformation;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 
 public class CustomDimensions {
 
@@ -19,51 +20,28 @@ public class CustomDimensions {
 
     // visible for testing
     CustomDimensions() {
-        String qualifiedSdkVersion = PropertyHelper.getQualifiedSdkVersionString();
-
-        if (qualifiedSdkVersion.startsWith("aw")) {
-            resourceProvider = ResourceProvider.RP_APPSVC;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("al")) {
-            resourceProvider = ResourceProvider.RP_APPSVC;
-            operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("kw")) {
-            resourceProvider = ResourceProvider.RP_AKS;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("kl")) {
-            resourceProvider = ResourceProvider.RP_AKS;
-            operatingSystem = OperatingSystem.OS_LINUX;
-        } else if (qualifiedSdkVersion.startsWith("fw")) {
-            resourceProvider = ResourceProvider.RP_FUNCTIONS;
-            operatingSystem = OperatingSystem.OS_WINDOWS;
-        } else if (qualifiedSdkVersion.startsWith("fl")) {
-            resourceProvider = ResourceProvider.RP_FUNCTIONS;
-            operatingSystem = OperatingSystem.OS_LINUX;
-        } else {
-            resourceProvider = ResourceProvider.UNKNOWN;
-            operatingSystem = initOperatingSystem();
-        }
-
-        sdkVersion = qualifiedSdkVersion.substring(qualifiedSdkVersion.lastIndexOf(':') + 1);
+        resourceProvider = ResourceProvider.initResourceProvider();
+        operatingSystem = initOperatingSystem();
+        sdkVersion = initSdkVersion();
         runtimeVersion = System.getProperty("java.version");
 
-        attachType = RpAttachType.getRpAttachType();
+        attachType = RpAttachType.getRpAttachTypeString();
         language = "java";
     }
 
-    public ResourceProvider getResourceProvider() {
+    ResourceProvider getResourceProvider() {
         return resourceProvider;
     }
 
-    public OperatingSystem getOperatingSystem() {
+    OperatingSystem getOperatingSystem() {
         return operatingSystem;
     }
 
-    public void setResourceProvider(ResourceProvider resourceProvider) {
-        this.resourceProvider = resourceProvider;
+    void setResourceProviderVm() {
+        this.resourceProvider = ResourceProvider.RP_VM;
     }
 
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
+    void setOperatingSystem(OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 
@@ -85,5 +63,13 @@ public class CustomDimensions {
         } else {
             return OperatingSystem.OS_UNKNOWN;
         }
+    }
+
+    private static String initSdkVersion() {
+        if (RpAttachType.getRpAttachType() == RpAttachType.MANUAL) {
+            return VersionGenerator.getSdkVersion();
+        }
+        String qualifiedSdkVersionString = PropertyHelper.getQualifiedSdkVersionString();
+        return qualifiedSdkVersionString.substring(qualifiedSdkVersionString.lastIndexOf(':')+1);
     }
 }

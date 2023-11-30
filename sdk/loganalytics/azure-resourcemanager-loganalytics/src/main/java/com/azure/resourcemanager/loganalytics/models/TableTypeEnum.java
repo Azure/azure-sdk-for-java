@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TableTypeEnum. */
+/** Table's creator. */
 public final class TableTypeEnum extends ExpandableStringEnum<TableTypeEnum> {
     /** Static value Microsoft for TableTypeEnum. */
     public static final TableTypeEnum MICROSOFT = fromString("Microsoft");
@@ -21,6 +21,15 @@ public final class TableTypeEnum extends ExpandableStringEnum<TableTypeEnum> {
 
     /** Static value SearchResults for TableTypeEnum. */
     public static final TableTypeEnum SEARCH_RESULTS = fromString("SearchResults");
+
+    /**
+     * Creates a new instance of TableTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TableTypeEnum() {
+    }
 
     /**
      * Creates or finds a TableTypeEnum from its string representation.

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A static site zip deployment. */
+/**
+ * A static site zip deployment.
+ */
 @Fluent
 public final class StaticSiteZipDeployment {
     /*
@@ -40,13 +42,15 @@ public final class StaticSiteZipDeployment {
     @JsonProperty(value = "functionLanguage")
     private String functionLanguage;
 
-    /** Creates an instance of StaticSiteZipDeployment class. */
+    /**
+     * Creates an instance of StaticSiteZipDeployment class.
+     */
     public StaticSiteZipDeployment() {
     }
 
     /**
      * Get the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @return the appZipUrl value.
      */
     public String appZipUrl() {
@@ -55,7 +59,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Set the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @param appZipUrl the appZipUrl value to set.
      * @return the StaticSiteZipDeployment object itself.
      */
@@ -66,7 +70,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Get the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @return the apiZipUrl value.
      */
     public String apiZipUrl() {
@@ -75,7 +79,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Set the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @param apiZipUrl the apiZipUrl value to set.
      * @return the StaticSiteZipDeployment object itself.
      */
@@ -86,7 +90,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Get the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @return the deploymentTitle value.
      */
     public String deploymentTitle() {
@@ -95,7 +99,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Set the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @param deploymentTitle the deploymentTitle value to set.
      * @return the StaticSiteZipDeployment object itself.
      */
@@ -106,7 +110,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Get the provider property: The provider submitting this deployment.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -115,7 +119,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Set the provider property: The provider submitting this deployment.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteZipDeployment object itself.
      */
@@ -126,7 +130,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Get the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @return the functionLanguage value.
      */
     public String functionLanguage() {
@@ -135,7 +139,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Set the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @param functionLanguage the functionLanguage value to set.
      * @return the StaticSiteZipDeployment object itself.
      */
@@ -146,7 +150,7 @@ public final class StaticSiteZipDeployment {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

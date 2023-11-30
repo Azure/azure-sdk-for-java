@@ -66,6 +66,13 @@ public final class ProjectProperties extends ProjectUpdateProperties {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ProjectProperties withDisplayName(String displayName) {
+        super.withDisplayName(displayName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

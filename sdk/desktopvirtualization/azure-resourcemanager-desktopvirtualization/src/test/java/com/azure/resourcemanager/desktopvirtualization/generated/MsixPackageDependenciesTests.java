@@ -13,23 +13,24 @@ public final class MsixPackageDependenciesTests {
     public void testDeserialize() throws Exception {
         MsixPackageDependencies model =
             BinaryData
-                .fromString("{\"dependencyName\":\"zqhof\",\"publisher\":\"maequiahxicslfa\",\"minVersion\":\"z\"}")
+                .fromString(
+                    "{\"dependencyName\":\"yklyhpluodpvruud\",\"publisher\":\"zibt\",\"minVersion\":\"stgktst\"}")
                 .toObject(MsixPackageDependencies.class);
-        Assertions.assertEquals("zqhof", model.dependencyName());
-        Assertions.assertEquals("maequiahxicslfa", model.publisher());
-        Assertions.assertEquals("z", model.minVersion());
+        Assertions.assertEquals("yklyhpluodpvruud", model.dependencyName());
+        Assertions.assertEquals("zibt", model.publisher());
+        Assertions.assertEquals("stgktst", model.minVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MsixPackageDependencies model =
             new MsixPackageDependencies()
-                .withDependencyName("zqhof")
-                .withPublisher("maequiahxicslfa")
-                .withMinVersion("z");
+                .withDependencyName("yklyhpluodpvruud")
+                .withPublisher("zibt")
+                .withMinVersion("stgktst");
         model = BinaryData.fromObject(model).toObject(MsixPackageDependencies.class);
-        Assertions.assertEquals("zqhof", model.dependencyName());
-        Assertions.assertEquals("maequiahxicslfa", model.publisher());
-        Assertions.assertEquals("z", model.minVersion());
+        Assertions.assertEquals("yklyhpluodpvruud", model.dependencyName());
+        Assertions.assertEquals("zibt", model.publisher());
+        Assertions.assertEquals("stgktst", model.minVersion());
     }
 }

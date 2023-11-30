@@ -8,6 +8,7 @@ import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
@@ -97,6 +98,7 @@ public class ChatClientTestBase extends TestProxyTestBase {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ACCESS_KEY))
+            .serviceVersion(CommunicationIdentityServiceVersion.V2022_10_01)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {

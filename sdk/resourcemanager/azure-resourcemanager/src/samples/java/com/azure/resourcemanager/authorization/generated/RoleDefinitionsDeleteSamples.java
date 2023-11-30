@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleDefinitions Delete. */
 public final class RoleDefinitionsDeleteSamples {
     /*
@@ -23,6 +21,6 @@ public final class RoleDefinitionsDeleteSamples {
             .manager()
             .roleServiceClient()
             .getRoleDefinitions()
-            .deleteWithResponse("scope", "roleDefinitionId", Context.NONE);
+            .deleteWithResponse("scope", "roleDefinitionId", com.azure.core.util.Context.NONE);
     }
 }

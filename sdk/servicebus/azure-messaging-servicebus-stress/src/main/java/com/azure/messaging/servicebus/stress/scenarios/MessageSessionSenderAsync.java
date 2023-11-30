@@ -6,14 +6,15 @@ package com.azure.messaging.servicebus.stress.scenarios;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.stress.util.RunResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
@@ -25,9 +26,6 @@ import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getSende
 @Component("MessageSessionSender")
 public class MessageSessionSenderAsync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderAsync.class);
-
-    @Value("${DURATION_IN_MINUTES:15}")
-    private int durationInMinutes;
 
     @Value("${SEND_SESSIONS:8}")
     private int sessionsToSend;
@@ -42,23 +40,24 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
     private int sendConcurrency;
 
     @Override
-    public void run() {
-        ServiceBusSenderAsyncClient client = getSenderBuilder(options, true).buildAsyncClient();
+    public RunResult run() {
+        AtomicReference<RunResult> result = new AtomicReference<>(RunResult.INCONCLUSIVE);
+        ServiceBusSenderAsyncClient client = toClose(getSenderBuilder(options, true).buildAsyncClient());
 
         final byte[] messagePayload = createMessagePayload(payloadSize);
-        Duration testDuration = Duration.ofMinutes(durationInMinutes);
 
-        RateLimiter rateLimiter = new RateLimiter(sendMessageRatePerSecond, sendConcurrency);
+        RateLimiter rateLimiter = toClose(new RateLimiter(sendMessageRatePerSecond, sendConcurrency));
 
         Flux<ServiceBusMessage> messages = Mono.fromSupplier(() -> new ServiceBusMessage(messagePayload).setSessionId(randomSessionId()))
             .repeat();
 
         messages
-            .take(testDuration)
+            .take(options.getTestDuration())
             .flatMap(msg ->
                 rateLimiter.acquire()
                     .then(client.sendMessage(msg)
                         .onErrorResume(t -> true, t -> {
+                            result.set(RunResult.ERROR);
                             LOGGER.error("error when sending", t);
                             return Mono.empty();
                         })
@@ -68,10 +67,8 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
             .runOn(Schedulers.boundedElastic())
             .subscribe();
 
-        blockingWait(testDuration);
-        LOGGER.info("done");
-        client.close();
-        rateLimiter.close();
+        blockingWait(options.getTestDuration());
+        return result.get();
     }
 
     private String randomSessionId() {

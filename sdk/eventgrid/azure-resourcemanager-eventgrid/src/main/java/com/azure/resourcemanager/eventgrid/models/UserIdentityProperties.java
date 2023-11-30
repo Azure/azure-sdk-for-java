@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information about the user identity. */
+/**
+ * The information about the user identity.
+ */
 @Fluent
 public final class UserIdentityProperties {
     /*
@@ -22,13 +24,15 @@ public final class UserIdentityProperties {
     @JsonProperty(value = "clientId")
     private String clientId;
 
-    /** Creates an instance of UserIdentityProperties class. */
+    /**
+     * Creates an instance of UserIdentityProperties class.
+     */
     public UserIdentityProperties() {
     }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserIdentityProperties {
 
     /**
      * Set the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the UserIdentityProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class UserIdentityProperties {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -57,7 +61,7 @@ public final class UserIdentityProperties {
 
     /**
      * Set the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserIdentityProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class UserIdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

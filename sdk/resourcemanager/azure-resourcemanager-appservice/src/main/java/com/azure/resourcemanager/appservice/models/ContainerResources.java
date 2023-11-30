@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App container resource requirements. */
+/**
+ * Container App container resource requirements.
+ */
 @Fluent
 public final class ContainerResources {
     /*
@@ -22,13 +24,15 @@ public final class ContainerResources {
     @JsonProperty(value = "memory")
     private String memory;
 
-    /** Creates an instance of ContainerResources class. */
+    /**
+     * Creates an instance of ContainerResources class.
+     */
     public ContainerResources() {
     }
 
     /**
      * Get the cpu property: Required CPU in cores, e.g. 0.5.
-     *
+     * 
      * @return the cpu value.
      */
     public Double cpu() {
@@ -37,7 +41,7 @@ public final class ContainerResources {
 
     /**
      * Set the cpu property: Required CPU in cores, e.g. 0.5.
-     *
+     * 
      * @param cpu the cpu value to set.
      * @return the ContainerResources object itself.
      */
@@ -48,7 +52,7 @@ public final class ContainerResources {
 
     /**
      * Get the memory property: Required memory, e.g. "250Mb".
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -57,7 +61,7 @@ public final class ContainerResources {
 
     /**
      * Set the memory property: Required memory, e.g. "250Mb".
-     *
+     * 
      * @param memory the memory value to set.
      * @return the ContainerResources object itself.
      */
@@ -68,7 +72,7 @@ public final class ContainerResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

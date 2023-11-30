@@ -8,17 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesRequest;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
 import com.azure.resourcemanager.applicationinsights.models.WebtestsResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An Application Insights web test definition. */
+/** An Application Insights WebTest definition. */
 @Fluent
 public final class WebTestInner extends WebtestsResource {
     /*
-     * The kind of web test that this web test watches. Choices are ping and
-     * multistep.
+     * The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
      */
     @JsonProperty(value = "kind")
     private WebTestKind kind;
@@ -29,8 +30,12 @@ public final class WebTestInner extends WebtestsResource {
     @JsonProperty(value = "properties")
     private WebTestProperties innerProperties;
 
+    /** Creates an instance of WebTestInner class. */
+    public WebTestInner() {
+    }
+
     /**
-     * Get the kind property: The kind of web test that this web test watches. Choices are ping and multistep.
+     * Get the kind property: The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
      *
      * @return the kind value.
      */
@@ -39,7 +44,7 @@ public final class WebTestInner extends WebtestsResource {
     }
 
     /**
-     * Set the kind property: The kind of web test that this web test watches. Choices are ping and multistep.
+     * Set the kind property: The kind of WebTest that this web test watches. Choices are ping, multistep and standard.
      *
      * @param kind the kind value to set.
      * @return the WebTestInner object itself.
@@ -121,7 +126,7 @@ public final class WebTestInner extends WebtestsResource {
     }
 
     /**
-     * Get the description property: Purpose/user defined descriptive test for this WebTest.
+     * Get the description property: User defined description for this WebTest.
      *
      * @return the description value.
      */
@@ -130,7 +135,7 @@ public final class WebTestInner extends WebtestsResource {
     }
 
     /**
-     * Set the description property: Purpose/user defined descriptive test for this WebTest.
+     * Set the description property: User defined description for this WebTest.
      *
      * @param description the description value to set.
      * @return the WebTestInner object itself.
@@ -213,7 +218,7 @@ public final class WebTestInner extends WebtestsResource {
     }
 
     /**
-     * Get the webTestKind property: The kind of web test this is, valid choices are ping and multistep.
+     * Get the webTestKind property: The kind of web test this is, valid choices are ping, multistep and standard.
      *
      * @return the webTestKind value.
      */
@@ -222,7 +227,7 @@ public final class WebTestInner extends WebtestsResource {
     }
 
     /**
-     * Set the webTestKind property: The kind of web test this is, valid choices are ping and multistep.
+     * Set the webTestKind property: The kind of web test this is, valid choices are ping, multistep and standard.
      *
      * @param webTestKind the webTestKind value to set.
      * @return the WebTestInner object itself.
@@ -315,6 +320,52 @@ public final class WebTestInner extends WebtestsResource {
      */
     public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the request property: The collection of request properties.
+     *
+     * @return the request value.
+     */
+    public WebTestPropertiesRequest request() {
+        return this.innerProperties() == null ? null : this.innerProperties().request();
+    }
+
+    /**
+     * Set the request property: The collection of request properties.
+     *
+     * @param request the request value to set.
+     * @return the WebTestInner object itself.
+     */
+    public WebTestInner withRequest(WebTestPropertiesRequest request) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebTestProperties();
+        }
+        this.innerProperties().withRequest(request);
+        return this;
+    }
+
+    /**
+     * Get the validationRules property: The collection of validation rule properties.
+     *
+     * @return the validationRules value.
+     */
+    public WebTestPropertiesValidationRules validationRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().validationRules();
+    }
+
+    /**
+     * Set the validationRules property: The collection of validation rule properties.
+     *
+     * @param validationRules the validationRules value to set.
+     * @return the WebTestInner object itself.
+     */
+    public WebTestInner withValidationRules(WebTestPropertiesValidationRules validationRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebTestProperties();
+        }
+        this.innerProperties().withValidationRules(validationRules);
+        return this;
     }
 
     /**

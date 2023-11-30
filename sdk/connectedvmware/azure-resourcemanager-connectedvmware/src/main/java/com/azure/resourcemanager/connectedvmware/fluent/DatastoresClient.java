@@ -23,15 +23,13 @@ public interface DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of define the datastore.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
-        String resourceGroupName, String datastoreName, DatastoreInner body);
+    SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(String resourceGroupName, String datastoreName);
 
     /**
      * Implements datastore PUT method.
@@ -50,22 +48,6 @@ public interface DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
         String resourceGroupName, String datastoreName, DatastoreInner body, Context context);
-
-    /**
-     * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreInner create(String resourceGroupName, String datastoreName, DatastoreInner body);
 
     /**
      * Implements datastore PUT method.
@@ -106,21 +88,6 @@ public interface DatastoresClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName);
-
-    /**
-     * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -132,9 +99,9 @@ public interface DatastoresClient {
         String resourceGroupName, String datastoreName, Context context);
 
     /**
-     * Updates a datastore.
+     * Gets a datastore.
      *
-     * <p>API to update certain properties of the datastore resource.
+     * <p>Implements datastore GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
@@ -144,7 +111,7 @@ public interface DatastoresClient {
      * @return define the datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreInner update(String resourceGroupName, String datastoreName);
+    DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName);
 
     /**
      * Updates a datastore.
@@ -165,20 +132,34 @@ public interface DatastoresClient {
         String resourceGroupName, String datastoreName, ResourcePatch body, Context context);
 
     /**
+     * Updates a datastore.
+     *
+     * <p>API to update certain properties of the datastore resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatastoreInner update(String resourceGroupName, String datastoreName);
+
+    /**
      * Deletes an datastore.
      *
      * <p>Implements datastore DELETE method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String datastoreName, Boolean force);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String datastoreName);
 
     /**
      * Deletes an datastore.
@@ -197,21 +178,6 @@ public interface DatastoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String datastoreName, Boolean force, Context context);
-
-    /**
-     * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String datastoreName, Boolean force);
 
     /**
      * Deletes an datastore.

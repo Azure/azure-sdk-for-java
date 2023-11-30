@@ -7,20 +7,20 @@ package com.azure.resourcemanager.servicenetworking.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
-import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Association Subresource of Traffic Controller. */
+/**
+ * Association Subresource of Traffic Controller.
+ */
 @Fluent
 public final class AssociationInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private AssociationProperties innerProperties;
+    private AssociationProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -28,36 +28,53 @@ public final class AssociationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AssociationInner class. */
+    /**
+     * Creates an instance of AssociationInner class.
+     */
     public AssociationInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private AssociationProperties innerProperties() {
-        return this.innerProperties;
+    public AssociationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the AssociationInner object itself.
+     */
+    public AssociationInner withProperties(AssociationProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssociationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AssociationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -65,68 +82,13 @@ public final class AssociationInner extends Resource {
     }
 
     /**
-     * Get the associationType property: Association Type.
-     *
-     * @return the associationType value.
-     */
-    public AssociationType associationType() {
-        return this.innerProperties() == null ? null : this.innerProperties().associationType();
-    }
-
-    /**
-     * Set the associationType property: Association Type.
-     *
-     * @param associationType the associationType value to set.
-     * @return the AssociationInner object itself.
-     */
-    public AssociationInner withAssociationType(AssociationType associationType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssociationProperties();
-        }
-        this.innerProperties().withAssociationType(associationType);
-        return this;
-    }
-
-    /**
-     * Get the subnet property: Association Subnet.
-     *
-     * @return the subnet value.
-     */
-    public AssociationSubnet subnet() {
-        return this.innerProperties() == null ? null : this.innerProperties().subnet();
-    }
-
-    /**
-     * Set the subnet property: Association Subnet.
-     *
-     * @param subnet the subnet value to set.
-     * @return the AssociationInner object itself.
-     */
-    public AssociationInner withSubnet(AssociationSubnet subnet) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssociationProperties();
-        }
-        this.innerProperties().withSubnet(subnet);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning State of Traffic Controller Association Resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

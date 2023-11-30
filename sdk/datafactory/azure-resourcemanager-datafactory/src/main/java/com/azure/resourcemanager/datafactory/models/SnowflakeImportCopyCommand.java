@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Snowflake import command settings. */
+/**
+ * Snowflake import command settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SnowflakeImportCopyCommand")
 @Fluent
@@ -34,7 +36,9 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalFormatOptions;
 
-    /** Creates an instance of SnowflakeImportCopyCommand class. */
+    /**
+     * Creates an instance of SnowflakeImportCopyCommand class.
+     */
     public SnowflakeImportCopyCommand() {
     }
 
@@ -42,7 +46,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Get the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }.
-     *
+     * 
      * @return the additionalCopyOptions value.
      */
     public Map<String, Object> additionalCopyOptions() {
@@ -53,7 +57,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Set the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:
      * key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }.
-     *
+     * 
      * @param additionalCopyOptions the additionalCopyOptions value to set.
      * @return the SnowflakeImportCopyCommand object itself.
      */
@@ -66,7 +70,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Get the additionalFormatOptions property: Additional format options directly passed to snowflake Copy Command.
      * Type: key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }.
-     *
+     * 
      * @return the additionalFormatOptions value.
      */
     public Map<String, Object> additionalFormatOptions() {
@@ -77,7 +81,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
      * Set the additionalFormatOptions property: Additional format options directly passed to snowflake Copy Command.
      * Type: key value pairs (value should be string type) (or Expression with resultType object). Example:
      * "additionalFormatOptions": { "FORCE": "TRUE", "LOAD_UNCERTAIN_FILES": "'FALSE'" }.
-     *
+     * 
      * @param additionalFormatOptions the additionalFormatOptions value to set.
      * @return the SnowflakeImportCopyCommand object itself.
      */
@@ -88,7 +92,7 @@ public final class SnowflakeImportCopyCommand extends ImportSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

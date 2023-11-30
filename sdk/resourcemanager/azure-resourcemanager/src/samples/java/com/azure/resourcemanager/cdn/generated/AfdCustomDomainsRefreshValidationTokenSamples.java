@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdCustomDomains RefreshValidationToken. */
 public final class AfdCustomDomainsRefreshValidationTokenSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDCustomDomains_RefreshValidationToken.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDCustomDomains_RefreshValidationToken.json
      */
     /**
      * Sample code: AFDCustomDomains_Delete.
@@ -22,6 +20,6 @@ public final class AfdCustomDomainsRefreshValidationTokenSamples {
             .manager()
             .serviceClient()
             .getAfdCustomDomains()
-            .refreshValidationToken("RG", "profile1", "domain1", Context.NONE);
+            .refreshValidationToken("RG", "profile1", "domain1", com.azure.core.util.Context.NONE);
     }
 }

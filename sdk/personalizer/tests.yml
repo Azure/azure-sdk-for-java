@@ -10,8 +10,8 @@ stages:
           groupId: com.azure
           safeName: azureaipersonalizer
       EnvVars:
-          AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-          AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-          AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
+          AZURE_TENANT_ID: $(PERSONALIZER_TENANT_ID)
+          AZURE_CLIENT_ID: $(PERSONALIZER_CLIENT_ID)
+          AZURE_CLIENT_SECRET: $(PERSONALIZER_CLIENT_SECRET)
           PERSONALIZER_ENDPOINT_STATIC: $(java-personalizer-test-singleslot-endpoint)
           PERSONALIZER_API_KEY_STATIC: $(java-personalizer-test-singleslot-api-key)

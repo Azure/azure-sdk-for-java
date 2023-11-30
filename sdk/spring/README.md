@@ -4,6 +4,7 @@ Spring Cloud Azure offers a convenient way to interact with **Azure** provided s
 
  - [Reference doc](https://aka.ms/spring/docs).
  - [Migration guide for 4.0](https://aka.ms/spring/docs#migration-guide-for-4-0).
+ - [Spring Boot Support Status](https://aka.ms/spring/versions)
 
 ## Build from Source
 
@@ -54,7 +55,7 @@ mvn clean install `
 
 ## Modules
 
-There're several modules in Spring Cloud Azure. Here is a quick review:
+There are several modules in Spring Cloud Azure. Here is a quick review:
 
 ### spring-cloud-azure-autoconfigure
 
@@ -71,7 +72,7 @@ The following application starters are provided by Spring Cloud Azure under the 
 | Name                                                 | Description                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------|
 | spring-cloud-azure-starter                           | Core starter, including auto-configuration support                 |
-| spring-cloud-azure-starter-active-directory          | Starter for using Azure Active Directory with Spring Security      |
+| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security          |
 | spring-cloud-azure-starter-active-directory-b2c      | Starter for using Azure Active Directory B2C with Spring Security  |
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
@@ -138,7 +139,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.11.0</version>
+            <version>4.13.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -146,6 +147,45 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
 </dependencyManagement>
 ```
 [//]: # ({x-version-update-end})
+
+## Spring Boot 3 Support
+
+The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [feature/spring-boot-3](https://github.com/Azure/azure-sdk-for-java/tree/feature/spring-boot-3) branch.
+
+#### Spring AOT and Spring native images
+
+Azure SDK JARs are signed. [Spring Boot 3 does not support today signed JARs](https://github.com/Azure/azure-sdk-for-java/issues/30320) when you run your application with [AOT mode on a JVM](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.efficient.aot) or you [build a native image](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html).
+
+You can disable the JAR signature verification in the following way for GraalVM Native Build Tools:
+
+* Maven
+```xml
+<plugin>
+    <groupId>org.graalvm.buildtools</groupId>
+    <artifactId>native-maven-plugin</artifactId>
+    <configuration>
+        <buildArgs>
+            <arg>-Djava.security.properties=src/main/resources/custom.security</arg>
+        </buildArgs>
+    </configuration>
+</plugin>
+```
+
+* Gradle:
+```groovy
+graalvmNative {
+  binaries {
+    main {
+      buildArgs('-Djava.security.properties=' + file("$rootDir/custom.security").absolutePath)
+    }
+  }
+}
+```
+
+You have to create a `custom.security file` in `src/main/resources` with the following content:
+```
+jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
+```
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

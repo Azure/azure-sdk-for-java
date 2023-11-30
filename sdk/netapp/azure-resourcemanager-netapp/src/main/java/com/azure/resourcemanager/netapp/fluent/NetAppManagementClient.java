@@ -108,13 +108,6 @@ public interface NetAppManagementClient {
     BackupsClient getBackups();
 
     /**
-     * Gets the AccountBackupsClient object to access its operations.
-     *
-     * @return the AccountBackupsClient object.
-     */
-    AccountBackupsClient getAccountBackups();
-
-    /**
      * Gets the BackupPoliciesClient object to access its operations.
      *
      * @return the BackupPoliciesClient object.

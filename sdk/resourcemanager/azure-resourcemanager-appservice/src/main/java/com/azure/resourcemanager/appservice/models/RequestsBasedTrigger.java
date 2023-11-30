@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger based on total requests. */
+/**
+ * Trigger based on total requests.
+ */
 @Fluent
 public final class RequestsBasedTrigger {
     /*
@@ -22,13 +24,15 @@ public final class RequestsBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
-    /** Creates an instance of RequestsBasedTrigger class. */
+    /**
+     * Creates an instance of RequestsBasedTrigger class.
+     */
     public RequestsBasedTrigger() {
     }
 
     /**
      * Get the count property: Request Count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -37,7 +41,7 @@ public final class RequestsBasedTrigger {
 
     /**
      * Set the count property: Request Count.
-     *
+     * 
      * @param count the count value to set.
      * @return the RequestsBasedTrigger object itself.
      */
@@ -48,7 +52,7 @@ public final class RequestsBasedTrigger {
 
     /**
      * Get the timeInterval property: Time interval.
-     *
+     * 
      * @return the timeInterval value.
      */
     public String timeInterval() {
@@ -57,7 +61,7 @@ public final class RequestsBasedTrigger {
 
     /**
      * Set the timeInterval property: Time interval.
-     *
+     * 
      * @param timeInterval the timeInterval value to set.
      * @return the RequestsBasedTrigger object itself.
      */
@@ -68,7 +72,7 @@ public final class RequestsBasedTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

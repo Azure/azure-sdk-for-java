@@ -22,6 +22,30 @@ public final class ProfileResourceState extends ExpandableStringEnum<ProfileReso
     /** Static value Disabled for ProfileResourceState. */
     public static final ProfileResourceState DISABLED = fromString("Disabled");
 
+    /** Static value Migrating for ProfileResourceState. */
+    public static final ProfileResourceState MIGRATING = fromString("Migrating");
+
+    /** Static value Migrated for ProfileResourceState. */
+    public static final ProfileResourceState MIGRATED = fromString("Migrated");
+
+    /** Static value PendingMigrationCommit for ProfileResourceState. */
+    public static final ProfileResourceState PENDING_MIGRATION_COMMIT = fromString("PendingMigrationCommit");
+
+    /** Static value CommittingMigration for ProfileResourceState. */
+    public static final ProfileResourceState COMMITTING_MIGRATION = fromString("CommittingMigration");
+
+    /** Static value AbortingMigration for ProfileResourceState. */
+    public static final ProfileResourceState ABORTING_MIGRATION = fromString("AbortingMigration");
+
+    /**
+     * Creates a new instance of ProfileResourceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProfileResourceState() {
+    }
+
     /**
      * Creates or finds a ProfileResourceState from its string representation.
      *

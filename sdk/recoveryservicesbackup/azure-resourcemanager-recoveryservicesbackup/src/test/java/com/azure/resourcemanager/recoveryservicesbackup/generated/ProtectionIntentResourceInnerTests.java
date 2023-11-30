@@ -65,6 +65,7 @@ public final class ProtectionIntentResourceInnerTests {
         Assertions.assertEquals("nryrtihf", model.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

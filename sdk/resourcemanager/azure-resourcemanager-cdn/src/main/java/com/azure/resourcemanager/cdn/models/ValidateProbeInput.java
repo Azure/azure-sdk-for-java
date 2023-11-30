@@ -17,6 +17,10 @@ public final class ValidateProbeInput {
     @JsonProperty(value = "probeURL", required = true)
     private String probeUrl;
 
+    /** Creates an instance of ValidateProbeInput class. */
+    public ValidateProbeInput() {
+    }
+
     /**
      * Get the probeUrl property: The probe URL to validate.
      *

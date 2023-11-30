@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Execution policy for an execute pipeline activity. */
+/**
+ * Execution policy for an execute pipeline activity.
+ */
 @Fluent
 public final class ExecutePipelineActivityPolicy {
     /*
@@ -24,16 +26,19 @@ public final class ExecutePipelineActivityPolicy {
     /*
      * Execution policy for an execute pipeline activity.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ExecutePipelineActivityPolicy class. */
+    /**
+     * Creates an instance of ExecutePipelineActivityPolicy class.
+     */
     public ExecutePipelineActivityPolicy() {
     }
 
     /**
      * Get the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @return the secureInput value.
      */
     public Boolean secureInput() {
@@ -43,7 +48,7 @@ public final class ExecutePipelineActivityPolicy {
     /**
      * Set the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @param secureInput the secureInput value to set.
      * @return the ExecutePipelineActivityPolicy object itself.
      */
@@ -54,7 +59,7 @@ public final class ExecutePipelineActivityPolicy {
 
     /**
      * Get the additionalProperties property: Execution policy for an execute pipeline activity.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -64,7 +69,7 @@ public final class ExecutePipelineActivityPolicy {
 
     /**
      * Set the additionalProperties property: Execution policy for an execute pipeline activity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ExecutePipelineActivityPolicy object itself.
      */
@@ -83,7 +88,7 @@ public final class ExecutePipelineActivityPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

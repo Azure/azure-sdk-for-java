@@ -63,8 +63,7 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
     public interface FederatedIdentityCredentialsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
-                + "/userAssignedIdentities/{resourceName}/federatedIdentityCredentials")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FederatedIdentityCredentialsListResult>> list(
@@ -80,9 +79,7 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
-                + "/userAssignedIdentities/{resourceName}/federatedIdentityCredentials"
-                + "/{federatedIdentityCredentialResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FederatedIdentityCredentialInner>> createOrUpdate(
@@ -98,9 +95,7 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
-                + "/userAssignedIdentities/{resourceName}/federatedIdentityCredentials"
-                + "/{federatedIdentityCredentialResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FederatedIdentityCredentialInner>> get(
@@ -115,9 +110,7 @@ public final class FederatedIdentityCredentialsClientImpl implements FederatedId
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity"
-                + "/userAssignedIdentities/{resourceName}/federatedIdentityCredentials"
-                + "/{federatedIdentityCredentialResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}/federatedIdentityCredentials/{federatedIdentityCredentialResourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(

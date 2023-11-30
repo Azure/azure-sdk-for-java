@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.CdnWebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.cdn.models.ActionType;
 import com.azure.resourcemanager.cdn.models.CustomRule;
@@ -30,7 +29,7 @@ import java.util.Arrays;
 /** Samples for Policies CreateOrUpdate. */
 public final class PoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/WafPolicyCreateOrUpdate.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/WafPolicyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates specific policy.
@@ -141,6 +140,6 @@ public final class PoliciesCreateOrUpdateSamples {
                                                                             .withEnabledState(
                                                                                 ManagedRuleEnabledState
                                                                                     .DISABLED)))))))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

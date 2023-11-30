@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.DrillSource;
 public final class DrillSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DrillSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DrillSource\",\"query\":\"dataxxbneiobub\",\"queryTimeout\":\"datayemppwkryz\",\"additionalColumns\":\"dataqpk\",\"sourceRetryCount\":\"datauv\",\"sourceRetryWait\":\"datai\",\"maxConcurrentConnections\":\"datazbhmyhjg\",\"disableMetricsCollection\":\"datayernckggwiquka\",\"\":{\"fttmjomuwl\":\"datakeolzizfbunzmx\",\"fzgpvdlx\":\"datavjwkpznsfbit\",\"clcuxzl\":\"datayo\",\"ggjeq\":\"datanwmgqc\"}}")
-                .toObject(DrillSource.class);
+        DrillSource model = BinaryData.fromString(
+            "{\"type\":\"DrillSource\",\"query\":\"datacrnpscfke\",\"queryTimeout\":\"dataltxefamimgjuvjv\",\"additionalColumns\":\"dataec\",\"sourceRetryCount\":\"dataennledhoukfj\",\"sourceRetryWait\":\"datactdnnqokqeuzs\",\"maxConcurrentConnections\":\"datayj\",\"disableMetricsCollection\":\"dataywijnlpeczqb\",\"\":{\"vphr\":\"datakqydthfcwycm\",\"sqlekchjdh\":\"dataufnfovyl\",\"fwqtcownx\":\"dataske\"}}")
+            .toObject(DrillSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillSource model =
-            new DrillSource()
-                .withSourceRetryCount("datauv")
-                .withSourceRetryWait("datai")
-                .withMaxConcurrentConnections("datazbhmyhjg")
-                .withDisableMetricsCollection("datayernckggwiquka")
-                .withQueryTimeout("datayemppwkryz")
-                .withAdditionalColumns("dataqpk")
-                .withQuery("dataxxbneiobub");
+        DrillSource model
+            = new DrillSource().withSourceRetryCount("dataennledhoukfj").withSourceRetryWait("datactdnnqokqeuzs")
+                .withMaxConcurrentConnections("datayj").withDisableMetricsCollection("dataywijnlpeczqb")
+                .withQueryTimeout("dataltxefamimgjuvjv").withAdditionalColumns("dataec").withQuery("datacrnpscfke");
         model = BinaryData.fromObject(model).toObject(DrillSource.class);
     }
 }

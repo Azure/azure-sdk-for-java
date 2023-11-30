@@ -26,8 +26,8 @@ public final class TriggersImpl implements Triggers {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public TriggersImpl(
-        TriggersClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public TriggersImpl(TriggersClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,30 +38,27 @@ public final class TriggersImpl implements Triggers {
     }
 
     public PagedIterable<TriggerResource> listByFactory(String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<TriggerResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+        PagedIterable<TriggerResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
         return Utils.mapPage(inner, inner1 -> new TriggerResourceImpl(inner1, this.manager()));
     }
 
-    public Response<TriggerQueryResponse> queryByFactoryWithResponse(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context) {
-        Response<TriggerQueryResponseInner> inner =
-            this.serviceClient().queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, context);
+    public Response<TriggerQueryResponse> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
+        TriggerFilterParameters filterParameters, Context context) {
+        Response<TriggerQueryResponseInner> inner = this.serviceClient().queryByFactoryWithResponse(resourceGroupName,
+            factoryName, filterParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TriggerQueryResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public TriggerQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
-        TriggerQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
+    public TriggerQueryResponse queryByFactory(String resourceGroupName, String factoryName,
+        TriggerFilterParameters filterParameters) {
+        TriggerQueryResponseInner inner
+            = this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
         if (inner != null) {
             return new TriggerQueryResponseImpl(inner, this.manager());
         } else {
@@ -69,15 +66,12 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public Response<TriggerResource> getWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context) {
-        Response<TriggerResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, context);
+    public Response<TriggerResource> getWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        String ifNoneMatch, Context context) {
+        Response<TriggerResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TriggerResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -93,8 +87,8 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, triggerName, context);
     }
 
@@ -102,10 +96,10 @@ public final class TriggersImpl implements Triggers {
         this.serviceClient().delete(resourceGroupName, factoryName, triggerName);
     }
 
-    public TriggerSubscriptionOperationStatus subscribeToEvents(
-        String resourceGroupName, String factoryName, String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().subscribeToEvents(resourceGroupName, factoryName, triggerName);
+    public TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
+        String triggerName) {
+        TriggerSubscriptionOperationStatusInner inner
+            = this.serviceClient().subscribeToEvents(resourceGroupName, factoryName, triggerName);
         if (inner != null) {
             return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
@@ -113,10 +107,10 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public TriggerSubscriptionOperationStatus subscribeToEvents(
-        String resourceGroupName, String factoryName, String triggerName, Context context) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().subscribeToEvents(resourceGroupName, factoryName, triggerName, context);
+    public TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
+        String triggerName, Context context) {
+        TriggerSubscriptionOperationStatusInner inner
+            = this.serviceClient().subscribeToEvents(resourceGroupName, factoryName, triggerName, context);
         if (inner != null) {
             return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
@@ -124,27 +118,22 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, Context context) {
-        Response<TriggerSubscriptionOperationStatusInner> inner =
-            this
-                .serviceClient()
-                .getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, context);
+    public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(String resourceGroupName,
+        String factoryName, String triggerName, Context context) {
+        Response<TriggerSubscriptionOperationStatusInner> inner = this.serviceClient()
+            .getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TriggerSubscriptionOperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
+    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus(String resourceGroupName, String factoryName,
+        String triggerName) {
+        TriggerSubscriptionOperationStatusInner inner
+            = this.serviceClient().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
         if (inner != null) {
             return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
@@ -152,10 +141,10 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public TriggerSubscriptionOperationStatus unsubscribeFromEvents(
-        String resourceGroupName, String factoryName, String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().unsubscribeFromEvents(resourceGroupName, factoryName, triggerName);
+    public TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
+        String triggerName) {
+        TriggerSubscriptionOperationStatusInner inner
+            = this.serviceClient().unsubscribeFromEvents(resourceGroupName, factoryName, triggerName);
         if (inner != null) {
             return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
@@ -163,10 +152,10 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public TriggerSubscriptionOperationStatus unsubscribeFromEvents(
-        String resourceGroupName, String factoryName, String triggerName, Context context) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().unsubscribeFromEvents(resourceGroupName, factoryName, triggerName, context);
+    public TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
+        String triggerName, Context context) {
+        TriggerSubscriptionOperationStatusInner inner
+            = this.serviceClient().unsubscribeFromEvents(resourceGroupName, factoryName, triggerName, context);
         if (inner != null) {
             return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
@@ -193,54 +182,39 @@ public final class TriggersImpl implements Triggers {
     public TriggerResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
+        return this.getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
             .getValue();
     }
 
     public Response<TriggerResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, context);
     }
@@ -248,25 +222,18 @@ public final class TriggersImpl implements Triggers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
@@ -274,25 +241,18 @@ public final class TriggersImpl implements Triggers {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String triggerName = Utils.getValueFromIdByName(id, "triggers");
         if (triggerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, factoryName, triggerName, context);
     }

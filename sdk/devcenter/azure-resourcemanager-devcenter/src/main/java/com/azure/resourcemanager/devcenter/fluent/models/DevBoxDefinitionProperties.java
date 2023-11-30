@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.CatalogResourceValidationStatus;
 import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.ImageValidationErrorDetails;
@@ -33,6 +34,12 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
      */
     @JsonProperty(value = "imageValidationErrorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ImageValidationErrorDetails imageValidationErrorDetails;
+
+    /*
+     * Validation status for the Dev Box Definition.
+     */
+    @JsonProperty(value = "validationStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private CatalogResourceValidationStatus validationStatus;
 
     /*
      * Image reference information for the currently active image (only populated during updates).
@@ -70,6 +77,15 @@ public final class DevBoxDefinitionProperties extends DevBoxDefinitionUpdateProp
      */
     public ImageValidationErrorDetails imageValidationErrorDetails() {
         return this.imageValidationErrorDetails;
+    }
+
+    /**
+     * Get the validationStatus property: Validation status for the Dev Box Definition.
+     *
+     * @return the validationStatus value.
+     */
+    public CatalogResourceValidationStatus validationStatus() {
+        return this.validationStatus;
     }
 
     /**

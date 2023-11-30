@@ -9,7 +9,9 @@ import com.azure.resourcemanager.nginx.fluent.models.NginxCertificateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NginxCertificateListResponse model. */
+/**
+ * The NginxCertificateListResponse model.
+ */
 @Fluent
 public final class NginxCertificateListResponse {
     /*
@@ -24,13 +26,15 @@ public final class NginxCertificateListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NginxCertificateListResponse class. */
+    /**
+     * Creates an instance of NginxCertificateListResponse class.
+     */
     public NginxCertificateListResponse() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<NginxCertificateInner> value() {
@@ -39,7 +43,7 @@ public final class NginxCertificateListResponse {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the NginxCertificateListResponse object itself.
      */
@@ -50,7 +54,7 @@ public final class NginxCertificateListResponse {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NginxCertificateListResponse {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NginxCertificateListResponse object itself.
      */
@@ -70,7 +74,7 @@ public final class NginxCertificateListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

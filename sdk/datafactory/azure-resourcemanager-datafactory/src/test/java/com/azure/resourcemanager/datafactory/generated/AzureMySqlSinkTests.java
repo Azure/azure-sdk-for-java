@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureMySqlSink;
 public final class AzureMySqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMySqlSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"dataefvboxvwtln\",\"writeBatchSize\":\"datashtujaqpkupnr\",\"writeBatchTimeout\":\"datajeypdk\",\"sinkRetryCount\":\"datacxzsynbdrqi\",\"sinkRetryWait\":\"dataihg\",\"maxConcurrentConnections\":\"datahyebwg\",\"disableMetricsCollection\":\"dataovsvjxnsor\",\"\":{\"bo\":\"dataarhlyhgiisnfaxt\"}}")
-                .toObject(AzureMySqlSink.class);
+        AzureMySqlSink model = BinaryData.fromString(
+            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datasxjvublouelfy\",\"writeBatchSize\":\"datab\",\"writeBatchTimeout\":\"datablpdwckmnpzub\",\"sinkRetryCount\":\"datad\",\"sinkRetryWait\":\"datag\",\"maxConcurrentConnections\":\"datargngcpbshqzzlc\",\"disableMetricsCollection\":\"datamnryxnklfsw\",\"\":{\"peuqyzfdsu\":\"dataigxsyxhygczab\",\"sspcutgkm\":\"datapcdia\",\"siwzzkaeqrnglgi\":\"datasqaqgllnhg\"}}")
+            .toObject(AzureMySqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSink model =
-            new AzureMySqlSink()
-                .withWriteBatchSize("datashtujaqpkupnr")
-                .withWriteBatchTimeout("datajeypdk")
-                .withSinkRetryCount("datacxzsynbdrqi")
-                .withSinkRetryWait("dataihg")
-                .withMaxConcurrentConnections("datahyebwg")
-                .withDisableMetricsCollection("dataovsvjxnsor")
-                .withPreCopyScript("dataefvboxvwtln");
+        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("datab")
+            .withWriteBatchTimeout("datablpdwckmnpzub").withSinkRetryCount("datad").withSinkRetryWait("datag")
+            .withMaxConcurrentConnections("datargngcpbshqzzlc").withDisableMetricsCollection("datamnryxnklfsw")
+            .withPreCopyScript("datasxjvublouelfy");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSink.class);
     }
 }

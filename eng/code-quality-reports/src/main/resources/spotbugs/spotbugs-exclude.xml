@@ -134,14 +134,6 @@
         <Method name="getDataFromMessageBody"/>
       </And>
       <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.Base64UrlJsonDeserializer"/>
-        <Method name="deserialize"/>
-      </And>
-      <And>
-        <Class name="com.azure.security.keyvault.keys.implementation.ByteExtensions"/>
-        <Method name="clone"/>
-      </And>
-      <And>
         <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
         <Method name="decode"/>
       </And>
@@ -185,6 +177,15 @@
         <Class name="com.azure.core.serializer.json.jackson.implementation.JacksonJsonReader"/>
         <Method name="getBinary"/>
       </And>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.BackupKeyResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.JsonWebKey"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationResult"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyReleasePolicy"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyRestoreParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeySignParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters"/>
+      <Class name="com.azure.security.keyvault.keys.implementation.models.RandomBytes"/>
     </Or>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -636,7 +637,6 @@
       <Class name="com.azure.security.keyvault.secrets.models.KeyVaultSecret"/>
       <Class name="com.azure.security.keyvault.secrets.models.SecretProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.DeletedKey"/>
-      <Class name="com.azure.security.keyvault.keys.cryptography.implementation.SecretKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyVaultKey"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyProperties"/>
       <Class name="com.azure.security.keyvault.keys.models.KeyRotationPolicy"/>
@@ -2712,4 +2712,6 @@
     <Method name="serializeRequest"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
+
+  <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>

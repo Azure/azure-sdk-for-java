@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ResourceHealthMetadata resource specific properties. */
+/**
+ * ResourceHealthMetadata resource specific properties.
+ */
 @Fluent
 public final class ResourceHealthMetadataProperties {
     /*
@@ -22,13 +24,15 @@ public final class ResourceHealthMetadataProperties {
     @JsonProperty(value = "signalAvailability")
     private Boolean signalAvailability;
 
-    /** Creates an instance of ResourceHealthMetadataProperties class. */
+    /**
+     * Creates an instance of ResourceHealthMetadataProperties class.
+     */
     public ResourceHealthMetadataProperties() {
     }
 
     /**
      * Get the category property: The category that the resource matches in the RHC Policy File.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -37,7 +41,7 @@ public final class ResourceHealthMetadataProperties {
 
     /**
      * Set the category property: The category that the resource matches in the RHC Policy File.
-     *
+     * 
      * @param category the category value to set.
      * @return the ResourceHealthMetadataProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class ResourceHealthMetadataProperties {
 
     /**
      * Get the signalAvailability property: Is there a health signal for the resource.
-     *
+     * 
      * @return the signalAvailability value.
      */
     public Boolean signalAvailability() {
@@ -57,7 +61,7 @@ public final class ResourceHealthMetadataProperties {
 
     /**
      * Set the signalAvailability property: Is there a health signal for the resource.
-     *
+     * 
      * @param signalAvailability the signalAvailability value to set.
      * @return the ResourceHealthMetadataProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class ResourceHealthMetadataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

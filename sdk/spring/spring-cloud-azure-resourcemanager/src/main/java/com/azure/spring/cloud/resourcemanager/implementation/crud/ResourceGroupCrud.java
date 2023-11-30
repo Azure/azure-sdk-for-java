@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 /**
  * Resource manager for resource group.
  */
-public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, String> {
+public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, String, Object> {
 
     /**
      * Creates a new instance of {@link ResourceGroupCrud}.

@@ -17,38 +17,38 @@ public final class ArtifactInstallPropertiesTests {
         ArtifactInstallProperties model =
             BinaryData
                 .fromString(
-                    "{\"artifactId\":\"vk\",\"artifactTitle\":\"pqvujzraehtwdwrf\",\"parameters\":[{\"name\":\"byrcdlbhshfwp\",\"value\":\"cstwity\"}],\"status\":\"evxccedcp\",\"deploymentStatusMessage\":\"dyodnwzxltj\",\"vmExtensionStatusMessage\":\"nhltiugcxn\",\"installTime\":\"2021-08-23T04:40:03Z\"}")
+                    "{\"artifactId\":\"gwfqatmt\",\"artifactTitle\":\"tmdvypgikdgs\",\"parameters\":[{\"name\":\"birryuzhl\",\"value\":\"joqrvqqaatj\"}],\"status\":\"rv\",\"deploymentStatusMessage\":\"upmfiibfg\",\"vmExtensionStatusMessage\":\"ioolvrwxkvtkkgll\",\"installTime\":\"2021-06-08T06:14:34Z\"}")
                 .toObject(ArtifactInstallProperties.class);
-        Assertions.assertEquals("vk", model.artifactId());
-        Assertions.assertEquals("pqvujzraehtwdwrf", model.artifactTitle());
-        Assertions.assertEquals("byrcdlbhshfwp", model.parameters().get(0).name());
-        Assertions.assertEquals("cstwity", model.parameters().get(0).value());
-        Assertions.assertEquals("evxccedcp", model.status());
-        Assertions.assertEquals("dyodnwzxltj", model.deploymentStatusMessage());
-        Assertions.assertEquals("nhltiugcxn", model.vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T04:40:03Z"), model.installTime());
+        Assertions.assertEquals("gwfqatmt", model.artifactId());
+        Assertions.assertEquals("tmdvypgikdgs", model.artifactTitle());
+        Assertions.assertEquals("birryuzhl", model.parameters().get(0).name());
+        Assertions.assertEquals("joqrvqqaatj", model.parameters().get(0).value());
+        Assertions.assertEquals("rv", model.status());
+        Assertions.assertEquals("upmfiibfg", model.deploymentStatusMessage());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T06:14:34Z"), model.installTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArtifactInstallProperties model =
             new ArtifactInstallProperties()
-                .withArtifactId("vk")
-                .withArtifactTitle("pqvujzraehtwdwrf")
+                .withArtifactId("gwfqatmt")
+                .withArtifactTitle("tmdvypgikdgs")
                 .withParameters(
-                    Arrays.asList(new ArtifactParameterProperties().withName("byrcdlbhshfwp").withValue("cstwity")))
-                .withStatus("evxccedcp")
-                .withDeploymentStatusMessage("dyodnwzxltj")
-                .withVmExtensionStatusMessage("nhltiugcxn")
-                .withInstallTime(OffsetDateTime.parse("2021-08-23T04:40:03Z"));
+                    Arrays.asList(new ArtifactParameterProperties().withName("birryuzhl").withValue("joqrvqqaatj")))
+                .withStatus("rv")
+                .withDeploymentStatusMessage("upmfiibfg")
+                .withVmExtensionStatusMessage("ioolvrwxkvtkkgll")
+                .withInstallTime(OffsetDateTime.parse("2021-06-08T06:14:34Z"));
         model = BinaryData.fromObject(model).toObject(ArtifactInstallProperties.class);
-        Assertions.assertEquals("vk", model.artifactId());
-        Assertions.assertEquals("pqvujzraehtwdwrf", model.artifactTitle());
-        Assertions.assertEquals("byrcdlbhshfwp", model.parameters().get(0).name());
-        Assertions.assertEquals("cstwity", model.parameters().get(0).value());
-        Assertions.assertEquals("evxccedcp", model.status());
-        Assertions.assertEquals("dyodnwzxltj", model.deploymentStatusMessage());
-        Assertions.assertEquals("nhltiugcxn", model.vmExtensionStatusMessage());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-23T04:40:03Z"), model.installTime());
+        Assertions.assertEquals("gwfqatmt", model.artifactId());
+        Assertions.assertEquals("tmdvypgikdgs", model.artifactTitle());
+        Assertions.assertEquals("birryuzhl", model.parameters().get(0).name());
+        Assertions.assertEquals("joqrvqqaatj", model.parameters().get(0).value());
+        Assertions.assertEquals("rv", model.status());
+        Assertions.assertEquals("upmfiibfg", model.deploymentStatusMessage());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", model.vmExtensionStatusMessage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T06:14:34Z"), model.installTime());
     }
 }

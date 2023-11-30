@@ -43,26 +43,29 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KubeEnvironmentsClient. */
-public final class KubeEnvironmentsClientImpl
-    implements InnerSupportsGet<KubeEnvironmentInner>,
-        InnerSupportsListing<KubeEnvironmentInner>,
-        InnerSupportsDelete<Void>,
-        KubeEnvironmentsClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in KubeEnvironmentsClient.
+ */
+public final class KubeEnvironmentsClientImpl implements InnerSupportsGet<KubeEnvironmentInner>,
+    InnerSupportsListing<KubeEnvironmentInner>, InnerSupportsDelete<Void>, KubeEnvironmentsClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KubeEnvironmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of KubeEnvironmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KubeEnvironmentsClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(KubeEnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(KubeEnvironmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,222 +76,158 @@ public final class KubeEnvironmentsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface KubeEnvironmentsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/kubeEnvironments")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<KubeEnvironmentCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<KubeEnvironmentCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<KubeEnvironmentCollection>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<KubeEnvironmentCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<KubeEnvironmentInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<KubeEnvironmentInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") KubeEnvironmentInner kubeEnvironmentEnvelope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<KubeEnvironmentInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<KubeEnvironmentInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") KubeEnvironmentPatchResource kubeEnvironmentEnvelope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<KubeEnvironmentCollection>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<KubeEnvironmentCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubeEnvironmentInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<KubeEnvironmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<KubeEnvironmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubeEnvironmentInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kubernetes Environments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KubeEnvironmentInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -297,15 +236,15 @@ public final class KubeEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubeEnvironmentInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Kubernetes Environments as paginated response with {@link PagedIterable}.
@@ -317,9 +256,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Get all Kubernetes Environments for a subscription.
-     *
-     * <p>Description for Get all Kubernetes Environments for a subscription.
-     *
+     * 
+     * Description for Get all Kubernetes Environments for a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -333,116 +272,81 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<KubeEnvironmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<KubeEnvironmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -451,16 +355,15 @@ public final class KubeEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KubeEnvironmentInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,16 +373,15 @@ public final class KubeEnvironmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubeEnvironmentInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -493,9 +395,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Get all the Kubernetes Environments in a resource group.
-     *
-     * <p>Description for Get all the Kubernetes Environments in a resource group.
-     *
+     * 
+     * Description for Get all the Kubernetes Environments in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,25 +412,23 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Get the properties of a Kubernetes Environment.
-     *
-     * <p>Description for Get the properties of a Kubernetes Environment.
-     *
+     * 
+     * Description for Get the properties of a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name) {
+    public Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -538,32 +438,21 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the properties of a Kubernetes Environment.
-     *
-     * <p>Description for Get the properties of a Kubernetes Environment.
-     *
+     * 
+     * Description for Get the properties of a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -571,16 +460,14 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<KubeEnvironmentInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,36 +477,27 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get the properties of a Kubernetes Environment.
-     *
-     * <p>Description for Get the properties of a Kubernetes Environment.
-     *
+     * 
+     * Description for Get the properties of a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KubeEnvironmentInner> getByResourceGroupAsync(String resourceGroupName, String name) {
@@ -629,9 +507,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Get the properties of a Kubernetes Environment.
-     *
-     * <p>Description for Get the properties of a Kubernetes Environment.
-     *
+     * 
+     * Description for Get the properties of a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -641,16 +519,16 @@ public final class KubeEnvironmentsClientImpl
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KubeEnvironmentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<KubeEnvironmentInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Get the properties of a Kubernetes Environment.
-     *
-     * <p>Description for Get the properties of a Kubernetes Environment.
-     *
+     * 
+     * Description for Get the properties of a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -665,9 +543,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -675,16 +553,14 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -694,40 +570,27 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (kubeEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
         } else {
             kubeEnvironmentEnvelope.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            kubeEnvironmentEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), kubeEnvironmentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -736,16 +599,14 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -755,37 +616,26 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (kubeEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
         } else {
             kubeEnvironmentEnvelope.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                kubeEnvironmentEnvelope,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), kubeEnvironmentEnvelope, accept, context);
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -793,28 +643,22 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     *     Service.
+     * Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope);
-        return this
-            .client
-            .<KubeEnvironmentInner, KubeEnvironmentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                KubeEnvironmentInner.class,
-                KubeEnvironmentInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope);
+        return this.client.<KubeEnvironmentInner, KubeEnvironmentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            KubeEnvironmentInner.class, KubeEnvironmentInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -823,25 +667,23 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     *     Service.
+     * Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context);
-        return this
-            .client
-            .<KubeEnvironmentInner, KubeEnvironmentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), KubeEnvironmentInner.class, KubeEnvironmentInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context);
+        return this.client.<KubeEnvironmentInner, KubeEnvironmentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            KubeEnvironmentInner.class, KubeEnvironmentInner.class, context);
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -849,19 +691,19 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     *     Service.
+     * Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
+    public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner>
+        beginCreateOrUpdate(String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).getSyncPoller();
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -870,7 +712,7 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a Kubernetes cluster specialized for web workloads by Azure App
-     *     Service.
+     * Service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubeEnvironmentInner>, KubeEnvironmentInner> beginCreateOrUpdate(
@@ -880,9 +722,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -890,21 +732,20 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KubeEnvironmentInner> createOrUpdateAsync(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope)
-            .last()
+    public Mono<KubeEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -913,21 +754,20 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<KubeEnvironmentInner> createOrUpdateAsync(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context)
-            .last()
+    private Mono<KubeEnvironmentInner> createOrUpdateAsync(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -937,16 +777,16 @@ public final class KubeEnvironmentsClientImpl
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KubeEnvironmentInner createOrUpdate(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope) {
+    public KubeEnvironmentInner createOrUpdate(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope) {
         return createOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope).block();
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -957,16 +797,16 @@ public final class KubeEnvironmentsClientImpl
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KubeEnvironmentInner createOrUpdate(
-        String resourceGroupName, String name, KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
+    public KubeEnvironmentInner createOrUpdate(String resourceGroupName, String name,
+        KubeEnvironmentInner kubeEnvironmentEnvelope, Context context) {
         return createOrUpdateAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).block();
     }
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,10 +817,8 @@ public final class KubeEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -990,32 +828,21 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -1025,13 +852,11 @@ public final class KubeEnvironmentsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1041,29 +866,20 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1074,17 +890,15 @@ public final class KubeEnvironmentsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -1094,20 +908,19 @@ public final class KubeEnvironmentsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1122,9 +935,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -1140,9 +953,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,9 +970,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -1175,9 +988,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1191,9 +1004,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Delete a Kubernetes Environment.
-     *
-     * <p>Description for Delete a Kubernetes Environment.
-     *
+     * 
+     * Description for Delete a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param context The context to associate with this operation.
@@ -1208,9 +1021,9 @@ public final class KubeEnvironmentsClientImpl
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -1218,16 +1031,14 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KubeEnvironmentInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
+    public Mono<Response<KubeEnvironmentInner>> updateWithResponseAsync(String resourceGroupName, String name,
+        KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1237,40 +1048,27 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (kubeEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
         } else {
             kubeEnvironmentEnvelope.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            kubeEnvironmentEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), kubeEnvironmentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -1279,16 +1077,14 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<KubeEnvironmentInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context) {
+    private Mono<Response<KubeEnvironmentInner>> updateWithResponseAsync(String resourceGroupName, String name,
+        KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1298,37 +1094,26 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (kubeEnvironmentEnvelope == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter kubeEnvironmentEnvelope is required and cannot be null."));
         } else {
             kubeEnvironmentEnvelope.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                kubeEnvironmentEnvelope,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), kubeEnvironmentEnvelope, accept, context);
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -1336,20 +1121,20 @@ public final class KubeEnvironmentsClientImpl
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KubeEnvironmentInner> updateAsync(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
+    public Mono<KubeEnvironmentInner> updateAsync(String resourceGroupName, String name,
+        KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
         return updateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -1360,16 +1145,16 @@ public final class KubeEnvironmentsClientImpl
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KubeEnvironmentInner> updateWithResponse(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context) {
+    public Response<KubeEnvironmentInner> updateWithResponse(String resourceGroupName, String name,
+        KubeEnvironmentPatchResource kubeEnvironmentEnvelope, Context context) {
         return updateWithResponseAsync(resourceGroupName, name, kubeEnvironmentEnvelope, context).block();
     }
 
     /**
      * Creates or updates a Kubernetes Environment.
-     *
-     * <p>Description for Creates or updates a Kubernetes Environment.
-     *
+     * 
+     * Description for Creates or updates a Kubernetes Environment.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the Kubernetes Environment.
      * @param kubeEnvironmentEnvelope Configuration details of the Kubernetes Environment.
@@ -1379,21 +1164,22 @@ public final class KubeEnvironmentsClientImpl
      * @return a Kubernetes cluster specialized for web workloads by Azure App Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KubeEnvironmentInner update(
-        String resourceGroupName, String name, KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
+    public KubeEnvironmentInner update(String resourceGroupName, String name,
+        KubeEnvironmentPatchResource kubeEnvironmentEnvelope) {
         return updateWithResponse(resourceGroupName, name, kubeEnvironmentEnvelope, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubeEnvironmentInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1401,76 +1187,59 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<KubeEnvironmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<KubeEnvironmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubeEnvironmentInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<KubeEnvironmentInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1478,63 +1247,45 @@ public final class KubeEnvironmentsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<KubeEnvironmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<KubeEnvironmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Kubernetes Environments along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<KubeEnvironmentInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Fluent
 public final class AfdOriginGroupListResult {
     /*
-     * List of CDN origin groups within an endpoint
+     * List of Azure Front Door origin groups within an Azure Front Door endpoint
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AfdOriginGroupInner> value;
@@ -27,8 +27,12 @@ public final class AfdOriginGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AfdOriginGroupListResult class. */
+    public AfdOriginGroupListResult() {
+    }
+
     /**
-     * Get the value property: List of CDN origin groups within an endpoint.
+     * Get the value property: List of Azure Front Door origin groups within an Azure Front Door endpoint.
      *
      * @return the value value.
      */

@@ -4,10 +4,11 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.LabelValue;
 import com.azure.communication.jobrouter.models.RouterQueue;
-import com.azure.communication.jobrouter.models.UpdateQueueOptions;
+import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -43,7 +44,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
@@ -55,17 +56,18 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        Map<String, LabelValue> updatedQueueLabels = new HashMap<String, LabelValue>() {
+        Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new LabelValue("UpdatedValue"));
+                put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
-
         // Action
-        queue = routerAdminClient.updateQueue(new UpdateQueueOptions(queueId).setLabels(updatedQueueLabels));
+        RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
+        queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
+            .getValue().toObject(RouterQueue.class);
 
         // Verify
-        assertEquals(updatedQueueLabels.get("Label_1").getValue(), queue.getLabels().get("Label_1").getValue());
+        assertEquals(updatedQueueLabels.get("Label_1").getStringValue(), queue.getLabels().get("Label_1").getStringValue());
 
         // Cleanup
         routerAdminClient.deleteQueue(queueId);

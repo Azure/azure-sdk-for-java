@@ -62,14 +62,14 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
         manager
             .resourceProviders()
             .bmsPrepareDataMove(
-                "dfkbnrzorpdltbq",
-                "tqjfgxxsaet",
+                "dkkgjiiytssikizb",
+                "ufqbvntnr",
                 new PrepareDataMoveRequest()
-                    .withTargetResourceId("zdgvpyigdaqqilz")
-                    .withTargetRegion("cduwjoedx")
-                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                    .withSourceContainerArmIds(Arrays.asList("aifpaurwwgil", "jqqacdmkx", "xdcvjwcy"))
-                    .withIgnoreMoved(true),
+                    .withTargetResourceId("mqso")
+                    .withTargetRegion("hcekxgnlykm")
+                    .withDataMoveLevel(DataMoveLevel.INVALID)
+                    .withSourceContainerArmIds(Arrays.asList("zvmd", "ksqd", "iw"))
+                    .withIgnoreMoved(false),
                 com.azure.core.util.Context.NONE);
     }
 }

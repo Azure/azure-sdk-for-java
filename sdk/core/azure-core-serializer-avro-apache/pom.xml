@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-avro-apache</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.40</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
+  <version>1.0.0-beta.43</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;current} -->
 
   <name>Microsoft Azure Apache Avro Serializer Library</name>
   <description>This package contains the Apache Avro serializer client plugin for azure-core.</description>
@@ -70,24 +70,24 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.44.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.46.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.44</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
+      <version>1.0.0-beta.47</version> <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
+      <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.31</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -120,7 +120,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.avro:avro:[1.11.0]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
+                <include>org.apache.avro:avro:[1.11.3]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -130,7 +130,7 @@
       <plugin>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-maven-plugin</artifactId>
-        <version>1.11.0</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+        <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <phase>generate-test-sources</phase>

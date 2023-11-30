@@ -90,6 +90,36 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> void com.azure.spring.data.cosmos.core.CosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> java.lang.Iterable<S> com.azure.spring.data.cosmos.core.CosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
@@ -148,6 +178,33 @@
           "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
           "justification": "Remove some meaningless jms properties"
         },
+		{
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
+          "justification": "New method added to support more properties."
+        },
+		{
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
+          "justification": "New method added to support more properties."
+        },
+		{
+          "code": "java.method.addedToInterface",
+          "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
+          "justification": "New method added to support more properties."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.resourcemanager.provisioning.properties.(ServiceBusTopicProperties|ServiceBusQueueProperties)",
+          "justification": "Provides new queue level properties."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class com.azure.spring.cloud.stream.binder.servicebus.core.properties.(ServiceBusProducerProperties|ServiceBusConsumerProperties)",
+          "justification": "Support new properties."
+        },
         {
           "regex": true,
           "code": "java.method.parameterTypeParameterChanged",
@@ -167,12 +224,6 @@
           "code": "java.annotation.added",
           "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
           "justification": "Skip customized getters on class when serialization and deserialization."
-        },
-        {
-          "regex": true,
-          "code": "java.annotation.added",
-          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
-          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
         },
         {
           "code": "java.class.removed",
@@ -234,14 +285,15 @@
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.containers\\.containerregistry\\.models.*",
-          "justification": "Removing Jackson annotations from ACR in transition to stream-style."
+          "old": ".*? (com\\.azure\\.containers\\.containerregistry\\.models.*|com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*|com\\.azure\\.security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)\\.models.*)",
+          "description": ".*com.fasterxml.jackson.*",
+          "justification": "Removing Jackson annotations from ACR, KeyVault, and Search in transition to stream-style."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
-          "justification": "Removing Jackson annotations from Search in transition to stream-style."
+          "old": ".*? com\\.azure\\.ai\\.textanalytics\\.models.*",
+          "justification": "Removing Jackson annotations from Text Analytics in transition to stream-style."
         },
         {
           "code": "java.field.removed",
@@ -261,12 +313,6 @@
           "old" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
           "new" : "class com.azure.spring.cloud.autoconfigure.aad.configuration.(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter|AadWebApplicationConfiguration.DefaultAadWebSecurityConfigurerAdapter)",
           "justification": "Element newly annotated with 'org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity"
-        },
-        {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
-          "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
         },
         {
           "regex": true,

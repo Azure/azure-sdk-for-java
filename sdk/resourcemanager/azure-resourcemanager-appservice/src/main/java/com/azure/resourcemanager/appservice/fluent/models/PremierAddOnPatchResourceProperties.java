@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PremierAddOnPatchResource resource specific properties. */
+/**
+ * PremierAddOnPatchResource resource specific properties.
+ */
 @Fluent
 public final class PremierAddOnPatchResourceProperties {
     /*
@@ -40,13 +42,15 @@ public final class PremierAddOnPatchResourceProperties {
     @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
-    /** Creates an instance of PremierAddOnPatchResourceProperties class. */
+    /**
+     * Creates an instance of PremierAddOnPatchResourceProperties class.
+     */
     public PremierAddOnPatchResourceProperties() {
     }
 
     /**
      * Get the sku property: Premier add on SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -55,7 +59,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the sku property: Premier add on SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the product property: Premier add on Product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -75,7 +79,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the product property: Premier add on Product.
-     *
+     * 
      * @param product the product value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the vendor property: Premier add on Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -95,7 +99,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the vendor property: Premier add on Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
@@ -115,7 +119,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @param marketplacePublisher the marketplacePublisher value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
@@ -135,7 +139,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @param marketplaceOffer the marketplaceOffer value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

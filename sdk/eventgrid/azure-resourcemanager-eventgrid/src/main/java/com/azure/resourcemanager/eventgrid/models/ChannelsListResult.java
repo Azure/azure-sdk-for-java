@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.ChannelInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List Channels operation. */
+/**
+ * Result of the List Channels operation.
+ */
 @Fluent
 public final class ChannelsListResult {
     /*
@@ -24,13 +26,15 @@ public final class ChannelsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ChannelsListResult class. */
+    /**
+     * Creates an instance of ChannelsListResult class.
+     */
     public ChannelsListResult() {
     }
 
     /**
      * Get the value property: A collection of Channels.
-     *
+     * 
      * @return the value value.
      */
     public List<ChannelInner> value() {
@@ -39,7 +43,7 @@ public final class ChannelsListResult {
 
     /**
      * Set the value property: A collection of Channels.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChannelsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ChannelsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of channels.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ChannelsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of channels.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ChannelsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ChannelsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -41,6 +41,10 @@ public final class PolicySettings {
     @JsonProperty(value = "defaultCustomBlockResponseBody")
     private String defaultCustomBlockResponseBody;
 
+    /** Creates an instance of PolicySettings class. */
+    public PolicySettings() {
+    }
+
     /**
      * Get the enabledState property: describes if the policy is in enabled state or disabled state.
      *

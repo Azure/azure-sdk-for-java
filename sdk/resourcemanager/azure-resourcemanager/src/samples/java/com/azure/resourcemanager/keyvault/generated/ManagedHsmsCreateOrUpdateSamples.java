@@ -17,7 +17,7 @@ import java.util.UUID;
 /** Samples for ManagedHsms CreateOrUpdate. */
 public final class ManagedHsmsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_CreateOrUpdate.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a new managed HSM Pool or update an existing managed HSM Pool.
@@ -49,6 +49,7 @@ public final class ManagedHsmsCreateOrUpdateSamples {
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

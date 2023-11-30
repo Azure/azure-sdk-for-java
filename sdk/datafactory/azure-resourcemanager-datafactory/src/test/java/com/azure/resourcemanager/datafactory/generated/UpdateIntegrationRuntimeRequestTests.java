@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateIntegrationRuntimeRequest model =
-            BinaryData
-                .fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"cwscwsvlx\"}")
+        UpdateIntegrationRuntimeRequest model
+            = BinaryData.fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"cwscwsvlx\"}")
                 .toObject(UpdateIntegrationRuntimeRequest.class);
         Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
         Assertions.assertEquals("cwscwsvlx", model.updateDelayOffset());
@@ -22,10 +21,8 @@ public final class UpdateIntegrationRuntimeRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateIntegrationRuntimeRequest model =
-            new UpdateIntegrationRuntimeRequest()
-                .withAutoUpdate(IntegrationRuntimeAutoUpdate.ON)
-                .withUpdateDelayOffset("cwscwsvlx");
+        UpdateIntegrationRuntimeRequest model = new UpdateIntegrationRuntimeRequest()
+            .withAutoUpdate(IntegrationRuntimeAutoUpdate.ON).withUpdateDelayOffset("cwscwsvlx");
         model = BinaryData.fromObject(model).toObject(UpdateIntegrationRuntimeRequest.class);
         Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
         Assertions.assertEquals("cwscwsvlx", model.updateDelayOffset());

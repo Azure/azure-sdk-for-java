@@ -31,7 +31,7 @@ public final class MsixPackagesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"imagePath\":\"kbsazgak\",\"packageName\":\"cyrcmjdmspo\",\"packageFamilyName\":\"pv\",\"displayName\":\"rylniofrzg\",\"packageRelativePath\":\"jed\",\"isRegularRegistration\":true,\"isActive\":true,\"packageDependencies\":[],\"version\":\"xbcuiiznkt\",\"lastUpdated\":\"2021-01-02T08:34:37Z\",\"packageApplications\":[]},\"id\":\"nv\",\"name\":\"dibmikostbzbkiwb\",\"type\":\"qnyophzfyls\"}";
+            "{\"properties\":{\"imagePath\":\"vsqxfxjelgcmpzqj\",\"packageName\":\"hqxu\",\"packageFamilyName\":\"vcacoyv\",\"displayName\":\"bsizus\",\"packageRelativePath\":\"zlbscmnlziji\",\"isRegularRegistration\":true,\"isActive\":true,\"packageDependencies\":[{\"dependencyName\":\"lnwyvqkxr\",\"publisher\":\"lniylylyfwxz\",\"minVersion\":\"gqztwhghmupgx\"},{\"dependencyName\":\"tcdxabbujftaben\",\"publisher\":\"klqpx\",\"minVersion\":\"cafeddw\"},{\"dependencyName\":\"lzafwxu\",\"publisher\":\"nhgookrtalvnbw\",\"minVersion\":\"bemeluclvd\"},{\"dependencyName\":\"ukyrdnqodxahh\",\"publisher\":\"qfaqnvzoqg\",\"minVersion\":\"pem\"}],\"version\":\"gavsczuejd\",\"lastUpdated\":\"2021-07-06T15:50:57Z\",\"packageApplications\":[{\"appId\":\"h\",\"description\":\"homewjjstliu\",\"appUserModelID\":\"awmo\",\"friendlyName\":\"ancz\",\"iconImageName\":\"odrrslblxyd\"},{\"appId\":\"vvbxiwkgfbqljnq\",\"description\":\"ychocokulehu\",\"appUserModelID\":\"lrqff\",\"friendlyName\":\"eyu\",\"iconImageName\":\"phyjdxravj\"},{\"appId\":\"rxmrgchbapx\",\"description\":\"y\",\"appUserModelID\":\"j\",\"friendlyName\":\"ajb\",\"iconImageName\":\"cgduusio\"}]},\"id\":\"lev\",\"name\":\"mclujyxkyxlzgs\",\"type\":\"gkzz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +62,25 @@ public final class MsixPackagesGetWithResponseMockTests {
         MsixPackage response =
             manager
                 .msixPackages()
-                .getWithResponse("uwfmduragegizvc", "felisdjub", "gbqi", com.azure.core.util.Context.NONE)
+                .getWithResponse("xpjb", "ypsjoq", "jenkyh", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("kbsazgak", response.imagePath());
-        Assertions.assertEquals("cyrcmjdmspo", response.packageName());
-        Assertions.assertEquals("pv", response.packageFamilyName());
-        Assertions.assertEquals("rylniofrzg", response.displayName());
-        Assertions.assertEquals("jed", response.packageRelativePath());
+        Assertions.assertEquals("vsqxfxjelgcmpzqj", response.imagePath());
+        Assertions.assertEquals("hqxu", response.packageName());
+        Assertions.assertEquals("vcacoyv", response.packageFamilyName());
+        Assertions.assertEquals("bsizus", response.displayName());
+        Assertions.assertEquals("zlbscmnlziji", response.packageRelativePath());
         Assertions.assertEquals(true, response.isRegularRegistration());
         Assertions.assertEquals(true, response.isActive());
-        Assertions.assertEquals("xbcuiiznkt", response.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T08:34:37Z"), response.lastUpdated());
+        Assertions.assertEquals("lnwyvqkxr", response.packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("lniylylyfwxz", response.packageDependencies().get(0).publisher());
+        Assertions.assertEquals("gqztwhghmupgx", response.packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("gavsczuejd", response.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-06T15:50:57Z"), response.lastUpdated());
+        Assertions.assertEquals("h", response.packageApplications().get(0).appId());
+        Assertions.assertEquals("homewjjstliu", response.packageApplications().get(0).description());
+        Assertions.assertEquals("awmo", response.packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("ancz", response.packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("odrrslblxyd", response.packageApplications().get(0).iconImageName());
     }
 }

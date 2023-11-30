@@ -32,7 +32,7 @@ public final class ServicesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"o\",\"name\":\"ukgjnpiucgygevq\",\"type\":\"typmrbpizcdrqjsd\",\"properties\":{\"displayName\":\"nfyhx\",\"resourceTypes\":[\"ejzicwifsjtt\",\"zfbishcbkhaj\"]}}]}";
+            "{\"value\":[{\"id\":\"eotg\",\"name\":\"l\",\"type\":\"muwlauwzizxbm\",\"properties\":{\"displayName\":\"jefuzmuvpbttdumo\",\"resourceTypes\":[\"xe\",\"mnzb\",\"bhjpglkfgohdne\"]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,7 +62,7 @@ public final class ServicesListMockTests {
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nfyhx", response.iterator().next().displayName());
-        Assertions.assertEquals("ejzicwifsjtt", response.iterator().next().resourceTypes().get(0));
+        Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());
+        Assertions.assertEquals("xe", response.iterator().next().resourceTypes().get(0));
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomDomains DisableCustomHttps. */
 public final class CustomDomainsDisableCustomHttpsSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/CustomDomains_DisableCustomHttps.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/CustomDomains_DisableCustomHttps.json
      */
     /**
      * Sample code: CustomDomains_DisableCustomHttps.
@@ -22,6 +20,6 @@ public final class CustomDomainsDisableCustomHttpsSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .disableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", Context.NONE);
+            .disableCustomHttps("RG", "profile1", "endpoint1", "www-someDomain-net", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to be used to connect to the HTTP server. */
+/**
+ * The authentication type to be used to connect to the HTTP server.
+ */
 public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthenticationType> {
-    /** Static value Basic for HttpAuthenticationType. */
+    /**
+     * Static value Basic for HttpAuthenticationType.
+     */
     public static final HttpAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value Anonymous for HttpAuthenticationType. */
+    /**
+     * Static value Anonymous for HttpAuthenticationType.
+     */
     public static final HttpAuthenticationType ANONYMOUS = fromString("Anonymous");
 
-    /** Static value Digest for HttpAuthenticationType. */
+    /**
+     * Static value Digest for HttpAuthenticationType.
+     */
     public static final HttpAuthenticationType DIGEST = fromString("Digest");
 
-    /** Static value Windows for HttpAuthenticationType. */
+    /**
+     * Static value Windows for HttpAuthenticationType.
+     */
     public static final HttpAuthenticationType WINDOWS = fromString("Windows");
 
-    /** Static value ClientCertificate for HttpAuthenticationType. */
+    /**
+     * Static value ClientCertificate for HttpAuthenticationType.
+     */
     public static final HttpAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
 
     /**
      * Creates a new instance of HttpAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
 
     /**
      * Creates or finds a HttpAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HttpAuthenticationType.
      */
@@ -47,7 +59,7 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
 
     /**
      * Gets known HttpAuthenticationType values.
-     *
+     * 
      * @return known HttpAuthenticationType values.
      */
     public static Collection<HttpAuthenticationType> values() {

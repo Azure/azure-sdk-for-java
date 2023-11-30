@@ -17,6 +17,10 @@ public final class CustomDomainPropertiesParameters {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
+    /** Creates an instance of CustomDomainPropertiesParameters class. */
+    public CustomDomainPropertiesParameters() {
+    }
+
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
      *

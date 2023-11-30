@@ -5,9 +5,11 @@ package com.azure.messaging.servicebus.stress.scenarios;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
-import org.springframework.beans.factory.annotation.Value;
+import com.azure.messaging.servicebus.stress.util.RunResult;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getReceiverBuilder;
 
@@ -17,12 +19,11 @@ import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getRecei
 @Component("MessageReceiverAsync")
 public class MessageReceiverAsync extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageReceiverAsync.class);
-    @Value("${DURATION_IN_MINUTES:15}")
-    private int durationInMinutes;
 
     @Override
-    public void run() {
-        ServiceBusReceiverAsyncClient client = getReceiverBuilder(options, false).buildAsyncClient();
+    public RunResult run() {
+        AtomicReference<RunResult> result = new AtomicReference<>(RunResult.INCONCLUSIVE);
+        ServiceBusReceiverAsyncClient client = toClose(getReceiverBuilder(options, false).buildAsyncClient());
 
         client.receiveMessages()
             .flatMap(message -> {
@@ -33,14 +34,18 @@ public class MessageReceiverAsync extends ServiceBusScenario {
                             message.getMessageId(),
                             message.getLockToken(),
                             ex);
+                        result.set(RunResult.ERROR);
                         return Mono.empty();
                     });
             })
-            .take(durationInMinutes)
+            .take(options.getTestDuration())
             .onErrorResume(error -> {
+                result.set(RunResult.ERROR);
                 LOGGER.error("error receiving", error);
                 return Mono.empty();
             })
             .blockLast();
+
+        return result.get();
     }
 }

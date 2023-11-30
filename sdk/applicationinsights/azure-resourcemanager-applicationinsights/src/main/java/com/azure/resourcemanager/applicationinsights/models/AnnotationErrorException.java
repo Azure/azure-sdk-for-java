@@ -30,6 +30,7 @@ public final class AnnotationErrorException extends ManagementException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public AnnotationError getValue() {
         return (AnnotationError) super.getValue();

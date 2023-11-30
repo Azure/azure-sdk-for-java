@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.authorization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RoleAssignmentScheduleInstances Get. */
 public final class RoleAssignmentScheduleInstancesGetSamples {
     /*
@@ -26,6 +24,6 @@ public final class RoleAssignmentScheduleInstancesGetSamples {
             .getWithResponse(
                 "providers/Microsoft.Subscription/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f",
                 "ed9b8180-cef7-4c77-a63c-b8566ecfc412",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

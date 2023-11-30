@@ -19,8 +19,8 @@ public class HelloWorld {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Fetch an Azure AD token to be used for authentication.
-        // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
+        // Fetch a Microsoft Entra token to be used for authentication.
+        // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
                 .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
@@ -31,7 +31,7 @@ public class HelloWorld {
             .setAddress("rediss://<HOST_NAME>:6380") // TODO: Replace Host Name with Azure Cache for Redis Host Name.
             .setKeepAlive(true) // Keep the connection alive.
             .setUsername("<USERNAME>") // Username is Required
-            .setPassword(token) // Azure AD Access Token as password is required.
+            .setPassword(token) // Microsoft Entra access token as password is required.
             .setClientName("Reddison-Client");
 
         RedissonClient redisson = Redisson.create(config);

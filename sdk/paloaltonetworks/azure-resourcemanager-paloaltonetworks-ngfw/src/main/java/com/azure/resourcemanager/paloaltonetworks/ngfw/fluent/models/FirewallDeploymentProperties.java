@@ -18,7 +18,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.RulestackDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties specific to the Firewall resource deployment. */
+/**
+ * Properties specific to the Firewall resource deployment.
+ */
 @Fluent
 public final class FirewallDeploymentProperties {
     /*
@@ -81,13 +83,15 @@ public final class FirewallDeploymentProperties {
     @JsonProperty(value = "marketplaceDetails", required = true)
     private MarketplaceDetails marketplaceDetails;
 
-    /** Creates an instance of FirewallDeploymentProperties class. */
+    /**
+     * Creates an instance of FirewallDeploymentProperties class.
+     */
     public FirewallDeploymentProperties() {
     }
 
     /**
      * Get the panEtag property: panEtag info.
-     *
+     * 
      * @return the panEtag value.
      */
     public String panEtag() {
@@ -96,7 +100,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the panEtag property: panEtag info.
-     *
+     * 
      * @param panEtag the panEtag value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the networkProfile property: Network settings.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -116,7 +120,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the networkProfile property: Network settings.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @return the isPanoramaManaged value.
      */
     public BooleanEnum isPanoramaManaged() {
@@ -136,7 +140,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @param isPanoramaManaged the isPanoramaManaged value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the panoramaConfig property: Panorama Configuration.
-     *
+     * 
      * @return the panoramaConfig value.
      */
     public PanoramaConfig panoramaConfig() {
@@ -156,7 +160,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the panoramaConfig property: Panorama Configuration.
-     *
+     * 
      * @param panoramaConfig the panoramaConfig value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the associatedRulestack property: Associated Rulestack.
-     *
+     * 
      * @return the associatedRulestack value.
      */
     public RulestackDetails associatedRulestack() {
@@ -176,7 +180,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the associatedRulestack property: Associated Rulestack.
-     *
+     * 
      * @param associatedRulestack the associatedRulestack value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the dnsSettings property: DNS settings for Firewall.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -196,7 +200,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the dnsSettings property: DNS settings for Firewall.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -207,7 +211,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the frontEndSettings property: Frontend settings for Firewall.
-     *
+     * 
      * @return the frontEndSettings value.
      */
     public List<FrontendSetting> frontEndSettings() {
@@ -216,7 +220,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the frontEndSettings property: Frontend settings for Firewall.
-     *
+     * 
      * @param frontEndSettings the frontEndSettings value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -236,7 +240,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the planData property: Billing plan information.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -245,7 +249,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the planData property: Billing plan information.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -256,7 +260,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Get the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @return the marketplaceDetails value.
      */
     public MarketplaceDetails marketplaceDetails() {
@@ -265,7 +269,7 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Set the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @param marketplaceDetails the marketplaceDetails value to set.
      * @return the FirewallDeploymentProperties object itself.
      */
@@ -276,15 +280,13 @@ public final class FirewallDeploymentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkProfile in model FirewallDeploymentProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkProfile in model FirewallDeploymentProperties"));
         } else {
             networkProfile().validate();
         }
@@ -295,10 +297,8 @@ public final class FirewallDeploymentProperties {
             associatedRulestack().validate();
         }
         if (dnsSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dnsSettings in model FirewallDeploymentProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dnsSettings in model FirewallDeploymentProperties"));
         } else {
             dnsSettings().validate();
         }
@@ -306,18 +306,14 @@ public final class FirewallDeploymentProperties {
             frontEndSettings().forEach(e -> e.validate());
         }
         if (planData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planData in model FirewallDeploymentProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property planData in model FirewallDeploymentProperties"));
         } else {
             planData().validate();
         }
         if (marketplaceDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property marketplaceDetails in model FirewallDeploymentProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property marketplaceDetails in model FirewallDeploymentProperties"));
         } else {
             marketplaceDetails().validate();
         }

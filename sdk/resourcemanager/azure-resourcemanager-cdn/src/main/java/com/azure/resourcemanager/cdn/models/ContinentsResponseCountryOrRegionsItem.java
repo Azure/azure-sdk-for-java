@@ -22,6 +22,10 @@ public final class ContinentsResponseCountryOrRegionsItem {
     @JsonProperty(value = "continentId")
     private String continentId;
 
+    /** Creates an instance of ContinentsResponseCountryOrRegionsItem class. */
+    public ContinentsResponseCountryOrRegionsItem() {
+    }
+
     /**
      * Get the id property: The id property.
      *

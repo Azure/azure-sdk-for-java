@@ -31,7 +31,7 @@ public final class CapabilitiesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"publisher\":\"kgjubgdknnqvsazn\",\"targetType\":\"tor\",\"description\":\"sgsahmkycgr\",\"parametersSchema\":\"wjue\",\"urn\":\"eburu\"},\"id\":\"dmovsm\",\"name\":\"l\",\"type\":\"wabm\"}]}";
+            "{\"value\":[{\"properties\":{\"publisher\":\"ttwvogvbbe\",\"targetType\":\"cngqqmoakufgmjz\",\"description\":\"rdgrtw\",\"parametersSchema\":\"nuuzkopbm\",\"urn\":\"rfdwoyu\"},\"id\":\"hziuiefozbhdms\",\"name\":\"l\",\"type\":\"zqhof\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,6 +62,13 @@ public final class CapabilitiesListMockTests {
         PagedIterable<Capability> response =
             manager
                 .capabilities()
-                .list("vglsbjjca", "vxb", "t", "udutnco", "mr", "xqtvcofu", com.azure.core.util.Context.NONE);
+                .list(
+                    "uximerqfobw",
+                    "znkbykutwpfhpagm",
+                    "r",
+                    "kdsnfdsdoakgtdl",
+                    "kkze",
+                    "dlhewp",
+                    com.azure.core.util.Context.NONE);
     }
 }

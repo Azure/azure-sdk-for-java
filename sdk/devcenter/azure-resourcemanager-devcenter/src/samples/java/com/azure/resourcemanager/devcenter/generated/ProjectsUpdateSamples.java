@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Projects Update. */
 public final class ProjectsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Projects_Patch.json
      */
     /**
      * Sample code: Projects_Update.
@@ -24,9 +24,15 @@ public final class ProjectsUpdateSamples {
                 .projects()
                 .getByResourceGroupWithResponse("rg1", "DevProject", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("CostCenter", "R&D")).withDescription("This is my first project.").apply();
+        resource
+            .update()
+            .withTags(mapOf("CostCenter", "R&D"))
+            .withDescription("This is my first project.")
+            .withDisplayName("Dev")
+            .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -37,6 +37,10 @@ public class AfdDomainUpdatePropertiesParameters {
     @JsonProperty(value = "preValidatedCustomDomainResourceId")
     private ResourceReference preValidatedCustomDomainResourceId;
 
+    /** Creates an instance of AfdDomainUpdatePropertiesParameters class. */
+    public AfdDomainUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the domain.
      *

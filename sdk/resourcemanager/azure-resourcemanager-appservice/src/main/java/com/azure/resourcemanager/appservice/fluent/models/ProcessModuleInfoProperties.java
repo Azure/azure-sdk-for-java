@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ProcessModuleInfo resource specific properties. */
+/**
+ * ProcessModuleInfo resource specific properties.
+ */
 @Fluent
 public final class ProcessModuleInfoProperties {
     /*
@@ -76,13 +78,15 @@ public final class ProcessModuleInfoProperties {
     @JsonProperty(value = "language")
     private String language;
 
-    /** Creates an instance of ProcessModuleInfoProperties class. */
+    /**
+     * Creates an instance of ProcessModuleInfoProperties class.
+     */
     public ProcessModuleInfoProperties() {
     }
 
     /**
      * Get the baseAddress property: Base address. Used as module identifier in ARM resource URI.
-     *
+     * 
      * @return the baseAddress value.
      */
     public String baseAddress() {
@@ -91,7 +95,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the baseAddress property: Base address. Used as module identifier in ARM resource URI.
-     *
+     * 
      * @param baseAddress the baseAddress value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the fileName property: File name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -111,7 +115,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the fileName property: File name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the href property: HRef URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -131,7 +135,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the href property: HRef URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -142,7 +146,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the filePath property: File path.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -151,7 +155,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the filePath property: File path.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the moduleMemorySize property: Module memory size.
-     *
+     * 
      * @return the moduleMemorySize value.
      */
     public Integer moduleMemorySize() {
@@ -171,7 +175,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the moduleMemorySize property: Module memory size.
-     *
+     * 
      * @param moduleMemorySize the moduleMemorySize value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -182,7 +186,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the fileVersion property: File version.
-     *
+     * 
      * @return the fileVersion value.
      */
     public String fileVersion() {
@@ -191,7 +195,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the fileVersion property: File version.
-     *
+     * 
      * @param fileVersion the fileVersion value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -202,7 +206,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the fileDescription property: File description.
-     *
+     * 
      * @return the fileDescription value.
      */
     public String fileDescription() {
@@ -211,7 +215,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the fileDescription property: File description.
-     *
+     * 
      * @param fileDescription the fileDescription value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -222,7 +226,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the product property: Product name.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -231,7 +235,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the product property: Product name.
-     *
+     * 
      * @param product the product value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -242,7 +246,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the productVersion property: Product version.
-     *
+     * 
      * @return the productVersion value.
      */
     public String productVersion() {
@@ -251,7 +255,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the productVersion property: Product version.
-     *
+     * 
      * @param productVersion the productVersion value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -262,7 +266,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the isDebug property: Is debug?.
-     *
+     * 
      * @return the isDebug value.
      */
     public Boolean isDebug() {
@@ -271,7 +275,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the isDebug property: Is debug?.
-     *
+     * 
      * @param isDebug the isDebug value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -282,7 +286,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Get the language property: Module language (locale).
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -291,7 +295,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Set the language property: Module language (locale).
-     *
+     * 
      * @param language the language value to set.
      * @return the ProcessModuleInfoProperties object itself.
      */
@@ -302,7 +306,7 @@ public final class ProcessModuleInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

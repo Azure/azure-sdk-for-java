@@ -36,7 +36,7 @@ public final class ProtectedItemsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"AzureIaasVM\",\"workloadType\":\"AzureSqlDb\",\"containerName\":\"gv\",\"sourceResourceId\":\"mxaursqftibtyi\",\"policyId\":\"yvp\",\"lastRecoveryPoint\":\"2021-02-03T04:51:25Z\",\"backupSetName\":\"jpnqnoowsbeden\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-01-21T17:44:50Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"vucnulgmnh\",\"isDeferredDeleteScheduleUpcoming\":false,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"fajs\"],\"isArchiveEnabled\":true,\"policyName\":\"mqozzkivy\",\"softDeleteRetentionPeriod\":478502250},\"eTag\":\"iizjixlqfhefkwa\",\"location\":\"solronqqlm\",\"tags\":{\"exhvuqbozoolz\":\"qxsjxte\",\"nx\":\"ocarkuzlbcnndt\",\"llhdyzm\":\"wqy\"},\"id\":\"ckze\",\"name\":\"nxakckyw\",\"type\":\"mxgaabjkdtfohfao\"}";
+            "{\"properties\":{\"protectedItemType\":\"ProtectedItem\",\"backupManagementType\":\"DefaultBackup\",\"workloadType\":\"AzureSqlDb\",\"containerName\":\"vzbjuyrsrzi\",\"sourceResourceId\":\"tixgbd\",\"policyId\":\"ifrevk\",\"lastRecoveryPoint\":\"2021-04-30T21:12:50Z\",\"backupSetName\":\"zkiswqjmdghsy\",\"createMode\":\"Default\",\"deferredDeleteTimeInUTC\":\"2021-10-18T22:36:06Z\",\"isScheduledForDeferredDelete\":false,\"deferredDeleteTimeRemaining\":\"p\",\"isDeferredDeleteScheduleUpcoming\":true,\"isRehydrate\":false,\"resourceGuardOperationRequests\":[\"ciuiyqvldaswv\",\"pisqqzlgcndhzx\",\"rfc\",\"srhkhgsnxuwwkpph\"],\"isArchiveEnabled\":false,\"policyName\":\"zxlb\",\"softDeleteRetentionPeriodInDays\":2075745667},\"eTag\":\"eikjclwza\",\"location\":\"nmwpf\",\"tags\":{\"azyqbxyxoyfp\":\"t\",\"ezxlhdjzqdca\":\"qqi\",\"iihjriybmrzo\":\"wvpsoz\"},\"id\":\"pnx\",\"name\":\"dvwnjkgvfnmxa\",\"type\":\"rsqftib\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,53 +67,54 @@ public final class ProtectedItemsCreateOrUpdateWithResponseMockTests {
         ProtectedItemResource response =
             manager
                 .protectedItems()
-                .define("muii")
-                .withRegion("uww")
-                .withExistingProtectionContainer("zwjiqullq", "bdmvrscmqerndbr", "yeofltfnnxrkad", "fynn")
-                .withTags(mapOf("xlb", "hefsb", "wpfsuqtaaz", "xomeikjclwzacn", "ezxlhdjzqdca", "qbxyxoyfpuqqi"))
+                .define("zgowox")
+                .withRegion("fvabmvmsxba")
+                .withExistingProtectionContainer("ciidjs", "lfryvdmvxadqac", "rgnawbabgfbk", "yjmfczlfsyqkfr")
+                .withTags(mapOf("vajmailfem", "jcnkottlwu", "xbdmvrscmqernd", "jzakzwjiqull", "dj", "rnyeofltfnnxrk"))
                 .withProperties(
                     new ProtectedItem()
-                        .withContainerName("ykfkx")
-                        .withSourceResourceId("cbrwjiutgnjizbe")
-                        .withPolicyId("oiymrvzbjuyrsrzi")
-                        .withLastRecoveryPoint(OffsetDateTime.parse("2020-12-28T10:26:36Z"))
-                        .withBackupSetName("xgbdsuifrevka")
-                        .withCreateMode(CreateMode.INVALID)
-                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-03-29T18:46:45Z"))
+                        .withContainerName("xnyqgxhlusr")
+                        .withSourceResourceId("i")
+                        .withPolicyId("mjceagbjqvls")
+                        .withLastRecoveryPoint(OffsetDateTime.parse("2021-08-27T20:17:50Z"))
+                        .withBackupSetName("z")
+                        .withCreateMode(CreateMode.RECOVER)
+                        .withDeferredDeleteTimeInUtc(OffsetDateTime.parse("2021-10-16T10:28:35Z"))
                         .withIsScheduledForDeferredDelete(false)
-                        .withDeferredDeleteTimeRemaining("qjm")
+                        .withDeferredDeleteTimeRemaining("yjfqipubyznc")
                         .withIsDeferredDeleteScheduleUpcoming(true)
                         .withIsRehydrate(true)
-                        .withResourceGuardOperationRequests(Arrays.asList("ry", "jufptbjczjnciuiy", "vldaswv"))
+                        .withResourceGuardOperationRequests(Arrays.asList("gv", "pemtuoqu"))
                         .withIsArchiveEnabled(false)
-                        .withPolicyName("qqzlgcndhz")
-                        .withSoftDeleteRetentionPeriod(599915299))
-                .withEtag("cfsrhkhgsn")
+                        .withPolicyName("gqa")
+                        .withSoftDeleteRetentionPeriod(965244387))
+                .withEtag("flqqbtnyjpylxd")
                 .create();
 
-        Assertions.assertEquals("solronqqlm", response.location());
-        Assertions.assertEquals("qxsjxte", response.tags().get("exhvuqbozoolz"));
-        Assertions.assertEquals("gv", response.properties().containerName());
-        Assertions.assertEquals("mxaursqftibtyi", response.properties().sourceResourceId());
-        Assertions.assertEquals("yvp", response.properties().policyId());
+        Assertions.assertEquals("nmwpf", response.location());
+        Assertions.assertEquals("t", response.tags().get("azyqbxyxoyfp"));
+        Assertions.assertEquals("vzbjuyrsrzi", response.properties().containerName());
+        Assertions.assertEquals("tixgbd", response.properties().sourceResourceId());
+        Assertions.assertEquals("ifrevk", response.properties().policyId());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2021-02-03T04:51:25Z"), response.properties().lastRecoveryPoint());
-        Assertions.assertEquals("jpnqnoowsbeden", response.properties().backupSetName());
+            .assertEquals(OffsetDateTime.parse("2021-04-30T21:12:50Z"), response.properties().lastRecoveryPoint());
+        Assertions.assertEquals("zkiswqjmdghsy", response.properties().backupSetName());
         Assertions.assertEquals(CreateMode.DEFAULT, response.properties().createMode());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-01-21T17:44:50Z"), response.properties().deferredDeleteTimeInUtc());
+                OffsetDateTime.parse("2021-10-18T22:36:06Z"), response.properties().deferredDeleteTimeInUtc());
         Assertions.assertEquals(false, response.properties().isScheduledForDeferredDelete());
-        Assertions.assertEquals("vucnulgmnh", response.properties().deferredDeleteTimeRemaining());
-        Assertions.assertEquals(false, response.properties().isDeferredDeleteScheduleUpcoming());
+        Assertions.assertEquals("p", response.properties().deferredDeleteTimeRemaining());
+        Assertions.assertEquals(true, response.properties().isDeferredDeleteScheduleUpcoming());
         Assertions.assertEquals(false, response.properties().isRehydrate());
-        Assertions.assertEquals("fajs", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(true, response.properties().isArchiveEnabled());
-        Assertions.assertEquals("mqozzkivy", response.properties().policyName());
-        Assertions.assertEquals(478502250, response.properties().softDeleteRetentionPeriod());
-        Assertions.assertEquals("iizjixlqfhefkwa", response.etag());
+        Assertions.assertEquals("ciuiyqvldaswv", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(false, response.properties().isArchiveEnabled());
+        Assertions.assertEquals("zxlb", response.properties().policyName());
+        Assertions.assertEquals(2075745667, response.properties().softDeleteRetentionPeriod());
+        Assertions.assertEquals("eikjclwza", response.etag());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

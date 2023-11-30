@@ -36,7 +36,7 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"omevtfycn\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCount\",\"factData\":\"odk\",\"threshold\":\"ji\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-01-07T11:21:40Z\",\"provisioningState\":\"k\",\"uniqueIdentifier\":\"bcufqbvntn\"},\"location\":\"gmqsorhcekxg\",\"tags\":{\"cpwzv\":\"km\",\"qba\":\"doksqdtiwlwxlbon\",\"xbyja\":\"qicqchygt\"},\"id\":\"epubdp\",\"name\":\"xyqvg\",\"type\":\"i\"}";
+            "{\"properties\":{\"description\":\"rswgkpjhboyikeb\",\"status\":\"Disabled\",\"factName\":\"LabVmSize\",\"factData\":\"gwl\",\"threshold\":\"hueoijyzcqyp\",\"evaluatorType\":\"AllowedValuesPolicy\",\"createdDate\":\"2021-10-11T17:07:04Z\",\"provisioningState\":\"s\",\"uniqueIdentifier\":\"ej\"},\"location\":\"vdwtfxptpqayamk\",\"tags\":{\"snxoc\":\"gybm\",\"oy\":\"ullojk\"},\"id\":\"g\",\"name\":\"wdjuxdbdljzgdy\",\"type\":\"cvuq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,28 +67,29 @@ public final class PoliciesCreateOrUpdateWithResponseMockTests {
         Policy response =
             manager
                 .policies()
-                .define("lbnwtpcpahp")
-                .withRegion("rbhtmeplvukaobr")
-                .withExistingPolicyset("utrpbr", "uyu", "atvlmbjwcolbm")
-                .withTags(mapOf("emuowakyw", "gsnbagnchjh"))
-                .withDescription("rvxhmtfhocnxzcm")
-                .withStatus(PolicyStatus.ENABLED)
+                .define("ipbwxgooo")
+                .withRegion("sr")
+                .withExistingPolicyset("njdiqfliejhpcl", "iedfsbwcei", "bv")
+                .withTags(mapOf("cetjdvq", "jglzrsubklrxhjnl", "kw", "dieq", "bibanbau", "ruwdxvqzxoebwgj"))
+                .withDescription("pradmskxknpdgzi")
+                .withStatus(PolicyStatus.DISABLED)
                 .withFactName(PolicyFactName.ENVIRONMENT_TEMPLATE)
-                .withFactData("oqrxtdisnjevhdlm")
-                .withThreshold("idwhepfw")
+                .withFactData("whgsaodkww")
+                .withThreshold("afoctohz")
                 .withEvaluatorType(PolicyEvaluatorType.MAX_VALUE_POLICY)
                 .create();
 
-        Assertions.assertEquals("gmqsorhcekxg", response.location());
-        Assertions.assertEquals("km", response.tags().get("cpwzv"));
-        Assertions.assertEquals("omevtfycn", response.description());
+        Assertions.assertEquals("vdwtfxptpqayamk", response.location());
+        Assertions.assertEquals("gybm", response.tags().get("snxoc"));
+        Assertions.assertEquals("rswgkpjhboyikeb", response.description());
         Assertions.assertEquals(PolicyStatus.DISABLED, response.status());
-        Assertions.assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT, response.factName());
-        Assertions.assertEquals("odk", response.factData());
-        Assertions.assertEquals("ji", response.threshold());
+        Assertions.assertEquals(PolicyFactName.LAB_VM_SIZE, response.factName());
+        Assertions.assertEquals("gwl", response.factData());
+        Assertions.assertEquals("hueoijyzcqyp", response.threshold());
         Assertions.assertEquals(PolicyEvaluatorType.ALLOWED_VALUES_POLICY, response.evaluatorType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

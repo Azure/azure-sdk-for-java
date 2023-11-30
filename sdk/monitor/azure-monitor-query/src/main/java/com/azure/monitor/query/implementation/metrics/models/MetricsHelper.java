@@ -223,7 +223,7 @@ public final class MetricsHelper {
 
     public static MetricResult mapToMetrics(com.azure.monitor.query.implementation.metricsbatch.models.Metric metric) {
         List<com.azure.monitor.query.models.TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
-        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().name()),
+        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().toString()),
             metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
             new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
         return metricResult;

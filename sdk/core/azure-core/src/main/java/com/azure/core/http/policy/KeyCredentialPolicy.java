@@ -73,7 +73,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return FluxUtil.monoError(LOGGER,
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
@@ -84,7 +84,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }

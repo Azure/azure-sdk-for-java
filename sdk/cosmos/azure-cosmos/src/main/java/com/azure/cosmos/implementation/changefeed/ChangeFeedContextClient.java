@@ -51,6 +51,11 @@ public interface ChangeFeedContextClient {
                                                             CosmosChangeFeedRequestOptions requestOptions,
                                                             Class<T> klass);
 
+    <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                            CosmosChangeFeedRequestOptions requestOptions,
+                                                            Class<T> klass,
+                                                            boolean isSplitHandlingDisabled);
+
     /**
      * Reads a database.
      *
