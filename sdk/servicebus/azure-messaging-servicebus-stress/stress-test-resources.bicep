@@ -10,7 +10,7 @@ var serviceBusSessionQueueName = 'test-session-queue'
 var serviceBusTopicName = 'test-topic'
 var serviceBusSubscriptionName = 'test-subscription'
 var serviceBusSessionSubscriptionName = 'test-session-subscription'
-var serviceBusMessageLockDuration = 'PT05S'
+var serviceBusMessageLockDuration = 'PT01M'
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: baseName

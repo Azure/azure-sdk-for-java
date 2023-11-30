@@ -1,27 +1,29 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.stress.scenarios;
+package com.azure.messaging.servicebus.stress.util;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import com.azure.messaging.servicebus.stress.util.EntityType;
-import com.azure.messaging.servicebus.stress.util.ScenarioOptions;
+import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-final class TestUtils {
+public final class TestUtils {
     private static final byte[] PAYLOAD = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
-
+    private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("ServiceBusScenarioRunner");
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
-    static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
+    public static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options)
             .sender();
 
@@ -49,7 +51,7 @@ final class TestUtils {
             .disableAutoComplete();
     }
 
-    static ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(ScenarioOptions options) {
+    public static ServiceBusClientBuilder.ServiceBusProcessorClientBuilder getProcessorBuilder(ScenarioOptions options) {
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = getBuilder(options).processor();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
@@ -64,7 +66,7 @@ final class TestUtils {
             .disableAutoComplete();
     }
 
-    static ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(ScenarioOptions options) {
+    public static ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder getSessionProcessorBuilder(ScenarioOptions options) {
         ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = getBuilder(options).sessionProcessor();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
@@ -79,7 +81,7 @@ final class TestUtils {
             .disableAutoComplete();
     }
 
-    static ServiceBusMessageBatch createBatchSync(ServiceBusSenderClient client, byte[] messagePayload, int batchSize) {
+    public static ServiceBusMessageBatch createBatchSync(ServiceBusSenderClient client, BinaryData messagePayload, int batchSize) {
         try {
             ServiceBusMessageBatch batch = client.createMessageBatch();
             for (int i = 0; i < batchSize; i++) {
@@ -92,21 +94,21 @@ final class TestUtils {
         }
     }
 
-    static byte[] createMessagePayload(int messageSize) {
-        final byte[] messagePayload = new byte[messageSize];
+    public static BinaryData createMessagePayload(int messageSize) {
+        final StringBuilder body = new StringBuilder(messageSize);
         for (int i = 0; i < messageSize; i++) {
-            messagePayload[i] = PAYLOAD[i % PAYLOAD.length];
+            body.append(PAYLOAD[i % PAYLOAD.length]);
         }
-        return messagePayload;
+        return BinaryData.fromString(body.toString());
     }
 
-    protected static ServiceBusClientBuilder getBuilder(ScenarioOptions options) {
+    private static ServiceBusClientBuilder getBuilder(ScenarioOptions options) {
         return new ServiceBusClientBuilder()
             .retryOptions(new AmqpRetryOptions().setTryTimeout(options.getTryTimeout()))
             .connectionString(options.getServiceBusConnectionString());
     }
 
-    static boolean blockingWait(Duration duration) {
+    public static boolean blockingWait(Duration duration) {
         if (duration.toMillis() <= 0) {
             return true;
         }
@@ -119,6 +121,14 @@ final class TestUtils {
         }
 
         return true;
+    }
+
+    public static Span startSampledInSpan(String name) {
+        return TRACER.spanBuilder(name)
+            // guarantee that we have before/after spans sampled in
+            // and record duration/result of the test
+            .setAttribute("sample.in", "true")
+            .startSpan();
     }
 
     private TestUtils() {
