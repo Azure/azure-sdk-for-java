@@ -15,7 +15,6 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.implementation.models.BatchImageGenerationOperationResponse;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -40,11 +39,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.PollerFlux;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1583,189 +1579,14 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a successful image generation operation on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImageGenerations> getImageGenerations(String deploymentOrModelName,
         ImageGenerationOptions imageGenerationOptions) {
-        // Restore @Generated when we remove LRO support entirely
         // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        // When the model name isn't passed, we are assuming dall-2 which for older versions of the service,
-        // was available through an LRO
-        if (CoreUtils.isNullOrEmpty(deploymentOrModelName) && openAIServiceClient == null) {
-            return beginBeginImageGenerations(imageGenerationOptionsBinaryData, requestOptions).last()
-                .flatMap(AsyncPollResponse::getFinalResult)
-                .map(it -> it.toObject(BatchImageGenerationOperationResponse.class).getResult());
-        } else {
-            return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
-                requestOptions).flatMap(FluxUtil::toMono)
-                    .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
-        }
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     model: String (Optional)
-     *     prompt: String (Required)
-     *     n: Integer (Optional)
-     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
-     *     response_format: String(url/b64_json) (Optional)
-     *     quality: String(standard/hd) (Optional)
-     *     style: String(natural/vivid) (Optional)
-     *     user: String (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 b64_json: String (Optional)
-     *                 revised_prompt: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
-     * operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<BinaryData, BinaryData> beginBeginImageGenerations(BinaryData imageGenerationOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginBeginImageGenerationsAsync(imageGenerationOptions, requestOptions);
-    }
-
-    /**
-     * Returns the status of the images operation.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data (Required): [
-     *              (Required){
-     *                 url: String (Optional)
-     *                 b64_json: String (Optional)
-     *                 revised_prompt: String (Optional)
-     *             }
-     *         ]
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param operationId .
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a polling status update or final response payload for an image operation along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAzureBatchImageGenerationOperationStatusWithResponse(String operationId,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getAzureBatchImageGenerationOperationStatusWithResponseAsync(operationId,
-            requestOptions);
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
-     * operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
-        beginBeginImageGenerations(ImageGenerationOptions imageGenerationOptions) {
-        // Generated convenience method for beginBeginImageGenerationsWithModel
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginBeginImageGenerationsWithModelAsync(BinaryData.fromObject(imageGenerationOptions),
-            requestOptions);
-    }
-
-    /**
-     * Returns the status of the images operation.
-     *
-     * @param operationId .
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a polling status update or final response payload for an image operation on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BatchImageGenerationOperationResponse> getAzureBatchImageGenerationOperationStatus(String operationId) {
-        // Generated convenience method for getAzureBatchImageGenerationOperationStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAzureBatchImageGenerationOperationStatusWithResponse(operationId, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BatchImageGenerationOperationResponse.class));
+        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
     }
 }
