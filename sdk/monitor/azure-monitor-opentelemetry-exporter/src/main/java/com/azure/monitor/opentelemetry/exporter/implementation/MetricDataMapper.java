@@ -156,7 +156,7 @@ public class MetricDataMapper {
         // url as the metric name that is reported to Breeze.
         String schemaUrl = metricData.getResource().getSchemaUrl();
         if (schemaUrl.startsWith("app_insights_")) {
-            pointBuilder.setName(schemaUrl.substring(schemaUrl.length() -1));
+            pointBuilder.setName(schemaUrl.substring(schemaUrl.length()));
         } else {
             pointBuilder.setName(metricData.getName());
         }
