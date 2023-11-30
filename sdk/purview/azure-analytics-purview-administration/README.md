@@ -26,7 +26,7 @@ For more information about permissions, see [here][azure_purview_permissions].
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-administration</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
