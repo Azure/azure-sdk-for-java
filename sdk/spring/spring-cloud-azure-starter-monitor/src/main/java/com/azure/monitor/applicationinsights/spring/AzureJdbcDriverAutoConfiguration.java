@@ -26,7 +26,6 @@ public class AzureJdbcDriverAutoConfiguration {
 
     @Bean
     OpenTelemetryInjector injectOtelIntoJdbcDriver() {
-        System.out.println("AzureJdbcDriverAutoConfiguration.injectOtelIntoJdbcDriver");
         return openTelemetry -> OpenTelemetryDriver.install(openTelemetry);
     }
 
