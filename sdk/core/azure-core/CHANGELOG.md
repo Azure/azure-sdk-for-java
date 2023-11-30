@@ -1,5 +1,13 @@
 # Release History
 
+## 1.45.1 (2023-11-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor Core from `3.4.33` to `3.4.34`.
+
 ## 1.45.0 (2023-11-03)
 
 ### Features Added
