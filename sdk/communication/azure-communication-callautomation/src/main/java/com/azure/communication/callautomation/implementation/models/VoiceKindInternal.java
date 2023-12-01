@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Voice kind type. */
+/**
+ * Voice kind type.
+ */
 public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInternal> {
-    /** Static value male for VoiceKindInternal. */
+    /**
+     * Static value male for VoiceKindInternal.
+     */
     public static final VoiceKindInternal MALE = fromString("male");
 
-    /** Static value female for VoiceKindInternal. */
+    /**
+     * Static value female for VoiceKindInternal.
+     */
     public static final VoiceKindInternal FEMALE = fromString("female");
 
     /**
      * Creates a new instance of VoiceKindInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VoiceKindInternal() {}
+    public VoiceKindInternal() {
+    }
 
     /**
      * Creates or finds a VoiceKindInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VoiceKindInternal.
      */
@@ -37,7 +44,7 @@ public final class VoiceKindInternal extends ExpandableStringEnum<VoiceKindInter
 
     /**
      * Gets known VoiceKindInternal values.
-     *
+     * 
      * @return known VoiceKindInternal values.
      */
     public static Collection<VoiceKindInternal> values() {

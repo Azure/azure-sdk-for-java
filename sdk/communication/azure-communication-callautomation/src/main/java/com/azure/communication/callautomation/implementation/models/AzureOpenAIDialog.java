@@ -9,15 +9,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Azure Open AI Dialog. */
+/**
+ * Azure Open AI Dialog.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("AzureOpenAI")
 @Fluent
 public final class AzureOpenAIDialog extends BaseDialog {
-    /** Creates an instance of AzureOpenAIDialog class. */
-    public AzureOpenAIDialog() {}
+    /**
+     * Creates an instance of AzureOpenAIDialog class.
+     */
+    public AzureOpenAIDialog() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureOpenAIDialog setContext(Map<String, Object> context) {
         super.setContext(context);

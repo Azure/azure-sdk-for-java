@@ -23,7 +23,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
@@ -37,101 +36,121 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureCommunicationCallAutomationService type. */
+/**
+ * Initializes a new instance of the AzureCommunicationCallAutomationService type.
+ */
 public final class AzureCommunicationCallAutomationServiceImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureCommunicationCallAutomationServiceService service;
 
-    /** The endpoint of the Azure Communication resource. */
+    /**
+     * The endpoint of the Azure Communication resource.
+     */
     private final String endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The CallConnectionsImpl object to access its operations. */
+    /**
+     * The CallConnectionsImpl object to access its operations.
+     */
     private final CallConnectionsImpl callConnections;
 
     /**
      * Gets the CallConnectionsImpl object to access its operations.
-     *
+     * 
      * @return the CallConnectionsImpl object.
      */
     public CallConnectionsImpl getCallConnections() {
         return this.callConnections;
     }
 
-    /** The CallMediasImpl object to access its operations. */
+    /**
+     * The CallMediasImpl object to access its operations.
+     */
     private final CallMediasImpl callMedias;
 
     /**
      * Gets the CallMediasImpl object to access its operations.
-     *
+     * 
      * @return the CallMediasImpl object.
      */
     public CallMediasImpl getCallMedias() {
         return this.callMedias;
     }
 
-    /** The CallDialogsImpl object to access its operations. */
+    /**
+     * The CallDialogsImpl object to access its operations.
+     */
     private final CallDialogsImpl callDialogs;
 
     /**
      * Gets the CallDialogsImpl object to access its operations.
-     *
+     * 
      * @return the CallDialogsImpl object.
      */
     public CallDialogsImpl getCallDialogs() {
         return this.callDialogs;
     }
 
-    /** The CallRecordingsImpl object to access its operations. */
+    /**
+     * The CallRecordingsImpl object to access its operations.
+     */
     private final CallRecordingsImpl callRecordings;
 
     /**
      * Gets the CallRecordingsImpl object to access its operations.
-     *
+     * 
      * @return the CallRecordingsImpl object.
      */
     public CallRecordingsImpl getCallRecordings() {
@@ -140,23 +159,18 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Initializes an instance of AzureCommunicationCallAutomationService client.
-     *
+     * 
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
      * Initializes an instance of AzureCommunicationCallAutomationService client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
@@ -167,14 +181,14 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Initializes an instance of AzureCommunicationCallAutomationService client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -183,11 +197,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         this.callMedias = new CallMediasImpl(this);
         this.callDialogs = new CallDialogsImpl(this);
         this.callRecordings = new CallRecordingsImpl(this);
-        this.service =
-                RestProxy.create(
-                        AzureCommunicationCallAutomationServiceService.class,
-                        this.httpPipeline,
-                        this.getSerializerAdapter());
+        this.service = RestProxy.create(AzureCommunicationCallAutomationServiceService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
@@ -198,57 +209,49 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface AzureCommunicationCallAutomationServiceService {
         @Post("/calling/callConnections")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> createCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateCallRequestInternal createCallRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> createCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CreateCallRequestInternal createCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:answer")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionPropertiesInternal>> answerCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Mono<Response<CallConnectionPropertiesInternal>> answerCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AnswerCallRequestInternal answerCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:redirect")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> redirectCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Mono<Response<Void>> redirectCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RedirectCallRequestInternal redirectCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/calling/callConnections:reject")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> rejectCall(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Mono<Response<Void>> rejectCall(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RejectCallRequestInternal rejectCallRequest,
+            @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
     }
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -256,26 +259,18 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
-            CreateCallRequestInternal createCallRequest) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-                context ->
-                        service.createCall(
-                                this.getEndpoint(),
-                                this.getApiVersion(),
-                                createCallRequest,
-                                accept,
-                                repeatabilityRequestId,
-                                repeatabilityFirstSent,
-                                context));
+        return FluxUtil.withContext(context -> service.createCall(this.getEndpoint(), this.getApiVersion(),
+            createCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,24 +279,18 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
-            CreateCallRequestInternal createCallRequest, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        createCallWithResponseAsync(CreateCallRequestInternal createCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.createCall(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                createCallRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.createCall(this.getEndpoint(), this.getApiVersion(), createCallRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -315,7 +304,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,14 +313,14 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> createCallAsync(
-            CreateCallRequestInternal createCallRequest, Context context) {
+    public Mono<CallConnectionPropertiesInternal> createCallAsync(CreateCallRequestInternal createCallRequest,
+        Context context) {
         return createCallWithResponseAsync(createCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,14 +329,14 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> createCallWithResponse(
-            CreateCallRequestInternal createCallRequest, Context context) {
+    public Response<CallConnectionPropertiesInternal>
+        createCallWithResponse(CreateCallRequestInternal createCallRequest, Context context) {
         return createCallWithResponseAsync(createCallRequest, context).block();
     }
 
     /**
      * Create an outbound call.
-     *
+     * 
      * @param createCallRequest The create call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -361,9 +350,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -371,28 +360,20 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
-            AnswerCallRequestInternal answerCallRequest) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-                context ->
-                        service.answerCall(
-                                this.getEndpoint(),
-                                this.getApiVersion(),
-                                answerCallRequest,
-                                accept,
-                                repeatabilityRequestId,
-                                repeatabilityFirstSent,
-                                context));
+        return FluxUtil.withContext(context -> service.answerCall(this.getEndpoint(), this.getApiVersion(),
+            answerCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,26 +382,20 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>>
+        answerCallWithResponseAsync(AnswerCallRequestInternal answerCallRequest, Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.answerCall(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                answerCallRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.answerCall(this.getEndpoint(), this.getApiVersion(), answerCallRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -434,9 +409,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,16 +420,16 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionPropertiesInternal> answerCallAsync(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Mono<CallConnectionPropertiesInternal> answerCallAsync(AnswerCallRequestInternal answerCallRequest,
+        Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,16 +438,16 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return properties of a call connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
-            AnswerCallRequestInternal answerCallRequest, Context context) {
+    public Response<CallConnectionPropertiesInternal>
+        answerCallWithResponse(AnswerCallRequestInternal answerCallRequest, Context context) {
         return answerCallWithResponseAsync(answerCallRequest, context).block();
     }
 
     /**
      * Answer a Call.
-     *
-     * <p>Answer a call using the IncomingCallContext from Event Grid.
-     *
+     * 
+     * Answer a call using the IncomingCallContext from Event Grid.
+     * 
      * @param answerCallRequest The answer call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -486,7 +461,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -498,21 +473,13 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-                context ->
-                        service.redirectCall(
-                                this.getEndpoint(),
-                                this.getApiVersion(),
-                                redirectCallRequest,
-                                accept,
-                                repeatabilityRequestId,
-                                repeatabilityFirstSent,
-                                context));
+        return FluxUtil.withContext(context -> service.redirectCall(this.getEndpoint(), this.getApiVersion(),
+            redirectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,24 +488,18 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponseAsync(
-            RedirectCallRequestInternal redirectCallRequest, Context context) {
+    public Mono<Response<Void>> redirectCallWithResponseAsync(RedirectCallRequestInternal redirectCallRequest,
+        Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.redirectCall(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                redirectCallRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.redirectCall(this.getEndpoint(), this.getApiVersion(), redirectCallRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -552,7 +513,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -567,7 +528,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -582,7 +543,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Redirect a call.
-     *
+     * 
      * @param redirectCallRequest The redirect call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -595,7 +556,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -607,21 +568,13 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-                context ->
-                        service.rejectCall(
-                                this.getEndpoint(),
-                                this.getApiVersion(),
-                                rejectCallRequest,
-                                accept,
-                                repeatabilityRequestId,
-                                repeatabilityFirstSent,
-                                context));
+        return FluxUtil.withContext(context -> service.rejectCall(this.getEndpoint(), this.getApiVersion(),
+            rejectCallRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -630,24 +583,18 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponseAsync(
-            RejectCallRequestInternal rejectCallRequest, Context context) {
+    public Mono<Response<Void>> rejectCallWithResponseAsync(RejectCallRequestInternal rejectCallRequest,
+        Context context) {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.rejectCall(
-                this.getEndpoint(),
-                this.getApiVersion(),
-                rejectCallRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.rejectCall(this.getEndpoint(), this.getApiVersion(), rejectCallRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -661,7 +608,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -676,7 +623,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -691,7 +638,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
 
     /**
      * Reject the call.
-     *
+     * 
      * @param rejectCallRequest The reject call request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

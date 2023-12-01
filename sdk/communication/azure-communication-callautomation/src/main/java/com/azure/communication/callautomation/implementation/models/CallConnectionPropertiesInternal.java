@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a call connection. */
+/**
+ * Properties of a call connection.
+ */
 @Fluent
 public final class CallConnectionPropertiesInternal {
     /*
@@ -84,12 +86,15 @@ public final class CallConnectionPropertiesInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
-    /** Creates an instance of CallConnectionPropertiesInternal class. */
-    public CallConnectionPropertiesInternal() {}
+    /**
+     * Creates an instance of CallConnectionPropertiesInternal class.
+     */
+    public CallConnectionPropertiesInternal() {
+    }
 
     /**
      * Get the callConnectionId property: The call connection id.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -98,7 +103,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callConnectionId property: The call connection id.
-     *
+     * 
      * @param callConnectionId the callConnectionId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -109,7 +114,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the serverCallId property: The server call id.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -118,7 +123,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the serverCallId property: The server call id.
-     *
+     * 
      * @param serverCallId the serverCallId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -129,7 +134,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the targets property: The targets of the call.
-     *
+     * 
      * @return the targets value.
      */
     public List<CommunicationIdentifierModel> getTargets() {
@@ -138,7 +143,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the targets property: The targets of the call.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -149,7 +154,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the callConnectionState property: The state of the call connection.
-     *
+     * 
      * @return the callConnectionState value.
      */
     public CallConnectionStateModelInternal getCallConnectionState() {
@@ -158,19 +163,19 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callConnectionState property: The state of the call connection.
-     *
+     * 
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(
-            CallConnectionStateModelInternal callConnectionState) {
+    public CallConnectionPropertiesInternal
+        setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }
 
     /**
      * Get the callbackUri property: The callback URI.
-     *
+     * 
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -179,7 +184,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the callbackUri property: The callback URI.
-     *
+     * 
      * @param callbackUri the callbackUri value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -190,7 +195,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
+     * 
      * @return the mediaSubscriptionId value.
      */
     public String getMediaSubscriptionId() {
@@ -199,7 +204,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
+     * 
      * @param mediaSubscriptionId the mediaSubscriptionId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -210,7 +215,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     *
+     * 
      * @return the dataSubscriptionId value.
      */
     public String getDataSubscriptionId() {
@@ -219,7 +224,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the dataSubscriptionId property: SubscriptionId for transcription.
-     *
+     * 
      * @param dataSubscriptionId the dataSubscriptionId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -229,9 +234,10 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited. Required only when calling a PSTN callee.
-     *
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when calling a PSTN callee.
+     * 
      * @return the sourceCallerIdNumber value.
      */
     public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
@@ -239,9 +245,10 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
-     * being invited. Required only when calling a PSTN callee.
-     *
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when calling a PSTN callee.
+     * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -252,7 +259,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
-     *
+     * 
      * @return the sourceDisplayName value.
      */
     public String getSourceDisplayName() {
@@ -261,7 +268,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the sourceDisplayName property: Display name of the call if dialing out to a pstn number.
-     *
+     * 
      * @param sourceDisplayName the sourceDisplayName value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -272,7 +279,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the source property: Source identity.
-     *
+     * 
      * @return the source value.
      */
     public CommunicationIdentifierModel getSource() {
@@ -281,7 +288,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the source property: Source identity.
-     *
+     * 
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -292,7 +299,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Get the correlationId property: The correlation ID.
-     *
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
@@ -301,7 +308,7 @@ public final class CallConnectionPropertiesInternal {
 
     /**
      * Set the correlationId property: The correlation ID.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
@@ -313,7 +320,7 @@ public final class CallConnectionPropertiesInternal {
     /**
      * Get the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
      * request.
-     *
+     * 
      * @return the answeredBy value.
      */
     public CommunicationUserIdentifierModel getAnsweredBy() {
@@ -323,7 +330,7 @@ public final class CallConnectionPropertiesInternal {
     /**
      * Set the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
      * request.
-     *
+     * 
      * @param answeredBy the answeredBy value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */

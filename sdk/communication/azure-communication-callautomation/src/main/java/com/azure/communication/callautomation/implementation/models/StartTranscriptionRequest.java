@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StartTranscriptionRequest model. */
+/**
+ * The StartTranscriptionRequest model.
+ */
 @Fluent
 public final class StartTranscriptionRequest {
     /*
@@ -22,12 +24,15 @@ public final class StartTranscriptionRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StartTranscriptionRequest class. */
-    public StartTranscriptionRequest() {}
+    /**
+     * Creates an instance of StartTranscriptionRequest class.
+     */
+    public StartTranscriptionRequest() {
+    }
 
     /**
      * Get the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -36,7 +41,7 @@ public final class StartTranscriptionRequest {
 
     /**
      * Set the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the StartTranscriptionRequest object itself.
      */
@@ -47,7 +52,7 @@ public final class StartTranscriptionRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -56,7 +61,7 @@ public final class StartTranscriptionRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartTranscriptionRequest object itself.
      */

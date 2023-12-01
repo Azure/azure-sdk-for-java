@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExternalStorageInternal model. */
+/**
+ * The ExternalStorageInternal model.
+ */
 @Fluent
 public final class ExternalStorageInternal {
     /*
@@ -22,12 +24,15 @@ public final class ExternalStorageInternal {
     @JsonProperty(value = "blobStorage")
     private BlobStorageInternal blobStorage;
 
-    /** Creates an instance of ExternalStorageInternal class. */
-    public ExternalStorageInternal() {}
+    /**
+     * Creates an instance of ExternalStorageInternal class.
+     */
+    public ExternalStorageInternal() {
+    }
 
     /**
      * Get the storageType property: Defines the type of external storage.
-     *
+     * 
      * @return the storageType value.
      */
     public RecordingStorageTypeInternal getStorageType() {
@@ -36,7 +41,7 @@ public final class ExternalStorageInternal {
 
     /**
      * Set the storageType property: Defines the type of external storage.
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the ExternalStorageInternal object itself.
      */
@@ -47,7 +52,7 @@ public final class ExternalStorageInternal {
 
     /**
      * Get the blobStorage property: Defines the blob storage location where the recording will be stored.
-     *
+     * 
      * @return the blobStorage value.
      */
     public BlobStorageInternal getBlobStorage() {
@@ -56,7 +61,7 @@ public final class ExternalStorageInternal {
 
     /**
      * Set the blobStorage property: Defines the blob storage location where the recording will be stored.
-     *
+     * 
      * @param blobStorage the blobStorage value to set.
      * @return the ExternalStorageInternal object itself.
      */

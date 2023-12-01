@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CustomCallingContext model. */
+/**
+ * The CustomCallingContext model.
+ */
 @Fluent
 public final class CustomCallingContext {
     /*
@@ -23,12 +25,15 @@ public final class CustomCallingContext {
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
-    /** Creates an instance of CustomCallingContext class. */
-    public CustomCallingContext() {}
+    /**
+     * Creates an instance of CustomCallingContext class.
+     */
+    public CustomCallingContext() {
+    }
 
     /**
      * Get the voipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the voipHeaders value.
      */
     public Map<String, String> getVoipHeaders() {
@@ -37,7 +42,7 @@ public final class CustomCallingContext {
 
     /**
      * Set the voipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */
@@ -48,7 +53,7 @@ public final class CustomCallingContext {
 
     /**
      * Get the sipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the sipHeaders value.
      */
     public Map<String, String> getSipHeaders() {
@@ -57,7 +62,7 @@ public final class CustomCallingContext {
 
     /**
      * Set the sipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */

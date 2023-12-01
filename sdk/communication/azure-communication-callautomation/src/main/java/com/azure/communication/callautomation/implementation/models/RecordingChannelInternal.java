@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The channel type of call recording. */
+/**
+ * The channel type of call recording.
+ */
 public final class RecordingChannelInternal extends ExpandableStringEnum<RecordingChannelInternal> {
-    /** Static value mixed for RecordingChannelInternal. */
+    /**
+     * Static value mixed for RecordingChannelInternal.
+     */
     public static final RecordingChannelInternal MIXED = fromString("mixed");
 
-    /** Static value unmixed for RecordingChannelInternal. */
+    /**
+     * Static value unmixed for RecordingChannelInternal.
+     */
     public static final RecordingChannelInternal UNMIXED = fromString("unmixed");
 
     /**
      * Creates a new instance of RecordingChannelInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecordingChannelInternal() {}
+    public RecordingChannelInternal() {
+    }
 
     /**
      * Creates or finds a RecordingChannelInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingChannelInternal.
      */
@@ -37,7 +44,7 @@ public final class RecordingChannelInternal extends ExpandableStringEnum<Recordi
 
     /**
      * Gets known RecordingChannelInternal values.
-     *
+     * 
      * @return known RecordingChannelInternal values.
      */
     public static Collection<RecordingChannelInternal> values() {

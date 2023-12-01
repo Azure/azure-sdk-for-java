@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecordingStateResponseInternal model. */
+/**
+ * The RecordingStateResponseInternal model.
+ */
 @Fluent
 public final class RecordingStateResponseInternal {
     /*
@@ -28,12 +30,15 @@ public final class RecordingStateResponseInternal {
     @JsonProperty(value = "recordingType")
     private RecordingType recordingType;
 
-    /** Creates an instance of RecordingStateResponseInternal class. */
-    public RecordingStateResponseInternal() {}
+    /**
+     * Creates an instance of RecordingStateResponseInternal class.
+     */
+    public RecordingStateResponseInternal() {
+    }
 
     /**
      * Get the recordingId property: The recordingId property.
-     *
+     * 
      * @return the recordingId value.
      */
     public String getRecordingId() {
@@ -42,7 +47,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingId property: The recordingId property.
-     *
+     * 
      * @param recordingId the recordingId value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -53,7 +58,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingState property: The recordingState property.
-     *
+     * 
      * @return the recordingState value.
      */
     public RecordingStateInternal getRecordingState() {
@@ -62,7 +67,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingState property: The recordingState property.
-     *
+     * 
      * @param recordingState the recordingState value to set.
      * @return the RecordingStateResponseInternal object itself.
      */
@@ -73,7 +78,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Get the recordingType property: The recordingType property.
-     *
+     * 
      * @return the recordingType value.
      */
     public RecordingType getRecordingType() {
@@ -82,7 +87,7 @@ public final class RecordingStateResponseInternal {
 
     /**
      * Set the recordingType property: The recordingType property.
-     *
+     * 
      * @param recordingType the recordingType value to set.
      * @return the RecordingStateResponseInternal object itself.
      */

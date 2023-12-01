@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Communication Services error. */
+/**
+ * The Communication Services error.
+ */
 @Fluent
 public final class CommunicationError {
     /*
@@ -41,12 +43,15 @@ public final class CommunicationError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private CommunicationError innerError;
 
-    /** Creates an instance of CommunicationError class. */
-    public CommunicationError() {}
+    /**
+     * Creates an instance of CommunicationError class.
+     */
+    public CommunicationError() {
+    }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -55,7 +60,7 @@ public final class CommunicationError {
 
     /**
      * Set the code property: The error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the CommunicationError object itself.
      */
@@ -66,7 +71,7 @@ public final class CommunicationError {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -75,7 +80,7 @@ public final class CommunicationError {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the CommunicationError object itself.
      */
@@ -86,7 +91,7 @@ public final class CommunicationError {
 
     /**
      * Get the target property: The error target.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -95,7 +100,7 @@ public final class CommunicationError {
 
     /**
      * Get the details property: Further details about specific errors that led to this error.
-     *
+     * 
      * @return the details value.
      */
     public List<CommunicationError> getDetails() {
@@ -104,7 +109,7 @@ public final class CommunicationError {
 
     /**
      * Get the innerError property: The inner error if any.
-     *
+     * 
      * @return the innerError value.
      */
     public CommunicationError getInnerError() {

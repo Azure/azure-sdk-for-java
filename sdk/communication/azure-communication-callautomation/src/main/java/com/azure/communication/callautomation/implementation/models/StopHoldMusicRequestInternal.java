@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for holding participant from the call. */
+/**
+ * The request payload for holding participant from the call.
+ */
 @Fluent
 public final class StopHoldMusicRequestInternal {
     /*
@@ -23,12 +25,16 @@ public final class StopHoldMusicRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StopHoldMusicRequestInternal class. */
-    public StopHoldMusicRequestInternal() {}
+    /**
+     * Creates an instance of StopHoldMusicRequestInternal class.
+     */
+    public StopHoldMusicRequestInternal() {
+    }
 
     /**
-     * Get the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
-     *
+     * Get the targetParticipant property: Participants to be hold from the call.
+     * Only ACS Users are supported.
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -36,8 +42,9 @@ public final class StopHoldMusicRequestInternal {
     }
 
     /**
-     * Set the targetParticipant property: Participants to be hold from the call. Only ACS Users are supported.
-     *
+     * Set the targetParticipant property: Participants to be hold from the call.
+     * Only ACS Users are supported.
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the StopHoldMusicRequestInternal object itself.
      */
@@ -49,7 +56,7 @@ public final class StopHoldMusicRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -59,7 +66,7 @@ public final class StopHoldMusicRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StopHoldMusicRequestInternal object itself.
      */

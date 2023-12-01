@@ -8,26 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Audio channel type to stream, eg. unmixed audio, mixed audio. */
+/**
+ * Audio channel type to stream, eg. unmixed audio, mixed audio.
+ */
 public final class MediaStreamingAudioChannelTypeInternal
-        extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
-    /** Static value mixed for MediaStreamingAudioChannelTypeInternal. */
+    extends ExpandableStringEnum<MediaStreamingAudioChannelTypeInternal> {
+    /**
+     * Static value mixed for MediaStreamingAudioChannelTypeInternal.
+     */
     public static final MediaStreamingAudioChannelTypeInternal MIXED = fromString("mixed");
 
-    /** Static value unmixed for MediaStreamingAudioChannelTypeInternal. */
+    /**
+     * Static value unmixed for MediaStreamingAudioChannelTypeInternal.
+     */
     public static final MediaStreamingAudioChannelTypeInternal UNMIXED = fromString("unmixed");
 
     /**
      * Creates a new instance of MediaStreamingAudioChannelTypeInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public MediaStreamingAudioChannelTypeInternal() {}
+    public MediaStreamingAudioChannelTypeInternal() {
+    }
 
     /**
      * Creates or finds a MediaStreamingAudioChannelTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MediaStreamingAudioChannelTypeInternal.
      */
@@ -38,7 +45,7 @@ public final class MediaStreamingAudioChannelTypeInternal
 
     /**
      * Gets known MediaStreamingAudioChannelTypeInternal values.
-     *
+     * 
      * @return known MediaStreamingAudioChannelTypeInternal values.
      */
     public static Collection<MediaStreamingAudioChannelTypeInternal> values() {

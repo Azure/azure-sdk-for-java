@@ -9,30 +9,37 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Determines the sub-type of the recognize operation. In case of cancel operation the this field is not set and is
- * returned empty.
+ * Determines the sub-type of the recognize operation.
+ * In case of cancel operation the this field is not set and is returned empty.
  */
 public final class RecognitionTypeInternal extends ExpandableStringEnum<RecognitionTypeInternal> {
-    /** Static value dtmf for RecognitionTypeInternal. */
+    /**
+     * Static value dtmf for RecognitionTypeInternal.
+     */
     public static final RecognitionTypeInternal DTMF = fromString("dtmf");
 
-    /** Static value speech for RecognitionTypeInternal. */
+    /**
+     * Static value speech for RecognitionTypeInternal.
+     */
     public static final RecognitionTypeInternal SPEECH = fromString("speech");
 
-    /** Static value choices for RecognitionTypeInternal. */
+    /**
+     * Static value choices for RecognitionTypeInternal.
+     */
     public static final RecognitionTypeInternal CHOICES = fromString("choices");
 
     /**
      * Creates a new instance of RecognitionTypeInternal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecognitionTypeInternal() {}
+    public RecognitionTypeInternal() {
+    }
 
     /**
      * Creates or finds a RecognitionTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecognitionTypeInternal.
      */
@@ -43,7 +50,7 @@ public final class RecognitionTypeInternal extends ExpandableStringEnum<Recognit
 
     /**
      * Gets known RecognitionTypeInternal values.
-     *
+     * 
      * @return known RecognitionTypeInternal values.
      */
     public static Collection<RecognitionTypeInternal> values() {

@@ -11,17 +11,17 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** The BaseDialog model. */
+/**
+ * The BaseDialog model.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = BaseDialog.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = BaseDialog.class)
 @JsonTypeName("BaseDialog")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureOpenAI", value = AzureOpenAIDialog.class),
-    @JsonSubTypes.Type(name = "PowerVirtualAgents", value = PowerVirtualAgentsDialog.class)
-})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureOpenAI", value = AzureOpenAIDialog.class),
+    @JsonSubTypes.Type(name = "PowerVirtualAgents", value = PowerVirtualAgentsDialog.class) })
 @Fluent
 public class BaseDialog {
     /*
@@ -30,12 +30,15 @@ public class BaseDialog {
     @JsonProperty(value = "context", required = true)
     private Map<String, Object> context;
 
-    /** Creates an instance of BaseDialog class. */
-    public BaseDialog() {}
+    /**
+     * Creates an instance of BaseDialog class.
+     */
+    public BaseDialog() {
+    }
 
     /**
      * Get the context property: Dialog context.
-     *
+     * 
      * @return the context value.
      */
     public Map<String, Object> getContext() {
@@ -44,7 +47,7 @@ public class BaseDialog {
 
     /**
      * Set the context property: Dialog context.
-     *
+     * 
      * @param context the context value to set.
      * @return the BaseDialog object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Options for DTMF recognition. */
+/**
+ * Options for DTMF recognition.
+ */
 @Fluent
 public final class DtmfOptionsInternal {
     /*
@@ -29,12 +31,15 @@ public final class DtmfOptionsInternal {
     @JsonProperty(value = "stopTones")
     private List<DtmfToneInternal> stopTones;
 
-    /** Creates an instance of DtmfOptionsInternal class. */
-    public DtmfOptionsInternal() {}
+    /**
+     * Creates an instance of DtmfOptionsInternal class.
+     */
+    public DtmfOptionsInternal() {
+    }
 
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
-     *
+     * 
      * @return the interToneTimeoutInSeconds value.
      */
     public Integer getInterToneTimeoutInSeconds() {
@@ -43,7 +48,7 @@ public final class DtmfOptionsInternal {
 
     /**
      * Set the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
-     *
+     * 
      * @param interToneTimeoutInSeconds the interToneTimeoutInSeconds value to set.
      * @return the DtmfOptionsInternal object itself.
      */
@@ -54,7 +59,7 @@ public final class DtmfOptionsInternal {
 
     /**
      * Get the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
-     *
+     * 
      * @return the maxTonesToCollect value.
      */
     public Integer getMaxTonesToCollect() {
@@ -63,7 +68,7 @@ public final class DtmfOptionsInternal {
 
     /**
      * Set the maxTonesToCollect property: Maximum number of DTMF tones to be collected.
-     *
+     * 
      * @param maxTonesToCollect the maxTonesToCollect value to set.
      * @return the DtmfOptionsInternal object itself.
      */
@@ -74,7 +79,7 @@ public final class DtmfOptionsInternal {
 
     /**
      * Get the stopTones property: List of tones that will stop recognizing.
-     *
+     * 
      * @return the stopTones value.
      */
     public List<DtmfToneInternal> getStopTones() {
@@ -83,7 +88,7 @@ public final class DtmfOptionsInternal {
 
     /**
      * Set the stopTones property: List of tones that will stop recognizing.
-     *
+     * 
      * @param stopTones the stopTones value to set.
      * @return the DtmfOptionsInternal object itself.
      */

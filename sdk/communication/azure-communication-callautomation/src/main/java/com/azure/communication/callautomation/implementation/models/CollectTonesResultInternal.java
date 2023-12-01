@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CollectTonesResultInternal model. */
+/**
+ * The CollectTonesResultInternal model.
+ */
 @Immutable
 public final class CollectTonesResultInternal {
     /*
@@ -17,12 +19,15 @@ public final class CollectTonesResultInternal {
     @JsonProperty(value = "tones", access = JsonProperty.Access.WRITE_ONLY)
     private List<DtmfToneInternal> tones;
 
-    /** Creates an instance of CollectTonesResultInternal class. */
-    public CollectTonesResultInternal() {}
+    /**
+     * Creates an instance of CollectTonesResultInternal class.
+     */
+    public CollectTonesResultInternal() {
+    }
 
     /**
      * Get the tones property: The tones property.
-     *
+     * 
      * @return the tones value.
      */
     public List<DtmfToneInternal> getTones() {

@@ -26,22 +26,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CallDialogs. */
+/**
+ * An instance of this class provides access to all the operations defined in CallDialogs.
+ */
 public final class CallDialogsImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CallDialogsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureCommunicationCallAutomationServiceImpl client;
 
     /**
      * Initializes an instance of CallDialogsImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CallDialogsImpl(AzureCommunicationCallAutomationServiceImpl client) {
-        this.service =
-                RestProxy.create(CallDialogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CallDialogsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,35 +59,28 @@ public final class CallDialogsImpl {
     @ServiceInterface(name = "AzureCommunicationCa")
     public interface CallDialogsService {
         @Put("/calling/callConnections/{callConnectionId}/dialogs/{dialogId}")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<DialogStateResponse>> startDialog(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @PathParam("dialogId") String dialogId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") StartDialogRequestInternal startDialogRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DialogStateResponse>> startDialog(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @PathParam("dialogId") String dialogId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StartDialogRequestInternal startDialogRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/calling/callConnections/{callConnectionId}/dialogs/{dialogId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> stopDialog(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("callConnectionId") String callConnectionId,
-                @PathParam("dialogId") String dialogId,
-                @QueryParam("operationCallbackUri") String operationCallbackUri,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> stopDialog(@HostParam("endpoint") String endpoint,
+            @PathParam("callConnectionId") String callConnectionId, @PathParam("dialogId") String dialogId,
+            @QueryParam("operationCallbackUri") String operationCallbackUri,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -91,26 +90,18 @@ public final class CallDialogsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
+    public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.startDialog(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                dialogId,
-                                this.client.getApiVersion(),
-                                startDialogRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.startDialog(this.client.getEndpoint(), callConnectionId,
+            dialogId, this.client.getApiVersion(), startDialogRequest, accept, context));
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -121,24 +112,18 @@ public final class CallDialogsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
+    public Mono<Response<DialogStateResponse>> startDialogWithResponseAsync(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest, Context context) {
         final String accept = "application/json";
-        return service.startDialog(
-                this.client.getEndpoint(),
-                callConnectionId,
-                dialogId,
-                this.client.getApiVersion(),
-                startDialogRequest,
-                accept,
-                context);
+        return service.startDialog(this.client.getEndpoint(), callConnectionId, dialogId, this.client.getApiVersion(),
+            startDialogRequest, accept, context);
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -148,17 +133,17 @@ public final class CallDialogsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
+    public Mono<DialogStateResponse> startDialogAsync(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -169,17 +154,17 @@ public final class CallDialogsImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DialogStateResponse> startDialogAsync(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
+    public Mono<DialogStateResponse> startDialogAsync(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -190,16 +175,16 @@ public final class CallDialogsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DialogStateResponse> startDialogWithResponse(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest, Context context) {
+    public Response<DialogStateResponse> startDialogWithResponse(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest, Context context) {
         return startDialogWithResponseAsync(callConnectionId, dialogId, startDialogRequest, context).block();
     }
 
     /**
      * Start a dialog targeting a particular participant on the call.
-     *
-     * <p>Start a dialog.
-     *
+     * 
+     * Start a dialog.
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param startDialogRequest The start dialog request.
@@ -209,14 +194,14 @@ public final class CallDialogsImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DialogStateResponse startDialog(
-            String callConnectionId, String dialogId, StartDialogRequestInternal startDialogRequest) {
+    public DialogStateResponse startDialog(String callConnectionId, String dialogId,
+        StartDialogRequestInternal startDialogRequest) {
         return startDialogWithResponse(callConnectionId, dialogId, startDialogRequest, Context.NONE).getValue();
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.
@@ -226,24 +211,16 @@ public final class CallDialogsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopDialogWithResponseAsync(
-            String callConnectionId, String dialogId, String operationCallbackUri) {
+    public Mono<Response<Void>> stopDialogWithResponseAsync(String callConnectionId, String dialogId,
+        String operationCallbackUri) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.stopDialog(
-                                this.client.getEndpoint(),
-                                callConnectionId,
-                                dialogId,
-                                operationCallbackUri,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.stopDialog(this.client.getEndpoint(), callConnectionId, dialogId,
+            operationCallbackUri, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.
@@ -254,22 +231,16 @@ public final class CallDialogsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopDialogWithResponseAsync(
-            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
+    public Mono<Response<Void>> stopDialogWithResponseAsync(String callConnectionId, String dialogId,
+        String operationCallbackUri, Context context) {
         final String accept = "application/json";
-        return service.stopDialog(
-                this.client.getEndpoint(),
-                callConnectionId,
-                dialogId,
-                operationCallbackUri,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stopDialog(this.client.getEndpoint(), callConnectionId, dialogId, operationCallbackUri,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.
@@ -281,12 +252,12 @@ public final class CallDialogsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopDialogAsync(String callConnectionId, String dialogId, String operationCallbackUri) {
         return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.
@@ -297,15 +268,15 @@ public final class CallDialogsImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> stopDialogAsync(
-            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
+    public Mono<Void> stopDialogAsync(String callConnectionId, String dialogId, String operationCallbackUri,
+        Context context) {
         return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.
@@ -316,14 +287,14 @@ public final class CallDialogsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopDialogWithResponse(
-            String callConnectionId, String dialogId, String operationCallbackUri, Context context) {
+    public Response<Void> stopDialogWithResponse(String callConnectionId, String dialogId, String operationCallbackUri,
+        Context context) {
         return stopDialogWithResponseAsync(callConnectionId, dialogId, operationCallbackUri, context).block();
     }
 
     /**
      * Stop a dialog.
-     *
+     * 
      * @param callConnectionId The call connection id.
      * @param dialogId The dialog id.
      * @param operationCallbackUri Opeation callback URI.

@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Channel affinity for a participant. */
+/**
+ * Channel affinity for a participant.
+ */
 @Fluent
 public final class ChannelAffinityInternal {
     /*
@@ -23,12 +25,15 @@ public final class ChannelAffinityInternal {
     @JsonProperty(value = "participant", required = true)
     private CommunicationIdentifierModel participant;
 
-    /** Creates an instance of ChannelAffinityInternal class. */
-    public ChannelAffinityInternal() {}
+    /**
+     * Creates an instance of ChannelAffinityInternal class.
+     */
+    public ChannelAffinityInternal() {
+    }
 
     /**
      * Get the channel property: Channel number to which bitstream from a particular participant will be written.
-     *
+     * 
      * @return the channel value.
      */
     public Integer getChannel() {
@@ -37,7 +42,7 @@ public final class ChannelAffinityInternal {
 
     /**
      * Set the channel property: Channel number to which bitstream from a particular participant will be written.
-     *
+     * 
      * @param channel the channel value to set.
      * @return the ChannelAffinityInternal object itself.
      */
@@ -49,7 +54,7 @@ public final class ChannelAffinityInternal {
     /**
      * Get the participant property: The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
-     *
+     * 
      * @return the participant value.
      */
     public CommunicationIdentifierModel getParticipant() {
@@ -59,7 +64,7 @@ public final class ChannelAffinityInternal {
     /**
      * Set the participant property: The identifier for the participant whose bitstream will be written to the channel
      * represented by the channel number.
-     *
+     * 
      * @param participant the participant value to set.
      * @return the ChannelAffinityInternal object itself.
      */

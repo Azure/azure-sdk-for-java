@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Power Virtual Agents Dialog. */
+/**
+ * Power Virtual Agents Dialog.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("PowerVirtualAgents")
 @Fluent
@@ -27,12 +29,15 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
     @JsonProperty(value = "language")
     private String language;
 
-    /** Creates an instance of PowerVirtualAgentsDialog class. */
-    public PowerVirtualAgentsDialog() {}
+    /**
+     * Creates an instance of PowerVirtualAgentsDialog class.
+     */
+    public PowerVirtualAgentsDialog() {
+    }
 
     /**
      * Get the botAppId property: Bot identifier.
-     *
+     * 
      * @return the botAppId value.
      */
     public String getBotAppId() {
@@ -41,7 +46,7 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Set the botAppId property: Bot identifier.
-     *
+     * 
      * @param botAppId the botAppId value to set.
      * @return the PowerVirtualAgentsDialog object itself.
      */
@@ -52,7 +57,7 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Get the language property: Language.
-     *
+     * 
      * @return the language value.
      */
     public String getLanguage() {
@@ -61,7 +66,7 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
 
     /**
      * Set the language property: Language.
-     *
+     * 
      * @param language the language value to set.
      * @return the PowerVirtualAgentsDialog object itself.
      */
@@ -70,7 +75,9 @@ public final class PowerVirtualAgentsDialog extends BaseDialog {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerVirtualAgentsDialog setContext(Map<String, Object> context) {
         super.setContext(context);

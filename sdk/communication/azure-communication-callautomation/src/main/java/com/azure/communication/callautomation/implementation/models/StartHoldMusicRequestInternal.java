@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for holding participant from the call. */
+/**
+ * The request payload for holding participant from the call.
+ */
 @Fluent
 public final class StartHoldMusicRequestInternal {
     /*
@@ -34,12 +36,15 @@ public final class StartHoldMusicRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of StartHoldMusicRequestInternal class. */
-    public StartHoldMusicRequestInternal() {}
+    /**
+     * Creates an instance of StartHoldMusicRequestInternal class.
+     */
+    public StartHoldMusicRequestInternal() {
+    }
 
     /**
      * Get the targetParticipant property: Participant to be held from the call.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -48,7 +53,7 @@ public final class StartHoldMusicRequestInternal {
 
     /**
      * Set the targetParticipant property: Participant to be held from the call.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the StartHoldMusicRequestInternal object itself.
      */
@@ -59,7 +64,7 @@ public final class StartHoldMusicRequestInternal {
 
     /**
      * Get the playSourceInfo property: Prompt to play while in hold.
-     *
+     * 
      * @return the playSourceInfo value.
      */
     public PlaySourceInternal getPlaySourceInfo() {
@@ -68,7 +73,7 @@ public final class StartHoldMusicRequestInternal {
 
     /**
      * Set the playSourceInfo property: Prompt to play while in hold.
-     *
+     * 
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the StartHoldMusicRequestInternal object itself.
      */
@@ -79,7 +84,7 @@ public final class StartHoldMusicRequestInternal {
 
     /**
      * Get the loop property: If the prompt will be looped or not.
-     *
+     * 
      * @return the loop value.
      */
     public Boolean isLoop() {
@@ -88,7 +93,7 @@ public final class StartHoldMusicRequestInternal {
 
     /**
      * Set the loop property: If the prompt will be looped or not.
-     *
+     * 
      * @param loop the loop value to set.
      * @return the StartHoldMusicRequestInternal object itself.
      */
@@ -100,7 +105,7 @@ public final class StartHoldMusicRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -110,7 +115,7 @@ public final class StartHoldMusicRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartHoldMusicRequestInternal object itself.
      */

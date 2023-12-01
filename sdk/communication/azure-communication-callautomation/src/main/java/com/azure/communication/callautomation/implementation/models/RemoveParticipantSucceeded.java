@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The participant removed event. */
+/**
+ * The participant removed event.
+ */
 @Immutable
 public final class RemoveParticipantSucceeded {
     /*
@@ -46,13 +48,16 @@ public final class RemoveParticipantSucceeded {
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
-    /** Creates an instance of RemoveParticipantSucceeded class. */
-    public RemoveParticipantSucceeded() {}
+    /**
+     * Creates an instance of RemoveParticipantSucceeded class.
+     */
+    public RemoveParticipantSucceeded() {
+    }
 
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -61,7 +66,7 @@ public final class RemoveParticipantSucceeded {
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
+     * 
      * @return the resultInformation value.
      */
     public ResultInformation getResultInformation() {
@@ -70,7 +75,7 @@ public final class RemoveParticipantSucceeded {
 
     /**
      * Get the participant property: Participant.
-     *
+     * 
      * @return the participant value.
      */
     public CommunicationIdentifierModel getParticipant() {
@@ -79,7 +84,7 @@ public final class RemoveParticipantSucceeded {
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -88,7 +93,7 @@ public final class RemoveParticipantSucceeded {
 
     /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -96,9 +101,9 @@ public final class RemoveParticipantSucceeded {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {

@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for transferring call to a participant. */
+/**
+ * The request payload for transferring call to a participant.
+ */
 @Fluent
 public final class TransferToParticipantRequestInternal {
     /*
@@ -42,12 +44,15 @@ public final class TransferToParticipantRequestInternal {
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
-    /** Creates an instance of TransferToParticipantRequestInternal class. */
-    public TransferToParticipantRequestInternal() {}
+    /**
+     * Creates an instance of TransferToParticipantRequestInternal class.
+     */
+    public TransferToParticipantRequestInternal() {
+    }
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -56,7 +61,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the targetParticipant property: The identity of the target where call should be transferred to.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -67,7 +72,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
+     * 
      * @return the customCallingContext value.
      */
     public CustomCallingContext getCustomCallingContext() {
@@ -76,7 +81,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
+     * 
      * @param customCallingContext the customCallingContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -88,7 +93,7 @@ public final class TransferToParticipantRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -98,7 +103,7 @@ public final class TransferToParticipantRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -109,7 +114,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the transferee property: Transferee is the participant who is transferred away.
-     *
+     * 
      * @return the transferee value.
      */
     public CommunicationIdentifierModel getTransferee() {
@@ -118,7 +123,7 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the transferee property: Transferee is the participant who is transferred away.
-     *
+     * 
      * @param transferee the transferee value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
@@ -129,9 +134,10 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -140,9 +146,10 @@ public final class TransferToParticipantRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */

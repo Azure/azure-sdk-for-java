@@ -21,7 +21,7 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.1.14
+autorest README.md --java --v4 --use=@autorest/java@4.1.23
 ```
 
 ### Code generation settings
@@ -235,7 +235,6 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
-- remove-model: ToneInfo
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

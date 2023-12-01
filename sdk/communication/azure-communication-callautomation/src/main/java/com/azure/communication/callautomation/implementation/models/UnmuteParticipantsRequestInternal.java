@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The request payload for unmuting participant from the call. */
+/**
+ * The request payload for unmuting participant from the call.
+ */
 @Fluent
 public final class UnmuteParticipantsRequestInternal {
     /*
@@ -24,12 +26,16 @@ public final class UnmuteParticipantsRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of UnmuteParticipantsRequestInternal class. */
-    public UnmuteParticipantsRequestInternal() {}
+    /**
+     * Creates an instance of UnmuteParticipantsRequestInternal class.
+     */
+    public UnmuteParticipantsRequestInternal() {
+    }
 
     /**
-     * Get the targetParticipants property: Participants to be unmuted from the call. Only ACS Users are supported.
-     *
+     * Get the targetParticipants property: Participants to be unmuted from the call.
+     * Only ACS Users are supported.
+     * 
      * @return the targetParticipants value.
      */
     public List<CommunicationIdentifierModel> getTargetParticipants() {
@@ -37,13 +43,14 @@ public final class UnmuteParticipantsRequestInternal {
     }
 
     /**
-     * Set the targetParticipants property: Participants to be unmuted from the call. Only ACS Users are supported.
-     *
+     * Set the targetParticipants property: Participants to be unmuted from the call.
+     * Only ACS Users are supported.
+     * 
      * @param targetParticipants the targetParticipants value to set.
      * @return the UnmuteParticipantsRequestInternal object itself.
      */
-    public UnmuteParticipantsRequestInternal setTargetParticipants(
-            List<CommunicationIdentifierModel> targetParticipants) {
+    public UnmuteParticipantsRequestInternal
+        setTargetParticipants(List<CommunicationIdentifierModel> targetParticipants) {
         this.targetParticipants = targetParticipants;
         return this;
     }
@@ -51,7 +58,7 @@ public final class UnmuteParticipantsRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -61,7 +68,7 @@ public final class UnmuteParticipantsRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the UnmuteParticipantsRequestInternal object itself.
      */
