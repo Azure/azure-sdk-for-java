@@ -39,6 +39,7 @@ import com.azure.communication.callautomation.models.events.TranscriptionStarted
 import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -172,6 +173,8 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, TranscriptionResumed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStopped")) {
                 ret = mapper.convertValue(eventData, TranscriptionStopped.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
+                ret = mapper.convertValue(eventData, TranscriptionUpdated.class);
             }
             return ret;
         } catch (RuntimeException e) {
