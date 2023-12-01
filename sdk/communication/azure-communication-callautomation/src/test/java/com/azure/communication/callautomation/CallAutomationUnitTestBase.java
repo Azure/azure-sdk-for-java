@@ -16,7 +16,6 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
-import com.azure.communication.callautomation.implementation.models.DialogInputType;
 import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;

@@ -19,7 +19,6 @@ import com.azure.communication.callautomation.implementation.converters.PhoneNum
 import com.azure.communication.callautomation.implementation.models.AddParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantRequest;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
-import com.azure.communication.callautomation.implementation.models.CustomContext;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
@@ -56,7 +55,6 @@ import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
