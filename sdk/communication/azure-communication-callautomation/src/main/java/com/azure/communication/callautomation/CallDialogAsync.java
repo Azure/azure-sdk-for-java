@@ -120,8 +120,8 @@ public final class CallDialogAsync {
     Mono<Response<Void>> stopDialogWithResponseInternal(String dialogId, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-
-            return dialogsInternal.stopDialogWithResponseAsync(callConnectionId, dialogId, context);
+            // TODO: FIX OperationCallbackUri
+            return dialogsInternal.stopDialogWithResponseAsync(callConnectionId, dialogId, null, context);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

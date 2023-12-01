@@ -41,6 +41,25 @@ public final class TranscriptionStatusDetails extends ExpandableStringEnum<Trans
     /** Static value unspecifiedError for TranscriptionStatusDetails. */
     public static final TranscriptionStatusDetails UNSPECIFIED_ERROR = fromString("unspecifiedError");
 
+    /** Static value authenticationFailure for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails AUTHENTICATION_FAILURE = fromString("authenticationFailure");
+
+    /** Static value badRequest for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails BAD_REQUEST = fromString("badRequest");
+
+    /** Static value tooManyRequests for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails TOO_MANY_REQUESTS = fromString("tooManyRequests");
+
+    /** Static value forbidden for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails FORBIDDEN = fromString("forbidden");
+
+    /** Static value serviceTimeout for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails SERVICE_TIMEOUT = fromString("serviceTimeout");
+
+    /** Static value transcriptionLocaleUpdated for TranscriptionStatusDetails. */
+    public static final TranscriptionStatusDetails TRANSCRIPTION_LOCALE_UPDATED =
+            fromString("transcriptionLocaleUpdated");
+
     /**
      * Creates a new instance of TranscriptionStatusDetails value.
      *

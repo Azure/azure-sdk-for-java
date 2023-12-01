@@ -418,9 +418,9 @@ public final class CallMediaAsync {
             }
         }
 
-        if (choiceRecognizeOptions.getSpeechModelEndpointId() != null) {
-            if (!choiceRecognizeOptions.getSpeechModelEndpointId().isEmpty()) {
-                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechModelEndpointId());
+        if (choiceRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
+            if (!choiceRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechRecognitionModelEndpointId());
             }
         }
 

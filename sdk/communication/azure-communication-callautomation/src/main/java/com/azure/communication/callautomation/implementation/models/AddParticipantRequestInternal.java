@@ -44,10 +44,10 @@ public final class AddParticipantRequestInternal {
     private String operationContext;
 
     /*
-     * Used by customer to send custom context to targets
+     * Used by customer to send custom calling context to targets
      */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
@@ -169,22 +169,22 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Get the customContext property: Used by customer to send custom context to targets.
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
      *
-     * @return the customContext value.
+     * @return the customCallingContext value.
      */
-    public CustomContext getCustomContext() {
-        return this.customContext;
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
     }
 
     /**
-     * Set the customContext property: Used by customer to send custom context to targets.
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
      *
-     * @param customContext the customContext value to set.
+     * @param customCallingContext the customCallingContext value to set.
      * @return the AddParticipantRequestInternal object itself.
      */
-    public AddParticipantRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
+    public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
     }
 

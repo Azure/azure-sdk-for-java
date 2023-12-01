@@ -17,6 +17,14 @@ public final class StartDialogRequestInternal {
     private BaseDialog dialog;
 
     /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     */
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
+
+    /*
      * The value to identify context of the operation.
      */
     @JsonProperty(value = "operationContext")
@@ -42,6 +50,30 @@ public final class StartDialogRequestInternal {
      */
     public StartDialogRequestInternal setDialog(BaseDialog dialog) {
         this.dialog = dialog;
+        return this;
+    }
+
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the StartDialogRequestInternal object itself.
+     */
+    public StartDialogRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 

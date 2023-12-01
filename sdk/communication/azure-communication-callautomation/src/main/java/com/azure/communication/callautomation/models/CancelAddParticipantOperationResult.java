@@ -17,7 +17,7 @@ import java.util.Objects;
 
 /** The CancelAddParticipantResult model. */
 @Immutable
-public final class CancelAddParticipantResult extends ResultWithEventHandling<CancelAddParticipantEventResult> {
+public final class CancelAddParticipantOperationResult extends ResultWithEventHandling<CancelAddParticipantEventResult> {
 
     /**
      * The invitation ID used to cancel the add participant request.
@@ -33,8 +33,8 @@ public final class CancelAddParticipantResult extends ResultWithEventHandling<Ca
         CancelAddParticipantResponseConstructorProxy.setAccessor(
                 new CancelAddParticipantResponseConstructorAccessor() {
                     @Override
-                    public CancelAddParticipantResult create(CancelAddParticipantResponse internalHeaders) {
-                        return new CancelAddParticipantResult(internalHeaders);
+                    public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
+                        return new CancelAddParticipantOperationResult(internalHeaders);
                     }
                 });
     }
@@ -42,7 +42,7 @@ public final class CancelAddParticipantResult extends ResultWithEventHandling<Ca
     /**
      * Public constructor.
      */
-    public CancelAddParticipantResult() {
+    public CancelAddParticipantOperationResult() {
         invitationId = null;
         operationContext = null;
     }
@@ -52,7 +52,7 @@ public final class CancelAddParticipantResult extends ResultWithEventHandling<Ca
      *
      * @param cancelAddParticipantResponseInternal The response from the service.
      */
-    CancelAddParticipantResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
+    CancelAddParticipantOperationResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
         Objects.requireNonNull(cancelAddParticipantResponseInternal,
                 "cancelAddParticipantResponseInternal must not be null");
 

@@ -61,16 +61,16 @@ public final class CreateCallRequestInternal {
     private TranscriptionConfiguration transcriptionConfiguration;
 
     /*
-     * The identifier of the Cognitive Service resource assigned to this call.
+     * AI options for the call.
      */
-    @JsonProperty(value = "cognitiveServicesEndpoint")
-    private String cognitiveServicesEndpoint;
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
-     * Used by customer to send custom context to targets
+     * Used by customer to send custom calling context to targets
      */
-    @JsonProperty(value = "customContext")
-    private CustomContext customContext;
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
 
     /** Creates an instance of CreateCallRequestInternal class. */
     public CreateCallRequestInternal() {}
@@ -240,44 +240,43 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
-     * call.
+     * Get the callIntelligenceOptions property: AI options for the call.
      *
-     * @return the cognitiveServicesEndpoint value.
+     * @return the callIntelligenceOptions value.
      */
-    public String getCognitiveServicesEndpoint() {
-        return this.cognitiveServicesEndpoint;
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
-     * call.
+     * Set the callIntelligenceOptions property: AI options for the call.
      *
-     * @param cognitiveServicesEndpoint the cognitiveServicesEndpoint value to set.
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setCognitiveServicesEndpoint(String cognitiveServicesEndpoint) {
-        this.cognitiveServicesEndpoint = cognitiveServicesEndpoint;
+    public CreateCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 
     /**
-     * Get the customContext property: Used by customer to send custom context to targets.
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
      *
-     * @return the customContext value.
+     * @return the customCallingContext value.
      */
-    public CustomContext getCustomContext() {
-        return this.customContext;
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
     }
 
     /**
-     * Set the customContext property: Used by customer to send custom context to targets.
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
      *
-     * @param customContext the customContext value to set.
+     * @param customCallingContext the customCallingContext value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setCustomContext(CustomContext customContext) {
-        this.customContext = customContext;
+    public CreateCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
     }
 }

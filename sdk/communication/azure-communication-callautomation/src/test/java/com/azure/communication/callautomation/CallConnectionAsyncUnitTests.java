@@ -13,8 +13,8 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
@@ -282,7 +282,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void muteParticipant() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 200)
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
@@ -296,7 +296,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 200)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
@@ -307,7 +307,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             callConnectionAsync.muteParticipantWithResponse(options).block();
 
         assertNotNull(muteParticipantsResultResponse);
-        assertEquals(200, muteParticipantsResultResponse.getStatusCode());
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
         assertNotNull(muteParticipantsResultResponse.getValue());
     }
 
@@ -404,7 +404,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        CancelAddParticipantResult result = callConnectionAsync.cancelAddParticipant(invitationId).block();
+        CancelAddParticipantOperationResult result = callConnectionAsync.cancelAddParticipantOperation(invitationId).block();
 
         assertNotNull(result);
         assertEquals(CALL_OPERATION_CONTEXT, result.getOperationContext());
@@ -423,9 +423,9 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        CancelAddParticipantOptions options = new CancelAddParticipantOptions(invitationId)
+        CancelAddParticipantOperationOptions options = new CancelAddParticipantOperationOptions(invitationId)
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<CancelAddParticipantResult> response = callConnectionAsync.cancelAddParticipantWithResponse(
+        Response<CancelAddParticipantOperationResult> response = callConnectionAsync.cancelAddParticipantOperationWithResponse(
             options).block();
 
 

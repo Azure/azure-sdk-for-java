@@ -4,8 +4,8 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantOptions;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationOptions;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -223,7 +223,7 @@ public final class CallConnection {
     }
 
     /**
-     * Mutes participant in the call.
+     * Mutes a participant in the call.
      *
      * @param targetParticipant - Participant to be muted. Only ACS Users are currently supported.
      * @return A MuteParticipantResult object.
@@ -234,7 +234,8 @@ public final class CallConnection {
     }
 
     /**
-     * Mute participant in the call.
+     * Mutes a participant in the call.
+     *
      * @param options - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the MuteParticipantResult object.
@@ -246,6 +247,7 @@ public final class CallConnection {
 
     /**
      * Unmutes participant in the call.
+     *
      * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
      * @return An UnmuteParticipantResult object.
      */
@@ -256,6 +258,7 @@ public final class CallConnection {
 
     /**
      * Unmutes participant in the call.
+     *
      * @param options - Options for the request.
      * @param context A {@link Context} representing the request context.
      * @return a Response containing the UnmuteParticipantResult object.
@@ -266,7 +269,7 @@ public final class CallConnection {
     }
 
     /**
-     * Cancel add participant request.
+     * Cancel add participant operation request.
      *
      * @param invitationId invitation ID used to add participant.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -274,22 +277,22 @@ public final class CallConnection {
      * @return Result of cancelling add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAddParticipantResult cancelAddParticipant(String invitationId) {
-        return callConnectionAsync.cancelAddParticipant(invitationId).block();
+    public CancelAddParticipantOperationResult cancelAddParticipantOperation(String invitationId) {
+        return callConnectionAsync.cancelAddParticipantOperation(invitationId).block();
     }
 
     /**
-     * Cancel add participant request.
+     * Cancel add participant operation request.
      *
-     * @param cancelAddParticipantOptions The options for cancelling add participant request.
+     * @param cancelAddParticipantOperationOptions The options for cancelling add participant operation request.
      * @param context A {@link Context} representing the request context.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of cancelling add participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAddParticipantResult> cancelAddParticipantWithResponse(CancelAddParticipantOptions cancelAddParticipantOptions, Context context) {
-        return callConnectionAsync.cancelAddParticipantWithResponseInternal(cancelAddParticipantOptions, context).block();
+    public Response<CancelAddParticipantOperationResult> cancelAddParticipantOperationWithResponse(CancelAddParticipantOperationOptions cancelAddParticipantOperationOptions, Context context) {
+        return callConnectionAsync.cancelAddParticipantOperationWithResponseInternal(cancelAddParticipantOperationOptions, context).block();
     }
 
     //region Content management Actions
