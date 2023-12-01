@@ -4,6 +4,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.FutureTemperatureArguments;
 import com.azure.ai.openai.functions.FutureTemperatureParameters;
 import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
@@ -605,6 +606,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(audioTaskLabel, translation.getTask());
         assertNotNull(translation.getSegments());
         assertFalse(translation.getSegments().isEmpty());
+    }
+
+    static void assertFunctionToolCallArgs(String argumentJson) {
+        FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
+        assertNotNull(functionArguments);
     }
 
     protected static final String BATMAN_TRANSCRIPTION =
