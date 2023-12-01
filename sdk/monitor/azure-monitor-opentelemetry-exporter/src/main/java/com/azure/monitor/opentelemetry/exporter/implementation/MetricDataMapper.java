@@ -156,7 +156,7 @@ public class MetricDataMapper {
         // We emit jmx metrics via opentelemetry with an attribute that has the original name the customer set
         // in their applicationinsights.json file. We parse for that attribute here to report the intended
         // metric name to Breeze.
-        String jmxMetricName = metricData.getResource().getAttribute(AttributeKey.stringKey("real jmx metric name"));
+        String jmxMetricName = metricData.getResource().getAttribute(AttributeKey.stringKey("app_insights_internal_jmx_metric"));
         if (jmxMetricName != null) {
             pointBuilder.setName(jmxMetricName);
         } else {
