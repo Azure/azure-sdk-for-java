@@ -1453,7 +1453,6 @@ public final class OpenAIAsyncClient {
      * @return transcribed text and associated metadata from provided spoken audio data on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
@@ -1461,8 +1460,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
             new MultipartFormDataHelper(requestOptions)
-                .serializeField("file", audioTranscriptionOptions.getFile(),
-                    audioTranscriptionOptions.getFileFilename())
+                .serializeField("file", BinaryData.fromBytes(audioTranscriptionOptions.getFile()), "file")
                 .serializeField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
                 .serializeField("language", audioTranscriptionOptions.getLanguage())
                 .serializeField("prompt", audioTranscriptionOptions.getPrompt())
@@ -1487,7 +1485,6 @@ public final class OpenAIAsyncClient {
      * @return english language transcribed text and associated metadata from provided spoken audio data on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
@@ -1495,7 +1492,7 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
             new MultipartFormDataHelper(requestOptions)
-                .serializeField("file", audioTranslationOptions.getFile(), audioTranslationOptions.getFileFilename())
+                .serializeField("file", BinaryData.fromBytes(audioTranslationOptions.getFile()), "file")
                 .serializeField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
                 .serializeField("prompt", audioTranslationOptions.getPrompt())
                 .serializeField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
@@ -1574,16 +1571,14 @@ public final class OpenAIAsyncClient {
      * @return transcribed text and associated metadata from provided spoken audio data on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
+    Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
         // Generated convenience method for getAudioTranscriptionAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName,
             new MultipartFormDataHelper(requestOptions)
-                .serializeField("file", audioTranscriptionOptions.getFile(),
-                    audioTranscriptionOptions.getFileFilename())
+                .serializeField("file", BinaryData.fromBytes(audioTranscriptionOptions.getFile()), "file")
                 .serializeField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
                 .serializeField("language", audioTranscriptionOptions.getLanguage())
                 .serializeField("prompt", audioTranscriptionOptions.getPrompt())
@@ -1608,15 +1603,14 @@ public final class OpenAIAsyncClient {
      * @return english language transcribed text and associated metadata from provided spoken audio data on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranslation> getAudioTranslationAsResponseObject(String deploymentOrModelName,
+    Mono<AudioTranslation> getAudioTranslationAsResponseObject(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName,
             new MultipartFormDataHelper(requestOptions)
-                .serializeField("file", audioTranslationOptions.getFile(), audioTranslationOptions.getFileFilename())
+                .serializeField("file", BinaryData.fromBytes(audioTranslationOptions.getFile()), "file")
                 .serializeField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
                 .serializeField("prompt", audioTranslationOptions.getPrompt())
                 .serializeField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
