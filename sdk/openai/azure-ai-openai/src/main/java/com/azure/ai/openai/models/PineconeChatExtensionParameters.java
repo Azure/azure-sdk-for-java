@@ -15,7 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class PineconeChatExtensionParameters {
 
     /*
-     * The authentication option to access the data.
+     * The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      */
     @Generated
     @JsonProperty(value = "authentication")
@@ -60,7 +65,7 @@ public final class PineconeChatExtensionParameters {
     private String environment;
 
     /*
-     * The index name name of Pinecone.
+     * The name of the Pinecone database index.
      */
     @Generated
     @JsonProperty(value = "indexName")
@@ -78,7 +83,7 @@ public final class PineconeChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "embeddingDependency")
-    private OnYourDataEmbeddingDependency embeddingDependency;
+    private OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Creates an instance of PineconeChatExtensionParameters class.
@@ -98,7 +103,12 @@ public final class PineconeChatExtensionParameters {
     }
 
     /**
-     * Get the authentication property: The authentication option to access the data.
+     * Get the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @return the authentication value.
      */
@@ -108,7 +118,12 @@ public final class PineconeChatExtensionParameters {
     }
 
     /**
-     * Set the authentication property: The authentication option to access the data.
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @param authentication the authentication value to set.
      * @return the PineconeChatExtensionParameters object itself.
@@ -224,7 +239,7 @@ public final class PineconeChatExtensionParameters {
     }
 
     /**
-     * Get the indexName property: The index name name of Pinecone.
+     * Get the indexName property: The name of the Pinecone database index.
      *
      * @return the indexName value.
      */
@@ -249,7 +264,7 @@ public final class PineconeChatExtensionParameters {
      * @return the embeddingDependency value.
      */
     @Generated
-    public OnYourDataEmbeddingDependency getEmbeddingDependency() {
+    public OnYourDataVectorizationSource getEmbeddingDependency() {
         return this.embeddingDependency;
     }
 
@@ -260,7 +275,7 @@ public final class PineconeChatExtensionParameters {
      * @return the PineconeChatExtensionParameters object itself.
      */
     @Generated
-    public PineconeChatExtensionParameters setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
+    public PineconeChatExtensionParameters setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
     }

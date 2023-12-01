@@ -11,12 +11,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The embedding dependency based on deployment name.
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
+ * on an internal embeddings model deployment name in the same Azure OpenAI resource.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DeploymentName")
 @Immutable
-public final class OnYourDataEmbeddingDeploymentNameDependency extends OnYourDataEmbeddingDependency {
+public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
      * The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search
@@ -27,13 +29,13 @@ public final class OnYourDataEmbeddingDeploymentNameDependency extends OnYourDat
     private String deploymentName;
 
     /**
-     * Creates an instance of OnYourDataEmbeddingDeploymentNameDependency class.
+     * Creates an instance of OnYourDataDeploymentNameVectorizationSource class.
      *
      * @param deploymentName the deploymentName value to set.
      */
     @Generated
     @JsonCreator
-    public OnYourDataEmbeddingDeploymentNameDependency(@JsonProperty(value = "deploymentName") String deploymentName) {
+    public OnYourDataDeploymentNameVectorizationSource(@JsonProperty(value = "deploymentName") String deploymentName) {
         this.deploymentName = deploymentName;
     }
 

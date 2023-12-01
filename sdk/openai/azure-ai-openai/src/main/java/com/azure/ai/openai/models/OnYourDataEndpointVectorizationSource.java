@@ -11,12 +11,14 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The embedding dependency based on endpoint URL.
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
+ * on a public Azure OpenAI endpoint call for embeddings.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Endpoint")
 @Immutable
-public final class OnYourDataEmbeddingEndpointDependency extends OnYourDataEmbeddingDependency {
+public final class OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
      * Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of
@@ -35,14 +37,14 @@ public final class OnYourDataEmbeddingEndpointDependency extends OnYourDataEmbed
     private OnYourDataAuthenticationOptions authentication;
 
     /**
-     * Creates an instance of OnYourDataEmbeddingEndpointDependency class.
+     * Creates an instance of OnYourDataEndpointVectorizationSource class.
      *
      * @param endpoint the endpoint value to set.
      * @param authentication the authentication value to set.
      */
     @Generated
     @JsonCreator
-    public OnYourDataEmbeddingEndpointDependency(@JsonProperty(value = "endpoint") String endpoint,
+    public OnYourDataEndpointVectorizationSource(@JsonProperty(value = "endpoint") String endpoint,
         @JsonProperty(value = "authentication") OnYourDataAuthenticationOptions authentication) {
         this.endpoint = endpoint;
         this.authentication = authentication;

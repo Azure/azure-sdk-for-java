@@ -9,13 +9,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters to use when configuring Elasticsearch as an Azure OpenAI chat extension.
+ * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
  */
 @Fluent
 public final class ElasticsearchChatExtensionParameters {
 
     /*
-     * The authentication option to access the data.
+     * The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      */
     @Generated
     @JsonProperty(value = "authentication")
@@ -53,28 +58,28 @@ public final class ElasticsearchChatExtensionParameters {
     private String roleInformation;
 
     /*
-     * The endpoint of Elasticsearch.
+     * The endpoint of Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /*
-     * The index name of Elasticsearch.
+     * The index name of Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "indexName")
     private String indexName;
 
     /*
-     * The index field mapping options of Elasticsearch.
+     * The index field mapping options of Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "fieldsMapping")
     private ElasticsearchIndexFieldMappingOptions fieldsMapping;
 
     /*
-     * The query type of Elasticsearch.
+     * The query type of Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "queryType")
@@ -85,7 +90,7 @@ public final class ElasticsearchChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "embeddingDependency")
-    private OnYourDataEmbeddingDependency embeddingDependency;
+    private OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Creates an instance of ElasticsearchChatExtensionParameters class.
@@ -102,7 +107,12 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the authentication property: The authentication option to access the data.
+     * Get the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @return the authentication value.
      */
@@ -112,7 +122,12 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Set the authentication property: The authentication option to access the data.
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @param authentication the authentication value to set.
      * @return the ElasticsearchChatExtensionParameters object itself.
@@ -218,7 +233,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the endpoint property: The endpoint of Elasticsearch.
+     * Get the endpoint property: The endpoint of Elasticsearch®.
      *
      * @return the endpoint value.
      */
@@ -228,7 +243,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the indexName property: The index name of Elasticsearch.
+     * Get the indexName property: The index name of Elasticsearch®.
      *
      * @return the indexName value.
      */
@@ -238,7 +253,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the fieldsMapping property: The index field mapping options of Elasticsearch.
+     * Get the fieldsMapping property: The index field mapping options of Elasticsearch®.
      *
      * @return the fieldsMapping value.
      */
@@ -248,7 +263,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Set the fieldsMapping property: The index field mapping options of Elasticsearch.
+     * Set the fieldsMapping property: The index field mapping options of Elasticsearch®.
      *
      * @param fieldsMapping the fieldsMapping value to set.
      * @return the ElasticsearchChatExtensionParameters object itself.
@@ -260,7 +275,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the queryType property: The query type of Elasticsearch.
+     * Get the queryType property: The query type of Elasticsearch®.
      *
      * @return the queryType value.
      */
@@ -270,7 +285,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Set the queryType property: The query type of Elasticsearch.
+     * Set the queryType property: The query type of Elasticsearch®.
      *
      * @param queryType the queryType value to set.
      * @return the ElasticsearchChatExtensionParameters object itself.
@@ -287,7 +302,7 @@ public final class ElasticsearchChatExtensionParameters {
      * @return the embeddingDependency value.
      */
     @Generated
-    public OnYourDataEmbeddingDependency getEmbeddingDependency() {
+    public OnYourDataVectorizationSource getEmbeddingDependency() {
         return this.embeddingDependency;
     }
 
@@ -299,7 +314,7 @@ public final class ElasticsearchChatExtensionParameters {
      */
     @Generated
     public ElasticsearchChatExtensionParameters
-        setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
+        setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
     }

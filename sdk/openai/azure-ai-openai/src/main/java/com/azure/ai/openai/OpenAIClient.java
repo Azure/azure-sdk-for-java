@@ -876,7 +876,7 @@ public final class OpenAIClient {
      *                     (recursive schema, see above)
      *                 ]
      *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]

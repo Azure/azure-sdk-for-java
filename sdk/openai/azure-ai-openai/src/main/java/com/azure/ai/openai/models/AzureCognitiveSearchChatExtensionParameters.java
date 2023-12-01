@@ -15,7 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AzureCognitiveSearchChatExtensionParameters {
 
     /*
-     * The authentication option to access the data.
+     * The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      */
     @Generated
     @JsonProperty(value = "authentication")
@@ -123,7 +128,7 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "embeddingDependency")
-    private OnYourDataEmbeddingDependency embeddingDependency;
+    private OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Creates an instance of AzureCognitiveSearchChatExtensionParameters class.
@@ -140,7 +145,12 @@ public final class AzureCognitiveSearchChatExtensionParameters {
     }
 
     /**
-     * Get the authentication property: The authentication option to access the data.
+     * Get the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @return the authentication value.
      */
@@ -150,7 +160,12 @@ public final class AzureCognitiveSearchChatExtensionParameters {
     }
 
     /**
-     * Set the authentication property: The authentication option to access the data.
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @param authentication the authentication value to set.
      * @return the AzureCognitiveSearchChatExtensionParameters object itself.
@@ -444,7 +459,7 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * @return the embeddingDependency value.
      */
     @Generated
-    public OnYourDataEmbeddingDependency getEmbeddingDependency() {
+    public OnYourDataVectorizationSource getEmbeddingDependency() {
         return this.embeddingDependency;
     }
 
@@ -456,7 +471,7 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      */
     @Generated
     public AzureCognitiveSearchChatExtensionParameters
-        setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
+        setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
     }

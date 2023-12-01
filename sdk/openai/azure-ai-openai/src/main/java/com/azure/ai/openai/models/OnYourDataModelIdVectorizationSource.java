@@ -11,34 +11,36 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The embedding dependency based on model id.
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
+ * on a search service model ID. Currently only supported by Elasticsearch®.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ModelId")
 @Immutable
-public final class OnYourDataEmbeddingModelIdDependency extends OnYourDataEmbeddingDependency {
+public final class OnYourDataModelIdVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
-     * The embedding model ID build inside the search service. Currently only supported by Elasticsearch.
+     * The embedding model ID build inside the search service. Currently only supported by Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "modelId")
     private String modelId;
 
     /**
-     * Creates an instance of OnYourDataEmbeddingModelIdDependency class.
+     * Creates an instance of OnYourDataModelIdVectorizationSource class.
      *
      * @param modelId the modelId value to set.
      */
     @Generated
     @JsonCreator
-    public OnYourDataEmbeddingModelIdDependency(@JsonProperty(value = "modelId") String modelId) {
+    public OnYourDataModelIdVectorizationSource(@JsonProperty(value = "modelId") String modelId) {
         this.modelId = modelId;
     }
 
     /**
      * Get the modelId property: The embedding model ID build inside the search service. Currently only supported by
-     * Elasticsearch.
+     * Elasticsearch®.
      *
      * @return the modelId value.
      */

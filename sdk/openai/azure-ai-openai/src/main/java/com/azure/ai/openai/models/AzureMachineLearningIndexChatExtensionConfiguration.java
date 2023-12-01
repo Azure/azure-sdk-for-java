@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A specific representation of configurable options for Azure Machine Learning index when using it as an Azure OpenAI
- * chat
- * extension.
+ * A specific representation of configurable options for Azure Machine Learning vector index when using it as an Azure
+ * OpenAI chat extension.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMLIndex")
@@ -21,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class AzureMachineLearningIndexChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
     /*
-     * The parameters for the Azure Machine Learning index chat extension.
+     * The parameters for the Azure Machine Learning vector index chat extension.
      */
     @Generated
     @JsonProperty(value = "parameters")
     private AzureMachineLearningIndexChatExtensionParameters parameters;
 
     /**
-     * Get the parameters property: The parameters for the Azure Machine Learning index chat extension.
+     * Get the parameters property: The parameters for the Azure Machine Learning vector index chat extension.
      *
      * @return the parameters value.
      */
