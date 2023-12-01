@@ -128,17 +128,22 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
      * Retrieve the ID of the Azure Container Apps environment that the Function App runs on.
      *
      * @return the ID of the Azure Container Apps environment
-     * @see {@link DefinitionStages.WithDockerContainerImage#}
+     * @see DefinitionStages.WithManagedEnvironment#withManagedEnvironmentId(String)
      */
     String managedEnvironmentId();
 
     /**
-     * Retrieves
+     * Retrieves the maximum replica count.
      *
-     * @return
+     * @return the maximum replica count
      */
     Integer maxReplicas();
 
+    /**
+     * Retrieves the minimum replica count.
+     *
+     * @return the minimum replica count
+     */
     Integer minReplicas();
 
     /**************************************************************
@@ -416,7 +421,7 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
                 DefinitionStages.WithRuntimeVersion,
                 DefinitionStages.WithDailyUsageQuota,
                 DefinitionStages.WithManagedEnvironment,
-            WithScaleRulesOrDockerContainerImage,
+                DefinitionStages.WithScaleRulesOrDockerContainerImage,
                 WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
 
@@ -824,6 +829,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
             UpdateStages.WithDailyUsageQuota,
             UpdateStages.WithDockerContainerImage,
             UpdateStages.WithCredentials,
-        UpdateStages.WithManagedEnvironmentScaleRules {
+            UpdateStages.WithManagedEnvironmentScaleRules {
     }
 }
