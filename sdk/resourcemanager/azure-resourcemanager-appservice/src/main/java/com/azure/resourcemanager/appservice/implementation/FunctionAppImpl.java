@@ -13,20 +13,32 @@ import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
@@ -38,6 +50,7 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
@@ -55,10 +68,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -172,12 +187,63 @@ class FunctionAppImpl
     }
 
     @Override
+    Mono<SiteInner> submitSite(SiteInner site) {
+        if (isFunctionAppOnACA()) {
+            return createOrUpdateInner(site);
+        } else {
+            return super.submitSite(site);
+        }
+    }
+
+    @Override
+    Mono<SiteInner> submitSite(SitePatchResourceInner siteUpdate) {
+        if (isFunctionAppOnACA()) {
+            return updateInner(siteUpdate);
+        } else {
+            return super.submitSite(siteUpdate);
+        }
+    }
+
+    @Override
+    Mono<SiteInner> updateInner(SitePatchResourceInner siteUpdate) {
+        if (isFunctionAppOnACA()) {
+            return pollResult(
+                this.manager()
+                    .serviceClient()
+                    .getWebApps()
+                    .updateWithResponseAsync(resourceGroupName(), name(), siteUpdate),
+                SiteInner.class
+            );
+        } else {
+            return super.updateInner(siteUpdate);
+        }
+    }
+
+    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
         }
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
+        } else if (isFunctionAppOnACA()) {
+            return storageAccountToSet
+                .getKeysAsync()
+                .flatMap(storageAccountKeys -> {
+                    StorageAccountKey key = storageAccountKeys.get(0);
+                    String connectionString = ResourceManagerUtils
+                        .getStorageConnectionString(storageAccountToSet.name(), key.value(),
+                            manager().environment());
+                    addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
+                    addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+                    return FunctionAppImpl.super.submitAppSettings();
+                }).then(
+                    Mono
+                        .fromCallable(
+                            () -> {
+                                resetStorageInfo();
+                                return this;
+                            }));
         } else {
             return Flux
                 .concat(
@@ -209,16 +275,92 @@ class FunctionAppImpl
                     Mono
                         .fromCallable(
                             () -> {
-                                currentStorageAccount = storageAccountToSet;
-                                storageAccountToSet = null;
-                                storageAccountCreatable = null;
+                                resetStorageInfo();
                                 return this;
                             }));
         }
     }
 
+    private void resetStorageInfo() {
+        currentStorageAccount = storageAccountToSet;
+        storageAccountToSet = null;
+        storageAccountCreatable = null;
+    }
+
+    @Override
+    Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner appSettings) {
+        if (isFunctionAppOnACA()) {
+            return pollResult(
+                this.manager()
+                    .serviceClient()
+                    .getWebApps()
+                    .updateApplicationSettingsWithResponseAsync(resourceGroupName(), name(), appSettings),
+                StringDictionaryInner.class
+            );
+        } else {
+            return super.updateAppSettings(appSettings);
+        }
+    }
+
+    @Override
+    Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
+        if (isFunctionAppOnACA()) {
+            return pollResult(
+                this.manager()
+                    .serviceClient()
+                    .getWebApps()
+                    .createOrUpdateConfigurationWithResponseAsync(resourceGroupName(), name(), siteConfig),
+                SiteConfigResourceInner.class);
+        } else {
+            return super.createOrUpdateSiteConfig(siteConfig);
+        }
+    }
+
+    private <T> Mono<T> pollResult(Mono<Response<T>> responseMono, Class<T> responseBodyType) {
+        return responseMono.flatMap((Function<Response<T>, Mono<T>>) response -> {
+            if (response.getStatusCode() == 200) {
+                return Mono.just(response.getValue());
+            } else if (response.getStatusCode() == 202) {
+                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
+                if (locationHeader == null) {
+                    return Mono.error(new IllegalStateException("\"Location\" header is null"));
+                }
+                String locationUrl = locationHeader.getValue();
+                SerializerAdapter serializerAdapter = ((WebSiteManagementClientImpl) manager().serviceClient()).getSerializerAdapter();
+                return Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
+                    .flatMap(ignored -> manager().httpPipeline().send(new HttpRequest(HttpMethod.GET, locationUrl)))
+                    .takeUntil(pollResponse -> {
+                        if (pollResponse.getStatusCode() == 200) {
+                            return true;
+                        } else if (pollResponse.getStatusCode() == 202) {
+                            return false;
+                        } else {
+                            throw new IllegalStateException(String.format("Poll response status: %d.", response.getStatusCode()));
+                        }
+                    })
+                    .last()
+                    .flatMap((Function<HttpResponse, Mono<T>>) httpResponse -> {
+                        try {
+                            return Mono.just(
+                                serializerAdapter.deserialize(
+                                    httpResponse.getBodyAsBinaryData().toBytes(),
+                                    responseBodyType,
+                                    SerializerEncoding.JSON));
+                        } catch (IOException e) {
+                            return Mono.error(e);
+                        }
+                    });
+            } else {
+                throw new IllegalStateException(String.format("createOrUpdateConfiguration response status: %d.", response.getStatusCode()));
+            }
+        });
+    }
+
     @Override
     public OperatingSystem operatingSystem() {
+        if (isFunctionAppOnACA()) {
+            return OperatingSystem.LINUX;
+        }
         return (innerModel().reserved() == null || !innerModel().reserved())
             ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
@@ -514,6 +656,27 @@ class FunctionAppImpl
     }
 
     @Override
+    public String managedEnvironmentId() {
+        return innerModel().managedEnvironmentId();
+    }
+
+    @Override
+    public Integer maxReplicas() {
+        if (this.siteConfig == null) {
+            return null;
+        }
+        return this.siteConfig.functionAppScaleLimit();
+    }
+
+    @Override
+    public Integer minReplicas() {
+        if (this.siteConfig == null) {
+            return null;
+        }
+        return this.siteConfig.minimumElasticInstanceCount();
+    }
+
+    @Override
     public Flux<String> streamApplicationLogsAsync() {
         return functionService
             .ping(functionServiceHost)
@@ -578,9 +741,29 @@ class FunctionAppImpl
     }
 
     @Override
+    public void beforeGroupCreateOrUpdate() {
+        // special handling for Function App on ACA
+        if (isFunctionAppOnACA()) {
+            adaptForFunctionAppOnACA();
+        }
+        super.beforeGroupCreateOrUpdate();
+    }
+
+    private void adaptForFunctionAppOnACA() {
+        this.innerModel().withReserved(null);
+        if (this.siteConfig != null) {
+            SiteConfigInner siteConfigInner = new SiteConfigInner();
+            siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
+            siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
+            siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
+            this.innerModel().withSiteConfig(siteConfigInner);
+        }
+    }
+
+    @Override
     public Mono<FunctionApp> createAsync() {
         if (this.isInCreateMode()) {
-            if (innerModel().serverFarmId() == null) {
+            if (innerModel().serverFarmId() == null && !isFunctionAppOnACA()) {
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
@@ -599,6 +782,57 @@ class FunctionAppImpl
             initializeFunctionService();
         }
         return super.afterPostRunAsync(isGroupFaulted);
+    }
+
+    @Override
+    public FunctionAppImpl withManagedEnvironmentId(String managedEnvironmentId) {
+        this.innerModel().withManagedEnvironmentId(managedEnvironmentId);
+        if (!CoreUtils.isNullOrEmpty(managedEnvironmentId)) {
+            this.innerModel().withKind("functionapp,linux,container,azurecontainerapps");
+        }
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withManagedEnvironmentName(String managedEnvironmentName) {
+        if (CoreUtils.isNullOrEmpty(managedEnvironmentName)) {
+            throw new IllegalArgumentException("managedEnvironmentName for Function App must not be null.");
+        }
+        return withManagedEnvironmentId(ResourceUtils.constructResourceId(
+            this.manager().subscriptionId(),
+            resourceGroupName(),
+            "Microsoft.App",
+            "managedEnvironments",
+            managedEnvironmentName,
+            ""
+        ));
+    }
+
+    @Override
+    public FunctionAppImpl withMaxReplicas(int maxReplicas) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withFunctionAppScaleLimit(maxReplicas);
+        return this;
+    }
+
+    @Override
+    public FunctionAppImpl withMinReplicas(int minReplicas) {
+        if (siteConfig == null) {
+            siteConfig = new SiteConfigResourceInner();
+        }
+        siteConfig.withMinimumElasticInstanceCount(minReplicas);
+        return this;
+    }
+
+    /**
+     * Whether this Function App is on Azure Container Apps environment.
+     *
+     * @return whether this Function App is on Azure Container Apps environment
+     */
+    private boolean isFunctionAppOnACA() {
+        return !CoreUtils.isNullOrEmpty(this.innerModel().managedEnvironmentId());
     }
 
     @Host("{$host}")
