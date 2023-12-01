@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.16 (Unreleased)
 
+### Features Added
+
 - Updated OpenTelemetry Semantic Conventions to version 1.23.1.
 
 ### Breaking Changes

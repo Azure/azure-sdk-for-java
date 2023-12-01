@@ -12,7 +12,7 @@
 
 ### Other Changes
 
-- Stopped populating status attribute on metrics when no error has happened. ([#TODO](https://github.com/Azure/azure-sdk-for-java/issues/TODO))
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
 
 ## 5.17.1 (2023-12-07)
 
