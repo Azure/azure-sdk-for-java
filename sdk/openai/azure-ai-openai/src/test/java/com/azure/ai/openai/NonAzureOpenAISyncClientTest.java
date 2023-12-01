@@ -23,6 +23,7 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -32,6 +33,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -626,18 +628,70 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
 
-            chatCompletionsStream.forEach(chatCompletions -> {
+            StringBuilder argumentsBuilder = new StringBuilder();
+            long totalStreamMessages = chatCompletionsStream.stream().count();
+            String functionName = null;
+            String toolCallId = null;
+            String content = null;
+            assertTrue(totalStreamMessages > 0);
+
+            int i = 0;
+            for (ChatCompletions chatCompletions : chatCompletionsStream) {
                 List<ChatChoice> chatChoices = chatCompletions.getChoices();
                 if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
-
+                    assertEquals(1, chatChoices.size());
                     ChatChoice chatChoice = chatChoices.get(0);
                     List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
                     if (toolCalls != null && !toolCalls.isEmpty()) {
-                        ChatCompletionsToolCall toolCall = toolCalls.get(0);
-                        System.out.println(toolCall + " - function: " + BinaryData.fromObject(toolCall));
+                        assertEquals(1, toolCalls.size());
+                        ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
+                        FunctionCall functionCall = toolCall.getFunction();
+
+                        // this data is only available in the first stream message, if at all
+                        if (i == 0) {
+                            content = chatChoice.getDelta().getContent();
+                            functionName = functionCall.getName();
+                            toolCallId = toolCall.getId();
+                        }
+                        argumentsBuilder.append(functionCall.getArguments());
+                    }
+                    if(i < totalStreamMessages - 1) {
+                        assertNull(chatChoice.getFinishReason());
+                    } else {
+                        assertEquals(CompletionsFinishReason.TOOL_CALLS, chatChoice.getFinishReason());
                     }
                 }
-            });
+                i++;
+            }
+            assertFunctionToolCallArgs(argumentsBuilder.toString());
+            FunctionCall functionCall = new FunctionCall(functionName, argumentsBuilder.toString());
+            ChatCompletionsFunctionToolCall functionToolCall = new ChatCompletionsFunctionToolCall(toolCallId, functionCall);
+
+            ChatCompletionsOptions followUpChatCompletionsOptions = getChatCompletionsOptionWithToolCallFollowUp(
+                    functionToolCall, content);
+
+            IterableStream<ChatCompletions> followupChatCompletionsStream = client.getChatCompletionsStream(modelId, followUpChatCompletionsOptions);
+            assertNotNull(followupChatCompletionsStream);
+
+            StringBuilder contentBuilder = new StringBuilder();
+            long totalStreamFollowUpMessages = followupChatCompletionsStream.stream().count();
+            int j = 0;
+
+            for (ChatCompletions chatCompletions: followupChatCompletionsStream) {
+                List<ChatChoice> chatChoices = chatCompletions.getChoices();
+                if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
+                    assertEquals(1, chatChoices.size());
+                    ChatChoice chatChoice = chatChoices.get(0);
+                    contentBuilder.append(chatChoice.getDelta().getContent());
+                    if(j < totalStreamFollowUpMessages - 1) {
+                        assertNull(chatChoice.getFinishReason());
+                    } else {
+                        assertEquals(CompletionsFinishReason.STOPPED, chatChoice.getFinishReason());
+                    }
+                }
+                j++;
+            }
+            assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
         }));
 
     }

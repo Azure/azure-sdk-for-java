@@ -4,6 +4,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.FutureTemperatureArguments;
 import com.azure.ai.openai.functions.FutureTemperatureParameters;
 import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
@@ -607,6 +608,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertFalse(translation.getSegments().isEmpty());
     }
 
+    static void assertFunctionToolCallArgs(String argumentJson) {
+        FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
+        assertNotNull(functionArguments);
+    }
+    
     protected static final String BATMAN_TRANSCRIPTION =
             "Skills and Abilities. Batman has no inherent superpowers. He relies on his own "
             + "scientific knowledge, detective skills, and athletic prowess. In the stories, Batman is "
