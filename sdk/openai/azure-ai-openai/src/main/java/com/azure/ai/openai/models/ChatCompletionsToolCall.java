@@ -16,12 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
  * chat completion.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.DEDUCTION,
-    defaultImpl = ChatCompletionsToolCall.class)
 @JsonTypeName("ChatCompletionsToolCall")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = ChatCompletionsFunctionToolCall.class) })
 @Immutable
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION, defaultImpl = ChatCompletionsToolCall.class)
 public class ChatCompletionsToolCall {
 
     /*
@@ -33,19 +31,6 @@ public class ChatCompletionsToolCall {
 
     @JsonProperty("type")
     private String type;
-
-    /**
-     * Creates an instance of ChatCompletionsToolCall class.
-     *
-     * @param id the id value to set.
-     * @param type the type value to set.
-     */
-    @Generated
-    @JsonCreator
-    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") String type) {
-        this.id = id;
-        this.type = type;
-    }
 
     /**
      * Get the id property: The ID of the tool call.
@@ -65,5 +50,18 @@ public class ChatCompletionsToolCall {
     @JsonGetter
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Creates an instance of ChatCompletionsToolCall class.
+     * 
+     * @param id the id value to set.
+     * @param type the type value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ChatCompletionsToolCall(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") String type) {
+        this.id = id;
+        this.type = type;
     }
 }
