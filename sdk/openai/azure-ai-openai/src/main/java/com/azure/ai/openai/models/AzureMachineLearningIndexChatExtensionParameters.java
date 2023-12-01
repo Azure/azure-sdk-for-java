@@ -9,13 +9,18 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for the Azure Machine Learning index chat extension.
+ * Parameters for the Azure Machine Learning vector index chat extension.
  */
 @Fluent
 public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /*
-     * The authentication option to access the data.
+     * The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      */
     @Generated
     @JsonProperty(value = "authentication")
@@ -60,21 +65,21 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     private String projectResourceId;
 
     /*
-     * The Azure Machine Learning index name.
+     * The Azure Machine Learning vector index name.
      */
     @Generated
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * The version of the Azure Machine Learning index.
+     * The version of the Azure Machine Learning vector index.
      */
     @Generated
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Search filter. Only supported if the MLIndex is of type AzureSearch.
+     * Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
      */
     @Generated
     @JsonProperty(value = "filter")
@@ -98,7 +103,12 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the authentication property: The authentication option to access the data.
+     * Get the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @return the authentication value.
      */
@@ -108,7 +118,12 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Set the authentication property: The authentication option to access the data.
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @param authentication the authentication value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -225,7 +240,7 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the name property: The Azure Machine Learning index name.
+     * Get the name property: The Azure Machine Learning vector index name.
      *
      * @return the name value.
      */
@@ -235,7 +250,7 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the version property: The version of the Azure Machine Learning index.
+     * Get the version property: The version of the Azure Machine Learning vector index.
      *
      * @return the version value.
      */
@@ -245,7 +260,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the filter property: Search filter. Only supported if the MLIndex is of type AzureSearch.
+     * Get the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @return the filter value.
      */
@@ -255,7 +271,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Set the filter property: Search filter. Only supported if the MLIndex is of type AzureSearch.
+     * Set the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @param filter the filter value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.

@@ -9,13 +9,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
+ * Parameters to use when configuring Azure OpenAI On Your Data chat extensions when using Azure Cosmos DB for
+ * MongoDB vCore.
  */
 @Fluent
 public final class AzureCosmosDBChatExtensionParameters {
 
     /*
-     * The authentication option to access the data.
+     * The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      */
     @Generated
     @JsonProperty(value = "authentication")
@@ -53,21 +59,21 @@ public final class AzureCosmosDBChatExtensionParameters {
     private String roleInformation;
 
     /*
-     * The database name of Azure Cosmos DB.
+     * The MongoDB vCore database name to use with Azure Cosmos DB.
      */
     @Generated
     @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
-     * The container name name of Azure Cosmos DB.
+     * The name of the Azure Cosmos DB resource container.
      */
     @Generated
     @JsonProperty(value = "containerName")
     private String containerName;
 
     /*
-     * The index name of Azure Cosmos DB.
+     * The MongoDB vCore index name to use with Azure Cosmos DB.
      */
     @Generated
     @JsonProperty(value = "indexName")
@@ -85,7 +91,7 @@ public final class AzureCosmosDBChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "embeddingDependency")
-    private OnYourDataEmbeddingDependency embeddingDependency;
+    private OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Creates an instance of AzureCosmosDBChatExtensionParameters class.
@@ -108,7 +114,12 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Get the authentication property: The authentication option to access the data.
+     * Get the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @return the authentication value.
      */
@@ -118,7 +129,12 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Set the authentication property: The authentication option to access the data.
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
      *
      * @param authentication the authentication value to set.
      * @return the AzureCosmosDBChatExtensionParameters object itself.
@@ -224,7 +240,7 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Get the databaseName property: The database name of Azure Cosmos DB.
+     * Get the databaseName property: The MongoDB vCore database name to use with Azure Cosmos DB.
      *
      * @return the databaseName value.
      */
@@ -234,7 +250,7 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Get the containerName property: The container name name of Azure Cosmos DB.
+     * Get the containerName property: The name of the Azure Cosmos DB resource container.
      *
      * @return the containerName value.
      */
@@ -244,7 +260,7 @@ public final class AzureCosmosDBChatExtensionParameters {
     }
 
     /**
-     * Get the indexName property: The index name of Azure Cosmos DB.
+     * Get the indexName property: The MongoDB vCore index name to use with Azure Cosmos DB.
      *
      * @return the indexName value.
      */
@@ -269,7 +285,7 @@ public final class AzureCosmosDBChatExtensionParameters {
      * @return the embeddingDependency value.
      */
     @Generated
-    public OnYourDataEmbeddingDependency getEmbeddingDependency() {
+    public OnYourDataVectorizationSource getEmbeddingDependency() {
         return this.embeddingDependency;
     }
 
@@ -281,7 +297,7 @@ public final class AzureCosmosDBChatExtensionParameters {
      */
     @Generated
     public AzureCosmosDBChatExtensionParameters
-        setEmbeddingDependency(OnYourDataEmbeddingDependency embeddingDependency) {
+        setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
     }

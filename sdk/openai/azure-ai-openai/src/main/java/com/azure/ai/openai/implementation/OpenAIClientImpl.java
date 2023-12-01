@@ -857,7 +857,7 @@ public final class OpenAIClientImpl {
      *                         innererror (Optional): (recursive schema, see innererror above)
      *                     }
      *                 }
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]
@@ -1005,7 +1005,7 @@ public final class OpenAIClientImpl {
      *                         innererror (Optional): (recursive schema, see innererror above)
      *                     }
      *                 }
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]
@@ -1244,7 +1244,7 @@ public final class OpenAIClientImpl {
      *                     (recursive schema, see above)
      *                 ]
      *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]
@@ -1444,7 +1444,7 @@ public final class OpenAIClientImpl {
      *                     (recursive schema, see above)
      *                 ]
      *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]
@@ -1643,7 +1643,7 @@ public final class OpenAIClientImpl {
      *                     (recursive schema, see above)
      *                 ]
      *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]
@@ -1844,7 +1844,7 @@ public final class OpenAIClientImpl {
      *                     (recursive schema, see above)
      *                 ]
      *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Required): (recursive schema, see jailbreak above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
      *             }
      *         }
      *     ]

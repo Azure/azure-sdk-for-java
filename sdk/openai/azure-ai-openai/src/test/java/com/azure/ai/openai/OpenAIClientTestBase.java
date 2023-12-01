@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -451,9 +450,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         ChatChoice actual = choices.get(0);
         assertEquals(0, actual.getIndex());
-        assertEquals( ChatRole.ASSISTANT, actual.getMessage().getRole());
+        assertEquals(ChatRole.ASSISTANT, actual.getMessage().getRole());
         assertNotNull(actual.getMessage().getContent());
-        assertFalse(actual.getMessage().getContent().isEmpty() || actual.getMessage().getContent().isBlank());
+        assertFalse(actual.getMessage().getContent().isEmpty());
         assertTrue(actual.getFinishDetails() instanceof StopFinishDetails);
     }
 

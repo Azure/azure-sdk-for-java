@@ -16,6 +16,7 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionsToolCall;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
@@ -723,6 +724,28 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertFalse(content == null || content.isEmpty());
             assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
             assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
+
+            chatCompletionsStream.forEach(chatCompletions -> {
+                List<ChatChoice> chatChoices = chatCompletions.getChoices();
+                if (!chatChoices.isEmpty() && chatChoices.get(0) != null) {
+
+                    ChatChoice chatChoice = chatChoices.get(0);
+                    List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
+                    if (toolCalls != null && !toolCalls.isEmpty()) {
+                        ChatCompletionsToolCall toolCall = toolCalls.get(0);
+                        System.out.println(toolCall + " - function: " + BinaryData.fromObject(toolCall));
+                    }
+                }
+            });
         }));
     }
 }

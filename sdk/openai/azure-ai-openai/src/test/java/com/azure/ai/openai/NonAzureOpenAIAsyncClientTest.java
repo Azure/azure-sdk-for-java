@@ -661,20 +661,19 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature"); // see base class
                         assertFalse(functionToolCall.getFunction().getArguments() == null
                                 || functionToolCall.getFunction().getArguments().isEmpty());
-
-                       return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
+                        return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
                                 functionToolCall, responseMessage.getContent()));
-                })).assertNext(followUpChatCompletions -> {
-                    assertNotNull(followUpChatCompletions);
-                    assertNotNull(followUpChatCompletions.getChoices());
-                    ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
-                    assertNotNull(followUpChatChoice);
-                    assertNotNull(followUpChatChoice.getMessage());
-                    String content = followUpChatChoice.getMessage().getContent();
-                    assertFalse(content == null || content.isEmpty());
-                    assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
-                    assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
-                }).verifyComplete());
+                    })).assertNext(followUpChatCompletions -> {
+                        assertNotNull(followUpChatCompletions);
+                        assertNotNull(followUpChatCompletions.getChoices());
+                        ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+                        assertNotNull(followUpChatChoice);
+                        assertNotNull(followUpChatChoice.getMessage());
+                        String content = followUpChatChoice.getMessage().getContent();
+                        assertFalse(content == null || content.isEmpty());
+                        assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                        assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+                    }).verifyComplete());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

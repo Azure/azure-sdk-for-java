@@ -20,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class ElasticsearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
     /*
-     * The parameters to use when configuring Elasticsearch.
+     * The parameters to use when configuring Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "parameters")
     private ElasticsearchChatExtensionParameters parameters;
 
     /**
-     * Get the parameters property: The parameters to use when configuring Elasticsearch.
+     * Get the parameters property: The parameters to use when configuring Elasticsearch®.
      *
      * @return the parameters value.
      */

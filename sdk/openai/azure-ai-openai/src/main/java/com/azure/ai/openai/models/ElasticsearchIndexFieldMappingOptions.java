@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Optional settings to control how fields are processed when using a configured Elasticsearch resource.
+ * Optional settings to control how fields are processed when using a configured Elasticsearch® resource.
  */
 @Fluent
 public final class ElasticsearchIndexFieldMappingOptions {

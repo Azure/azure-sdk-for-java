@@ -6,7 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -81,18 +80,6 @@ public final class ContentFilterResultDetailsForPrompt {
     @Generated
     @JsonProperty(value = "jailbreak")
     private ContentFilterDetectionResult jailbreak;
-
-    /**
-     * Creates an instance of ContentFilterResultDetailsForPrompt class.
-     *
-     * @param jailbreak the jailbreak value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ContentFilterResultDetailsForPrompt(
-        @JsonProperty(value = "jailbreak") ContentFilterDetectionResult jailbreak) {
-        this.jailbreak = jailbreak;
-    }
 
     /**
      * Get the sexual property: Describes language related to anatomical organs and genitals, romantic relationships,
@@ -182,5 +169,12 @@ public final class ContentFilterResultDetailsForPrompt {
     @Generated
     public ContentFilterDetectionResult getJailbreak() {
         return this.jailbreak;
+    }
+
+    /**
+     * Creates an instance of ContentFilterResultDetailsForPrompt class.
+     */
+    @Generated
+    private ContentFilterResultDetailsForPrompt() {
     }
 }

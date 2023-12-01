@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of Elasticsearch retrieval query that should be executed when using it as an Azure OpenAI chat extension.
+ * The type of Elasticsearch® retrieval query that should be executed when using it as an Azure OpenAI chat extension.
  */
 public final class ElasticsearchQueryType extends ExpandableStringEnum<ElasticsearchQueryType> {
 
