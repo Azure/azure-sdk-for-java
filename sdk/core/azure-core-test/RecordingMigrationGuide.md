@@ -120,4 +120,4 @@ primary ways:
 [git_setup]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [git_token]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-latest
-[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.me
+[transition_script]: https://github.com/Azure/azure-sdk-for-java/blob/main/eng/common/testproxy/onboarding/README.md
