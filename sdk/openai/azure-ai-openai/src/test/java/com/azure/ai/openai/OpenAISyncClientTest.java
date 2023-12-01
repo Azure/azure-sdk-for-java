@@ -759,7 +759,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
                     ChatChoice chatChoice = chatChoices.get(0);
                     List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
-                    if(toolCalls != null && !toolCalls.isEmpty()) {
+                    if (toolCalls != null && !toolCalls.isEmpty()) {
                         ChatCompletionsToolCall toolCall = toolCalls.get(0);
                         System.out.println(toolCall + " - function: " + BinaryData.fromObject(toolCall));
                     }
