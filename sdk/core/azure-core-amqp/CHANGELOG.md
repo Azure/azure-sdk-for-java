@@ -1,12 +1,29 @@
 # Release History
 
-## 2.8.13 (2023-11-30)
+## 2.8.14 (2023-11-30)
 
 ### Other Changes
 
 #### Dependency Updates
 
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
 - Upgraded Reactor Core from `3.4.33` to `3.4.34`.
+
+## 2.9.0-beta.7 (2023-11-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 2.8.13 (2023-11-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0` (The version 2.8.12 used earlier azure-core dependency version 1.44.1 instead of latest 1.45.0. This 2.8.13 patch release fixes it).
 
 ## 2.8.12 (2023-11-03)
 
@@ -28,14 +45,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.42.0` to `1.44.1`.
-
-## 2.8.12 (2023-11-03)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
 
 ## 2.8.11 (2023-10-18)
 
@@ -220,7 +229,7 @@
 
 ### Features Added
 
-- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as 
+- Added AMQP-level metrics to reporting number of sent batches, duration of network call, number of received message and consumer lag as well as
   error counters. Metrics are off by default and can be enabled with [azure-core-metrics-opentelemetry](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/README.md)
   plugin. ([#30583](https://github.com/Azure/azure-sdk-for-java/pull/30583))
 
@@ -246,12 +255,12 @@
 
 ### Features Added
 
- - Added `AmqpMessageConstant` `MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state")`.
+- Added `AmqpMessageConstant` `MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state")`.
 
 ### Bugs Fixed
 
 - Ensure ReactorReceiver EndpointStates terminates if there is no remote-close acknowledgment ([#29212](https://github.com/Azure/azure-sdk-for-java/issues/29212))
-- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582)) 
+- Fixed issue that when connection is closed, the `AmqpChannelProcessor` repeatedly requests and closes `RequestResponseChannel`. ([#24582](https://github.com/Azure/azure-sdk-for-java/issues/24582))
 
 ### Other Changes
 
@@ -275,13 +284,13 @@
 
 - Upgraded `azure-core` from `1.28.0` to `1.29.0`.
 
-- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver. 
+- Added "entityPath" context to logger for ReceiveLinkHandlers, SendLinkHandler, LinkHandler, and ReactorReceiver.
 
 ## 2.5.0 (2022-05-06)
 
 ### Features Added
 
-- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment 
+- Added `ProxyOptions.fromConfiguration(Configuration)` to enable creation of `ProxyOptions` from an environment
   configuration.
 
 ### Bugs Fixed
@@ -299,9 +308,9 @@
 
 ### Bugs Fixed
 
-- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the 
+- Fixed an issue where error from one receiver bypassed to parent connection that resulted in taking down rest of the
   receivers. ([#27716](https://github.com/Azure/azure-sdk-for-java/issues/27716))
-- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often 
+- Downgraded the level of a log entry in RequestResponseChannel from error to warn, the sender and receiver often
   recover from this error, but due to the log level, it generates false alerts in monitoring systems. ([26968](https://github.com/Azure/azure-sdk-for-java/issues/26968))
 
 ### Other Changes
