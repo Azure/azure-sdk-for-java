@@ -693,6 +693,5 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             }
             assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
         }));
-
     }
 }

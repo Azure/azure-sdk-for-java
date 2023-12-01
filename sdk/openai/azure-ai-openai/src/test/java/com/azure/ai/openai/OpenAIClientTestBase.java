@@ -612,7 +612,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
         assertNotNull(functionArguments);
     }
-    
+
     protected static final String BATMAN_TRANSCRIPTION =
             "Skills and Abilities. Batman has no inherent superpowers. He relies on his own "
             + "scientific knowledge, detective skills, and athletic prowess. In the stories, Batman is "
