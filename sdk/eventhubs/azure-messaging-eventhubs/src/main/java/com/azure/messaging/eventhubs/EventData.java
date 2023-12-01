@@ -418,6 +418,15 @@ public class EventData extends MessageContent {
     }
 
     /**
+     * Gets the replication segment for the event.
+     *
+     * @return The replication segment.  -1 or null if geo-disaster recovery is not enabled.
+     */
+    public Long getReplicationSegment() {
+        return systemProperties.getReplicationSegment();
+    }
+
+    /**
      * True if the object is an {@link EventData} and the binary contents of {@link #getBody()} are equal.
      */
     @Override
