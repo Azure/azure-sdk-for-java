@@ -373,7 +373,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -416,7 +417,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -457,7 +459,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -522,7 +525,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -585,7 +589,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -626,7 +631,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -666,7 +672,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -729,7 +736,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
