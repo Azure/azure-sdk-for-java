@@ -157,6 +157,9 @@ public class Configs {
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
+    public static final String IS_TLSv1_3_ENABLED = "COSMOS.IS_TLSv1_3_ENABLED";
+    public static final boolean DEFAULT_IS_TLSv1_3_ENABLED = false;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -168,7 +171,13 @@ public class Configs {
     private SslContext sslContextInit() {
         try {
             SslProvider sslProvider = SslContext.defaultClientProvider();
-            return SslContextBuilder.forClient().sslProvider(sslProvider).protocols("TLSv1.3").build();
+
+            if (Configs.isTls_v1_3_Enabled()) {
+                return SslContextBuilder.forClient().sslProvider(sslProvider).protocols("TLSv1.3").build();
+            } else {
+                return SslContextBuilder.forClient().sslProvider(sslProvider).build();
+            }
+
         } catch (SSLException sslException) {
             logger.error("Fatal error cannot instantiate ssl context due to {}", sslException.getMessage(), sslException);
             throw new IllegalStateException(sslException);
@@ -393,6 +402,13 @@ public class Configs {
         return getJVMConfigAsBoolean(
             TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED,
             DEFAULT_TCP_HEALTH_CHECK_TIMEOUT_DETECTION_ENABLED);
+    }
+
+    public static boolean isTls_v1_3_Enabled() {
+        return getJVMConfigAsBoolean(
+          IS_TLSv1_3_ENABLED,
+          DEFAULT_IS_TLSv1_3_ENABLED
+        );
     }
 
     public static int getMinConnectionPoolSizePerEndpoint() {
