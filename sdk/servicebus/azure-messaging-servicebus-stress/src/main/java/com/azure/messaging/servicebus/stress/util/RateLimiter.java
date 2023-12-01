@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.servicebus.stress.scenarios;
+package com.azure.messaging.servicebus.stress.util;
 
 import reactor.core.publisher.Mono;
 
@@ -10,13 +10,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class RateLimiter implements AutoCloseable {
+public class RateLimiter implements AutoCloseable {
     private final int maxConcurrency;
     private final AtomicInteger inFlight = new AtomicInteger(0);
     private final AtomicInteger bucket = new AtomicInteger(0);
     private final Timer replenishTimer;
 
-    RateLimiter(int maxRps, int maxConcurrency) {
+    public RateLimiter(int maxRps, int maxConcurrency) {
         this.maxConcurrency = maxConcurrency;
 
         replenishTimer = new Timer("replenish");
