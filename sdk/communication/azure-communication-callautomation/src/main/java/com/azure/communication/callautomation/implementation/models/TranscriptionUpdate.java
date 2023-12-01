@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TranscriptionUpdate model.
- */
+/** The TranscriptionUpdate model. */
 @Fluent
 public final class TranscriptionUpdate {
     /*
@@ -25,14 +23,8 @@ public final class TranscriptionUpdate {
     private TranscriptionStatusDetails transcriptionStatusDetails;
 
     /**
-     * Creates an instance of TranscriptionUpdate class.
-     */
-    public TranscriptionUpdate() {
-    }
-
-    /**
      * Get the transcriptionStatus property: The transcriptionStatus property.
-     * 
+     *
      * @return the transcriptionStatus value.
      */
     public TranscriptionStatus getTranscriptionStatus() {
@@ -41,7 +33,7 @@ public final class TranscriptionUpdate {
 
     /**
      * Set the transcriptionStatus property: The transcriptionStatus property.
-     * 
+     *
      * @param transcriptionStatus the transcriptionStatus value to set.
      * @return the TranscriptionUpdate object itself.
      */
@@ -52,7 +44,7 @@ public final class TranscriptionUpdate {
 
     /**
      * Get the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     * 
+     *
      * @return the transcriptionStatusDetails value.
      */
     public TranscriptionStatusDetails getTranscriptionStatusDetails() {
@@ -61,7 +53,7 @@ public final class TranscriptionUpdate {
 
     /**
      * Set the transcriptionStatusDetails property: The transcriptionStatusDetails property.
-     * 
+     *
      * @param transcriptionStatusDetails the transcriptionStatusDetails value to set.
      * @return the TranscriptionUpdate object itself.
      */

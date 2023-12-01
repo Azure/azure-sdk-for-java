@@ -54,7 +54,9 @@ import reactor.core.publisher.Mono;
 import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -156,6 +158,8 @@ public final class CallConnectionAsync {
 
             return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(
                     callConnectionId,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
@@ -292,6 +296,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.transferToParticipantWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     TransferCallResult result = TransferCallResponseConstructorProxy.create(response.getValue());
@@ -355,6 +361,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.addParticipantWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context
             ).map(response -> {
                 AddParticipantResult result = AddParticipantResponseConstructorProxy.create(response.getValue());
@@ -404,6 +412,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.removeParticipantWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context).map(response -> {
                         RemoveParticipantResult result = RemoveParticipantResponseConstructorProxy.create(response.getValue());
                         result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());
@@ -449,6 +459,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -488,6 +500,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -532,6 +546,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.cancelAddParticipantWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context).map(response -> {
                         CancelAddParticipantOperationResult result = CancelAddParticipantResponseConstructorProxy.create(response.getValue());
                         result.setEventProcessor(eventProcessor, callConnectionId, result.getOperationContext());

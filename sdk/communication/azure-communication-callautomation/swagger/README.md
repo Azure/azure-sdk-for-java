@@ -250,6 +250,13 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
+- remove-model: TranscriptionStarted
+- remove-model: TranscriptionStarted
+- remove-model: TranscriptionResumed
+- remove-model: TranscriptionStopped
+- remove-model: TranscriptionFailed
+
+
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

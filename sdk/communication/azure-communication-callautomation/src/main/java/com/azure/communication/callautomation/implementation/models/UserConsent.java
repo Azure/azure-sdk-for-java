@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The UserConsent model.
- */
+/** The UserConsent model. */
 @Fluent
 public final class UserConsent {
     /*
@@ -19,14 +17,8 @@ public final class UserConsent {
     private Integer recording;
 
     /**
-     * Creates an instance of UserConsent class.
-     */
-    public UserConsent() {
-    }
-
-    /**
      * Get the recording property: The recording property.
-     * 
+     *
      * @return the recording value.
      */
     public Integer getRecording() {
@@ -35,7 +27,7 @@ public final class UserConsent {
 
     /**
      * Set the recording property: The recording property.
-     * 
+     *
      * @param recording the recording value to set.
      * @return the UserConsent object itself.
      */

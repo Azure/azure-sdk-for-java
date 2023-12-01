@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StopTranscriptionRequestInternal model.
- */
+/** The StopTranscriptionRequestInternal model. */
 @Fluent
 public final class StopTranscriptionRequestInternal {
     /*
@@ -19,14 +17,8 @@ public final class StopTranscriptionRequestInternal {
     private String operationContext;
 
     /**
-     * Creates an instance of StopTranscriptionRequestInternal class.
-     */
-    public StopTranscriptionRequestInternal() {
-    }
-
-    /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -35,7 +27,7 @@ public final class StopTranscriptionRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the StopTranscriptionRequestInternal object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The UpdateTranscriptionRequestInternal model.
- */
+/** The UpdateTranscriptionRequestInternal model. */
 @Fluent
 public final class UpdateTranscriptionRequestInternal {
     /*
@@ -19,14 +17,8 @@ public final class UpdateTranscriptionRequestInternal {
     private String locale;
 
     /**
-     * Creates an instance of UpdateTranscriptionRequestInternal class.
-     */
-    public UpdateTranscriptionRequestInternal() {
-    }
-
-    /**
      * Get the locale property: Defines new locale for transcription.
-     * 
+     *
      * @return the locale value.
      */
     public String getLocale() {
@@ -35,7 +27,7 @@ public final class UpdateTranscriptionRequestInternal {
 
     /**
      * Set the locale property: Defines new locale for transcription.
-     * 
+     *
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
