@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.OdbcSink;
 public final class OdbcSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OdbcSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OdbcSink\",\"preCopyScript\":\"datatsnqjcmk\",\"writeBatchSize\":\"databckjrfkwclqmyowd\",\"writeBatchTimeout\":\"datatwaxobdzatqocvrd\",\"sinkRetryCount\":\"datavsclwpsteuvjdnh\",\"sinkRetryWait\":\"datayvymvnlaehit\",\"maxConcurrentConnections\":\"dataibfomohcynorhhbv\",\"disableMetricsCollection\":\"dataxtktkeuapomoof\",\"\":{\"mathiydmkyvsxc\":\"datahptraljcqpu\",\"fmkp\":\"dataivghajpddgfozn\",\"mwptdrrruy\":\"dataoesozcuhunmfz\"}}")
-                .toObject(OdbcSink.class);
+        OdbcSink model = BinaryData.fromString(
+            "{\"type\":\"OdbcSink\",\"preCopyScript\":\"dataeql\",\"writeBatchSize\":\"datazqqwiawbwzyvb\",\"writeBatchTimeout\":\"datafhysatoplqcujsrl\",\"sinkRetryCount\":\"datauqkprfqoc\",\"sinkRetryWait\":\"datato\",\"maxConcurrentConnections\":\"datawbsbkobbdss\",\"disableMetricsCollection\":\"datawhf\",\"\":{\"ajb\":\"datarjbrxmrsetttuls\",\"slyipjzgmxq\":\"dataespfgmosiskih\"}}")
+            .toObject(OdbcSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OdbcSink model =
-            new OdbcSink()
-                .withWriteBatchSize("databckjrfkwclqmyowd")
-                .withWriteBatchTimeout("datatwaxobdzatqocvrd")
-                .withSinkRetryCount("datavsclwpsteuvjdnh")
-                .withSinkRetryWait("datayvymvnlaehit")
-                .withMaxConcurrentConnections("dataibfomohcynorhhbv")
-                .withDisableMetricsCollection("dataxtktkeuapomoof")
-                .withPreCopyScript("datatsnqjcmk");
+        OdbcSink model = new OdbcSink().withWriteBatchSize("datazqqwiawbwzyvb")
+            .withWriteBatchTimeout("datafhysatoplqcujsrl").withSinkRetryCount("datauqkprfqoc")
+            .withSinkRetryWait("datato").withMaxConcurrentConnections("datawbsbkobbdss")
+            .withDisableMetricsCollection("datawhf").withPreCopyScript("dataeql");
         model = BinaryData.fromObject(model).toObject(OdbcSink.class);
     }
 }

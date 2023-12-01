@@ -10,20 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbMongoDbApiLin
 public final class CosmosDbMongoDbApiLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbMongoDbApiLinkedServiceTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"isServerVersionAbove32\":\"dataxgdjudekmxhw\",\"connectionString\":\"datamehcdfd\",\"database\":\"datathqnztuki\"}")
-                .toObject(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
+        CosmosDbMongoDbApiLinkedServiceTypeProperties model = BinaryData.fromString(
+            "{\"isServerVersionAbove32\":\"datariyraybigksnijc\",\"connectionString\":\"datafdprezqxzxeig\",\"database\":\"datadd\"}")
+            .toObject(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiLinkedServiceTypeProperties model =
-            new CosmosDbMongoDbApiLinkedServiceTypeProperties()
-                .withIsServerVersionAbove32("dataxgdjudekmxhw")
-                .withConnectionString("datamehcdfd")
-                .withDatabase("datathqnztuki");
+        CosmosDbMongoDbApiLinkedServiceTypeProperties model
+            = new CosmosDbMongoDbApiLinkedServiceTypeProperties().withIsServerVersionAbove32("datariyraybigksnijc")
+                .withConnectionString("datafdprezqxzxeig").withDatabase("datadd");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
     }
 }

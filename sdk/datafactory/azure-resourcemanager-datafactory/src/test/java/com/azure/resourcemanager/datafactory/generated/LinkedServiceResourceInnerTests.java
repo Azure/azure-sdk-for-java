@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"vfiwjmygtdss\",\"parameters\":{\"emwabnet\":\"datatmweriofzpyq\",\"d\":\"datahhszh\"}},\"description\":\"vwiwubmwmbesld\",\"parameters\":{\"flcxoga\":{\"type\":\"Float\",\"defaultValue\":\"datapp\"},\"qzeqqkdltfzxm\":{\"type\":\"SecureString\",\"defaultValue\":\"datanzmnsikvm\"}},\"annotations\":[\"datahgure\"],\"\":{\"xwak\":\"datawobdagxtibqdx\",\"lbpodxunk\":\"dataogqxndlkzgxhuri\",\"lrb\":\"dataebxmubyynt\"}},\"name\":\"koievseo\",\"type\":\"q\",\"etag\":\"ltmuwlauwzizx\",\"id\":\"pgcjefuzmuvp\"}")
-                .toObject(LinkedServiceResourceInner.class);
+        LinkedServiceResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"vfiwjmygtdss\",\"parameters\":{\"emwabnet\":\"datatmweriofzpyq\",\"d\":\"datahhszh\"}},\"description\":\"vwiwubmwmbesld\",\"parameters\":{\"flcxoga\":{\"type\":\"Float\",\"defaultValue\":\"datapp\"},\"qzeqqkdltfzxm\":{\"type\":\"SecureString\",\"defaultValue\":\"datanzmnsikvm\"}},\"annotations\":[\"datahgure\"],\"\":{\"xwak\":\"datawobdagxtibqdx\",\"lbpodxunk\":\"dataogqxndlkzgxhuri\",\"lrb\":\"dataebxmubyynt\"}},\"name\":\"koievseo\",\"type\":\"q\",\"etag\":\"ltmuwlauwzizx\",\"id\":\"pgcjefuzmuvp\"}")
+            .toObject(LinkedServiceResourceInner.class);
         Assertions.assertEquals("pgcjefuzmuvp", model.id());
         Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());
         Assertions.assertEquals("vwiwubmwmbesld", model.properties().description());
@@ -31,26 +29,17 @@ public final class LinkedServiceResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceResourceInner model =
-            new LinkedServiceResourceInner()
-                .withId("pgcjefuzmuvp")
-                .withProperties(
-                    new LinkedService()
-                        .withConnectVia(
-                            new IntegrationRuntimeReference()
-                                .withReferenceName("vfiwjmygtdss")
-                                .withParameters(mapOf("emwabnet", "datatmweriofzpyq", "d", "datahhszh")))
-                        .withDescription("vwiwubmwmbesld")
-                        .withParameters(
-                            mapOf(
-                                "flcxoga",
-                                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapp"),
-                                "qzeqqkdltfzxm",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.SECURE_STRING)
-                                    .withDefaultValue("datanzmnsikvm")))
-                        .withAnnotations(Arrays.asList("datahgure"))
-                        .withAdditionalProperties(mapOf("type", "LinkedService")));
+        LinkedServiceResourceInner model = new LinkedServiceResourceInner().withId("pgcjefuzmuvp")
+            .withProperties(new LinkedService()
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("vfiwjmygtdss")
+                    .withParameters(mapOf("emwabnet", "datatmweriofzpyq", "d", "datahhszh")))
+                .withDescription("vwiwubmwmbesld")
+                .withParameters(mapOf("flcxoga",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapp"),
+                    "qzeqqkdltfzxm",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                        .withDefaultValue("datanzmnsikvm")))
+                .withAnnotations(Arrays.asList("datahgure")).withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceResourceInner.class);
         Assertions.assertEquals("pgcjefuzmuvp", model.id());
         Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());

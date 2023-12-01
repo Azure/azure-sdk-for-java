@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FileShareDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileShareDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FileShare\",\"typeProperties\":{\"folderPath\":\"dataqdonbzzs\",\"fileName\":\"datazyviiwsu\",\"modifiedDatetimeStart\":\"datazhw\",\"modifiedDatetimeEnd\":\"datauifkzqqhb\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"dataoilmkfbeoiipjpng\",\"deserializer\":\"datavuoikdlp\",\"\":{\"wimqnryclocfm\":\"datatug\",\"qhdxtwwulkryb\":\"dataswxvjelei\"}},\"fileFilter\":\"dataevy\",\"compression\":{\"type\":\"datayjecrqkwakkch\",\"level\":\"dataoulborcxuibsdqbd\",\"\":{\"bjqlqfbl\":\"datapectsmwpgweoq\"}}},\"description\":\"ufollcshjuc\",\"structure\":\"databymjjvtpne\",\"schema\":\"datavjeazrah\",\"linkedServiceName\":{\"referenceName\":\"lhbimyii\",\"parameters\":{\"dos\":\"datamcthtpqgf\"}},\"parameters\":{\"flgzh\":{\"type\":\"Bool\",\"defaultValue\":\"datau\"}},\"annotations\":[\"datagwahcrxo\"],\"folder\":{\"name\":\"u\"},\"\":{\"pmhz\":\"datapccxziv\",\"kvnnjdtujq\":\"datahh\",\"tqlfxolrwvtl\":\"datavhnjvpmxnhtmz\"}}")
-                .toObject(FileShareDataset.class);
+        FileShareDataset model = BinaryData.fromString(
+            "{\"type\":\"FileShare\",\"typeProperties\":{\"folderPath\":\"dataqdonbzzs\",\"fileName\":\"datazyviiwsu\",\"modifiedDatetimeStart\":\"datazhw\",\"modifiedDatetimeEnd\":\"datauifkzqqhb\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"dataoilmkfbeoiipjpng\",\"deserializer\":\"datavuoikdlp\",\"\":{\"wimqnryclocfm\":\"datatug\",\"qhdxtwwulkryb\":\"dataswxvjelei\"}},\"fileFilter\":\"dataevy\",\"compression\":{\"type\":\"datayjecrqkwakkch\",\"level\":\"dataoulborcxuibsdqbd\",\"\":{\"bjqlqfbl\":\"datapectsmwpgweoq\"}}},\"description\":\"ufollcshjuc\",\"structure\":\"databymjjvtpne\",\"schema\":\"datavjeazrah\",\"linkedServiceName\":{\"referenceName\":\"lhbimyii\",\"parameters\":{\"dos\":\"datamcthtpqgf\"}},\"parameters\":{\"flgzh\":{\"type\":\"Bool\",\"defaultValue\":\"datau\"}},\"annotations\":[\"datagwahcrxo\"],\"folder\":{\"name\":\"u\"},\"\":{\"pmhz\":\"datapccxziv\",\"kvnnjdtujq\":\"datahh\",\"tqlfxolrwvtl\":\"datavhnjvpmxnhtmz\"}}")
+            .toObject(FileShareDataset.class);
         Assertions.assertEquals("ufollcshjuc", model.description());
         Assertions.assertEquals("lhbimyii", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("flgzh").type());
@@ -33,34 +31,19 @@ public final class FileShareDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileShareDataset model =
-            new FileShareDataset()
-                .withDescription("ufollcshjuc")
-                .withStructure("databymjjvtpne")
-                .withSchema("datavjeazrah")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("lhbimyii")
-                        .withParameters(mapOf("dos", "datamcthtpqgf")))
-                .withParameters(
-                    mapOf("flgzh", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datau")))
-                .withAnnotations(Arrays.asList("datagwahcrxo"))
-                .withFolder(new DatasetFolder().withName("u"))
-                .withFolderPath("dataqdonbzzs")
-                .withFileName("datazyviiwsu")
-                .withModifiedDatetimeStart("datazhw")
-                .withModifiedDatetimeEnd("datauifkzqqhb")
-                .withFormat(
-                    new DatasetStorageFormat()
-                        .withSerializer("dataoilmkfbeoiipjpng")
-                        .withDeserializer("datavuoikdlp")
-                        .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-                .withFileFilter("dataevy")
-                .withCompression(
-                    new DatasetCompression()
-                        .withType("datayjecrqkwakkch")
-                        .withLevel("dataoulborcxuibsdqbd")
-                        .withAdditionalProperties(mapOf()));
+        FileShareDataset model = new FileShareDataset().withDescription("ufollcshjuc").withStructure("databymjjvtpne")
+            .withSchema("datavjeazrah")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lhbimyii")
+                .withParameters(mapOf("dos", "datamcthtpqgf")))
+            .withParameters(
+                mapOf("flgzh", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datau")))
+            .withAnnotations(Arrays.asList("datagwahcrxo")).withFolder(new DatasetFolder().withName("u"))
+            .withFolderPath("dataqdonbzzs").withFileName("datazyviiwsu").withModifiedDatetimeStart("datazhw")
+            .withModifiedDatetimeEnd("datauifkzqqhb")
+            .withFormat(new DatasetStorageFormat().withSerializer("dataoilmkfbeoiipjpng")
+                .withDeserializer("datavuoikdlp").withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+            .withFileFilter("dataevy").withCompression(new DatasetCompression().withType("datayjecrqkwakkch")
+                .withLevel("dataoulborcxuibsdqbd").withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(FileShareDataset.class);
         Assertions.assertEquals("ufollcshjuc", model.description());
         Assertions.assertEquals("lhbimyii", model.linkedServiceName().referenceName());

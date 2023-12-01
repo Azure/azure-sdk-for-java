@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperSourceConnectionsInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperSourceConnectionsInfo model =
-            BinaryData
-                .fromString(
-                    "{\"sourceEntities\":[{\"name\":\"epmywbormcqm\",\"properties\":{\"schema\":[{\"name\":\"qpkzfbojxjmcsmy\",\"dataType\":\"ixvcpwnkwywzwo\"},{\"name\":\"lickduoi\",\"dataType\":\"amt\"},{\"name\":\"sknxrwzawnvsbcf\",\"dataType\":\"agxnvhycvdimw\"},{\"name\":\"regzgyufutrwpwer\",\"dataType\":\"kzkdhmeott\"}],\"dslConnectorProperties\":[{\"name\":\"osxw\",\"value\":\"datanhjtf\"},{\"name\":\"n\",\"value\":\"datamiljpnwynud\"}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"zsauzp\",\"parameters\":{\"ezxlskihm\":\"dataeehuxiqhzlray\"}},\"linkedServiceType\":\"fdsajred\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"uwg\",\"value\":\"datavuafpwzyifr\"},{\"name\":\"wltxeqipxgzdyims\",\"value\":\"datayorpr\"}]}}")
-                .toObject(MapperSourceConnectionsInfo.class);
+        MapperSourceConnectionsInfo model = BinaryData.fromString(
+            "{\"sourceEntities\":[{\"name\":\"epmywbormcqm\",\"properties\":{\"schema\":[{\"name\":\"qpkzfbojxjmcsmy\",\"dataType\":\"ixvcpwnkwywzwo\"},{\"name\":\"lickduoi\",\"dataType\":\"amt\"},{\"name\":\"sknxrwzawnvsbcf\",\"dataType\":\"agxnvhycvdimw\"},{\"name\":\"regzgyufutrwpwer\",\"dataType\":\"kzkdhmeott\"}],\"dslConnectorProperties\":[{\"name\":\"osxw\",\"value\":\"datanhjtf\"},{\"name\":\"n\",\"value\":\"datamiljpnwynud\"}]}}],\"connection\":{\"linkedService\":{\"referenceName\":\"zsauzp\",\"parameters\":{\"ezxlskihm\":\"dataeehuxiqhzlray\"}},\"linkedServiceType\":\"fdsajred\",\"type\":\"linkedservicetype\",\"isInlineDataset\":true,\"commonDslConnectorProperties\":[{\"name\":\"uwg\",\"value\":\"datavuafpwzyifr\"},{\"name\":\"wltxeqipxgzdyims\",\"value\":\"datayorpr\"}]}}")
+            .toObject(MapperSourceConnectionsInfo.class);
         Assertions.assertEquals("epmywbormcqm", model.sourceEntities().get(0).name());
         Assertions.assertEquals("qpkzfbojxjmcsmy", model.sourceEntities().get(0).schema().get(0).name());
         Assertions.assertEquals("ixvcpwnkwywzwo", model.sourceEntities().get(0).schema().get(0).dataType());
@@ -38,49 +36,26 @@ public final class MapperSourceConnectionsInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperSourceConnectionsInfo model =
-            new MapperSourceConnectionsInfo()
-                .withSourceEntities(
-                    Arrays
-                        .asList(
-                            new MapperTable()
-                                .withName("epmywbormcqm")
-                                .withSchema(
-                                    Arrays
-                                        .asList(
-                                            new MapperTableSchema()
-                                                .withName("qpkzfbojxjmcsmy")
-                                                .withDataType("ixvcpwnkwywzwo"),
-                                            new MapperTableSchema().withName("lickduoi").withDataType("amt"),
-                                            new MapperTableSchema()
-                                                .withName("sknxrwzawnvsbcf")
-                                                .withDataType("agxnvhycvdimw"),
-                                            new MapperTableSchema()
-                                                .withName("regzgyufutrwpwer")
-                                                .withDataType("kzkdhmeott")))
-                                .withDslConnectorProperties(
-                                    Arrays
-                                        .asList(
-                                            new MapperDslConnectorProperties().withName("osxw").withValue("datanhjtf"),
-                                            new MapperDslConnectorProperties()
-                                                .withName("n")
-                                                .withValue("datamiljpnwynud")))))
+        MapperSourceConnectionsInfo model
+            = new MapperSourceConnectionsInfo()
+                .withSourceEntities(Arrays.asList(new MapperTable().withName("epmywbormcqm")
+                    .withSchema(Arrays.asList(
+                        new MapperTableSchema().withName("qpkzfbojxjmcsmy").withDataType("ixvcpwnkwywzwo"),
+                        new MapperTableSchema().withName("lickduoi").withDataType("amt"),
+                        new MapperTableSchema().withName("sknxrwzawnvsbcf").withDataType("agxnvhycvdimw"),
+                        new MapperTableSchema().withName("regzgyufutrwpwer").withDataType("kzkdhmeott")))
+                    .withDslConnectorProperties(
+                        Arrays.asList(new MapperDslConnectorProperties().withName("osxw").withValue("datanhjtf"),
+                            new MapperDslConnectorProperties().withName("n").withValue("datamiljpnwynud")))))
                 .withConnection(
                     new MapperConnection()
-                        .withLinkedService(
-                            new LinkedServiceReference()
-                                .withReferenceName("zsauzp")
-                                .withParameters(mapOf("ezxlskihm", "dataeehuxiqhzlray")))
-                        .withLinkedServiceType("fdsajred")
-                        .withType(ConnectionType.LINKEDSERVICETYPE)
+                        .withLinkedService(new LinkedServiceReference().withReferenceName("zsauzp")
+                            .withParameters(mapOf("ezxlskihm", "dataeehuxiqhzlray")))
+                        .withLinkedServiceType("fdsajred").withType(ConnectionType.LINKEDSERVICETYPE)
                         .withIsInlineDataset(true)
-                        .withCommonDslConnectorProperties(
-                            Arrays
-                                .asList(
-                                    new MapperDslConnectorProperties().withName("uwg").withValue("datavuafpwzyifr"),
-                                    new MapperDslConnectorProperties()
-                                        .withName("wltxeqipxgzdyims")
-                                        .withValue("datayorpr"))));
+                        .withCommonDslConnectorProperties(Arrays.asList(
+                            new MapperDslConnectorProperties().withName("uwg").withValue("datavuafpwzyifr"),
+                            new MapperDslConnectorProperties().withName("wltxeqipxgzdyims").withValue("datayorpr"))));
         model = BinaryData.fromObject(model).toObject(MapperSourceConnectionsInfo.class);
         Assertions.assertEquals("epmywbormcqm", model.sourceEntities().get(0).name());
         Assertions.assertEquals("qpkzfbojxjmcsmy", model.sourceEntities().get(0).schema().get(0).name());

@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,48 +33,34 @@ public final class FrontendsInterfacesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"fqdn\":\"ceoveilovno\",\"provisioningState\":\"Succeeded\"},\"location\":\"fcnj\",\"tags\":{\"kphywpnvjto\":\"nxdhbt\"},\"id\":\"nermcl\",\"name\":\"plpho\",\"type\":\"uscrpabgyepsb\"}";
+        String responseStr
+            = "{\"properties\":{\"fqdn\":\"udxytlmoyrx\",\"provisioningState\":\"Succeeded\"},\"location\":\"dw\",\"tags\":{\"rqjbhckfrl\":\"txhdzh\",\"ca\":\"rxsbkyvp\",\"b\":\"uzbpzkafku\",\"ehhseyvjusrts\":\"rnwb\"},\"id\":\"hspkdeemao\",\"name\":\"mx\",\"type\":\"gkvtmelmqkrhah\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Frontend response =
-            manager
-                .frontendsInterfaces()
-                .define("vlopwiyighx")
-                .withRegion("m")
-                .withExistingTrafficController("mg", "xnkjzkdesl")
-                .withTags(mapOf("txp", "upedeojnabckhs", "tfhvpesapskrdqmh", "ie", "tkncwsc", "jdhtldwkyzxu"))
-                .create();
+        Frontend response = manager.frontendsInterfaces().define("fcnj").withRegion("ywpnvjt")
+            .withExistingTrafficController("nmic", "kvceoveilovnotyf")
+            .withTags(mapOf("abgy", "ermclfplphoxuscr", "qugxywpmueefjzwf", "psbjta"))
+            .withProperties(new FrontendProperties()).create();
 
-        Assertions.assertEquals("fcnj", response.location());
-        Assertions.assertEquals("nxdhbt", response.tags().get("kphywpnvjto"));
+        Assertions.assertEquals("dw", response.location());
+        Assertions.assertEquals("txhdzh", response.tags().get("rqjbhckfrl"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

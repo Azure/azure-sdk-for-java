@@ -311,7 +311,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 cosmosEndToEndOperationLatencyPolicyConfigForFaultyOperation);
 
             // allow enough time for operation and connection establishment to timeout
-            Thread.sleep(5000);
+            Thread.sleep(6000);
 
             assertThat(faultInjectionRule.getHitCount()).isGreaterThanOrEqualTo(1);
 

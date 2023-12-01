@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Common Data Service for Apps entity dataset. */
+/**
+ * The Common Data Service for Apps entity dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CommonDataServiceForAppsEntity")
 @Fluent
@@ -23,62 +25,78 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private CommonDataServiceForAppsEntityDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of CommonDataServiceForAppsEntityDataset class. */
+    /**
+     * Creates an instance of CommonDataServiceForAppsEntityDataset class.
+     */
     public CommonDataServiceForAppsEntityDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Common Data Service for Apps entity dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private CommonDataServiceForAppsEntityDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsEntityDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -86,8 +104,9 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the entityName value.
      */
     public Object entityName() {
@@ -95,8 +114,9 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param entityName the entityName value to set.
      * @return the CommonDataServiceForAppsEntityDataset object itself.
      */
@@ -110,7 +130,7 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

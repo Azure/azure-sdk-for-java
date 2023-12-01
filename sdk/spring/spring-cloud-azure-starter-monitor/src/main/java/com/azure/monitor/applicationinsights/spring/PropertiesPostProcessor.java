@@ -13,12 +13,10 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertySource;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertiesPostProcessor.class);
-
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 
@@ -39,10 +37,27 @@ class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
     }
 
     private static Map<String, Object> buildNewProperties(ConfigurableEnvironment environment) {
-        if (starterHasToBeDisabled(environment)) {
-            return Collections.singletonMap("otel.sdk.disabled", true); // Disable the Spring Monitor starter and the OTel starter;
+        Map<String, Object> newProperties = new HashMap<>();
+
+        // Waiting for fix on OTel side. We disable OpenTelemetryJdbcDriverAutoConfiguration.
+        String springExcludeProperty = "spring.autoconfigure.exclude";
+        String existingExclusions = environment.getProperty(springExcludeProperty);
+        String exclusions;
+        String newExclusion = "io.opentelemetry.instrumentation.spring.autoconfigure.instrumentation.jdbc.OpenTelemetryJdbcDriverAutoConfiguration";
+        if (existingExclusions == null || existingExclusions.isEmpty()) {
+            exclusions = newExclusion;
+        } else {
+            exclusions = existingExclusions + ", " + newExclusion;
         }
-        return Collections.singletonMap("otel.exporter.otlp.enabled", false); // Override the otel.exporter.otlp.enabled property
+        newProperties.put(springExcludeProperty, exclusions);
+
+        if (starterHasToBeDisabled(environment)) {
+            newProperties.put("otel.sdk.disabled", true); // Disable the Spring Monitor starter and the OTel starter;
+            return newProperties;
+        }
+
+        newProperties.put("otel.exporter.otlp.enabled", false); // Override the otel.exporter.otlp.enabled property
+        return newProperties;
     }
 
     private static boolean starterHasToBeDisabled(ConfigurableEnvironment environment) {

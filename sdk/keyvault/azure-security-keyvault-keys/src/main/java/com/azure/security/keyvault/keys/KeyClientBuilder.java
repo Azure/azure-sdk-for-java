@@ -9,7 +9,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -96,10 +95,15 @@ public final class KeyClientBuilder implements
     HttpTrait<KeyClientBuilder>,
     ConfigurationTrait<KeyClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
-    // This is properties file's name.
-    private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-key-vault-keys.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -108,7 +112,6 @@ public final class KeyClientBuilder implements
 
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
-    private final Map<String, String> properties;
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -129,7 +132,6 @@ public final class KeyClientBuilder implements
         httpLogOptions = new HttpLogOptions();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
-        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_KEYS);
     }
 
     /**
@@ -150,7 +152,7 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildInnerClient());
+        return new KeyClient(buildInnerClient(), vaultUrl, version != null ? version : KeyServiceVersion.getLatest());
     }
 
     /**
@@ -171,7 +173,8 @@ public final class KeyClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public KeyAsyncClient buildAsyncClient() {
-        return new KeyAsyncClient(buildInnerClient());
+        return new KeyAsyncClient(buildInnerClient(), vaultUrl,
+            version != null ? version : KeyServiceVersion.getLatest());
     }
 
     private KeyClientImpl buildInnerClient() {
@@ -187,7 +190,7 @@ public final class KeyClientBuilder implements
         KeyServiceVersion serviceVersion = version != null ? version : KeyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyClientImpl(vaultUrl, pipeline, serviceVersion);
+            return new KeyClientImpl(pipeline, serviceVersion.getVersion());
         }
 
         if (credential == null) {
@@ -197,20 +200,17 @@ public final class KeyClientBuilder implements
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
-            clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
 
-        List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders().forEach(header ->
-            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-        policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
+            policies.add(new AddHeadersPolicy(new HttpHeaders(headers)));
+        }
 
         // Add per call additional policies.
         policies.addAll(perCallPolicies);
@@ -228,7 +228,7 @@ public final class KeyClientBuilder implements
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -237,7 +237,7 @@ public final class KeyClientBuilder implements
             .clientOptions(localClientOptions)
             .build();
 
-        return new KeyClientImpl(vaultUrl, pipeline, serviceVersion);
+        return new KeyClientImpl(pipeline, serviceVersion.getVersion());
     }
 
     /**
@@ -405,7 +405,7 @@ public final class KeyClientBuilder implements
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
@@ -422,9 +422,9 @@ public final class KeyClientBuilder implements
 
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
-     *
+     * <p>
      * The default retry policy will be used in the pipeline, if not provided.
-     *
+     * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy user's retry policy applied to each request.

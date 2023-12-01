@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A wrapper for an ARM resource id. */
+/**
+ * A wrapper for an ARM resource id.
+ */
 @Immutable
 public final class ArmIdWrapper {
     /*
@@ -16,13 +18,15 @@ public final class ArmIdWrapper {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of ArmIdWrapper class. */
+    /**
+     * Creates an instance of ArmIdWrapper class.
+     */
     public ArmIdWrapper() {
     }
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ArmIdWrapper {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

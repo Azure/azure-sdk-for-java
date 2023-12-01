@@ -27,7 +27,7 @@ private case class ItemsScan(session: SparkSession,
   requireNotNull(cosmosQuery, "cosmosQuery")
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val clientConfiguration = CosmosClientConfiguration.apply(
     config,

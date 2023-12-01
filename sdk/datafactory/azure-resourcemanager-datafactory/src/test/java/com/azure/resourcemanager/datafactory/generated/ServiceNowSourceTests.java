@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.ServiceNowSource;
 public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceNowSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ServiceNowSource\",\"query\":\"dataiwcgcwmshlpq\",\"queryTimeout\":\"dataxhdwjfxopzclka\",\"additionalColumns\":\"datauomga\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"datajjfmzv\",\"maxConcurrentConnections\":\"databflyzc\",\"disableMetricsCollection\":\"datamlybsy\",\"\":{\"bt\":\"datanvtvbfpuml\"}}")
-                .toObject(ServiceNowSource.class);
+        ServiceNowSource model = BinaryData.fromString(
+            "{\"type\":\"ServiceNowSource\",\"query\":\"dataybezmyjqpd\",\"queryTimeout\":\"datadsxvk\",\"additionalColumns\":\"datappxzgjysm\",\"sourceRetryCount\":\"dataktou\",\"sourceRetryWait\":\"databwddpjsokosugr\",\"maxConcurrentConnections\":\"datazfwdmae\",\"disableMetricsCollection\":\"datahq\",\"\":{\"mhfmognn\":\"datagzmonjqnienctwb\",\"byxygubvidpsk\":\"dataxrdllrqamfjyyrfp\",\"dctgsdxjx\":\"datazssxhvzgliu\",\"yvvlgsadpvmn\":\"dataddxoatlprsrkennn\"}}")
+            .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model =
-            new ServiceNowSource()
-                .withSourceRetryCount("datac")
-                .withSourceRetryWait("datajjfmzv")
-                .withMaxConcurrentConnections("databflyzc")
-                .withDisableMetricsCollection("datamlybsy")
-                .withQueryTimeout("dataxhdwjfxopzclka")
-                .withAdditionalColumns("datauomga")
-                .withQuery("dataiwcgcwmshlpq");
+        ServiceNowSource model
+            = new ServiceNowSource().withSourceRetryCount("dataktou").withSourceRetryWait("databwddpjsokosugr")
+                .withMaxConcurrentConnections("datazfwdmae").withDisableMetricsCollection("datahq")
+                .withQueryTimeout("datadsxvk").withAdditionalColumns("datappxzgjysm").withQuery("dataybezmyjqpd");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

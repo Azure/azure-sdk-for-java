@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data flow debug resource. */
+/**
+ * Data flow debug resource.
+ */
 @Fluent
 public final class DataFlowDebugResource extends SubResourceDebugResource {
     /*
@@ -17,13 +19,15 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
-    /** Creates an instance of DataFlowDebugResource class. */
+    /**
+     * Creates an instance of DataFlowDebugResource class.
+     */
     public DataFlowDebugResource() {
     }
 
     /**
      * Get the properties property: Data flow properties.
-     *
+     * 
      * @return the properties value.
      */
     public DataFlow properties() {
@@ -32,7 +36,7 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
 
     /**
      * Set the properties property: Data flow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataFlowDebugResource object itself.
      */
@@ -41,7 +45,9 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowDebugResource withName(String name) {
         super.withName(name);
@@ -50,17 +56,15 @@ public final class DataFlowDebugResource extends SubResourceDebugResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model DataFlowDebugResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model DataFlowDebugResource"));
         } else {
             properties().validate();
         }
