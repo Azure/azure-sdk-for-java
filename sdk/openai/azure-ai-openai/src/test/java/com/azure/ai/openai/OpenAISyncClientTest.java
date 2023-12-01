@@ -212,25 +212,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGenerateImageLegacy(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        // The last service in which dall-e-2 was supported
-        client = getOpenAIClient(httpClient, OpenAIServiceVersion.V2023_09_01_PREVIEW);
-        getImageGenerationLegacyRunner((modelId, imageGenerationOptions) ->
-                client.getImageGenerations(null, imageGenerationOptions));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGenerateImageLegacyWithNewServiceVersion(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, serviceVersion);
-        getImageGenerationLegacyRunner((modelId, imageGenerationOptions) ->
-                assertThrows(ResourceNotFoundException.class, () ->
-                        assertImageGenerations(client.getImageGenerations(null, imageGenerationOptions))));
-    }
-
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
