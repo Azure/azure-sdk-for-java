@@ -972,8 +972,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @Disabled("listblobs does not return lastaccessedtime?")
-    //@EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isPlaybackMode")
     @Test
     public void listBlobsFlatOptionsLastAccessTime() {
         BlockBlobAsyncClient b = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();

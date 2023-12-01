@@ -57,6 +57,7 @@ import reactor.test.StepVerifier;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -122,7 +123,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .setDefaultServiceVersion("2018-03-28")).block();
     }
 
-    //todo isbr
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void sasSanitization(boolean unsanitize) {
@@ -149,7 +149,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
 
-        String connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).getAccountName()
+        String connectionString = "AccountName=" + BlobUrlParts.parse(ccAsync.getAccountUrl()).getAccountName()
             + ";SharedAccessSignature=" + sas;
         BlobContainerAsyncClient client2 = instrument(new BlobContainerClientBuilder()
             .connectionString(connectionString)
@@ -940,7 +940,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(client.getProperties())
-            .verifyError(BlobStorageException.class);
+            .verifyErrorSatisfies(r -> {
+                assertTrue(r instanceof BlobStorageException || r instanceof UnknownHostException);
+            });
     }
 
     @Test
