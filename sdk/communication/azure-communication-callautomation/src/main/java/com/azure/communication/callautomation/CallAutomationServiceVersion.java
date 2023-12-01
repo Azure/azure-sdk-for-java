@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
 public enum CallAutomationServiceVersion implements ServiceVersion {
 
     /**
-     * Service version {@code 2023-10-03-preview}.
+     * Service version {@code 2023-03-06}.
      */
-    V2023_10_03_PREVIEW("2023-10-03-preview"),
+    V2023_03_06("2023-03-06"),
 
     /**
      * Service version {@code 2023-10-15}.
@@ -21,14 +21,9 @@ public enum CallAutomationServiceVersion implements ServiceVersion {
     V2023_10_15("2023-10-15"),
 
     /**
-     * Service version {@code 2023-03-06}.
+     * Service version {@code 2023-10-03-preview}.
      */
-    V2023_03_06("2023-03-06"),
-
-    /**
-     * Service version {@code 2023-01-15-preview}.
-     */
-    V2023_01_15_PREVIEW("2023-01-15-preview");
+    V2023_10_03_PREVIEW("2023-10-03-preview");
 
     private final String version;
 
