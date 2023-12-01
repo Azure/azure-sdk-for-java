@@ -5,9 +5,9 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
-import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
@@ -15,22 +15,18 @@ import com.azure.communication.callautomation.implementation.converters.PhoneNum
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
-import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
-import com.azure.communication.callautomation.models.AnswerCallOptions;
-import com.azure.communication.callautomation.models.AnswerCallResult;
-import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -190,6 +186,8 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     createCallRequestInternal,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {

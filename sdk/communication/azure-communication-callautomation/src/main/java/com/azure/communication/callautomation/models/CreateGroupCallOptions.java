@@ -102,24 +102,6 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionConfiguration.
-     */
-    public TranscriptionOptions getTranscriptionConfiguration() {
-        return transcriptionOptions;
-    }
-
-    /**
      * get caller's display name
      * @return display name for caller
      */
@@ -165,18 +147,6 @@ public final class CreateGroupCallOptions {
      */
     public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
         this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public CreateGroupCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 
@@ -230,14 +200,12 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Set the media streaming configuration.
+     * Get the Transcription configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
+     * @return the transcriptionConfiguration.
      */
-    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
     }
 
     /**
