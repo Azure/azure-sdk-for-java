@@ -1,15 +1,16 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.11.1 (2023-12-01)
 
 ### Bugs Fixed
-- fixed Azure Arc Managed Identiy not being retrived because of a code logic bug (misplaced finally block)
+- Fixed Azure Arc Managed Identity token retrieval issue.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`
 
 ## 1.11.0 (2023-11-07)
 
