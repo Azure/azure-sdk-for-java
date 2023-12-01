@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.DEDUCTION,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
     defaultImpl = ChatCompletionsToolCall.class)
 @JsonTypeName("ChatCompletionsToolCall")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = ChatCompletionsFunctionToolCall.class) })
@@ -40,6 +38,7 @@ public class ChatCompletionsToolCall {
      * Creates an instance of ChatCompletionsToolCall class.
      *
      * @param id the id value to set.
+     * @param type the type value to set.
      */
     @Generated
     @JsonCreator
@@ -58,6 +57,11 @@ public class ChatCompletionsToolCall {
         return this.id;
     }
 
+    /**
+     * Get the type property: The type pf the tool call.
+     *
+     * @return the type value.
+     */
     @JsonGetter
     public String getType() {
         return this.type;

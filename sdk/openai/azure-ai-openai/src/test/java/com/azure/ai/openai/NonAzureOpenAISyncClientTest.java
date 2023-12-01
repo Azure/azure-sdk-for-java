@@ -35,7 +35,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.List;
@@ -641,7 +640,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
                     ChatChoice chatChoice = chatChoices.get(0);
                     List<ChatCompletionsToolCall> toolCalls = chatChoice.getDelta().getToolCalls();
-                    if(toolCalls != null && !toolCalls.isEmpty()) {
+                    if (toolCalls != null && !toolCalls.isEmpty()) {
                         ChatCompletionsToolCall toolCall = toolCalls.get(0);
                         System.out.println(toolCall + " - function: " + BinaryData.fromObject(toolCall));
                     }
