@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleTriggerTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recurrence\":{\"frequency\":\"Day\",\"interval\":665115764,\"startTime\":\"2021-06-20T22:00:28Z\",\"endTime\":\"2021-02-19T00:10:50Z\",\"timeZone\":\"mlgmgcnllqfbeuug\",\"schedule\":{\"minutes\":[1684959388,468220489,595739482,1958046175],\"hours\":[648581162],\"weekDays\":[\"Wednesday\",\"Thursday\",\"Thursday\"],\"monthDays\":[828575448],\"monthlyOccurrences\":[{\"day\":\"Sunday\",\"occurrence\":1247863559,\"\":{\"ecmjgbzhdonyle\":\"dataozdcth\"}}],\"\":{\"r\":\"datawvdwmuytkkfoton\"}},\"\":{\"udkyzyiyvhgdkb\":\"datazuoopo\"}}}")
-                .toObject(ScheduleTriggerTypeProperties.class);
+        ScheduleTriggerTypeProperties model = BinaryData.fromString(
+            "{\"recurrence\":{\"frequency\":\"Day\",\"interval\":665115764,\"startTime\":\"2021-06-20T22:00:28Z\",\"endTime\":\"2021-02-19T00:10:50Z\",\"timeZone\":\"mlgmgcnllqfbeuug\",\"schedule\":{\"minutes\":[1684959388,468220489,595739482,1958046175],\"hours\":[648581162],\"weekDays\":[\"Wednesday\",\"Thursday\",\"Thursday\"],\"monthDays\":[828575448],\"monthlyOccurrences\":[{\"day\":\"Sunday\",\"occurrence\":1247863559,\"\":{\"ecmjgbzhdonyle\":\"dataozdcth\"}}],\"\":{\"r\":\"datawvdwmuytkkfoton\"}},\"\":{\"udkyzyiyvhgdkb\":\"datazuoopo\"}}}")
+            .toObject(ScheduleTriggerTypeProperties.class);
         Assertions.assertEquals(RecurrenceFrequency.DAY, model.recurrence().frequency());
         Assertions.assertEquals(665115764, model.recurrence().interval());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-20T22:00:28Z"), model.recurrence().startTime());
@@ -41,31 +39,20 @@ public final class ScheduleTriggerTypePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleTriggerTypeProperties model =
-            new ScheduleTriggerTypeProperties()
-                .withRecurrence(
-                    new ScheduleTriggerRecurrence()
-                        .withFrequency(RecurrenceFrequency.DAY)
-                        .withInterval(665115764)
-                        .withStartTime(OffsetDateTime.parse("2021-06-20T22:00:28Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-02-19T00:10:50Z"))
-                        .withTimeZone("mlgmgcnllqfbeuug")
-                        .withSchedule(
-                            new RecurrenceSchedule()
-                                .withMinutes(Arrays.asList(1684959388, 468220489, 595739482, 1958046175))
-                                .withHours(Arrays.asList(648581162))
-                                .withWeekDays(
-                                    Arrays.asList(DaysOfWeek.WEDNESDAY, DaysOfWeek.THURSDAY, DaysOfWeek.THURSDAY))
-                                .withMonthDays(Arrays.asList(828575448))
-                                .withMonthlyOccurrences(
-                                    Arrays
-                                        .asList(
-                                            new RecurrenceScheduleOccurrence()
-                                                .withDay(DayOfWeek.SUNDAY)
-                                                .withOccurrence(1247863559)
-                                                .withAdditionalProperties(mapOf())))
-                                .withAdditionalProperties(mapOf()))
-                        .withAdditionalProperties(mapOf()));
+        ScheduleTriggerTypeProperties model
+            = new ScheduleTriggerTypeProperties()
+                .withRecurrence(new ScheduleTriggerRecurrence().withFrequency(RecurrenceFrequency.DAY)
+                    .withInterval(665115764).withStartTime(OffsetDateTime.parse("2021-06-20T22:00:28Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-02-19T00:10:50Z")).withTimeZone("mlgmgcnllqfbeuug")
+                    .withSchedule(new RecurrenceSchedule()
+                        .withMinutes(Arrays.asList(1684959388, 468220489, 595739482, 1958046175))
+                        .withHours(Arrays.asList(648581162))
+                        .withWeekDays(Arrays.asList(DaysOfWeek.WEDNESDAY, DaysOfWeek.THURSDAY, DaysOfWeek.THURSDAY))
+                        .withMonthDays(Arrays.asList(828575448))
+                        .withMonthlyOccurrences(Arrays.asList(new RecurrenceScheduleOccurrence()
+                            .withDay(DayOfWeek.SUNDAY).withOccurrence(1247863559).withAdditionalProperties(mapOf())))
+                        .withAdditionalProperties(mapOf()))
+                    .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(ScheduleTriggerTypeProperties.class);
         Assertions.assertEquals(RecurrenceFrequency.DAY, model.recurrence().frequency());
         Assertions.assertEquals(665115764, model.recurrence().interval());

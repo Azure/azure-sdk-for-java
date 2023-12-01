@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.ResponsysSource;
 public final class ResponsysSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResponsysSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ResponsysSource\",\"query\":\"datacrejt\",\"queryTimeout\":\"dataqqoz\",\"additionalColumns\":\"datasbpqwnmfjktdvdh\",\"sourceRetryCount\":\"dataztaluuup\",\"sourceRetryWait\":\"dataaoatzvajwvxh\",\"maxConcurrentConnections\":\"datamotulhilmazgp\",\"disableMetricsCollection\":\"datarppsoeo\",\"\":{\"ln\":\"datawtye\",\"dxsgwd\":\"datagqeplyos\"}}")
-                .toObject(ResponsysSource.class);
+        ResponsysSource model = BinaryData.fromString(
+            "{\"type\":\"ResponsysSource\",\"query\":\"dataiaakgdk\",\"queryTimeout\":\"datamhvwgc\",\"additionalColumns\":\"datapbdkqwgooma\",\"sourceRetryCount\":\"dataaxno\",\"sourceRetryWait\":\"datajfvj\",\"maxConcurrentConnections\":\"dataec\",\"disableMetricsCollection\":\"dataoxjzttalsnmxvsrv\",\"\":{\"ztmdybxeh\":\"dataxl\",\"hf\":\"datakqogtnflaxsp\",\"ocrr\":\"datakqijmyqosrsf\"}}")
+            .toObject(ResponsysSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponsysSource model =
-            new ResponsysSource()
-                .withSourceRetryCount("dataztaluuup")
-                .withSourceRetryWait("dataaoatzvajwvxh")
-                .withMaxConcurrentConnections("datamotulhilmazgp")
-                .withDisableMetricsCollection("datarppsoeo")
-                .withQueryTimeout("dataqqoz")
-                .withAdditionalColumns("datasbpqwnmfjktdvdh")
-                .withQuery("datacrejt");
+        ResponsysSource model = new ResponsysSource().withSourceRetryCount("dataaxno").withSourceRetryWait("datajfvj")
+            .withMaxConcurrentConnections("dataec").withDisableMetricsCollection("dataoxjzttalsnmxvsrv")
+            .withQueryTimeout("datamhvwgc").withAdditionalColumns("datapbdkqwgooma").withQuery("dataiaakgdk");
         model = BinaryData.fromObject(model).toObject(ResponsysSource.class);
     }
 }

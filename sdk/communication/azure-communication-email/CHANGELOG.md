@@ -8,7 +8,18 @@
 
 ### Bugs Fixed
 
+- An `EmailMessage` with null recipient addresses can no longer be sent.
 ### Other Changes
+
+## 1.0.8 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+- Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
 ## 1.0.7 (2023-10-20)
 

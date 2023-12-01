@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight Hive activity properties. */
+/**
+ * HDInsight Hive activity properties.
+ */
 @Fluent
 public final class HDInsightHiveActivityTypeProperties {
     /*
@@ -60,19 +62,21 @@ public final class HDInsightHiveActivityTypeProperties {
     private Map<String, Object> variables;
 
     /*
-     * Query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security
+     * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security
      * Package)
      */
     @JsonProperty(value = "queryTimeout")
     private Integer queryTimeout;
 
-    /** Creates an instance of HDInsightHiveActivityTypeProperties class. */
+    /**
+     * Creates an instance of HDInsightHiveActivityTypeProperties class.
+     */
     public HDInsightHiveActivityTypeProperties() {
     }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -81,19 +85,19 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
-    public HDInsightHiveActivityTypeProperties withStorageLinkedServices(
-        List<LinkedServiceReference> storageLinkedServices) {
+    public HDInsightHiveActivityTypeProperties
+        withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
     }
 
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @return the arguments value.
      */
     public List<Object> arguments() {
@@ -102,7 +106,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -122,7 +126,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -133,7 +137,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object scriptPath() {
@@ -142,7 +146,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference scriptLinkedService() {
@@ -162,7 +166,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -173,7 +177,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Get the defines property: Allows user to specify defines for Hive job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -182,7 +186,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the defines property: Allows user to specify defines for Hive job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -193,7 +197,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Get the variables property: User specified arguments under hivevar namespace.
-     *
+     * 
      * @return the variables value.
      */
     public Map<String, Object> variables() {
@@ -202,7 +206,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Set the variables property: User specified arguments under hivevar namespace.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -212,9 +216,9 @@ public final class HDInsightHiveActivityTypeProperties {
     }
 
     /**
-     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
+     * Get the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
+     * ESP (Enterprise Security Package).
+     * 
      * @return the queryTimeout value.
      */
     public Integer queryTimeout() {
@@ -222,9 +226,9 @@ public final class HDInsightHiveActivityTypeProperties {
     }
 
     /**
-     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP
-     * (Enterprise Security Package).
-     *
+     * Set the queryTimeout property: Query timeout value (in minutes). Effective when the HDInsight cluster is with
+     * ESP (Enterprise Security Package).
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the HDInsightHiveActivityTypeProperties object itself.
      */
@@ -235,7 +239,7 @@ public final class HDInsightHiveActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

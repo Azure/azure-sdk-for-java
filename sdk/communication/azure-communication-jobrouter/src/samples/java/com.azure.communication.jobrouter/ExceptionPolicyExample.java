@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class ExceptionPolicyExample {
@@ -66,7 +67,7 @@ public class ExceptionPolicyExample {
         /**
          * Add additional exception rule to policy.
          */
-        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(60);
+        WaitTimeExceptionTrigger waitTimeExceptionTrigger = new WaitTimeExceptionTrigger(Duration.ofSeconds(60));
 
         ExceptionRule waitTimeExceptionRule = new ExceptionRule("wait-time-exception-rule", waitTimeExceptionTrigger,
             Arrays.asList(exceptionAction));
@@ -85,6 +86,7 @@ public class ExceptionPolicyExample {
     private void getExceptionPolicy() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
 
         ExceptionPolicy exceptionPolicyResult = routerAdminClient.getExceptionPolicy(exceptionPolicyId);
@@ -94,6 +96,7 @@ public class ExceptionPolicyExample {
     private void listExceptionPolicies() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
 
         PagedIterable<ExceptionPolicy> exceptionPolicyPagedIterable = routerAdminClient.listExceptionPolicies();
@@ -109,6 +112,7 @@ public class ExceptionPolicyExample {
     private void cleanUp() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
         routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
     }

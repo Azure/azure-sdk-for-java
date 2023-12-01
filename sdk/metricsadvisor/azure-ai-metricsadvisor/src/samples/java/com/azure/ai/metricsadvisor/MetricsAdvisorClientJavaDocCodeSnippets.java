@@ -38,6 +38,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -61,7 +62,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
     /**
      * Code snippet for creating a {@link MetricsAdvisorClient}
      */
-    public void createMetricsAdvisorAsyncClient() {
+    public void createMetricsAdvisorClient() {
         // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation
         MetricsAdvisorClient metricsAdvisorClient =
             new MetricsAdvisorClientBuilder()
@@ -69,6 +70,19 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
                 .endpoint("{endpoint}")
                 .buildClient();
         // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating a {@link MetricsAdvisorClient}
+     */
+    public void createMetricsAdvisorClientWithAAD() {
+        // BEGIN: com.azure.ai.metricsadvisor.MetricsAdvisorClient.withAAD
+        MetricsAdvisorClient metricsAdvisorClient =
+            new MetricsAdvisorClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
+        // END: com.azure.ai.metricsadvisor.MetricsAdvisorClient.withAAD
     }
 
     /**

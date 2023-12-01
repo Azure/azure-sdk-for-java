@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PowerQuerySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PowerQuerySink model =
-            BinaryData
-                .fromString(
-                    "{\"script\":\"oykdno\",\"schemaLinkedService\":{\"referenceName\":\"axwmgzru\",\"parameters\":{\"cbgvsbt\":\"datacwnynlleiq\",\"xmnrqstjcmet\":\"dataertoxadhxuvj\"}},\"rejectedDataLinkedService\":{\"referenceName\":\"l\",\"parameters\":{\"gjnaqyqipsl\":\"datavnpvvd\",\"tfo\":\"datamvcdsvmwbitek\"}},\"name\":\"vfiybxqichgyb\",\"description\":\"dqekivycpzcvd\",\"dataset\":{\"referenceName\":\"ulrqtbht\",\"parameters\":{\"ryfmxmdu\":\"datapzl\",\"giln\":\"datazf\"}},\"linkedService\":{\"referenceName\":\"dccgndjgdpriggqq\",\"parameters\":{\"buu\":\"dataf\",\"igi\":\"datapyuflqjfshtujcyo\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"csklkqnq\",\"datasetParameters\":\"dataixnmbz\",\"parameters\":{\"mbzayspzvrietv\":\"datauyrzw\",\"dvatlzmgschn\":\"dataphmdzxplgtp\"},\"\":{\"vlzdmnfm\":\"databkkz\"}}}")
-                .toObject(PowerQuerySink.class);
+        PowerQuerySink model = BinaryData.fromString(
+            "{\"script\":\"oykdno\",\"schemaLinkedService\":{\"referenceName\":\"axwmgzru\",\"parameters\":{\"cbgvsbt\":\"datacwnynlleiq\",\"xmnrqstjcmet\":\"dataertoxadhxuvj\"}},\"rejectedDataLinkedService\":{\"referenceName\":\"l\",\"parameters\":{\"gjnaqyqipsl\":\"datavnpvvd\",\"tfo\":\"datamvcdsvmwbitek\"}},\"name\":\"vfiybxqichgyb\",\"description\":\"dqekivycpzcvd\",\"dataset\":{\"referenceName\":\"ulrqtbht\",\"parameters\":{\"ryfmxmdu\":\"datapzl\",\"giln\":\"datazf\"}},\"linkedService\":{\"referenceName\":\"dccgndjgdpriggqq\",\"parameters\":{\"buu\":\"dataf\",\"igi\":\"datapyuflqjfshtujcyo\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"csklkqnq\",\"datasetParameters\":\"dataixnmbz\",\"parameters\":{\"mbzayspzvrietv\":\"datauyrzw\",\"dvatlzmgschn\":\"dataphmdzxplgtp\"},\"\":{\"vlzdmnfm\":\"databkkz\"}}}")
+            .toObject(PowerQuerySink.class);
         Assertions.assertEquals("vfiybxqichgyb", model.name());
         Assertions.assertEquals("dqekivycpzcvd", model.description());
         Assertions.assertEquals("ulrqtbht", model.dataset().referenceName());
@@ -35,34 +33,20 @@ public final class PowerQuerySinkTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PowerQuerySink model =
-            new PowerQuerySink()
-                .withName("vfiybxqichgyb")
-                .withDescription("dqekivycpzcvd")
-                .withDataset(
-                    new DatasetReference()
-                        .withReferenceName("ulrqtbht")
-                        .withParameters(mapOf("ryfmxmdu", "datapzl", "giln", "datazf")))
-                .withLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("dccgndjgdpriggqq")
-                        .withParameters(mapOf("buu", "dataf", "igi", "datapyuflqjfshtujcyo")))
-                .withFlowlet(
-                    new DataFlowReference()
-                        .withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                        .withReferenceName("csklkqnq")
-                        .withDatasetParameters("dataixnmbz")
-                        .withParameters(mapOf("mbzayspzvrietv", "datauyrzw", "dvatlzmgschn", "dataphmdzxplgtp"))
-                        .withAdditionalProperties(mapOf()))
-                .withSchemaLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("axwmgzru")
-                        .withParameters(mapOf("cbgvsbt", "datacwnynlleiq", "xmnrqstjcmet", "dataertoxadhxuvj")))
-                .withRejectedDataLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("l")
-                        .withParameters(mapOf("gjnaqyqipsl", "datavnpvvd", "tfo", "datamvcdsvmwbitek")))
-                .withScript("oykdno");
+        PowerQuerySink model = new PowerQuerySink().withName("vfiybxqichgyb").withDescription("dqekivycpzcvd")
+            .withDataset(new DatasetReference().withReferenceName("ulrqtbht")
+                .withParameters(mapOf("ryfmxmdu", "datapzl", "giln", "datazf")))
+            .withLinkedService(new LinkedServiceReference().withReferenceName("dccgndjgdpriggqq")
+                .withParameters(mapOf("buu", "dataf", "igi", "datapyuflqjfshtujcyo")))
+            .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                .withReferenceName("csklkqnq").withDatasetParameters("dataixnmbz")
+                .withParameters(mapOf("mbzayspzvrietv", "datauyrzw", "dvatlzmgschn", "dataphmdzxplgtp"))
+                .withAdditionalProperties(mapOf()))
+            .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("axwmgzru")
+                .withParameters(mapOf("cbgvsbt", "datacwnynlleiq", "xmnrqstjcmet", "dataertoxadhxuvj")))
+            .withRejectedDataLinkedService(new LinkedServiceReference().withReferenceName("l")
+                .withParameters(mapOf("gjnaqyqipsl", "datavnpvvd", "tfo", "datamvcdsvmwbitek")))
+            .withScript("oykdno");
         model = BinaryData.fromObject(model).toObject(PowerQuerySink.class);
         Assertions.assertEquals("vfiybxqichgyb", model.name());
         Assertions.assertEquals("dqekivycpzcvd", model.description());

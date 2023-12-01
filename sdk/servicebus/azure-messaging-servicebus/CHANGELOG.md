@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.5 (Unreleased)
+## 7.15.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.15.0-beta.5 (2023-11-22)
+
+### Bugs Fixed
+
+- Fixes the need for byte array allocation to track the combined size of messages in the batch. ([37197](https://github.com/Azure/azure-sdk-for-java/issues/37197))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded `azure-core-amqp` from `2.9.0-beta.6` to `2.9.0-beta.7`.
+- Upgraded `azure-identity` from `1.10.4` to `1.11.0`.
+
+## 7.14.6 (2023-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+- Upgraded `azure-core-amqp` from `2.8.11` to `2.8.13`.
+- Upgraded `azure-identity` from `1.10.4` to `1.11.0`.
 
 ## 7.15.0-beta.4 (2023-11-01)
 

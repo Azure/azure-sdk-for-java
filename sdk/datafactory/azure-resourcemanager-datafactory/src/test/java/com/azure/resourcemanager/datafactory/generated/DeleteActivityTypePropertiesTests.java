@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeleteActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeleteActivityTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recursive\":\"databxgkudioumgv\",\"maxConcurrentConnections\":2061944926,\"enableLogging\":\"datazheqvzwumm\",\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"ax\",\"parameters\":{\"iwkqr\":\"dataihgcdujhz\",\"l\":\"datatrmi\"}},\"path\":\"datazdukamt\",\"logLevel\":\"dataufvabci\",\"enableReliableLogging\":\"databyfs\",\"\":{\"sfrajpyuw\":\"datawgkozl\",\"lsungzvytbq\":\"dataggfgl\",\"qhugjeaetgmmf\":\"datamxkuyyrcqs\",\"upkpyzaenarfy\":\"datafdqoepwyy\"}},\"dataset\":{\"referenceName\":\"lqiykhoygfgchlc\",\"parameters\":{\"kl\":\"datacsskgug\",\"fawfeeatvnmm\":\"datahmymkcccl\",\"wtcllzwaz\":\"datagowfqrykikhf\"}},\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datamkfy\",\"\":{\"znf\":\"dataavfsehbxbqionnq\",\"pvxcqj\":\"dataiboyexjcrwwdtey\",\"mv\":\"datawtiasfbp\"}}}")
-                .toObject(DeleteActivityTypeProperties.class);
+        DeleteActivityTypeProperties model = BinaryData.fromString(
+            "{\"recursive\":\"databxgkudioumgv\",\"maxConcurrentConnections\":2061944926,\"enableLogging\":\"datazheqvzwumm\",\"logStorageSettings\":{\"linkedServiceName\":{\"referenceName\":\"ax\",\"parameters\":{\"iwkqr\":\"dataihgcdujhz\",\"l\":\"datatrmi\"}},\"path\":\"datazdukamt\",\"logLevel\":\"dataufvabci\",\"enableReliableLogging\":\"databyfs\",\"\":{\"sfrajpyuw\":\"datawgkozl\",\"lsungzvytbq\":\"dataggfgl\",\"qhugjeaetgmmf\":\"datamxkuyyrcqs\",\"upkpyzaenarfy\":\"datafdqoepwyy\"}},\"dataset\":{\"referenceName\":\"lqiykhoygfgchlc\",\"parameters\":{\"kl\":\"datacsskgug\",\"fawfeeatvnmm\":\"datahmymkcccl\",\"wtcllzwaz\":\"datagowfqrykikhf\"}},\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datamkfy\",\"\":{\"znf\":\"dataavfsehbxbqionnq\",\"pvxcqj\":\"dataiboyexjcrwwdtey\",\"mv\":\"datawtiasfbp\"}}}")
+            .toObject(DeleteActivityTypeProperties.class);
         Assertions.assertEquals(2061944926, model.maxConcurrentConnections());
         Assertions.assertEquals("ax", model.logStorageSettings().linkedServiceName().referenceName());
         Assertions.assertEquals("lqiykhoygfgchlc", model.dataset().referenceName());
@@ -29,32 +27,17 @@ public final class DeleteActivityTypePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeleteActivityTypeProperties model =
-            new DeleteActivityTypeProperties()
-                .withRecursive("databxgkudioumgv")
-                .withMaxConcurrentConnections(2061944926)
-                .withEnableLogging("datazheqvzwumm")
-                .withLogStorageSettings(
-                    new LogStorageSettings()
-                        .withLinkedServiceName(
-                            new LinkedServiceReference()
-                                .withReferenceName("ax")
-                                .withParameters(mapOf("iwkqr", "dataihgcdujhz", "l", "datatrmi")))
-                        .withPath("datazdukamt")
-                        .withLogLevel("dataufvabci")
-                        .withEnableReliableLogging("databyfs")
-                        .withAdditionalProperties(mapOf()))
-                .withDataset(
-                    new DatasetReference()
-                        .withReferenceName("lqiykhoygfgchlc")
-                        .withParameters(
-                            mapOf(
-                                "kl", "datacsskgug", "fawfeeatvnmm", "datahmymkcccl", "wtcllzwaz", "datagowfqrykikhf")))
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datah")
-                        .withDisableMetricsCollection("datamkfy")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")));
+        DeleteActivityTypeProperties model = new DeleteActivityTypeProperties().withRecursive("databxgkudioumgv")
+            .withMaxConcurrentConnections(2061944926).withEnableLogging("datazheqvzwumm")
+            .withLogStorageSettings(new LogStorageSettings()
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ax")
+                    .withParameters(mapOf("iwkqr", "dataihgcdujhz", "l", "datatrmi")))
+                .withPath("datazdukamt").withLogLevel("dataufvabci").withEnableReliableLogging("databyfs")
+                .withAdditionalProperties(mapOf()))
+            .withDataset(new DatasetReference().withReferenceName("lqiykhoygfgchlc").withParameters(
+                mapOf("kl", "datacsskgug", "fawfeeatvnmm", "datahmymkcccl", "wtcllzwaz", "datagowfqrykikhf")))
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datah")
+                .withDisableMetricsCollection("datamkfy").withAdditionalProperties(mapOf("type", "StoreReadSettings")));
         model = BinaryData.fromObject(model).toObject(DeleteActivityTypeProperties.class);
         Assertions.assertEquals(2061944926, model.maxConcurrentConnections());
         Assertions.assertEquals("ax", model.logStorageSettings().linkedServiceName().referenceName());

@@ -10,8 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Representation of the response data from an embeddings request. Embeddings measure the relatedness of text strings
- * and are commonly used for search, clustering, recommendations, and other similar scenarios.
+ * Representation of the response data from an embeddings request.
+ * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+ * recommendations, and other similar scenarios.
  */
 @Immutable
 public final class Embeddings {
@@ -38,9 +39,8 @@ public final class Embeddings {
      */
     @Generated
     @JsonCreator
-    private Embeddings(
-            @JsonProperty(value = "data") List<EmbeddingItem> data,
-            @JsonProperty(value = "usage") EmbeddingsUsage usage) {
+    private Embeddings(@JsonProperty(value = "data") List<EmbeddingItem> data,
+        @JsonProperty(value = "usage") EmbeddingsUsage usage) {
         this.data = data;
         this.usage = usage;
     }

@@ -167,6 +167,8 @@ import com.azure.messaging.eventgrid.systemevents.ResourceDeleteFailureEventData
 import com.azure.messaging.eventgrid.systemevents.ResourceDeleteSuccessEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAnnotatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementCreatedOrUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ResourceNotificationsResourceManagementDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteCancelEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteFailureEventData;
 import com.azure.messaging.eventgrid.systemevents.ResourceWriteSuccessEventData;
@@ -937,6 +939,19 @@ public final class SystemEventNames {
             "Microsoft.ResourceNotifications.HealthResources.AvailabilityStatusChanged";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.CreatedOrUpdated
+     * event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED =
+            "Microsoft.ResourceNotifications.Resources.CreatedOrUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.Deleted event.
+     */
+    public static final String RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED =
+            "Microsoft.ResourceNotifications.Resources.Deleted";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteCancel event. This is
      * raised when a resource create or update operation is canceled.
      */
@@ -1312,6 +1327,12 @@ public final class SystemEventNames {
                     put(
                             RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
                             ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED,
+                            ResourceNotificationsResourceManagementCreatedOrUpdatedEventData.class);
+                    put(
+                            RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED,
+                            ResourceNotificationsResourceManagementDeletedEventData.class);
                     put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
                     put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
                     put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);

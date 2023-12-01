@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings that will be leveraged for teradata source partitioning. */
+/**
+ * The settings that will be leveraged for teradata source partitioning.
+ */
 @Fluent
 public final class TeradataPartitionSettings {
     /*
@@ -31,14 +33,16 @@ public final class TeradataPartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
-    /** Creates an instance of TeradataPartitionSettings class. */
+    /**
+     * Creates an instance of TeradataPartitionSettings class.
+     */
     public TeradataPartitionSettings() {
     }
 
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range or hash
      * partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionColumnName value.
      */
     public Object partitionColumnName() {
@@ -48,7 +52,7 @@ public final class TeradataPartitionSettings {
     /**
      * Set the partitionColumnName property: The name of the column that will be used for proceeding range or hash
      * partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the TeradataPartitionSettings object itself.
      */
@@ -60,7 +64,7 @@ public final class TeradataPartitionSettings {
     /**
      * Get the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionUpperBound value.
      */
     public Object partitionUpperBound() {
@@ -70,7 +74,7 @@ public final class TeradataPartitionSettings {
     /**
      * Set the partitionUpperBound property: The maximum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionUpperBound the partitionUpperBound value to set.
      * @return the TeradataPartitionSettings object itself.
      */
@@ -82,7 +86,7 @@ public final class TeradataPartitionSettings {
     /**
      * Get the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionLowerBound value.
      */
     public Object partitionLowerBound() {
@@ -92,7 +96,7 @@ public final class TeradataPartitionSettings {
     /**
      * Set the partitionLowerBound property: The minimum value of column specified in partitionColumnName that will be
      * used for proceeding range partitioning. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionLowerBound the partitionLowerBound value to set.
      * @return the TeradataPartitionSettings object itself.
      */
@@ -103,7 +107,7 @@ public final class TeradataPartitionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

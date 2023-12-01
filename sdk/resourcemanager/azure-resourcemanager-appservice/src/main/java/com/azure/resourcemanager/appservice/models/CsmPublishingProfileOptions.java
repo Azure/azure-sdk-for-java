@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Publishing options for requested profile. */
+/**
+ * Publishing options for requested profile.
+ */
 @Fluent
 public final class CsmPublishingProfileOptions {
     /*
@@ -25,13 +27,18 @@ public final class CsmPublishingProfileOptions {
     @JsonProperty(value = "includeDisasterRecoveryEndpoints")
     private Boolean includeDisasterRecoveryEndpoints;
 
-    /** Creates an instance of CsmPublishingProfileOptions class. */
+    /**
+     * Creates an instance of CsmPublishingProfileOptions class.
+     */
     public CsmPublishingProfileOptions() {
     }
 
     /**
-     * Get the format property: Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp.
-     *
+     * Get the format property: Name of the format. Valid values are:
+     * FileZilla3
+     * WebDeploy -- default
+     * Ftp.
+     * 
      * @return the format value.
      */
     public PublishingProfileFormat format() {
@@ -39,8 +46,11 @@ public final class CsmPublishingProfileOptions {
     }
 
     /**
-     * Set the format property: Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp.
-     *
+     * Set the format property: Name of the format. Valid values are:
+     * FileZilla3
+     * WebDeploy -- default
+     * Ftp.
+     * 
      * @param format the format value to set.
      * @return the CsmPublishingProfileOptions object itself.
      */
@@ -51,7 +61,7 @@ public final class CsmPublishingProfileOptions {
 
     /**
      * Get the includeDisasterRecoveryEndpoints property: Include the DisasterRecover endpoint if true.
-     *
+     * 
      * @return the includeDisasterRecoveryEndpoints value.
      */
     public Boolean includeDisasterRecoveryEndpoints() {
@@ -60,7 +70,7 @@ public final class CsmPublishingProfileOptions {
 
     /**
      * Set the includeDisasterRecoveryEndpoints property: Include the DisasterRecover endpoint if true.
-     *
+     * 
      * @param includeDisasterRecoveryEndpoints the includeDisasterRecoveryEndpoints value to set.
      * @return the CsmPublishingProfileOptions object itself.
      */
@@ -71,7 +81,7 @@ public final class CsmPublishingProfileOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

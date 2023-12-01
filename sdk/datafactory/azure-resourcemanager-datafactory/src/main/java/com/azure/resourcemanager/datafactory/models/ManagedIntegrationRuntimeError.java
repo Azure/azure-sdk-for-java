@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Error definition for managed integration runtime. */
+/**
+ * Error definition for managed integration runtime.
+ */
 @Fluent
 public final class ManagedIntegrationRuntimeError {
     /*
@@ -44,15 +46,18 @@ public final class ManagedIntegrationRuntimeError {
     /*
      * Error definition for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedIntegrationRuntimeError class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeError class.
+     */
     public ManagedIntegrationRuntimeError() {
     }
 
     /**
      * Get the time property: The time when the error occurred.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -61,7 +66,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -70,7 +75,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Get the parameters property: Managed integration runtime error parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public List<String> parameters() {
@@ -79,7 +84,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -88,7 +93,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Get the additionalProperties property: Error definition for managed integration runtime.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -98,7 +103,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Set the additionalProperties property: Error definition for managed integration runtime.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedIntegrationRuntimeError object itself.
      */
@@ -117,7 +122,7 @@ public final class ManagedIntegrationRuntimeError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

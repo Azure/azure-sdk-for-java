@@ -15,16 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** Contains the parameters specific to using an Azure Open AI service for vectorization at query time. */
+/** Specifies the Azure OpenAI resource used to vectorize a query string. */
 @Fluent
 public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
-     * The name of the kind of vectorization method being configured for use with vector search.
-     */
-    private static final VectorSearchVectorizerKind KIND = VectorSearchVectorizerKind.AZURE_OPEN_AI;
-
-    /*
-     * Contains the parameters specific to Azure Open AI embedding vectorization.
+     * Contains the parameters specific to Azure OpenAI embedding vectorization.
      */
     private AzureOpenAIParameters azureOpenAIParameters;
 
@@ -38,8 +33,7 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     }
 
     /**
-     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
-     * vectorization.
+     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding vectorization.
      *
      * @return the azureOpenAIParameters value.
      */
@@ -48,8 +42,7 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     }
 
     /**
-     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
-     * vectorization.
+     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding vectorization.
      *
      * @param azureOpenAIParameters the azureOpenAIParameters value to set.
      * @return the AzureOpenAIVectorizer object itself.
@@ -62,7 +55,7 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("kind", Objects.toString(VectorSearchVectorizerKind.AZURE_OPEN_AI, null));
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeJsonField("azureOpenAIParameters", this.azureOpenAIParameters);
         return jsonWriter.writeEndObject();
@@ -90,11 +83,9 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
 
                         if ("kind".equals(fieldName)) {
                             String kind = reader.getString();
-                            if (!KIND.toString().equals(kind)) {
+                            if (!"azureOpenAI".equals(kind)) {
                                 throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
+                                        "'kind' was expected to be non-null and equal to 'azureOpenAI'. The found 'kind' was '"
                                                 + kind
                                                 + "'.");
                             }

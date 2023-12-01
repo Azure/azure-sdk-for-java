@@ -7,81 +7,83 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import java.util.List;
 
-/** An immutable client-side representation of TopicTypeInfo. */
+/**
+ * An immutable client-side representation of TopicTypeInfo.
+ */
 public interface TopicTypeInfo {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the provider property: Namespace of the provider of the topic type.
-     *
+     * 
      * @return the provider value.
      */
     String provider();
 
     /**
      * Gets the displayName property: Display Name for the topic type.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: Description of the topic type.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the resourceRegionType property: Region type of the resource.
-     *
+     * 
      * @return the resourceRegionType value.
      */
     ResourceRegionType resourceRegionType();
 
     /**
      * Gets the provisioningState property: Provisioning state of the topic type.
-     *
+     * 
      * @return the provisioningState value.
      */
     TopicTypeProvisioningState provisioningState();
 
     /**
      * Gets the supportedLocations property: List of locations supported by this topic type.
-     *
+     * 
      * @return the supportedLocations value.
      */
     List<String> supportedLocations();
 
     /**
      * Gets the sourceResourceFormat property: Source resource format.
-     *
+     * 
      * @return the sourceResourceFormat value.
      */
     String sourceResourceFormat();
 
     /**
      * Gets the supportedScopesForSource property: Supported source scopes.
-     *
+     * 
      * @return the supportedScopesForSource value.
      */
     List<TopicTypeSourceScope> supportedScopesForSource();
@@ -89,14 +91,22 @@ public interface TopicTypeInfo {
     /**
      * Gets the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
      * regional or global system topics.
-     *
+     * 
      * @return the areRegionalAndGlobalSourcesSupported value.
      */
     Boolean areRegionalAndGlobalSourcesSupported();
 
     /**
+     * Gets the additionalEnforcedPermissions property: Permissions which are enforced for creating and updating system
+     * topics of this this topic type.
+     * 
+     * @return the additionalEnforcedPermissions value.
+     */
+    List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     TopicTypeInfoInner innerModel();

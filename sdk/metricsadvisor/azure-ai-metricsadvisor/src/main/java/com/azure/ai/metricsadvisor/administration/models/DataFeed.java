@@ -28,6 +28,12 @@ public final class DataFeed {
     private String dataFeedName;
     private DataFeedSchema dataFeedSchema;
 
+    /**
+     * Create a new instance of DataFeed.
+     */
+    public DataFeed() {
+    }
+
     static {
         DataFeedHelper.setAccessor(new DataFeedHelper.DataFeedAccessor() {
             @Override

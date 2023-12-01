@@ -156,6 +156,17 @@ public interface ReactiveCosmosOperations {
      * @param <S> type class of domain type
      * @return Flux of result
      */
+    <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities);
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
     <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities);
 
     /**
@@ -219,6 +230,17 @@ public interface ReactiveCosmosOperations {
      * @return void Mono
      */
     <T> Mono<Void> deleteEntity(String containerName, T entity);
+
+    /**
+     * Delete all items with bulk.
+     *
+     * @param entityInformation must not be {@literal null}
+     * @param entities must not be {@literal null}
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
+    <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities);
 
     /**
      * Delete all items with bulk.

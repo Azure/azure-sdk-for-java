@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object with a list of the resources that need to be moved and the resource group they should be moved to. */
+/**
+ * Object with a list of the resources that need to be moved and the resource group they should be moved to.
+ */
 @Fluent
 public final class CsmMoveResourceEnvelope {
     /*
@@ -23,13 +25,15 @@ public final class CsmMoveResourceEnvelope {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
-    /** Creates an instance of CsmMoveResourceEnvelope class. */
+    /**
+     * Creates an instance of CsmMoveResourceEnvelope class.
+     */
     public CsmMoveResourceEnvelope() {
     }
 
     /**
      * Get the targetResourceGroup property: The targetResourceGroup property.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -38,7 +42,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Set the targetResourceGroup property: The targetResourceGroup property.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the CsmMoveResourceEnvelope object itself.
      */
@@ -49,7 +53,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Get the resources property: The resources property.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> resources() {
@@ -58,7 +62,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Set the resources property: The resources property.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the CsmMoveResourceEnvelope object itself.
      */
@@ -69,7 +73,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

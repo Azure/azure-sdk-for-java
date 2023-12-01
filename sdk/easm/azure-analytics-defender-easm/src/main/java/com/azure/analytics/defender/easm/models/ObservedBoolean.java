@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ObservedBoolean model. */
+/**
+ * The ObservedBoolean model.
+ */
 @Immutable
 public final class ObservedBoolean extends ObservedValue {
 
@@ -26,9 +28,12 @@ public final class ObservedBoolean extends ObservedValue {
     @JsonProperty(value = "sources")
     private List<Source> sources;
 
-    /** Creates an instance of ObservedBoolean class. */
+    /**
+     * Creates an instance of ObservedBoolean class.
+     */
     @Generated
-    private ObservedBoolean() {}
+    private ObservedBoolean() {
+    }
 
     /**
      * Get the value property: The value property.

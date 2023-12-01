@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SAP HANA Table properties. */
+/**
+ * SAP HANA Table properties.
+ */
 @Fluent
 public final class SapHanaTableDatasetTypeProperties {
     /*
@@ -22,13 +24,15 @@ public final class SapHanaTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of SapHanaTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SapHanaTableDatasetTypeProperties class.
+     */
     public SapHanaTableDatasetTypeProperties() {
     }
 
     /**
      * Get the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -37,7 +41,7 @@ public final class SapHanaTableDatasetTypeProperties {
 
     /**
      * Set the schema property: The schema name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SapHanaTableDatasetTypeProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class SapHanaTableDatasetTypeProperties {
 
     /**
      * Get the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -57,7 +61,7 @@ public final class SapHanaTableDatasetTypeProperties {
 
     /**
      * Set the table property: The table name of SAP HANA. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SapHanaTableDatasetTypeProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class SapHanaTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

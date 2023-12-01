@@ -40,7 +40,6 @@ import reactor.core.publisher.Mono;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -100,7 +99,7 @@ public class IdentityClient extends IdentityClientBase {
      */
     IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
         String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-        InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
         Duration clientAssertionTimeout, IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
             clientAssertionSupplier, certificate, certificatePassword, isSharedTokenCacheCredential,
@@ -233,7 +232,9 @@ public class IdentityClient extends IdentityClientBase {
             if (authDetails == null) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                     new CredentialUnavailableException("IntelliJ Authentication not available."
-                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE.")));
+                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE."
+                        + " Fore more details refer to the troubleshooting guidelines here at"
+                        + " https://aka.ms/azsdk/java/identity/intellijcredential/troubleshoot")));
             }
             String authType = authDetails.getAuthMethod();
             if ("SP".equalsIgnoreCase(authType)) {
@@ -926,7 +927,7 @@ public class IdentityClient extends IdentityClientBase {
                          + " Unauthorized response from Azure Arc Managed Identity Endpoint, received: %d", status),
                         null, e));
                 }
-
+            } finally {
                 String realm = connection.getHeaderField("WWW-Authenticate");
 
                 if (realm == null) {
@@ -945,17 +946,17 @@ public class IdentityClient extends IdentityClientBase {
                 String secretKeyPath = realm.substring(separatorIndex + 1);
                 secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
 
-            } finally {
+            
                 if (connection != null) {
                     connection.disconnect();
                 }
-            }
 
+                if (secretKey == null) {
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Did not receive a secret value"
+                        + " in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
 
-            if (secretKey == null) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Did not receive a secret value"
-                     + " in the response from Azure Arc Managed Identity Endpoint",
-                    null));
             }
 
 

@@ -7,33 +7,22 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraNetworkProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraStorageProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class CloudProviderProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudProviderProfile model =
-            BinaryData
-                .fromString(
-                    "{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"ddtocjjxhvp\",\"o\"]},\"infraStorageProfile\":{\"storageSpaceIds\":[\"dzxibqeojnxqbzvd\"]}}")
-                .toObject(CloudProviderProfile.class);
-        Assertions.assertEquals("ddtocjjxhvp", model.infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.infraStorageProfile().storageSpaceIds().get(0));
+        CloudProviderProfile model = BinaryData.fromString("{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"xtij\"]}}")
+            .toObject(CloudProviderProfile.class);
+        Assertions.assertEquals("xtij", model.infraNetworkProfile().vnetSubnetIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudProviderProfile model =
-            new CloudProviderProfile()
-                .withInfraNetworkProfile(
-                    new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList("ddtocjjxhvp", "o")))
-                .withInfraStorageProfile(
-                    new CloudProviderProfileInfraStorageProfile()
-                        .withStorageSpaceIds(Arrays.asList("dzxibqeojnxqbzvd")));
+        CloudProviderProfile model = new CloudProviderProfile().withInfraNetworkProfile(
+            new CloudProviderProfileInfraNetworkProfile().withVnetSubnetIds(Arrays.asList("xtij")));
         model = BinaryData.fromObject(model).toObject(CloudProviderProfile.class);
-        Assertions.assertEquals("ddtocjjxhvp", model.infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions.assertEquals("dzxibqeojnxqbzvd", model.infraStorageProfile().storageSpaceIds().get(0));
+        Assertions.assertEquals("xtij", model.infraNetworkProfile().vnetSubnetIds().get(0));
     }
 }

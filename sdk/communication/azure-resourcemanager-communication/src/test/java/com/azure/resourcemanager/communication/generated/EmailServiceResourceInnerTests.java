@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailServiceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"igdtopbob\"},\"location\":\"ghmewuam\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}")
-                .toObject(EmailServiceResourceInner.class);
+        EmailServiceResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"igdtopbob\"},\"location\":\"ghmewuam\",\"tags\":{\"t\":\"rzayv\",\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\",\"abhjybi\":\"tthzrvqd\"},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}")
+            .toObject(EmailServiceResourceInner.class);
         Assertions.assertEquals("ghmewuam", model.location());
         Assertions.assertEquals("rzayv", model.tags().get("t"));
         Assertions.assertEquals("igdtopbob", model.dataLocation());
@@ -25,11 +23,9 @@ public final class EmailServiceResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailServiceResourceInner model =
-            new EmailServiceResourceInner()
-                .withLocation("ghmewuam")
-                .withTags(mapOf("t", "rzayv", "ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx", "abhjybi", "tthzrvqd"))
-                .withDataLocation("igdtopbob");
+        EmailServiceResourceInner model = new EmailServiceResourceInner().withLocation("ghmewuam")
+            .withTags(mapOf("t", "rzayv", "ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx", "abhjybi", "tthzrvqd"))
+            .withDataLocation("igdtopbob");
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceInner.class);
         Assertions.assertEquals("ghmewuam", model.location());
         Assertions.assertEquals("rzayv", model.tags().get("t"));

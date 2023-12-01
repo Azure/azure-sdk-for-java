@@ -31,7 +31,7 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"jhwuaanozjos\"},\"privateLinkServiceConnectionState\":{\"status\":\"youlp\",\"description\":\"rvxaglrvimjwosy\",\"actionsRequired\":\"itc\"},\"provisioningState\":\"fcktqumiekke\"},\"id\":\"ikh\",\"name\":\"yf\",\"type\":\"hdgqggeb\"}";
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"lagun\"},\"privateLinkServiceConnectionState\":{\"status\":\"gfebwlnb\",\"description\":\"hyreeu\",\"actionsRequired\":\"qavbpdqmj\"},\"provisioningState\":\"yyzglgouwtlmjjy\",\"groupIds\":[\"qtobaxkjeyt\"]},\"id\":\"lbfjkwr\",\"name\":\"snkq\",\"type\":\"hsyrqunj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,11 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         PrivateEndpointConnection response =
             manager
                 .privateEndpointConnections()
-                .getWithResponse("wczelpci", "elsfeaen", "abfatkl", com.azure.core.util.Context.NONE)
+                .getWithResponse("laprlt", "katbhjm", "nnbsoqeqa", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("jhwuaanozjos", response.properties().privateEndpoint().id());
-        Assertions.assertEquals("youlp", response.properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals("rvxaglrvimjwosy", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lagun", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("gfebwlnb", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("hyreeu", response.properties().privateLinkServiceConnectionState().description());
     }
 }

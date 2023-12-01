@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The data stored in text format. */
+/**
+ * The data stored in text format.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TextFormat")
 @Fluent
@@ -75,13 +77,15 @@ public final class TextFormat extends DatasetStorageFormat {
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
 
-    /** Creates an instance of TextFormat class. */
+    /**
+     * Creates an instance of TextFormat class.
+     */
     public TextFormat() {
     }
 
     /**
      * Get the columnDelimiter property: The column delimiter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the columnDelimiter value.
      */
     public Object columnDelimiter() {
@@ -90,7 +94,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Set the columnDelimiter property: The column delimiter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param columnDelimiter the columnDelimiter value to set.
      * @return the TextFormat object itself.
      */
@@ -101,7 +105,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Get the rowDelimiter property: The row delimiter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the rowDelimiter value.
      */
     public Object rowDelimiter() {
@@ -110,7 +114,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Set the rowDelimiter property: The row delimiter. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param rowDelimiter the rowDelimiter value to set.
      * @return the TextFormat object itself.
      */
@@ -121,7 +125,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Get the escapeChar property: The escape character. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the escapeChar value.
      */
     public Object escapeChar() {
@@ -130,7 +134,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Set the escapeChar property: The escape character. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param escapeChar the escapeChar value to set.
      * @return the TextFormat object itself.
      */
@@ -141,7 +145,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Get the quoteChar property: The quote character. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the quoteChar value.
      */
     public Object quoteChar() {
@@ -150,7 +154,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Set the quoteChar property: The quote character. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param quoteChar the quoteChar value to set.
      * @return the TextFormat object itself.
      */
@@ -161,7 +165,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Get the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the nullValue value.
      */
     public Object nullValue() {
@@ -170,7 +174,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Set the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param nullValue the nullValue value to set.
      * @return the TextFormat object itself.
      */
@@ -184,7 +188,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * ΓÇ£utf-8ΓÇ¥, unless BOM denotes another Unicode encoding. Refer to the ΓÇ£NameΓÇ¥ column of the table in the
      * following link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the encodingName value.
      */
     public Object encodingName() {
@@ -196,7 +200,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * ΓÇ£utf-8ΓÇ¥, unless BOM denotes another Unicode encoding. Refer to the ΓÇ£NameΓÇ¥ column of the table in the
      * following link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param encodingName the encodingName value to set.
      * @return the TextFormat object itself.
      */
@@ -206,9 +210,9 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Get the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is
+     * true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the treatEmptyAsNull value.
      */
     public Object treatEmptyAsNull() {
@@ -216,9 +220,9 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Set the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is true.
-     * Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the treatEmptyAsNull property: Treat empty column values in the text file as null. The default value is
+     * true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param treatEmptyAsNull the treatEmptyAsNull value to set.
      * @return the TextFormat object itself.
      */
@@ -228,9 +232,9 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Get the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default value
-     * is 0. Type: integer (or Expression with resultType integer).
-     *
+     * Get the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default
+     * value is 0. Type: integer (or Expression with resultType integer).
+     * 
      * @return the skipLineCount value.
      */
     public Object skipLineCount() {
@@ -238,9 +242,9 @@ public final class TextFormat extends DatasetStorageFormat {
     }
 
     /**
-     * Set the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default value
-     * is 0. Type: integer (or Expression with resultType integer).
-     *
+     * Set the skipLineCount property: The number of lines/rows to be skipped when parsing text files. The default
+     * value is 0. Type: integer (or Expression with resultType integer).
+     * 
      * @param skipLineCount the skipLineCount value to set.
      * @return the TextFormat object itself.
      */
@@ -253,7 +257,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * Get the firstRowAsHeader property: When used as input, treat the first row of data as headers. When used as
      * output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the firstRowAsHeader value.
      */
     public Object firstRowAsHeader() {
@@ -264,7 +268,7 @@ public final class TextFormat extends DatasetStorageFormat {
      * Set the firstRowAsHeader property: When used as input, treat the first row of data as headers. When used as
      * output,write the headers into the output as the first row of data. The default value is false. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param firstRowAsHeader the firstRowAsHeader value to set.
      * @return the TextFormat object itself.
      */
@@ -273,14 +277,18 @@ public final class TextFormat extends DatasetStorageFormat {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TextFormat withSerializer(Object serializer) {
         super.withSerializer(serializer);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TextFormat withDeserializer(Object deserializer) {
         super.withDeserializer(deserializer);
@@ -289,7 +297,7 @@ public final class TextFormat extends DatasetStorageFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

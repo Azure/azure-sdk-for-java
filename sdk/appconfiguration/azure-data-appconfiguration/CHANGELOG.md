@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.3 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.5.0 (2023-11-08)
+
+### Features Added
+
+- Added support for the `2023-10-01` service version.
+
+### Breaking Changes
+
+Note: Below breaking changes only affect the version `1.5.0-beta.2`.
+
+- Removed `azure-core-experimental` as a dependency and replaced usage of `PollResult` by `PollOperationDetails`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
 ## 1.4.10 (2023-10-20)
 

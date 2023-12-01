@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TumblingWindowTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TumblingWindowTriggerTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"frequency\":\"Month\",\"interval\":2031433893,\"startTime\":\"2021-07-13T04:21:03Z\",\"endTime\":\"2021-06-28T17:38:49Z\",\"delay\":\"datarko\",\"maxConcurrency\":1137580538,\"retryPolicy\":{\"count\":\"databwdvuvqgupl\",\"intervalInSeconds\":1886264335},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]}")
-                .toObject(TumblingWindowTriggerTypeProperties.class);
+        TumblingWindowTriggerTypeProperties model = BinaryData.fromString(
+            "{\"frequency\":\"Month\",\"interval\":2031433893,\"startTime\":\"2021-07-13T04:21:03Z\",\"endTime\":\"2021-06-28T17:38:49Z\",\"delay\":\"datarko\",\"maxConcurrency\":1137580538,\"retryPolicy\":{\"count\":\"databwdvuvqgupl\",\"intervalInSeconds\":1886264335},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]}")
+            .toObject(TumblingWindowTriggerTypeProperties.class);
         Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
         Assertions.assertEquals(2031433893, model.interval());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T04:21:03Z"), model.startTime());
@@ -31,22 +29,14 @@ public final class TumblingWindowTriggerTypePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TumblingWindowTriggerTypeProperties model =
-            new TumblingWindowTriggerTypeProperties()
-                .withFrequency(TumblingWindowFrequency.MONTH)
-                .withInterval(2031433893)
-                .withStartTime(OffsetDateTime.parse("2021-07-13T04:21:03Z"))
-                .withEndTime(OffsetDateTime.parse("2021-06-28T17:38:49Z"))
-                .withDelay("datarko")
+        TumblingWindowTriggerTypeProperties model
+            = new TumblingWindowTriggerTypeProperties().withFrequency(TumblingWindowFrequency.MONTH)
+                .withInterval(2031433893).withStartTime(OffsetDateTime.parse("2021-07-13T04:21:03Z"))
+                .withEndTime(OffsetDateTime.parse("2021-06-28T17:38:49Z")).withDelay("datarko")
                 .withMaxConcurrency(1137580538)
                 .withRetryPolicy(new RetryPolicy().withCount("databwdvuvqgupl").withIntervalInSeconds(1886264335))
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new DependencyReference(),
-                            new DependencyReference(),
-                            new DependencyReference(),
-                            new DependencyReference()));
+                .withDependsOn(Arrays.asList(new DependencyReference(), new DependencyReference(),
+                    new DependencyReference(), new DependencyReference()));
         model = BinaryData.fromObject(model).toObject(TumblingWindowTriggerTypeProperties.class);
         Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
         Assertions.assertEquals(2031433893, model.interval());

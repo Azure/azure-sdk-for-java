@@ -473,7 +473,20 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * Insert all items with bulk.
      *
      * @param entityInformation the CosmosEntityInformation
-     * @param entities the Iterable entities to be deleted
+     * @param entities the Iterable entities to be inserted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return Flux of result
+     */
+    public <S extends T, T> Flux<S> insertAll(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
+        return insertAll(entityInformation, Flux.fromIterable(entities));
+    }
+
+    /**
+     * Insert all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Flux of entities to be inserted
      * @param <T> type class of domain type
      * @param <S> type class of domain type
      * @return Flux of result
@@ -498,19 +511,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         return (Flux<S>) this.getCosmosAsyncClient()
-            .getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
-            .publishOn(Schedulers.parallel())
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
-                    this.responseDiagnosticsProcessor))
-            .flatMap(r -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    r.getResponse().getCosmosDiagnostics(), null);
-                JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
-                return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
-            });
+                             .getDatabase(this.getDatabaseName())
+                             .getContainer(containerName)
+                             .executeBulkOperations(cosmosItemOperationsFlux, cosmosBulkExecutionOptions)
+                             .publishOn(Schedulers.parallel())
+                             .onErrorResume(throwable ->
+                                 CosmosExceptionUtils.exceptionHandler("Failed to insert item(s)", throwable,
+                                     this.responseDiagnosticsProcessor))
+                             .flatMap(r -> {
+                                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                     r.getResponse().getCosmosDiagnostics(), null);
+                                 JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
+                                 return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+                             });
     }
 
     /**
@@ -683,6 +696,19 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param <S> type class of domain type
      * @return void Mono
      */
+    public <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Iterable<S> entities) {
+        return deleteEntities(entityInformation, Flux.fromIterable(entities));
+    }
+
+    /**
+     * Delete all items with bulk.
+     *
+     * @param entityInformation the CosmosEntityInformation
+     * @param entities the Iterable entities to be deleted
+     * @param <T> type class of domain type
+     * @param <S> type class of domain type
+     * @return void Mono
+     */
     public <S extends T, T> Mono<Void> deleteEntities(CosmosEntityInformation<T, ?> entityInformation, Flux<S> entities) {
         Assert.notNull(entities, "entities to be deleted should not be null");
 
@@ -704,13 +730,13 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
         return this.getCosmosAsyncClient()
-            .getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
-            .publishOn(Schedulers.parallel())
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
-                    this.responseDiagnosticsProcessor)).then();
+                   .getDatabase(this.getDatabaseName())
+                   .getContainer(containerName)
+                   .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
+                   .publishOn(Schedulers.parallel())
+                   .onErrorResume(throwable ->
+                       CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
+                           this.responseDiagnosticsProcessor)).then();
     }
 
     /**

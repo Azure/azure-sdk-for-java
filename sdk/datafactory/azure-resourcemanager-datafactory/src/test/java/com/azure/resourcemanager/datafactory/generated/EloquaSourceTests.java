@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.EloquaSource;
 public final class EloquaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EloquaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"EloquaSource\",\"query\":\"dataxmpgfspwhfhdgu\",\"queryTimeout\":\"datagav\",\"additionalColumns\":\"datavdfytqzx\",\"sourceRetryCount\":\"dataqnwpwrfe\",\"sourceRetryWait\":\"dataggrm\",\"maxConcurrentConnections\":\"datafhkoe\",\"disableMetricsCollection\":\"datarjmicha\",\"\":{\"pxydi\":\"datantaqjvddeiqvrjh\"}}")
-                .toObject(EloquaSource.class);
+        EloquaSource model = BinaryData.fromString(
+            "{\"type\":\"EloquaSource\",\"query\":\"datapptv\",\"queryTimeout\":\"datadbnu\",\"additionalColumns\":\"datamllyjelnhm\",\"sourceRetryCount\":\"datahxkofzxkqsle\",\"sourceRetryWait\":\"databam\",\"maxConcurrentConnections\":\"datanwgccgblepam\",\"disableMetricsCollection\":\"databaxdaoja\",\"\":{\"ljmj\":\"dataoxwqlnxvnm\"}}")
+            .toObject(EloquaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaSource model =
-            new EloquaSource()
-                .withSourceRetryCount("dataqnwpwrfe")
-                .withSourceRetryWait("dataggrm")
-                .withMaxConcurrentConnections("datafhkoe")
-                .withDisableMetricsCollection("datarjmicha")
-                .withQueryTimeout("datagav")
-                .withAdditionalColumns("datavdfytqzx")
-                .withQuery("dataxmpgfspwhfhdgu");
+        EloquaSource model = new EloquaSource().withSourceRetryCount("datahxkofzxkqsle").withSourceRetryWait("databam")
+            .withMaxConcurrentConnections("datanwgccgblepam").withDisableMetricsCollection("databaxdaoja")
+            .withQueryTimeout("datadbnu").withAdditionalColumns("datamllyjelnhm").withQuery("datapptv");
         model = BinaryData.fromObject(model).toObject(EloquaSource.class);
     }
 }

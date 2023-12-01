@@ -33,55 +33,36 @@ public final class PrivateEndpointConnectionOperationsCreateOrUpdateWithResponse
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"jrh\",\"privateEndpoint\":{\"id\":\"fstmbbjil\"},\"privateLinkServiceConnectionState\":{\"status\":\"ctykc\",\"description\":\"svflurrfnl\",\"actionsRequired\":\"fvjrohyecb\"}},\"name\":\"p\",\"type\":\"qqvmfuuhmftshgc\",\"etag\":\"x\",\"id\":\"gvipzvvr\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"jrh\",\"privateEndpoint\":{\"id\":\"fstmbbjil\"},\"privateLinkServiceConnectionState\":{\"status\":\"ctykc\",\"description\":\"svflurrfnl\",\"actionsRequired\":\"fvjrohyecb\"}},\"name\":\"p\",\"type\":\"qqvmfuuhmftshgc\",\"etag\":\"x\",\"id\":\"gvipzvvr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnectionResource response =
-            manager
-                .privateEndpointConnectionOperations()
-                .define("z")
-                .withExistingFactory("zqbvdlhcyoykmpxt", "crugitjnwaj")
-                .withProperties(
-                    new PrivateLinkConnectionApprovalRequest()
-                        .withPrivateLinkServiceConnectionState(
-                            new PrivateLinkConnectionState()
-                                .withStatus("eaqnbkcqoyqmbu")
-                                .withDescription("fb")
-                                .withActionsRequired("czyhtj"))
-                        .withPrivateEndpoint(new PrivateEndpoint().withId("lflqpanceowvq")))
-                .withIfMatch("fefyggbacmn")
-                .create();
+        PrivateEndpointConnectionResource response = manager.privateEndpointConnectionOperations().define("z")
+            .withExistingFactory("zqbvdlhcyoykmpxt", "crugitjnwaj")
+            .withProperties(new PrivateLinkConnectionApprovalRequest()
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState().withStatus("eaqnbkcqoyqmbu")
+                    .withDescription("fb").withActionsRequired("czyhtj"))
+                .withPrivateEndpoint(new PrivateEndpoint().withId("lflqpanceowvq")))
+            .withIfMatch("fefyggbacmn").create();
 
         Assertions.assertEquals("gvipzvvr", response.id());
         Assertions.assertEquals("ctykc", response.properties().privateLinkServiceConnectionState().status());
         Assertions.assertEquals("svflurrfnl", response.properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("fvjrohyecb", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("fvjrohyecb",
+            response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

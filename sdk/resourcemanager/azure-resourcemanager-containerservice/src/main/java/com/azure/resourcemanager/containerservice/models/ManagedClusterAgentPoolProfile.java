@@ -313,8 +313,22 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withCapacityReservationGroupId(String capacityReservationGroupId) {
+        super.withCapacityReservationGroupId(capacityReservationGroupId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withHostGroupId(String hostGroupId) {
         super.withHostGroupId(hostGroupId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAgentPoolProfile withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        super.withNetworkProfile(networkProfile);
         return this;
     }
 

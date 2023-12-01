@@ -7,20 +7,19 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
+import java.util.LinkedHashMap;
+
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevCenterGetProjectTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevCenterGetProjectTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = devCenterClient.getProjectWithResponse("myProject", requestOptions);
+
+        Response<BinaryData> response = devCenterClient.getProjectWithResponse(projectName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"DevDiv\",\"description\":\"The developer division\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals(projectName, response.getValue().toObject(LinkedHashMap.class).get("name"));
     }
 }

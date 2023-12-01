@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnec
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of linked service resources. */
+/**
+ * A list of linked service resources.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResponse {
     /*
@@ -25,13 +27,15 @@ public final class PrivateEndpointConnectionListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointConnectionListResponse class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResponse class.
+     */
     public PrivateEndpointConnectionListResponse() {
     }
 
     /**
      * Get the value property: List of Private Endpoint Connections.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionResourceInner> value() {
@@ -40,7 +44,7 @@ public final class PrivateEndpointConnectionListResponse {
 
     /**
      * Set the value property: List of Private Endpoint Connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class PrivateEndpointConnectionListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class PrivateEndpointConnectionListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateEndpointConnectionListResponse object itself.
      */
@@ -71,15 +75,13 @@ public final class PrivateEndpointConnectionListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PrivateEndpointConnectionListResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PrivateEndpointConnectionListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -30,44 +30,29 @@ public final class LocalRulestacksListPredefinedUrlCategoriesWithResponseMockTes
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"action\":\"s\",\"name\":\"qwjksghudgz\"},{\"action\":\"xog\",\"name\":\"ggsvoujkxibdaf\"},{\"action\":\"rkmdyom\",\"name\":\"xfbvfb\"},{\"action\":\"dy\",\"name\":\"rhpw\"}],\"nextLink\":\"ddei\"}";
+        String responseStr = "{\"value\":[{\"action\":\"y\",\"name\":\"xpvelszerqzevxo\"}],\"nextLink\":\"intxwa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PredefinedUrlCategoriesResponse response =
-            manager
-                .localRulestacks()
-                .listPredefinedUrlCategoriesWithResponse(
-                    "tljqobbpih", "hcecybmrqbr", "bbmpxdlvykfre", 824374091, com.azure.core.util.Context.NONE)
-                .getValue();
+        PredefinedUrlCategoriesResponse response
+            = manager.localRulestacks().listPredefinedUrlCategoriesWithResponse("hkxdxuwsaifmc", "nosbz",
+                "ehgcvkbcknjo", 988926975, com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("s", response.value().get(0).action());
-        Assertions.assertEquals("qwjksghudgz", response.value().get(0).name());
-        Assertions.assertEquals("ddei", response.nextLink());
+        Assertions.assertEquals("y", response.value().get(0).action());
+        Assertions.assertEquals("xpvelszerqzevxo", response.value().get(0).name());
+        Assertions.assertEquals("intxwa", response.nextLink());
     }
 }
