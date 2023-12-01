@@ -115,10 +115,13 @@ public class SessionTokenHelper {
                                                                ConcurrentHashMap<String, SessionTokenMetadata> partitionKeyToTokenMap) {
         if (partitionKeyToTokenMap != null) {
             SessionTokenMetadata sessionTokenMetadata = partitionKeyToTokenMap.get(partitionKey);
-            sessionTokenMetadata.setLastAccessedTimestamp(Instant.now());
-            // TODO: Evaluate whether SessionTokenMetadata should be mutable?
-            // partitionKeyToTokenMap.put(partitionKey, new SessionTokenMetadata(sessionTokenMetadata.getSessionToken(), Instant.now(), sessionTokenMetadata.getPkRangeId()));
-            return sessionTokenMetadata.getSessionToken();
+
+            if (sessionTokenMetadata != null) {
+                sessionTokenMetadata.setLastAccessedTimestamp(Instant.now());
+                // TODO: Evaluate whether SessionTokenMetadata should be mutable?
+                // partitionKeyToTokenMap.put(partitionKey, new SessionTokenMetadata(sessionTokenMetadata.getSessionToken(), Instant.now(), sessionTokenMetadata.getPkRangeId()));
+                return sessionTokenMetadata.getSessionToken();
+            }
         }
 
         return null;
