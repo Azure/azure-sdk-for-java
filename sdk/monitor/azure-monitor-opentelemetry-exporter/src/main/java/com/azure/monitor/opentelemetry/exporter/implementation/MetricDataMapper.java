@@ -13,6 +13,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.DependencyExtractor;
 import com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.RequestExtractor;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedTime;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.sdk.metrics.data.DoublePointData;
 import io.opentelemetry.sdk.metrics.data.HistogramPointData;
@@ -152,15 +153,16 @@ public class MetricDataMapper {
         // TODO (heya) why give it the same name as otel metric?
         //  it seems this field doesn't matter and only _MS.MetricId property matters?
 
-        // To emit JMX metrics with spaces in the name to Breeze, we need to use the schema
-        // url as the metric name that is reported to Breeze.
-        String schemaUrl = metricData.getResource().getSchemaUrl();
-        String prefix = "internal_metric_name_";
-        if (schemaUrl.startsWith(prefix)) {
-            pointBuilder.setName(schemaUrl.substring(prefix.length()));
+        // We emit jmx metrics via opentelemetry with an attribute that has the original name the customer set
+        // in their applicationinsights.json file. We parse for that attribute here to report the intended
+        // metric name to Breeze.
+        String jmxMetricName = metricData.getResource().getAttribute(AttributeKey.stringKey("real jmx metric name"));
+        if (jmxMetricName != null) {
+            pointBuilder.setName(jmxMetricName);
         } else {
             pointBuilder.setName(metricData.getName());
         }
+
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
 
         Attributes attributes = pointData.getAttributes();
