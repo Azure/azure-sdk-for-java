@@ -251,28 +251,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGenerateImageLegacy(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        // The last service in which dall-e-2 was supported
-        client = getOpenAIAsyncClient(httpClient, OpenAIServiceVersion.V2023_09_01_PREVIEW);
-        getImageGenerationLegacyRunner((modelId, imageGenerationOptions) ->
-                StepVerifier.create(client.getImageGenerations(null, imageGenerationOptions))
-                        .assertNext(OpenAIClientTestBase::assertImageGenerations)
-                        .verifyComplete());
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGenerateImageLegacyNewServiceVersion(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        // The last service in which dall-e-2 was supported
-        client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getImageGenerationLegacyRunner((modelId, imageGenerationOptions) ->
-                StepVerifier.create(client.getImageGenerations(null, imageGenerationOptions))
-                        .verifyErrorSatisfies(throwable -> assertInstanceOf(ResourceNotFoundException.class, throwable))
-        );
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatFunctionForRunner((modelId, chatCompletionsOptions) -> {
