@@ -127,7 +127,7 @@ public class MetricsHelperTests {
         assertEquals(1, checkpointDuration.getMeasurements().size());
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
         assertEquals(10000d, durationMeasurements.getValue(), 1000d);
-        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
+        assertStatusAttributes(checkpoint, null, durationMeasurements.getAttributes());
     }
 
     @Test
@@ -173,7 +173,7 @@ public class MetricsHelperTests {
         TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
         assertEquals(0d, durationMeasurements.getValue(), 1000d);
-        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
+        assertStatusAttributes(checkpoint, null, durationMeasurements.getAttributes());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class MetricsHelperTests {
         final int[] k = {0};
         durationHistogram.getMeasurements().forEach(m -> {
             assertEquals(0d, m.getValue(), 1000d);
-            assertStatusAttributes(checkpoints.get(k[0]), "ok", m.getAttributes());
+            assertStatusAttributes(checkpoints.get(k[0]), null, m.getAttributes());
             k[0]++;
         });
     }
@@ -251,7 +251,7 @@ public class MetricsHelperTests {
 
         assertEquals(10000d, duration.getMeasurements().get(0).getValue(), 1000d);
         assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
-        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
+        assertStatusAttributes(checkpoint2, null, duration.getMeasurements().get(1).getAttributes());
     }
 
     @Test
@@ -297,9 +297,9 @@ public class MetricsHelperTests {
         assertEquals(2, duration.getMeasurements().size());
 
         assertEquals(0d, duration.getMeasurements().get(0).getValue(), 1000d);
-        assertStatusAttributes(checkpoint1, "ok", duration.getMeasurements().get(0).getAttributes());
+        assertStatusAttributes(checkpoint1, null, duration.getMeasurements().get(0).getAttributes());
         assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
-        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
+        assertStatusAttributes(checkpoint2, null, duration.getMeasurements().get(1).getAttributes());
     }
 
 

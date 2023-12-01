@@ -2,9 +2,13 @@
 
 ## 1.0.0-beta.16 (Unreleased)
 
-### Features Added
+- Updated OpenTelemetry Semantic Conventions to version 1.23.1.
 
 ### Breaking Changes
+
+- Renamed attributes according to OpenTelemetry semantic conventions changes:
+    - `net.peer.name` -> `server.address`
+    - `otel.status_code` -> `error.type`
 
 ### Bugs Fixed
 
