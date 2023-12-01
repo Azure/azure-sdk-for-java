@@ -390,6 +390,10 @@ class Transforms {
     }
 
     static OffsetDateTime parseWindowsFileTimeOrDateString(String date) {
+        if (date == null) {
+            return null;
+        }
+
         try {
             // First try to parse as a long (Windows file time)
             return fromWindowsFileTimeOrNull(Long.parseLong(date));
