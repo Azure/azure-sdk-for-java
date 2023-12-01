@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = StoreReadSettings.class)
 @JsonTypeName("StoreReadSettings")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureBlobStorageReadSettings", value = AzureBlobStorageReadSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobFSReadSettings", value = AzureBlobFSReadSettings.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreReadSettings", value = AzureDataLakeStoreReadSettings.class),
     @JsonSubTypes.Type(name = "AmazonS3ReadSettings", value = AmazonS3ReadSettings.class),

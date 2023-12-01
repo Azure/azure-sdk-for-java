@@ -25,7 +25,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = Trigger.class)
 @JsonTypeName("Trigger")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "RerunTumblingWindowTrigger", value = RerunTumblingWindowTrigger.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "RerunTumblingWindowTrigger", value = RerunTumblingWindowTrigger.class),
     @JsonSubTypes.Type(name = "MultiplePipelineTrigger", value = MultiplePipelineTrigger.class),
     @JsonSubTypes.Type(name = "TumblingWindowTrigger", value = TumblingWindowTrigger.class),
     @JsonSubTypes.Type(name = "ChainingTrigger", value = ChainingTrigger.class) })

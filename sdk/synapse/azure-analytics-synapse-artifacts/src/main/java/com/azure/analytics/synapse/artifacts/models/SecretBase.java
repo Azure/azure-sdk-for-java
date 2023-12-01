@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type",
     defaultImpl = SecretBase.class)
 @JsonTypeName("SecretBase")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "SecureString", value = SecureString.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SecureString", value = SecureString.class),
     @JsonSubTypes.Type(name = "AzureKeyVaultSecret", value = AzureKeyVaultSecretReference.class) })
 @Immutable
 public class SecretBase {

@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = CopySource.class)
 @JsonTypeName("CopySource")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
     @JsonSubTypes.Type(name = "ExcelSource", value = ExcelSource.class),
     @JsonSubTypes.Type(name = "ParquetSource", value = ParquetSource.class),
     @JsonSubTypes.Type(name = "DelimitedTextSource", value = DelimitedTextSource.class),

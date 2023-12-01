@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "type",
     defaultImpl = TabularSource.class)
 @JsonTypeName("TabularSource")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureTableSource", value = AzureTableSource.class),
     @JsonSubTypes.Type(name = "InformixSource", value = InformixSource.class),
     @JsonSubTypes.Type(name = "Db2Source", value = Db2Source.class),
     @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),

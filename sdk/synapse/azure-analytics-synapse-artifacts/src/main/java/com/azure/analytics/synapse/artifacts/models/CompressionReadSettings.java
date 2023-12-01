@@ -23,7 +23,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = CompressionReadSettings.class)
 @JsonTypeName("CompressionReadSettings")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class),
     @JsonSubTypes.Type(name = "TarReadSettings", value = TarReadSettings.class),
     @JsonSubTypes.Type(name = "TarGZipReadSettings", value = TarGZipReadSettings.class) })
 @Fluent

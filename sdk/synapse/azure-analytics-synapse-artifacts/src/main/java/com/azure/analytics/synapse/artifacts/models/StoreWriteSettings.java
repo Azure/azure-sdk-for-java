@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = StoreWriteSettings.class)
 @JsonTypeName("StoreWriteSettings")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobStorageWriteSettings", value = AzureBlobStorageWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureBlobFSWriteSettings", value = AzureBlobFSWriteSettings.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreWriteSettings", value = AzureDataLakeStoreWriteSettings.class),

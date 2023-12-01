@@ -26,7 +26,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = Dataset.class)
 @JsonTypeName("Dataset")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
     @JsonSubTypes.Type(name = "Avro", value = AvroDataset.class),
     @JsonSubTypes.Type(name = "Excel", value = ExcelDataset.class),
     @JsonSubTypes.Type(name = "Parquet", value = ParquetDataset.class),

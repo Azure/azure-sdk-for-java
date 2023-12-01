@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = CopySink.class)
 @JsonTypeName("CopySink")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
     @JsonSubTypes.Type(name = "JsonSink", value = JsonSink.class),
     @JsonSubTypes.Type(name = "OrcSink", value = OrcSink.class),
     @JsonSubTypes.Type(name = "RestSink", value = RestSink.class),

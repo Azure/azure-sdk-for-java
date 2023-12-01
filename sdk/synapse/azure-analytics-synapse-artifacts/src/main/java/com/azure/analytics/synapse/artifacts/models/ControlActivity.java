@@ -19,7 +19,8 @@ import java.util.List;
     property = "type",
     defaultImpl = ControlActivity.class)
 @JsonTypeName("Container")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class),
     @JsonSubTypes.Type(name = "IfCondition", value = IfConditionActivity.class),
     @JsonSubTypes.Type(name = "Switch", value = SwitchActivity.class),
     @JsonSubTypes.Type(name = "ForEach", value = ForEachActivity.class),

@@ -20,7 +20,8 @@ import java.util.List;
     property = "type",
     defaultImpl = ExecutionActivity.class)
 @JsonTypeName("Execution")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "Copy", value = CopyActivity.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Copy", value = CopyActivity.class),
     @JsonSubTypes.Type(name = "HDInsightHive", value = HDInsightHiveActivity.class),
     @JsonSubTypes.Type(name = "HDInsightPig", value = HDInsightPigActivity.class),
     @JsonSubTypes.Type(name = "HDInsightMapReduce", value = HDInsightMapReduceActivity.class),

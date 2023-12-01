@@ -26,7 +26,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = LinkedService.class)
 @JsonTypeName("LinkedService")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
     @JsonSubTypes.Type(name = "AzureBlobStorage", value = AzureBlobStorageLinkedService.class),
     @JsonSubTypes.Type(name = "AzureTableStorage", value = AzureTableStorageLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSqlDW", value = AzureSqlDWLinkedService.class),

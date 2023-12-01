@@ -23,7 +23,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = ExportSettings.class)
 @JsonTypeName("ExportSettings")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SnowflakeExportCopyCommand", value = SnowflakeExportCopyCommand.class),
     @JsonSubTypes.Type(
         name = "AzureDatabricksDeltaLakeExportCommand",
         value = AzureDatabricksDeltaLakeExportCommand.class) })

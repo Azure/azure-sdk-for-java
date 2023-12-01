@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = DatasetLocation.class)
 @JsonTypeName("DatasetLocation")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureBlobStorageLocation", value = AzureBlobStorageLocation.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureBlobStorageLocation", value = AzureBlobStorageLocation.class),
     @JsonSubTypes.Type(name = "AzureBlobFSLocation", value = AzureBlobFSLocation.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreLocation", value = AzureDataLakeStoreLocation.class),
     @JsonSubTypes.Type(name = "AmazonS3Location", value = AmazonS3Location.class),

@@ -24,7 +24,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = DatasetStorageFormat.class)
 @JsonTypeName("DatasetStorageFormat")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "TextFormat", value = TextFormat.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "TextFormat", value = TextFormat.class),
     @JsonSubTypes.Type(name = "JsonFormat", value = JsonFormat.class),
     @JsonSubTypes.Type(name = "AvroFormat", value = AvroFormat.class),
     @JsonSubTypes.Type(name = "OrcFormat", value = OrcFormat.class),

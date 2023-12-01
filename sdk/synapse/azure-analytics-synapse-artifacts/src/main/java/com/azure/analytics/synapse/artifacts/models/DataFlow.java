@@ -20,7 +20,8 @@ import java.util.List;
     property = "type",
     defaultImpl = DataFlow.class)
 @JsonTypeName("DataFlow")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
     @JsonSubTypes.Type(name = "Flowlet", value = Flowlet.class) })
 @Fluent
 public class DataFlow {

@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "authenticationType",
     defaultImpl = WebLinkedServiceTypeProperties.class)
 @JsonTypeName("WebLinkedServiceTypeProperties")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "Anonymous", value = WebAnonymousAuthentication.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Anonymous", value = WebAnonymousAuthentication.class),
     @JsonSubTypes.Type(name = "Basic", value = WebBasicAuthentication.class),
     @JsonSubTypes.Type(name = "ClientCertificate", value = WebClientCertificateAuthentication.class) })
 @Fluent

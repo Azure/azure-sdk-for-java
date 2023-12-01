@@ -20,7 +20,8 @@ import java.util.List;
     property = "type",
     defaultImpl = MultiplePipelineTrigger.class)
 @JsonTypeName("MultiplePipelineTrigger")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "ScheduleTrigger", value = ScheduleTrigger.class),
     @JsonSubTypes.Type(name = "BlobTrigger", value = BlobTrigger.class),
     @JsonSubTypes.Type(name = "BlobEventsTrigger", value = BlobEventsTrigger.class),
     @JsonSubTypes.Type(name = "CustomEventsTrigger", value = CustomEventsTrigger.class) })

@@ -25,7 +25,8 @@ import java.util.Map;
     property = "type",
     defaultImpl = Activity.class)
 @JsonTypeName("Activity")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Container", value = ControlActivity.class),
     @JsonSubTypes.Type(name = "Execution", value = ExecutionActivity.class),
     @JsonSubTypes.Type(name = "SqlPoolStoredProcedure", value = SqlPoolStoredProcedureActivity.class) })
 @Fluent
