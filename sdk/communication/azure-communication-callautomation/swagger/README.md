@@ -197,9 +197,6 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: SendDtmfRequest
-    to: SendDtmfRequestInternal
-- rename-model:
     from: TranscriptionConfiguration
     to: TranscriptionConfigurationInternal
 - rename-model:
@@ -250,7 +247,6 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
-- remove-model: TranscriptionStarted
 - remove-model: TranscriptionStarted
 - remove-model: TranscriptionResumed
 - remove-model: TranscriptionStopped
