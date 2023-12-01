@@ -16,7 +16,6 @@ import org.springframework.boot.context.config.Profiles;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
-import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
@@ -24,7 +23,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
 public class AppConfigurationDataLocationResolver
-    implements ConfigDataLocationResolver<AppConfigDataResource>, Ordered {
+    implements ConfigDataLocationResolver<AppConfigDataResource> {
 
     public static final String PREFIX = "azureAppConfiguration";
 
@@ -33,16 +32,18 @@ public class AppConfigurationDataLocationResolver
         if (!location.hasPrefix(PREFIX)) {
             return false;
         }
-        Boolean hasEndpoint =  StringUtils.hasText(context.getBinder()
+        Boolean hasEndpoint = StringUtils.hasText(context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].endpoint", String.class)
             .orElse(""));
-        Boolean  hasConnectionString = StringUtils.hasText(context.getBinder()
+        Boolean hasConnectionString = StringUtils.hasText(context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
             .orElse(""));
-        Boolean hasClientConfigs = StringUtils.hasText(context.getBinder().bind("spring.cloud.appconfiguration.version", String.class)
-            .orElse(""));
+        // TODO (mametcal) This file never loads
+        Boolean hasClientConfigs = StringUtils
+            .hasText(context.getBinder().bind("spring.cloud.appconfiguration.version", String.class)
+                .orElse(""));
 
-        return (hasEndpoint || hasConnectionString);// && hasClientConfigs;
+        return (hasEndpoint || hasConnectionString);
     }
 
     @Override
@@ -52,8 +53,19 @@ public class AppConfigurationDataLocationResolver
     }
 
     @Override
-    public int getOrder() {
-        return -1;
+    public List<AppConfigDataResource> resolveProfileSpecific(
+        ConfigDataLocationResolverContext resolverContext, ConfigDataLocation location, Profiles profiles)
+        throws ConfigDataLocationNotFoundException {
+
+        Holder holder = loadProperties(resolverContext);
+        List<AppConfigDataResource> locations = new ArrayList<>();
+        for (ConfigStore store : holder.properties.getStores()) {
+            locations.add(
+                new AppConfigDataResource(store, profiles, holder.appProperties));
+
+        }
+
+        return locations;
     }
 
     protected Holder loadProperties(ConfigDataLocationResolverContext context) {
@@ -89,22 +101,6 @@ public class AppConfigurationDataLocationResolver
         holder.appProperties = appProperties;
 
         return holder;
-    }
-
-    @Override
-    public List<AppConfigDataResource> resolveProfileSpecific(
-        ConfigDataLocationResolverContext resolverContext, ConfigDataLocation location, Profiles profiles)
-        throws ConfigDataLocationNotFoundException {
-
-        Holder holder = loadProperties(resolverContext);
-        List<AppConfigDataResource> locations = new ArrayList<>();
-        for (ConfigStore store : holder.properties.getStores()) {
-            locations.add(
-                new AppConfigDataResource(store, profiles, holder.appProperties));
-
-        }
-
-        return locations;
     }
 
     private BindHandler getBindHandler(ConfigDataLocationResolverContext context) {

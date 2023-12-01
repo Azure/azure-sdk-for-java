@@ -37,7 +37,7 @@ public class AppConfigDataLoader implements ConfigDataLoader<AppConfigDataResour
     
     private StateHolder storeState = new StateHolder();
     
-    private List<AppConfigurationPropertySource> sources;
+    private List<AppConfigurationPropertySource> sources = new ArrayList<>();
 
     public AppConfigDataLoader(DeferredLogFactory logFactory) {
         this.logger = logFactory.getLog(getClass());
