@@ -111,17 +111,16 @@ public class SessionTokenHelper {
         return highestSessionToken;
     }
 
-    static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey,
-                                                               ConcurrentHashMap<String, SessionTokenMetadata> partitionKeyToTokenMap) {
-        if (partitionKeyToTokenMap != null) {
-            SessionTokenMetadata sessionTokenMetadata = partitionKeyToTokenMap.get(partitionKey);
+    static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey, String pkRangeId,
+                                                               ConcurrentHashMap<String, PkRangeIdScopedSessionTokenRegistry> collectionRidScopedSessionTokenRegistry) {
+        if (collectionRidScopedSessionTokenRegistry != null) {
+            PkRangeIdScopedSessionTokenRegistry pkRangeIdScopedSessionTokenRegistry = collectionRidScopedSessionTokenRegistry.get(pkRangeId);
 
-            if (sessionTokenMetadata != null) {
-                sessionTokenMetadata.setLastAccessedTimestamp(Instant.now());
-                // TODO: Evaluate whether SessionTokenMetadata should be mutable?
-                // partitionKeyToTokenMap.put(partitionKey, new SessionTokenMetadata(sessionTokenMetadata.getSessionToken(), Instant.now(), sessionTokenMetadata.getPkRangeId()));
-                return sessionTokenMetadata.getSessionToken();
+            if (pkRangeIdScopedSessionTokenRegistry != null) {
+
+                return pkRangeIdScopedSessionTokenRegistry.resolvePkScopedSessionToken(partitionKey);
             }
+
         }
 
         return null;
