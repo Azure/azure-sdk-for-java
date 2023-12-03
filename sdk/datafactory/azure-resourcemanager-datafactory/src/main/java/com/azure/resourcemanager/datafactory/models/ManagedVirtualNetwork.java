@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** A managed Virtual Network associated with the Azure Data Factory. */
+/**
+ * A managed Virtual Network associated with the Azure Data Factory.
+ */
 @Fluent
 public final class ManagedVirtualNetwork {
     /*
@@ -30,15 +32,18 @@ public final class ManagedVirtualNetwork {
     /*
      * A managed Virtual Network associated with the Azure Data Factory
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ManagedVirtualNetwork class. */
+    /**
+     * Creates an instance of ManagedVirtualNetwork class.
+     */
     public ManagedVirtualNetwork() {
     }
 
     /**
      * Get the vNetId property: Managed Virtual Network ID.
-     *
+     * 
      * @return the vNetId value.
      */
     public String vNetId() {
@@ -47,7 +52,7 @@ public final class ManagedVirtualNetwork {
 
     /**
      * Get the alias property: Managed Virtual Network alias.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -56,7 +61,7 @@ public final class ManagedVirtualNetwork {
 
     /**
      * Get the additionalProperties property: A managed Virtual Network associated with the Azure Data Factory.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -66,7 +71,7 @@ public final class ManagedVirtualNetwork {
 
     /**
      * Set the additionalProperties property: A managed Virtual Network associated with the Azure Data Factory.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ManagedVirtualNetwork object itself.
      */
@@ -85,7 +90,7 @@ public final class ManagedVirtualNetwork {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

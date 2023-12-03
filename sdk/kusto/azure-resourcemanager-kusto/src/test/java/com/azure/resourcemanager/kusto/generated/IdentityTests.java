@@ -18,7 +18,7 @@ public final class IdentityTests {
         Identity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"parcry\",\"tenantId\":\"nzwuxzd\",\"type\":\"None\",\"userAssignedIdentities\":{\"tijbpzvgnwzsymgl\":{\"principalId\":\"lhmwhfpmrqobm\",\"clientId\":\"kknryrtihf\"},\"s\":{\"principalId\":\"fcyzkohdbihanufh\",\"clientId\":\"bj\"},\"npqxuh\":{\"principalId\":\"ithxqhabifpi\",\"clientId\":\"wczbys\"},\"tfwvukxgaudc\":{\"principalId\":\"y\",\"clientId\":\"iwbybrkxvdumjg\"}}}")
+                    "{\"principalId\":\"y\",\"tenantId\":\"nzwuxzd\",\"type\":\"None\",\"userAssignedIdentities\":{\"tijbpzvgnwzsymgl\":{\"principalId\":\"lhmwhfpmrqobm\",\"clientId\":\"kknryrtihf\"},\"s\":{\"principalId\":\"fcyzkohdbihanufh\",\"clientId\":\"bj\"},\"npqxuh\":{\"principalId\":\"ithxqhabifpi\",\"clientId\":\"wczbys\"},\"tfwvukxgaudc\":{\"principalId\":\"y\",\"clientId\":\"iwbybrkxvdumjg\"}}}")
                 .toObject(Identity.class);
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }
@@ -42,6 +42,7 @@ public final class IdentityTests {
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

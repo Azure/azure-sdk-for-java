@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxPrivateIpAddress model. */
+/**
+ * The NginxPrivateIpAddress model.
+ */
 @Fluent
 public final class NginxPrivateIpAddress {
     /*
@@ -28,13 +30,15 @@ public final class NginxPrivateIpAddress {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
-    /** Creates an instance of NginxPrivateIpAddress class. */
+    /**
+     * Creates an instance of NginxPrivateIpAddress class.
+     */
     public NginxPrivateIpAddress() {
     }
 
     /**
      * Get the privateIpAddress property: The privateIPAddress property.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -43,7 +47,7 @@ public final class NginxPrivateIpAddress {
 
     /**
      * Set the privateIpAddress property: The privateIPAddress property.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the NginxPrivateIpAddress object itself.
      */
@@ -54,7 +58,7 @@ public final class NginxPrivateIpAddress {
 
     /**
      * Get the privateIpAllocationMethod property: The privateIPAllocationMethod property.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public NginxPrivateIpAllocationMethod privateIpAllocationMethod() {
@@ -63,19 +67,19 @@ public final class NginxPrivateIpAddress {
 
     /**
      * Set the privateIpAllocationMethod property: The privateIPAllocationMethod property.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the NginxPrivateIpAddress object itself.
      */
-    public NginxPrivateIpAddress withPrivateIpAllocationMethod(
-        NginxPrivateIpAllocationMethod privateIpAllocationMethod) {
+    public NginxPrivateIpAddress
+        withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnetId property: The subnetId property.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -84,7 +88,7 @@ public final class NginxPrivateIpAddress {
 
     /**
      * Set the subnetId property: The subnetId property.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NginxPrivateIpAddress object itself.
      */
@@ -95,7 +99,7 @@ public final class NginxPrivateIpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

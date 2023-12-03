@@ -7,8 +7,6 @@ import com.azure.core.util.CoreUtils
 import com.azure.cosmos.implementation.HttpConstants
 import reactor.util.concurrent.Queues
 
-import java.time.Duration
-
 // cosmos db related constants
 private object CosmosConstants {
   private[this] val propertiesFileName = "azure-cosmos-spark.properties"
@@ -23,7 +21,7 @@ private object CosmosConstants {
   val defaultDirectRequestTimeoutInSeconds = 10L
   val feedRangesCacheIntervalInMinutes = 1L
   val defaultIoThreadCountFactorPerCore = 4
-  val smallestPossibleReactorQueueSizeLargerThanOne = math.min(8, Queues.XS_BUFFER_SIZE)
+  val smallestPossibleReactorQueueSizeLargerThanOne: Int = math.min(8, Queues.XS_BUFFER_SIZE)
   val defaultMetricsIntervalInSeconds = 60
   val defaultSlf4jMetricReporterEnabled = false
 
@@ -32,24 +30,32 @@ private object CosmosConstants {
     val ChangeFeedDataSourceShortName = "cosmos.oltp.changeFeed"
   }
 
+  object MetricNames {
+    val BytesWritten = "bytesWritten"
+    val RecordsWritten = "recordsWritten"
+    val TotalRequestCharge = "cosmos.totalRequestCharge"
+
+    val KnownCustomMetricNames: Set[String] = Set(TotalRequestCharge)
+  }
+
   object Properties {
     val Id = "id"
     val ETag = "_etag"
   }
 
   object StatusCodes {
-    val Conflict = HttpConstants.StatusCodes.CONFLICT
-    val ServiceUnavailable = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
-    val InternalServerError = HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
-    val Gone = HttpConstants.StatusCodes.GONE
-    val Timeout = HttpConstants.StatusCodes.REQUEST_TIMEOUT
-    val PreconditionFailed = HttpConstants.StatusCodes.PRECONDITION_FAILED
-    val NotFound = HttpConstants.StatusCodes.NOTFOUND
-    val BadRequest = HttpConstants.StatusCodes.BADREQUEST
+    val Conflict: Int = HttpConstants.StatusCodes.CONFLICT
+    val ServiceUnavailable: Int = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
+    val InternalServerError: Int = HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR
+    val Gone: Int = HttpConstants.StatusCodes.GONE
+    val Timeout: Int = HttpConstants.StatusCodes.REQUEST_TIMEOUT
+    val PreconditionFailed: Int = HttpConstants.StatusCodes.PRECONDITION_FAILED
+    val NotFound: Int = HttpConstants.StatusCodes.NOTFOUND
+    val BadRequest: Int = HttpConstants.StatusCodes.BADREQUEST
   }
 
   object SystemProperties {
-    val LineSeparator = System.getProperty("line.separator")
+    val LineSeparator: String = System.getProperty("line.separator")
   }
 
   object TableProperties {

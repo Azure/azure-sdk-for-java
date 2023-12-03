@@ -20,11 +20,13 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandRequest;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugPackage;
 import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRequest;
 
-/** An instance of this class provides access to all the operations defined in DataFlowDebugSessionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataFlowDebugSessionsClient.
+ */
 public interface DataFlowDebugSessionsClient {
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
@@ -39,7 +41,7 @@ public interface DataFlowDebugSessionsClient {
 
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
@@ -51,12 +53,12 @@ public interface DataFlowDebugSessionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
-        beginCreate(
-            String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context);
+        beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request,
+            Context context);
 
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
@@ -66,12 +68,12 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateDataFlowDebugSessionResponseInner create(
-        String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request);
+    CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request);
 
     /**
      * Creates a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition.
@@ -82,12 +84,12 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure for creating data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CreateDataFlowDebugSessionResponseInner create(
-        String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context);
+    CreateDataFlowDebugSessionResponseInner create(String resourceGroupName, String factoryName,
+        CreateDataFlowDebugSessionRequest request, Context context);
 
     /**
      * Query all active data flow debug sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +102,7 @@ public interface DataFlowDebugSessionsClient {
 
     /**
      * Query all active data flow debug sessions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -110,12 +112,12 @@ public interface DataFlowDebugSessionsClient {
      * @return a list of active debug sessions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<DataFlowDebugSessionInfoInner> queryByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Add a data flow into debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition with debug content.
@@ -126,12 +128,12 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure for starting data flow debug session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context);
+    Response<AddDataFlowToDebugSessionResponseInner> addDataFlowWithResponse(String resourceGroupName,
+        String factoryName, DataFlowDebugPackage request, Context context);
 
     /**
      * Add a data flow into debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition with debug content.
@@ -141,12 +143,12 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure for starting data flow debug session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AddDataFlowToDebugSessionResponseInner addDataFlow(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request);
+    AddDataFlowToDebugSessionResponseInner addDataFlow(String resourceGroupName, String factoryName,
+        DataFlowDebugPackage request);
 
     /**
      * Deletes a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition for deletion.
@@ -157,12 +159,12 @@ public interface DataFlowDebugSessionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName,
+        DeleteDataFlowDebugSessionRequest request, Context context);
 
     /**
      * Deletes a data flow debug session.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug session definition for deletion.
@@ -175,7 +177,7 @@ public interface DataFlowDebugSessionsClient {
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
@@ -183,15 +185,15 @@ public interface DataFlowDebugSessionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
-     *     statistics or expression preview.
+     * statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(
-        String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request);
+    SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
+        beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request);
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
@@ -200,7 +202,7 @@ public interface DataFlowDebugSessionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response body structure of data flow result for data preview,
-     *     statistics or expression preview.
+     * statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner> beginExecuteCommand(
@@ -208,7 +210,7 @@ public interface DataFlowDebugSessionsClient {
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
@@ -218,12 +220,12 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataFlowDebugCommandResponseInner executeCommand(
-        String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request);
+    DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request);
 
     /**
      * Execute a data flow debug command.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param request Data flow debug command definition.
@@ -234,6 +236,6 @@ public interface DataFlowDebugSessionsClient {
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataFlowDebugCommandResponseInner executeCommand(
-        String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context);
+    DataFlowDebugCommandResponseInner executeCommand(String resourceGroupName, String factoryName,
+        DataFlowDebugCommandRequest request, Context context);
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The integration runtime authentication keys. */
+/**
+ * The integration runtime authentication keys.
+ */
 @Fluent
 public final class IntegrationRuntimeAuthKeysInner {
     /*
@@ -22,13 +24,15 @@ public final class IntegrationRuntimeAuthKeysInner {
     @JsonProperty(value = "authKey2")
     private String authKey2;
 
-    /** Creates an instance of IntegrationRuntimeAuthKeysInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeAuthKeysInner class.
+     */
     public IntegrationRuntimeAuthKeysInner() {
     }
 
     /**
      * Get the authKey1 property: The primary integration runtime authentication key.
-     *
+     * 
      * @return the authKey1 value.
      */
     public String authKey1() {
@@ -37,7 +41,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Set the authKey1 property: The primary integration runtime authentication key.
-     *
+     * 
      * @param authKey1 the authKey1 value to set.
      * @return the IntegrationRuntimeAuthKeysInner object itself.
      */
@@ -48,7 +52,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Get the authKey2 property: The secondary integration runtime authentication key.
-     *
+     * 
      * @return the authKey2 value.
      */
     public String authKey2() {
@@ -57,7 +61,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Set the authKey2 property: The secondary integration runtime authentication key.
-     *
+     * 
      * @param authKey2 the authKey2 value to set.
      * @return the IntegrationRuntimeAuthKeysInner object itself.
      */
@@ -68,7 +72,7 @@ public final class IntegrationRuntimeAuthKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

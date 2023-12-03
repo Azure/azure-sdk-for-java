@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/GetCluster.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/GetCluster.json
      */
     /**
      * Sample code: GetCluster.
@@ -17,6 +15,6 @@ public final class ClustersGetByResourceGroupSamples {
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void getCluster(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("testrg", "HRCluster", Context.NONE);
+        manager.clusters().getByResourceGroupWithResponse("testrg", "HRCluster", com.azure.core.util.Context.NONE);
     }
 }

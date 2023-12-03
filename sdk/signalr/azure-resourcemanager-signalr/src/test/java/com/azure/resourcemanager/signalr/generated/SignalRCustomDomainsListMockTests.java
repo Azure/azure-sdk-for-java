@@ -32,7 +32,7 @@ public final class SignalRCustomDomainsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"domainName\":\"izrxklob\",\"customCertificate\":{\"id\":\"nazpmk\"}},\"id\":\"lmv\",\"name\":\"vfxzopjh\",\"type\":\"zxlioh\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"totiowlxteqdptjg\",\"customCertificate\":{\"id\":\"tgukranblwphql\"}},\"id\":\"c\",\"name\":\"zgygqwahoiulwgni\",\"type\":\"prglvawuwzduf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class SignalRCustomDomainsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomDomain> response =
-            manager.signalRCustomDomains().list("wnwvroevytlyokr", "rouuxvnsasbcry", com.azure.core.util.Context.NONE);
+            manager.signalRCustomDomains().list("v", "qcgxuug", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("izrxklob", response.iterator().next().domainName());
-        Assertions.assertEquals("nazpmk", response.iterator().next().customCertificate().id());
+        Assertions.assertEquals("totiowlxteqdptjg", response.iterator().next().domainName());
+        Assertions.assertEquals("tgukranblwphql", response.iterator().next().customCertificate().id());
     }
 }

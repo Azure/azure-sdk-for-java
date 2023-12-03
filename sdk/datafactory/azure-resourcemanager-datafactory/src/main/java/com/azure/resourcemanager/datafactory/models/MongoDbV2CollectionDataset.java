@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDB database dataset. */
+/**
+ * The MongoDB database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbV2Collection")
 @Fluent
@@ -22,65 +24,81 @@ public final class MongoDbV2CollectionDataset extends Dataset {
      * MongoDB database dataset properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private MongoDbV2CollectionDatasetTypeProperties innerTypeProperties =
-        new MongoDbV2CollectionDatasetTypeProperties();
+    private MongoDbV2CollectionDatasetTypeProperties innerTypeProperties
+        = new MongoDbV2CollectionDatasetTypeProperties();
 
-    /** Creates an instance of MongoDbV2CollectionDataset class. */
+    /**
+     * Creates an instance of MongoDbV2CollectionDataset class.
+     */
     public MongoDbV2CollectionDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: MongoDB database dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private MongoDbV2CollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2CollectionDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -90,7 +108,7 @@ public final class MongoDbV2CollectionDataset extends Dataset {
     /**
      * Get the collection property: The collection name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collection value.
      */
     public Object collection() {
@@ -100,7 +118,7 @@ public final class MongoDbV2CollectionDataset extends Dataset {
     /**
      * Set the collection property: The collection name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collection the collection value to set.
      * @return the MongoDbV2CollectionDataset object itself.
      */
@@ -114,17 +132,15 @@ public final class MongoDbV2CollectionDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model MongoDbV2CollectionDataset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model MongoDbV2CollectionDataset"));
         } else {
             innerTypeProperties().validate();
         }

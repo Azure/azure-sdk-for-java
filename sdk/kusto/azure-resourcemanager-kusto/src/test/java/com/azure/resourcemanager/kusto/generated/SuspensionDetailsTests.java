@@ -14,16 +14,16 @@ public final class SuspensionDetailsTests {
     public void testDeserialize() throws Exception {
         SuspensionDetails model =
             BinaryData
-                .fromString("{\"suspensionStartDate\":\"2021-03-01T20:41:09Z\"}")
+                .fromString("{\"suspensionStartDate\":\"2021-04-16T08:57:57Z\"}")
                 .toObject(SuspensionDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T20:41:09Z"), model.suspensionStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T08:57:57Z"), model.suspensionStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SuspensionDetails model =
-            new SuspensionDetails().withSuspensionStartDate(OffsetDateTime.parse("2021-03-01T20:41:09Z"));
+            new SuspensionDetails().withSuspensionStartDate(OffsetDateTime.parse("2021-04-16T08:57:57Z"));
         model = BinaryData.fromObject(model).toObject(SuspensionDetails.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T20:41:09Z"), model.suspensionStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-16T08:57:57Z"), model.suspensionStartDate());
     }
 }

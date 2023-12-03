@@ -9,6 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
+import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -186,7 +187,8 @@ public final class VolumeInner extends Resource {
      * Get the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @return the usageThreshold value.
      */
@@ -198,7 +200,8 @@ public final class VolumeInner extends Resource {
      * Set the usageThreshold property: usageThreshold
      *
      * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
-     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume. Specified in bytes.
+     * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
+     * Specified in bytes.
      *
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeInner object itself.
@@ -392,7 +395,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @return the networkFeatures value.
      */
@@ -403,7 +406,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the networkFeatures property: Network features
      *
-     * <p>Basic network, or Standard features available to the volume.
+     * <p>Network features available to the volume, or current state of update.
      *
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeInner object itself.
@@ -627,7 +630,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbAccessBasedEnumeration value.
      */
@@ -638,7 +641,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
      *
-     * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeInner object itself.
@@ -654,7 +657,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @return the smbNonBrowsable value.
      */
@@ -665,7 +668,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the smbNonBrowsable property: smbNonBrowsable
      *
-     * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
      *
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeInner object itself.
@@ -858,6 +861,37 @@ public final class VolumeInner extends Resource {
             this.innerProperties = new VolumeProperties();
         }
         this.innerProperties().withCoolnessPeriod(coolnessPeriod);
+        return this;
+    }
+
+    /**
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @return the coolAccessRetrievalPolicy value.
+     */
+    public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().coolAccessRetrievalPolicy();
+    }
+
+    /**
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
+     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
+     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
+     *
+     * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withCoolAccessRetrievalPolicy(CoolAccessRetrievalPolicy coolAccessRetrievalPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withCoolAccessRetrievalPolicy(coolAccessRetrievalPolicy);
         return this;
     }
 

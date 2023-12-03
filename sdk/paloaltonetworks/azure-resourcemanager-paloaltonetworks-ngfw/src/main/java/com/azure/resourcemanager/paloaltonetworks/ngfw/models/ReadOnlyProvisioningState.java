@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the firewall resource. */
+/**
+ * Provisioning state of the firewall resource.
+ */
 public final class ReadOnlyProvisioningState extends ExpandableStringEnum<ReadOnlyProvisioningState> {
-    /** Static value Succeeded for ReadOnlyProvisioningState. */
+    /**
+     * Static value Succeeded for ReadOnlyProvisioningState.
+     */
     public static final ReadOnlyProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ReadOnlyProvisioningState. */
+    /**
+     * Static value Failed for ReadOnlyProvisioningState.
+     */
     public static final ReadOnlyProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleted for ReadOnlyProvisioningState. */
+    /**
+     * Static value Deleted for ReadOnlyProvisioningState.
+     */
     public static final ReadOnlyProvisioningState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of ReadOnlyProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ReadOnlyProvisioningState extends ExpandableStringEnum<ReadOn
 
     /**
      * Creates or finds a ReadOnlyProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReadOnlyProvisioningState.
      */
@@ -41,7 +49,7 @@ public final class ReadOnlyProvisioningState extends ExpandableStringEnum<ReadOn
 
     /**
      * Gets known ReadOnlyProvisioningState values.
-     *
+     * 
      * @return known ReadOnlyProvisioningState values.
      */
     public static Collection<ReadOnlyProvisioningState> values() {

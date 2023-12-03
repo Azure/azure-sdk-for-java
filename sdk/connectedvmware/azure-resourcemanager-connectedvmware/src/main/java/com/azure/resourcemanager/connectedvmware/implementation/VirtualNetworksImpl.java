@@ -28,15 +28,6 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         this.serviceManager = serviceManager;
     }
 
-    public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
-        VirtualNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualNetworkName);
-        if (inner != null) {
-            return new VirtualNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<VirtualNetwork> getByResourceGroupWithResponse(
         String resourceGroupName, String virtualNetworkName, Context context) {
         Response<VirtualNetworkInner> inner =
@@ -52,8 +43,13 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
         }
     }
 
-    public void delete(String resourceGroupName, String virtualNetworkName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, virtualNetworkName, force);
+    public VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
+        VirtualNetworkInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, virtualNetworkName);
+        if (inner != null) {
+            return new VirtualNetworkImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String virtualNetworkName) {

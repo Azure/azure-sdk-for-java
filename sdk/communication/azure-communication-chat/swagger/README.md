@@ -1,11 +1,13 @@
 # Azure Communication Service chat client library for Java
 
 > see https://aka.ms/autorest
+
 ## Getting Started
 
 To build the SDK for Chat Client, simply Install AutoRest and in this folder, run:
 
 ### Setup
+
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
 git checkout main
@@ -17,7 +19,7 @@ npm install -g autorest
 
 ### Generation
 
-There is one swagger for Chat management APIs. 
+There is one swagger for Chat management APIs.
 
 ```ps
 cd <swagger-folder>
@@ -25,15 +27,17 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 ```
 
 ## Update generated files for chat service
+
 To update generated files for chat service, run the following command
 
 > autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 
 ### Code generation settings
-``` yaml
-tag: package-chat-2021-09-07
+
+```yaml
+tag: package-chat-2023-11-07
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8dbeba81f3a838cd4b7efd70234f29cc1cdc7374/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/731138d0505c02fcee05d7b5a1417fd10ef5efc3/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\
@@ -56,115 +60,121 @@ generic-response-type: true
 ```
 
 ### Rename AddChatParticipantsRequest to AddChatParticipantsOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.AddChatParticipantsOptions) {
-      $.AddChatParticipantsOptions = $.AddChatParticipantsRequest;
-      delete $.AddChatParticipantsRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/participants/:add"].post.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatParticipantsRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatParticipantsOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.AddChatParticipantsOptions) {
+            $.AddChatParticipantsOptions = $.AddChatParticipantsRequest;
+            delete $.AddChatParticipantsRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads/{chatThreadId}/participants/:add"].post.parameters[2]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatParticipantsRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatParticipantsOptions");
+              $.schema = { "$ref": path };
+          }
 ```
 
 ### Rename CreateChatThreadRequest to CreateChatThreadOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.CreateChatThreadOptions) {
-      $.CreateChatThreadOptions = $.CreateChatThreadRequest;
-      delete $.CreateChatThreadRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads"].post.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.CreateChatThreadOptions) {
+            $.CreateChatThreadOptions = $.CreateChatThreadRequest;
+            delete $.CreateChatThreadRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads"].post.parameters[2]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");
+              $.schema = { "$ref": path };
+          }
 ```
 
 ### Rename SendChatMessageRequest to SendChatMessageOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.SendChatMessageOptions) {
-      $.SendChatMessageOptions = $.SendChatMessageRequest;
-      delete $.SendChatMessageRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/messages"].post.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendChatMessageRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/SendChatMessageOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.SendChatMessageOptions) {
+            $.SendChatMessageOptions = $.SendChatMessageRequest;
+            delete $.SendChatMessageRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads/{chatThreadId}/messages"].post.parameters[2]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendChatMessageRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/SendChatMessageOptions");
+              $.schema = { "$ref": path };
+          }
 ```
 
 ### Rename UpdateChatMessageRequest to UpdateChatMessageOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.UpdateChatMessageOptions) {
-      $.UpdateChatMessageOptions = $.UpdateChatMessageRequest;
-      delete $.UpdateChatMessageRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/messages/{chatMessageId}"].patch.parameters[3]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatMessageRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatMessageOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.UpdateChatMessageOptions) {
+            $.UpdateChatMessageOptions = $.UpdateChatMessageRequest;
+            delete $.UpdateChatMessageRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads/{chatThreadId}/messages/{chatMessageId}"].patch.parameters[3]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatMessageRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatMessageOptions");
+              $.schema = { "$ref": path };
+          }
 ```
 
 ### Rename UpdateChatThreadRequest to UpdateChatThreadOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.UpdateChatThreadOptions) {
-      $.UpdateChatThreadOptions = $.UpdateChatThreadRequest;
-      delete $.UpdateChatThreadRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}"].patch.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatThreadRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatThreadOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.UpdateChatThreadOptions) {
+            $.UpdateChatThreadOptions = $.UpdateChatThreadRequest;
+            delete $.UpdateChatThreadRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads/{chatThreadId}"].patch.parameters[2]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("UpdateChatThreadRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/UpdateChatThreadOptions");
+              $.schema = { "$ref": path };
+          }
 ```
 
 ### Rename SendTypingNotificationRequest to TypingNotificationOptions
-``` yaml
+
+```yaml
 directive:
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.TypingNotificationOptions) {
-      $.TypingNotificationOptions = $.SendTypingNotificationRequest;
-      delete $.SendTypingNotificationRequest;
-    }
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/TypingNotificationOptions");
-        $.schema = { "$ref": path };
-    }
+    - from: swagger-document
+      where: $.definitions
+      transform: >
+          if (!$.TypingNotificationOptions) {
+            $.TypingNotificationOptions = $.SendTypingNotificationRequest;
+            delete $.SendTypingNotificationRequest;
+          }
+    - from: swagger-document
+      where: $["paths"]["/chat/threads/{chatThreadId}/typing"].post.parameters[2]
+      transform: >
+          if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("SendTypingNotificationRequest")) {
+              const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/TypingNotificationOptions");
+              $.schema = { "$ref": path };
+          }
 ```

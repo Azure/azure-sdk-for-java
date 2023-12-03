@@ -25,6 +25,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
@@ -454,6 +455,9 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
 
             void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize);
+
+            void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
+            BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
         }
     }
 
@@ -1606,6 +1610,9 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosSessionRetryOptionsAccessor {
             CosmosRegionSwitchHint getRegionSwitchHint(SessionRetryOptions sessionRetryOptions);
+            Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
+
+            int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
         }
     }
 }

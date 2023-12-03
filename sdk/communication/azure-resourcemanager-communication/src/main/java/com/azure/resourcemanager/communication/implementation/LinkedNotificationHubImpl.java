@@ -12,8 +12,7 @@ public final class LinkedNotificationHubImpl implements LinkedNotificationHub {
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
 
-    LinkedNotificationHubImpl(
-        LinkedNotificationHubInner innerObject,
+    LinkedNotificationHubImpl(LinkedNotificationHubInner innerObject,
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

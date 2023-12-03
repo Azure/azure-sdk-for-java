@@ -55,6 +55,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -81,6 +82,19 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                 .endpoint("{endpoint}")
                 .buildClient();
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation
+    }
+
+    /**
+     * Code snippet for creating a {@link MetricsAdvisorAdministrationClient} with AAD
+     */
+    public void createMetricsAdvisorAdministrationClientWithAAD() {
+        // BEGIN: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD
+        MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
+            new MetricsAdvisorAdministrationClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
+        // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD
     }
 
     /**

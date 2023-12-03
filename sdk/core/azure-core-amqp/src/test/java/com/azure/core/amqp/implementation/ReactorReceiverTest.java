@@ -119,7 +119,7 @@ class ReactorReceiverTest {
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
-        reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, receiverHandler, tokenManager,
+        reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(receiverHandler), tokenManager,
             reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
     }
 
@@ -804,7 +804,7 @@ class ReactorReceiverTest {
 
         TestMeter meter = new TestMeter();
         AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, "namespace", "name/and/partition");
-        ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition", receiver, receiverHandler, tokenManager,
+        ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition", receiver, new ReceiveLinkHandlerWrapper(receiverHandler), tokenManager,
             reactorDispatcher, retryOptions, metricsProvider);
 
         TestGauge sequenceNumberMetric = meter.getGauges().get("messaging.az.amqp.prefetch.sequence_number");

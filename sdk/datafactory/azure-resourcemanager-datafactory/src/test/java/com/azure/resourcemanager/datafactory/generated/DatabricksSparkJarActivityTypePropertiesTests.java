@@ -13,31 +13,18 @@ import java.util.Map;
 public final class DatabricksSparkJarActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabricksSparkJarActivityTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mainClassName\":\"dataoe\",\"parameters\":[\"datart\",\"databadrcy\",\"dataxbjaktg\",\"dataw\"],\"libraries\":[{\"ragqcwcdbtopuyi\":\"datahghorgji\",\"imhjbxwr\":\"databqdsuaazkouvvgcw\",\"z\":\"datagaofwo\"},{\"bnx\":\"datap\"},{\"uxjh\":\"datalysfsh\"}]}")
-                .toObject(DatabricksSparkJarActivityTypeProperties.class);
+        DatabricksSparkJarActivityTypeProperties model = BinaryData.fromString(
+            "{\"mainClassName\":\"dataoe\",\"parameters\":[\"datart\",\"databadrcy\",\"dataxbjaktg\",\"dataw\"],\"libraries\":[{\"ragqcwcdbtopuyi\":\"datahghorgji\",\"imhjbxwr\":\"databqdsuaazkouvvgcw\",\"z\":\"datagaofwo\"},{\"bnx\":\"datap\"},{\"uxjh\":\"datalysfsh\"}]}")
+            .toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabricksSparkJarActivityTypeProperties model =
-            new DatabricksSparkJarActivityTypeProperties()
-                .withMainClassName("dataoe")
-                .withParameters(Arrays.asList("datart", "databadrcy", "dataxbjaktg", "dataw"))
-                .withLibraries(
-                    Arrays
-                        .asList(
-                            mapOf(
-                                "ragqcwcdbtopuyi",
-                                "datahghorgji",
-                                "imhjbxwr",
-                                "databqdsuaazkouvvgcw",
-                                "z",
-                                "datagaofwo"),
-                            mapOf("bnx", "datap"),
-                            mapOf("uxjh", "datalysfsh")));
+        DatabricksSparkJarActivityTypeProperties model = new DatabricksSparkJarActivityTypeProperties()
+            .withMainClassName("dataoe").withParameters(Arrays.asList("datart", "databadrcy", "dataxbjaktg", "dataw"))
+            .withLibraries(Arrays.asList(
+                mapOf("ragqcwcdbtopuyi", "datahghorgji", "imhjbxwr", "databqdsuaazkouvvgcw", "z", "datagaofwo"),
+                mapOf("bnx", "datap"), mapOf("uxjh", "datalysfsh")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 

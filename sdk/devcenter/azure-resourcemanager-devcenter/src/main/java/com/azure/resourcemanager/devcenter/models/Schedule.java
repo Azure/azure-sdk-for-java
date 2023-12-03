@@ -99,11 +99,13 @@ public interface Schedule {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Schedule definition stages. */
     interface DefinitionStages {
         /** The first stage of the Schedule definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Schedule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -116,6 +118,7 @@ public interface Schedule {
              */
             WithCreate withExistingPool(String resourceGroupName, String projectName, String poolName);
         }
+
         /**
          * The stage of the Schedule definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -142,6 +145,7 @@ public interface Schedule {
              */
             Schedule create(Context context);
         }
+
         /** The stage of the Schedule definition allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
             /**
@@ -152,6 +156,7 @@ public interface Schedule {
              */
             WithCreate withTypePropertiesType(ScheduledType typePropertiesType);
         }
+
         /** The stage of the Schedule definition allowing to specify frequency. */
         interface WithFrequency {
             /**
@@ -162,6 +167,7 @@ public interface Schedule {
              */
             WithCreate withFrequency(ScheduledFrequency frequency);
         }
+
         /** The stage of the Schedule definition allowing to specify time. */
         interface WithTime {
             /**
@@ -172,6 +178,7 @@ public interface Schedule {
              */
             WithCreate withTime(String time);
         }
+
         /** The stage of the Schedule definition allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -182,6 +189,7 @@ public interface Schedule {
              */
             WithCreate withTimeZone(String timeZone);
         }
+
         /** The stage of the Schedule definition allowing to specify state. */
         interface WithState {
             /**
@@ -192,6 +200,7 @@ public interface Schedule {
              */
             WithCreate withState(ScheduleEnableStatus state);
         }
+
         /** The stage of the Schedule definition allowing to specify top. */
         interface WithTop {
             /**
@@ -204,6 +213,7 @@ public interface Schedule {
             WithCreate withTop(Integer top);
         }
     }
+
     /**
      * Begins update for the Schedule resource.
      *
@@ -235,6 +245,7 @@ public interface Schedule {
          */
         Schedule apply(Context context);
     }
+
     /** The Schedule update stages. */
     interface UpdateStages {
         /** The stage of the Schedule update allowing to specify tags. */
@@ -247,6 +258,7 @@ public interface Schedule {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Schedule update allowing to specify type. */
         interface WithType {
             /**
@@ -257,6 +269,7 @@ public interface Schedule {
              */
             Update withType(ScheduledType type);
         }
+
         /** The stage of the Schedule update allowing to specify frequency. */
         interface WithFrequency {
             /**
@@ -267,6 +280,7 @@ public interface Schedule {
              */
             Update withFrequency(ScheduledFrequency frequency);
         }
+
         /** The stage of the Schedule update allowing to specify time. */
         interface WithTime {
             /**
@@ -277,6 +291,7 @@ public interface Schedule {
              */
             Update withTime(String time);
         }
+
         /** The stage of the Schedule update allowing to specify timeZone. */
         interface WithTimeZone {
             /**
@@ -287,6 +302,7 @@ public interface Schedule {
              */
             Update withTimeZone(String timeZone);
         }
+
         /** The stage of the Schedule update allowing to specify state. */
         interface WithState {
             /**
@@ -297,6 +313,7 @@ public interface Schedule {
              */
             Update withState(ScheduleEnableStatus state);
         }
+
         /** The stage of the Schedule update allowing to specify top. */
         interface WithTop {
             /**
@@ -309,6 +326,7 @@ public interface Schedule {
             Update withTop(Integer top);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

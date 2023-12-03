@@ -196,7 +196,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
             String.format(
                 "{\"id\":\"%s\",\"k1\":\"v1\",\"description\":\"%s\",\"display_name\":\"%s\",\"enabled\":%s,"
                 + "\"conditions\":{\"requirement_type\":\"All\",\"client_filters\":"
-                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]"
+                + "[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]"
                 + "},\"additional_field\":\"additional_value\"}", featureFlagX.getFeatureId(),
                 featureFlagX.getDescription(), featureFlagX.getDisplayName(), featureFlagX.isEnabled());
         featureFlagX.setValue(valueWithAdditionalFieldAtFirstLayer);
@@ -223,7 +223,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         String key = getKey();
         String valueWithAdditionalFields =
             "{\"uri\":\"uriValue\",\"objectFiledName\":{\"unknown\":\"unknown\",\"unknown2\":\"unknown2\"},"
-                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}";
+                + "\"arrayFieldName\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}";
 
         testRunner.accept(new SecretReferenceConfigurationSetting(key, valueWithAdditionalFields));
     }
@@ -841,12 +841,12 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     private String getFeatureFlagConfigurationSettingValue(String key) {
         return "{\"id\":\"" + key + "\",\"description\":null,\"display_name\":\"Feature Flag X\""
                    + ",\"enabled\":false,\"conditions\":{\"client_filters\":[{\"name\":"
-                   + "\"Microsoft.Percentage\",\"parameters\":{\"Value\":\"30\"}}]}}";
+                   + "\"Microsoft.Percentage\",\"parameters\":{\"Value\":30}}]}}";
     }
 
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String key, String displayName) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("Value", "30");
+        parameters.put("Value", 30);
         final List<FeatureFlagFilter> filters = new ArrayList<>();
         filters.add(new FeatureFlagFilter("Microsoft.Percentage")
                         .setParameters(parameters));

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.GlobalParameterResour
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Global parameters. */
+/**
+ * A list of Global parameters.
+ */
 @Fluent
 public final class GlobalParameterListResponse {
     /*
@@ -25,13 +27,15 @@ public final class GlobalParameterListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GlobalParameterListResponse class. */
+    /**
+     * Creates an instance of GlobalParameterListResponse class.
+     */
     public GlobalParameterListResponse() {
     }
 
     /**
      * Get the value property: List of global parameters.
-     *
+     * 
      * @return the value value.
      */
     public List<GlobalParameterResourceInner> value() {
@@ -40,7 +44,7 @@ public final class GlobalParameterListResponse {
 
     /**
      * Set the value property: List of global parameters.
-     *
+     * 
      * @param value the value value to set.
      * @return the GlobalParameterListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class GlobalParameterListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class GlobalParameterListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GlobalParameterListResponse object itself.
      */
@@ -71,15 +75,13 @@ public final class GlobalParameterListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model GlobalParameterListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GlobalParameterListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

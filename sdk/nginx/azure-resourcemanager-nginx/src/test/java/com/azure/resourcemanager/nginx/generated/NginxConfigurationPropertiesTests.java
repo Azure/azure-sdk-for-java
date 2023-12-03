@@ -10,49 +10,39 @@ import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxConfigurationPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        NginxConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Updating\",\"files\":[{\"content\":\"dvhpfxxypininm\",\"virtualPath\":\"huyb\"},{\"content\":\"podepoo\",\"virtualPath\":\"nuvamiheogna\"},{\"content\":\"zxtheotusivyevcc\",\"virtualPath\":\"ihnhun\"}],\"protectedFiles\":[{\"content\":\"zrnf\",\"virtualPath\":\"xgispemvtzfkufu\"},{\"content\":\"jofxqe\",\"virtualPath\":\"jaeq\"},{\"content\":\"qjbasvms\",\"virtualPath\":\"qulngsntnbybkzgc\"},{\"content\":\"wclxxwrl\",\"virtualPath\":\"ouskcqvkocrc\"}],\"package\":{\"data\":\"wtnhxbnjbiksqr\"},\"rootFile\":\"ssainqpjwnzll\"}")
-                .toObject(NginxConfigurationProperties.class);
-        Assertions.assertEquals("dvhpfxxypininm", model.files().get(0).content());
-        Assertions.assertEquals("huyb", model.files().get(0).virtualPath());
-        Assertions.assertEquals("zrnf", model.protectedFiles().get(0).content());
-        Assertions.assertEquals("xgispemvtzfkufu", model.protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("wtnhxbnjbiksqr", model.packageProperty().data());
-        Assertions.assertEquals("ssainqpjwnzll", model.rootFile());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxConfigurationProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Deleting\",\"files\":[{\"content\":\"qfou\",\"virtualPath\":\"mmnkzsmodmgl\"},{\"content\":\"gpbkwtmut\",\"virtualPath\":\"qktapspwgcuert\"}],\"protectedFiles\":[{\"content\":\"o\",\"virtualPath\":\"qw\"},{\"content\":\"mdgbbjfdd\",\"virtualPath\":\"bmbexppbhtqqro\"}],\"package\":{\"data\":\"fpsalgbqu\",\"protectedFiles\":[\"jyj\",\"zjaoyfhrtxil\",\"erkujys\",\"l\"]},\"rootFile\":\"uvfqawrlyxwj\"}")
+            .toObject(NginxConfigurationProperties.class);
+        Assertions.assertEquals("qfou", model.files().get(0).content());
+        Assertions.assertEquals("mmnkzsmodmgl", model.files().get(0).virtualPath());
+        Assertions.assertEquals("o", model.protectedFiles().get(0).content());
+        Assertions.assertEquals("qw", model.protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("fpsalgbqu", model.packageProperty().data());
+        Assertions.assertEquals("jyj", model.packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("uvfqawrlyxwj", model.rootFile());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxConfigurationProperties model =
-            new NginxConfigurationProperties()
-                .withFiles(
-                    Arrays
-                        .asList(
-                            new NginxConfigurationFile().withContent("dvhpfxxypininm").withVirtualPath("huyb"),
-                            new NginxConfigurationFile().withContent("podepoo").withVirtualPath("nuvamiheogna"),
-                            new NginxConfigurationFile().withContent("zxtheotusivyevcc").withVirtualPath("ihnhun")))
-                .withProtectedFiles(
-                    Arrays
-                        .asList(
-                            new NginxConfigurationFile().withContent("zrnf").withVirtualPath("xgispemvtzfkufu"),
-                            new NginxConfigurationFile().withContent("jofxqe").withVirtualPath("jaeq"),
-                            new NginxConfigurationFile().withContent("qjbasvms").withVirtualPath("qulngsntnbybkzgc"),
-                            new NginxConfigurationFile().withContent("wclxxwrl").withVirtualPath("ouskcqvkocrc")))
-                .withPackageProperty(new NginxConfigurationPackage().withData("wtnhxbnjbiksqr"))
-                .withRootFile("ssainqpjwnzll");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxConfigurationProperties model = new NginxConfigurationProperties()
+            .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("qfou").withVirtualPath("mmnkzsmodmgl"),
+                new NginxConfigurationFile().withContent("gpbkwtmut").withVirtualPath("qktapspwgcuert")))
+            .withProtectedFiles(Arrays.asList(new NginxConfigurationFile().withContent("o").withVirtualPath("qw"),
+                new NginxConfigurationFile().withContent("mdgbbjfdd").withVirtualPath("bmbexppbhtqqro")))
+            .withPackageProperty(new NginxConfigurationPackage().withData("fpsalgbqu")
+                .withProtectedFiles(Arrays.asList("jyj", "zjaoyfhrtxil", "erkujys", "l")))
+            .withRootFile("uvfqawrlyxwj");
         model = BinaryData.fromObject(model).toObject(NginxConfigurationProperties.class);
-        Assertions.assertEquals("dvhpfxxypininm", model.files().get(0).content());
-        Assertions.assertEquals("huyb", model.files().get(0).virtualPath());
-        Assertions.assertEquals("zrnf", model.protectedFiles().get(0).content());
-        Assertions.assertEquals("xgispemvtzfkufu", model.protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("wtnhxbnjbiksqr", model.packageProperty().data());
-        Assertions.assertEquals("ssainqpjwnzll", model.rootFile());
+        Assertions.assertEquals("qfou", model.files().get(0).content());
+        Assertions.assertEquals("mmnkzsmodmgl", model.files().get(0).virtualPath());
+        Assertions.assertEquals("o", model.protectedFiles().get(0).content());
+        Assertions.assertEquals("qw", model.protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("fpsalgbqu", model.packageProperty().data());
+        Assertions.assertEquals("jyj", model.packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("uvfqawrlyxwj", model.rootFile());
     }
 }

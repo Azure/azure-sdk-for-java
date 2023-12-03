@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetadataPermissionsResourcesItem model. */
+/**
+ * The MetadataPermissionsResourcesItem model.
+ */
 @Fluent
 public final class MetadataPermissionsResourcesItem {
     /*
@@ -26,7 +28,7 @@ public final class MetadataPermissionsResourcesItem {
 
     /**
      * Creates an instance of MetadataPermissionsResourcesItem class.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      */
     @JsonCreator
@@ -36,7 +38,7 @@ public final class MetadataPermissionsResourcesItem {
 
     /**
      * Get the resourceId property: The resource ID on the permission indication.
-     *
+     * 
      * @return the resourceId value.
      */
     public String getResourceId() {
@@ -45,7 +47,7 @@ public final class MetadataPermissionsResourcesItem {
 
     /**
      * Get the denyTables property: The list of tables that were denied access for the resource ID.
-     *
+     * 
      * @return the denyTables value.
      */
     public List<String> getDenyTables() {
@@ -54,24 +56,12 @@ public final class MetadataPermissionsResourcesItem {
 
     /**
      * Set the denyTables property: The list of tables that were denied access for the resource ID.
-     *
+     * 
      * @param denyTables the denyTables value to set.
      * @return the MetadataPermissionsResourcesItem object itself.
      */
     public MetadataPermissionsResourcesItem setDenyTables(List<String> denyTables) {
         this.denyTables = denyTables;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getResourceId() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property resourceId in model MetadataPermissionsResourcesItem");
-        }
     }
 }

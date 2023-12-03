@@ -2520,7 +2520,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
         SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
             .flatMap(searchIndexer -> SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer, false,
-                Arrays.asList("1234", "4321"), null)
+                    Arrays.asList("1234", "4321"), null)
                 .flatMap(resetDocsResult -> {
                     System.out.printf("Requesting documents to be reset completed with status code %d.%n",
                         resetDocsResult.getStatusCode());
@@ -2664,6 +2664,7 @@ public class SearchJavaDocCodeSnippets {
                     updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
     }
+
 
     /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteDataSourceConnection(String)}
@@ -2842,7 +2843,7 @@ public class SearchJavaDocCodeSnippets {
             })
             .subscribe(updateSkillsetResponse ->
                 System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                    + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
+                        + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
                     updateSkillsetResponse.getValue().getName(),
                     updateSkillsetResponse.getValue().getDescription()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
@@ -2912,7 +2913,7 @@ public class SearchJavaDocCodeSnippets {
     public void createAliasWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
         SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-            Collections.singletonList("index-to-alias")))
+                Collections.singletonList("index-to-alias")))
             .subscribe(response ->
                 System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
                     response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
@@ -2937,7 +2938,7 @@ public class SearchJavaDocCodeSnippets {
     public void createAliasWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
         Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-                Collections.singletonList("index-to-alias")), new Context(KEY_1, VALUE_1));
+            Collections.singletonList("index-to-alias")), new Context(KEY_1, VALUE_1));
 
         System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
             response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
@@ -2951,7 +2952,7 @@ public class SearchJavaDocCodeSnippets {
     public void createOrUpdateAliasAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
         SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
+                new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
             .flatMap(searchAlias -> {
                 System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
                     searchAlias.getIndexes().get(0));
@@ -2976,10 +2977,10 @@ public class SearchJavaDocCodeSnippets {
 
                 return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse(
                     new SearchAlias(response.getValue().getName(), Collections.singletonList("new-index-to-alias"))
-                    .setETag(response.getValue().getETag()), true);
+                        .setETag(response.getValue().getETag()), true);
             }).subscribe(response ->
                 System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
-                response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
+                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
     }
 

@@ -56,6 +56,8 @@ public final class SchedulesDeleteWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.schedules().deleteWithResponse("fajs", "kskmqozzkivyhjrl", "izjixlq", com.azure.core.util.Context.NONE);
+        manager
+            .schedules()
+            .deleteWithResponse("ojmrvvxwjongzse", "qqrsil", "chskxxka", com.azure.core.util.Context.NONE);
     }
 }

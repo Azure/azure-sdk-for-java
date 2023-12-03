@@ -9,12 +9,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
@@ -1220,6 +1222,48 @@ public class ServiceApiTests extends BlobTestBase {
                 blobClient.uploadWithResponse(new BlobParallelUploadOptions(input), null, null));
 
         assertEquals(BlobErrorCode.OPERATION_TIMED_OUT, e.getErrorCode());
+    }
+
+    @Test
+    public void defaultAudience() {
+        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(null)
+            .buildClient();
+
+        assertNotNull(aadService.getProperties() != null);
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience(cc.getAccountName()))
+            .buildClient();
+
+        assertNotNull(aadService.getProperties() != null);
+    }
+
+    @Test
+    public void audienceError() {
+        BlobServiceClient aadService = instrument(new BlobServiceClientBuilder()
+            .endpoint(cc.getBlobContainerUrl())
+            .credential(new MockTokenCredential())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+            .buildClient();
+
+        BlobStorageException e = assertThrows(BlobStorageException.class, () -> aadService.getProperties());
+        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", cc.getAccountName());
+        BlobAudience audience = BlobAudience.fromString(url);
+
+        BlobServiceClient aadService = getServiceClientBuilderWithTokenCredential(cc.getBlobContainerUrl())
+            .audience(audience)
+            .buildClient();
+
+        assertNotNull(aadService.getProperties() != null);
     }
 
 //    public void renameBlob() container() {

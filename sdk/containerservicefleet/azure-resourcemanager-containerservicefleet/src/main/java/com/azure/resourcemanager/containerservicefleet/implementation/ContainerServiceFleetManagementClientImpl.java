@@ -24,6 +24,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
@@ -159,6 +160,18 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         return this.updateRuns;
     }
 
+    /** The FleetUpdateStrategiesClient object to access its operations. */
+    private final FleetUpdateStrategiesClient fleetUpdateStrategies;
+
+    /**
+     * Gets the FleetUpdateStrategiesClient object to access its operations.
+     *
+     * @return the FleetUpdateStrategiesClient object.
+     */
+    public FleetUpdateStrategiesClient getFleetUpdateStrategies() {
+        return this.fleetUpdateStrategies;
+    }
+
     /**
      * Initializes an instance of ContainerServiceFleetManagementClient client.
      *
@@ -181,11 +194,12 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-15-preview";
+        this.apiVersion = "2023-10-15";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
         this.updateRuns = new UpdateRunsClientImpl(this);
+        this.fleetUpdateStrategies = new FleetUpdateStrategiesClientImpl(this);
     }
 
     /**

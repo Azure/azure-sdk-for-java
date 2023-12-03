@@ -7,11 +7,13 @@ package com.azure.monitor.query.implementation.metricsbatch.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with AdditionalInfoErrorResponse information. */
+/**
+ * Exception thrown for an invalid response with AdditionalInfoErrorResponse information.
+ */
 public final class AdditionalInfoErrorResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the AdditionalInfoErrorResponseException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,17 +23,19 @@ public final class AdditionalInfoErrorResponseException extends HttpResponseExce
 
     /**
      * Initializes a new instance of the AdditionalInfoErrorResponseException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public AdditionalInfoErrorResponseException(
-            String message, HttpResponse response, AdditionalInfoErrorResponse value) {
+    public AdditionalInfoErrorResponseException(String message, HttpResponse response,
+        AdditionalInfoErrorResponse value) {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AdditionalInfoErrorResponse getValue() {
         return (AdditionalInfoErrorResponse) super.getValue();

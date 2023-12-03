@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
@@ -214,6 +215,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
         instrument(builder);
 
+        return builder.credential(getTokenCredential());
+    }
+
+    protected TokenCredential getTokenCredential() {
         Configuration configuration = Configuration.getGlobalConfiguration();
         if (!interceptorManager.isPlaybackMode()) {
             // Determine whether to use the environment credential based on the shared configurations or to use the
@@ -222,18 +227,18 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
                 && !CoreUtils.isNullOrEmpty(configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))) {
                 // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
-                return builder.credential(new EnvironmentCredentialBuilder().build());
+                return new EnvironmentCredentialBuilder().build();
             } else {
                 // STORAGE_TENANT_ID, STORAGE_CLIENT_ID, STORAGE_CLIENT_SECRET
-                return builder.credential(new ClientSecretCredentialBuilder()
+                return new ClientSecretCredentialBuilder()
                     .tenantId(configuration.get("STORAGE_TENANT_ID"))
                     .clientId(configuration.get("STORAGE_CLIENT_ID"))
                     .clientSecret(configuration.get("STORAGE_CLIENT_SECRET"))
-                    .build());
+                    .build();
             }
         } else {
             // Running in playback, use the mock credential.
-            return builder.credential(new MockTokenCredential());
+            return new MockTokenCredential();
         }
     }
 
@@ -447,6 +452,20 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildDirectoryClient();
     }
 
+
+    protected DataLakePathClientBuilder getPathClientBuilderWithTokenCredential(String endpoint, String pathName,
+                                                                                HttpPipelinePolicy... policies) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().pathName(pathName).endpoint(endpoint);
+        builder.credential(getTokenCredential());
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        return instrument(builder);
+    }
+
+
     protected DataLakePathClientBuilder getPathClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         String pathName) {
         return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
@@ -491,6 +510,12 @@ public class DataLakeTestBase extends TestProxyTestBase {
     protected DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {
         DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
 
+        return instrument(builder);
+    }
+
+    protected DataLakeFileSystemClientBuilder getFileSystemClientBuilderWithTokenCredential(String endpoint) {
+        DataLakeFileSystemClientBuilder builder = new DataLakeFileSystemClientBuilder().endpoint(endpoint);
+        builder.credential(getTokenCredential());
         return instrument(builder);
     }
 

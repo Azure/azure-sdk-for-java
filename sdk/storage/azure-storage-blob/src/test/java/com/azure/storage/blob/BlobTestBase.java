@@ -38,6 +38,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -52,6 +53,7 @@ import okhttp3.ConnectionPool;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -75,6 +77,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import java.util.zip.CRC32;
@@ -86,7 +89,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
  * Base class for Azure Storage Blob tests.
  */
 public class BlobTestBase extends TestProxyTestBase {
-    protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
+    public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
@@ -261,6 +264,10 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected HttpClient getHttpClient() {
+        return getHttpClient(interceptorManager::getPlaybackClient);
+    }
+
+    public static HttpClient getHttpClient(Supplier<HttpClient> playbackClientSupplier) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             switch (ENVIRONMENT.getHttpClientType()) {
                 case NETTY:
@@ -271,7 +278,7 @@ public class BlobTestBase extends TestProxyTestBase {
                     throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
             }
         } else {
-            return interceptorManager.getPlaybackClient();
+            return playbackClientSupplier.get();
         }
     }
 
@@ -465,6 +472,14 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
+            return createLeaseAsyncClient(cu).acquireLease(-1).block();
+        } else {
+            return leaseID;
+        }
+    }
+
     protected BlobServiceClient getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
@@ -530,6 +545,26 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected BlobServiceClientBuilder getServiceClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
+    }
+
     protected static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
         return createLeaseClient(blobClient, null);
     }
@@ -541,6 +576,17 @@ public class BlobTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
+        return createLeaseAsyncClient(blobAsyncClient, null);
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
+            .blobAsyncClient(blobAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
+    }
+
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
         return createLeaseClient(containerClient, null);
     }
@@ -550,6 +596,17 @@ public class BlobTestBase extends TestProxyTestBase {
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient();
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
+        return createLeaseAsyncClient(containerAsyncClient, null);
+    }
+
+    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
+            .containerAsyncClient(containerAsyncClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
     }
 
     /**
@@ -593,6 +650,26 @@ public class BlobTestBase extends TestProxyTestBase {
         return builder;
     }
 
+    protected BlobContainerClientBuilder getContainerClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobContainerClientBuilder builder = new BlobContainerClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
+    }
+
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
@@ -629,6 +706,26 @@ public class BlobTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(credential).buildClient();
+    }
+
+    protected BlobClientBuilder getBlobClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
     }
 
     protected BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint,
@@ -691,6 +788,26 @@ public class BlobTestBase extends TestProxyTestBase {
 
         builder.connectionString(ENVIRONMENT.getPrimaryAccount().getConnectionString());
         return instrument(builder);
+    }
+
+    protected SpecializedBlobClientBuilder getSpecializedBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
     }
 
     /*
@@ -892,6 +1009,12 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
+    }
+
+    protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
+        StepVerifier.create(response)
+            .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
+            .verifyComplete();
     }
 
     protected static Stream<Arguments> allConditionsSupplier() {

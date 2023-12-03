@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the platform of App Service Authentication/Authorization. */
+/**
+ * The configuration settings of the platform of App Service Authentication/Authorization.
+ */
 @Fluent
 public final class AuthPlatform {
     /*
@@ -32,14 +34,16 @@ public final class AuthPlatform {
     @JsonProperty(value = "configFilePath")
     private String configFilePath;
 
-    /** Creates an instance of AuthPlatform class. */
+    /**
+     * Creates an instance of AuthPlatform class.
+     */
     public AuthPlatform() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -49,7 +53,7 @@ public final class AuthPlatform {
     /**
      * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the Authentication / Authorization feature is enabled
      * for the current app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AuthPlatform object itself.
      */
@@ -60,9 +64,10 @@ public final class AuthPlatform {
 
     /**
      * Get the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of certain features in the Authentication /
-     * Authorization module.
-     *
+     * current app.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -71,9 +76,10 @@ public final class AuthPlatform {
 
     /**
      * Set the runtimeVersion property: The RuntimeVersion of the Authentication / Authorization feature in use for the
-     * current app. The setting in this value can control the behavior of certain features in the Authentication /
-     * Authorization module.
-     *
+     * current app.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
+     * module.
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the AuthPlatform object itself.
      */
@@ -85,7 +91,7 @@ public final class AuthPlatform {
     /**
      * Get the configFilePath property: The path of the config file containing auth settings if they come from a file.
      * If the path is relative, base will the site's root directory.
-     *
+     * 
      * @return the configFilePath value.
      */
     public String configFilePath() {
@@ -95,7 +101,7 @@ public final class AuthPlatform {
     /**
      * Set the configFilePath property: The path of the config file containing auth settings if they come from a file.
      * If the path is relative, base will the site's root directory.
-     *
+     * 
      * @param configFilePath the configFilePath value to set.
      * @return the AuthPlatform object itself.
      */
@@ -106,7 +112,7 @@ public final class AuthPlatform {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,29 +14,19 @@ import java.util.Map;
 public final class AzureBlobFSDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBlobFSDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"folderPath\":\"datarho\",\"fileName\":\"datakkvxu\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datazbvb\",\"deserializer\":\"datauvqhxtozfgdkw\",\"\":{\"utui\":\"datarklpiigfuzk\",\"xyll\":\"datajclzjwaqdzqydewu\"}},\"compression\":{\"type\":\"datazevtzqwczoc\",\"level\":\"databek\",\"\":{\"horkslhraqk\":\"datanfpkyvnhiys\",\"flteatnegef\":\"datawlwkfflaqwmwqog\",\"ibt\":\"datajxnjtqbgy\",\"kxunsaujqgbb\":\"datanvxwtdqtcbjdbtqy\"}}}")
-                .toObject(AzureBlobFSDatasetTypeProperties.class);
+        AzureBlobFSDatasetTypeProperties model = BinaryData.fromString(
+            "{\"folderPath\":\"datarho\",\"fileName\":\"datakkvxu\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datazbvb\",\"deserializer\":\"datauvqhxtozfgdkw\",\"\":{\"utui\":\"datarklpiigfuzk\",\"xyll\":\"datajclzjwaqdzqydewu\"}},\"compression\":{\"type\":\"datazevtzqwczoc\",\"level\":\"databek\",\"\":{\"horkslhraqk\":\"datanfpkyvnhiys\",\"flteatnegef\":\"datawlwkfflaqwmwqog\",\"ibt\":\"datajxnjtqbgy\",\"kxunsaujqgbb\":\"datanvxwtdqtcbjdbtqy\"}}}")
+            .toObject(AzureBlobFSDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSDatasetTypeProperties model =
-            new AzureBlobFSDatasetTypeProperties()
-                .withFolderPath("datarho")
-                .withFileName("datakkvxu")
-                .withFormat(
-                    new DatasetStorageFormat()
-                        .withSerializer("datazbvb")
-                        .withDeserializer("datauvqhxtozfgdkw")
-                        .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-                .withCompression(
-                    new DatasetCompression()
-                        .withType("datazevtzqwczoc")
-                        .withLevel("databek")
-                        .withAdditionalProperties(mapOf()));
+        AzureBlobFSDatasetTypeProperties model
+            = new AzureBlobFSDatasetTypeProperties().withFolderPath("datarho").withFileName("datakkvxu")
+                .withFormat(new DatasetStorageFormat().withSerializer("datazbvb").withDeserializer("datauvqhxtozfgdkw")
+                    .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
+                .withCompression(new DatasetCompression().withType("datazevtzqwczoc").withLevel("databek")
+                    .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureBlobFSDatasetTypeProperties.class);
     }
 

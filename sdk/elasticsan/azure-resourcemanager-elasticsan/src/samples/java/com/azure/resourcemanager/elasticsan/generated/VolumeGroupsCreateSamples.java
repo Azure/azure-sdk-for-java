@@ -5,16 +5,24 @@
 package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.resourcemanager.elasticsan.models.Action;
+import com.azure.resourcemanager.elasticsan.models.EncryptionIdentity;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
+import com.azure.resourcemanager.elasticsan.models.Identity;
+import com.azure.resourcemanager.elasticsan.models.IdentityType;
+import com.azure.resourcemanager.elasticsan.models.KeyVaultProperties;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
+import com.azure.resourcemanager.elasticsan.models.UserAssignedIdentity;
 import com.azure.resourcemanager.elasticsan.models.VirtualNetworkRule;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for VolumeGroups Create. */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_Create_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MinimumSet_Gen.
@@ -30,7 +38,7 @@ public final class VolumeGroupsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/VolumeGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MaximumSet_Gen.
@@ -42,8 +50,20 @@ public final class VolumeGroupsCreateSamples {
             .volumeGroups()
             .define("volumegroupname")
             .withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withIdentity(
+                new Identity()
+                    .withType(IdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf("key7482", new UserAssignedIdentity())))
             .withProtocolType(StorageTargetType.ISCSI)
-            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY)
+            .withEncryptionProperties(
+                new EncryptionProperties()
+                    .withKeyVaultProperties(
+                        new KeyVaultProperties()
+                            .withKeyName("fakeTokenPlaceholder")
+                            .withKeyVersion("fakeTokenPlaceholder")
+                            .withKeyVaultUri("fakeTokenPlaceholder"))
+                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("im")))
             .withNetworkAcls(
                 new NetworkRuleSet()
                     .withVirtualNetworkRules(
@@ -54,5 +74,17 @@ public final class VolumeGroupsCreateSamples {
                                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}")
                                     .withAction(Action.ALLOW))))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

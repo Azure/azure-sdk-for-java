@@ -19,8 +19,7 @@ public final class UserRequestsSubmitTests extends PurviewWorkflowClientTestBase
                 BinaryData.fromString(
                         "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                purviewWorkflowClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
+        Response<BinaryData> response = userRequestsClient.submitWithResponse(userRequestsPayload, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(
                 BinaryData.fromString(

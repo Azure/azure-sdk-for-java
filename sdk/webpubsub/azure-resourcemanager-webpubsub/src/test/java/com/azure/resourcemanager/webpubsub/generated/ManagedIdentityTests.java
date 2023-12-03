@@ -18,7 +18,7 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"akufgmjz\":{\"principalId\":\"ewpusdsttwvogvb\",\"clientId\":\"jdcngqqm\"}},\"principalId\":\"rdgrtw\",\"tenantId\":\"nuuzkopbm\"}")
+                    "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"u\":{\"principalId\":\"ufgmjzrwrdg\",\"clientId\":\"wae\"},\"fozbhdmsmlmzqhof\":{\"principalId\":\"kopbminrf\",\"clientId\":\"oyuhhziui\"}},\"principalId\":\"maequiahxicslfa\",\"tenantId\":\"z\"}")
                 .toObject(ManagedIdentity.class);
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
@@ -28,11 +28,17 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             new ManagedIdentity()
                 .withType(ManagedIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("akufgmjz", new UserAssignedIdentityProperty()));
+                .withUserAssignedIdentities(
+                    mapOf(
+                        "u",
+                        new UserAssignedIdentityProperty(),
+                        "fozbhdmsmlmzqhof",
+                        new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
         Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.RevisionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App Revisions collection ARM resource. */
+/**
+ * Container App Revisions collection ARM resource.
+ */
 @Fluent
 public final class RevisionCollection {
     /*
@@ -25,13 +27,15 @@ public final class RevisionCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RevisionCollection class. */
+    /**
+     * Creates an instance of RevisionCollection class.
+     */
     public RevisionCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<RevisionInner> value() {
@@ -40,7 +44,7 @@ public final class RevisionCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the RevisionCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class RevisionCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class RevisionCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model RevisionCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model RevisionCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -3,7 +3,7 @@
 package com.azure.monitor.applicationinsights.spring;
 
 import io.opentelemetry.sdk.resources.Resource;
-import io.opentelemetry.semconv.resource.attributes.ResourceAttributes;
+import io.opentelemetry.semconv.ResourceAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -19,7 +19,7 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     /**
      * OpenTelemetry version of the starter
      */
-    public static final String STARTER_OTEL_VERSION = "1.28.0";
+    public static final String STARTER_OTEL_VERSION = "1.32.0";
 
     private final Resource otelResource;
 

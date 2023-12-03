@@ -32,7 +32,7 @@ public final class EndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"jzwf\",\"provisioningState\":\"Succeeded\"},\"id\":\"ujidsuyono\",\"name\":\"glaocq\",\"type\":\"tcc\"}]}";
+            "{\"value\":[{\"properties\":{\"endpointType\":\"EndpointBaseProperties\",\"description\":\"eualupjmkhf\",\"provisioningState\":\"Succeeded\"},\"id\":\"cswsrtjri\",\"name\":\"lrbpbewtghfgbl\",\"type\":\"gw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,9 @@ public final class EndpointsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Endpoint> response = manager.endpoints().list("zq", "gxywpmue", com.azure.core.util.Context.NONE);
+        PagedIterable<Endpoint> response =
+            manager.endpoints().list("vylwzbtdhxuj", "nbmpowuwprzq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jzwf", response.iterator().next().properties().description());
+        Assertions.assertEquals("eualupjmkhf", response.iterator().next().properties().description());
     }
 }

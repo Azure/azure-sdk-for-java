@@ -19,16 +19,21 @@ private case class ItemsScan(session: SparkSession,
                              readConfig: CosmosReadConfig,
                              cosmosQuery: CosmosParameterizedQuery,
                              cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-                             diagnosticsConfig: DiagnosticsConfig)
+                             diagnosticsConfig: DiagnosticsConfig,
+                             sparkEnvironmentInfo: String)
   extends Scan
     with Batch {
 
   requireNotNull(cosmosQuery, "cosmosQuery")
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  private val clientConfiguration = CosmosClientConfiguration.apply(config, readConfig.forceEventualConsistency)
+  private val clientConfiguration = CosmosClientConfiguration.apply(
+    config,
+    readConfig.forceEventualConsistency,
+    CosmosClientConfiguration.getSparkEnvironmentInfo(Some(session))
+  )
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val defaultMinPartitionCount = 1 + (2 * session.sparkContext.defaultParallelism)
@@ -81,7 +86,7 @@ private case class ItemsScan(session: SparkSession,
           calledFrom
         )),
         ThroughputControlHelper.getThroughputControlClientCacheItem(
-          config, calledFrom, Some(cosmosClientStateHandles))
+          config, calledFrom, Some(cosmosClientStateHandles), sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =
@@ -114,7 +119,8 @@ private case class ItemsScan(session: SparkSession,
       cosmosQuery,
       DiagnosticsContext(correlationActivityId, cosmosQuery.queryText),
       cosmosClientStateHandles,
-      DiagnosticsConfig.parseDiagnosticsConfig(config))
+      DiagnosticsConfig.parseDiagnosticsConfig(config),
+      sparkEnvironmentInfo)
   }
 
   override def toBatch: Batch = {

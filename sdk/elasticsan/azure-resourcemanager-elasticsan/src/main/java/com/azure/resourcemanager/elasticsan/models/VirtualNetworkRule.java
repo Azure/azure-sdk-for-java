@@ -24,12 +24,6 @@ public final class VirtualNetworkRule {
     @JsonProperty(value = "action")
     private Action action;
 
-    /*
-     * Gets the state of virtual network rule.
-     */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
-
     /** Creates an instance of VirtualNetworkRule class. */
     public VirtualNetworkRule() {
     }
@@ -74,15 +68,6 @@ public final class VirtualNetworkRule {
     public VirtualNetworkRule withAction(Action action) {
         this.action = action;
         return this;
-    }
-
-    /**
-     * Get the state property: Gets the state of virtual network rule.
-     *
-     * @return the state value.
-     */
-    public State state() {
-        return this.state;
     }
 
     /**

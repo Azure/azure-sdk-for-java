@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workbooks Delete. */
 public final class WorkbooksDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class WorkbooksDeleteSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workbooks()
-            .deleteWithResponse("my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", Context.NONE);
+            .deleteByResourceGroupWithResponse(
+                "my-resource-group", "deadb33f-5e0d-4064-8ebb-1a4ed0313eb2", com.azure.core.util.Context.NONE);
     }
 }

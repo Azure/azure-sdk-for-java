@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity attributes of a lab user. */
 @Fluent
-public class UserIdentity {
+public final class UserIdentity {
     /*
      * Set to the principal name / UPN of the client JWT making the request.
      */

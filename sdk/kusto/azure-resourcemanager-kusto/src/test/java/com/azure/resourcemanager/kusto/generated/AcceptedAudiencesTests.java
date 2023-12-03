@@ -11,14 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AcceptedAudiencesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AcceptedAudiences model = BinaryData.fromString("{\"value\":\"gvfcj\"}").toObject(AcceptedAudiences.class);
-        Assertions.assertEquals("gvfcj", model.value());
+        AcceptedAudiences model =
+            BinaryData.fromString("{\"value\":\"fpdvhpfxxypi\"}").toObject(AcceptedAudiences.class);
+        Assertions.assertEquals("fpdvhpfxxypi", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AcceptedAudiences model = new AcceptedAudiences().withValue("gvfcj");
+        AcceptedAudiences model = new AcceptedAudiences().withValue("fpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(AcceptedAudiences.class);
-        Assertions.assertEquals("gvfcj", model.value());
+        Assertions.assertEquals("fpdvhpfxxypi", model.value());
     }
 }

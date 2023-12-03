@@ -13,35 +13,21 @@ import java.util.Map;
 public final class SnowflakeSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeSource\",\"query\":\"databmahuwxodddqzew\",\"exportSettings\":{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"s\":\"datatgsocqkdclbzqnao\",\"cbhezau\":\"datamp\"},\"additionalFormatOptions\":{\"aywmcipu\":\"dataysxhfupvqjkqlaf\",\"aifgyxkgqwmp\":\"dataefhhdrm\",\"nkxhc\":\"datahxpcxqc\",\"bxllfwxdou\":\"datadhx\"},\"\":{\"ofhk\":\"datapaqjahjxgedtmz\",\"rfassiii\":\"dataywtacgukierd\",\"ayyxgcgb\":\"datacmrgahs\",\"vqopxun\":\"dataieqonsbukznxd\"}},\"sourceRetryCount\":\"dataxtkmknacnfzcy\",\"sourceRetryWait\":\"datahdjpagwszm\",\"maxConcurrentConnections\":\"datagzfeyexbg\",\"disableMetricsCollection\":\"datayo\",\"\":{\"edxpbpjw\":\"dataigvqgceacqj\",\"baodi\":\"datannvd\"}}")
-                .toObject(SnowflakeSource.class);
+        SnowflakeSource model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeSource\",\"query\":\"dataxsgwdxoxjlvvvzp\",\"exportSettings\":{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"mb\":\"datayintgkveogeld\",\"iwuux\":\"datakbiibobkxiujaagf\",\"egm\":\"datawmzmsiv\",\"jptk\":\"datafzbrha\"},\"additionalFormatOptions\":{\"ievcttszca\":\"dataspz\",\"tsdeequovanaglwa\":\"datayxyoyjasqdhbftt\",\"oamqxw\":\"datasfbmbtcefqkuxgyu\",\"objledjxblob\":\"datauslxyt\"},\"\":{\"hzgj\":\"datapdi\",\"rhbql\":\"dataeomctbgoccypx\"}},\"sourceRetryCount\":\"datauflfzawkkzexhbp\",\"sourceRetryWait\":\"dataqfbjpclboiojpjn\",\"maxConcurrentConnections\":\"datawyhxzythxzrvjfsm\",\"disableMetricsCollection\":\"datadhhwfrm\",\"\":{\"ct\":\"datakefdgfexa\",\"mdievkmr\":\"datacpszdnccouuq\",\"mdxcwx\":\"dataohoyiheheimuq\"}}")
+            .toObject(SnowflakeSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeSource model =
-            new SnowflakeSource()
-                .withSourceRetryCount("dataxtkmknacnfzcy")
-                .withSourceRetryWait("datahdjpagwszm")
-                .withMaxConcurrentConnections("datagzfeyexbg")
-                .withDisableMetricsCollection("datayo")
-                .withQuery("databmahuwxodddqzew")
-                .withExportSettings(
-                    new SnowflakeExportCopyCommand()
-                        .withAdditionalCopyOptions(mapOf("s", "datatgsocqkdclbzqnao", "cbhezau", "datamp"))
-                        .withAdditionalFormatOptions(
-                            mapOf(
-                                "aywmcipu",
-                                "dataysxhfupvqjkqlaf",
-                                "aifgyxkgqwmp",
-                                "dataefhhdrm",
-                                "nkxhc",
-                                "datahxpcxqc",
-                                "bxllfwxdou",
-                                "datadhx")));
+        SnowflakeSource model = new SnowflakeSource().withSourceRetryCount("datauflfzawkkzexhbp")
+            .withSourceRetryWait("dataqfbjpclboiojpjn").withMaxConcurrentConnections("datawyhxzythxzrvjfsm")
+            .withDisableMetricsCollection("datadhhwfrm").withQuery("dataxsgwdxoxjlvvvzp")
+            .withExportSettings(new SnowflakeExportCopyCommand()
+                .withAdditionalCopyOptions(mapOf("mb", "datayintgkveogeld", "iwuux", "datakbiibobkxiujaagf", "egm",
+                    "datawmzmsiv", "jptk", "datafzbrha"))
+                .withAdditionalFormatOptions(mapOf("ievcttszca", "dataspz", "tsdeequovanaglwa", "datayxyoyjasqdhbftt",
+                    "oamqxw", "datasfbmbtcefqkuxgyu", "objledjxblob", "datauslxyt")));
         model = BinaryData.fromObject(model).toObject(SnowflakeSource.class);
     }
 

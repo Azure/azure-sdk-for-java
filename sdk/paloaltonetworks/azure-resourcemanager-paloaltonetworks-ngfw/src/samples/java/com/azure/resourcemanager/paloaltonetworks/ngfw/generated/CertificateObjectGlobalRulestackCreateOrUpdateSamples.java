@@ -7,48 +7,43 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.CertificateObjectGlobalRulestackResourceInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 
-/** Samples for CertificateObjectGlobalRulestack CreateOrUpdate. */
+/**
+ * Samples for CertificateObjectGlobalRulestack CreateOrUpdate.
+ */
 public final class CertificateObjectGlobalRulestackCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .certificateObjectGlobalRulestacks()
-            .createOrUpdate(
-                "praval",
-                "armid1",
-                new CertificateObjectGlobalRulestackResourceInner().withCertificateSelfSigned(BooleanEnum.TRUE),
-                com.azure.core.util.Context.NONE);
+        manager.certificateObjectGlobalRulestacks().createOrUpdate("praval", "armid1",
+            new CertificateObjectGlobalRulestackResourceInner().withCertificateSelfSigned(BooleanEnum.TRUE),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void certificateObjectGlobalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .certificateObjectGlobalRulestacks()
-            .createOrUpdate(
-                "praval",
-                "armid1",
-                new CertificateObjectGlobalRulestackResourceInner()
-                    .withCertificateSignerResourceId("")
-                    .withCertificateSelfSigned(BooleanEnum.TRUE)
-                    .withAuditComment("comment")
-                    .withDescription("description")
-                    .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
-                com.azure.core.util.Context.NONE);
+        manager.certificateObjectGlobalRulestacks().createOrUpdate("praval", "armid1",
+            new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("")
+                .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("comment").withDescription("description")
+                .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27"),
+            com.azure.core.util.Context.NONE);
     }
 }

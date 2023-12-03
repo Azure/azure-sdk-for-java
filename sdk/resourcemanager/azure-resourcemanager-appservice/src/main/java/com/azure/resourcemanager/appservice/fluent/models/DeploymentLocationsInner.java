@@ -9,7 +9,10 @@ import com.azure.resourcemanager.appservice.models.HostingEnvironmentDeploymentI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of available locations (regions or App Service Environments) for deployment of App Service resources. */
+/**
+ * List of available locations (regions or App Service Environments) for
+ * deployment of App Service resources.
+ */
 @Fluent
 public final class DeploymentLocationsInner {
     /*
@@ -30,13 +33,15 @@ public final class DeploymentLocationsInner {
     @JsonProperty(value = "hostingEnvironmentDeploymentInfos")
     private List<HostingEnvironmentDeploymentInfo> hostingEnvironmentDeploymentInfos;
 
-    /** Creates an instance of DeploymentLocationsInner class. */
+    /**
+     * Creates an instance of DeploymentLocationsInner class.
+     */
     public DeploymentLocationsInner() {
     }
 
     /**
      * Get the locations property: Available regions.
-     *
+     * 
      * @return the locations value.
      */
     public List<GeoRegionInner> locations() {
@@ -45,7 +50,7 @@ public final class DeploymentLocationsInner {
 
     /**
      * Set the locations property: Available regions.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the DeploymentLocationsInner object itself.
      */
@@ -57,7 +62,7 @@ public final class DeploymentLocationsInner {
     /**
      * Get the hostingEnvironments property: Available App Service Environments with full descriptions of the
      * environments.
-     *
+     * 
      * @return the hostingEnvironments value.
      */
     public List<AppServiceEnvironmentInner> hostingEnvironments() {
@@ -67,7 +72,7 @@ public final class DeploymentLocationsInner {
     /**
      * Set the hostingEnvironments property: Available App Service Environments with full descriptions of the
      * environments.
-     *
+     * 
      * @param hostingEnvironments the hostingEnvironments value to set.
      * @return the DeploymentLocationsInner object itself.
      */
@@ -78,7 +83,7 @@ public final class DeploymentLocationsInner {
 
     /**
      * Get the hostingEnvironmentDeploymentInfos property: Available App Service Environments with basic information.
-     *
+     * 
      * @return the hostingEnvironmentDeploymentInfos value.
      */
     public List<HostingEnvironmentDeploymentInfo> hostingEnvironmentDeploymentInfos() {
@@ -87,7 +92,7 @@ public final class DeploymentLocationsInner {
 
     /**
      * Set the hostingEnvironmentDeploymentInfos property: Available App Service Environments with basic information.
-     *
+     * 
      * @param hostingEnvironmentDeploymentInfos the hostingEnvironmentDeploymentInfos value to set.
      * @return the DeploymentLocationsInner object itself.
      */
@@ -99,7 +104,7 @@ public final class DeploymentLocationsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

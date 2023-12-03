@@ -32,7 +32,7 @@ public final class JobDefinitionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"description\":\"qgitxmed\",\"copyMode\":\"Additive\",\"sourceName\":\"c\",\"sourceResourceId\":\"ynqwwncwzzhxgk\",\"sourceSubpath\":\"mgucna\",\"targetName\":\"kteo\",\"targetResourceId\":\"lwptfdy\",\"targetSubpath\":\"fqbuaceopzf\",\"latestJobRunName\":\"hhuao\",\"latestJobRunResourceId\":\"pcqeqx\",\"latestJobRunStatus\":\"Queued\",\"agentName\":\"ahzxctobgbk\",\"agentResourceId\":\"oizpostmgrcfbun\",\"provisioningState\":\"Succeeded\"},\"id\":\"qjhhkxbpv\",\"name\":\"ymjhxxjyngudivkr\",\"type\":\"swbxqz\"}";
+            "{\"properties\":{\"description\":\"olbgycduiertgccy\",\"copyMode\":\"Mirror\",\"sourceName\":\"aolps\",\"sourceResourceId\":\"qlfmmdnbb\",\"sourceSubpath\":\"zpswiydmc\",\"targetName\":\"yhz\",\"targetResourceId\":\"ss\",\"targetSubpath\":\"bzmnvdfznud\",\"latestJobRunName\":\"dvxzbncblylpst\",\"latestJobRunResourceId\":\"hh\",\"latestJobRunStatus\":\"Failed\",\"agentName\":\"dzu\",\"agentResourceId\":\"rsc\",\"provisioningState\":\"Succeeded\"},\"id\":\"evfiwjmygt\",\"name\":\"sslswtmweriof\",\"type\":\"pyqs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,16 +63,15 @@ public final class JobDefinitionsGetWithResponseMockTests {
         JobDefinition response =
             manager
                 .jobDefinitions()
-                .getWithResponse(
-                    "hnrztfol", "bnxknalaulppg", "dtpnapnyiropuhp", "gvpgy", com.azure.core.util.Context.NONE)
+                .getWithResponse("oygmift", "nzdndslgna", "qig", "nduhavhqlkthum", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qgitxmed", response.description());
-        Assertions.assertEquals(CopyMode.ADDITIVE, response.copyMode());
-        Assertions.assertEquals("c", response.sourceName());
-        Assertions.assertEquals("mgucna", response.sourceSubpath());
-        Assertions.assertEquals("kteo", response.targetName());
-        Assertions.assertEquals("fqbuaceopzf", response.targetSubpath());
-        Assertions.assertEquals("ahzxctobgbk", response.agentName());
+        Assertions.assertEquals("olbgycduiertgccy", response.description());
+        Assertions.assertEquals(CopyMode.MIRROR, response.copyMode());
+        Assertions.assertEquals("aolps", response.sourceName());
+        Assertions.assertEquals("zpswiydmc", response.sourceSubpath());
+        Assertions.assertEquals("yhz", response.targetName());
+        Assertions.assertEquals("bzmnvdfznud", response.targetSubpath());
+        Assertions.assertEquals("dzu", response.agentName());
     }
 }

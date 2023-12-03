@@ -18,6 +18,10 @@ public final class WorkspaceListResult {
     @JsonProperty(value = "value")
     private List<WorkspaceInner> value;
 
+    /** Creates an instance of WorkspaceListResult class. */
+    public WorkspaceListResult() {
+    }
+
     /**
      * Get the value property: A list of workspaces.
      *

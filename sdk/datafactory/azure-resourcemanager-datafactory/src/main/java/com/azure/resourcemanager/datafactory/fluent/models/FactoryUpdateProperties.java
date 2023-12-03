@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Factory update resource properties. */
+/**
+ * Factory update resource properties.
+ */
 @Fluent
 public final class FactoryUpdateProperties {
     /*
@@ -17,13 +19,15 @@ public final class FactoryUpdateProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of FactoryUpdateProperties class. */
+    /**
+     * Creates an instance of FactoryUpdateProperties class.
+     */
     public FactoryUpdateProperties() {
     }
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -32,7 +36,7 @@ public final class FactoryUpdateProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FactoryUpdateProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class FactoryUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

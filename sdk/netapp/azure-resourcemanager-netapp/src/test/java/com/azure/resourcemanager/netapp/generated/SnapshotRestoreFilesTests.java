@@ -14,20 +14,20 @@ public final class SnapshotRestoreFilesTests {
     public void testDeserialize() throws Exception {
         SnapshotRestoreFiles model =
             BinaryData
-                .fromString("{\"filePaths\":[\"iyq\",\"luicpdggkzzlvmbm\"],\"destinationPath\":\"xmodf\"}")
+                .fromString("{\"filePaths\":[\"xyjrxsagafcnih\",\"wqapnedgfbcvk\"],\"destinationPath\":\"q\"}")
                 .toObject(SnapshotRestoreFiles.class);
-        Assertions.assertEquals("iyq", model.filePaths().get(0));
-        Assertions.assertEquals("xmodf", model.destinationPath());
+        Assertions.assertEquals("xyjrxsagafcnih", model.filePaths().get(0));
+        Assertions.assertEquals("q", model.destinationPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnapshotRestoreFiles model =
             new SnapshotRestoreFiles()
-                .withFilePaths(Arrays.asList("iyq", "luicpdggkzzlvmbm"))
-                .withDestinationPath("xmodf");
+                .withFilePaths(Arrays.asList("xyjrxsagafcnih", "wqapnedgfbcvk"))
+                .withDestinationPath("q");
         model = BinaryData.fromObject(model).toObject(SnapshotRestoreFiles.class);
-        Assertions.assertEquals("iyq", model.filePaths().get(0));
-        Assertions.assertEquals("xmodf", model.destinationPath());
+        Assertions.assertEquals("xyjrxsagafcnih", model.filePaths().get(0));
+        Assertions.assertEquals("q", model.destinationPath());
     }
 }

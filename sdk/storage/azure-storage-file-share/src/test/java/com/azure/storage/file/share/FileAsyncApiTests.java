@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
@@ -25,6 +26,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -601,6 +603,67 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertEquals(result.charAt((int) (destinationOffset + i)), data.charAt((int) (sourceOffset + i)));
             }
         }).verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @Test
+    public void uploadRangeFromURLOAuth() {
+        ShareServiceAsyncClient oAuthServiceClient = getOAuthServiceClientAsyncSharedKey(new ShareServiceClientBuilder()
+            .shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryAsyncClient dirClient = oAuthServiceClient.getShareAsyncClient(shareName)
+            .getDirectoryClient(generatePathName());
+        dirClient.create().block();
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = dirClient.getFileClient(fileName);
+        fileClient.create(1024).block();
+
+        String data = "The quick brown fox jumps over the lazy dog";
+        int sourceOffset = 5;
+        int length = 5;
+        int destinationOffset = 0;
+
+        fileClient.uploadRange(Flux.just(ByteBuffer.wrap(data.getBytes())), data.length()).block();
+        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
+            ENVIRONMENT.getPrimaryAccount().getConnectionString());
+        String sasToken = new ShareServiceSasSignatureValues()
+            .setExpiryTime(testResourceNamer.now().plusDays(1))
+            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
+            .setShareName(fileClient.getShareName())
+            .setFilePath(fileClient.getFilePath())
+            .generateSasQueryParameters(credential)
+            .encode();
+
+        String fileNameDest = generatePathName();
+        ShareFileAsyncClient fileClientDest = dirClient.getFileClient(fileNameDest);
+        fileClientDest.create(1024).block();
+
+        StepVerifier.create(fileClientDest.uploadRangeFromUrlWithResponse(length,
+            destinationOffset, sourceOffset, fileClient.getFileUrl() + "?" + sasToken))
+            .assertNext(r -> assertEquals(r.getStatusCode(), 201))
+            .verifyComplete();
+
+        StepVerifier.create(fileClientDest.downloadWithResponse(null)
+            .flatMap(r -> {
+                assertTrue(r.getStatusCode() == 200 || r.getStatusCode() == 206);
+                ShareFileDownloadHeaders headers = r.getDeserializedHeaders();
+
+                assertNotNull(headers.getETag());
+                assertNotNull(headers.getLastModified());
+                assertNotNull(headers.getFilePermissionKey());
+                assertNotNull(headers.getFileAttributes());
+                assertNotNull(headers.getFileLastWriteTime());
+                assertNotNull(headers.getFileCreationTime());
+                assertNotNull(headers.getFileChangeTime());
+                assertNotNull(headers.getFileParentId());
+                assertNotNull(headers.getFileId());
+
+                return FluxUtil.collectBytesInByteBufferStream(r.getValue());
+            }))
+            .assertNext(bytes -> {
+                //u
+                assertEquals(bytes[0], 117);
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -1398,4 +1461,90 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertEquals(filePath, primaryFileAsyncClient.getFilePath());
     }
 
+    @Test
+    public void defaultAudience() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(null) /* should default to "https://storage.azure.com/" */);
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience(shareClient.getAccountName())));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(ShareAudience.createShareServiceAccountAudience("badAudience")));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+            });
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", shareClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        String fileName = generatePathName();
+        ShareFileAsyncClient fileClient = fileBuilderHelper(shareName, fileName).buildFileAsyncClient();
+        fileClient.create(Constants.KB).block();
+        ShareServiceAsyncClient oAuthServiceClient =
+            getOAuthServiceAsyncClient(new ShareServiceClientBuilder()
+                .shareTokenIntent(ShareTokenIntent.BACKUP)
+                .audience(audience));
+
+        ShareFileAsyncClient aadFileClient = oAuthServiceClient.getShareAsyncClient(shareName).getFileClient(fileName);
+
+        StepVerifier.create(aadFileClient.exists())
+            .expectNext(true)
+            .verifyComplete();
+    }
+
+    /* Uncomment this test when Client Name is enabled with STG 93.
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
+    @Test
+    public void listHandlesClientName() {
+        ShareAsyncClient client = primaryFileServiceAsyncClient.getShareAsyncClient("testing");
+        ShareDirectoryAsyncClient directoryClient = client.getDirectoryClient("dir1");
+        ShareFileAsyncClient fileClient = directoryClient.getFileClient("test.txt");
+        List<HandleItem> list = fileClient.listHandles().collectList().block();
+        assertNotNull(list.get(0).getClientName());
+
+    }
+    */
 }

@@ -56,6 +56,8 @@ public final class ServiceFabricSchedulesExecuteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.serviceFabricSchedules().execute("i", "ocqibz", "ihweeb", "ph", "yv", com.azure.core.util.Context.NONE);
+        manager
+            .serviceFabricSchedules()
+            .execute("gkr", "wiehycpn", "wawonoehrguql", "fwafbjz", "pyrgu", com.azure.core.util.Context.NONE);
     }
 }

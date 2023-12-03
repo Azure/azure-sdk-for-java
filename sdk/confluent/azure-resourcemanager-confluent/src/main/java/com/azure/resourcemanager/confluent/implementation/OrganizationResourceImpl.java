@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.confluent.fluent.models.OrganizationResourceInner;
+import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.OrganizationResource;
 import com.azure.resourcemanager.confluent.models.OrganizationResourceUpdate;
@@ -76,12 +77,20 @@ public final class OrganizationResourceImpl
         return this.innerModel().userDetail();
     }
 
+    public LinkOrganization linkOrganization() {
+        return this.innerModel().linkOrganization();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public OrganizationResourceInner innerModel() {
@@ -104,20 +113,14 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .create(resourceGroupName, organizationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getOrganizations().create(resourceGroupName, organizationName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public OrganizationResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .create(resourceGroupName, organizationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getOrganizations().create(resourceGroupName, organizationName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -133,27 +136,19 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getOrganizations()
+            .updateWithResponse(resourceGroupName, organizationName, updateBody, Context.NONE).getValue();
         return this;
     }
 
     public OrganizationResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .updateWithResponse(resourceGroupName, organizationName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getOrganizations()
+            .updateWithResponse(resourceGroupName, organizationName, updateBody, context).getValue();
         return this;
     }
 
-    OrganizationResourceImpl(
-        OrganizationResourceInner innerObject, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
+    OrganizationResourceImpl(OrganizationResourceInner innerObject,
+        com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -161,22 +156,14 @@ public final class OrganizationResourceImpl
     }
 
     public OrganizationResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, Context.NONE).getValue();
         return this;
     }
 
     public OrganizationResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrganizations()
-                .getByResourceGroupWithResponse(resourceGroupName, organizationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getOrganizations()
+            .getByResourceGroupWithResponse(resourceGroupName, organizationName, context).getValue();
         return this;
     }
 
@@ -208,6 +195,11 @@ public final class OrganizationResourceImpl
             this.updateBody.withTags(tags);
             return this;
         }
+    }
+
+    public OrganizationResourceImpl withLinkOrganization(LinkOrganization linkOrganization) {
+        this.innerModel().withLinkOrganization(linkOrganization);
+        return this;
     }
 
     private boolean isInCreateMode() {

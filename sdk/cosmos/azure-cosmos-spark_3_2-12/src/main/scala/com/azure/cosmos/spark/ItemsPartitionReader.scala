@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
-import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsContext, DiagnosticsLoader, LoggerHelper, SparkTaskContext}
 import org.apache.spark.TaskContext
@@ -15,8 +15,6 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
-
-import java.time.Duration
 
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
@@ -29,7 +27,8 @@ private case class ItemsPartitionReader
   cosmosQuery: CosmosParameterizedQuery,
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 )
   extends PartitionReader[InternalRow] {
 
@@ -54,7 +53,7 @@ private case class ItemsPartitionReader
       feedRange.toString + " " + cosmosQuery.toString)
   }
 
-  private var operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
+  private val operationContextAndListenerTuple: Option[OperationContextAndListenerTuple] = {
     if (diagnosticsConfig.mode.isDefined) {
       val listener =
         DiagnosticsLoader.getDiagnosticsProvider(diagnosticsConfig).getLogger(this.getClass)
@@ -71,7 +70,7 @@ private case class ItemsPartitionReader
     }
   }
 
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}, Context: ${operationContext.toString} ${getThreadInfo}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   log.logInfo(s"Reading from feed range $feedRange of " +
@@ -80,7 +79,7 @@ private case class ItemsPartitionReader
     s"query: ${cosmosQuery.toString}, Context: ${operationContext.toString} ${getThreadInfo}")
 
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
   )
@@ -89,7 +88,8 @@ private case class ItemsPartitionReader
     ThroughputControlHelper.getThroughputControlClientCacheItem(
       config,
       clientCacheItem.context,
-      Some(cosmosClientStateHandles))
+      Some(cosmosClientStateHandles),
+      sparkEnvironmentInfo)
 
   private val cosmosAsyncContainer =
     ThroughputControlHelper.getContainer(

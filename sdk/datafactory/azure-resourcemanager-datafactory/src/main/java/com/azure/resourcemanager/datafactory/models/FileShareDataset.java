@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** An on-premises file system dataset. */
+/**
+ * An on-premises file system dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileShare")
 @Fluent
@@ -23,62 +25,78 @@ public final class FileShareDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private FileShareDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of FileShareDataset class. */
+    /**
+     * Creates an instance of FileShareDataset class.
+     */
     public FileShareDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: On-premises file system dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private FileShareDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileShareDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -86,9 +104,9 @@ public final class FileShareDataset extends Dataset {
     }
 
     /**
-     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -96,9 +114,9 @@ public final class FileShareDataset extends Dataset {
     }
 
     /**
-     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param folderPath the folderPath value to set.
      * @return the FileShareDataset object itself.
      */
@@ -113,7 +131,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Get the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object fileName() {
@@ -123,7 +141,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Set the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FileShareDataset object itself.
      */
@@ -138,7 +156,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object modifiedDatetimeStart() {
@@ -148,7 +166,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the FileShareDataset object itself.
      */
@@ -163,7 +181,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object modifiedDatetimeEnd() {
@@ -173,7 +191,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the FileShareDataset object itself.
      */
@@ -187,7 +205,7 @@ public final class FileShareDataset extends Dataset {
 
     /**
      * Get the format property: The format of the files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -196,7 +214,7 @@ public final class FileShareDataset extends Dataset {
 
     /**
      * Set the format property: The format of the files.
-     *
+     * 
      * @param format the format value to set.
      * @return the FileShareDataset object itself.
      */
@@ -211,7 +229,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileFilter value.
      */
     public Object fileFilter() {
@@ -221,7 +239,7 @@ public final class FileShareDataset extends Dataset {
     /**
      * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileFilter the fileFilter value to set.
      * @return the FileShareDataset object itself.
      */
@@ -235,7 +253,7 @@ public final class FileShareDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the file system.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -244,7 +262,7 @@ public final class FileShareDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the file system.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the FileShareDataset object itself.
      */
@@ -258,7 +276,7 @@ public final class FileShareDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

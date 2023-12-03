@@ -19,6 +19,13 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+// Note: The 'ServiceBusReceiverInstrumentation::instrumentProcess' API added for v2 will never be invoked with
+// a NULL ServiceBusReceivedMessage object, and all 'receive' instrumentation in v2 goes through this API.
+//
+// In v1, the 'receive' instrumentation goes through 'ServiceBusReceiverInstrumentation::startProcessInstrumentation' API
+// and v1 can invoke this API with NULL ServiceBusReceivedMessage object. So the following tests asserts the instrumentation
+// paths are safe from NPE in v1.
+//
 public class ServiceBusReceiverInstrumentationTests {
     @Test
     public void testInstrumentNullMessageNoMeter() {
@@ -28,7 +35,7 @@ public class ServiceBusReceiverInstrumentationTests {
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null,
             "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
-        instrumentation.instrumentProcess("span name", null, Context.NONE);
+        instrumentation.startProcessInstrumentation("span name", null, Context.NONE);
         instrumentation.instrumentSettlement(Mono.just(1), null, Context.NONE, DispositionStatus.ABANDONED);
         verify(tracer, never()).start(anyString(), any(StartSpanOptions.class), any(Context.class));
     }
@@ -41,7 +48,7 @@ public class ServiceBusReceiverInstrumentationTests {
             "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
         // does not throw
-        instrumentation.instrumentProcess("span name", null, Context.NONE);
+        instrumentation.startProcessInstrumentation("span name", null, Context.NONE);
         instrumentation.instrumentSettlement(Mono.just(1), null, Context.NONE, DispositionStatus.ABANDONED);
     }
 
@@ -51,7 +58,7 @@ public class ServiceBusReceiverInstrumentationTests {
             "fqdn", "entityPath", null, ReceiverKind.ASYNC_RECEIVER);
 
         // does not throw
-        instrumentation.instrumentProcess("span name", null, Context.NONE);
+        instrumentation.startProcessInstrumentation("span name", null, Context.NONE);
         instrumentation.instrumentSettlement(Mono.just(1), null, Context.NONE, DispositionStatus.ABANDONED);
     }
 }

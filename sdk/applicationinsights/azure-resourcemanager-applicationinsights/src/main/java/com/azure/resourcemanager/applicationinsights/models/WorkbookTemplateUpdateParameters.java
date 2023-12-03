@@ -27,6 +27,10 @@ public final class WorkbookTemplateUpdateParameters {
     @JsonProperty(value = "properties")
     private WorkbookTemplateProperties innerProperties;
 
+    /** Creates an instance of WorkbookTemplateUpdateParameters class. */
+    public WorkbookTemplateUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

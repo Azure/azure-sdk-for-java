@@ -28,22 +28,13 @@ public final class SavedSearchesImpl implements SavedSearches {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String savedSearchId) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, savedSearchId);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, savedSearchId, context);
     }
 
-    public SavedSearch get(String resourceGroupName, String workspaceName, String savedSearchId) {
-        SavedSearchInner inner = this.serviceClient().get(resourceGroupName, workspaceName, savedSearchId);
-        if (inner != null) {
-            return new SavedSearchImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String savedSearchId) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, savedSearchId);
     }
 
     public Response<SavedSearch> getWithResponse(
@@ -61,10 +52,10 @@ public final class SavedSearchesImpl implements SavedSearches {
         }
     }
 
-    public SavedSearchesListResult listByWorkspace(String resourceGroupName, String workspaceName) {
-        SavedSearchesListResultInner inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public SavedSearch get(String resourceGroupName, String workspaceName, String savedSearchId) {
+        SavedSearchInner inner = this.serviceClient().get(resourceGroupName, workspaceName, savedSearchId);
         if (inner != null) {
-            return new SavedSearchesListResultImpl(inner, this.manager());
+            return new SavedSearchImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,6 +71,15 @@ public final class SavedSearchesImpl implements SavedSearches {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SavedSearchesListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SavedSearchesListResult listByWorkspace(String resourceGroupName, String workspaceName) {
+        SavedSearchesListResultInner inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new SavedSearchesListResultImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -18,11 +18,11 @@ public final class DatadogSingleSignOnResourceListResponseTests {
         DatadogSingleSignOnResourceListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"zpwv\",\"singleSignOnUrl\":\"dqgbiqylihkaetc\"},\"id\":\"vfcivfsnkymuc\",\"name\":\"qhjfbebr\",\"type\":\"cxerf\"},{\"properties\":{\"provisioningState\":\"Updating\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"fvjrbirphxepcy\",\"singleSignOnUrl\":\"hfnljkyq\"},\"id\":\"vuujq\",\"name\":\"idokgjlj\",\"type\":\"oxgvclt\"},{\"properties\":{\"provisioningState\":\"Deleted\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"kjeszz\",\"singleSignOnUrl\":\"ijhtxf\"},\"id\":\"xbf\",\"name\":\"mxnehmp\",\"type\":\"ec\"}],\"nextLink\":\"odebfqkkrbmpu\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"vyifqrvkdvjsl\",\"singleSignOnUrl\":\"mvvd\"},\"id\":\"atkpnp\",\"name\":\"lexxbczwtru\",\"type\":\"iqzbq\"}],\"nextLink\":\"sovmyokacspkwl\"}")
                 .toObject(DatadogSingleSignOnResourceListResponse.class);
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.value().get(0).properties().singleSignOnState());
-        Assertions.assertEquals("zpwv", model.value().get(0).properties().enterpriseAppId());
-        Assertions.assertEquals("odebfqkkrbmpu", model.nextLink());
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).properties().singleSignOnState());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).properties().enterpriseAppId());
+        Assertions.assertEquals("sovmyokacspkwl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,22 +35,12 @@ public final class DatadogSingleSignOnResourceListResponseTests {
                             new DatadogSingleSignOnResourceInner()
                                 .withProperties(
                                     new DatadogSingleSignOnProperties()
-                                        .withSingleSignOnState(SingleSignOnStates.DISABLE)
-                                        .withEnterpriseAppId("zpwv")),
-                            new DatadogSingleSignOnResourceInner()
-                                .withProperties(
-                                    new DatadogSingleSignOnProperties()
-                                        .withSingleSignOnState(SingleSignOnStates.DISABLE)
-                                        .withEnterpriseAppId("fvjrbirphxepcy")),
-                            new DatadogSingleSignOnResourceInner()
-                                .withProperties(
-                                    new DatadogSingleSignOnProperties()
-                                        .withSingleSignOnState(SingleSignOnStates.DISABLE)
-                                        .withEnterpriseAppId("kjeszz"))))
-                .withNextLink("odebfqkkrbmpu");
+                                        .withSingleSignOnState(SingleSignOnStates.ENABLE)
+                                        .withEnterpriseAppId("vyifqrvkdvjsl"))))
+                .withNextLink("sovmyokacspkwl");
         model = BinaryData.fromObject(model).toObject(DatadogSingleSignOnResourceListResponse.class);
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, model.value().get(0).properties().singleSignOnState());
-        Assertions.assertEquals("zpwv", model.value().get(0).properties().enterpriseAppId());
-        Assertions.assertEquals("odebfqkkrbmpu", model.nextLink());
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).properties().singleSignOnState());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).properties().enterpriseAppId());
+        Assertions.assertEquals("sovmyokacspkwl", model.nextLink());
     }
 }

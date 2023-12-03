@@ -11,27 +11,18 @@ import com.azure.resourcemanager.datafactory.models.HdfsSource;
 public final class HdfsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HdfsSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HdfsSource\",\"recursive\":\"datay\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"datacwu\",\"tempScriptPath\":\"dataanpoy\",\"distcpOptions\":\"datajonilnyhze\"},\"sourceRetryCount\":\"datatdcloq\",\"sourceRetryWait\":\"datazdb\",\"maxConcurrentConnections\":\"datae\",\"disableMetricsCollection\":\"datahfmzeufjzqaqeqc\",\"\":{\"vaoazfkykkcq\":\"dataqcwzytomnqcthgq\",\"lllzsqolckwhg\":\"datafnvjgixsjhinpyek\",\"xzdohfvxavhfhl\":\"datafbnnhwpnloi\"}}")
-                .toObject(HdfsSource.class);
+        HdfsSource model = BinaryData.fromString(
+            "{\"type\":\"HdfsSource\",\"recursive\":\"datamsptcesvvr\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"databyfhzybjrxen\",\"tempScriptPath\":\"datakxa\",\"distcpOptions\":\"databrcydwr\"},\"sourceRetryCount\":\"datatanbwxh\",\"sourceRetryWait\":\"dataioqhoxcgfyzlui\",\"maxConcurrentConnections\":\"datagpghjakzmn\",\"disableMetricsCollection\":\"datanqmajs\",\"\":{\"yupgojrwpoxu\":\"datajlpbxvp\"}}")
+            .toObject(HdfsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HdfsSource model =
-            new HdfsSource()
-                .withSourceRetryCount("datatdcloq")
-                .withSourceRetryWait("datazdb")
-                .withMaxConcurrentConnections("datae")
-                .withDisableMetricsCollection("datahfmzeufjzqaqeqc")
-                .withRecursive("datay")
-                .withDistcpSettings(
-                    new DistcpSettings()
-                        .withResourceManagerEndpoint("datacwu")
-                        .withTempScriptPath("dataanpoy")
-                        .withDistcpOptions("datajonilnyhze"));
+        HdfsSource model = new HdfsSource().withSourceRetryCount("datatanbwxh")
+            .withSourceRetryWait("dataioqhoxcgfyzlui").withMaxConcurrentConnections("datagpghjakzmn")
+            .withDisableMetricsCollection("datanqmajs").withRecursive("datamsptcesvvr")
+            .withDistcpSettings(new DistcpSettings().withResourceManagerEndpoint("databyfhzybjrxen")
+                .withTempScriptPath("datakxa").withDistcpOptions("databrcydwr"));
         model = BinaryData.fromObject(model).toObject(HdfsSource.class);
     }
 }

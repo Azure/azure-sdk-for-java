@@ -21,6 +21,7 @@ import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.AccessTier;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -3338,5 +3339,54 @@ public class FileApiTest extends DataLakeTestBase {
         // dfs endpoint
         assertEquals("2019-02-02", fileClient.getAccessControlWithResponse(false, null, null, null).getHeaders()
             .getValue(X_MS_VERSION));
+    }
+
+    @Test
+    public void defaultAudience() {
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            dataLakeFileSystemClient.getFileSystemUrl(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+
+    @Test
+    public void storageAccountAudience() {
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemClient.getAccountName()))
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
+    }
+
+    @Test
+    public void audienceError() {
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+            .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
+            .buildFileClient();
+
+        DataLakeStorageException e = assertThrows(DataLakeStorageException.class, aadFileClient::exists);
+        assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
+    }
+
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemClient.getAccountName());
+        DataLakeAudience audience = DataLakeAudience.fromString(url);
+
+        DataLakeFileClient aadFileClient = getPathClientBuilderWithTokenCredential(
+            ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint(), fc.getFilePath())
+            .fileSystemName(dataLakeFileSystemClient.getFileSystemName())
+            .audience(audience)
+            .buildFileClient();
+
+        assertTrue(aadFileClient.exists());
     }
 }

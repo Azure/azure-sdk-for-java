@@ -11,12 +11,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.BillingSku;
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsUploadConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.EventHubConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -271,6 +273,36 @@ public final class PacketCoreControlPlaneInner extends Resource {
     }
 
     /**
+     * Get the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @return the controlPlaneAccessVirtualIpv4Addresses value.
+     */
+    public List<String> controlPlaneAccessVirtualIpv4Addresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().controlPlaneAccessVirtualIpv4Addresses();
+    }
+
+    /**
+     * Set the controlPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the control plane on the
+     * access network in a High Availability (HA) system. In an HA deployment the access network router should be
+     * configured to anycast traffic for this address to the control plane access interfaces on the active and standby
+     * nodes. In non-HA system this list should be omitted or empty.
+     *
+     * @param controlPlaneAccessVirtualIpv4Addresses the controlPlaneAccessVirtualIpv4Addresses value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withControlPlaneAccessVirtualIpv4Addresses(
+        List<String> controlPlaneAccessVirtualIpv4Addresses) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withControlPlaneAccessVirtualIpv4Addresses(controlPlaneAccessVirtualIpv4Addresses);
+        return this;
+    }
+
+    /**
      * Get the sku property: The SKU defining the throughput and SIM allowances for this packet core control plane
      * deployment.
      *
@@ -368,6 +400,52 @@ public final class PacketCoreControlPlaneInner extends Resource {
             this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
         }
         this.innerProperties().withDiagnosticsUpload(diagnosticsUpload);
+        return this;
+    }
+
+    /**
+     * Get the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @return the eventHub value.
+     */
+    public EventHubConfiguration eventHub() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventHub();
+    }
+
+    /**
+     * Set the eventHub property: Configuration for sending packet core events to an Azure Event Hub.
+     *
+     * @param eventHub the eventHub value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withEventHub(EventHubConfiguration eventHub) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withEventHub(eventHub);
+        return this;
+    }
+
+    /**
+     * Get the signaling property: Signaling configuration for the packet core.
+     *
+     * @return the signaling value.
+     */
+    public SignalingConfiguration signaling() {
+        return this.innerProperties() == null ? null : this.innerProperties().signaling();
+    }
+
+    /**
+     * Set the signaling property: Signaling configuration for the packet core.
+     *
+     * @param signaling the signaling value to set.
+     * @return the PacketCoreControlPlaneInner object itself.
+     */
+    public PacketCoreControlPlaneInner withSignaling(SignalingConfiguration signaling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PacketCoreControlPlanePropertiesFormat();
+        }
+        this.innerProperties().withSignaling(signaling);
         return this;
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Integration runtime debug resource. */
+/**
+ * Integration runtime debug resource.
+ */
 @Fluent
 public final class IntegrationRuntimeDebugResource extends SubResourceDebugResource {
     /*
@@ -17,13 +19,15 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
-    /** Creates an instance of IntegrationRuntimeDebugResource class. */
+    /**
+     * Creates an instance of IntegrationRuntimeDebugResource class.
+     */
     public IntegrationRuntimeDebugResource() {
     }
 
     /**
      * Get the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     public IntegrationRuntime properties() {
@@ -32,7 +36,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
 
     /**
      * Set the properties property: Integration runtime properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeDebugResource object itself.
      */
@@ -41,7 +45,9 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationRuntimeDebugResource withName(String name) {
         super.withName(name);
@@ -50,17 +56,15 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model IntegrationRuntimeDebugResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model IntegrationRuntimeDebugResource"));
         } else {
             properties().validate();
         }

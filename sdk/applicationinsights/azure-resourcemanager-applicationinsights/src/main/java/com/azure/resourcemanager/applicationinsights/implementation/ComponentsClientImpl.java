@@ -64,7 +64,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
-    private interface ComponentsService {
+    public interface ComponentsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/components")
         @ExpectedResponses({200})
@@ -78,8 +78,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
-                + "/components")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentListResult>> listByResourceGroup(
@@ -92,8 +91,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -107,8 +105,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentInner>> getByResourceGroup(
@@ -122,8 +119,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentInner>> createOrUpdate(
@@ -138,8 +134,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentInner>> updateTags(
@@ -154,8 +149,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/purge")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/purge")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ComponentPurgeResponseInner>> purge(
@@ -170,8 +164,7 @@ public final class ComponentsClientImpl implements ComponentsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components"
-                + "/{resourceName}/operations/{purgeId}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/operations/{purgeId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ComponentPurgeStatusResponseInner>> getPurgeStatus(
@@ -632,20 +625,6 @@ public final class ComponentsClientImpl implements ComponentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceName) {
-        deleteAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Deletes an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -655,6 +634,20 @@ public final class ComponentsClientImpl implements ComponentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Deletes an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String resourceName) {
+        deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     /**
@@ -777,21 +770,6 @@ public final class ComponentsClientImpl implements ComponentsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Returns an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -802,6 +780,21 @@ public final class ComponentsClientImpl implements ComponentsClient {
     public Response<ApplicationInsightsComponentInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Returns an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights component definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInsightsComponentInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -949,24 +942,6 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param insightProperties Properties that need to be specified to create an Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentInner createOrUpdate(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentInner insightProperties) {
-        return createOrUpdateAsync(resourceGroupName, resourceName, insightProperties).block();
-    }
-
-    /**
-     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param insightProperties Properties that need to be specified to create an Application Insights component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -980,6 +955,24 @@ public final class ComponentsClientImpl implements ComponentsClient {
         ApplicationInsightsComponentInner insightProperties,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, insightProperties, context).block();
+    }
+
+    /**
+     * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
+     * InstrumentationKey nor AppId in the Put operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param insightProperties Properties that need to be specified to create an Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights component definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInsightsComponentInner createOrUpdate(
+        String resourceGroupName, String resourceName, ApplicationInsightsComponentInner insightProperties) {
+        return createOrUpdateWithResponse(resourceGroupName, resourceName, insightProperties, Context.NONE).getValue();
     }
 
     /**
@@ -1118,23 +1111,6 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param componentTags Updated tag information to set into the component instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentInner updateTags(
-        String resourceGroupName, String resourceName, TagsResource componentTags) {
-        return updateTagsAsync(resourceGroupName, resourceName, componentTags).block();
-    }
-
-    /**
-     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param componentTags Updated tag information to set into the component instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1148,12 +1124,32 @@ public final class ComponentsClientImpl implements ComponentsClient {
     }
 
     /**
+     * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param componentTags Updated tag information to set into the component instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights component definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationInsightsComponentInner updateTags(
+        String resourceGroupName, String resourceName, TagsResource componentTags) {
+        return updateTagsWithResponse(resourceGroupName, resourceName, componentTags, Context.NONE).getValue();
+    }
+
+    /**
      * Purges data in an Application Insights component by a set of user-defined filters.
      *
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -1215,7 +1211,10 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -1275,7 +1274,10 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -1298,28 +1300,10 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
      * the execution of purge requests by sending a single command whose predicate includes all user identities that
      * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing operationId for a specific purge action.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentPurgeResponseInner purge(String resourceGroupName, String resourceName, ComponentPurgeBody body) {
-        return purgeAsync(resourceGroupName, resourceName, body).block();
-    }
-
-    /**
-     * Purges data in an Application Insights component by a set of user-defined filters.
-     *
-     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
-     * the execution of purge requests by sending a single command whose predicate includes all user identities that
-     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
-     * a purge request to verify that the results are expected.
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -1334,6 +1318,30 @@ public final class ComponentsClientImpl implements ComponentsClient {
     public Response<ComponentPurgeResponseInner> purgeWithResponse(
         String resourceGroupName, String resourceName, ComponentPurgeBody body, Context context) {
         return purgeWithResponseAsync(resourceGroupName, resourceName, body, context).block();
+    }
+
+    /**
+     * Purges data in an Application Insights component by a set of user-defined filters.
+     *
+     * <p>In order to manage system resources, purge requests are throttled at 50 requests per hour. You should batch
+     * the execution of purge requests by sending a single command whose predicate includes all user identities that
+     * require purging. Use the in operator to specify multiple identities. You should run the query prior to using for
+     * a purge request to verify that the results are expected. Note: this operation is intended for Classic resources,
+     * for workspace-based Application Insights resource please run purge operation (directly on the
+     * workspace)(https://docs.microsoft.com/en-us/rest/api/loganalytics/workspace-purge/purge) , scoped to specific
+     * resource id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param body Describes the body of a request to purge data in a single table of an Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing operationId for a specific purge action.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComponentPurgeResponseInner purge(String resourceGroupName, String resourceName, ComponentPurgeBody body) {
+        return purgeWithResponse(resourceGroupName, resourceName, body, Context.NONE).getValue();
     }
 
     /**
@@ -1468,23 +1476,6 @@ public final class ComponentsClientImpl implements ComponentsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status for an ongoing purge operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ComponentPurgeStatusResponseInner getPurgeStatus(
-        String resourceGroupName, String resourceName, String purgeId) {
-        return getPurgeStatusAsync(resourceGroupName, resourceName, purgeId).block();
-    }
-
-    /**
-     * Get status for an ongoing purge operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1498,9 +1489,27 @@ public final class ComponentsClientImpl implements ComponentsClient {
     }
 
     /**
+     * Get status for an ongoing purge operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param purgeId In a purge status request, this is the Id of the operation the status of which is returned.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status for an ongoing purge operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ComponentPurgeStatusResponseInner getPurgeStatus(
+        String resourceGroupName, String resourceName, String purgeId) {
+        return getPurgeStatusWithResponse(resourceGroupName, resourceName, purgeId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1536,7 +1545,8 @@ public final class ComponentsClientImpl implements ComponentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1574,7 +1584,8 @@ public final class ComponentsClientImpl implements ComponentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1612,7 +1623,8 @@ public final class ComponentsClientImpl implements ComponentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
