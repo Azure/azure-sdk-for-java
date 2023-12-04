@@ -65,7 +65,8 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("unused")
 public class BlobClientBaseJavaDocCodeSnippets {
-    private BlobClient client = new BlobClientBuilder().buildClient();
+    private BlobClient client = new BlobClientBuilder().endpoint("https://storageaccount.blob.core.windows.net")
+        .containerName("containerName").blobName("blobName").sasToken("sasToken").buildClient();
     private String leaseId = "leaseId";
     private String tags = "tags";
     private String copyId = "copyId";
