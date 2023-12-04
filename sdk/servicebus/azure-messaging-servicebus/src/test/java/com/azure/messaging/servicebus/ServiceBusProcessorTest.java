@@ -14,6 +14,8 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusR
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
@@ -66,22 +68,25 @@ public class ServiceBusProcessorTest {
      *
      * @throws InterruptedException If the test is interrupted.
      */
-    @Test
-    public void testReceivingMessagesWithProcessor() throws InterruptedException {
-        Flux<ServiceBusMessageContext> messageFlux =
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testReceivingMessagesWithProcessor(boolean isV2) throws InterruptedException {
+        Flux<ServiceBusReceivedMessage> messageFlux =
             Flux.create(emitter -> {
                 for (int i = 0; i < 5; i++) {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
+                    emitter.next(serviceBusReceivedMessage);
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
-
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(5);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -91,7 +96,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
@@ -120,7 +125,7 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux, null);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfMessages);
@@ -147,12 +152,17 @@ public class ServiceBusProcessorTest {
      *
      * @throws InterruptedException If the test is interrupted.
      */
-    @Test
-    public void testStartStopResume() throws InterruptedException {
-        AtomicReference<FluxSink<ServiceBusMessageContext>> sink = new AtomicReference<>();
-        Flux<ServiceBusMessageContext> messageFlux = Flux.create(sink::set);
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
-
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testStartStopResume(boolean isV2) throws InterruptedException {
+        AtomicReference<FluxSink<ServiceBusReceivedMessage>> sink = new AtomicReference<>();
+        Flux<ServiceBusReceivedMessage> messageFlux = Flux.create(sink::set);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(2));
@@ -171,16 +181,14 @@ public class ServiceBusProcessorTest {
                 }
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-            ServiceBusMessageContext serviceBusMessageContext =
-                new ServiceBusMessageContext(serviceBusReceivedMessage);
-            sink.get().next(serviceBusMessageContext);
+            sink.get().next(serviceBusReceivedMessage);
         }
         boolean success = countDownLatch.get().await(5, TimeUnit.SECONDS);
         serviceBusProcessorClient.stop();
@@ -192,9 +200,7 @@ public class ServiceBusProcessorTest {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-            ServiceBusMessageContext serviceBusMessageContext =
-                new ServiceBusMessageContext(serviceBusReceivedMessage);
-            sink.get().next(serviceBusMessageContext);
+            sink.get().next(serviceBusReceivedMessage);
         }
         success = countDownLatch.get().await(5, TimeUnit.SECONDS);
         serviceBusProcessorClient.close();
@@ -208,34 +214,36 @@ public class ServiceBusProcessorTest {
      *
      * @throws InterruptedException If the test is interrupted.
      */
-    @Test
-    public void testErrorRecovery() throws InterruptedException {
-        List<ServiceBusMessageContext> messageList = new ArrayList<>();
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testErrorRecovery(boolean isV2) throws InterruptedException {
+        List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             ServiceBusReceivedMessage serviceBusReceivedMessage =
                 new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
             serviceBusReceivedMessage.setMessageId(String.valueOf(i));
-            ServiceBusMessageContext serviceBusMessageContext =
-                new ServiceBusMessageContext(serviceBusReceivedMessage);
-            messageList.add(serviceBusMessageContext);
+            messageList.add(serviceBusReceivedMessage);
         }
 
-        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
-                ServiceBusMessageContext serviceBusMessageContext =
-                    new ServiceBusMessageContext(serviceBusReceivedMessage);
                 if (state == 2) {
                     throw new IllegalStateException("error");
                 } else {
-                    sink.next(serviceBusMessageContext);
+                    sink.next(serviceBusReceivedMessage);
                 }
                 return state + 1;
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, null);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, null);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         AtomicInteger messageId = new AtomicInteger();
         AtomicReference<CountDownLatch> countDownLatch = new AtomicReference<>();
         countDownLatch.set(new CountDownLatch(4));
@@ -255,7 +263,7 @@ public class ServiceBusProcessorTest {
                 }
             },
             error -> { /* ignored */ },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.get().await(20, TimeUnit.SECONDS);
@@ -268,17 +276,16 @@ public class ServiceBusProcessorTest {
      * Tests user message processing code throwing an error which should result in the message being abandoned.
      * @throws InterruptedException If the test is interrupted.
      */
-    @Test
-    public void testUserMessageHandlerError() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testUserMessageHandlerError(boolean isV2) throws InterruptedException {
         final int numberOfEvents = 5;
-        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
-                ServiceBusMessageContext serviceBusMessageContext =
-                    new ServiceBusMessageContext(serviceBusReceivedMessage);
-                sink.next(serviceBusMessageContext);
+                sink.next(serviceBusReceivedMessage);
                 if (state == numberOfEvents) {
                     sink.complete();
                 }
@@ -288,9 +295,17 @@ public class ServiceBusProcessorTest {
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
+        if (isV2) {
+            when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
+        } else {
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new));
+        }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.abandon(any(ServiceBusReceivedMessage.class))).thenReturn(Mono.empty());
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
@@ -311,7 +326,7 @@ public class ServiceBusProcessorTest {
                 assertSame(exception.getErrorSource(), ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
             },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(5, TimeUnit.SECONDS);
@@ -324,29 +339,38 @@ public class ServiceBusProcessorTest {
             .abandon(any(ServiceBusReceivedMessage.class));
     }
 
-    @Test
-    public void testUserMessageHandlerErrorWithAutoCompleteDisabled() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testUserMessageHandlerErrorWithAutoCompleteDisabled(boolean isV2) throws InterruptedException {
 
-        final Flux<ServiceBusMessageContext> messageFlux = Flux.generate(() -> 0,
+        final Flux<ServiceBusReceivedMessage> messageFlux = Flux.generate(() -> 0,
             (state, sink) -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                 serviceBusReceivedMessage.setMessageId(String.valueOf(state));
-                ServiceBusMessageContext serviceBusMessageContext =
-                    new ServiceBusMessageContext(serviceBusReceivedMessage);
-                sink.next(serviceBusMessageContext);
+                sink.next(serviceBusReceivedMessage);
                 if (state == 5) {
                     sink.complete();
                 }
                 return state + 1;
-            }).publish().autoConnect().cast(ServiceBusMessageContext.class);
+            }).publish().autoConnect().cast(ServiceBusReceivedMessage.class);
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
         ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1)
+            .setDisableAutoComplete(true);
+        if (isV2) {
+            options.setV2(true);
+        }
+        if (isV2) {
+            when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux);
+        } else {
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux.map(ServiceBusMessageContext::new));
+        }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
@@ -367,7 +391,7 @@ public class ServiceBusProcessorTest {
                 assertEquals(ServiceBusErrorSource.USER_CALLBACK, exception.getErrorSource());
                 countDownLatch.countDown();
             },
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setDisableAutoComplete(true));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(30, TimeUnit.SECONDS);
@@ -377,9 +401,10 @@ public class ServiceBusProcessorTest {
         verify(asyncClient, never()).abandon(any(ServiceBusReceivedMessage.class));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
     @SuppressWarnings("unchecked")
-    public void testProcessorWithTracingEnabled() throws InterruptedException {
+    public void testProcessorWithTracingEnabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
 
@@ -400,7 +425,7 @@ public class ServiceBusProcessorTest {
                     .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
-        Flux<ServiceBusMessageContext> messageFlux =
+        Flux<ServiceBusReceivedMessage> messageFlux =
             Flux.create(emitter -> {
                 for (int i = 0; i < numberOfTimes; i++) {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
@@ -408,14 +433,16 @@ public class ServiceBusProcessorTest {
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
                     serviceBusReceivedMessage.setEnqueuedTime(OffsetDateTime.now());
                     serviceBusReceivedMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, diagnosticId);
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
+                    emitter.next(serviceBusReceivedMessage);
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
-
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -425,7 +452,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
@@ -452,7 +479,7 @@ public class ServiceBusProcessorTest {
         when(tracer.start(eq("ServiceBus.process"), any(StartSpanOptions.class), any())).thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
 
         Flux<ServiceBusMessageContext> messageFlux = Flux.just(new ServiceBusMessageContext("sessionId", new RuntimeException("foo")));
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder = getSessionBuilder(messageFlux, tracer);
 
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -471,28 +498,33 @@ public class ServiceBusProcessorTest {
         verify(tracer, never()).start(eq("ServiceBus.process"), any(StartSpanOptions.class), any(Context.class));
     }
 
-    @Test
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
     @SuppressWarnings("unchecked")
-    public void testProcessorWithTracingDisabled() throws InterruptedException {
+    public void testProcessorWithTracingDisabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
 
         when(tracer.isEnabled()).thenReturn(false);
 
-        Flux<ServiceBusMessageContext> messageFlux =
+        Flux<ServiceBusReceivedMessage> messageFlux =
             Flux.create(emitter -> {
                 ServiceBusReceivedMessage serviceBusReceivedMessage =
                     new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
-                emitter.next(new ServiceBusMessageContext(serviceBusReceivedMessage));
+                emitter.next(serviceBusReceivedMessage);
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
-
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
             null, null,
             messageContext -> countDownLatch.countDown(),
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(1, TimeUnit.SECONDS);
@@ -504,8 +536,9 @@ public class ServiceBusProcessorTest {
         verify(tracer, never()).end(any(), any(), any());
     }
 
-    @Test
-    public void testProcessorWithTracingEnabledWithoutDiagnosticId() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testProcessorWithTracingEnabledWithoutDiagnosticId(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
         when(tracer.isEnabled()).thenReturn(true);
@@ -517,21 +550,23 @@ public class ServiceBusProcessorTest {
                     .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
-        Flux<ServiceBusMessageContext> messageFlux =
+        Flux<ServiceBusReceivedMessage> messageFlux =
             Flux.create(emitter -> {
                 for (int i = 0; i < numberOfTimes; i++) {
                     ServiceBusReceivedMessage serviceBusReceivedMessage =
                         new ServiceBusReceivedMessage(BinaryData.fromString("hello"));
                     serviceBusReceivedMessage.setMessageId(String.valueOf(i));
                     serviceBusReceivedMessage.setEnqueuedTime(OffsetDateTime.now());
-                    ServiceBusMessageContext serviceBusMessageContext =
-                        new ServiceBusMessageContext(serviceBusReceivedMessage);
-                    emitter.next(serviceBusMessageContext);
+                    emitter.next(serviceBusReceivedMessage);
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, tracer);
-
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
+        final ServiceBusProcessorClientOptions options = new ServiceBusProcessorClientOptions()
+            .setMaxConcurrentCalls(1);
+        if (isV2) {
+            options.setV2(true);
+        }
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
@@ -541,7 +576,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            options);
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
@@ -557,7 +592,7 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusReceiverClientBuilder getBuilder(
-        Flux<ServiceBusMessageContext> messageFlux, Tracer tracer) {
+        Flux<ServiceBusReceivedMessage> messageFlux, boolean isV2, Tracer tracer) {
 
         ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
@@ -568,8 +603,12 @@ public class ServiceBusProcessorTest {
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
 
         ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(
-            new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+        if (isV2) {
+            when(asyncClient.nonSessionProcessorReceiveV2()).thenReturn(messageFlux.publishOn(Schedulers.boundedElastic()));
+        } else {
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(
+                new FluxTrace(messageFlux.map(ServiceBusMessageContext::new), instrumentation).publishOn(Schedulers.boundedElastic()));
+        }
         when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         doNothing().when(asyncClient).close();
@@ -577,7 +616,7 @@ public class ServiceBusProcessorTest {
     }
 
     private ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder getSessionBuilder(
-        Flux<ServiceBusMessageContext> messageFlux) {
+        Flux<ServiceBusMessageContext> messageFlux, Tracer tracer) {
 
         ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverBuilder =
             mock(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class);
@@ -586,7 +625,14 @@ public class ServiceBusProcessorTest {
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_NAME);
         when(receiverBuilder.buildAsyncClientForProcessor()).thenReturn(asyncClient);
-        when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        if (tracer != null) {
+            ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, NAMESPACE, ENTITY_NAME, null, ReceiverKind.PROCESSOR);
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(
+                new FluxTrace(messageFlux, instrumentation).publishOn(Schedulers.boundedElastic()));
+            when(asyncClient.getInstrumentation()).thenReturn(instrumentation);
+        } else {
+            when(asyncClient.receiveMessagesWithContext()).thenReturn(messageFlux);
+        }
         when(asyncClient.isConnectionClosed()).thenReturn(false);
         when(asyncClient.getInstrumentation()).thenReturn(DEFAULT_INSTRUMENTATION);
         doNothing().when(asyncClient).close();

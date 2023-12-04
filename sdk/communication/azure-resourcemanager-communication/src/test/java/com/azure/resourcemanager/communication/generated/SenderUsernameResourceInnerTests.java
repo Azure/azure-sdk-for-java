@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SenderUsernameResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SenderUsernameResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataLocation\":\"nfyhx\",\"username\":\"eoejzic\",\"displayName\":\"fsj\",\"provisioningState\":\"Running\"},\"id\":\"fbishcbkha\",\"name\":\"deyeamdphagalpbu\",\"type\":\"wgipwhono\"}")
-                .toObject(SenderUsernameResourceInner.class);
+        SenderUsernameResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataLocation\":\"nfyhx\",\"username\":\"eoejzic\",\"displayName\":\"fsj\",\"provisioningState\":\"Running\"},\"id\":\"fbishcbkha\",\"name\":\"deyeamdphagalpbu\",\"type\":\"wgipwhono\"}")
+            .toObject(SenderUsernameResourceInner.class);
         Assertions.assertEquals("eoejzic", model.username());
         Assertions.assertEquals("fsj", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SenderUsernameResourceInner model =
-            new SenderUsernameResourceInner().withUsername("eoejzic").withDisplayName("fsj");
+        SenderUsernameResourceInner model
+            = new SenderUsernameResourceInner().withUsername("eoejzic").withDisplayName("fsj");
         model = BinaryData.fromObject(model).toObject(SenderUsernameResourceInner.class);
         Assertions.assertEquals("eoejzic", model.username());
         Assertions.assertEquals("fsj", model.displayName());

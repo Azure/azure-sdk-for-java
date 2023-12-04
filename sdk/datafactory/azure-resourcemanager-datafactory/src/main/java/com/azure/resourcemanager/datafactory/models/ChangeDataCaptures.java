@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ChangeDataCaptures. */
+/**
+ * Resource collection API of ChangeDataCaptures.
+ */
 public interface ChangeDataCaptures {
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -33,33 +35,29 @@ public interface ChangeDataCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of change data capture resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ChangeDataCaptureResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<ChangeDataCaptureResource> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a change data capture along with {@link Response}.
      */
-    Response<ChangeDataCaptureResource> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        String ifNoneMatch,
-        Context context);
+    Response<ChangeDataCaptureResource> getWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, String ifNoneMatch, Context context);
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -72,7 +70,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -82,12 +80,12 @@ public interface ChangeDataCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -99,7 +97,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -109,12 +107,12 @@ public interface ChangeDataCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> startWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> startWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -126,7 +124,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -136,12 +134,12 @@ public interface ChangeDataCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> stopWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -153,7 +151,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -163,12 +161,12 @@ public interface ChangeDataCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status for the change data capture resource along with {@link Response}.
      */
-    Response<String> statusWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<String> statusWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -181,7 +179,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,10 +190,10 @@ public interface ChangeDataCaptures {
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param id the resource ID.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -206,7 +204,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,7 +214,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +226,7 @@ public interface ChangeDataCaptures {
 
     /**
      * Begins definition for a new ChangeDataCaptureResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ChangeDataCaptureResource definition.
      */

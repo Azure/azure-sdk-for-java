@@ -4,9 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -43,9 +41,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class CryptographyClientTest extends CryptographyClientTestBase {
     private KeyClient client;
-    private HttpPipeline pipeline;
-
-    private boolean curveNotSupportedByRuntime = false;
 
     @Override
     protected void beforeTest() {
@@ -53,22 +48,16 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     private void initializeKeyClient(HttpClient httpClient) {
-        pipeline = getHttpPipeline(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
-        client = new KeyClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl(getEndpoint())
+        client = getKeyClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), getEndpoint(),
+            null)
             .buildClient();
     }
 
     CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient,
                                                     CryptographyServiceVersion serviceVersion) {
-        pipeline = getHttpPipeline(buildSyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
-
-        return new CryptographyClientBuilder()
-            .pipeline(pipeline)
-            .serviceVersion(serviceVersion)
+        return getCryptographyClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), serviceVersion)
             .keyIdentifier(keyId)
             .buildClient();
     }

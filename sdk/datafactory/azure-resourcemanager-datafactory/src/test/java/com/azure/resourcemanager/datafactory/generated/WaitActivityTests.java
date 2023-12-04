@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WaitActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitActivity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Wait\",\"typeProperties\":{\"waitTimeInSeconds\":\"datazucpixfdbi\"},\"name\":\"pchbcbdpyorhq\",\"description\":\"fvhnhyxcws\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"area\",\"dependencyConditions\":[\"Skipped\",\"Completed\"],\"\":{\"npcrsfqwqm\":\"datanmnmqydpieleruoy\"}}],\"userProperties\":[{\"name\":\"j\",\"value\":\"dataonvjur\"},{\"name\":\"czdelqazb\",\"value\":\"dataixg\"}],\"\":{\"uvqacae\":\"databhwwpaec\",\"oqjmo\":\"datavn\",\"brrqxldkhgngyofe\":\"datagdb\",\"ncxkazmydsqvjkfz\":\"datajksmyeegbertf\"}}")
-                .toObject(WaitActivity.class);
+        WaitActivity model = BinaryData.fromString(
+            "{\"type\":\"Wait\",\"typeProperties\":{\"waitTimeInSeconds\":\"datazucpixfdbi\"},\"name\":\"pchbcbdpyorhq\",\"description\":\"fvhnhyxcws\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"area\",\"dependencyConditions\":[\"Skipped\",\"Completed\"],\"\":{\"npcrsfqwqm\":\"datanmnmqydpieleruoy\"}}],\"userProperties\":[{\"name\":\"j\",\"value\":\"dataonvjur\"},{\"name\":\"czdelqazb\",\"value\":\"dataixg\"}],\"\":{\"uvqacae\":\"databhwwpaec\",\"oqjmo\":\"datavn\",\"brrqxldkhgngyofe\":\"datagdb\",\"ncxkazmydsqvjkfz\":\"datajksmyeegbertf\"}}")
+            .toObject(WaitActivity.class);
         Assertions.assertEquals("pchbcbdpyorhq", model.name());
         Assertions.assertEquals("fvhnhyxcws", model.description());
         Assertions.assertEquals(ActivityState.ACTIVE, model.state());
@@ -35,26 +33,14 @@ public final class WaitActivityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitActivity model =
-            new WaitActivity()
-                .withName("pchbcbdpyorhq")
-                .withDescription("fvhnhyxcws")
-                .withState(ActivityState.ACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new ActivityDependency()
-                                .withActivity("area")
-                                .withDependencyConditions(
-                                    Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.COMPLETED))
-                                .withAdditionalProperties(mapOf())))
-                .withUserProperties(
-                    Arrays
-                        .asList(
-                            new UserProperty().withName("j").withValue("dataonvjur"),
-                            new UserProperty().withName("czdelqazb").withValue("dataixg")))
-                .withWaitTimeInSeconds("datazucpixfdbi");
+        WaitActivity model = new WaitActivity().withName("pchbcbdpyorhq").withDescription("fvhnhyxcws")
+            .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SUCCEEDED)
+            .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("area")
+                .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.COMPLETED))
+                .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("j").withValue("dataonvjur"),
+                new UserProperty().withName("czdelqazb").withValue("dataixg")))
+            .withWaitTimeInSeconds("datazucpixfdbi");
         model = BinaryData.fromObject(model).toObject(WaitActivity.class);
         Assertions.assertEquals("pchbcbdpyorhq", model.name());
         Assertions.assertEquals("fvhnhyxcws", model.description());

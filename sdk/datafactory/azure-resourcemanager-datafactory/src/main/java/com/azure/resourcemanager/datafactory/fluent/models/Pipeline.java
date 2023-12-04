@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A data factory pipeline. */
+/**
+ * A data factory pipeline.
+ */
 @Fluent
 public final class Pipeline {
     /*
@@ -75,13 +77,15 @@ public final class Pipeline {
     @JsonProperty(value = "policy")
     private PipelinePolicy policy;
 
-    /** Creates an instance of Pipeline class. */
+    /**
+     * Creates an instance of Pipeline class.
+     */
     public Pipeline() {
     }
 
     /**
      * Get the description property: The description of the pipeline.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +94,7 @@ public final class Pipeline {
 
     /**
      * Set the description property: The description of the pipeline.
-     *
+     * 
      * @param description the description value to set.
      * @return the Pipeline object itself.
      */
@@ -101,7 +105,7 @@ public final class Pipeline {
 
     /**
      * Get the activities property: List of activities in pipeline.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -110,7 +114,7 @@ public final class Pipeline {
 
     /**
      * Set the activities property: List of activities in pipeline.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the Pipeline object itself.
      */
@@ -121,7 +125,7 @@ public final class Pipeline {
 
     /**
      * Get the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> parameters() {
@@ -130,7 +134,7 @@ public final class Pipeline {
 
     /**
      * Set the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Pipeline object itself.
      */
@@ -141,7 +145,7 @@ public final class Pipeline {
 
     /**
      * Get the variables property: List of variables for pipeline.
-     *
+     * 
      * @return the variables value.
      */
     public Map<String, VariableSpecification> variables() {
@@ -150,7 +154,7 @@ public final class Pipeline {
 
     /**
      * Set the variables property: List of variables for pipeline.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the Pipeline object itself.
      */
@@ -161,7 +165,7 @@ public final class Pipeline {
 
     /**
      * Get the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @return the concurrency value.
      */
     public Integer concurrency() {
@@ -170,7 +174,7 @@ public final class Pipeline {
 
     /**
      * Set the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @param concurrency the concurrency value to set.
      * @return the Pipeline object itself.
      */
@@ -181,7 +185,7 @@ public final class Pipeline {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> annotations() {
@@ -190,7 +194,7 @@ public final class Pipeline {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the Pipeline object itself.
      */
@@ -201,7 +205,7 @@ public final class Pipeline {
 
     /**
      * Get the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @return the runDimensions value.
      */
     public Map<String, Object> runDimensions() {
@@ -210,7 +214,7 @@ public final class Pipeline {
 
     /**
      * Set the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @param runDimensions the runDimensions value to set.
      * @return the Pipeline object itself.
      */
@@ -222,7 +226,7 @@ public final class Pipeline {
     /**
      * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @return the folder value.
      */
     public PipelineFolder folder() {
@@ -232,7 +236,7 @@ public final class Pipeline {
     /**
      * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the Pipeline object itself.
      */
@@ -243,7 +247,7 @@ public final class Pipeline {
 
     /**
      * Get the policy property: Pipeline Policy.
-     *
+     * 
      * @return the policy value.
      */
     public PipelinePolicy policy() {
@@ -252,7 +256,7 @@ public final class Pipeline {
 
     /**
      * Set the policy property: Pipeline Policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the Pipeline object itself.
      */
@@ -263,7 +267,7 @@ public final class Pipeline {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -271,24 +275,18 @@ public final class Pipeline {
             activities().forEach(e -> e.validate());
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (variables() != null) {
-            variables()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            variables().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (folder() != null) {
             folder().validate();

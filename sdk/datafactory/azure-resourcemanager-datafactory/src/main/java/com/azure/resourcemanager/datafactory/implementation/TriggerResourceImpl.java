@@ -65,24 +65,14 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, triggerName, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, triggerName, this.innerModel(), createIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public TriggerResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, triggerName, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, triggerName, this.innerModel(), createIfMatch, context).getValue();
         return this;
     }
 
@@ -99,29 +89,19 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public TriggerResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, triggerName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, triggerName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public TriggerResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, triggerName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, triggerName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    TriggerResourceImpl(
-        TriggerResourceInner innerObject, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    TriggerResourceImpl(TriggerResourceInner innerObject,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -131,23 +111,15 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
 
     public TriggerResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers()
+            .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, Context.NONE).getValue();
         return this;
     }
 
     public TriggerResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers()
+            .getWithResponse(resourceGroupName, factoryName, triggerName, localIfNoneMatch, context).getValue();
         return this;
     }
 
@@ -160,9 +132,8 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
     }
 
     public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(Context context) {
-        return serviceManager
-            .triggers()
-            .getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, context);
+        return serviceManager.triggers().getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName,
+            triggerName, context);
     }
 
     public TriggerSubscriptionOperationStatus getEventSubscriptionStatus() {

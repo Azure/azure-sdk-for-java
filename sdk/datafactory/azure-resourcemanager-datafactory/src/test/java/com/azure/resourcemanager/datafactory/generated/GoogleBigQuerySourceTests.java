@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.GoogleBigQuerySource;
 public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GoogleBigQuerySource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataiupwktnsyrrybd\",\"queryTimeout\":\"dataivkssu\",\"additionalColumns\":\"datazihdkq\",\"sourceRetryCount\":\"datawthw\",\"sourceRetryWait\":\"dataijgasnafdjinw\",\"maxConcurrentConnections\":\"datarnjgs\",\"disableMetricsCollection\":\"datazbdhr\",\"\":{\"ygcahijbjj\":\"dataan\",\"jtyhe\":\"dataxsvjzbggsnan\",\"gaimktns\":\"datazxzazofronsxj\"}}")
-                .toObject(GoogleBigQuerySource.class);
+        GoogleBigQuerySource model = BinaryData.fromString(
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataadafecwnufldzjc\",\"queryTimeout\":\"datahjbzpoh\",\"additionalColumns\":\"datajgpe\",\"sourceRetryCount\":\"databoxvwtlnv\",\"sourceRetryWait\":\"datahtujaqpkup\",\"maxConcurrentConnections\":\"datacrjeypd\",\"disableMetricsCollection\":\"datascxzsynbdrqirni\",\"\":{\"sorsola\":\"datathyebwgesovsvjx\",\"afpyil\":\"datahlyhgiisnfaxtob\"}}")
+            .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model =
-            new GoogleBigQuerySource()
-                .withSourceRetryCount("datawthw")
-                .withSourceRetryWait("dataijgasnafdjinw")
-                .withMaxConcurrentConnections("datarnjgs")
-                .withDisableMetricsCollection("datazbdhr")
-                .withQueryTimeout("dataivkssu")
-                .withAdditionalColumns("datazihdkq")
-                .withQuery("dataiupwktnsyrrybd");
+        GoogleBigQuerySource model
+            = new GoogleBigQuerySource().withSourceRetryCount("databoxvwtlnv").withSourceRetryWait("datahtujaqpkup")
+                .withMaxConcurrentConnections("datacrjeypd").withDisableMetricsCollection("datascxzsynbdrqirni")
+                .withQueryTimeout("datahjbzpoh").withAdditionalColumns("datajgpe").withQuery("dataadafecwnufldzjc");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }
