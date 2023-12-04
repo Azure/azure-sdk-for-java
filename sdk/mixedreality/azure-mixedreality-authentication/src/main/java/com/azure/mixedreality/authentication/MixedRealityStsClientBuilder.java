@@ -29,13 +29,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
-
 import com.azure.mixedreality.authentication.implementation.MixedRealityStsRestClientImpl;
 import com.azure.mixedreality.authentication.implementation.MixedRealityStsRestClientImplBuilder;
 
@@ -66,10 +62,6 @@ public final class MixedRealityStsClientBuilder implements
     private static final String MIXED_REALITY_STS_PROPERTIES = "azure-mixedreality-authentication.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String MIXED_REALITY_TRACING_NAMESPACE_VALUE = "Microsoft.MixedReality";
-    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(MIXED_REALITY_STS_PROPERTIES);
-    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private final ClientLogger logger = new ClientLogger(MixedRealityStsClientBuilder.class);
@@ -478,7 +470,6 @@ public final class MixedRealityStsClientBuilder implements
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .tracer(createTracer())
             .build();
     }
 
@@ -488,6 +479,11 @@ public final class MixedRealityStsClientBuilder implements
      * @return The default {@link UserAgentPolicy} for the module.
      */
     private UserAgentPolicy getUserAgentPolicy() {
+        Map<String, String> properties = CoreUtils.getProperties(MIXED_REALITY_STS_PROPERTIES);
+
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+
         // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
         // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
         String applicationId = this.clientOptions == null
@@ -495,16 +491,6 @@ public final class MixedRealityStsClientBuilder implements
             : this.clientOptions.getApplicationId();
 
         return new UserAgentPolicy(
-            applicationId, CLIENT_NAME, CLIENT_VERSION, this.configuration);
-    }
-
-    private Tracer createTracer() {
-        TracingOptions tracingOptions = null;
-        if (clientOptions != null) {
-            tracingOptions = clientOptions.getTracingOptions();
-        }
-        
-        return TracerProvider.getDefaultProvider()
-            .createTracer(CLIENT_NAME, CLIENT_VERSION, MIXED_REALITY_TRACING_NAMESPACE_VALUE, tracingOptions);
+            applicationId, clientName, clientVersion, this.configuration);
     }
 }
