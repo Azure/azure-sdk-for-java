@@ -305,7 +305,7 @@ public class Variant {
 
 ### Getting a Feature's Variant
 
-A feature's variant can be retrieved using the `IVariantFeatureManager`'s `GetVariantAsync` method.
+A feature's variant can be retrieved using the `IVariantFeatureManager`'s `GetVariantAsync`/`GetVariant` methods. What the value is depends on the type of variant. If the variant uses "ConfigurationValue" then the value will be a `Map<String, Object>` that represents the fully resolved configuration object. If the variant uses "ConfigurationReference" then the value will be an actual instance of the referenced object, if this is don't the `@ConfigurationProperties` must be modified to support this, see [Configuration Reference](./README.md#configuration-reference) for more details.
 
 ```java
 …
@@ -314,7 +314,7 @@ FeatureManager featureManager;
 
 
 public void endpoint() {
-  Variant variant = featureManager.GetVariant("FeatureU");
+  Variant variant = featureManager.GetVariant("ShoppingCart");
 
   MyVariant variantConfiguration = variant.getConfiguration();
 
@@ -322,68 +322,72 @@ public void endpoint() {
 }
 ```
 
+#### Configuration Reference
+
+To support resolving configuration references `@ConfigurationProperties` must be setup that implement `VariantProperties`.
+
+```java
+@ConfigurationProperties(prefix = "variant")
+class MyVariantProperties implements VariantProperties {
+
+    Map<String, ShoppingCart> shoppingCart;
+
+    public Map<String, ShoppingCart> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(Map<String, ShoppingCart> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+}
+```
+
+The required naming for a configuration reference is `<feature-name>.<variant-name>`. In the example above, the configuration reference would be `ShoppingCart.Big`. This enables the return of the actual instance of the configuration.
+
 ### Setting a Variant's Configuration
 
 For each of the variants in the `Variants` property of a feature, there is a specified configuration. This can be set using either the `ConfigurationReference` or `ConfigurationValue` properties. `ConfigurationReference` is a string path that references a section of the current configuration that contains the feature flag declaration. `ConfigurationValue` is an inline configuration that can be a string, number, boolean, or configuration object. If both are specified, `ConfigurationValue` is used. If neither are specified, the returned variant's `Configuration` property will be null.
 
-```
-"Variants": [
-    { 
-        "Name": "Big", 
-        "ConfigurationReference": "ShoppingCart:Big" 
-    },  
-    { 
-        "Name": "Small", 
-        "ConfigurationValue": {
-            "Size": 300
-        }
-    } 
-]
+```yml
+feature-management:
+  ShoppingCart:
+    variants:
+      - name: Big
+        configurationReference: ShoppingCart.Big
+      - name: Small
+        configurationValue:
+          size: 300
 ```
 
 ### Allocating a Variant
 
 The process of allocating a variant to a specific feature is determined by the `Allocation` property of the feature.
 
-```
-"Allocation": { 
-    "DefaultWhenEnabled": "Small", 
-    "DefaultWhenDisabled": "Small",  
-    "User": [ 
-        { 
-            "Variant": "Big", 
-            "Users": [ 
-                "Marsha" 
-            ] 
-        } 
-    ], 
-    "Group": [ 
-        { 
-            "Variant": "Big", 
-            "Groups": [ 
-                "Ring1" 
-            ] 
-        } 
-    ],
-    "Percentile": [ 
-        { 
-            "Variant": "Big", 
-            "From": 0, 
-            "To": 10 
-        } 
-    ], 
-    "Seed": "13973240" 
-},
-"Variants": [
-    { 
-        "Name": "Big", 
-        "ConfigurationReference": "ShoppingCart:Big" 
-    },  
-    { 
-        "Name": "Small", 
-        "ConfigurationValue": "300px"
-    } 
-]
+```yml
+feature-management:
+  ShoppingCart:
+    allocation:
+      defaultWhenEnabled: Small
+      defaultWhenDisabled: Small
+      user:
+        - variant: Big
+          users:
+            - Marsha
+      group:
+        - variant: Big
+          groups:
+            - Ring1
+      percentile:
+        - variant: Big
+          from: 0
+          to: 10
+      seed: 13973240
+    variants:
+      - name: Big
+        configurationReference: ShoppingCart.Big
+      - name: Small
+        configurationValue:
+          size: 300
 ```
 
 The `Allocation` setting of a feature flag has the following properties:
@@ -392,12 +396,12 @@ The `Allocation` setting of a feature flag has the following properties:
 | ---------------- | ---------------- |
 | `DefaultWhenDisabled` | Specifies which variant should be used when a variant is requested while the feature is considered disabled. |
 | `DefaultWhenEnabled` | Specifies which variant should be used when a variant is requested while the feature is considered enabled and no variant was allocated to the user. |
-| `User` | Specifies a variant and a list of users for which that variant should be used. | 
+| `User` | Specifies a variant and a list of users for which that variant should be used. |
 | `Group` | Specifies a variant and a list of groups the current user has to be in for that variant to be used. |
 | `Percentile` | Specifies a variant and a percentage range the user's calculated percentage has to fit into for that variant to be used. |
 | `Seed` | The value which percentage calculations for `Percentile` are based on. The percentage calculation for a specific user will be the same across all features if the same `Seed` value is used. If no `Seed` is specified, then a default seed is created based on the feature name. |
 
-In the above example, if the feature is not enabled, `GetVariantAsync` would return the variant allocated by `DefaultWhenDisabled`, which is `Small` in this case. 
+In the above example, if the feature is not enabled, `GetVariantAsync` would return the variant allocated by `DefaultWhenDisabled`, which is `Small` in this case.
 
 If the feature is enabled, the feature manager will check the `User`, `Group`, and `Percentile` allocations in that order to allocate a variant for this feature. If the user being evaluated is named `Marsha`, in the group named `Ring1`, or the user happens to fall between the 0 and 10th percentile calculated with the given `Seed`, then the specified variant is returned for that allocation. In this case, all of these would return the `Big` variant. If none of these allocations match, the `DefaultWhenEnabled` variant is returned, which is `Small`.
 
@@ -409,7 +413,7 @@ You can use variants to override the enabled state of a feature flag. This gives
 
 If you are using a feature flag with binary variants, the `StatusOverride` property can be very helpful. It allows you to continue using APIs like `isEnabledAsync`/`isEnabled` and `@FeatureGate` in your application, all while benefiting from the new features that come with variants, such as percentile allocation and seed.
 
-```
+```json
 "Allocation": {
     "Percentile": [{
         "Variant": "On",
