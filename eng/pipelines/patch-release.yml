@@ -162,10 +162,6 @@ extends:
       groupId: com.azure
       safeName: azuredataappconfiguration
       ServiceDirectory: appconfiguration
-    - name: azure-communication-chat
-      groupId: com.azure
-      safeName: azurecommunicationchatclient
-      ServiceDirectory: communication
     - name: azure-messaging-eventhubs-checkpointstore-blob
       groupId: com.azure
       safeName: azuremessagingeventhubscheckpointstoreblob
