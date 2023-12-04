@@ -135,7 +135,7 @@ class OpenTelemetryUtils {
      *
      * @param span the span to set the status for.
      * @param statusMessage description for this error condition. Any non-null {@code statusMessage} indicates an error.
-     *                      Pass empty string to create error status without description.
+     *                      Must be low-cardinality.
      * @param throwable the error occurred during response transmission (optional).
      * @return the corresponding OpenTelemetry {@link Span}.
      */
