@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -44,30 +45,17 @@ public final class KeyWrapAlgorithm extends ExpandableStringEnum<KeyWrapAlgorith
     public static final KeyWrapAlgorithm A256KW = fromString("A256KW");
 
     /**
-     * Creates a new instance of {@link KeyWrapAlgorithm} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link KeyWrapAlgorithm} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public KeyWrapAlgorithm() {
-    }
-
-    /**
      * Creates or finds a KeyWrapAlgorithm from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding KeyWrapAlgorithm.
      */
+    @JsonCreator
     public static KeyWrapAlgorithm fromString(String name) {
         return fromString(name, KeyWrapAlgorithm.class);
     }
 
     /**
-     * Gets known KeyWrapAlgorithm values.
-     *
      * @return known KeyWrapAlgorithm values.
      */
     public static Collection<KeyWrapAlgorithm> values() {

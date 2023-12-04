@@ -8,7 +8,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -19,20 +18,21 @@ import java.net.HttpURLConnection;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@EnabledIf("shouldRunHsmTest")
 public class KeyAsyncClientManagedHsmTest extends KeyAsyncClientTest implements KeyClientManagedHsmTestBase {
     public KeyAsyncClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.runManagedHsmTest = shouldRunHsmTest();
+        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
     }
 
-    public static boolean shouldRunHsmTest() {
-        return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
-               || TEST_MODE == TestMode.PLAYBACK;
+    @Override
+    protected void beforeTest() {
+        Assumptions.assumeTrue(runManagedHsmTest);
+
+        super.beforeTest();
     }
 
     /**
-     * Tests that an RSA key created.
+     * Tests that a RSA key created.
      */
     @Override
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

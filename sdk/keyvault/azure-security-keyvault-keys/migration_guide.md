@@ -1,5 +1,5 @@
 # Guide for migrating to azure-security-keyvault-keys from azure-keyvault
-This guide is intended to assist in the migration to `azure-security-keyvault-keys` from [deprecated] `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
+This guide is intended to assist in the migration to `azure-security-keyvault-keys` from `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
 
 Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README for azure-security-keyvault-keys](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
 
@@ -20,11 +20,8 @@ Familiarity with the `azure-keyvault` package is assumed. For those new to the K
         - [Delete a key](#delete-a-key)
         - [Perform cryptographic operations](#perform-cryptographic-operations)
 - [Additional samples](#additional-samples)
-- [Support](#support)
 
 ## Migration benefits
-> Note: `azure-keyvault` has been [deprecated]. Please upgrade to `azure-security-keyvault-keys` for continued support.
-
 A natural question to ask when considering whether or not to adopt a new version or library is what the benefits of doing so would be. As Azure has matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and practices to best support developer productivity and to understand the gaps that the Java client libraries have.
 
 There were several areas of consistent feedback expressed across the Azure client library ecosystem. One of the most important is that the client libraries for different Azure services have not had a consistent approach to organization, naming, and API structure. Additionally, many developers have felt that the learning curve was difficult, and the APIs did not offer a good, approachable, and consistent onboarding story for those learning Azure or exploring a specific Azure service.
@@ -291,13 +288,3 @@ byte[] ciphertext = encryptResult.getCipherText();
 
 ## Additional samples
 More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-keys/src/samples).
-
-## Support
-
-If you have migrated your code base and experiencing errors, see our [troubleshooting guide][troubleshooting_guide]. For additional support, please search our [existing issues][existing_issues] or [open a new issue][open_new_issue]. You may also find existing answers on community sites like [Stack Overflow].
-
-[deprecated]: https://aka.ms/azsdk/deprecated
-[existing_issues]: https://github.com/Azure/azure-sdk-for-java/issues
-[open_new_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new/choose
-[stack_overflow]: https://stackoverflow.com/questions/tagged/azure-keyvault+java
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/TROUBLESHOOTING.md

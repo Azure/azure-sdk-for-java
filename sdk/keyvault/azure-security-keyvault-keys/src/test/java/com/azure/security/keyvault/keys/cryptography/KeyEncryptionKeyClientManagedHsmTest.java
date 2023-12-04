@@ -3,14 +3,16 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,35 +20,37 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
 
-import static com.azure.security.keyvault.keys.KeyClientTestBase.TEST_MODE;
-import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-@EnabledIf("shouldRunHsmTest")
 public class KeyEncryptionKeyClientManagedHsmTest extends KeyEncryptionKeyClientTest {
     private KeyVaultKey keyVaultKey;
 
     public KeyEncryptionKeyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.runManagedHsmTest = shouldRunHsmTest();
+        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
     }
 
-    public static boolean shouldRunHsmTest() {
-        return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
-               || TEST_MODE == TestMode.PLAYBACK;
+    @Override
+    protected void beforeTest() {
+        Assumptions.assumeTrue(runManagedHsmTest);
+
+        super.beforeTest();
     }
 
     private void setupKeyAndClient(JsonWebKey jsonWebKey, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        httpClient = buildSyncAssertingClient(interceptorManager.isPlaybackMode()
-            ? interceptorManager.getPlaybackClient() : httpClient);
+        HttpPipeline pipeline = getHttpPipeline(httpClient);
 
         if (keyVaultKey == null) {
-            KeyClient keyClient = getKeyClientBuilder(httpClient, getEndpoint(),
-                KeyServiceVersion.valueOf(serviceVersion.name()))
+            KeyClient keyClient = new KeyClientBuilder()
+                .vaultUrl(getEndpoint())
+                .pipeline(pipeline)
+                .serviceVersion(KeyServiceVersion.valueOf(serviceVersion.name()))
                 .buildClient();
             keyVaultKey = keyClient.importKey(testResourceNamer.randomName("symmetricKey", 20), jsonWebKey);
-            keyEncryptionKey = getKeyEncryptionKeyClientBuilder(httpClient, serviceVersion)
+            keyEncryptionKey = new KeyEncryptionKeyClientBuilder()
+                .pipeline(pipeline)
+                .serviceVersion(serviceVersion)
                 .buildKeyEncryptionKey(keyVaultKey.getId());
         }
     }
