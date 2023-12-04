@@ -25,7 +25,10 @@ public class SslContextWithTlsVersionModificationsTests {
 
     @Test(groups = { "simple" }, dataProvider = "isTls_v_1_3_enabledConfigs")
     public void readItem(boolean isTlsV_1_3_enabled) {
-        System.setProperty("COSMOS.IS_TLSv1_3_ENABLED", String.valueOf(isTlsV_1_3_enabled));
+
+        if (isTlsV_1_3_enabled) {
+            System.setProperty("COSMOS.IS_TLSv1_3_ENABLED", String.valueOf(isTlsV_1_3_enabled));
+        }
 
         CosmosClient client = null;
         CosmosDatabase database = null;
@@ -72,6 +75,8 @@ public class SslContextWithTlsVersionModificationsTests {
             if (client != null) {
                 client.close();
             }
+
+            System.clearProperty("COSMOS.IS_TLSv1_3_ENABLED");
         }
     }
 
