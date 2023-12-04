@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.FluxUtil;
 import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
@@ -195,6 +196,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // TODO (trask) also export and validate logs in this test
     }
 
+    @DoNotRecord
     @Test
     public void testStatsbeat() throws Exception {
         // create the OpenTelemetry SDK
@@ -220,12 +222,14 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         verifyStatsbeatTelemetry(customValidationPolicy);
     }
 
+    @DoNotRecord
     @Test
     public void testStatsbeatShutdownWhen400InvalidIKeyReturned() throws Exception {
         String fakeBody = "{\"itemsReceived\":4,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":1,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":2,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":3,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
         verifyStatsbeatShutdownOrnNot(fakeBody, true);
     }
 
+    @DoNotRecord
     @Test
     public void testStatsbeatNotShutDownWhen400InvalidDataReturned() throws Exception {
         String fakeBody = "{\"itemsReceived\":1,\"itemsAccepted\":0,\"errors\":[{\"index\":0,\"statusCode\":400,\"message\":\"102: Field 'time' on type 'Envelope' is not a valid time string. Expected: date, Actual: fake\"}]}";
