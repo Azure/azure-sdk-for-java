@@ -111,23 +111,13 @@ public class SessionTokenHelper {
         return highestSessionToken;
     }
 
-    static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey, ConcurrentHashMap<String, ISessionToken> collectionRidScopedSessionTokenRegistry) {
-//        if (collectionRidScopedSessionTokenRegistry != null) {
-//            PkRangeIdScopedSessionTokenRegistry pkRangeIdScopedSessionTokenRegistry = collectionRidScopedSessionTokenRegistry.get(pkRangeId);
-//
-//            if (pkRangeIdScopedSessionTokenRegistry != null) {
-//
-//                return pkRangeIdScopedSessionTokenRegistry.resolvePkScopedSessionToken(partitionKey);
-//            }
-//
-//        }
-//
-//        return null;
+    static ISessionToken resolvePartitionKeyScopedSessionToken(String partitionKey, CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry) {
 
-        if (collectionRidScopedSessionTokenRegistry != null) {
-
+        if (collectionScopedSessionTokenRegistry != null) {
+            return collectionScopedSessionTokenRegistry.resolvePkScopedSessionToken(partitionKey);
         }
 
+        return null;
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,

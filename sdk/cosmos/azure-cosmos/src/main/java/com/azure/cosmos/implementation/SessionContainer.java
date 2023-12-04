@@ -113,28 +113,28 @@ public final class SessionContainer implements ISessionContainer {
         return rangeIdToTokenMap;
     }
 
-    private ConcurrentHashMap<String, ISessionToken> getPartitionKeyToTokenMap(RxDocumentServiceRequest request) {
-        return getPartitionKeyToTokenMap(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
+    private CollectionScopedSessionTokenRegistry getCollectionScopedSessionTokenRegistry(RxDocumentServiceRequest request) {
+        return getCollectionScopedSessionTokenRegistry(request.getIsNameBased(), request.getResourceId(), request.getResourceAddress());
     }
 
-    private ConcurrentHashMap<String, ISessionToken> getPartitionKeyToTokenMap(boolean isNameBased, String rId, String resourceAddress) {
-        ConcurrentHashMap<String, ISessionToken> partitionKeyToTokenMap = null;
+    private CollectionScopedSessionTokenRegistry getCollectionScopedSessionTokenRegistry(boolean isNameBased, String rId, String resourceAddress) {
+        CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry = null;
 
         if (!isNameBased) {
             if (!StringUtils.isEmpty(rId)) {
                 ResourceId resourceId = ResourceId.parse(rId);
                 if (resourceId.getDocumentCollection() != 0) {
-                    partitionKeyToTokenMap = this.globalSessionTokenRegistry.resolveCollectionRidScopedRegistry(resourceId.getUniqueDocumentCollectionId());
+                    collectionScopedSessionTokenRegistry = this.globalSessionTokenRegistry.resolveCollectionScopedSessionTokenRegistry(resourceId.getUniqueDocumentCollectionId());
                 }
             }
         } else {
             String collectionName = Utils.getCollectionName(resourceAddress);
             if (!StringUtils.isEmpty(collectionName) && this.collectionNameToCollectionResourceId.containsKey(collectionName)) {
-                partitionKeyToTokenMap = this.globalSessionTokenRegistry.resolveCollectionRidScopedRegistry(this.collectionNameToCollectionResourceId.get(collectionName));
+                collectionScopedSessionTokenRegistry = this.globalSessionTokenRegistry.resolveCollectionScopedSessionTokenRegistry(this.collectionNameToCollectionResourceId.get(collectionName));
             }
         }
 
-        return partitionKeyToTokenMap;
+        return collectionScopedSessionTokenRegistry;
     }
 
     public String resolveGlobalSessionToken(RxDocumentServiceRequest request) {
@@ -159,7 +159,7 @@ public final class SessionContainer implements ISessionContainer {
 
                 resolvedPartitionKeyScopedSessionToken = SessionTokenHelper
                     .resolvePartitionKeyScopedSessionToken(
-                        partitionKey, this.getPartitionKeyToTokenMap(request));
+                        partitionKey, this.getCollectionScopedSessionTokenRegistry(request));
 
                 // TODO: abhmohanty - revert logger or logger.debug here
                 if (resolvedPartitionKeyScopedSessionToken != null) {
@@ -194,7 +194,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.remove(collectionName);
 
                     if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                        this.globalSessionTokenRegistry.removeCollectionRidFromRegistry(rid);
+                        this.globalSessionTokenRegistry.removeCollectionScopedSessionTokenRegistry(rid);
                     }
                 }
             } finally {
@@ -218,7 +218,7 @@ public final class SessionContainer implements ISessionContainer {
                         this.collectionNameToCollectionResourceId.remove(collectionName);
 
                         if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
-                            this.globalSessionTokenRegistry.removeCollectionRidFromRegistry(rid);
+                            this.globalSessionTokenRegistry.removeCollectionScopedSessionTokenRegistry(rid);
                         }
                     }
                 } finally {
@@ -321,28 +321,26 @@ public final class SessionContainer implements ISessionContainer {
     }
 
     private void updateExistingPartitionKeyScopedTokensInternal(
-        Long collectionRid,
-        ConcurrentHashMap<String, ISessionToken> collectionRidScopedSessionTokenRegistry,
+        CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry,
         String partitionKey,
         ISessionToken parsedSessionToken) {
 
-        this.globalSessionTokenRegistry.updatePkScopedSessionTokens(
-            collectionRidScopedSessionTokenRegistry,
+        this.globalSessionTokenRegistry.tryMergeSessionToken(
+            collectionScopedSessionTokenRegistry,
             partitionKey,
-            parsedSessionToken,
-            collectionRid);
+            parsedSessionToken);
     }
 
     private void addSessionToken(ResourceId resourceId, String partitionKeyRangeId, String partitionKey, ISessionToken parsedSessionToken) {
         ConcurrentHashMap<String, ISessionToken> existingPkRangeIdScopedTokensIfAny = this.collectionResourceIdToSessionTokens.get(resourceId.getUniqueDocumentCollectionId());
-        ConcurrentHashMap<String, ISessionToken> sessionTokenRegistry = this.globalSessionTokenRegistry.resolveCollectionRidScopedRegistry(resourceId.getUniqueDocumentCollectionId());
+        CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry = this.globalSessionTokenRegistry.resolveCollectionScopedSessionTokenRegistry(resourceId.getUniqueDocumentCollectionId());
 
         if (existingPkRangeIdScopedTokensIfAny != null) {
             // if an entry for this collection exists, no need to lock the outer ConcurrentHashMap.
             updateExistingPkRangeIdScopedTokensInternal(existingPkRangeIdScopedTokensIfAny, partitionKeyRangeId, parsedSessionToken);
 
-            if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled() && sessionTokenRegistry != null) {
-                updateExistingPartitionKeyScopedTokensInternal(resourceId.getUniqueDocumentCollectionId(), sessionTokenRegistry, partitionKey, parsedSessionToken);
+            if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled() && collectionScopedSessionTokenRegistry != null) {
+                updateExistingPartitionKeyScopedTokensInternal(collectionScopedSessionTokenRegistry, partitionKey, parsedSessionToken);
             }
 
             return;
@@ -366,7 +364,6 @@ public final class SessionContainer implements ISessionContainer {
             this.globalSessionTokenRegistry.setupCollectionRidScopedRegistry(
                 resourceId.getUniqueDocumentCollectionId(),
                 partitionKey,
-                partitionKeyRangeId,
                 parsedSessionToken);
         }
     }

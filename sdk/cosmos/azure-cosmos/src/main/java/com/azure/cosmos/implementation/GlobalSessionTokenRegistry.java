@@ -10,72 +10,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class GlobalSessionTokenRegistry {
 
     private final AtomicInteger sessionTokenCount;
-    private final ConcurrentHashMap<Long, ConcurrentHashMap<String, ISessionToken>> collectionRidToPkScopedSessionTokens;
-    private final ConcurrentHashMap<Long, ConcurrentLinkedQueue<String>> collectionRidToPksAdded;
+    private final ConcurrentHashMap<Long, CollectionScopedSessionTokenRegistry> collectionRidToPkScopedSessionTokens;
 
     public GlobalSessionTokenRegistry() {
         this.sessionTokenCount = new AtomicInteger(0);
         this.collectionRidToPkScopedSessionTokens = new ConcurrentHashMap<>();
-        this.collectionRidToPksAdded = new ConcurrentHashMap<>();
     }
 
-    public void setupCollectionRidScopedRegistry(Long collectionRid, String partitionKey, String pkRangeId, ISessionToken parsedSessionToken) {
-        this.collectionRidToPkScopedSessionTokens.compute(collectionRid, (rid, pkScopedSessionTokens) -> {
+    public void setupCollectionRidScopedRegistry(Long collectionRid, String partitionKey, ISessionToken parsedSessionToken) {
+        this.collectionRidToPkScopedSessionTokens.compute(collectionRid, (rid, collectionScopedSessionTokenRegistry) -> {
 
-            if (pkScopedSessionTokens == null) {
-                ConcurrentHashMap<String, ISessionToken> pkScopedSessionTokensInner = new ConcurrentHashMap<>();
-                pkScopedSessionTokensInner.put(partitionKey, parsedSessionToken);
-                this.sessionTokenCount.incrementAndGet();
-                return pkScopedSessionTokensInner;
+            if (collectionScopedSessionTokenRegistry == null) {
+                CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistryInner = new CollectionScopedSessionTokenRegistry();
+                collectionScopedSessionTokenRegistryInner.tryMergeSessionToken(partitionKey, parsedSessionToken, this.sessionTokenCount);
+                return collectionScopedSessionTokenRegistryInner;
             }
 
-            pkScopedSessionTokens.merge(partitionKey, parsedSessionToken, ISessionToken::merge);
-
-            this.collectionRidToPksAdded.compute(collectionRid, (ridInner, collectionRidScopedPksAdded) -> {
-
-                if (collectionRidScopedPksAdded == null) {
-                    collectionRidScopedPksAdded = new ConcurrentLinkedQueue<>();
-                }
-
-                collectionRidScopedPksAdded.offer(partitionKey);
-                return collectionRidScopedPksAdded;
-            });
-
-            return pkScopedSessionTokens;
+            collectionScopedSessionTokenRegistry.tryMergeSessionToken(partitionKey, parsedSessionToken, this.sessionTokenCount);
+            return collectionScopedSessionTokenRegistry;
         });
     }
 
-    public void removeCollectionRidFromRegistry(Long collectionRid) {
+    public CollectionScopedSessionTokenRegistry resolveCollectionScopedSessionTokenRegistry(Long collectionRid) {
+        return this.collectionRidToPkScopedSessionTokens.get(collectionRid);
+    }
+
+    public void removeCollectionScopedSessionTokenRegistry(Long collectionRid) {
         this.collectionRidToPkScopedSessionTokens.remove(collectionRid);
     }
 
-    public ConcurrentHashMap<String, ISessionToken> resolveCollectionRidScopedRegistry(Long collectionRid) {
-        if (this.collectionRidToPkScopedSessionTokens.containsKey(collectionRid)) {
-            return this.collectionRidToPkScopedSessionTokens.get(collectionRid);
-        }
-
-        return null;
-    }
-
-    public void updatePkScopedSessionTokens(
-        ConcurrentHashMap<String, ISessionToken> pkScopedSessionsForSomeCollectionRid,
+    public void tryMergeSessionToken(
+        CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry,
         String partitionKey,
-        ISessionToken parsedSessionToken,
-        Long collectionRid) {
-
-        pkScopedSessionsForSomeCollectionRid.merge(partitionKey, parsedSessionToken, (existingSessionToken, newSessionToken) -> {
-            ConcurrentLinkedQueue<String> pkQueueForCollectionRid = this.collectionRidToPksAdded.get(collectionRid);
-            pkQueueForCollectionRid.add(partitionKey);
-            return existingSessionToken.merge(newSessionToken);
-        });
-    }
-
-    public ISessionToken resolveSessionToken(
-        ConcurrentHashMap<String, ISessionToken> pkScopedSessionsForSomeCollectionRid,
-        String partitionKey,
-        Long collectionRid) {
-
-        this.collectionRidToPksAdded.get(collectionRid).add(partitionKey);
-        return pkScopedSessionsForSomeCollectionRid.get(partitionKey);
+        ISessionToken parsedSessionToken) {
+        collectionScopedSessionTokenRegistry.tryMergeSessionToken(partitionKey, parsedSessionToken, this.sessionTokenCount);
     }
 }
