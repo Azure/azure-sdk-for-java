@@ -16,7 +16,7 @@ public class DistinctContinuationToken extends JsonSerializable {
     private static final String LAST_HASH_PROPERTY_NAME = "lastHash";
     private static final String SOURCE_TOKEN_PROPERTY_NAME = "sourceToken";
 
-    private static final Logger logger = LoggerFactory.getLogger(TakeContinuationToken.class);
+    private static final Logger logger = LoggerFactory.getLogger(DistinctContinuationToken.class);
 
     public DistinctContinuationToken(UInt128 lastHash, String sourceToken) {
         this.setLastHash(lastHash);

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
 
 ### Other Changes
 

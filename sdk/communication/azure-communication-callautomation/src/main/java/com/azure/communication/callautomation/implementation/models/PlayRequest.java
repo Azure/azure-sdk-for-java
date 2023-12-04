@@ -8,14 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PlayRequest model. */
+/**
+ * The PlayRequest model.
+ */
 @Fluent
 public final class PlayRequest {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
-    private PlaySourceInternal playSourceInfo;
+    @JsonProperty(value = "playSources", required = true)
+    private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
@@ -37,35 +39,43 @@ public final class PlayRequest {
     private String operationContext;
 
     /*
-     * The callback URI to override the main callback URI.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /**
-     * Get the playSourceInfo property: The source of the audio to be played.
-     *
-     * @return the playSourceInfo value.
+     * Creates an instance of PlayRequest class.
      */
-    public PlaySourceInternal getPlaySourceInfo() {
-        return this.playSourceInfo;
+    public PlayRequest() {
     }
 
     /**
-     * Set the playSourceInfo property: The source of the audio to be played.
-     *
-     * @param playSourceInfo the playSourceInfo value to set.
+     * Get the playSources property: The source of the audio to be played.
+     * 
+     * @return the playSources value.
+     */
+    public List<PlaySourceInternal> getPlaySources() {
+        return this.playSources;
+    }
+
+    /**
+     * Set the playSources property: The source of the audio to be played.
+     * 
+     * @param playSources the playSources value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
-        this.playSourceInfo = playSourceInfo;
+    public PlayRequest setPlaySources(List<PlaySourceInternal> playSources) {
+        this.playSources = playSources;
         return this;
     }
 
     /**
-     * Get the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Get the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @return the playTo value.
      */
     public List<CommunicationIdentifierModel> getPlayTo() {
@@ -73,9 +83,9 @@ public final class PlayRequest {
     }
 
     /**
-     * Set the playTo property: The list of call participants play provided audio to. Plays to everyone in the call when
-     * not provided.
-     *
+     * Set the playTo property: The list of call participants play provided audio to.
+     * Plays to everyone in the call when not provided.
+     * 
      * @param playTo the playTo value to set.
      * @return the PlayRequest object itself.
      */
@@ -86,7 +96,7 @@ public final class PlayRequest {
 
     /**
      * Get the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @return the playOptions value.
      */
     public PlayOptionsInternal getPlayOptions() {
@@ -95,7 +105,7 @@ public final class PlayRequest {
 
     /**
      * Set the playOptions property: Defines options for playing the audio.
-     *
+     * 
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
@@ -106,7 +116,7 @@ public final class PlayRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -115,7 +125,7 @@ public final class PlayRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the PlayRequest object itself.
      */
@@ -125,22 +135,28 @@ public final class PlayRequest {
     }
 
     /**
-     * Get the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @return the callbackUri value.
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @return the operationCallbackUri value.
      */
-    public String getCallbackUri() {
-        return this.callbackUri;
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
     }
 
     /**
-     * Set the callbackUri property: The callback URI to override the main callback URI.
-     *
-     * @param callbackUri the callbackUri value to set.
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
+    public PlayRequest setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

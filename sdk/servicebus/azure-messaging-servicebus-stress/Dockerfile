@@ -28,10 +28,11 @@ RUN yum update -y
 
 WORKDIR /app
 COPY --from=builder /stress-sb/sdk/servicebus/azure-messaging-servicebus-stress/target .
+COPY --from=builder /stress-sb/sdk/servicebus/azure-messaging-servicebus-stress/src/main/resources/applicationinsights.json /app/applicationinsights.json
 
-ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.4.15/applicationinsights-agent-3.4.15.jar
-ADD ${AGENT_URL} ./BOOT-INF/classes/
+ARG APPLICATION_INSIGHTS_AGENT_VERSION=3.4.18
+ARG AGENT_URL=https://github.com/microsoft/ApplicationInsights-Java/releases/download/${APPLICATION_INSIGHTS_AGENT_VERSION}/applicationinsights-agent-${APPLICATION_INSIGHTS_AGENT_VERSION}.jar
+ADD ${AGENT_URL} ./applicationinsights-agent.jar
 
-ENTRYPOINT ["java", "-javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.15.jar", \
-            "-jar", "/app/azure-messaging-servicebus-stress/target/azure-messaging-servicebus-stress-1.0.0-beta.1.jar", \
-            "--TEST_CLASS=MessageSender"]
+# This is never executed (since job yaml overrides it)
+ENTRYPOINT ["bash"]

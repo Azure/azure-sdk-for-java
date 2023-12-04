@@ -1,2 +1,3 @@
 com.azure.monitor.applicationinsights.spring.AzureSpringMonitorAutoConfig
 com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagAutoConfig
+com.azure.monitor.applicationinsights.spring.AzureJdbcDriverAutoConfiguration
