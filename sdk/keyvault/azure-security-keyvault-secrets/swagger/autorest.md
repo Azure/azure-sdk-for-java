@@ -30,10 +30,10 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.22'
+use: '@autorest/java@4.1.19'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/secrets.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/551275acb80e1f8b39036b79dfc35a8f63b601a7/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.4/secrets.json
 title: SecretClient
 namespace: com.azure.security.keyvault.secrets
 models-subpackage: implementation.models

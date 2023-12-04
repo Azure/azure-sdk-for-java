@@ -16,31 +16,14 @@ public final class DeletedSecretHelper {
     }
 
     public static void setRecoveryId(DeletedSecret deletedSecret, String recoveryId) {
-        if (accessor == null) {
-            new DeletedSecret();
-        }
-
-        assert accessor != null;
         accessor.setRecoveryId(deletedSecret, recoveryId);
     }
 
     public static void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate) {
-        if (accessor == null) {
-            new DeletedSecret();
-        }
-
-        assert accessor != null;
-
         accessor.setScheduledPurgeDate(deletedSecret, scheduledPurgeDate);
     }
 
     public static void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn) {
-        if (accessor == null) {
-            new DeletedSecret();
-        }
-
-        assert accessor != null;
-
         accessor.setDeletedOn(deletedSecret, deletedOn);
     }
 

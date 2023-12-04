@@ -32,7 +32,7 @@ public final class SecretRestoreParameters implements JsonSerializable<SecretRes
      */
     public byte[] getSecretBundleBackup() {
         if (this.secretBundleBackup == null) {
-            return null;
+            return new byte[0];
         }
         return this.secretBundleBackup.decodedBytes();
     }
