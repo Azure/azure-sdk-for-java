@@ -41,7 +41,6 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
@@ -696,21 +695,6 @@ class FunctionAppImpl
             this.innerModel().withKind("functionapp,linux,container,azurecontainerapps");
         }
         return this;
-    }
-
-    @Override
-    public FunctionAppImpl withManagedEnvironmentName(String managedEnvironmentName) {
-        if (CoreUtils.isNullOrEmpty(managedEnvironmentName)) {
-            throw new IllegalArgumentException("managedEnvironmentName for Function App must not be null.");
-        }
-        return withManagedEnvironmentId(ResourceUtils.constructResourceId(
-            this.manager().subscriptionId(),
-            resourceGroupName(),
-            "Microsoft.App",
-            "managedEnvironments",
-            managedEnvironmentName,
-            ""
-        ));
     }
 
     @Override

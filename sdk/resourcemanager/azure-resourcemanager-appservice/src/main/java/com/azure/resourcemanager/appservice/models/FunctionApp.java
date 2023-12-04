@@ -523,18 +523,6 @@ public interface FunctionApp extends FunctionAppBasic, WebAppBase, Updatable<Fun
              * @return the next stage of the definition
              */
             WithScaleRulesOrDockerContainerImage withManagedEnvironmentId(String managedEnvironmentId);
-
-            /**
-             * Specifies the name of the <a href="https://learn.microsoft.com/en-us/azure/container-apps/environment">Azure Container Apps environment</a>
-             * to deploy the Function App on. The environment must be in the same resource group as the Function App.
-             * <p>When your container is hosted in a <a href="https://learn.microsoft.com/en-us/azure/container-apps/plans#consumption-dedicated">Consumption + Dedicated plan</a> structure,
-             * only the default Consumption plan is currently supported. Dedicated plans in this structure aren't yet supported for Functions.
-             * When running functions on Container Apps, you're charged only for the Container Apps usage.</p>
-             *
-             * @param managedEnvironmentName name of the Azure Container Apps environment
-             * @return the next stage of the definition
-             */
-            WithScaleRulesOrDockerContainerImage withManagedEnvironmentName(String managedEnvironmentName);
         }
 
         /** A function app definition allowing scale rules to be specified for Function Apps hosted on Azure Container Apps. */

@@ -5,7 +5,7 @@
 ### Features Added
 
 - Supported Function App in Azure Container Apps environment.
-  - Supported `withManagedEnvironmentId` and `withManagedEnvironmentName` for `FunctionApp`.
+  - Supported `withManagedEnvironmentId` or `FunctionApp`.
   - Supported `withMaxReplica` and `withMinReplica` for `FunctionApp`.
 
 ### Breaking Changes
