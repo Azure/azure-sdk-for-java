@@ -185,13 +185,19 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If a schema
-     * <b>does not exist</b>does not exist with the same {@code groupName}, {@code name}, {@code format}, and
-     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
-     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
-     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
-     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
-     * is assigned to it.
+     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
+     * 
+     * <ul>
+     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
+     * 
+     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
+     * the id of that existing schema is returned.</li>
+     * 
+     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
+     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
+     * returned.</li>
+     * </ul>
      *
      * @param groupName The schema group.
      * @param name The schema name.
@@ -212,13 +218,19 @@ public final class SchemaRegistryAsyncClient {
     }
 
     /**
-     * Registers a new schema in the specified schema group with the given schema name. If a schema
-     * <b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
-{@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a schema id. If a schema
-     * exists with a matching {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition}, the id of
-     * that schema is returned. If the Schema Registry instance contains an existing {@code groupName}, {@code name},
-     * and {@code format} but the {@code schemaDefinition} is different, it is considered a new version, and schema id
-     * is assigned to it.
+     * Registers a new schema in the specified schema group with the given schema name.  If a schema:
+     * 
+     * <ul>
+     * <li><b>does not exist</b> with the same {@code groupName}, {@code name}, {@code format}, and
+     * {@code schemaDefinition}, it is added to the Schema Registry Instance and assigned a new schema id.</li>
+     * 
+     * <li>exists with the same {@code groupName}, {@code name}, {@code format}, and {@code schemaDefinition},
+     * the id of that existing schema is returned.</li>
+     * 
+     * <li>exists with the same {@code groupName}, {@code name}, and {@code format} but the <u>{@code schemaDefinition}
+     * is different</u>, it is considered a new version. A new schema id is assigned to the schema and its schema id is
+     * returned.</li>
+     * </ul>
      *
      * @param groupName The schema group.
      * @param name The schema name.
