@@ -8,26 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The localizable string class.
- */
+/** The localizable string class. */
 @Fluent
 public final class LocalizableString {
     /*
-     * The invariant value.
+     * the invariant value.
      */
     @JsonProperty(value = "value", required = true)
     private String value;
 
     /*
-     * The display name.
+     * the locale specific value.
      */
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**
      * Creates an instance of LocalizableString class.
-     * 
+     *
      * @param value the value value to set.
      */
     @JsonCreator
@@ -36,8 +34,8 @@ public final class LocalizableString {
     }
 
     /**
-     * Get the value property: The invariant value.
-     * 
+     * Get the value property: the invariant value.
+     *
      * @return the value value.
      */
     public String getValue() {
@@ -45,8 +43,8 @@ public final class LocalizableString {
     }
 
     /**
-     * Get the localizedValue property: The display name.
-     * 
+     * Get the localizedValue property: the locale specific value.
+     *
      * @return the localizedValue value.
      */
     public String getLocalizedValue() {
@@ -54,13 +52,24 @@ public final class LocalizableString {
     }
 
     /**
-     * Set the localizedValue property: The display name.
-     * 
+     * Set the localizedValue property: the locale specific value.
+     *
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableString object itself.
      */
     public LocalizableString setLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model LocalizableString");
+        }
     }
 }

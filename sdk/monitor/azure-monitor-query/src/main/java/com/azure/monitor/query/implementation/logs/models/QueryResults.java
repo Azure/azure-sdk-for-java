@@ -11,13 +11,13 @@ import java.util.List;
 
 /**
  * A query response.
- * 
- * Contains the tables, columns &amp; rows resulting from a query.
+ *
+ * <p>Contains the tables, columns &amp; rows resulting from a query.
  */
 @Fluent
 public final class QueryResults {
     /*
-     * The results of the query in tabular format.
+     * The list of tables, columns and rows.
      */
     @JsonProperty(value = "tables", required = true)
     private List<Table> tables;
@@ -42,7 +42,7 @@ public final class QueryResults {
 
     /**
      * Creates an instance of QueryResults class.
-     * 
+     *
      * @param tables the tables value to set.
      */
     @JsonCreator
@@ -51,8 +51,8 @@ public final class QueryResults {
     }
 
     /**
-     * Get the tables property: The results of the query in tabular format.
-     * 
+     * Get the tables property: The list of tables, columns and rows.
+     *
      * @return the tables value.
      */
     public List<Table> getTables() {
@@ -61,7 +61,7 @@ public final class QueryResults {
 
     /**
      * Get the statistics property: Statistics represented in JSON format.
-     * 
+     *
      * @return the statistics value.
      */
     public Object getStatistics() {
@@ -70,7 +70,7 @@ public final class QueryResults {
 
     /**
      * Set the statistics property: Statistics represented in JSON format.
-     * 
+     *
      * @param statistics the statistics value to set.
      * @return the QueryResults object itself.
      */
@@ -81,7 +81,7 @@ public final class QueryResults {
 
     /**
      * Get the render property: Visualization data in JSON format.
-     * 
+     *
      * @return the render value.
      */
     public Object getRender() {
@@ -90,7 +90,7 @@ public final class QueryResults {
 
     /**
      * Set the render property: Visualization data in JSON format.
-     * 
+     *
      * @param render the render value to set.
      * @return the QueryResults object itself.
      */
@@ -101,7 +101,7 @@ public final class QueryResults {
 
     /**
      * Get the error property: The code and message for an error.
-     * 
+     *
      * @return the error value.
      */
     public ErrorInfo getError() {
@@ -110,12 +110,28 @@ public final class QueryResults {
 
     /**
      * Set the error property: The code and message for an error.
-     * 
+     *
      * @param error the error value to set.
      * @return the QueryResults object itself.
      */
     public QueryResults setError(ErrorInfo error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTables() == null) {
+            throw new IllegalArgumentException("Missing required property tables in model QueryResults");
+        } else {
+            getTables().forEach(e -> e.validate());
+        }
+        if (getError() != null) {
+            getError().validate();
+        }
     }
 }

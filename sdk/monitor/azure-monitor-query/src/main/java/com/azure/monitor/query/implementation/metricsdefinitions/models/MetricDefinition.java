@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Metric definition class specifies the metadata for a metric.
- */
+/** Metric definition class specifies the metadata for a metric. */
 @Fluent
 public final class MetricDefinition {
     /*
@@ -91,15 +89,12 @@ public final class MetricDefinition {
     @JsonProperty(value = "dimensions")
     private List<LocalizableString> dimensions;
 
-    /**
-     * Creates an instance of MetricDefinition class.
-     */
-    public MetricDefinition() {
-    }
+    /** Creates an instance of MetricDefinition class. */
+    public MetricDefinition() {}
 
     /**
      * Get the isDimensionRequired property: Flag to indicate whether the dimension is required.
-     * 
+     *
      * @return the isDimensionRequired value.
      */
     public Boolean isDimensionRequired() {
@@ -108,7 +103,7 @@ public final class MetricDefinition {
 
     /**
      * Set the isDimensionRequired property: Flag to indicate whether the dimension is required.
-     * 
+     *
      * @param isDimensionRequired the isDimensionRequired value to set.
      * @return the MetricDefinition object itself.
      */
@@ -119,7 +114,7 @@ public final class MetricDefinition {
 
     /**
      * Get the resourceId property: the resource identifier of the resource that emitted the metric.
-     * 
+     *
      * @return the resourceId value.
      */
     public String getResourceId() {
@@ -128,7 +123,7 @@ public final class MetricDefinition {
 
     /**
      * Set the resourceId property: the resource identifier of the resource that emitted the metric.
-     * 
+     *
      * @param resourceId the resourceId value to set.
      * @return the MetricDefinition object itself.
      */
@@ -139,7 +134,7 @@ public final class MetricDefinition {
 
     /**
      * Get the namespace property: the namespace the metric belongs to.
-     * 
+     *
      * @return the namespace value.
      */
     public String getNamespace() {
@@ -148,7 +143,7 @@ public final class MetricDefinition {
 
     /**
      * Set the namespace property: the namespace the metric belongs to.
-     * 
+     *
      * @param namespace the namespace value to set.
      * @return the MetricDefinition object itself.
      */
@@ -159,7 +154,7 @@ public final class MetricDefinition {
 
     /**
      * Get the name property: the name and the display name of the metric, i.e. it is a localizable string.
-     * 
+     *
      * @return the name value.
      */
     public LocalizableString getName() {
@@ -168,7 +163,7 @@ public final class MetricDefinition {
 
     /**
      * Set the name property: the name and the display name of the metric, i.e. it is a localizable string.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricDefinition object itself.
      */
@@ -179,7 +174,7 @@ public final class MetricDefinition {
 
     /**
      * Get the displayDescription property: Detailed description of this metric.
-     * 
+     *
      * @return the displayDescription value.
      */
     public String getDisplayDescription() {
@@ -188,7 +183,7 @@ public final class MetricDefinition {
 
     /**
      * Set the displayDescription property: Detailed description of this metric.
-     * 
+     *
      * @param displayDescription the displayDescription value to set.
      * @return the MetricDefinition object itself.
      */
@@ -199,7 +194,7 @@ public final class MetricDefinition {
 
     /**
      * Get the category property: Custom category name for this metric.
-     * 
+     *
      * @return the category value.
      */
     public String getCategory() {
@@ -208,7 +203,7 @@ public final class MetricDefinition {
 
     /**
      * Set the category property: Custom category name for this metric.
-     * 
+     *
      * @param category the category value to set.
      * @return the MetricDefinition object itself.
      */
@@ -219,7 +214,7 @@ public final class MetricDefinition {
 
     /**
      * Get the metricClass property: The class of the metric.
-     * 
+     *
      * @return the metricClass value.
      */
     public MetricClass getMetricClass() {
@@ -228,7 +223,7 @@ public final class MetricDefinition {
 
     /**
      * Set the metricClass property: The class of the metric.
-     * 
+     *
      * @param metricClass the metricClass value to set.
      * @return the MetricDefinition object itself.
      */
@@ -239,7 +234,7 @@ public final class MetricDefinition {
 
     /**
      * Get the unit property: The unit of the metric.
-     * 
+     *
      * @return the unit value.
      */
     public MetricUnit getUnit() {
@@ -248,7 +243,7 @@ public final class MetricDefinition {
 
     /**
      * Set the unit property: The unit of the metric.
-     * 
+     *
      * @param unit the unit value to set.
      * @return the MetricDefinition object itself.
      */
@@ -260,7 +255,7 @@ public final class MetricDefinition {
     /**
      * Get the primaryAggregationType property: the primary aggregation type value defining how to use the values for
      * display.
-     * 
+     *
      * @return the primaryAggregationType value.
      */
     public AggregationType getPrimaryAggregationType() {
@@ -270,7 +265,7 @@ public final class MetricDefinition {
     /**
      * Set the primaryAggregationType property: the primary aggregation type value defining how to use the values for
      * display.
-     * 
+     *
      * @param primaryAggregationType the primaryAggregationType value to set.
      * @return the MetricDefinition object itself.
      */
@@ -281,7 +276,7 @@ public final class MetricDefinition {
 
     /**
      * Get the supportedAggregationTypes property: the collection of what aggregation types are supported.
-     * 
+     *
      * @return the supportedAggregationTypes value.
      */
     public List<AggregationType> getSupportedAggregationTypes() {
@@ -290,7 +285,7 @@ public final class MetricDefinition {
 
     /**
      * Set the supportedAggregationTypes property: the collection of what aggregation types are supported.
-     * 
+     *
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricDefinition object itself.
      */
@@ -301,7 +296,7 @@ public final class MetricDefinition {
 
     /**
      * Get the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
-     * 
+     *
      * @return the metricAvailabilities value.
      */
     public List<MetricAvailability> getMetricAvailabilities() {
@@ -310,7 +305,7 @@ public final class MetricDefinition {
 
     /**
      * Set the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
-     * 
+     *
      * @param metricAvailabilities the metricAvailabilities value to set.
      * @return the MetricDefinition object itself.
      */
@@ -321,7 +316,7 @@ public final class MetricDefinition {
 
     /**
      * Get the id property: the resource identifier of the metric definition.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -330,7 +325,7 @@ public final class MetricDefinition {
 
     /**
      * Set the id property: the resource identifier of the metric definition.
-     * 
+     *
      * @param id the id value to set.
      * @return the MetricDefinition object itself.
      */
@@ -341,7 +336,7 @@ public final class MetricDefinition {
 
     /**
      * Get the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<LocalizableString> getDimensions() {
@@ -350,12 +345,29 @@ public final class MetricDefinition {
 
     /**
      * Set the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the MetricDefinition object itself.
      */
     public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
         this.dimensions = dimensions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() != null) {
+            getName().validate();
+        }
+        if (getMetricAvailabilities() != null) {
+            getMetricAvailabilities().forEach(e -> e.validate());
+        }
+        if (getDimensions() != null) {
+            getDimensions().forEach(e -> e.validate());
+        }
     }
 }

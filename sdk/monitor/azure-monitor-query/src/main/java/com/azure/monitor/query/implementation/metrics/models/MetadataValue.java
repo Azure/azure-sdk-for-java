@@ -7,32 +7,27 @@ package com.azure.monitor.query.implementation.metrics.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents a metric metadata value.
- */
+/** Represents a metric metadata value. */
 @Fluent
 public final class MetadataValue {
     /*
-     * The name of the metadata.
+     * the name of the metadata.
      */
     @JsonProperty(value = "name")
     private LocalizableString name;
 
     /*
-     * The value of the metadata.
+     * the value of the metadata.
      */
     @JsonProperty(value = "value")
     private String value;
 
-    /**
-     * Creates an instance of MetadataValue class.
-     */
-    public MetadataValue() {
-    }
+    /** Creates an instance of MetadataValue class. */
+    public MetadataValue() {}
 
     /**
-     * Get the name property: The name of the metadata.
-     * 
+     * Get the name property: the name of the metadata.
+     *
      * @return the name value.
      */
     public LocalizableString getName() {
@@ -40,8 +35,8 @@ public final class MetadataValue {
     }
 
     /**
-     * Set the name property: The name of the metadata.
-     * 
+     * Set the name property: the name of the metadata.
+     *
      * @param name the name value to set.
      * @return the MetadataValue object itself.
      */
@@ -51,8 +46,8 @@ public final class MetadataValue {
     }
 
     /**
-     * Get the value property: The value of the metadata.
-     * 
+     * Get the value property: the value of the metadata.
+     *
      * @return the value value.
      */
     public String getValue() {
@@ -60,13 +55,24 @@ public final class MetadataValue {
     }
 
     /**
-     * Set the value property: The value of the metadata.
-     * 
+     * Set the value property: the value of the metadata.
+     *
      * @param value the value value to set.
      * @return the MetadataValue object itself.
      */
     public MetadataValue setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getName() != null) {
+            getName().validate();
+        }
     }
 }
