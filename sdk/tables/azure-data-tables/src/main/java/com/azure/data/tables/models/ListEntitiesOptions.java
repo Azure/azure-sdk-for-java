@@ -16,14 +16,6 @@ public final class ListEntitiesOptions {
     private List<String> select;
     private String filter;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Returns an empty instance of {@link ListEntitiesOptions}.
-     */
-    public ListEntitiesOptions() {
-
-    }
-
     /**
      * Gets the value of the `top` OData query option which limits the number of returned entities.
      *

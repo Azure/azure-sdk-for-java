@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <h2>Overview</h2>
  * An entity within a table.
  *
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
@@ -22,80 +21,6 @@ import java.util.Objects;
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
  * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
- *
- * <h3><strong>Usage Code Samples</strong></h3>
- *
- * <p>The following samples provide examples of common operations preformed on a TableEntity. The samples use a subset of acceptable
- * property values. For an exhaustive list, see <a href="https://docs.microsoft.com/rest/api/storageservices/understanding-the-table-service-data-model#property-types">the service documentation</a>.
- * </p>
- *
- * <strong>Create a TableEntity</strong>
- *
- * <p>The following sample shows the creation of a table entity.</p>
- *
- *  <!-- src_embed com.azure.data.tables.models.TableEntity.create#string-string -->
- * <pre>
- * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- * </pre>
- *  <!-- end com.azure.data.tables.models.TableEntity.create#string-string -->
- *
- * <strong>Add properties to a TableEntity</strong>
- *
- * <p>The following sample shows the addition of properties to a table entity.</p>
- *
- * <!-- src_embed com.azure.data.tables.models.TableEntity.create#string-string -->
- * <pre>
- * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.models.TableEntity.create#string-string -->
- *
- * <strong>Set properties from a TableEntity</strong>
- *
- * <p>The following sample shows the setting of a table entity's properties.</p>
- *
- * <!-- src_embed com.azure.data.tables.models.TableEntity.setProperties#map -->
- * <pre>
- * Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;&#40;&#41;;
- * properties.put&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;;
- * properties.put&#40;&quot;Integer&quot;, 100&#41;;
- * properties.put&#40;&quot;Boolean&quot;, true&#41;;
- * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
- *     .setProperties&#40;properties&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.models.TableEntity.setProperties#map -->
- *
- * <strong>Get a property from a TableEntity</strong>
- *
- * <p>The following sample shows the retrieval of a property from a table entity.</p>
- *
- * <!-- src_embed com.azure.data.tables.models.TableEntity.getProperty#string -->
- * <pre>
- * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
- *     .addProperty&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;
- *     .addProperty&#40;&quot;Integer&quot;, 100&#41;
- *     .addProperty&#40;&quot;Boolean&quot;, true&#41;;
- *
- * String stringValue = &#40;String&#41; entity.getProperty&#40;&quot;String&quot;&#41;;
- * int integerValue = &#40;int&#41; entity.getProperty&#40;&quot;Integer&quot;&#41;;
- * boolean booleanValue = &#40;boolean&#41; entity.getProperty&#40;&quot;Boolean&quot;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.models.TableEntity.getProperty#string -->
- *
- * <strong>Get properties from a TableEntity</strong>
- *
- * <p>The following sample shows the retrieval of all properties from a table entity.</p>
- *
- * <!-- src_embed com.azure.data.tables.models.TableEntity.getProperties -->
- * <pre>
- * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
- *     .addProperty&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;
- *     .addProperty&#40;&quot;Integer&quot;, 100&#41;
- *     .addProperty&#40;&quot;Boolean&quot;, true&#41;;
- *
- * Map&lt;String, Object&gt; properties = entity.getProperties&#40;&#41;;
- * </pre>
- * <!-- end com.azure.data.tables.models.TableEntity.getProperties -->
- *
  */
 @Fluent
 public final class TableEntity {
