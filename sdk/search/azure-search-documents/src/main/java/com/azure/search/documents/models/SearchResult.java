@@ -66,8 +66,8 @@ public final class SearchResult {
 
             @Override
             public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
-                List<QueryCaptionResult> captions, List<DocumentDebugInfo> debugInfo) {
-                searchResult.setSemanticSearchResult(rerankerScore, captions, debugInfo);
+                List<QueryCaptionResult> captions) {
+                searchResult.setSemanticSearchResult(rerankerScore, captions);
             }
         });
     }
@@ -157,10 +157,8 @@ public final class SearchResult {
      *
      * @param rerankerScore The reranker score.
      * @param captions The captions.
-     * @param debugInfo The debug info.
      */
-    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions,
-        List<DocumentDebugInfo> debugInfo) {
-        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions, debugInfo);
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
     }
 }
