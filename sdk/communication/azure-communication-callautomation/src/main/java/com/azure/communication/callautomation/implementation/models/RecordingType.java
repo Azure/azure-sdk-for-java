@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecordingType. */
+/**
+ * Defines values for RecordingType.
+ */
 public final class RecordingType extends ExpandableStringEnum<RecordingType> {
-    /** Static value acs for RecordingType. */
+    /**
+     * Static value acs for RecordingType.
+     */
     public static final RecordingType ACS = fromString("acs");
 
-    /** Static value teams for RecordingType. */
+    /**
+     * Static value teams for RecordingType.
+     */
     public static final RecordingType TEAMS = fromString("teams");
 
     /**
+     * Creates a new instance of RecordingType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecordingType() {
+    }
+
+    /**
      * Creates or finds a RecordingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingType.
      */
@@ -27,7 +42,11 @@ public final class RecordingType extends ExpandableStringEnum<RecordingType> {
         return fromString(name, RecordingType.class);
     }
 
-    /** @return known RecordingType values. */
+    /**
+     * Gets known RecordingType values.
+     * 
+     * @return known RecordingType values.
+     */
     public static Collection<RecordingType> values() {
         return values(RecordingType.class);
     }

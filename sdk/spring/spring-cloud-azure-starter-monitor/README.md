@@ -25,7 +25,7 @@ For more information, please read [introduction to Application Insights][applica
 <dependency>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

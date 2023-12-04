@@ -24,7 +24,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-monitor;current} -->
 
   <name>Azure Monitor OpenTelemetry Distro / Application Insights in Spring native Java application</name>
   <description>Spring Boot starter providing telemetry data to Azure Monitor for Spring Boot applications and GraalVM native images.</description>
@@ -47,6 +47,12 @@
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-spring-boot-starter</artifactId>
       <version>1.32.0-alpha</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-jdbc</artifactId>
+      <version>1.32.0-alpha</version><!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -143,6 +149,7 @@
                 <include>io.opentelemetry:opentelemetry-sdk-metrics:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-metrics;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-logs:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-logs;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;external_dependency} -->
+                <include>io.opentelemetry.instrumentation:opentelemetry-jdbc:[1.32.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
