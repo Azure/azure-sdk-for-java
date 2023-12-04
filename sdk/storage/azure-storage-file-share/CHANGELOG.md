@@ -1,16 +1,5 @@
 # Release History
 
-## 12.22.0-beta.1 (Unreleased)
-
-### Features Added
-- Added client name field in HandleItem.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.21.0 (2023-11-08)
 
 ### Features Added
