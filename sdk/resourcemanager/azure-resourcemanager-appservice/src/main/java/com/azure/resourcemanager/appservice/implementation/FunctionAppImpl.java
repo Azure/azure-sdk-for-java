@@ -13,24 +13,16 @@ import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigInner;
@@ -38,7 +30,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInne
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
-import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
@@ -68,12 +59,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /** The implementation for FunctionApp. */
 class FunctionAppImpl
@@ -205,21 +194,6 @@ class FunctionAppImpl
     }
 
     @Override
-    Mono<SiteInner> updateInner(SitePatchResourceInner siteUpdate) {
-        if (isFunctionAppOnACA()) {
-            return pollResult(
-                this.manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .updateWithResponseAsync(resourceGroupName(), name(), siteUpdate),
-                SiteInner.class
-            );
-        } else {
-            return super.updateInner(siteUpdate);
-        }
-    }
-
-    @Override
     Mono<Indexable> submitAppSettings() {
         if (storageAccountCreatable != null && this.taskResult(storageAccountCreatable.key()) != null) {
             storageAccountToSet = this.taskResult(storageAccountCreatable.key());
@@ -285,75 +259,6 @@ class FunctionAppImpl
         currentStorageAccount = storageAccountToSet;
         storageAccountToSet = null;
         storageAccountCreatable = null;
-    }
-
-    @Override
-    Mono<StringDictionaryInner> updateAppSettings(StringDictionaryInner appSettings) {
-        if (isFunctionAppOnACA()) {
-            return pollResult(
-                this.manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .updateApplicationSettingsWithResponseAsync(resourceGroupName(), name(), appSettings),
-                StringDictionaryInner.class
-            );
-        } else {
-            return super.updateAppSettings(appSettings);
-        }
-    }
-
-    @Override
-    Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
-        if (isFunctionAppOnACA()) {
-            return pollResult(
-                this.manager()
-                    .serviceClient()
-                    .getWebApps()
-                    .createOrUpdateConfigurationWithResponseAsync(resourceGroupName(), name(), siteConfig),
-                SiteConfigResourceInner.class);
-        } else {
-            return super.createOrUpdateSiteConfig(siteConfig);
-        }
-    }
-
-    private <T> Mono<T> pollResult(Mono<Response<T>> responseMono, Class<T> responseBodyType) {
-        return responseMono.flatMap((Function<Response<T>, Mono<T>>) response -> {
-            if (response.getStatusCode() == 200) {
-                return Mono.just(response.getValue());
-            } else if (response.getStatusCode() == 202) {
-                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
-                if (locationHeader == null) {
-                    return Mono.error(new IllegalStateException("\"Location\" header is null"));
-                }
-                String locationUrl = locationHeader.getValue();
-                SerializerAdapter serializerAdapter = ((WebSiteManagementClientImpl) manager().serviceClient()).getSerializerAdapter();
-                return Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(manager().serviceClient().getDefaultPollInterval()))
-                    .flatMap(ignored -> manager().httpPipeline().send(new HttpRequest(HttpMethod.GET, locationUrl)))
-                    .takeUntil(pollResponse -> {
-                        if (pollResponse.getStatusCode() == 200) {
-                            return true;
-                        } else if (pollResponse.getStatusCode() == 202) {
-                            return false;
-                        } else {
-                            throw new IllegalStateException(String.format("Poll response status: %d.", response.getStatusCode()));
-                        }
-                    })
-                    .last()
-                    .flatMap((Function<HttpResponse, Mono<T>>) httpResponse -> {
-                        try {
-                            return Mono.just(
-                                serializerAdapter.deserialize(
-                                    httpResponse.getBodyAsBinaryData().toBytes(),
-                                    responseBodyType,
-                                    SerializerEncoding.JSON));
-                        } catch (IOException e) {
-                            return Mono.error(e);
-                        }
-                    });
-            } else {
-                throw new IllegalStateException(String.format("createOrUpdateConfiguration response status: %d.", response.getStatusCode()));
-            }
-        });
     }
 
     @Override
