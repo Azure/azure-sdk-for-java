@@ -870,8 +870,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         long fileSize = channel.size();
 
                         if (fileSize == 0) {
-                            // if file size is 0, create the file but do not upload data.
-                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions);
+                            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
+                                + "greater than 0."));
                         }
 
                         // By default, if the file is larger than 100 MB chunk it and append it in stages.
