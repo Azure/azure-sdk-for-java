@@ -7,30 +7,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
-import com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper;
-import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper;
-import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.models.BackupCertificateResult;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
-import com.azure.security.keyvault.certificates.implementation.models.Contacts;
-import com.azure.security.keyvault.certificates.implementation.models.IssuerBundle;
-import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificateOperation;
@@ -45,34 +28,20 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPo
 import com.azure.security.keyvault.certificates.models.LifetimeAction;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
 
-import java.net.HttpURLConnection;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.Objects;
 
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapCertificateItemPage;
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapContactsToPagedResponse;
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapDeletedCertificateItemPage;
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.mapIssuersPagedResponse;
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.processCertificateOperationResponse;
-import static com.azure.security.keyvault.certificates.CertificateAsyncClient.transformCertificateForImport;
-import static com.azure.security.keyvault.certificates.implementation.CertificateIssuerHelper.getIssuerBundle;
-import static com.azure.security.keyvault.certificates.implementation.CertificateOperationHelper.createCertificateOperation;
-import static com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper.getImplCertificatePolicy;
-import static com.azure.security.keyvault.certificates.implementation.DeletedCertificateHelper.createDeletedCertificate;
-import static com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper.createCertificateWithPolicy;
 
 /**
- * The CertificateClient provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in the key
- * vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up, restoring and
- * listing the {@link KeyVaultCertificate certificates}. The client also supports listing
+ * The {@link CertificateClient} provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in
+ * the key vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
+ * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
  * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.
  *
  * <p>The client further allows creating, retrieving, updating, deleting and listing the
- * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and deleting
- * {@link CertificateContact certificate contacts}</p>
+ * {@link CertificateIssuer certificate issuers}. The client also supports creating, listing and
+ * deleting {@link CertificateContact certificate contacts}.</p>
  *
  * <h2>Getting Started</h2>
  *
@@ -176,23 +145,17 @@ import static com.azure.security.keyvault.certificates.implementation.KeyVaultCe
  * @see com.azure.security.keyvault.certificates
  * @see CertificateClientBuilder
  */
-@ServiceClient(builder = CertificateClientBuilder.class,
-               serviceInterfaces = CertificateClientImpl.CertificateClientService.class)
+@ServiceClient(builder = CertificateClientBuilder.class, serviceInterfaces = CertificateClientImpl.CertificateService.class)
 public final class CertificateClient {
-    private static final ClientLogger LOGGER = new ClientLogger(CertificateClient.class);
-
     private final CertificateClientImpl implClient;
-    private final String vaultUrl;
 
     /**
      * Creates a CertificateClient that uses {@code pipeline} to service requests
      *
      * @param implClient The implementation client to route requests through.
-     * @param vaultUrl The vault url.
      */
-    CertificateClient(CertificateClientImpl implClient, String vaultUrl) {
+    CertificateClient(CertificateClientImpl implClient) {
         this.implClient = implClient;
-        this.vaultUrl = vaultUrl;
     }
 
     /**
@@ -200,20 +163,18 @@ public final class CertificateClient {
      * @return the vault endpoint url
      */
     public String getVaultUrl() {
-        return vaultUrl;
+        return implClient.getVaultUrl();
     }
 
     /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
-     * requires the certificates/create permission.
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
+     * the certificates/create permission.
      *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
-     * complete on service side.</p>
+     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to complete on service side.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
-     * complete and returns its last status. The details of the last certificate operation status are printed when a
-     * response is received</p>
+     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
+     * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      * <pre>
@@ -231,61 +192,23 @@ public final class CertificateClient {
      * @param policy The policy of the certificate to be created.
      * @param isEnabled The enabled status of the certificate.
      * @param tags The application specific metadata to set.
-     * @throws NullPointerException if {@code policy} is null.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
-        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        if (policy == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
-        }
-
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            ignored -> createCertificateActivation(certificateName, policy, isEnabled, tags),
-            ignored -> certificatePollOperation(certificateName),
-            (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
-            ignored -> fetchCertificateOperation(certificateName));
-    }
-
-    private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
-        CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
-            getImplCertificatePolicy(policy);
-
-        return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createCertificateOperation(
-            callWithMappedException(() -> implClient.createCertificate(vaultUrl, certificateName, implPolicy,
-                new CertificateAttributes().setEnabled(isEnabled), tags),
-                CertificateAsyncClient::mapCreateCertificateException)));
-    }
-
-    private PollResponse<CertificateOperation> certificatePollOperation(String certificateName) {
-        return processCertificateOperationResponse(callWithMappedException(() -> implClient.getCertificateOperation(
-            vaultUrl, certificateName), CertificateAsyncClient::mapGetCertificateOperationException));
-    }
-
-    private CertificateOperation certificateCancellationOperation(String certificateName) {
-        return createCertificateOperation(callWithMappedException(() -> implClient.updateCertificateOperation(vaultUrl,
-            certificateName, true), CertificateAsyncClient::mapUpdateCertificateOperationException));
-    }
-
-    private KeyVaultCertificateWithPolicy fetchCertificateOperation(String certificateName) {
-        return createCertificateWithPolicy(callWithMappedException(() -> implClient.getCertificate(vaultUrl,
-            certificateName, null), CertificateAsyncClient::mapGetCertificateException));
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        return implClient.beginCreateCertificate(certificateName, policy, isEnabled, tags, Context.NONE);
     }
 
     /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
-     * requires the certificates/create permission.
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
+     * the certificates/create permission.
      *
-     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
-     * complete on service side.</p>
+     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to complete on service side.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
-     * complete and returns its last status. The details of the last certificate operation status are printed when a
-     * response is received</p>
+     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to complete and
+     * returns its last status. The details of the last certificate operation status are printed when a response is received</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
      * <pre>
@@ -301,23 +224,20 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate to be created.
      * @param policy The policy of the certificate to be created.
-     * @throws NullPointerException if {@code policy} is null.
      * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
-        String certificateName, CertificatePolicy policy) {
-        return beginCreateCertificate(certificateName, policy, true, null);
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
+        return implClient.beginCreateCertificate(certificateName, policy, true, null, Context.NONE);
     }
 
     /**
-     * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get
-     * permission.
+     * Gets a pending {@link CertificateOperation} from the key vault. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Geta a pending certificate operation. The {@link SyncPoller poller} allows users to automatically poll on the
-     * certificate operation status.</p>
+     * <p>Geta a pending certificate operation. The {@link SyncPoller poller} allows users to automatically poll on the certificate
+     * operation status.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String -->
      * <pre>
@@ -330,26 +250,18 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName}
-     * doesn't exist.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist.
      * @return A {@link SyncPoller} to poll on the certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(
-        String certificateName) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            ignored -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
-            ignored -> certificatePollOperation(certificateName),
-            (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
-            ignored -> fetchCertificateOperation(certificateName));
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
+        return implClient.getCertificateOperation(certificateName, Context.NONE);
     }
     /**
-     * Gets information about the latest version of the specified certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when
-     * a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificate#String -->
      * <pre>
@@ -371,12 +283,10 @@ public final class CertificateClient {
     }
 
     /**
-     * Gets information about the latest version of the specified certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when
-     * a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-Context -->
      * <pre>
@@ -392,23 +302,18 @@ public final class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
-     * {@link KeyVaultCertificateWithPolicy certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificateWithPolicy certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String certificateName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.getCertificateWithResponse(
-            vaultUrl, certificateName, null, context), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
-            CertificateAsyncClient::mapGetCertificateException);
+        return implClient.getCertificateWithResponse(certificateName, "", context);
     }
 
     /**
-     * Gets information about the latest version of the specified certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about the latest version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when
-     * a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersionWithResponse#String-String-Context -->
      * <pre>
@@ -423,29 +328,22 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersionWithResponse#String-String-Context -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version
-     * of the certificate is retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
-     * {@link KeyVaultCertificate certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultCertificate certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> getCertificateVersionWithResponse(String certificateName, String version,
-        Context context) {
-        return callWithMappedResponseAndException(() -> implClient.getCertificateWithResponse(vaultUrl, certificateName,
-            version, context), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
-            CertificateAsyncClient::mapGetCertificateException);
+    public Response<KeyVaultCertificate> getCertificateVersionWithResponse(String certificateName, String version, Context context) {
+        return implClient.getCertificateVersionWithResponse(certificateName, version, context);
     }
 
     /**
-     * Gets information about the specified version of the specified certificate. This operation requires the
-     * certificates/get permission.
+     * Gets information about the specified version of the specified certificate. This operation requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when
-     * a response has been received.</p>
+     * <p>Gets a specific version of the certificate in the key vault. Prints out the returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String -->
      * <pre>
@@ -458,8 +356,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String -->
      *
      * @param certificateName The name of the certificate to retrieve, cannot be null
-     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version
-     * of the certificate is retrieved.
+     * @param version The version of the certificate to retrieve. If this is an empty String or null then latest version of the certificate is retrieved.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
      * @return The requested {@link KeyVaultCertificate certificate}.
@@ -470,13 +367,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Updates the specified attributes associated with the specified certificate. The update operation changes
-     * specified attributes of an existing stored certificate and attributes that are not specified in the request are
-     * left unchanged. This operation requires the certificates/update permission.
+     * Updates the specified attributes associated with the specified certificate. The update operation changes specified attributes of an existing
+     * stored certificate and attributes that are not specified in the request are left unchanged. This operation requires the certificates/update permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure
-     * Key Vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure Key Vault. Prints out the
+     * returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties -->
      * <pre>
@@ -490,11 +386,9 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties -->
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
-     * @throws NullPointerException if {@code properties} is null.
-     * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName}
-     * and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or
-     * {@link CertificateProperties#getVersion() version} is empty string.
+     * @throws NullPointerException if {@code certificate} is {@code null}.
+     * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or {@link CertificateProperties#getVersion() version} is empty string.
      * @return The {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -503,13 +397,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Updates the specified attributes associated with the specified certificate. The update operation changes
-     * specified attributes of an existing stored certificate and attributes that are not specified in the request are
-     * left unchanged. This operation requires the certificates/update permission.
+     * Updates the specified attributes associated with the specified certificate. The update operation changes specified attributes of an existing
+     * stored certificate and attributes that are not specified in the request are left unchanged. This operation requires the certificates/update permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure
-     * Key Vault. Prints out the returned certificate details when a response has been received.</p>
+     * <p>Gets latest version of the certificate, changes its tags and enabled status and then updates it in the Azure Key Vault. Prints out the
+     * returned certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-Context -->
      * <pre>
@@ -526,41 +419,25 @@ public final class CertificateClient {
      *
      * @param properties The {@link CertificateProperties} object with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code properties} is null.
-     * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName}
-     * and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
-     * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or
-     * {@link CertificateProperties#getVersion() version} is empty string.
+     * @throws NullPointerException if {@code certificate} is {@code null}.
+     * @throws ResourceNotFoundException when a certificate with {@link CertificateProperties#getName() certificateName} and {@link CertificateProperties#getVersion() version} doesn't exist in the key vault.
+     * @throws HttpRequestException if {@link CertificateProperties#getName() certificateName} or {@link CertificateProperties#getVersion() version} is empty string.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateProperties updated certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties,
-        Context context) {
-        if (properties == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'properties' cannot be null."));
-        }
-
-        CertificateAttributes certificateAttributes = new CertificateAttributes()
-            .setEnabled(properties.isEnabled())
-            .setExpires(properties.getExpiresOn())
-            .setNotBefore(properties.getNotBefore());
-
-        Response<CertificateBundle> response = implClient.updateCertificateWithResponse(vaultUrl, properties.getName(),
-                properties.getVersion(), null, certificateAttributes, properties.getTags(), context);
-
-        return new SimpleResponse<>(response, createCertificateWithPolicy(response.getValue()));
+    public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
+        return implClient.updateCertificatePropertiesWithResponse(properties, context);
     }
 
     /**
-     * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated
-     * policy get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted
-     * state and requires to be purged for permanent deletion else the certificate is permanently deleted. The delete
-     * operation applies to any certificate stored in Azure Key Vault, but it cannot be applied to an individual version
-     * of a certificate. This operation requires the certificates/delete permission.
+     * Deletes a certificate from a specified key vault. All the versions of the certificate along with its associated policy
+     * get deleted. If soft-delete is enabled on the key vault then the certificate is placed in the deleted state and requires to be
+     * purged for permanent deletion else the certificate is permanently deleted. The delete operation applies to any certificate stored in
+     * Azure Key Vault but it cannot be applied to an individual version of a certificate. This operation requires the certificates/delete permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the certificate in the Azure Key Vault. Prints out the deleted certificate details when a response has
-     * been received.</p>
+     * <p>Deletes the certificate in the Azure Key Vault. Prints out the
+     * deleted certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
      * <pre>
@@ -581,51 +458,17 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedCertificate, Void> beginDeleteCertificate(String certificateName) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), ignored -> deleteCertificateActivation(certificateName),
-            pollingContext -> deleteCertificatePollOperation(certificateName, pollingContext),
-            (pollingContext, firstResponse) -> null, pollingContext -> null);
-    }
-
-    private PollResponse<DeletedCertificate> deleteCertificateActivation(String certificateName) {
-        return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
-            createDeletedCertificate(callWithMappedException(() -> implClient.deleteCertificate(vaultUrl,
-                certificateName), CertificateAsyncClient::mapDeleteCertificateException)));
-    }
-
-    private PollResponse<DeletedCertificate> deleteCertificatePollOperation(String certificateName,
-        PollingContext<DeletedCertificate> pollingContext) {
-        try {
-            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createDeletedCertificate(implClient.getDeletedCertificate(vaultUrl, certificateName)));
-        } catch (KeyVaultErrorException ex) {
-            if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                    pollingContext.getLatestResponse().getValue());
-            } else {
-                // This means either vault has soft-delete disabled or permission is not granted for the get deleted
-                // certificate operation. In both cases deletion operation was successful when activation operation
-                // succeeded before reaching here.
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue());
-            }
-        } catch (Exception ex) {
-            // This means either vault has soft-delete disabled or permission is not granted for the get deleted
-            // certificate operation. In both cases deletion operation was successful when activation operation
-            // succeeded before reaching here.
-            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                pollingContext.getLatestResponse().getValue());
-        }
+        return implClient.beginDeleteCertificate(certificateName, Context.NONE);
     }
 
     /**
-     * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable
-     * for soft-delete enabled vaults and additionally retrieves deleted certificate's attributes, such as retention
-     * interval, scheduled permanent deletion and the current deletion recovery level. This operation requires the
-     * certificates/get permission.
+     * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable for soft-delete
+     * enabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
+     * requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the deleted certificate
-     * details when a response has been received.</p>
+     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * deleted certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getDeletedCertificate#string -->
      * <pre>
@@ -646,14 +489,13 @@ public final class CertificateClient {
     }
 
     /**
-     * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable
-     * for soft-delete enabled vaults and additionally retrieves deleted certificate's attributes, such as retention
-     * interval, scheduled permanent deletion and the current deletion recovery level. This operation requires the
-     * certificates/get permission.
+     * Retrieves information about the specified deleted certificate. The GetDeletedCertificate operation  is applicable for soft-delete
+     * enabled vaults and additionally retrieves deleted certificate's attributes, such as retention interval, scheduled permanent deletion and the current deletion recovery level. This operation
+     * requires the certificates/get permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the deleted certificate
-     * details when a response has been received.</p>
+     * <p> Gets the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * deleted certificate details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-Context -->
      * <pre>
@@ -669,24 +511,20 @@ public final class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link DeletedCertificate deleted certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DeletedCertificate deleted certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String certificateName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.getDeletedCertificateWithResponse(vaultUrl,
-                certificateName, context), DeletedCertificateHelper::createDeletedCertificate,
-            CertificateAsyncClient::mapGetDeletedCertificateException);
+        return implClient.getDeletedCertificateWithResponse(certificateName, context);
     }
 
     /**
-     * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted
-     * Certificate operation is applicable for soft-delete enabled vaults and is not available if the recovery level
-     * does not specify 'Purgeable'. This operation requires the certificate/purge permission.
+     * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted Certificate operation is applicable for
+     * soft-delete enabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
-     * server response when a response has been received.</p>
+     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * status code from the server response when a response has been received.</p>
 
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#string -->
      * <pre>
@@ -704,13 +542,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted
-     * Certificate operation is applicable for soft-delete enabled vaults and is not available if the recovery level
-     * does not specify 'Purgeable'. This operation requires the certificate/purge permission.
+     * Permanently deletes the specified deleted certificate without possibility for recovery. The Purge Deleted Certificate operation is applicable for
+     * soft-delete enabled vaults and is not available if the recovery level does not specify 'Purgeable'. This operation requires the certificate/purge permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the status code from the
-     * server response when a response has been received.</p>
+     * <p>Purges the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * status code from the server response when a response has been received.</p>
 
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#string-Context -->
      * <pre>
@@ -728,20 +565,18 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.purgeDeletedCertificateWithResponse(vaultUrl,
-            certificateName, context), t -> t, CertificateAsyncClient::mapPurgeDeletedCertificateException);
+        return implClient.purgeDeletedCertificateWithResponse(certificateName, context);
     }
 
     /**
-     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a
-     * soft-delete enabled vault. The RecoverDeletedCertificate operation performs the reversal of the Delete operation
-     * and must be issued during the retention interval (available in the deleted certificate's attributes). This
-     * operation requires the certificates/recover permission.
+     * Recovers the deleted certificate back to its current version under /certificates and can only be performed on a soft-delete enabled vault.
+     * The RecoverDeletedCertificate operation performs the reversal of the Delete operation and must be issued during the retention interval
+     * (available in the deleted certificate's attributes). This operation requires the certificates/recover permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the recovered
-     * certificate details when a response has been received.</p>
-     *
+     * <p>Recovers the deleted certificate from the key vault enabled for soft-delete. Prints out the
+     * recovered certificate details when a response has been received.</p>
+
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
      * <pre>
      * SyncPoller&lt;KeyVaultCertificateWithPolicy, Void&gt; recoverDeletedCertPoller = certificateClient
@@ -756,57 +591,22 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
      *
      * @param certificateName The name of the deleted certificate to be recovered.
-     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the
-     * certificate vault.
+     * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the certificate vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultCertificateWithPolicy recovered certificate}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String certificateName) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            ignored -> recoverDeletedCertificateActivation(certificateName),
-            pollingContext -> recoverDeletedCertificatePollOperation(certificateName, pollingContext),
-            (pollingContext, firstResponse) -> null, pollingContext -> null);
-    }
-
-    private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificateActivation(String certificateName) {
-        return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, createCertificateWithPolicy(
-            callWithMappedException(() -> implClient.recoverDeletedCertificate(vaultUrl, certificateName),
-                CertificateAsyncClient::mapRecoverDeletedCertificateException)));
-    }
-
-    private PollResponse<KeyVaultCertificateWithPolicy> recoverDeletedCertificatePollOperation(String certificateName,
-        PollingContext<KeyVaultCertificateWithPolicy> pollingContext) {
-        try {
-            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                createCertificateWithPolicy(implClient.getCertificate(vaultUrl, certificateName, null)));
-        } catch (KeyVaultErrorException ex) {
-            if (ex.getResponse().getStatusCode() == HttpURLConnection.HTTP_NOT_FOUND) {
-                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                    pollingContext.getLatestResponse().getValue());
-            } else {
-                // This means permission is not granted for the get deleted key operation.
-                // In both cases deletion operation was successful when activation operation succeeded before
-                // reaching here.
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    pollingContext.getLatestResponse().getValue());
-            }
-        } catch (Exception ex) {
-            // This means permission is not granted for the get deleted key operation.
-            // In both cases deletion operation was successful when activation operation succeeded before reaching
-            // here.
-            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                pollingContext.getLatestResponse().getValue());
-        }
+        return implClient.beginRecoverDeletedCertificate(certificateName, Context.NONE);
     }
 
     /**
-     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
-     * will be downloaded. This operation requires the certificates/backup permission.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will
+     * be downloaded. This operation requires the certificates/backup permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Backs up the certificate from the key vault. Prints out the length of the certificate's backup byte array
-     * returned in the response.</p>
+     * <p>Backs up the certificate from the key vault. Prints out the
+     * length of the certificate's backup byte array returned in the response.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.backupCertificate#string -->
      * <pre>
@@ -826,12 +626,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate
-     * will be downloaded. This operation requires the certificates/backup permission.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will
+     * be downloaded. This operation requires the certificates/backup permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Backs up the certificate from the key vault. Prints out the length of the certificate's backup byte array
-     * returned in the response.</p>
+     * <p>Backs up the certificate from the key vault. Prints out the
+     * length of the certificate's backup byte array returned in the response.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-Context -->
      * <pre>
@@ -850,18 +650,16 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String certificateName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.backupCertificateWithResponse(vaultUrl,
-            certificateName, context), BackupCertificateResult::getValue,
-            CertificateAsyncClient::mapBackupCertificateException);
+        return implClient.backupCertificateWithResponse(certificateName, context);
     }
 
     /**
-     * Restores a backed up certificate to the vault. All the versions of the certificate are restored to the vault.
-     * This operation requires the certificates/restore permission.
+     * Restores a backed up certificate to the vault. All the versions of the certificate are restored to the vault. This operation
+     * requires the certificates/restore permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate details when a
-     * response has been received.</p>
+     * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate
+     * details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.restoreCertificate#byte -->
      * <pre>
@@ -882,12 +680,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Restores a backed up certificate to the vault. All the versions of the certificate are restored to the vault.
-     * This operation requires the certificates/restore permission.
+     * Restores a backed up certificate to the vault. All the versions of the certificate are restored to the vault. This operation
+     * requires the certificates/restore permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate details when a
-     * response has been received.</p>
+     * <p>Restores the certificate in the key vault from its backup. Prints out the restored certificate
+     * details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-Context -->
      * <pre>
@@ -903,25 +701,22 @@ public final class CertificateClient {
      * @param backup The backup blob associated with the certificate.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceModifiedException when {@code backup} blob is malformed.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultCertificate restored certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificate restored certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.restoreCertificateWithResponse(vaultUrl, backup,
-            context), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy,
-            CertificateAsyncClient::mapRestoreCertificateException);
+        return implClient.restoreCertificateBackupWithResponse(backup, context);
     }
 
     /**
-     * List certificates in the key vault. Retrieves the set of certificates resources in the key vault and the
-     * individual certificate response in the iterable is represented by {@link CertificateProperties} as only the
-     * certificate identifier, thumbprint, attributes and tags are provided in the response. The policy and individual
-     * certificate versions are not listed in the response. This operation requires the certificates/list permission.
+     * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
+     * certificate response in the iterable is represented by {@link CertificateProperties} as only the certificate identifier, thumbprint,
+     * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
+     * the response. This operation requires the certificates/list permission.
      *
-     * <p>It is possible to get certificates with all the properties excluding the policy from this information. Loop
-     * over the {@link CertificateProperties} and call {@link CertificateClient#getCertificateVersion(String, String)} .
-     * This will return the {@link KeyVaultCertificate certificate} with all its properties excluding the policy.</p>
+     * <p>It is possible to get certificates with all the properties excluding the policy from this information. Loop over the {@link CertificateProperties} and
+     * call {@link CertificateClient#getCertificateVersion(String, String)} . This will return the {@link KeyVaultCertificate certificate}
+     * with all its properties excluding the policy.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listCertificates -->
      * <pre>
@@ -935,23 +730,22 @@ public final class CertificateClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.listCertificates -->
      *
-     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in
-     * the vault.
+     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
-        return listPropertiesOfCertificates(false, Context.NONE);
+        return implClient.listPropertiesOfCertificates(false, Context.NONE);
     }
 
     /**
-     * List certificates in the key vault. Retrieves the set of certificates resources in the key vault and the
-     * individual certificate response in the iterable is represented by {@link CertificateProperties} as only the
-     * certificate identifier, thumbprint, attributes and tags are provided in the response. The policy and individual
-     * certificate versions are not listed in the response. This operation requires the certificates/list permission.
+     * List certificates in a the key vault. Retrieves the set of certificates resources in the key vault and the individual
+     * certificate response in the iterable is represented by {@link CertificateProperties} as only the certificate identifier, thumbprint,
+     * attributes and tags are provided in the response. The policy and individual certificate versions are not listed in
+     * the response. This operation requires the certificates/list permission.
      *
-     * <p>It is possible to get certificates with all the properties excluding the policy from this information. Loop
-     * over the {@link CertificateProperties} and call {@link CertificateClient#getCertificateVersion(String, String)} .
-     * This will return the {@link KeyVaultCertificate certificate} with all its properties excluding the policy.</p>
+     * <p>It is possible to get certificates with all the properties excluding the policy from this information. Loop over the {@link CertificateProperties} and
+     * call {@link CertificateClient#getCertificateVersion(String, String)} . This will return the {@link KeyVaultCertificate certificate}
+     * with all its properties excluding the policy.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listCertificates#context -->
      * <pre>
@@ -968,25 +762,21 @@ public final class CertificateClient {
      *
      * @param includePending indicate if pending certificates should be included in the results.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in
-     * the vault.
+     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} for all the certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(maxResults ->
-            mapCertificateItemPage(implClient.getCertificatesSinglePage(vaultUrl, maxResults, includePending, context)),
-            (continuationToken, maxResults) -> mapCertificateItemPage(implClient.getCertificatesNextSinglePage(
-                continuationToken, vaultUrl, context)));
+        return implClient.listPropertiesOfCertificates(includePending, context);
     }
 
     /**
-     * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This
-     * operation includes deletion-specific information and is applicable for vaults enabled for soft-delete. This
-     * operation requires the certificates/get/list permission.
+     * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
+     * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
+     * {@code certificates/get/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted certificates in the key vault. Prints out the recovery id of each deleted certificate when a
-     * response has been received.</p>
+     * <p>Lists the deleted certificates in the key vault. Prints out the
+     * recovery id of each deleted certificate when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listDeletedCertificates -->
      * <pre>
@@ -996,8 +786,7 @@ public final class CertificateClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.listDeletedCertificates -->
      *
-     * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates() {
@@ -1005,13 +794,13 @@ public final class CertificateClient {
     }
 
     /**
-     * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This
-     * operation includes deletion-specific information and is applicable for vaults enabled for soft-delete. This
-     * operation requires the certificates/get/list permission.
+     * Lists the {@link DeletedCertificate deleted certificates} in the key vault currently available for recovery. This operation includes
+     * deletion-specific information and is applicable for vaults enabled for soft-delete. This operation requires the
+     * {@code certificates/get/list} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the deleted certificates in the key vault. Prints out the recovery id of each deleted certificate when a
-     * response has been received.</p>
+     * <p>Lists the deleted certificates in the key vault. Prints out the
+     * recovery id of each deleted certificate when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listDeletedCertificates#context -->
      * <pre>
@@ -1024,27 +813,21 @@ public final class CertificateClient {
      *
      * @param includePending indicate if pending deleted certificates should be included in the results.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link DeletedCertificate deleted certificates} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending, Context context) {
-        return new PagedIterable<>(maxResults -> mapDeletedCertificateItemPage(
-            implClient.getDeletedCertificatesSinglePage(vaultUrl, maxResults, includePending, context)),
-            (continuationToken, maxResults) -> mapDeletedCertificateItemPage(
-                implClient.getDeletedCertificatesNextSinglePage(continuationToken, vaultUrl, context)));
+        return implClient.listDeletedCertificates(includePending, context);
     }
 
     /**
-     * List all versions of the specified certificate. The individual certificate response in the iterable is
-     * represented by {@link CertificateProperties} as only the certificate identifier, thumbprint, attributes and tags
-     * are provided in the response. The policy is not listed in the response. This operation requires the
-     * certificates/list permission.
+     * List all versions of the specified certificate. The individual certificate response in the iterable is represented by {@link CertificateProperties}
+     * as only the certificate identifier, thumbprint, attributes and tags are provided in the response. The policy is not listed in
+     * the response. This operation requires the certificates/list permission.
      *
-     * <p>It is possible to get the certificates with properties excluding the policy for all the versions from this
-     * information. Loop over the {@link CertificateProperties} and call
-     * {@link CertificateClient#getCertificateVersion(String, String)}. This will return the
-     * {@link KeyVaultCertificate certificate} with all its properties excluding the policy.</p>
+     * <p>It is possible to get the certificates with properties excluding the policy for all the versions from this information. Loop over the {@link CertificateProperties} and
+     * call {@link CertificateClient#getCertificateVersion(String, String)}. This will return the {@link KeyVaultCertificate certificate}
+     * with all its properties excluding the policy.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listCertificateVersions -->
      * <pre>
@@ -1062,9 +845,7 @@ public final class CertificateClient {
      * @param certificateName The name of the certificate.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the
-     * specified certificate in the vault. Paged Iterable is empty if certificate with {@code certificateName} does not
-     * exist in key vault.
+     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Paged Iterable is empty if certificate with {@code certificateName} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName) {
@@ -1072,15 +853,13 @@ public final class CertificateClient {
     }
 
     /**
-     * List all versions of the specified certificate. The individual certificate response in the iterable is
-     * represented by {@link CertificateProperties} as only the certificate identifier, thumbprint, attributes and tags
-     * are provided in the response. The policy is not listed in the response. This operation requires the
-     * certificates/list permission.
+     * List all versions of the specified certificate. The individual certificate response in the iterable is represented by {@link CertificateProperties}
+     * as only the certificate identifier, thumbprint, attributes and tags are provided in the response. The policy is not listed in
+     * the response. This operation requires the certificates/list permission.
      *
-     * <p>It is possible to get the certificates with properties excluding the policy for all the versions from this
-     * information. Loop over the {@link CertificateProperties} and call
-     * {@link CertificateClient#getCertificateVersion(String, String)}. This will return the
-     * {@link KeyVaultCertificate certificate} with all its properties excluding the policy.</p>
+     * <p>It is possible to get the certificates with properties excluding the policy for all the versions from this information. Loop over the {@link CertificateProperties} and
+     * call {@link CertificateClient#getCertificateVersion(String, String)}. This will return the {@link KeyVaultCertificate certificate}
+     * with all its properties excluding the policy.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listCertificateVersions#context -->
      * <pre>
@@ -1099,26 +878,19 @@ public final class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate with {@code certificateName} is empty string.
-     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the
-     * specified certificate in the vault. Iterable is empty if certificate with {@code certificateName} does not exist
-     * in key vault.
+     * @return A {@link PagedIterable} containing {@link CertificateProperties certificate} of all the versions of the specified certificate in the vault. Iterable is empty if certificate with {@code certificateName} does not exist in key vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName,
-        Context context) {
-        return new PagedIterable<>(maxResults -> mapCertificateItemPage(implClient.getCertificateVersionsSinglePage(
-            vaultUrl, certificateName, maxResults, context)),
-            (continuationToken, maxResults) -> mapCertificateItemPage(implClient.getCertificateVersionsNextSinglePage(
-                continuationToken, vaultUrl, context)));
+    public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String certificateName, Context context) {
+        return implClient.listPropertiesOfCertificateVersions(certificateName, context);
     }
 
     /**
-     * Retrieves the policy of the specified certificate in the key vault. This operation requires the certificates/get
-     * permission.
+     * Retrieves the policy of the specified certificate in the key vault. This operation requires the {@code certificates/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the policy of a certificate in the key vault. Prints out the returned certificate policy details when a
-     * response has been received.</p>
+     * <p>Gets the policy of a certirifcate in the key vault. Prints out the
+     * returned certificate policy details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
      * <pre>
@@ -1138,12 +910,11 @@ public final class CertificateClient {
     }
 
     /**
-     * Retrieves the policy of the specified certificate in the key vault. This operation requires the certificates/get
-     * permission.
+     * Retrieves the policy of the specified certificate in the key vault. This operation requires the {@code certificates/get} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the policy of a certificate in the key vault. Prints out the returned certificate policy details when a
-     * response has been received.</p>
+     * <p>Gets the policy of a certirifcate in the key vault. Prints out the
+     * returned certificate policy details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicyWithResponse#string -->
      * <pre>
@@ -1158,20 +929,16 @@ public final class CertificateClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
-     * {@link CertificatePolicy certificate policy}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.getCertificatePolicyWithResponse(vaultUrl,
-            certificateName, context), CertificatePolicyHelper::createCertificatePolicy,
-            CertificateAsyncClient::mapGetCertificatePolicyException);
+        return implClient.getCertificatePolicyWithResponse(certificateName, context);
     }
 
     /**
-     * Updates the policy for a certificate. The update operation changes specified attributes of the certificate policy
-     * and attributes that are not specified in the request are left unchanged. This operation requires the
-     * certificates/update permission.
+     * Updates the policy for a certificate. The update operation changes specified attributes of the certificate policy and attributes
+     * that are not specified in the request are left unchanged. This operation requires the {@code certificates/update} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the certificate policy, changes its properties and then updates it in the Azure Key Vault. Prints out the
@@ -1191,7 +958,7 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate whose policy is to be updated.
      * @param policy The certificate policy to be updated.
-     * @throws NullPointerException if {@code policy} is null.
+     * @throws NullPointerException if {@code policy} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string or if {@code policy} is invalid.
      * @return The updated {@link CertificatePolicy certificate policy}.
@@ -1202,9 +969,8 @@ public final class CertificateClient {
     }
 
     /**
-     * Updates the policy for a certificate. The update operation changes specified attributes of the certificate policy
-     * and attributes that are not specified in the request are left unchanged. This operation requires the
-     * certificates/update permission.
+     * Updates the policy for a certificate. The update operation changes specified attributes of the certificate policy and attributes
+     * that are not specified in the request are left unchanged. This operation requires the {@code certificates/update} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the certificate policy, changes its properties and then updates it in the Azure Key Vault. Prints out the
@@ -1226,29 +992,19 @@ public final class CertificateClient {
      * @param certificateName The certificateName of the certificate whose policy is to be updated.
      * @param policy The certificate policy to be updated.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code policy} is null.
+     * @throws NullPointerException if {@code policy} is {@code null}.
      * @throws ResourceNotFoundException when a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code certificateName} is empty string or if {@code policy} is invalid.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the updated
-     * {@link CertificatePolicy certificate policy}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the updated {@link CertificatePolicy certificate policy}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
-        CertificatePolicy policy, Context context) {
-        if (policy == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
-        }
-
-        return callWithMappedResponseAndException(() -> implClient.updateCertificatePolicyWithResponse(vaultUrl,
-            certificateName, getImplCertificatePolicy(policy), context),
-            CertificatePolicyHelper::createCertificatePolicy,
-            CertificateAsyncClient::mapUpdateCertificatePolicyException);
+    public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
+        return implClient.updateCertificatePolicyWithResponse(certificateName, policy, context);
     }
 
     /**
-     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate
-     * issuer if it already exists or adds it if it doesn't exist. This operation requires the
-     * certificates/setissuers permission.
+     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
+     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate issuer details when a
@@ -1267,10 +1023,8 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer -->
      *
      * @param issuer The configuration of the certificate issuer to be created.
-     * @throws NullPointerException if {@code issuer} is null.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty
-     * string.
+     * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty string.
      * @return The created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1279,13 +1033,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate
-     * issuer if it already exists or adds it if it doesn't exist. This operation requires the
-     * certificates/setissuers permission.
-     *
+     * Creates the specified certificate issuer. The SetCertificateIssuer operation updates the specified certificate issuer if it
+     * already exists or adds it if doesn't exist. This operation requires the certificates/setissuers permission.
+
      * <p><strong>Code Samples</strong></p>
-     * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate issuer details when a
-     * response has been received.</p>
+     * <p>Creates a new certificate issuer in the key vault. Prints out the created certificate
+     * issuer details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-Context -->
      * <pre>
@@ -1302,33 +1055,21 @@ public final class CertificateClient {
      *
      * @param issuer The configuration of the certificate issuer to be created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code issuer} is null.
      * @throws ResourceModifiedException when invalid certificate issuer {@code issuer} configuration is provided.
-     * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty
-     * string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the created
-     * {@link CertificateIssuer certificate issuer}.
+     * @throws HttpRequestException when a certificate issuer with {@link CertificateIssuer#getName() name} is empty string.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the created {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        if (issuer == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'issuer' cannot be null."));
-        }
-
-        IssuerBundle issuerBundle = getIssuerBundle(issuer);
-        return callWithMappedResponseAndException(() -> implClient.setCertificateIssuerWithResponse(vaultUrl,
-            issuer.getName(), issuer.getProvider(), issuerBundle.getCredentials(),
-            issuerBundle.getOrganizationDetails(), issuerBundle.getAttributes(), context),
-            CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
+        return implClient.createIssuerWithResponse(issuer, context);
     }
 
     /**
-     * Retrieves the specified certificate issuer from the key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * Retrieves the specified certificate issuer from the key vault. This operation requires the certificates/manageissuers/getissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the specified certificate issuer in the key vault. Prints out the returned certificate issuer details
-     * when a response has been received.</p>
+     * <p>Gets the specificed certifcate issuer in the key vault. Prints out the returned certificate issuer details when
+     * a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#string-context -->
      * <pre>
@@ -1341,21 +1082,17 @@ public final class CertificateClient {
      *
      * @param issuerName The name of the certificate issuer to retrieve, cannot be null
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key
-     * vault.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code issuerName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
-     * {@link CertificateIssuer certificate issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link CertificateIssuer certificate issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> getIssuerWithResponse(String issuerName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.getCertificateIssuerWithResponse(vaultUrl,
-            issuerName, context), CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
+        return implClient.getIssuerWithResponse(issuerName, context);
     }
 
     /**
-     * Retrieves the specified certificate issuer from the key vault. This operation requires the
-     * certificates/manageissuers/getissuers permission.
+     * Retrieves the specified certificate issuer from the key vault. This operation requires the certificates/manageissuers/getissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the specified certificate issuer in the key vault. Prints out the returned certificate issuer details
@@ -1370,8 +1107,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getIssuer#string -->
      *
      * @param issuerName The name of the certificate issuer to retrieve, cannot be null
-     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key
-     * vault.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
      * @throws HttpRequestException if {@code issuerName} is empty string.
      * @return The requested {@link CertificateIssuer certificate issuer}.
      */
@@ -1381,9 +1117,8 @@ public final class CertificateClient {
     }
 
     /**
-     * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified
-     * certificate issuer from the key vault. This operation requires the certificates/manageissuers/deleteissuers
-     * permission.
+     * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified certificate
+     * issuer from the key vault. This operation requires the {@code certificates/manageissuers/deleteissuers permission}.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the certificate issuer in the Azure Key Vault. Prints out the
@@ -1391,7 +1126,7 @@ public final class CertificateClient {
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context -->
      * <pre>
-     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;;
+     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;certificateName&quot;&#41;;
      * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;, deletedIssuer.getName&#40;&#41;,
      *     deletedIssuer.getProvider&#40;&#41;&#41;;
      * </pre>
@@ -1399,23 +1134,18 @@ public final class CertificateClient {
      *
      * @param issuerName The name of the certificate issuer to be deleted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key
-     * vault.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link CertificateIssuer deleted issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer deleted issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> deleteIssuerWithResponse(String issuerName, Context context) {
-        return callWithMappedResponseAndException(() -> implClient.deleteCertificateIssuerWithResponse(vaultUrl,
-            issuerName, context), CertificateIssuerHelper::createCertificateIssuer,
-            CertificateAsyncClient::mapDeleteCertificateIssuerException);
+        return implClient.deleteIssuerWithResponse(issuerName, context);
     }
 
     /**
-     * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified
-     * certificate issuer from the key vault. This operation requires the certificates/manageissuers/deleteissuers
-     * permission.
+     * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified certificate
+     * issuer from the key vault. This operation requires the {@code certificates/manageissuers/deleteissuers permission}.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the certificate issuer in the Azure Key Vault. Prints out the deleted certificate details when a
@@ -1424,7 +1154,7 @@ public final class CertificateClient {
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteIssuer#string -->
      * <pre>
      * Response&lt;CertificateIssuer&gt; deletedIssuerWithResponse = certificateClient.
-     *     deleteIssuerWithResponse&#40;&quot;issuerName&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     deleteIssuerWithResponse&#40;&quot;certificateName&quot;, new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;,
      *     deletedIssuerWithResponse.getValue&#40;&#41;.getName&#40;&#41;,
      *     deletedIssuerWithResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
@@ -1432,8 +1162,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.deleteIssuer#string -->
      *
      * @param issuerName The name of the certificate issuer to be deleted.
-     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key
-     * vault.
+     * @throws ResourceNotFoundException when a certificate issuer with {@code issuerName} doesn't exist in the key vault.
      * @throws HttpRequestException when a certificate issuer with {@code issuerName} is empty string.
      * @return The {@link CertificateIssuer deleted issuer}.
      */
@@ -1443,13 +1172,13 @@ public final class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the
-     * iterable is represented by {@link IssuerProperties} as only the certificate issuer identifier and provider are
-     * provided in the response. This operation requires the certificates/manageissuers/getissuers permission.
+     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the iterable is represented by {@link IssuerProperties}
+     * as only the certificate issuer identifier and provider are provided in the response. This operation requires the
+     * {@code certificates/manageissuers/getissuers} permission.
      *
-     * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the
-     * {@link IssuerProperties issuerProperties} and call {@link CertificateClient#getIssuer(String)}. This will return
-     * the {@link CertificateIssuer issuer} with all its properties.</p>.
+     * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the {@link IssuerProperties issuerProperties} and
+     * call {@link CertificateClient#getIssuer(String)} . This will return the {@link CertificateIssuer issuer}
+     * with all its properties.</p>.
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers -->
      * <pre>
@@ -1469,13 +1198,13 @@ public final class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the
-     * iterable is represented by {@link IssuerProperties} as only the certificate issuer identifier and provider are
-     * provided in the response. This operation requires the certificates/manageissuers/getissuers permission.
+     * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the iterable is represented by {@link IssuerProperties}
+     * as only the certificate issuer identifier and provider are provided in the response. This operation requires the
+     * {@code certificates/manageissuers/getissuers} permission.
      *
-     * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the
-     * {@link IssuerProperties issuerProperties} and call {@link CertificateClient#getIssuer(String)}. This will return
-     * the {@link CertificateIssuer issuer} with all its properties.</p>.
+     * <p>It is possible to get the certificate issuer with all of its properties from this information. Loop over the {@link IssuerProperties issuerProperties} and
+     * call {@link CertificateClient#getIssuer(String)}. This will return the {@link CertificateIssuer issuer}
+     * with all its properties.</p>.
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#context -->
      * <pre>
@@ -1492,19 +1221,16 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(Context context) {
-        return new PagedIterable<>(maxResults -> mapIssuersPagedResponse(implClient.getCertificateIssuersSinglePage(
-            vaultUrl, maxResults, context)),
-            (continuationToken, maxResults) -> mapIssuersPagedResponse(implClient.getCertificateIssuersNextSinglePage(
-                continuationToken, vaultUrl, context)));
+        return implClient.listPropertiesOfIssuers(context);
     }
 
     /**
-     * Updates the specified certificate issuer. The UpdateCertificateIssuer operation updates the specified attributes
-     * of the certificate issuer entity. This operation requires the certificates/setissuers permission.
+     * Updates the specified certificate issuer. The UpdateCertificateIssuer operation updates the specified attributes of
+     * the certificate issuer entity. This operation requires the certificates/setissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints
-     * out the returned certificate issuer details when a response has been received.</p>
+     * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
+     * returned certificate issuer details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer -->
      * <pre>
@@ -1517,9 +1243,8 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer -->
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties.
-     * @throws NullPointerException if {@code issuer} is null.
-     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't
-     * exist in the key vault.
+     * @throws NullPointerException if {@code issuer} is {@code null}.
+     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateIssuer#getName() name} is empty string.
      * @return The {@link CertificateIssuer updated issuer}.
      */
@@ -1529,12 +1254,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Updates the specified certificate issuer. The UpdateCertificateIssuer operation updates the specified attributes
-     * of the certificate issuer entity. This operation requires the certificates/setissuers permission.
+     * Updates the specified certificate issuer. The UpdateCertificateIssuer operation updates the specified attributes of
+     * the certificate issuer entity. This operation requires the certificates/setissuers permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints
-     * out the returned certificate issuer details when a response has been received.</p>
+     * <p>Gets the certificate issuer, changes its attributes/properties then updates it in the Azure Key Vault. Prints out the
+     * returned certificate issuer details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-Context -->
      * <pre>
@@ -1551,32 +1276,20 @@ public final class CertificateClient {
      *
      * @param issuer The {@link CertificateIssuer issuer} with updated properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws NullPointerException if {@code issuer} is null.
-     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't
-     * exist in the key vault.
+     * @throws NullPointerException if {@code issuer} is {@code null}.
+     * @throws ResourceNotFoundException when a certificate issuer with {@link CertificateIssuer#getName() name} doesn't exist in the key vault.
      * @throws HttpRequestException if {@link CertificateIssuer#getName() name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link CertificateIssuer updated issuer}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateIssuer updated issuer}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
-        if (issuer == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'issuer' cannot be null."));
-        }
-
-        IssuerBundle issuerBundle = CertificateIssuerHelper.getIssuerBundle(issuer);
-        return callWithMappedResponseAndException(() -> implClient.updateCertificateIssuerWithResponse(vaultUrl,
-                issuer.getName(), issuer.getProvider(), issuerBundle.getCredentials(),
-                issuerBundle.getOrganizationDetails(), issuerBundle.getAttributes(), context),
-                CertificateIssuerHelper::createCertificateIssuer, ex -> ex);
+        return implClient.updateIssuerWithResponse(issuer, context);
     }
 
     /**
-     * Sets the certificate contacts on the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a
-     * {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -1593,8 +1306,7 @@ public final class CertificateClient {
      *
      * @param contacts The list of contacts to set on the vault.
      * @throws HttpRequestException when a contact information provided is invalid/incomplete.
-     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts) {
@@ -1602,11 +1314,9 @@ public final class CertificateClient {
     }
 
     /**
-     * Sets the certificate contacts on the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Sets the certificate contacts on the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
-     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a
-     * {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
+     *<p>The {@link LifetimeAction} of type {@link CertificatePolicyAction#EMAIL_CONTACTS} set on a {@link CertificatePolicy} emails the contacts set on the vault when triggered.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sets the certificate contacts in the Azure Key Vault. Prints out the returned contacts details.</p>
@@ -1625,22 +1335,18 @@ public final class CertificateClient {
      * @param contacts The list of contacts to set on the vault.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when a contact information provided is invalid/incomplete.
-     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts, Context context) {
-        return new PagedIterable<>(() -> mapContactsToPagedResponse(implClient.setCertificateContactsWithResponse(
-            vaultUrl, new Contacts().setContactList(contacts), context)));
+        return implClient.setContacts(contacts, context);
     }
 
     /**
-     * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the
-     * response.</p>
+     * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the response.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listContacts -->
      * <pre>
@@ -1651,8 +1357,7 @@ public final class CertificateClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.listContacts -->
      *
-     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts() {
@@ -1660,12 +1365,10 @@ public final class CertificateClient {
     }
 
     /**
-     * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Lists the certificate contacts in the key vault. This operation requires the certificates/managecontacts permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the
-     * response.</p>
+     * <p>Lists the certificate contacts in the Azure Key Vault. Prints out the returned contacts details in the response.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.listContacts#context -->
      * <pre>
@@ -1677,22 +1380,19 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.listContacts#context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts(Context context) {
-        return new PagedIterable<>(
-            () -> mapContactsToPagedResponse(implClient.getCertificateContactsWithResponse(vaultUrl, context)));
+        return implClient.listContacts(context);
     }
 
     /**
-     * Deletes the certificate contacts in the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Deletes the certificate contacts in the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the certificate contacts in the Azure Key Vault. Subscribes to the call and prints out the deleted
-     * contacts details.</p>
+     * <p>Deletes the certificate contacts in the Azure Key Vault. Subscribes to the call and prints out the
+     * deleted contacts details.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteContacts -->
      * <pre>
@@ -1703,8 +1403,7 @@ public final class CertificateClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.deleteContacts -->
      *
-     * @return A {@link PagedIterable} containing the deleted {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the deleted {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts() {
@@ -1712,12 +1411,10 @@ public final class CertificateClient {
     }
 
     /**
-     * Deletes the certificate contacts in the key vault. This operation requires the certificates/managecontacts
-     * permission.
+     * Deletes the certificate contacts in the key vault. This operation requires the {@code certificates/managecontacts} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Deletes the certificate contacts in the Azure Key Vault. Prints out the deleted contacts details in the
-     * response.</p>
+     * <p>Deletes the certificate contacts in the Azure Key Vault. Prints out the deleted contacts details in the response.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteContacts#context -->
      * <pre>
@@ -1729,23 +1426,20 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.deleteContacts#context -->
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link PagedIterable} containing the deleted {@link CertificateContact certificate contacts} in the
-     * vault.
+     * @return A {@link PagedIterable} containing all of the deleted {@link CertificateContact certificate contacts} in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts(Context context) {
-        return new PagedIterable<>(
-            () -> mapContactsToPagedResponse(implClient.deleteCertificateContactsWithResponse(vaultUrl, context)));
+        return implClient.deleteContacts(context);
     }
 
     /**
-     * Deletes the creation operation for the specified certificate that is in the process of being created. The
-     * certificate is no longer created. This operation requires the certificates/update permission.
+     * Deletes the creation operation for the specified certificate that is in the process of being created. The certificate is
+     * no longer created. This operation requires the {@code certificates/update permission}.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault.
-     * Subscribes to the call and prints out the deleted certificate operation details when a response has been
-     * received.</p>
+     * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * deleted certificate operation details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#string -->
      * <pre>
@@ -1757,8 +1451,7 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#string -->
      *
      * @param certificateName The name of the certificate.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName}
-     * doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code certificateName} is empty string.
      * @return The deleted {@link CertificateOperation certificate operation}.
      */
@@ -1768,13 +1461,12 @@ public final class CertificateClient {
     }
 
     /**
-     * Deletes the creation operation for the specified certificate that is in the process of being created. The
-     * certificate is no longer created. This operation requires the certificates/update permission.
+     * Deletes the creation operation for the specified certificate that is in the process of being created. The certificate is
+     * no longer created. This operation requires the {@code certificates/update permission}.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault.
-     * Subscribes to the call and prints out the deleted certificate operation details when a response has been
-     * received.</p>
+     * <p>Triggers certificate creation and then deletes the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * deleted certificate operation details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.deleteCertificateOperationWithResponse#string -->
      * <pre>
@@ -1786,28 +1478,21 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName}
-     * doesn't exist in the key vault.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code certificateName} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code certificateName} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link CertificateOperation deleted certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation deleted certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
-        Context context) {
-        return callWithMappedResponseAndException(() -> implClient.deleteCertificateOperationWithResponse(vaultUrl,
-            certificateName, context), CertificateOperationHelper::createCertificateOperation,
-            CertificateAsyncClient::mapDeleteCertificateOperationException);
+    public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName, Context context) {
+        return implClient.deleteCertificateOperationWithResponse(certificateName, context);
     }
 
     /**
-     * Cancels a certificate creation operation that is already in progress. This operation requires the
-     * certificates/update permission.
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault.
-     * Subscribes to the call and prints out the updated certificate operation details when a response has been
-     * received.</p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string -->
      * <pre>
@@ -1818,11 +1503,9 @@ public final class CertificateClient {
      * <!-- end com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#string -->
      *
      * @param certificateName The name of the certificate which is in the process of being created.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist
-     * in the key vault.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link CertificateOperation cancelled certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation cancelCertificateOperation(String certificateName) {
@@ -1830,13 +1513,11 @@ public final class CertificateClient {
     }
 
     /**
-     * Cancels a certificate creation operation that is already in progress. This operation requires the
-     * certificates/update permission.
+     * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault.
-     * Subscribes to the call and prints out the updated certificate operation details when a response has been
-     * received.</p>
+     * <p>Triggers certificate creation and then cancels the certificate creation operation in the Azure Key Vault. Subscribes to the call and prints out the
+     * updated certificate operation details when a response has been received.</p>
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#string -->
      * <pre>
@@ -1848,23 +1529,18 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate which is in the process of being created.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist
-     * in the key vault.
+     * @throws ResourceNotFoundException when a certificate operation for a certificate with {@code name} doesn't exist in the key vault.
      * @throws HttpRequestException when the {@code name} is empty string.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link CertificateOperation cancelled certificate operation}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link CertificateOperation cancelled certificate operation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName,
-        Context context) {
-        return callWithMappedResponseAndException(() -> implClient.updateCertificateOperationWithResponse(vaultUrl,
-            certificateName, true, context), CertificateOperationHelper::createCertificateOperation,
-            CertificateAsyncClient::mapUpdateCertificateOperationException);
+    public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName, Context context) {
+        return implClient.cancelCertificateOperationWithResponse(certificateName, context);
     }
 
     /**
-     * Merges a certificate or a certificate chain with a key pair currently available in the service. This operation
-     * requires the certificates/create permission.
+     * Merges a certificate or a certificate chain with a key pair currently available in the service. This operation requires
+     * the {@code certificates/create} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Merges a certificate with a kay pair available in the service.</p>
@@ -1892,8 +1568,8 @@ public final class CertificateClient {
     }
 
     /**
-     * Merges a certificate or a certificate chain with a key pair currently available in the service. This operation
-     * requires the certificates/create permission.
+     * Merges a certificate or a certificate chain with a key pair currently available in the service. This operation requires
+     * the {@code certificates/create} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Merges a certificate with a kay pair available in the service.</p>
@@ -1919,23 +1595,14 @@ public final class CertificateClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the merged certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(
-        MergeCertificateOptions mergeCertificateOptions, Context context) {
-        if (mergeCertificateOptions == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'mergeCertificateOptions' cannot be null."));
-        }
-
-        return callWithMappedResponseAndException(() -> implClient.mergeCertificateWithResponse(vaultUrl,
-                mergeCertificateOptions.getName(), mergeCertificateOptions.getX509Certificates(),
-                new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()),
-                mergeCertificateOptions.getTags(),
-                context), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy, ex -> ex);
+    public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
+        Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
+        return implClient.mergeCertificateWithResponse(mergeCertificateOptions, context);
     }
 
     /**
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
-     * and must contain the private key as well as the x509 certificates. This operation requires the
-     * certificates/import permission.
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Imports a certificate into the key vault.</p>
@@ -1953,7 +1620,6 @@ public final class CertificateClient {
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
-     * @throws NullPointerException when {@code importCertificateOptions} is null.
      * @return the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1963,8 +1629,7 @@ public final class CertificateClient {
 
     /**
      * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
-     * and must contain the private key as well as the x509 certificates. This operation requires the
-     * certificates/import permission.
+     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Imports a certificate into the key vault.</p>
@@ -1985,43 +1650,10 @@ public final class CertificateClient {
      * @param importCertificateOptions The details of the certificate to import to the key vault
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @throws HttpRequestException when the {@code importCertificateOptions} are invalid.
-     * @throws NullPointerException when {@code importCertificateOptions} is null.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultCertificateWithPolicy imported certificate}.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultCertificateWithPolicy imported certificate}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(
-        ImportCertificateOptions importCertificateOptions, Context context) {
-        if (importCertificateOptions == null) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'importCertificateOptions' cannot be null."));
-        }
-
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
-            = getImplCertificatePolicy(importCertificateOptions.getPolicy());
-
-        return callWithMappedResponseAndException(() -> implClient.importCertificateWithResponse(vaultUrl,
-                importCertificateOptions.getName(), transformCertificateForImport(importCertificateOptions),
-                importCertificateOptions.getPassword(), implPolicy,
-                implPolicy == null ? null : implPolicy.getAttributes(), importCertificateOptions.getTags(), context),
-            KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy, ex -> ex);
-    }
-
-    private static <T> T callWithMappedException(Supplier<T> apiCall,
-        Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
-        try {
-            return apiCall.get();
-        } catch (KeyVaultErrorException ex) {
-            throw exceptionMapper.apply(ex);
-        }
-    }
-
-    private static <T, R> Response<R> callWithMappedResponseAndException(Supplier<Response<T>> apiCall,
-        Function<T, R> responseValueMapper, Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
-        try {
-            Response<T> responseInn = apiCall.get();
-            return new SimpleResponse<>(responseInn, responseValueMapper.apply(responseInn.getValue()));
-        } catch (KeyVaultErrorException ex) {
-            throw exceptionMapper.apply(ex);
-        }
+    public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+        return implClient.importCertificateWithResponse(importCertificateOptions, context);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -23,19 +24,12 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
     public static final CertificateContentType PEM = fromString("application/x-pem-file");
 
     /**
-     * Creates a new instance of CertificateContentType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CertificateContentType() {}
-
-    /**
      * Creates or finds a {@link CertificateContentType} from its string representation.
      *
      * @param name A name to look for.
      * @return The corresponding {@link CertificateContentType}.
      */
+    @JsonCreator
     public static CertificateContentType fromString(String name) {
         return fromString(name, CertificateContentType.class);
     }

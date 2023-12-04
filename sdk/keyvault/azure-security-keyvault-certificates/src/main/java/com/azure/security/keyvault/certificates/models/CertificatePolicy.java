@@ -3,46 +3,128 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
-import com.azure.security.keyvault.certificates.implementation.models.IssuerParameters;
-import com.azure.security.keyvault.certificates.implementation.models.KeyProperties;
-import com.azure.security.keyvault.certificates.implementation.models.SecretProperties;
-import com.azure.security.keyvault.certificates.implementation.models.X509CertificateProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 /**
  * The Certificate Management policy for the {@link KeyVaultCertificate certificate}.
  */
-public final class CertificatePolicy implements JsonSerializable<CertificatePolicy> {
-    static {
-        CertificatePolicyHelper.setAccessor(new CertificatePolicyHelper.CertificatePolicyAccessor() {
-            @Override
-            public CertificatePolicy createPolicy(
-                com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
-                return new CertificatePolicy(impl);
-            }
+public final class CertificatePolicy {
 
-            @Override
-            public com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy getPolicy(
-                CertificatePolicy policy) {
-                return policy == null ? null : policy.impl;
-            }
-        });
-    }
+    /**
+     * The subject name. Should be a valid X509 distinguished Name.
+     */
+    @JsonProperty(value = "subject")
+    private String subject;
 
-    private final com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl;
+    /**
+     * The subject alternative names.
+     */
+    @JsonProperty(value = "sans")
+    private SubjectAlternativeNames subjectAlternativeNames;
 
+    /**
+     * The duration that the certificate is valid in months.
+     */
+    @JsonProperty(value = "validity_months")
+    private Integer validityInMonths;
+
+    /**
+     * Actions that will be performed by Key Vault over the lifetime of a
+     * certificate.
+     */
     private List<LifetimeAction> lifetimeActions;
+
+    /**
+     * Name of the referenced issuer object or reserved names; for example,
+     * 'Self' or 'Unknown'.
+     */
+    @JsonProperty(value = "name")
+    private String issuerName;
+
+    /**
+     * Type of certificate to be requested from the issuer provider.
+     */
+    @JsonProperty(value = "cty")
+    private String certificateType;
+
+    /**
+     * Indicates if the certificates generated under this policy should be
+     * published to certificate transparency logs.
+     */
+    @JsonProperty(value = "cert_transparency")
+    private Boolean certificateTransparent;
+
+    /**
+     * The content type of the secret.
+     */
+    private CertificateContentType contentType;
+
+    /**
+     * Creation time in UTC.
+     */
+    private OffsetDateTime createdOn;
+
+    /**
+     * Last updated time in UTC.
+     */
+    private OffsetDateTime updatedOn;
+
+    /**
+     * Determines whether the object is enabled.
+     */
+    private Boolean enabled;
+
+    /**
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    private Boolean exportable;
+
+    /**
+     * The type of key pair to be used for the certificate. Possible values
+     * include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
+     */
+    @JsonProperty(value = "kty")
+    private CertificateKeyType keyType;
+
+    /**
+     * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+     */
+    @JsonProperty(value = "key_size")
+    private Integer keySize;
+
+    /**
+     * Indicates if the same key pair will be used on certificate renewal.
+     */
+    @JsonProperty(value = "reuse_key")
+    private Boolean keyReusable;
+
+    /**
+     * Elliptic curve name. For valid values, see KeyCurveName. Possible
+     * values include: 'P-256', 'P-384', 'P-521', 'P-256K'.
+     */
+    @JsonProperty(value = "crv")
+    private CertificateKeyCurveName keyCurveName;
+
+    /**
+     * List of key usages.
+     */
+    @JsonProperty(value = "key_usage")
+    private List<CertificateKeyUsage> keyUsage;
+
+    /**
+     * The enhanced key usage.
+     */
+    @JsonProperty(value = "ekus")
+    private List<String> enhancedKeyUsage;
 
     /**
      * Creates certificate policy.
@@ -50,9 +132,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @param subject The subject name to set.
      */
     public CertificatePolicy(String issuerName, String subject) {
-        this.impl = new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
-            .setIssuerParameters(new IssuerParameters().setName(issuerName))
-            .setX509CertificateProperties(new X509CertificateProperties().setSubject(subject));
+        this.issuerName = issuerName;
+        this.subject = subject;
     }
 
     /**
@@ -61,10 +142,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @param subjectAlternativeNames The subject alternative names to set.
      */
     public CertificatePolicy(String issuerName, SubjectAlternativeNames subjectAlternativeNames) {
-        this.impl = new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
-            .setIssuerParameters(new IssuerParameters().setName(issuerName))
-            .setX509CertificateProperties(new X509CertificateProperties()
-                .setSubjectAlternativeNames(subjectAlternativeNames));
+        this.issuerName = issuerName;
+        this.subjectAlternativeNames = subjectAlternativeNames;
     }
 
     /**
@@ -74,14 +153,14 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @param subjectAlternativeNames The subject alternative names to set.
      */
     public CertificatePolicy(String issuerName, String subject, SubjectAlternativeNames subjectAlternativeNames) {
-        this.impl = new com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy()
-            .setIssuerParameters(new IssuerParameters().setName(issuerName))
-            .setX509CertificateProperties(new X509CertificateProperties().setSubject(subject)
-                .setSubjectAlternativeNames(subjectAlternativeNames));
+        this.issuerName = issuerName;
+        this.subject = subject;
+        this.subjectAlternativeNames = subjectAlternativeNames;
     }
 
-    private CertificatePolicy(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
-        this.impl = impl;
+
+    CertificatePolicy() {
+
     }
 
     /**
@@ -90,7 +169,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key usage
      */
     public List<CertificateKeyUsage> getKeyUsage() {
-        return impl.getX509CertificateProperties().getKeyUsage();
+        return this.keyUsage;
     }
 
     /**
@@ -100,12 +179,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setKeyUsage(CertificateKeyUsage... keyUsage) {
-        if (keyUsage == null) {
-            impl.getX509CertificateProperties().setKeyUsage(null);
-        } else {
-            impl.getX509CertificateProperties().setKeyUsage(Arrays.asList(keyUsage));
-        }
-
+        this.keyUsage = Arrays.asList(keyUsage);
         return this;
     }
 
@@ -115,7 +189,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the enhanced key usage
      */
     public List<String> getEnhancedKeyUsage() {
-        return impl.getX509CertificateProperties().getEkus();
+        return this.enhancedKeyUsage;
     }
 
     /**
@@ -125,8 +199,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setEnhancedKeyUsage(List<String> ekus) {
-        impl.getX509CertificateProperties().setEkus(ekus);
-
+        this.enhancedKeyUsage = ekus;
         return this;
     }
 
@@ -136,7 +209,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the exportable value
      */
     public Boolean isExportable() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().isExportable();
+        return this.exportable;
     }
 
     /**
@@ -146,11 +219,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setExportable(Boolean exportable) {
-        if (impl.getKeyProperties() == null) {
-            impl.setKeyProperties(new KeyProperties());
-        }
-
-        impl.getKeyProperties().setExportable(exportable);
+        this.exportable = exportable;
         return this;
     }
 
@@ -160,7 +229,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key type value
      */
     public CertificateKeyType getKeyType() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getKty();
+        return this.keyType;
     }
 
     /**
@@ -170,11 +239,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key type
      */
     public CertificatePolicy setKeyType(CertificateKeyType keyType) {
-        if (impl.getKeyProperties() == null) {
-            impl.setKeyProperties(new KeyProperties());
-        }
-
-        impl.getKeyProperties().setKty(keyType);
+        this.keyType = keyType;
         return this;
     }
 
@@ -184,7 +249,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key size
      */
     public Integer getKeySize() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getKeySize();
+        return this.keySize;
     }
 
     /**
@@ -193,7 +258,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the key reuse status
      */
     public Boolean isKeyReusable() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().isReuseKey();
+        return this.keyReusable;
     }
 
     /**
@@ -203,11 +268,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setKeyReusable(Boolean keyReusable) {
-        if (impl.getKeyProperties() == null) {
-            impl.setKeyProperties(new KeyProperties());
-        }
-
-        impl.getKeyProperties().setReuseKey(keyReusable);
+        this.keyReusable = keyReusable;
         return this;
     }
 
@@ -217,7 +278,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the curve value
      */
     public CertificateKeyCurveName getKeyCurveName() {
-        return impl.getKeyProperties() == null ? null : impl.getKeyProperties().getCrv();
+        return this.keyCurveName;
     }
 
     /**
@@ -226,7 +287,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the created UTC time.
      */
     public OffsetDateTime getCreatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getCreated();
+        return createdOn;
     }
 
     /**
@@ -235,7 +296,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the last updated UTC time.
      */
     public OffsetDateTime getUpdatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
+        return updatedOn;
     }
 
 
@@ -245,7 +306,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the enabled status
      */
     public Boolean isEnabled() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().isEnabled();
+        return this.enabled;
     }
 
     /**
@@ -254,11 +315,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setEnabled(Boolean enabled) {
-        if (impl.getAttributes() == null) {
-            impl.setAttributes(new CertificateAttributes());
-        }
-
-        impl.getAttributes().setEnabled(enabled);
+        this.enabled = enabled;
         return this;
     }
 
@@ -268,8 +325,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the content type
      */
     public CertificateContentType getContentType() {
-        return impl.getSecretProperties() == null ? null
-            : CertificateContentType.fromString(impl.getSecretProperties().getContentType());
+        return this.contentType;
     }
 
 
@@ -280,11 +336,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setContentType(CertificateContentType contentType) {
-        if (impl.getSecretProperties() == null) {
-            impl.setSecretProperties(new SecretProperties());
-        }
-
-        impl.getSecretProperties().setContentType(Objects.toString(contentType, null));
+        this.contentType = contentType;
         return this;
     }
 
@@ -294,7 +346,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the subjectAlternativeNames.
      */
     public SubjectAlternativeNames getSubjectAlternativeNames() {
-        return impl.getX509CertificateProperties().getSubjectAlternativeNames();
+        return subjectAlternativeNames;
     }
 
     /**
@@ -304,7 +356,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setSubjectAlternativeNames(SubjectAlternativeNames subjectAlternativeNames) {
-        impl.getX509CertificateProperties().setSubjectAlternativeNames(subjectAlternativeNames);
+        this.subjectAlternativeNames = subjectAlternativeNames;
         return this;
     }
 
@@ -315,7 +367,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setSubject(final String subject) {
-        impl.getX509CertificateProperties().setSubject(subject);
+        this.subject = subject;
         return this;
     }
 
@@ -326,7 +378,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setValidityInMonths(Integer validityInMonths) {
-        impl.getX509CertificateProperties().setValidityInMonths(validityInMonths);
+        this.validityInMonths = validityInMonths;
         return this;
     }
 
@@ -337,11 +389,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setKeySize(Integer keySize) {
-        if (impl.getKeyProperties() == null) {
-            impl.setKeyProperties(new KeyProperties());
-        }
-
-        impl.getKeyProperties().setKeySize(keySize);
+        this.keySize = keySize;
         return this;
     }
 
@@ -352,11 +400,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setKeyCurveName(CertificateKeyCurveName keyCurveName) {
-        if (impl.getKeyProperties() == null) {
-            impl.setKeyProperties(new KeyProperties());
-        }
-
-        impl.getKeyProperties().setCrv(keyCurveName);
+        this.keyCurveName = keyCurveName;
         return this;
     }
 
@@ -367,7 +411,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setCertificateType(String certificateType) {
-        impl.getIssuerParameters().setCertificateType(certificateType);
+        this.certificateType = certificateType;
         return this;
     }
 
@@ -378,7 +422,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated CertificatePolicy object itself.
      */
     public CertificatePolicy setCertificateTransparent(Boolean certificateTransparent) {
-        impl.getIssuerParameters().setCertificateTransparency(certificateTransparent);
+        this.certificateTransparent = certificateTransparent;
         return this;
     }
 
@@ -388,7 +432,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the subject
      */
     public String getSubject() {
-        return impl.getX509CertificateProperties().getSubject();
+        return this.subject;
     }
 
     /**
@@ -397,7 +441,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the validity in months
      */
     public Integer getValidityInMonths() {
-        return impl.getX509CertificateProperties().getValidityInMonths();
+        return this.validityInMonths;
     }
 
     /**
@@ -406,7 +450,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the issuer name.
      */
     public String getIssuerName() {
-        return impl.getIssuerParameters().getName();
+        return issuerName;
     }
 
     /**
@@ -415,7 +459,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the certificate type
      */
     public String getCertificateType() {
-        return impl.getIssuerParameters().getCertificateType();
+        return this.certificateType;
     }
 
     /**
@@ -424,7 +468,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the certificate transparency status
      */
     public Boolean isCertificateTransparent() {
-        return impl.getIssuerParameters().isCertificateTransparency();
+        return this.certificateTransparent;
     }
 
     /**
@@ -433,19 +477,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the updated certificate policy object itself.
      */
     public CertificatePolicy setLifetimeActions(LifetimeAction... actions) {
-        if (actions == null) {
-            impl.setLifetimeActions(null);
-            lifetimeActions = null;
-        } else {
-            lifetimeActions = Arrays.asList(actions);
-            List<com.azure.security.keyvault.certificates.implementation.models.LifetimeAction> implActions
-                = new ArrayList<>(actions.length);
-            for (LifetimeAction action : actions) {
-                implActions.add(action.getImpl());
-            }
-            impl.setLifetimeActions(implActions);
-        }
-
+        this.lifetimeActions = Arrays.asList(actions);
         return this;
     }
 
@@ -454,15 +486,7 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the lifetime actions
      */
     public List<LifetimeAction> getLifetimeActions() {
-        if (lifetimeActions == null && impl.getLifetimeActions() != null) {
-            lifetimeActions = new ArrayList<>(impl.getLifetimeActions().size());
-            for (com.azure.security.keyvault.certificates.implementation.models.LifetimeAction implAction
-                : impl.getLifetimeActions()) {
-                lifetimeActions.add(new LifetimeAction(implAction));
-            }
-        }
-
-        return lifetimeActions;
+        return this.lifetimeActions;
     }
 
     /**
@@ -470,23 +494,103 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
      * @return the default certificate policy.
      */
     public static CertificatePolicy getDefault() {
-        return new CertificatePolicy("Self", "CN=DefaultPolicy");
+        return  new CertificatePolicy("Self", "CN=DefaultPolicy");
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return impl.toJson(jsonWriter);
+
+    @JsonProperty("key_props")
+    private void unpackKeyProperties(Map<String, Object> keyProps) {
+
+        this.keyType = CertificateKeyType.fromString((String) keyProps.get("kty"));
+        this.keySize = (Integer) keyProps.get("key_size");
+        this.exportable = (Boolean) keyProps.get("exportable");
+        this.keyReusable = (Boolean) keyProps.get("reuse_key");
+        this.keyCurveName = keyProps.containsKey("crv") ? CertificateKeyCurveName.fromString((String) keyProps.get("crv")) : null;
     }
 
-    /**
-     * Reads a JSON stream into a {@link CertificatePolicy}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link CertificatePolicy} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link CertificatePolicy} fails to be read from the {@code jsonReader}.
-     */
-    public static CertificatePolicy fromJson(JsonReader jsonReader) throws IOException {
-        return new CertificatePolicy(
-            com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.fromJson(jsonReader));
+
+    @JsonProperty("x509_props")
+    @SuppressWarnings("unchecked")
+    private void unpackX509Properties(Map<String, Object> x509Props) {
+        validityInMonths = (Integer) x509Props.get("validity_months");
+        subject = (String) x509Props.get("subject");
+
+        this.enhancedKeyUsage = (x509Props.containsKey("ekus") ? parseEnhancedKeyUsage((List<Object>) x509Props.get("ekus")) : null);
+        this.keyUsage = (x509Props.containsKey("key_usage") ? parseKeyUsage((List<Object>) x509Props.get("key_usage")) : null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<CertificateKeyUsage> parseKeyUsage(List<Object> keyUsages) {
+        List<CertificateKeyUsage> output = new ArrayList<>();
+
+        for (Object keyUsage : keyUsages) {
+            CertificateKeyUsage type = CertificateKeyUsage.fromString((String) keyUsage);
+            output.add(type);
+        }
+        return output;
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<String> parseEnhancedKeyUsage(List<Object> keyUsages) {
+        List<String> output = new ArrayList<>();
+
+        for (Object keyUsage : keyUsages) {
+            output.add((String) keyUsage);
+        }
+        return output;
+    }
+
+    @JsonProperty("secret_props")
+    private void unpackSecretProperties(Map<String, Object> secretProps) {
+        this.contentType = secretProps.containsKey("contentType") ? CertificateContentType.fromString((String) secretProps.get("contentType")) : null;
+    }
+
+    @JsonProperty("issuer")
+    private void unpackIssuerProperties(Map<String, Object> issuerProps) {
+        this.issuerName = (String) issuerProps.get("name");
+        this.certificateType = (String) issuerProps.get("cty");
+        this.certificateTransparent = (Boolean) issuerProps.get("cert_transparency");
+    }
+
+    @JsonProperty("lifetime_actions")
+    @SuppressWarnings("unchecked")
+    private void unpackLifeTimeActions(List<Object> lifetimeActions) {
+        List<LifetimeAction> actions = new ArrayList<>();
+
+        for (Object action: lifetimeActions) {
+            Map<String, Object> map = (Map<String, Object>) action;
+            Integer lifetimePercentageTrigger = null;
+            Integer daysBeforeExpiryTrigger = null;
+            CertificatePolicyAction actionType = null;
+            if (map.containsKey("trigger")) {
+                Map<String, Object> trigger = (Map<String, Object>) map.get("trigger");
+                lifetimePercentageTrigger = trigger.containsKey("lifetime_percentage") ? (Integer) trigger.get("lifetime_percentage") : null;
+                daysBeforeExpiryTrigger = trigger.containsKey("days_before_expiry") ? (Integer) trigger.get("days_before_expiry") : null;
+            }
+
+            if (map.containsKey("action")) {
+                Map<String, Object> lifetimeAction = (Map<String, Object>) map.get("action");
+                actionType = lifetimeAction.containsKey("action_type") ? CertificatePolicyAction.fromString((String) lifetimeAction.get("action_type")) : null;
+            }
+            actions.add(new LifetimeAction(actionType).setLifetimePercentage(lifetimePercentageTrigger).setDaysBeforeExpiry(daysBeforeExpiryTrigger));
+        }
+
+        this.lifetimeActions = actions;
+    }
+
+
+    @JsonProperty("attributes")
+    private void unpackAttributes(Map<String, Object> attributes) {
+        this.enabled = (Boolean) attributes.get("enabled");
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
+    }
+
+    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
+        if (epochValue != null) {
+            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
+        }
+        return null;
     }
 }
