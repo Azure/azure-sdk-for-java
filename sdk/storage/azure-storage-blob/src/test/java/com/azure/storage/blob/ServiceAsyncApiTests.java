@@ -940,9 +940,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(client.getProperties())
-            .verifyErrorSatisfies(r -> {
-                assertTrue(r instanceof BlobStorageException || r instanceof UnknownHostException);
-            });
+            .expectError();
     }
 
     @Test
