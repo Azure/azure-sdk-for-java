@@ -46,7 +46,7 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        if (getTestMode() == TestMode.PLAYBACK && httpClient == null) {
+        if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
