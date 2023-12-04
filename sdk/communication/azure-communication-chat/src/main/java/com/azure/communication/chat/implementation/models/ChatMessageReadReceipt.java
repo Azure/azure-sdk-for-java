@@ -14,8 +14,8 @@ public final class ChatMessageReadReceipt {
     /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
-     * model is polymorphic: Apart from kind and rawId, at most one further
-     * property may be set which must match the kind enum value.
+     * model must be interpreted as a union: Apart from rawId, at most one
+     * further property may be set.
      */
     @JsonProperty(value = "senderCommunicationIdentifier", required = true)
     private CommunicationIdentifierModel senderCommunicationIdentifier;
@@ -36,8 +36,8 @@ public final class ChatMessageReadReceipt {
 
     /**
      * Get the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
      * @return the senderCommunicationIdentifier value.
      */
@@ -47,8 +47,8 @@ public final class ChatMessageReadReceipt {
 
     /**
      * Set the senderCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
-     * kind and rawId, at most one further property may be set which must match the kind enum value.
+     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
+     * union: Apart from rawId, at most one further property may be set.
      *
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the ChatMessageReadReceipt object itself.
