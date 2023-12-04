@@ -27,28 +27,27 @@ matrix:
 #      durationSeconds: 900
 #      imageBuildDir: "../../.."
 
-#    #this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
-#    download-med-file-test:
-#      testScenario: downloadtofile
-#      sync: true
-#      sizeBytes: 16777216
-#      parallel: 100
-#      faults: true
-#      durationSeconds: 900
-#      imageBuildDir: "../../.."
+#    # this test downloads 16 * 1024 * 1024 bytes, medium file in several chunks
+    download-med-file-test:
+      testScenario: downloadtofile
+      sync: true
+      sizeBytes: 16777216
+      parallel: 100
+      faults: true
+      durationSeconds: 900
+      imageBuildDir: "../../.."
+
+#    # this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
+    download-unaligned-file-test:
+      testScenario: downloadtofile
+      sync: true
+      sizeBytes: 8405002
+      parallel: 100
+      faults: true
+      durationSeconds: 900
+      imageBuildDir: "../../.."
 #
-#
-#    #this test downloads 8 * 1026 * 1024 + 10 bytes, unaligned file in several chunks
-#    download-unaligned-file-test:
-#      testScenario: downloadtofile
-#      sync: true
-#      sizeBytes: 8405002
-#      parallel: 100
-#      faults: true
-#      durationSeconds: 900
-#      imageBuildDir: "../../.."
-#
-#    #this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
+#    # this test downloads 50 * 1024 * 1024 bytes, large file requiring multiple requests
 #    download-large-file-test:
 #      testScenario: downloadtofile
 #      sync: true
