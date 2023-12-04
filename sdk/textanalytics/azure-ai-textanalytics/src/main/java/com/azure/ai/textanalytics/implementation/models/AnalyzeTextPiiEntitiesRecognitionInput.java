@@ -5,23 +5,25 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The AnalyzeTextPiiEntitiesRecognitionInput model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("PiiEntityRecognition")
 @Fluent
 public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTask {
     /*
      * The analysisInput property.
      */
+    @JsonProperty(value = "analysisInput")
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * Supported parameters for a PII Entities Recognition task.
      */
+    @JsonProperty(value = "parameters")
     private PiiTaskParameters parameters;
 
     /** Creates an instance of AnalyzeTextPiiEntitiesRecognitionInput class. */
@@ -65,55 +67,5 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
     public AnalyzeTextPiiEntitiesRecognitionInput setParameters(PiiTaskParameters parameters) {
         this.parameters = parameters;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(AnalyzeTextTaskKind.PII_ENTITY_RECOGNITION, null));
-        jsonWriter.writeJsonField("analysisInput", this.analysisInput);
-        jsonWriter.writeJsonField("parameters", this.parameters);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextPiiEntitiesRecognitionInput from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextPiiEntitiesRecognitionInput if the JsonReader was pointing to an instance of
-     *     it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AnalyzeTextPiiEntitiesRecognitionInput.
-     */
-    public static AnalyzeTextPiiEntitiesRecognitionInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AnalyzeTextPiiEntitiesRecognitionInput deserializedAnalyzeTextPiiEntitiesRecognitionInput =
-                            new AnalyzeTextPiiEntitiesRecognitionInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"PiiEntityRecognition".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'PiiEntityRecognition'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("analysisInput".equals(fieldName)) {
-                            deserializedAnalyzeTextPiiEntitiesRecognitionInput.analysisInput =
-                                    MultiLanguageAnalysisInput.fromJson(reader);
-                        } else if ("parameters".equals(fieldName)) {
-                            deserializedAnalyzeTextPiiEntitiesRecognitionInput.parameters =
-                                    PiiTaskParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedAnalyzeTextPiiEntitiesRecognitionInput;
-                });
     }
 }

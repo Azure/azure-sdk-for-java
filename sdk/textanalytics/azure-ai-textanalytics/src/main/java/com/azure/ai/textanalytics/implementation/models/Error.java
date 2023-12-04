@@ -5,48 +5,51 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.LinkedHashMap;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /** The error object. */
 @Fluent
-public final class Error implements JsonSerializable<Error> {
+public final class Error {
     /*
      * One of a server-defined set of error codes.
      */
+    @JsonProperty(value = "code", required = true)
     private ErrorCode code;
 
     /*
      * A human-readable representation of the error.
      */
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * The target of the error.
      */
+    @JsonProperty(value = "target")
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
+    @JsonProperty(value = "details")
     private List<Error> details;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
+    @JsonProperty(value = "innererror")
     private InnerErrorModel innererror;
 
     /*
      * The error object.
      */
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /** Creates an instance of Error class. */
     public Error() {}
@@ -158,6 +161,7 @@ public final class Error implements JsonSerializable<Error> {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -173,62 +177,11 @@ public final class Error implements JsonSerializable<Error> {
         return this;
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", Objects.toString(this.code, null));
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("target", this.target);
-        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("innererror", this.innererror);
-        if (additionalProperties != null) {
-            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
-            }
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
         }
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Error from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Error.
-     */
-    public static Error fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Error deserializedError = new Error();
-                    Map<String, Object> additionalProperties = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("code".equals(fieldName)) {
-                            deserializedError.code = ErrorCode.fromString(reader.getString());
-                        } else if ("message".equals(fieldName)) {
-                            deserializedError.message = reader.getString();
-                        } else if ("target".equals(fieldName)) {
-                            deserializedError.target = reader.getString();
-                        } else if ("details".equals(fieldName)) {
-                            List<Error> details = reader.readArray(reader1 -> Error.fromJson(reader1));
-                            deserializedError.details = details;
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedError.innererror = InnerErrorModel.fromJson(reader);
-                        } else {
-                            if (additionalProperties == null) {
-                                additionalProperties = new LinkedHashMap<>();
-                            }
-
-                            additionalProperties.put(fieldName, reader.readUntyped());
-                        }
-                    }
-                    deserializedError.additionalProperties = additionalProperties;
-
-                    return deserializedError;
-                });
+        additionalProperties.put(key, value);
     }
 }
