@@ -452,7 +452,7 @@ class AdministrationModelConverter {
     Response<TopicProperties> deserializeTopic(Response<Object> response) {
         final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
 
-        // This was an empty response (i.e. 204).
+        // This was an empty response (i.e. 204) or the entity does not exist.
         if (entry == null || entry.getContent() == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         } else if (entry.getContent().getTopicDescription() == null) {
