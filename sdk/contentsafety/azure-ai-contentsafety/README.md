@@ -61,7 +61,7 @@ ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
 ```
 
 #### Create a ContentSafetyClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
-- Step 1: Enable AAD for your resource
+- Step 1: Enable Microsoft Entra ID for your resource
   Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
 
   The main steps are:
@@ -74,7 +74,7 @@ After setup, you can choose which type of [credential](https://github.com/Azure/
 As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#authenticate-with-defaultazurecredential)
 can be used to authenticate the client.
 
-DefaultAzureCredential will use the values from these environment variables.
+`DefaultAzureCredential` will use the values from these environment variables.
 ```java com.azure.ai.contentsafety.createcontentsafetyclienttoken 
 ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
