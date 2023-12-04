@@ -7,7 +7,8 @@ import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
-import com.azure.ai.documentintelligence.models.DocumentTable;
+import com.azure.ai.documentintelligence.models.DocumentBarcode;
+import com.azure.ai.documentintelligence.models.DocumentPage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
@@ -35,9 +36,9 @@ public class AnalyzeAddOnBarcodesAsync {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         DocumentIntelligenceAsyncClient client = new DocumentIntelligenceClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+                .buildAsyncClient();
 
         File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/barcodes.jpg");
@@ -68,49 +69,23 @@ public class AnalyzeAddOnBarcodesAsync {
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // pages
-            analyzeLayoutResult.getPages().forEach(documentPage -> {
-                System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
-                    documentPage.getWidth(),
-                    documentPage.getHeight(),
-                    documentPage.getUnit());
+            List<DocumentPage> pages = analyzeLayoutResult.getPages();
 
-                // lines
-                documentPage.getLines().forEach(documentLine ->
-                    System.out.printf("Line '%s' is within a bounding polygon %s.%n",
-                        documentLine.getContent(),
-                        documentLine.getPolygon()));
+            for (int i = 0; i < pages.size(); i++) {
+                DocumentPage documentPage = pages.get(i);
 
-                // words
-                documentPage.getWords().forEach(documentWord ->
-                    System.out.printf("Word '%s' has a confidence score of %.2f.%n",
-                        documentWord.getContent(),
-                        documentWord.getConfidence()));
+                System.out.printf("----Barcodes detected from page #%d----%n", i);
 
-                // selection marks
-                documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                    System.out.printf("Selection mark is '%s' and is within a bounding polygon %s with confidence %.2f.%n",
-                        documentSelectionMark.getState().toString(),
-                        documentSelectionMark.getPolygon(),
-                        documentSelectionMark.getConfidence()));
-            });
-
-            // tables
-            List<DocumentTable> tables = analyzeLayoutResult.getTables();
-            for (int i = 0; i < tables.size(); i++) {
-                DocumentTable documentTable = tables.get(i);
-                System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
-                    documentTable.getColumnCount());
-                documentTable.getCells().forEach(documentTableCell -> {
-                    System.out.printf("Cell '%s', has row index %d and column index %d.%n",
-                        documentTableCell.getContent(),
-                        documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
-                });
-                System.out.println();
+                List<DocumentBarcode> barcodes = documentPage.getBarcodes();
+                System.out.printf("Detected %d barcodes:%n", barcodes.size());
+                for (int j = 0; j < barcodes.size(); j++) {
+                    DocumentBarcode documentBarcode = barcodes.get(j);
+                    System.out.printf("- Barcode %d: %s%n", j, documentBarcode.getValue());
+                    System.out.printf("  Kind: %s%n", documentBarcode.getKind());
+                    System.out.printf("  Confidence: %.2f%n", documentBarcode.getConfidence());
+                    System.out.printf("  Bounding regions: %s%n", documentBarcode.getPolygon());
+                }
             }
-
-            // styles
-            analyzeLayoutResult.getStyles().forEach(documentStyle
-                -> System.out.printf("Document is handwritten %s.%n", documentStyle.isHandwritten()));
         });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep

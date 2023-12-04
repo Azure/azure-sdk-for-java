@@ -7,15 +7,21 @@ import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.DocumentAnalysisFeature;
-import com.azure.ai.documentintelligence.models.DocumentTable;
+import com.azure.ai.documentintelligence.models.DocumentStyle;
+import com.azure.ai.documentintelligence.models.FontStyle;
+import com.azure.ai.documentintelligence.models.FontWeight;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This sample demonstrates how to extract all identified barcodes using the add-on 'STYLE_FONT' capability.
@@ -32,9 +38,9 @@ public class AnalyzeAddOnFonts {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
         DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildClient();
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+                .buildClient();
 
         File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
@@ -50,48 +56,116 @@ public class AnalyzeAddOnFonts {
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
 
-        // pages
-        analyzeLayoutResult.getPages().forEach(documentPage -> {
-            System.out.printf("Page has width: %.2f and height: %.2f, measured with unit: %s%n",
-                documentPage.getWidth(),
-                documentPage.getHeight(),
-                documentPage.getUnit());
-
-            // lines
-            documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line '%s; is within a bounding polygon %s.%n",
-                    documentLine.getContent(),
-                    documentLine.getPolygon()));
-
-            // words
-            documentPage.getWords().forEach(documentWord ->
-                System.out.printf("Word '%s' has a confidence score of %.2f%n.",
-                    documentWord.getContent(),
-                    documentWord.getConfidence()));
-
-            // selection marks
-            documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                System.out.printf("Selection mark is '%s' and is within a bounding polygon %s with confidence %.2f.%n",
-                    documentSelectionMark.getState().toString(),
-                    documentSelectionMark.getPolygon(),
-                    documentSelectionMark.getConfidence()));
-        });
-
-        // tables
-        List<DocumentTable> tables = analyzeLayoutResult.getTables();
-        for (int i = 0; i < tables.size(); i++) {
-            DocumentTable documentTable = tables.get(i);
-            System.out.printf("Table %d has %d rows and %d columns.%n", i, documentTable.getRowCount(),
-                documentTable.getColumnCount());
-            documentTable.getCells().forEach(documentTableCell -> {
-                System.out.printf("Cell '%s', has row index %d and column index %d.%n", documentTableCell.getContent(),
-                    documentTableCell.getRowIndex(), documentTableCell.getColumnIndex());
-            });
-            System.out.println();
-        }
+        // DocumentStyle has the following font related attributes:
+        Map<String, List<DocumentStyle>> similarFontFamilies = new HashMap<>(); // e.g., 'Arial, sans-serif
+        Map<FontStyle, List<DocumentStyle>> fontStyles = new HashMap<>(); // e.g, 'italic'
+        Map<FontWeight, List<DocumentStyle>> fontWeights = new HashMap<>(); // e.g., 'bold'
+        Map<String, List<DocumentStyle>> fontColors = new HashMap<>(); // in '#rrggbb' hexadecimal format
+        Map<String, List<DocumentStyle>> fontBackgroundColors = new HashMap<>(); // in '#rrggbb' hexadecimal format
 
         // styles
-        analyzeLayoutResult.getStyles().forEach(documentStyle
-            -> System.out.printf("Document is handwritten %s%n.", documentStyle.isHandwritten()));
+        List<DocumentStyle> documentStyles = analyzeLayoutResult.getStyles();
+        // Content
+        String content = analyzeLayoutResult.getContent();
+
+        boolean isDocumentContainsHandwritten = documentStyles.stream().anyMatch(documentStyle -> {
+            Boolean handwritten = documentStyle.isHandwritten();
+            return handwritten != null && handwritten;
+        });
+
+        if (isDocumentContainsHandwritten) {
+            System.out.println("Document contains handwritten content");
+        } else {
+            System.out.println("Document does not contains handwritten content");
+        }
+
+        System.out.println("----Fonts styles detected in the document----");
+
+        // Iterate over the styles and group them by their font attributes.
+        documentStyles.forEach(documentStyle -> {
+            String similarFontFamily = documentStyle.getSimilarFontFamily();
+            if (!CoreUtils.isNullOrEmpty(similarFontFamily)) {
+                if (!similarFontFamilies.containsKey(similarFontFamily)) {
+                    similarFontFamilies.put(similarFontFamily, new ArrayList<>());
+                }
+                similarFontFamilies.get(similarFontFamily).add(documentStyle);
+            }
+
+            FontStyle fontStyle = documentStyle.getFontStyle();
+            if (fontStyle != null) {
+                if (!fontStyles.containsKey(fontStyle)) {
+                    fontStyles.put(fontStyle, new ArrayList<>());
+                }
+                fontStyles.get(fontStyle).add(documentStyle);
+            }
+
+            FontWeight fontWeight = documentStyle.getFontWeight();
+            if (fontWeight != null) {
+                if (!fontWeights.containsKey(fontWeight)) {
+                    fontWeights.put(fontWeight, new ArrayList<>());
+                }
+                fontWeights.get(fontWeight).add(documentStyle);
+            }
+
+            String fontColor = documentStyle.getColor();
+            if (!CoreUtils.isNullOrEmpty(fontColor)) {
+                if (!fontColors.containsKey(fontColor)) {
+                    fontColors.put(fontColor, new ArrayList<>());
+                }
+                fontColors.get(fontColor).add(documentStyle);
+            }
+
+            String backgroundColor = documentStyle.getBackgroundColor();
+            if (!CoreUtils.isNullOrEmpty(backgroundColor)) {
+                if (!fontBackgroundColors.containsKey(backgroundColor)) {
+                    fontBackgroundColors.put(backgroundColor, new ArrayList<>());
+                }
+                fontBackgroundColors.get(backgroundColor).add(documentStyle);
+            }
+        });
+
+        System.out.printf("Detected %d font families: %n", similarFontFamilies.size());
+        similarFontFamilies.forEach((fontFamily, styles) -> {
+            System.out.println("- Font family: " + fontFamily);
+            printSpan(styles, content);
+        });
+
+        System.out.printf("Detected %d font styles: %n", fontStyles.size());
+        fontStyles.forEach((fontStyle, styles) -> {
+            System.out.println("- Font style: " + fontStyle);
+            printSpan(styles, content);
+        });
+
+        System.out.printf("Detected %d font weights: %n", fontWeights.size());
+        fontWeights.forEach((fontWeight, styles) -> {
+            System.out.println("- Font weight: " + fontWeight);
+            printSpan(styles, content);
+        });
+
+        System.out.printf("Detected %d font colors: %n", fontColors.size());
+        fontColors.forEach((fontColor, styles) -> {
+            System.out.println("- Font color: " + fontColor);
+            printSpan(styles, content);
+        });
+
+        System.out.printf("Detected %d font background colors: %n", fontBackgroundColors.size());
+        fontBackgroundColors.forEach((fontBackgroundColor, styles) -> {
+            System.out.println("- Font background color: " + fontBackgroundColor);
+            printSpan(styles, content);
+        });
+    }
+
+    public static void printSpan(List<DocumentStyle> styles, String content) {
+        for (DocumentStyle style : styles) {
+            style.getSpans().forEach(
+                    span -> {
+                        int offset = span.getOffset();
+                        int length = span.getLength();
+                        System.out.printf(" content=\"%s\", offset=%d, length=%d%n",
+                                content.substring(offset, offset + length),
+                                offset,
+                                length);
+                    });
+        }
     }
 }
