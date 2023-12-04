@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RecognitionChoiceInternal model.
- */
+/** The RecognitionChoiceInternal model. */
 @Fluent
 public final class RecognitionChoiceInternal {
     /*
@@ -31,15 +29,12 @@ public final class RecognitionChoiceInternal {
     @JsonProperty(value = "tone")
     private DtmfToneInternal tone;
 
-    /**
-     * Creates an instance of RecognitionChoiceInternal class.
-     */
-    public RecognitionChoiceInternal() {
-    }
+    /** Creates an instance of RecognitionChoiceInternal class. */
+    public RecognitionChoiceInternal() {}
 
     /**
      * Get the label property: Identifier for a given choice.
-     * 
+     *
      * @return the label value.
      */
     public String getLabel() {
@@ -48,7 +43,7 @@ public final class RecognitionChoiceInternal {
 
     /**
      * Set the label property: Identifier for a given choice.
-     * 
+     *
      * @param label the label value to set.
      * @return the RecognitionChoiceInternal object itself.
      */
@@ -59,7 +54,7 @@ public final class RecognitionChoiceInternal {
 
     /**
      * Get the phrases property: List of phrases to recognize.
-     * 
+     *
      * @return the phrases value.
      */
     public List<String> getPhrases() {
@@ -68,7 +63,7 @@ public final class RecognitionChoiceInternal {
 
     /**
      * Set the phrases property: List of phrases to recognize.
-     * 
+     *
      * @param phrases the phrases value to set.
      * @return the RecognitionChoiceInternal object itself.
      */
@@ -79,7 +74,7 @@ public final class RecognitionChoiceInternal {
 
     /**
      * Get the tone property: The tone property.
-     * 
+     *
      * @return the tone value.
      */
     public DtmfToneInternal getTone() {
@@ -88,7 +83,7 @@ public final class RecognitionChoiceInternal {
 
     /**
      * Set the tone property: The tone property.
-     * 
+     *
      * @param tone the tone value to set.
      * @return the RecognitionChoiceInternal object itself.
      */

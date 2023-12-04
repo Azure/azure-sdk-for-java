@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SsmlSourceInternal model.
- */
+/** The SsmlSourceInternal model. */
 @Fluent
 public final class SsmlSourceInternal {
     /*
@@ -24,15 +22,12 @@ public final class SsmlSourceInternal {
     @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
-    /**
-     * Creates an instance of SsmlSourceInternal class.
-     */
-    public SsmlSourceInternal() {
-    }
+    /** Creates an instance of SsmlSourceInternal class. */
+    public SsmlSourceInternal() {}
 
     /**
      * Get the ssmlText property: Ssml string for the cognitive service to be played.
-     * 
+     *
      * @return the ssmlText value.
      */
     public String getSsmlText() {
@@ -41,7 +36,7 @@ public final class SsmlSourceInternal {
 
     /**
      * Set the ssmlText property: Ssml string for the cognitive service to be played.
-     * 
+     *
      * @param ssmlText the ssmlText value to set.
      * @return the SsmlSourceInternal object itself.
      */
@@ -52,7 +47,7 @@ public final class SsmlSourceInternal {
 
     /**
      * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     * 
+     *
      * @return the customVoiceEndpointId value.
      */
     public String getCustomVoiceEndpointId() {
@@ -61,7 +56,7 @@ public final class SsmlSourceInternal {
 
     /**
      * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     * 
+     *
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
      * @return the SsmlSourceInternal object itself.
      */

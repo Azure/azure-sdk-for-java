@@ -20,11 +20,6 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
     /*
      * AI options for the call.
      */
@@ -101,26 +96,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }

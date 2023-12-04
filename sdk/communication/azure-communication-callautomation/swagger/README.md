@@ -21,14 +21,14 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.1.23
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.26.0
 ```
 
 ### Code generation settings
 ``` yaml
-tag: package-2023-10-03-preview
+tag: package-2023-10-15
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/4a12c91e35ff85ea2fbbb3b0bab0d432a68d00df/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/1fe6a37e8e0dfb02a2184cf220d75ba9fe238108/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -134,9 +134,6 @@ directive:
     from: SendDtmfTonesRequest
     to: SendDtmfTonesRequestInternal
 - rename-model:
-    from: SendDtmfTonesResult
-    to: SendDtmfTonesResultInternal
-- rename-model:
     from: ChannelAffinity
     to: ChannelAffinityInternal
 - rename-model:
@@ -167,18 +164,6 @@ directive:
     from: MuteParticipantsResult
     to: MuteParticipantsResultInternal
 - rename-model:
-    from: UnmuteParticipantsRequest
-    to: UnmuteParticipantsRequestInternal
-- rename-model:
-    from: UnmuteParticipantsResponse
-    to: UnmuteParticipantsResponseInternal
-- rename-model:
-    from: StartHoldMusicRequest
-    to: StartHoldMusicRequestInternal
-- rename-model:
-    from: StopHoldMusicRequest
-    to: StopHoldMusicRequestInternal
-- rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
 - rename-model:
@@ -197,8 +182,11 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
+    from: SendDtmfTonesResult
+    to: SendDtmfTonesResultInternal
+- rename-model:
+    from: SendDtmfTonesRequest
+    to: SendDtmfTonesRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -226,15 +214,6 @@ directive:
 - remove-model: SpeechResult
 - remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

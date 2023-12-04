@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SendDtmfTonesRequestInternal model.
- */
+/** The SendDtmfTonesRequestInternal model. */
 @Fluent
 public final class SendDtmfTonesRequestInternal {
     /*
@@ -39,15 +37,12 @@ public final class SendDtmfTonesRequestInternal {
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
-    /**
-     * Creates an instance of SendDtmfTonesRequestInternal class.
-     */
-    public SendDtmfTonesRequestInternal() {
-    }
+    /** Creates an instance of SendDtmfTonesRequestInternal class. */
+    public SendDtmfTonesRequestInternal() {}
 
     /**
      * Get the tones property: List of tones to be sent to target participant.
-     * 
+     *
      * @return the tones value.
      */
     public List<DtmfToneInternal> getTones() {
@@ -56,7 +51,7 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Set the tones property: List of tones to be sent to target participant.
-     * 
+     *
      * @param tones the tones value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
@@ -67,7 +62,7 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Get the targetParticipant property: Target participant of send Dtmf tones.
-     * 
+     *
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -76,7 +71,7 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Set the targetParticipant property: Target participant of send Dtmf tones.
-     * 
+     *
      * @param targetParticipant the targetParticipant value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
@@ -87,7 +82,7 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -96,7 +91,7 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */
@@ -107,10 +102,9 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -119,10 +113,9 @@ public final class SendDtmfTonesRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the SendDtmfTonesRequestInternal object itself.
      */

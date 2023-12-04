@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A call participant.
- */
+/** A call participant. */
 @Fluent
 public final class CallParticipantInternal {
     /*
@@ -24,15 +22,12 @@ public final class CallParticipantInternal {
     @JsonProperty(value = "isMuted")
     private Boolean isMuted;
 
-    /**
-     * Creates an instance of CallParticipantInternal class.
-     */
-    public CallParticipantInternal() {
-    }
+    /** Creates an instance of CallParticipantInternal class. */
+    public CallParticipantInternal() {}
 
     /**
      * Get the identifier property: Communication identifier of the participant.
-     * 
+     *
      * @return the identifier value.
      */
     public CommunicationIdentifierModel getIdentifier() {
@@ -41,7 +36,7 @@ public final class CallParticipantInternal {
 
     /**
      * Set the identifier property: Communication identifier of the participant.
-     * 
+     *
      * @param identifier the identifier value to set.
      * @return the CallParticipantInternal object itself.
      */
@@ -52,7 +47,7 @@ public final class CallParticipantInternal {
 
     /**
      * Get the isMuted property: Is participant muted.
-     * 
+     *
      * @return the isMuted value.
      */
     public Boolean isMuted() {
@@ -61,7 +56,7 @@ public final class CallParticipantInternal {
 
     /**
      * Set the isMuted property: Is participant muted.
-     * 
+     *
      * @param isMuted the isMuted value to set.
      * @return the CallParticipantInternal object itself.
      */
