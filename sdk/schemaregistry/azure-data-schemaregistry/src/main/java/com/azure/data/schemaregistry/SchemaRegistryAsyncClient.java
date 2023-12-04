@@ -139,8 +139,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse -->
  * <pre>
- * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;,
- *         &quot;&#123;schema-name&#125;&quot;, 1, Context.NONE&#41;
+ * client.getSchemaWithResponse&#40;&quot;&#123;group-name&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, 1&#41;
  *     .subscribe&#40;response -&gt; &#123;
  *         System.out.println&#40;&quot;Headers in HTTP response: &quot;&#41;;
  *
