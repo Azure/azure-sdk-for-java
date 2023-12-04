@@ -87,6 +87,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
       "currencyCode": "USD"
     }
   }
+  ...
   ```
 - API shapes have been designed from scratch to support the new Rest level client for the Document Intelligence service.
   Please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md)
