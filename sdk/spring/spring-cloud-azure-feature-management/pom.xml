@@ -34,19 +34,10 @@
       <version>3.1.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
       <exclusions>
         <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-logging</artifactId>
-        </exclusion>
-        <exclusion>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-log4j2</artifactId>
-      <version>3.1.5</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
