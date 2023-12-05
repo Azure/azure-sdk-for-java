@@ -5,7 +5,7 @@
 ### Other Changes
 
 #### Dependency Updates
-
+Regular updates for dependency versions.
 
 ## 2.8.0 (2023-09-28)
 
