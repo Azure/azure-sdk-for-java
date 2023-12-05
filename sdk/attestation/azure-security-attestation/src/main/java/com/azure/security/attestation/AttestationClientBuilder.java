@@ -54,7 +54,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  *
  * <p>The minimal configuration option required by {@link AttestationClientBuilder} is {@code String endpoint}.
  *
- * For the {@link AttestationClient#attestTpm(BinaryData)} API, the client also requires that a {@link TokenCredential} object
+ * For the {@link AttestationClient#attestTpm(String)} API, the client also requires that a {@link TokenCredential} object
  * be configured.
  *
  * <p><strong>Instantiate a synchronous Attestation Client</strong></p>
@@ -72,7 +72,7 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
- *     <p><strong>Build a attestation client for use with the {@link AttestationClient#attestTpm(BinaryData)} API</strong></p>
+ *     <p><strong>Build a attestation client for use with the {@link AttestationClient#attestTpm(String)} API</strong></p>
  *     <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
  * <pre>
  * AttestationAsyncClient asyncClientForTpm = new AttestationClientBuilder&#40;&#41;
@@ -96,7 +96,6 @@ public final class AttestationClientBuilder implements
 
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
 
@@ -209,8 +208,8 @@ public final class AttestationClientBuilder implements
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link TokenCredential} type.
      *
-     * <p>Note that this property is only required for the {@link AttestationClient#attestTpm(BinaryData)} and
-     * {@link AttestationAsyncClient#attestTpm(BinaryData)} APIs - other attestation APIs can be anonymous.</p>
+     * <p>Note that this property is only required for the {@link AttestationClient#attestTpm(String)} and
+     * {@link AttestationAsyncClient#attestTpm(String)} APIs - other attestation APIs can be anonymous.</p>
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return the AttestationClientBuilder.
@@ -439,12 +438,10 @@ public final class AttestationClientBuilder implements
         // which were provided.
         HttpPipeline pipeline = this.pipeline;
         if (pipeline == null) {
-            ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
-
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(
-                getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+                getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -462,10 +459,12 @@ public final class AttestationClientBuilder implements
             }
             policies.addAll(perRetryPolicies);
 
-            List<HttpHeader> httpHeaderList = new ArrayList<>();
-            localClientOptions.getHeaders().forEach(
-                header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
-            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            if (clientOptions != null) {
+                List<HttpHeader> httpHeaderList = new ArrayList<>();
+                clientOptions.getHeaders().forEach(
+                    header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+            }
 
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
@@ -474,7 +473,6 @@ public final class AttestationClientBuilder implements
             pipeline = new HttpPipelineBuilder()
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
-                .clientOptions(localClientOptions)
                 .build();
         }
 

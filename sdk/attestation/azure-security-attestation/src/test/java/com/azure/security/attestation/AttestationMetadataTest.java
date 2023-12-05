@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -18,11 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Tests for Attestation Metadata Configuration APIs.
  */
 public class AttestationMetadataTest extends AttestationClientTestBase {
+    private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetMetadataConfiguration(HttpClient client, String clientUri) {
-        AttestationOpenIdMetadata metadataConfig1 = getAttestationBuilder(client, clientUri).buildClient()
-            .getOpenIdMetadata();
+
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
+
+        AttestationOpenIdMetadata metadataConfig1 = attestationBuilder.buildClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
     }
@@ -30,8 +35,9 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
-        Response<AttestationOpenIdMetadata> metadataConfig = getAttestationBuilder(client, clientUri).buildClient()
-            .getOpenIdMetadataWithResponse(Context.NONE);
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
+
+        Response<AttestationOpenIdMetadata> metadataConfig = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
     }
 
@@ -39,7 +45,10 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
-        StepVerifier.create(getAttestationBuilder(client, clientUri).buildAsyncClient().getOpenIdMetadata())
+
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
+
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadata())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
             .expectComplete()
             .verify();
@@ -49,16 +58,16 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void getOpenIdMetadataWithResponseAsync(HttpClient client, String clientUri) {
-        StepVerifier.create(getAttestationBuilder(client, clientUri).buildAsyncClient().getOpenIdMetadataWithResponse())
-            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri,
-                metadataConfigResponse.getValue()))
+        AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
+
+        StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadataWithResponse())
+            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();
     }
 
     /**
      * Verifies the response to the GetMetadataConfiguration (/.well-known/open-id-metadata) API.
-     *
      * @param clientUri - URI associated with the operation.
      * @param metadataConfigResponse - Object representing the metadata configuration.
      */
@@ -75,5 +84,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         assertNotNull(metadataConfigResponse.getResponseTypesSupported());
         assertNotNull(metadataConfigResponse.getSupportedClaims());
     }
+
+
 }
 
