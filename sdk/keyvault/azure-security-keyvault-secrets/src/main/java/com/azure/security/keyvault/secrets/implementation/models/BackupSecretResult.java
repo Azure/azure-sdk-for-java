@@ -30,7 +30,7 @@ public final class BackupSecretResult implements JsonSerializable<BackupSecretRe
      */
     public byte[] getValue() {
         if (this.value == null) {
-            return null;
+            return new byte[0];
         }
         return this.value.decodedBytes();
     }
