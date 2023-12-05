@@ -60,7 +60,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                 // Increase the retry count after calculating the delay
                 retryCount++;
                 logger
-                    .warn("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
+                    .debug("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                             "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                             "shouldForceCollectionRoutingMapRefresh = {}",
                         this.locationEndpoint, this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
