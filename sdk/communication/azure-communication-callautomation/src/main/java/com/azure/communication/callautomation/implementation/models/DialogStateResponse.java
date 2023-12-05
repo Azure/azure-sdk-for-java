@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DialogStateResponse model. */
+/**
+ * The DialogStateResponse model.
+ */
 @Fluent
 public final class DialogStateResponse {
     /*
@@ -17,16 +19,10 @@ public final class DialogStateResponse {
     private String dialogId;
 
     /*
-     * Defines options for dialog.
+     * Defines dialog.
      */
-    @JsonProperty(value = "dialogOptions")
-    private DialogOptions dialogOptions;
-
-    /*
-     * Determines the type of the dialog.
-     */
-    @JsonProperty(value = "dialogInputType")
-    private DialogInputType dialogInputType;
+    @JsonProperty(value = "dialog")
+    private BaseDialog dialog;
 
     /*
      * The value to identify context of the operation.
@@ -35,8 +31,14 @@ public final class DialogStateResponse {
     private String operationContext;
 
     /**
+     * Creates an instance of DialogStateResponse class.
+     */
+    public DialogStateResponse() {
+    }
+
+    /**
      * Get the dialogId property: The dialog ID.
-     *
+     * 
      * @return the dialogId value.
      */
     public String getDialogId() {
@@ -45,7 +47,7 @@ public final class DialogStateResponse {
 
     /**
      * Set the dialogId property: The dialog ID.
-     *
+     * 
      * @param dialogId the dialogId value to set.
      * @return the DialogStateResponse object itself.
      */
@@ -55,48 +57,28 @@ public final class DialogStateResponse {
     }
 
     /**
-     * Get the dialogOptions property: Defines options for dialog.
-     *
-     * @return the dialogOptions value.
+     * Get the dialog property: Defines dialog.
+     * 
+     * @return the dialog value.
      */
-    public DialogOptions getDialogOptions() {
-        return this.dialogOptions;
+    public BaseDialog getDialog() {
+        return this.dialog;
     }
 
     /**
-     * Set the dialogOptions property: Defines options for dialog.
-     *
-     * @param dialogOptions the dialogOptions value to set.
+     * Set the dialog property: Defines dialog.
+     * 
+     * @param dialog the dialog value to set.
      * @return the DialogStateResponse object itself.
      */
-    public DialogStateResponse setDialogOptions(DialogOptions dialogOptions) {
-        this.dialogOptions = dialogOptions;
-        return this;
-    }
-
-    /**
-     * Get the dialogInputType property: Determines the type of the dialog.
-     *
-     * @return the dialogInputType value.
-     */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
-    }
-
-    /**
-     * Set the dialogInputType property: Determines the type of the dialog.
-     *
-     * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogStateResponse object itself.
-     */
-    public DialogStateResponse setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
+    public DialogStateResponse setDialog(BaseDialog dialog) {
+        this.dialog = dialog;
         return this;
     }
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -105,7 +87,7 @@ public final class DialogStateResponse {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the DialogStateResponse object itself.
      */

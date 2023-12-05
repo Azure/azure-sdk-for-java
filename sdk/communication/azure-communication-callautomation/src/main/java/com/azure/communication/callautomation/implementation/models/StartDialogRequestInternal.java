@@ -7,20 +7,24 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StartDialogRequestInternal model. */
+/**
+ * The StartDialogRequestInternal model.
+ */
 @Fluent
 public final class StartDialogRequestInternal {
     /*
-     * Defines options for dialog.
+     * Defines the dialog.
      */
-    @JsonProperty(value = "dialogOptions", required = true)
-    private DialogOptions dialogOptions;
+    @JsonProperty(value = "dialog", required = true)
+    private BaseDialog dialog;
 
     /*
-     * Determines the type of the dialog.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
-    @JsonProperty(value = "dialogInputType", required = true)
-    private DialogInputType dialogInputType;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /*
      * The value to identify context of the operation.
@@ -29,48 +33,60 @@ public final class StartDialogRequestInternal {
     private String operationContext;
 
     /**
-     * Get the dialogOptions property: Defines options for dialog.
-     *
-     * @return the dialogOptions value.
+     * Creates an instance of StartDialogRequestInternal class.
      */
-    public DialogOptions getDialogOptions() {
-        return this.dialogOptions;
+    public StartDialogRequestInternal() {
     }
 
     /**
-     * Set the dialogOptions property: Defines options for dialog.
-     *
-     * @param dialogOptions the dialogOptions value to set.
+     * Get the dialog property: Defines the dialog.
+     * 
+     * @return the dialog value.
+     */
+    public BaseDialog getDialog() {
+        return this.dialog;
+    }
+
+    /**
+     * Set the dialog property: Defines the dialog.
+     * 
+     * @param dialog the dialog value to set.
      * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequestInternal setDialogOptions(DialogOptions dialogOptions) {
-        this.dialogOptions = dialogOptions;
+    public StartDialogRequestInternal setDialog(BaseDialog dialog) {
+        this.dialog = dialog;
         return this;
     }
 
     /**
-     * Get the dialogInputType property: Determines the type of the dialog.
-     *
-     * @return the dialogInputType value.
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @return the operationCallbackUri value.
      */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
     }
 
     /**
-     * Set the dialogInputType property: Determines the type of the dialog.
-     *
-     * @param dialogInputType the dialogInputType value to set.
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StartDialogRequestInternal object itself.
      */
-    public StartDialogRequestInternal setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
+    public StartDialogRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -79,7 +95,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartDialogRequestInternal object itself.
      */
