@@ -25,6 +25,11 @@ public final class AnswerCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
     /*
      * AI options for the call.
      */
@@ -65,12 +70,32 @@ public final class AnswerCallOptions {
     }
 
     /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
+    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
     }
 
      /**

@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models;
+package com.azure.communication.callautomation.models.streaming.media;
 
+import com.azure.communication.callautomation.models.streaming.StreamingData;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 
@@ -10,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /** The MediaStreamingAudio model. */
-public final class MediaStreamingAudioData extends MediaStreamingPackageBase {
+public final class AudioData extends StreamingData {
 
     /*
      * The audio data.
@@ -40,7 +41,7 @@ public final class MediaStreamingAudioData extends MediaStreamingPackageBase {
      * @param participantRawID The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    MediaStreamingAudioData(String data, String timestamp, String participantRawID, boolean silent) {
+    public AudioData(String data, String timestamp, String participantRawID, boolean silent) {
         this.data = data;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (participantRawID != null && !participantRawID.isEmpty()) {

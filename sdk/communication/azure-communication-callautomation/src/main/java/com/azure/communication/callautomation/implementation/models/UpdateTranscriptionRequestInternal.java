@@ -7,17 +7,14 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpdateTranscriptionDataRequest model. */
+/** The UpdateTranscriptionRequestInternal model. */
 @Fluent
-public final class UpdateTranscriptionDataRequest {
+public final class UpdateTranscriptionRequestInternal {
     /*
      * Defines new locale for transcription.
      */
     @JsonProperty(value = "locale", required = true)
     private String locale;
-
-    /** Creates an instance of UpdateTranscriptionDataRequest class. */
-    public UpdateTranscriptionDataRequest() {}
 
     /**
      * Get the locale property: Defines new locale for transcription.
@@ -32,9 +29,9 @@ public final class UpdateTranscriptionDataRequest {
      * Set the locale property: Defines new locale for transcription.
      *
      * @param locale the locale value to set.
-     * @return the UpdateTranscriptionDataRequest object itself.
+     * @return the UpdateTranscriptionRequestInternal object itself.
      */
-    public UpdateTranscriptionDataRequest setLocale(String locale) {
+    public UpdateTranscriptionRequestInternal setLocale(String locale) {
         this.locale = locale;
         return this;
     }
