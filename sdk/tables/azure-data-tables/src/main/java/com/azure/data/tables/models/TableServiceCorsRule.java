@@ -42,14 +42,6 @@ public final class TableServiceCorsRule {
      */
     private int maxAgeInSeconds;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates an instance of {@link TableServiceCorsRule}.
-     */
-    public TableServiceCorsRule() {
-
-    }
-
     /**
      * Get the origin domains that are permitted to make a request against the service via CORS. The origin domain is
      * the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
