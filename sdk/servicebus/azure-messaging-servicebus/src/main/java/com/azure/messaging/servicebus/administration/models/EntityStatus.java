@@ -5,60 +5,79 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of a Service Bus resource. */
+/**
+ * Status of a Service Bus resource.
+ */
 public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
-    /** Static value Active for EntityStatus. */
+    /**
+     * Static value Active for EntityStatus.
+     */
     public static final EntityStatus ACTIVE = fromString("Active");
 
-    /** Static value Creating for EntityStatus. */
+    /**
+     * Static value Creating for EntityStatus.
+     */
     public static final EntityStatus CREATING = fromString("Creating");
 
-    /** Static value Deleting for EntityStatus. */
+    /**
+     * Static value Deleting for EntityStatus.
+     */
     public static final EntityStatus DELETING = fromString("Deleting");
 
-    /** Static value Disabled for EntityStatus. */
+    /**
+     * Static value Disabled for EntityStatus.
+     */
     public static final EntityStatus DISABLED = fromString("Disabled");
 
-    /** Static value ReceiveDisabled for EntityStatus. */
+    /**
+     * Static value ReceiveDisabled for EntityStatus.
+     */
     public static final EntityStatus RECEIVE_DISABLED = fromString("ReceiveDisabled");
 
-    /** Static value Renaming for EntityStatus. */
+    /**
+     * Static value Renaming for EntityStatus.
+     */
     public static final EntityStatus RENAMING = fromString("Renaming");
 
-    /** Static value Restoring for EntityStatus. */
+    /**
+     * Static value Restoring for EntityStatus.
+     */
     public static final EntityStatus RESTORING = fromString("Restoring");
 
-    /** Static value SendDisabled for EntityStatus. */
+    /**
+     * Static value SendDisabled for EntityStatus.
+     */
     public static final EntityStatus SEND_DISABLED = fromString("SendDisabled");
 
-    /** Static value Unknown for EntityStatus. */
+    /**
+     * Static value Unknown for EntityStatus.
+     */
     public static final EntityStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of EntityStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EntityStatus() {}
+    public EntityStatus() {
+    }
 
     /**
      * Creates or finds a EntityStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityStatus.
      */
-    @JsonCreator
     public static EntityStatus fromString(String name) {
         return fromString(name, EntityStatus.class);
     }
 
     /**
      * Gets known EntityStatus values.
-     *
+     * 
      * @return known EntityStatus values.
      */
     public static Collection<EntityStatus> values() {

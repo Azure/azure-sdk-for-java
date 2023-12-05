@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PlaygroundTests {
-    private static final String SIMPLE_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    private static final String SIMPLE_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         + "<SignedIdentifiers>"
         + "<SignedIdentifier>"
         + "<Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>"
@@ -30,7 +30,7 @@ public class PlaygroundTests {
         + "</SignedIdentifier>"
         + "</SignedIdentifiers>";
 
-    private static final String COMPLEX_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    private static final String COMPLEX_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         + "<entry xmlns=\"http://www.w3.org/2005/Atom\">"
         + "<id>https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2021-05</id>"
         + "<title>ShivangiServiceBus</title>"

@@ -27,7 +27,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-use: ['@autorest/java@4.1.17', '@autorest/modelerfour@4.25.0']
+use: '@autorest/java@4.1.24'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1d5723dc330e9749d5ded6cb9db5a309b3705fa4/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
@@ -43,11 +43,11 @@ custom-types: AccessRights,EntityStatus,NamespaceProperties,MessagingSku,Namespa
 custom-types-subpackage: models
 context-client-method-parameter: true
 customization-class: src/main/java/AdministrationClientCustomization.java
-enable-xml: true
 enable-sync-stack: true
 generic-response-type: true
 custom-strongly-typed-header-deserialization: true
 disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Change Return Types of Subscription REST Methods
@@ -147,4 +147,47 @@ directive:
       $.SubscriptionDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
       $.RuleDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
       $.RuleDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
+```
+
+### Add x-ms-discriminator-value to Polymorphic Types
+
+Adds `x-ms-discriminator-value` to `CorrelationFilter`, `SqlFilter`, `TrueFilter`, and `FalseFilter` for `RuleFilter`
+subtypes and `SqlRuleAction` and `EmptyRuleAction` for `RuleAction` subtypes.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.CorrelationFilter["x-ms-discriminator-value"] = "CorrelationFilter";
+      $.SqlFilter["x-ms-discriminator-value"] = "SqlFilter";
+      $.TrueFilter["x-ms-discriminator-value"] = "TrueFilter";
+      $.FalseFilter["x-ms-discriminator-value"] = "FalseFilter";
+      $.SqlRuleAction["x-ms-discriminator-value"] = "SqlRuleAction";
+      $.EmptyRuleAction["x-ms-discriminator-value"] = "EmptyRuleAction";
+```
+
+### Fix ServiceBusManagementError XML Definition
+
+`ServiceBusManagementError`'s Swagger definition was missing a root `xml` definition of `name: "Error"`.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ServiceBusManagementError
+    transform: >
+      $.xml = { "name": "Error" };
+```
+
+### Remove Invalid Prefixes
+
+`QueueDescriptionEntry` and `TopicDescriptionEntry` define a prefix without a namespace.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.QueueDescriptionEntry.properties.base.xml.prefix;
+      delete $.TopicDescriptionEntry.properties.base.xml.prefix;
 ```

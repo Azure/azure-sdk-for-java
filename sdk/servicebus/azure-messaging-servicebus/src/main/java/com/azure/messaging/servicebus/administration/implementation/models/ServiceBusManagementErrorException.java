@@ -7,11 +7,13 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with ServiceBusManagementError information. */
+/**
+ * Exception thrown for an invalid response with ServiceBusManagementError information.
+ */
 public final class ServiceBusManagementErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the ServiceBusManagementErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class ServiceBusManagementErrorException extends HttpResponseExcept
 
     /**
      * Initializes a new instance of the ServiceBusManagementErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -30,7 +32,9 @@ public final class ServiceBusManagementErrorException extends HttpResponseExcept
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusManagementError getValue() {
         return (ServiceBusManagementError) super.getValue();

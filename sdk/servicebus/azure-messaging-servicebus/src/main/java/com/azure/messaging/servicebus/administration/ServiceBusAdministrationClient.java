@@ -22,7 +22,6 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
@@ -171,17 +170,14 @@ public final class ServiceBusAdministrationClient {
      * Creates a new instance with the given client.
      *
      * @param managementClient Client to make management calls.
-     * @param serializer Serializer to deserialize ATOM XML responses.
-     * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
+     * @throws NullPointerException if {@code managementClient} is null.
      */
-    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer) {
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient) {
 
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
-        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint(), serializer);
+        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint());
     }
 
     /**
@@ -1216,7 +1212,7 @@ public final class ServiceBusAdministrationClient {
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
         final Response<Object> response = executeAndThrowException(() -> managementClient.listEntitiesWithResponse(
             QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context)));
-        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserialize(response, QueueDescriptionFeedImpl.class);
+        final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserializeQueueFeed(response);
         final QueueDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
@@ -1409,7 +1405,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response = executeAndThrowException(() ->
             managementClient.listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context)));
-        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserialize(response, TopicDescriptionFeedImpl.class);
+        final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserializeTopicFeed(response);
         final TopicDescriptionFeedImpl feed = feedResponse.getValue();
 
         if (feed == null) {
