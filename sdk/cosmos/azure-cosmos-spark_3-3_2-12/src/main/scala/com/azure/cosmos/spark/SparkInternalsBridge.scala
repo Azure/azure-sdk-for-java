@@ -12,6 +12,7 @@ import org.apache.spark.util.AccumulatorV2
 import java.lang.reflect.Method
 import java.util.Locale
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicReference}
+import scala.collection.mutable.ArrayBuffer
 
 object SparkInternalsBridge extends BasicLoggingTrait {
   private val SPARK_REFLECTION_ACCESS_ALLOWED_PROPERTY = "COSMOS.SPARK_REFLECTION_ACCESS_ALLOWED"
@@ -39,7 +40,7 @@ object SparkInternalsBridge extends BasicLoggingTrait {
 
   private final lazy val reflectionAccessAllowed = new AtomicBoolean(getSparkReflectionAccessAllowed)
 
-  def getInternalCustomTaskMetricsAsSQLMetric(knownCosmosMetricNames: Set[String]) : Map[String, SQLMetric] = {
+  def getInternalCustomTaskMetricsAsSQLMetric(knownCosmosMetricNames: Set[String]): Map[String, SQLMetric] = {
 
     if (!reflectionAccessAllowed.get) {
       Map.empty[String, SQLMetric]
@@ -51,19 +52,19 @@ object SparkInternalsBridge extends BasicLoggingTrait {
     }
   }
 
-  private def getAccumulators(taskCtx: TaskContext): Option[Seq[AccumulatorV2[_, _]]] = {
+  private def getAccumulators(taskCtx: TaskContext): Option[ArrayBuffer[AccumulatorV2[_, _]]] = {
     try {
       val taskMetrics: Object = taskCtx.taskMetrics()
       val method = Option(accumulatorsMethod.get) match {
         case Some(existing) => existing
         case None =>
-          val newMethod = taskMetrics.getClass.getMethod("accumulators")
+          val newMethod = taskMetrics.getClass.getMethod("externalAccums")
           newMethod.setAccessible(true)
           accumulatorsMethod.set(newMethod)
           newMethod
       }
 
-      val accums = method.invoke(taskMetrics).asInstanceOf[Seq[AccumulatorV2[_, _]]]
+      val accums = method.invoke(taskMetrics).asInstanceOf[ArrayBuffer[AccumulatorV2[_, _]]]
 
       Some(accums)
     } catch {
