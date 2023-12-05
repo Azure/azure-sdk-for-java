@@ -36,6 +36,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -52,9 +53,10 @@ import java.util.Objects;
  *
  * <p><strong>Sample: Construct a sync service client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of the synchronous client {@link SchemaRegistryClient}. The
- * credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
- * development and chooses the credential to used based on its running environment.</p>
+ *  <p>The following code sample demonstrates the creation of the synchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The credential used is {@code DefaultAzureCredential}
+ * because it combines commonly used credentials in deployment and development and chooses the credential to used based
+ * on its running environment.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
  * <pre>
@@ -69,9 +71,10 @@ import java.util.Objects;
 
  * <p><strong>Sample: Construct an async service client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of the asynchronous client {@link SchemaRegistryAsyncClient}.
- * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and
- * development and chooses the credential to used based on its running environment.</p>
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link com.azure.data.schemaregistry.SchemaRegistryAsyncClient}.  The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.construct -->
  * <pre>
@@ -117,18 +120,15 @@ public class SchemaRegistryClientBuilder implements
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
     private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry.properties";
-    private static final String CLIENT_NAME;
-    private static final String CLIENT_VERSION;
+    private static final String NAME = "name";
+    private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-
-    static {
-        Map<String, String> properties = CoreUtils.getProperties(CLIENT_PROPERTIES);
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
+
+    private final String clientName;
+    private final String clientVersion;
 
     private String fullyQualifiedNamespace;
     private HttpClient httpClient;
@@ -148,6 +148,10 @@ public class SchemaRegistryClientBuilder implements
         this.httpLogOptions = new HttpLogOptions();
         this.httpClient = null;
         this.credential = null;
+
+        Map<String, String> properties = CoreUtils.getProperties(CLIENT_PROPERTIES);
+        clientName = properties.getOrDefault(NAME, "UnknownName");
+        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     }
 
     /**
@@ -368,7 +372,7 @@ public class SchemaRegistryClientBuilder implements
     /**
      * Creates a {@link SchemaRegistryAsyncClient} based on options set in the builder. Every time {@code buildClient()}
      * is called a new instance of {@link SchemaRegistryAsyncClient} is created.
-     * <p>
+     *
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored.
      *
      * @return A {@link SchemaRegistryAsyncClient} with the options set from the builder.
@@ -406,8 +410,8 @@ public class SchemaRegistryClientBuilder implements
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-            policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME,
-                CLIENT_VERSION, buildConfiguration));
+            policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, httpLogOptions), clientName,
+                clientVersion, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -445,8 +449,13 @@ public class SchemaRegistryClientBuilder implements
         ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
         SerializerAdapter serializerAdapter = new SchemaRegistryJsonSerializer();
 
-        return new AzureSchemaRegistryImpl(buildPipeline, serializerAdapter, fullyQualifiedNamespace,
-            version.getVersion());
+        AzureSchemaRegistryImpl restService = new AzureSchemaRegistryImplBuilder()
+            .serializerAdapter(serializerAdapter)
+            .endpoint(fullyQualifiedNamespace)
+            .apiVersion(version.getVersion())
+            .pipeline(buildPipeline)
+            .buildClient();
+        return restService;
     }
 
     /**
