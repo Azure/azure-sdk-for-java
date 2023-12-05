@@ -8,14 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response payload for getting participants of the call. */
+/**
+ * The response payload for getting participants of the call.
+ */
 @Fluent
 public final class GetParticipantsResponseInternal {
     /*
      * List of the current participants in the call.
      */
-    @JsonProperty(value = "values")
-    private List<CallParticipantInternal> values;
+    @JsonProperty(value = "value", required = true)
+    private List<CallParticipantInternal> value;
 
     /*
      * Continue of the list of participants
@@ -24,28 +26,34 @@ public final class GetParticipantsResponseInternal {
     private String nextLink;
 
     /**
-     * Get the values property: List of the current participants in the call.
-     *
-     * @return the values value.
+     * Creates an instance of GetParticipantsResponseInternal class.
      */
-    public List<CallParticipantInternal> getValues() {
-        return this.values;
+    public GetParticipantsResponseInternal() {
     }
 
     /**
-     * Set the values property: List of the current participants in the call.
-     *
-     * @param values the values value to set.
+     * Get the value property: List of the current participants in the call.
+     * 
+     * @return the value value.
+     */
+    public List<CallParticipantInternal> getValue() {
+        return this.value;
+    }
+
+    /**
+     * Set the value property: List of the current participants in the call.
+     * 
+     * @param value the value value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
-    public GetParticipantsResponseInternal setValues(List<CallParticipantInternal> values) {
-        this.values = values;
+    public GetParticipantsResponseInternal setValue(List<CallParticipantInternal> value) {
+        this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: Continue of the list of participants.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -54,7 +62,7 @@ public final class GetParticipantsResponseInternal {
 
     /**
      * Set the nextLink property: Continue of the list of participants.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */

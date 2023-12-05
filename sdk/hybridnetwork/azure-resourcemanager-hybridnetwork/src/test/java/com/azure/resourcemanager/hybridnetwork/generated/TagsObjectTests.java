@@ -9,37 +9,25 @@ import com.azure.resourcemanager.hybridnetwork.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TagsObjectTests {
-    @Test
-    public void testDeserialize() {
-        TagsObject model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"zufcyzkohdbi\":\"jbpzvgnwzsymg\",\"th\":\"anufhfcbjysag\",\"yscnpqxu\":\"qhabifpikxwcz\",\"mjgr\":\"ivyqniwbybrkxvd\"}}")
-                .toObject(TagsObject.class);
-        Assertions.assertEquals("jbpzvgnwzsymg", model.tags().get("zufcyzkohdbi"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TagsObject model = BinaryData.fromString(
+            "{\"tags\":{\"ryo\":\"lwejdpv\",\"hbcryffdfdosyge\":\"psoacctazakljl\",\"rzevdphlxaol\":\"paojakhmsbzjh\"}}")
+            .toObject(TagsObject.class);
+        Assertions.assertEquals("lwejdpv", model.tags().get("ryo"));
     }
 
-    @Test
-    public void testSerialize() {
-        TagsObject model =
-            new TagsObject()
-                .withTags(
-                    mapOf(
-                        "zufcyzkohdbi",
-                        "jbpzvgnwzsymg",
-                        "th",
-                        "anufhfcbjysag",
-                        "yscnpqxu",
-                        "qhabifpikxwcz",
-                        "mjgr",
-                        "ivyqniwbybrkxvd"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TagsObject model = new TagsObject()
+            .withTags(mapOf("ryo", "lwejdpv", "hbcryffdfdosyge", "psoacctazakljl", "rzevdphlxaol", "paojakhmsbzjh"));
         model = BinaryData.fromObject(model).toObject(TagsObject.class);
-        Assertions.assertEquals("jbpzvgnwzsymg", model.tags().get("zufcyzkohdbi"));
+        Assertions.assertEquals("lwejdpv", model.tags().get("ryo"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

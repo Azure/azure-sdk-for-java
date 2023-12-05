@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User property. */
+/**
+ * User property.
+ */
 @Fluent
 public final class UserProperty {
     /*
@@ -23,13 +25,15 @@ public final class UserProperty {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of UserProperty class. */
+    /**
+     * Creates an instance of UserProperty class.
+     */
     public UserProperty() {
     }
 
     /**
      * Get the name property: User property name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class UserProperty {
 
     /**
      * Set the name property: User property name.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserProperty object itself.
      */
@@ -49,7 +53,7 @@ public final class UserProperty {
 
     /**
      * Get the value property: User property value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -58,7 +62,7 @@ public final class UserProperty {
 
     /**
      * Set the value property: User property value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param value the value value to set.
      * @return the UserProperty object itself.
      */
@@ -69,19 +73,17 @@ public final class UserProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UserProperty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model UserProperty"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model UserProperty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model UserProperty"));
         }
     }
 

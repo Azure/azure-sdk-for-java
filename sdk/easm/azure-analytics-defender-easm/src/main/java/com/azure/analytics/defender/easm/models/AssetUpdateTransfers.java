@@ -8,32 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A list of asset types to cascade the updates to. */
+/**
+ * A list of asset types to cascade the updates to.
+ */
 public final class AssetUpdateTransfers extends ExpandableStringEnum<AssetUpdateTransfers> {
 
-    /** Static value as for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers AS = fromString("as");
+    /**
+     * Static value as for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers AS = fromString("as");
 
-    /** Static value contact for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers CONTACT = fromString("contact");
+    /**
+     * Static value contact for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers CONTACT = fromString("contact");
 
-    /** Static value domain for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers DOMAIN = fromString("domain");
+    /**
+     * Static value domain for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers DOMAIN = fromString("domain");
 
-    /** Static value host for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers HOST = fromString("host");
+    /**
+     * Static value host for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers HOST = fromString("host");
 
-    /** Static value ipAddress for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers IP_ADDRESS = fromString("ipAddress");
+    /**
+     * Static value ipAddress for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers IP_ADDRESS = fromString("ipAddress");
 
-    /** Static value ipBlock for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers IP_BLOCK = fromString("ipBlock");
+    /**
+     * Static value ipBlock for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers IP_BLOCK = fromString("ipBlock");
 
-    /** Static value page for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers PAGE = fromString("page");
+    /**
+     * Static value page for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers PAGE = fromString("page");
 
-    /** Static value sslCert for AssetUpdateTransfers. */
-    @Generated public static final AssetUpdateTransfers SSL_CERT = fromString("sslCert");
+    /**
+     * Static value sslCert for AssetUpdateTransfers.
+     */
+    @Generated
+    public static final AssetUpdateTransfers SSL_CERT = fromString("sslCert");
 
     /**
      * Creates a new instance of AssetUpdateTransfers value.
@@ -42,7 +68,8 @@ public final class AssetUpdateTransfers extends ExpandableStringEnum<AssetUpdate
      */
     @Generated
     @Deprecated
-    public AssetUpdateTransfers() {}
+    public AssetUpdateTransfers() {
+    }
 
     /**
      * Creates or finds a AssetUpdateTransfers from its string representation.

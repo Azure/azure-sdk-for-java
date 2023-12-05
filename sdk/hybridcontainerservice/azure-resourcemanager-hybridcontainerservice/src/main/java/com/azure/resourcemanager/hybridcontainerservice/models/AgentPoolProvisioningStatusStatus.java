@@ -6,12 +6,15 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool. */
+/**
+ * Defines the observed state of the agent pool.
+ */
 @Fluent
 public final class AgentPoolProvisioningStatusStatus {
     /*
-     * ErrorMessage - Error messages during creation of cluster
+     * ErrorMessage - Error messages during creation of agent pool
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
@@ -19,28 +22,24 @@ public final class AgentPoolProvisioningStatusStatus {
     /*
      * Contains Provisioning errors
      */
-    @JsonProperty(value = "provisioningStatus")
-    private AgentPoolProvisioningStatusStatusProvisioningStatus provisioningStatus;
+    @JsonProperty(value = "operationStatus")
+    private AgentPoolProvisioningStatusOperationStatus operationStatus;
 
     /*
-     * Total number of ready machines targeted by this deployment.
+     * The readyReplicas property.
      */
     @JsonProperty(value = "readyReplicas")
-    private Integer readyReplicas;
+    private List<AgentPoolUpdateProfile> readyReplicas;
 
-    /*
-     * Total number of non-terminated machines targeted by this deployment
+    /**
+     * Creates an instance of AgentPoolProvisioningStatusStatus class.
      */
-    @JsonProperty(value = "replicas")
-    private Integer replicas;
-
-    /** Creates an instance of AgentPoolProvisioningStatusStatus class. */
     public AgentPoolProvisioningStatusStatus() {
     }
 
     /**
-     * Get the errorMessage property: ErrorMessage - Error messages during creation of cluster.
-     *
+     * Get the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -48,8 +47,8 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Set the errorMessage property: ErrorMessage - Error messages during creation of cluster.
-     *
+     * Set the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the AgentPoolProvisioningStatusStatus object itself.
      */
@@ -59,74 +58,57 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Get the provisioningStatus property: Contains Provisioning errors.
-     *
-     * @return the provisioningStatus value.
+     * Get the operationStatus property: Contains Provisioning errors.
+     * 
+     * @return the operationStatus value.
      */
-    public AgentPoolProvisioningStatusStatusProvisioningStatus provisioningStatus() {
-        return this.provisioningStatus;
+    public AgentPoolProvisioningStatusOperationStatus operationStatus() {
+        return this.operationStatus;
     }
 
     /**
-     * Set the provisioningStatus property: Contains Provisioning errors.
-     *
-     * @param provisioningStatus the provisioningStatus value to set.
+     * Set the operationStatus property: Contains Provisioning errors.
+     * 
+     * @param operationStatus the operationStatus value to set.
      * @return the AgentPoolProvisioningStatusStatus object itself.
      */
-    public AgentPoolProvisioningStatusStatus withProvisioningStatus(
-        AgentPoolProvisioningStatusStatusProvisioningStatus provisioningStatus) {
-        this.provisioningStatus = provisioningStatus;
+    public AgentPoolProvisioningStatusStatus
+        withOperationStatus(AgentPoolProvisioningStatusOperationStatus operationStatus) {
+        this.operationStatus = operationStatus;
         return this;
     }
 
     /**
-     * Get the readyReplicas property: Total number of ready machines targeted by this deployment.
-     *
+     * Get the readyReplicas property: The readyReplicas property.
+     * 
      * @return the readyReplicas value.
      */
-    public Integer readyReplicas() {
+    public List<AgentPoolUpdateProfile> readyReplicas() {
         return this.readyReplicas;
     }
 
     /**
-     * Set the readyReplicas property: Total number of ready machines targeted by this deployment.
-     *
+     * Set the readyReplicas property: The readyReplicas property.
+     * 
      * @param readyReplicas the readyReplicas value to set.
      * @return the AgentPoolProvisioningStatusStatus object itself.
      */
-    public AgentPoolProvisioningStatusStatus withReadyReplicas(Integer readyReplicas) {
+    public AgentPoolProvisioningStatusStatus withReadyReplicas(List<AgentPoolUpdateProfile> readyReplicas) {
         this.readyReplicas = readyReplicas;
         return this;
     }
 
     /**
-     * Get the replicas property: Total number of non-terminated machines targeted by this deployment.
-     *
-     * @return the replicas value.
-     */
-    public Integer replicas() {
-        return this.replicas;
-    }
-
-    /**
-     * Set the replicas property: Total number of non-terminated machines targeted by this deployment.
-     *
-     * @param replicas the replicas value to set.
-     * @return the AgentPoolProvisioningStatusStatus object itself.
-     */
-    public AgentPoolProvisioningStatusStatus withReplicas(Integer replicas) {
-        this.replicas = replicas;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (provisioningStatus() != null) {
-            provisioningStatus().validate();
+        if (operationStatus() != null) {
+            operationStatus().validate();
+        }
+        if (readyReplicas() != null) {
+            readyReplicas().forEach(e -> e.validate());
         }
     }
 }

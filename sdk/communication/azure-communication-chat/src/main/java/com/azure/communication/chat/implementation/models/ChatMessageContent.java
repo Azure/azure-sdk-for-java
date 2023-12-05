@@ -31,10 +31,16 @@ public final class ChatMessageContent {
     private List<ChatParticipant> participants;
 
     /*
+     * List of attachments for this message
+     */
+    @JsonProperty(value = "attachments")
+    private List<ChatAttachment> attachments;
+
+    /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
-     * model must be interpreted as a union: Apart from rawId, at most one
-     * further property may be set.
+     * model is polymorphic: Apart from kind and rawId, at most one further
+     * property may be set which must match the kind enum value.
      */
     @JsonProperty(value = "initiatorCommunicationIdentifier")
     private CommunicationIdentifierModel initiatorCommunicationIdentifier;
@@ -100,9 +106,29 @@ public final class ChatMessageContent {
     }
 
     /**
+     * Get the attachments property: List of attachments for this message.
+     *
+     * @return the attachments value.
+     */
+    public List<ChatAttachment> getAttachments() {
+        return this.attachments;
+    }
+
+    /**
+     * Set the attachments property: List of attachments for this message.
+     *
+     * @param attachments the attachments value to set.
+     * @return the ChatMessageContent object itself.
+     */
+    public ChatMessageContent setAttachments(List<ChatAttachment> attachments) {
+        this.attachments = attachments;
+        return this;
+    }
+
+    /**
      * Get the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
-     * union: Apart from rawId, at most one further property may be set.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @return the initiatorCommunicationIdentifier value.
      */
@@ -112,8 +138,8 @@ public final class ChatMessageContent {
 
     /**
      * Set the initiatorCommunicationIdentifier property: Identifies a participant in Azure Communication services. A
-     * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
-     * union: Apart from rawId, at most one further property may be set.
+     * participant is, for example, a phone number or an Azure communication user. This model is polymorphic: Apart from
+     * kind and rawId, at most one further property may be set which must match the kind enum value.
      *
      * @param initiatorCommunicationIdentifier the initiatorCommunicationIdentifier value to set.
      * @return the ChatMessageContent object itself.

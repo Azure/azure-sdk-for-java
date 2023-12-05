@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.ZohoSource;
 public final class ZohoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ZohoSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ZohoSource\",\"query\":\"datavddfmflwfxdkpwd\",\"queryTimeout\":\"datayg\",\"additionalColumns\":\"dataugcht\",\"sourceRetryCount\":\"datai\",\"sourceRetryWait\":\"datadlrxbsuftpvgmqzi\",\"maxConcurrentConnections\":\"datauvmlltas\",\"disableMetricsCollection\":\"dataqsf\",\"\":{\"vvvrbqxisa\":\"dataszvegawbmyvgmbi\"}}")
-                .toObject(ZohoSource.class);
+        ZohoSource model = BinaryData.fromString(
+            "{\"type\":\"ZohoSource\",\"query\":\"dataq\",\"queryTimeout\":\"dataykagsx\",\"additionalColumns\":\"datahervvlibrolqxloe\",\"sourceRetryCount\":\"datazrvf\",\"sourceRetryWait\":\"datasyqbfgwujw\",\"maxConcurrentConnections\":\"datathvue\",\"disableMetricsCollection\":\"datazznvdjnspy\",\"\":{\"nmavf\":\"dataygutqtjwiv\",\"nx\":\"datajwdw\",\"nd\":\"datae\"}}")
+            .toObject(ZohoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZohoSource model =
-            new ZohoSource()
-                .withSourceRetryCount("datai")
-                .withSourceRetryWait("datadlrxbsuftpvgmqzi")
-                .withMaxConcurrentConnections("datauvmlltas")
-                .withDisableMetricsCollection("dataqsf")
-                .withQueryTimeout("datayg")
-                .withAdditionalColumns("dataugcht")
-                .withQuery("datavddfmflwfxdkpwd");
+        ZohoSource model = new ZohoSource().withSourceRetryCount("datazrvf").withSourceRetryWait("datasyqbfgwujw")
+            .withMaxConcurrentConnections("datathvue").withDisableMetricsCollection("datazznvdjnspy")
+            .withQueryTimeout("dataykagsx").withAdditionalColumns("datahervvlibrolqxloe").withQuery("dataq");
         model = BinaryData.fromObject(model).toObject(ZohoSource.class);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** On-premises SQL Server dataset properties. */
+/**
+ * On-premises SQL Server dataset properties.
+ */
 @Fluent
 public final class SqlServerTableDatasetTypeProperties {
     /*
@@ -28,14 +30,16 @@ public final class SqlServerTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of SqlServerTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SqlServerTableDatasetTypeProperties class.
+     */
     public SqlServerTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +49,7 @@ public final class SqlServerTableDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SqlServerTableDatasetTypeProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class SqlServerTableDatasetTypeProperties {
     /**
      * Get the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -67,7 +71,7 @@ public final class SqlServerTableDatasetTypeProperties {
     /**
      * Set the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SqlServerTableDatasetTypeProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class SqlServerTableDatasetTypeProperties {
     /**
      * Get the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -89,7 +93,7 @@ public final class SqlServerTableDatasetTypeProperties {
     /**
      * Set the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SqlServerTableDatasetTypeProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class SqlServerTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

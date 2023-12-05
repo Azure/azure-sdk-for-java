@@ -7,18 +7,20 @@ package com.azure.resourcemanager.servicenetworking.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Frontend Subresource of Traffic Controller. */
+/**
+ * Frontend Subresource of Traffic Controller.
+ */
 @Fluent
 public final class FrontendInner extends Resource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private FrontendProperties innerProperties;
+    private FrontendProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -26,36 +28,53 @@ public final class FrontendInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FrontendInner class. */
+    /**
+     * Creates an instance of FrontendInner class.
+     */
     public FrontendInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private FrontendProperties innerProperties() {
-        return this.innerProperties;
+    public FrontendProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the FrontendInner object itself.
+     */
+    public FrontendInner withProperties(FrontendProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -63,32 +82,13 @@ public final class FrontendInner extends Resource {
     }
 
     /**
-     * Get the fqdn property: The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller
-     * frontend.
-     *
-     * @return the fqdn value.
-     */
-    public String fqdn() {
-        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning State of Traffic Controller Frontend Resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

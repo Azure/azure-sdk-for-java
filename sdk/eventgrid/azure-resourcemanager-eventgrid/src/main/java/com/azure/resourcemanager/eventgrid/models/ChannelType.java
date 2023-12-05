@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the event channel which represents the direction flow of events. */
+/**
+ * The type of the event channel which represents the direction flow of events.
+ */
 public final class ChannelType extends ExpandableStringEnum<ChannelType> {
-    /** Static value PartnerTopic for ChannelType. */
+    /**
+     * Static value PartnerTopic for ChannelType.
+     */
     public static final ChannelType PARTNER_TOPIC = fromString("PartnerTopic");
 
-    /** Static value PartnerDestination for ChannelType. */
+    /**
+     * Static value PartnerDestination for ChannelType.
+     */
     public static final ChannelType PARTNER_DESTINATION = fromString("PartnerDestination");
 
     /**
      * Creates a new instance of ChannelType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ChannelType extends ExpandableStringEnum<ChannelType> {
 
     /**
      * Creates or finds a ChannelType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChannelType.
      */
@@ -38,7 +44,7 @@ public final class ChannelType extends ExpandableStringEnum<ChannelType> {
 
     /**
      * Gets known ChannelType values.
-     *
+     * 
      * @return known ChannelType values.
      */
     public static Collection<ChannelType> values() {

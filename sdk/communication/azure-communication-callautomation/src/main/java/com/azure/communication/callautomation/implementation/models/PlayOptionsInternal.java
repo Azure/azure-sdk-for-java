@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PlayOptionsInternal model. */
+/**
+ * The PlayOptionsInternal model.
+ */
 @Fluent
 public final class PlayOptionsInternal {
     /*
@@ -17,8 +19,14 @@ public final class PlayOptionsInternal {
     private boolean loop;
 
     /**
+     * Creates an instance of PlayOptionsInternal class.
+     */
+    public PlayOptionsInternal() {
+    }
+
+    /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.
-     *
+     * 
      * @return the loop value.
      */
     public boolean isLoop() {
@@ -27,7 +35,7 @@ public final class PlayOptionsInternal {
 
     /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
-     *
+     * 
      * @param loop the loop value to set.
      * @return the PlayOptionsInternal object itself.
      */

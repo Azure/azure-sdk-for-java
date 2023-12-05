@@ -8,40 +8,42 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FqdnListLocalRulestacks. */
+/**
+ * Resource collection API of FqdnListLocalRulestacks.
+ */
 public interface FqdnListLocalRulestacks {
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName);
+    PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName);
 
     /**
      * List FqdnListLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListLocalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context);
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -51,12 +53,12 @@ public interface FqdnListLocalRulestacks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a FqdnListLocalRulestackResource along with {@link Response}.
      */
-    Response<FqdnListLocalRulestackResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    Response<FqdnListLocalRulestackResource> getWithResponse(String resourceGroupName, String localRulestackName,
+        String name, Context context);
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -69,7 +71,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -81,7 +83,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name fqdn list name.
@@ -94,7 +96,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +107,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Get a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Delete a FqdnListLocalRulestackResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -138,7 +140,7 @@ public interface FqdnListLocalRulestacks {
 
     /**
      * Begins definition for a new FqdnListLocalRulestackResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FqdnListLocalRulestackResource definition.
      */

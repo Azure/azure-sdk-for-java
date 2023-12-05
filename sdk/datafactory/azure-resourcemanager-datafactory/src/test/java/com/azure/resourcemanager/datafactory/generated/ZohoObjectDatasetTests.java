@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ZohoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ZohoObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ZohoObject\",\"typeProperties\":{\"tableName\":\"datamrslwknrd\"},\"description\":\"mbjern\",\"structure\":\"datazywx\",\"schema\":\"dataaq\",\"linkedServiceName\":{\"referenceName\":\"tkdeetnnef\",\"parameters\":{\"fwqjzybmfqdnpp\":\"datalkszuxjmrzsxwa\",\"vamuvkgd\":\"datacfguam\",\"spjvsyydjlhd\":\"datapjbblukgctv\"}},\"parameters\":{\"ulojwumfjdymeq\":{\"type\":\"Array\",\"defaultValue\":\"datavyeegx\"},\"nxemhqpzhnatw\":{\"type\":\"Bool\",\"defaultValue\":\"datapfyxdjspn\"}},\"annotations\":[\"datamcvdjlwwefevtwll\",\"dataypmjc\",\"datay\",\"datafwgkzuhk\"],\"folder\":{\"name\":\"jkckwbqwjyfmmk\"},\"\":{\"oerohextigukfk\":\"datarooyzhobnvyuepa\",\"enlqtqyvlfbs\":\"datasycbdymbnp\"}}")
-                .toObject(ZohoObjectDataset.class);
+        ZohoObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"ZohoObject\",\"typeProperties\":{\"tableName\":\"datamrslwknrd\"},\"description\":\"mbjern\",\"structure\":\"datazywx\",\"schema\":\"dataaq\",\"linkedServiceName\":{\"referenceName\":\"tkdeetnnef\",\"parameters\":{\"fwqjzybmfqdnpp\":\"datalkszuxjmrzsxwa\",\"vamuvkgd\":\"datacfguam\",\"spjvsyydjlhd\":\"datapjbblukgctv\"}},\"parameters\":{\"ulojwumfjdymeq\":{\"type\":\"Array\",\"defaultValue\":\"datavyeegx\"},\"nxemhqpzhnatw\":{\"type\":\"Bool\",\"defaultValue\":\"datapfyxdjspn\"}},\"annotations\":[\"datamcvdjlwwefevtwll\",\"dataypmjc\",\"datay\",\"datafwgkzuhk\"],\"folder\":{\"name\":\"jkckwbqwjyfmmk\"},\"\":{\"oerohextigukfk\":\"datarooyzhobnvyuepa\",\"enlqtqyvlfbs\":\"datasycbdymbnp\"}}")
+            .toObject(ZohoObjectDataset.class);
         Assertions.assertEquals("mbjern", model.description());
         Assertions.assertEquals("tkdeetnnef", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("ulojwumfjdymeq").type());
@@ -31,31 +29,17 @@ public final class ZohoObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZohoObjectDataset model =
-            new ZohoObjectDataset()
-                .withDescription("mbjern")
-                .withStructure("datazywx")
-                .withSchema("dataaq")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("tkdeetnnef")
-                        .withParameters(
-                            mapOf(
-                                "fwqjzybmfqdnpp",
-                                "datalkszuxjmrzsxwa",
-                                "vamuvkgd",
-                                "datacfguam",
-                                "spjvsyydjlhd",
-                                "datapjbblukgctv")))
-                .withParameters(
-                    mapOf(
-                        "ulojwumfjdymeq",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavyeegx"),
-                        "nxemhqpzhnatw",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datapfyxdjspn")))
+        ZohoObjectDataset model
+            = new ZohoObjectDataset().withDescription("mbjern").withStructure("datazywx").withSchema("dataaq")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("tkdeetnnef")
+                    .withParameters(mapOf("fwqjzybmfqdnpp", "datalkszuxjmrzsxwa", "vamuvkgd", "datacfguam",
+                        "spjvsyydjlhd", "datapjbblukgctv")))
+                .withParameters(mapOf("ulojwumfjdymeq",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavyeegx"),
+                    "nxemhqpzhnatw",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datapfyxdjspn")))
                 .withAnnotations(Arrays.asList("datamcvdjlwwefevtwll", "dataypmjc", "datay", "datafwgkzuhk"))
-                .withFolder(new DatasetFolder().withName("jkckwbqwjyfmmk"))
-                .withTableName("datamrslwknrd");
+                .withFolder(new DatasetFolder().withName("jkckwbqwjyfmmk")).withTableName("datamrslwknrd");
         model = BinaryData.fromObject(model).toObject(ZohoObjectDataset.class);
         Assertions.assertEquals("mbjern", model.description());
         Assertions.assertEquals("tkdeetnnef", model.linkedServiceName().referenceName());

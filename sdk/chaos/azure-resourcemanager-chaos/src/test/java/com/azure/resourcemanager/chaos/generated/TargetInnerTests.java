@@ -16,19 +16,23 @@ public final class TargetInnerTests {
         TargetInner model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"wzsyyceuzs\",\"properties\":{\"ytdw\":\"databjudpfrxtrthzv\"},\"id\":\"qbrqubpaxhexiili\",\"name\":\"pdtii\",\"type\":\"q\"}")
+                    "{\"location\":\"xrbuukzclew\",\"properties\":{\"pofncck\":\"datamlwpazt\",\"qa\":\"datayfzqwhxxbu\",\"lxorjaltolmncws\":\"datazfeqztppri\"},\"id\":\"bqwcsdbnwdcf\",\"name\":\"ucqdpfuvglsb\",\"type\":\"jcanvxbvtvudut\"}")
                 .toObject(TargetInner.class);
-        Assertions.assertEquals("wzsyyceuzs", model.location());
+        Assertions.assertEquals("xrbuukzclew", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TargetInner model =
-            new TargetInner().withLocation("wzsyyceuzs").withProperties(mapOf("ytdw", "databjudpfrxtrthzv"));
+            new TargetInner()
+                .withLocation("xrbuukzclew")
+                .withProperties(
+                    mapOf("pofncck", "datamlwpazt", "qa", "datayfzqwhxxbu", "lxorjaltolmncws", "datazfeqztppri"));
         model = BinaryData.fromObject(model).toObject(TargetInner.class);
-        Assertions.assertEquals("wzsyyceuzs", model.location());
+        Assertions.assertEquals("xrbuukzclew", model.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

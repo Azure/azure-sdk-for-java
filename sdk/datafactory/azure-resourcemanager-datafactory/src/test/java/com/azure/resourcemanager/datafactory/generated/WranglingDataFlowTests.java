@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WranglingDataFlowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WranglingDataFlow model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"WranglingDataFlow\",\"typeProperties\":{\"sources\":[{\"script\":\"dawsxmrsz\",\"schemaLinkedService\":{\"referenceName\":\"nimx\",\"parameters\":{\"mnb\":\"dataerxrzutylcurza\",\"bjmbnvynfaooeac\":\"dataqaeht\"}},\"name\":\"edcgl\",\"description\":\"akd\",\"dataset\":{\"referenceName\":\"dahzllrqm\",\"parameters\":{\"oiduyqypff\":\"databyx\",\"yhbrjjta\":\"datanoiicsu\",\"sxxhdodp\":\"dataxrdsjrholuqwg\"}},\"linkedService\":{\"referenceName\":\"yblvtbdmvsbyi\",\"parameters\":{\"jfb\":\"datalqpvekmk\",\"gdusxurs\":\"datatlo\",\"iqrizfwihvaan\":\"dataivuxcjkcoqwczs\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"nhjrfdmfd\",\"datasetParameters\":\"datab\",\"parameters\":{\"d\":\"dataxjfwt\",\"fedyuep\":\"datakkauigvmuafmc\",\"eocfkumcfjxok\":\"datavpltidajjvy\",\"svfnkwm\":\"dataelsy\"},\"\":{\"ugjqyckgtxkrdt\":\"datajekrknfd\",\"jdkl\":\"datalcr\",\"svobchkxfp\":\"datatcsubmzoo\",\"nkkw\":\"datahdyslbklglm\"}}}],\"script\":\"qshwyqxridt\",\"documentLocale\":\"saqjmkgx\"},\"description\":\"queu\",\"annotations\":[\"dataztpziizevjykof\",\"dataezefkhkqtwqlepjj\",\"datakca\",\"datafwzcntogffjwaj\"],\"folder\":{\"name\":\"wzvaqkifmxaw\"}}")
-                .toObject(WranglingDataFlow.class);
+        WranglingDataFlow model = BinaryData.fromString(
+            "{\"type\":\"WranglingDataFlow\",\"typeProperties\":{\"sources\":[{\"script\":\"dawsxmrsz\",\"schemaLinkedService\":{\"referenceName\":\"nimx\",\"parameters\":{\"mnb\":\"dataerxrzutylcurza\",\"bjmbnvynfaooeac\":\"dataqaeht\"}},\"name\":\"edcgl\",\"description\":\"akd\",\"dataset\":{\"referenceName\":\"dahzllrqm\",\"parameters\":{\"oiduyqypff\":\"databyx\",\"yhbrjjta\":\"datanoiicsu\",\"sxxhdodp\":\"dataxrdsjrholuqwg\"}},\"linkedService\":{\"referenceName\":\"yblvtbdmvsbyi\",\"parameters\":{\"jfb\":\"datalqpvekmk\",\"gdusxurs\":\"datatlo\",\"iqrizfwihvaan\":\"dataivuxcjkcoqwczs\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"nhjrfdmfd\",\"datasetParameters\":\"datab\",\"parameters\":{\"d\":\"dataxjfwt\",\"fedyuep\":\"datakkauigvmuafmc\",\"eocfkumcfjxok\":\"datavpltidajjvy\",\"svfnkwm\":\"dataelsy\"},\"\":{\"ugjqyckgtxkrdt\":\"datajekrknfd\",\"jdkl\":\"datalcr\",\"svobchkxfp\":\"datatcsubmzoo\",\"nkkw\":\"datahdyslbklglm\"}}}],\"script\":\"qshwyqxridt\",\"documentLocale\":\"saqjmkgx\"},\"description\":\"queu\",\"annotations\":[\"dataztpziizevjykof\",\"dataezefkhkqtwqlepjj\",\"datakca\",\"datafwzcntogffjwaj\"],\"folder\":{\"name\":\"wzvaqkifmxaw\"}}")
+            .toObject(WranglingDataFlow.class);
         Assertions.assertEquals("queu", model.description());
         Assertions.assertEquals("wzvaqkifmxaw", model.folder().name());
         Assertions.assertEquals("edcgl", model.sources().get(0).name());
@@ -41,64 +39,24 @@ public final class WranglingDataFlowTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WranglingDataFlow model =
-            new WranglingDataFlow()
-                .withDescription("queu")
-                .withAnnotations(
-                    Arrays.asList("dataztpziizevjykof", "dataezefkhkqtwqlepjj", "datakca", "datafwzcntogffjwaj"))
-                .withFolder(new DataFlowFolder().withName("wzvaqkifmxaw"))
-                .withSources(
-                    Arrays
-                        .asList(
-                            new PowerQuerySource()
-                                .withName("edcgl")
-                                .withDescription("akd")
-                                .withDataset(
-                                    new DatasetReference()
-                                        .withReferenceName("dahzllrqm")
-                                        .withParameters(
-                                            mapOf(
-                                                "oiduyqypff",
-                                                "databyx",
-                                                "yhbrjjta",
-                                                "datanoiicsu",
-                                                "sxxhdodp",
-                                                "dataxrdsjrholuqwg")))
-                                .withLinkedService(
-                                    new LinkedServiceReference()
-                                        .withReferenceName("yblvtbdmvsbyi")
-                                        .withParameters(
-                                            mapOf(
-                                                "jfb",
-                                                "datalqpvekmk",
-                                                "gdusxurs",
-                                                "datatlo",
-                                                "iqrizfwihvaan",
-                                                "dataivuxcjkcoqwczs")))
-                                .withFlowlet(
-                                    new DataFlowReference()
-                                        .withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                                        .withReferenceName("nhjrfdmfd")
-                                        .withDatasetParameters("datab")
-                                        .withParameters(
-                                            mapOf(
-                                                "d",
-                                                "dataxjfwt",
-                                                "fedyuep",
-                                                "datakkauigvmuafmc",
-                                                "eocfkumcfjxok",
-                                                "datavpltidajjvy",
-                                                "svfnkwm",
-                                                "dataelsy"))
-                                        .withAdditionalProperties(mapOf()))
-                                .withSchemaLinkedService(
-                                    new LinkedServiceReference()
-                                        .withReferenceName("nimx")
-                                        .withParameters(
-                                            mapOf("mnb", "dataerxrzutylcurza", "bjmbnvynfaooeac", "dataqaeht")))
-                                .withScript("dawsxmrsz")))
-                .withScript("qshwyqxridt")
-                .withDocumentLocale("saqjmkgx");
+        WranglingDataFlow model = new WranglingDataFlow().withDescription("queu")
+            .withAnnotations(
+                Arrays.asList("dataztpziizevjykof", "dataezefkhkqtwqlepjj", "datakca", "datafwzcntogffjwaj"))
+            .withFolder(new DataFlowFolder().withName("wzvaqkifmxaw"))
+            .withSources(Arrays.asList(new PowerQuerySource().withName("edcgl").withDescription("akd")
+                .withDataset(new DatasetReference().withReferenceName("dahzllrqm").withParameters(
+                    mapOf("oiduyqypff", "databyx", "yhbrjjta", "datanoiicsu", "sxxhdodp", "dataxrdsjrholuqwg")))
+                .withLinkedService(new LinkedServiceReference().withReferenceName("yblvtbdmvsbyi").withParameters(
+                    mapOf("jfb", "datalqpvekmk", "gdusxurs", "datatlo", "iqrizfwihvaan", "dataivuxcjkcoqwczs")))
+                .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                    .withReferenceName("nhjrfdmfd").withDatasetParameters("datab")
+                    .withParameters(mapOf("d", "dataxjfwt", "fedyuep", "datakkauigvmuafmc", "eocfkumcfjxok",
+                        "datavpltidajjvy", "svfnkwm", "dataelsy"))
+                    .withAdditionalProperties(mapOf()))
+                .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("nimx")
+                    .withParameters(mapOf("mnb", "dataerxrzutylcurza", "bjmbnvynfaooeac", "dataqaeht")))
+                .withScript("dawsxmrsz")))
+            .withScript("qshwyqxridt").withDocumentLocale("saqjmkgx");
         model = BinaryData.fromObject(model).toObject(WranglingDataFlow.class);
         Assertions.assertEquals("queu", model.description());
         Assertions.assertEquals("wzvaqkifmxaw", model.folder().name());

@@ -1,14 +1,19 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2023-12-04)
 
 ### Features Added
 
-### Breaking Changes
+- Added `ChatAttachment` object that contains properties for inline images incoming from Teams Chat Threads.
 
-### Bugs Fixed
+## 1.3.14 (2023-11-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
 ## 1.3.13 (2023-10-20)
 

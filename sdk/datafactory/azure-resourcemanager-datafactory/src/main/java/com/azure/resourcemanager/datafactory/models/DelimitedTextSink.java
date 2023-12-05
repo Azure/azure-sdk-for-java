@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity DelimitedText sink. */
+/**
+ * A copy activity DelimitedText sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DelimitedTextSink")
 @Fluent
@@ -26,13 +28,15 @@ public final class DelimitedTextSink extends CopySink {
     @JsonProperty(value = "formatSettings")
     private DelimitedTextWriteSettings formatSettings;
 
-    /** Creates an instance of DelimitedTextSink class. */
+    /**
+     * Creates an instance of DelimitedTextSink class.
+     */
     public DelimitedTextSink() {
     }
 
     /**
      * Get the storeSettings property: DelimitedText store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings storeSettings() {
@@ -41,7 +45,7 @@ public final class DelimitedTextSink extends CopySink {
 
     /**
      * Set the storeSettings property: DelimitedText store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the DelimitedTextSink object itself.
      */
@@ -52,7 +56,7 @@ public final class DelimitedTextSink extends CopySink {
 
     /**
      * Get the formatSettings property: DelimitedText format settings.
-     *
+     * 
      * @return the formatSettings value.
      */
     public DelimitedTextWriteSettings formatSettings() {
@@ -61,7 +65,7 @@ public final class DelimitedTextSink extends CopySink {
 
     /**
      * Set the formatSettings property: DelimitedText format settings.
-     *
+     * 
      * @param formatSettings the formatSettings value to set.
      * @return the DelimitedTextSink object itself.
      */
@@ -70,42 +74,54 @@ public final class DelimitedTextSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DelimitedTextSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -114,7 +130,7 @@ public final class DelimitedTextSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

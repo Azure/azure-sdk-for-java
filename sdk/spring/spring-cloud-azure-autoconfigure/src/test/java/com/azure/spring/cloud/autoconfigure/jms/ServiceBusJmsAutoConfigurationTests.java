@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
+import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -117,8 +118,8 @@ class ServiceBusJmsAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "basic", "standard" })
-    void autoconfigurationEnabledAndContextSuccessWithNonpremiumTier(String pricingTier) {
+    @ValueSource(strings = { "basic", "premium" })
+    void autoconfigurationEnabledAndContextSuccessWithNonstandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -129,14 +130,15 @@ class ServiceBusJmsAutoConfigurationTests {
                 assertThat(context).hasSingleBean(ConnectionFactory.class);
                 assertThat(context).hasSingleBean(JmsTemplate.class);
                 assertThat(context).hasSingleBean(DefaultJmsListenerContainerFactoryConfigurer.class);
+                assertThat(context).hasBean("jmsListenerContainerFactory");
                 assertThat(context).hasBean("topicJmsListenerContainerFactory");
                 assertThat(context).doesNotHaveBean("amqpOpenPropertiesCustomizer");
             });
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "premium" })
-    void autoconfigurationEnabledAndContextSuccessWithPremiumTier(String pricingTier) {
+    @ValueSource(strings = { "standard" })
+    void autoconfigurationEnabledAndContextSuccessWithStandardTier(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,

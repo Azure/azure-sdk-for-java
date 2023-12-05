@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP Address Space. */
+/**
+ * IP Address Space.
+ */
 @Fluent
 public final class IpAddressSpace {
     /*
@@ -22,13 +24,15 @@ public final class IpAddressSpace {
     @JsonProperty(value = "addressSpace")
     private String addressSpace;
 
-    /** Creates an instance of IpAddressSpace class. */
+    /**
+     * Creates an instance of IpAddressSpace class.
+     */
     public IpAddressSpace() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +41,7 @@ public final class IpAddressSpace {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IpAddressSpace object itself.
      */
@@ -48,7 +52,7 @@ public final class IpAddressSpace {
 
     /**
      * Get the addressSpace property: Address Space.
-     *
+     * 
      * @return the addressSpace value.
      */
     public String addressSpace() {
@@ -57,7 +61,7 @@ public final class IpAddressSpace {
 
     /**
      * Set the addressSpace property: Address Space.
-     *
+     * 
      * @param addressSpace the addressSpace value to set.
      * @return the IpAddressSpace object itself.
      */
@@ -68,7 +72,7 @@ public final class IpAddressSpace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

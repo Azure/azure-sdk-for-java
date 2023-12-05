@@ -12,7 +12,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** GlobalRulestack Certificate Object. */
+/**
+ * GlobalRulestack Certificate Object.
+ */
 @Fluent
 public final class CertificateObjectGlobalRulestackResourceInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CertificateObjectGlobalRulestackResourceInner class. */
+    /**
+     * Creates an instance of CertificateObjectGlobalRulestackResourceInner class.
+     */
     public CertificateObjectGlobalRulestackResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateObject innerProperties() {
@@ -42,7 +46,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
     /**
      * Get the certificateSignerResourceId property: Resource Id of certificate signer, to be populated only when
      * certificateSelfSigned is false.
-     *
+     * 
      * @return the certificateSignerResourceId value.
      */
     public String certificateSignerResourceId() {
@@ -62,12 +66,12 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
     /**
      * Set the certificateSignerResourceId property: Resource Id of certificate signer, to be populated only when
      * certificateSelfSigned is false.
-     *
+     * 
      * @param certificateSignerResourceId the certificateSignerResourceId value to set.
      * @return the CertificateObjectGlobalRulestackResourceInner object itself.
      */
-    public CertificateObjectGlobalRulestackResourceInner withCertificateSignerResourceId(
-        String certificateSignerResourceId) {
+    public CertificateObjectGlobalRulestackResourceInner
+        withCertificateSignerResourceId(String certificateSignerResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new CertificateObject();
         }
@@ -77,7 +81,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the certificateSelfSigned property: use certificate self signed.
-     *
+     * 
      * @return the certificateSelfSigned value.
      */
     public BooleanEnum certificateSelfSigned() {
@@ -86,7 +90,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Set the certificateSelfSigned property: use certificate self signed.
-     *
+     * 
      * @param certificateSelfSigned the certificateSelfSigned value to set.
      * @return the CertificateObjectGlobalRulestackResourceInner object itself.
      */
@@ -100,7 +104,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the auditComment property: comment for this object.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -109,7 +113,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Set the auditComment property: comment for this object.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the CertificateObjectGlobalRulestackResourceInner object itself.
      */
@@ -123,7 +127,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the description property: user description for this object.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -132,7 +136,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Set the description property: user description for this object.
-     *
+     * 
      * @param description the description value to set.
      * @return the CertificateObjectGlobalRulestackResourceInner object itself.
      */
@@ -146,7 +150,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the etag property: read only string representing last create or update.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -155,7 +159,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Set the etag property: read only string representing last create or update.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CertificateObjectGlobalRulestackResourceInner object itself.
      */
@@ -169,7 +173,7 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -178,16 +182,13 @@ public final class CertificateObjectGlobalRulestackResourceInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " CertificateObjectGlobalRulestackResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model CertificateObjectGlobalRulestackResourceInner"));
         } else {
             innerProperties().validate();
         }

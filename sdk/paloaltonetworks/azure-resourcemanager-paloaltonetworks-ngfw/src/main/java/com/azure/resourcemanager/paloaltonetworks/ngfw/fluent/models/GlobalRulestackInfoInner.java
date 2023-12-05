@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PAN Rulestack Describe Object. */
+/**
+ * PAN Rulestack Describe Object.
+ */
 @Fluent
 public final class GlobalRulestackInfoInner {
     /*
@@ -17,13 +19,15 @@ public final class GlobalRulestackInfoInner {
     @JsonProperty(value = "azureId", required = true)
     private String azureId;
 
-    /** Creates an instance of GlobalRulestackInfoInner class. */
+    /**
+     * Creates an instance of GlobalRulestackInfoInner class.
+     */
     public GlobalRulestackInfoInner() {
     }
 
     /**
      * Get the azureId property: rulestack description.
-     *
+     * 
      * @return the azureId value.
      */
     public String azureId() {
@@ -32,7 +36,7 @@ public final class GlobalRulestackInfoInner {
 
     /**
      * Set the azureId property: rulestack description.
-     *
+     * 
      * @param azureId the azureId value to set.
      * @return the GlobalRulestackInfoInner object itself.
      */
@@ -43,15 +47,13 @@ public final class GlobalRulestackInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (azureId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureId in model GlobalRulestackInfoInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property azureId in model GlobalRulestackInfoInner"));
         }
     }
 

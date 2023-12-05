@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlServerTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerTableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SqlServerTable\",\"typeProperties\":{\"tableName\":\"datazcq\",\"schema\":\"datavnkyakck\",\"table\":\"datah\"},\"description\":\"nsddjkkd\",\"structure\":\"dataesu\",\"schema\":\"dataogfcnxcxgxum\",\"linkedServiceName\":{\"referenceName\":\"cqxmyvkxixy\",\"parameters\":{\"g\":\"dataifjc\"}},\"parameters\":{\"chmxczbyfkoc\":{\"type\":\"Bool\",\"defaultValue\":\"datauw\"}},\"annotations\":[\"datadctsnlwscrngt\"],\"folder\":{\"name\":\"rolwv\"},\"\":{\"cucti\":\"datasdksut\",\"ux\":\"dataavishbvjhxvpmqqu\",\"lexoweorocr\":\"dataphngr\",\"gbq\":\"dataicgym\"}}")
-                .toObject(SqlServerTableDataset.class);
+        SqlServerTableDataset model = BinaryData.fromString(
+            "{\"type\":\"SqlServerTable\",\"typeProperties\":{\"tableName\":\"datazcq\",\"schema\":\"datavnkyakck\",\"table\":\"datah\"},\"description\":\"nsddjkkd\",\"structure\":\"dataesu\",\"schema\":\"dataogfcnxcxgxum\",\"linkedServiceName\":{\"referenceName\":\"cqxmyvkxixy\",\"parameters\":{\"g\":\"dataifjc\"}},\"parameters\":{\"chmxczbyfkoc\":{\"type\":\"Bool\",\"defaultValue\":\"datauw\"}},\"annotations\":[\"datadctsnlwscrngt\"],\"folder\":{\"name\":\"rolwv\"},\"\":{\"cucti\":\"datasdksut\",\"ux\":\"dataavishbvjhxvpmqqu\",\"lexoweorocr\":\"dataphngr\",\"gbq\":\"dataicgym\"}}")
+            .toObject(SqlServerTableDataset.class);
         Assertions.assertEquals("nsddjkkd", model.description());
         Assertions.assertEquals("cqxmyvkxixy", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("chmxczbyfkoc").type());
@@ -31,24 +29,14 @@ public final class SqlServerTableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerTableDataset model =
-            new SqlServerTableDataset()
-                .withDescription("nsddjkkd")
-                .withStructure("dataesu")
-                .withSchema("dataogfcnxcxgxum")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("cqxmyvkxixy")
-                        .withParameters(mapOf("g", "dataifjc")))
-                .withParameters(
-                    mapOf(
-                        "chmxczbyfkoc",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datauw")))
-                .withAnnotations(Arrays.asList("datadctsnlwscrngt"))
-                .withFolder(new DatasetFolder().withName("rolwv"))
-                .withTableName("datazcq")
-                .withSchemaTypePropertiesSchema("datavnkyakck")
-                .withTable("datah");
+        SqlServerTableDataset model = new SqlServerTableDataset().withDescription("nsddjkkd").withStructure("dataesu")
+            .withSchema("dataogfcnxcxgxum")
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("cqxmyvkxixy").withParameters(mapOf("g", "dataifjc")))
+            .withParameters(mapOf("chmxczbyfkoc",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datauw")))
+            .withAnnotations(Arrays.asList("datadctsnlwscrngt")).withFolder(new DatasetFolder().withName("rolwv"))
+            .withTableName("datazcq").withSchemaTypePropertiesSchema("datavnkyakck").withTable("datah");
         model = BinaryData.fromObject(model).toObject(SqlServerTableDataset.class);
         Assertions.assertEquals("nsddjkkd", model.description());
         Assertions.assertEquals("cqxmyvkxixy", model.linkedServiceName().referenceName());

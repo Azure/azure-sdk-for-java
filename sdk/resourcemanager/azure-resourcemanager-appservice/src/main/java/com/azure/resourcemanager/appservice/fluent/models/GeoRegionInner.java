@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Geographical region. */
+/**
+ * Geographical region.
+ */
 @Fluent
 public final class GeoRegionInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class GeoRegionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private GeoRegionProperties innerProperties;
 
-    /** Creates an instance of GeoRegionInner class. */
+    /**
+     * Creates an instance of GeoRegionInner class.
+     */
     public GeoRegionInner() {
     }
 
     /**
      * Get the innerProperties property: GeoRegion resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GeoRegionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GeoRegionInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class GeoRegionInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Region description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -48,7 +54,7 @@ public final class GeoRegionInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: Display name for region.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -57,7 +63,7 @@ public final class GeoRegionInner extends ProxyOnlyResource {
 
     /**
      * Get the orgDomain property: Display name for region.
-     *
+     * 
      * @return the orgDomain value.
      */
     public String orgDomain() {
@@ -66,7 +72,7 @@ public final class GeoRegionInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

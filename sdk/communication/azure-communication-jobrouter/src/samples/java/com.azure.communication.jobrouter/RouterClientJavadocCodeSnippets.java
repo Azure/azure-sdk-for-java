@@ -38,7 +38,9 @@ public final class RouterClientJavadocCodeSnippets {
         // Initialize the jobrouter administration client builder
         final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder();
         // Build the jobrouter administration client
-        JobRouterAdministrationClient jobRouterAdministrationClient = builder.buildClient();
+        JobRouterAdministrationClient jobRouterAdministrationClient = builder
+            .connectionString(connectionString)
+            .buildClient();
 
         // END: com.azure.communication.jobrouter.jobrouteradministrationclient.instantiation
         return jobRouterAdministrationClient;
@@ -51,7 +53,9 @@ public final class RouterClientJavadocCodeSnippets {
         // Initialize the jobrouter administration client builder
         final JobRouterAdministrationClientBuilder builder = new JobRouterAdministrationClientBuilder();
         // Build the jobrouter administration client
-        JobRouterAdministrationAsyncClient jobrouterAdministrationClient = builder.buildAsyncClient();
+        JobRouterAdministrationAsyncClient jobrouterAdministrationClient = builder
+            .connectionString(connectionString)
+            .buildAsyncClient();
 
         // END: com.azure.communication.jobrouter.jobrouteradministrationasyncclient.instantiation
         return jobrouterAdministrationClient;

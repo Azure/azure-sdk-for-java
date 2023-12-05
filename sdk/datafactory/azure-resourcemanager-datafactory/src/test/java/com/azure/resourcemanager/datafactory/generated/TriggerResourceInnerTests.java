@@ -15,25 +15,19 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"Trigger\",\"description\":\"cp\",\"runtimeState\":\"Started\",\"annotations\":[\"dataihih\",\"datahzdsqtzbsrgnow\",\"datajhf\",\"datamvec\"],\"\":{\"ekqvgqouwif\":\"dataxmwoteyowcluqo\",\"ivqikfxcvhr\":\"datampjw\",\"c\":\"datasphuagrttikteus\"}},\"name\":\"vyklxuby\",\"type\":\"ff\",\"etag\":\"fblcq\",\"id\":\"ubgq\"}")
-                .toObject(TriggerResourceInner.class);
+        TriggerResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"Trigger\",\"description\":\"cp\",\"runtimeState\":\"Started\",\"annotations\":[\"dataihih\",\"datahzdsqtzbsrgnow\",\"datajhf\",\"datamvec\"],\"\":{\"ekqvgqouwif\":\"dataxmwoteyowcluqo\",\"ivqikfxcvhr\":\"datampjw\",\"c\":\"datasphuagrttikteus\"}},\"name\":\"vyklxuby\",\"type\":\"ff\",\"etag\":\"fblcq\",\"id\":\"ubgq\"}")
+            .toObject(TriggerResourceInner.class);
         Assertions.assertEquals("ubgq", model.id());
         Assertions.assertEquals("cp", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerResourceInner model =
-            new TriggerResourceInner()
-                .withId("ubgq")
-                .withProperties(
-                    new Trigger()
-                        .withDescription("cp")
-                        .withAnnotations(Arrays.asList("dataihih", "datahzdsqtzbsrgnow", "datajhf", "datamvec"))
-                        .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started")));
+        TriggerResourceInner model = new TriggerResourceInner().withId("ubgq")
+            .withProperties(new Trigger().withDescription("cp")
+                .withAnnotations(Arrays.asList("dataihih", "datahzdsqtzbsrgnow", "datajhf", "datamvec"))
+                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Started")));
         model = BinaryData.fromObject(model).toObject(TriggerResourceInner.class);
         Assertions.assertEquals("ubgq", model.id());
         Assertions.assertEquals("cp", model.properties().description());

@@ -14,26 +14,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Allows you to generate a vector embedding for a given text input using the Azure Open AI service. */
+/** Allows you to generate a vector embedding for a given text input using the Azure OpenAI resource. */
 @Fluent
 public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     /*
-     * Identifies the concrete type of the skill.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill";
-
-    /*
-     * The resource uri for your Azure Open AI resource.
+     * The resource URI for your Azure OpenAI resource.
      */
     private String resourceUri;
 
     /*
-     * ID of your Azure Open AI model deployment on the designated resource.
+     * ID of your Azure OpenAI model deployment on the designated resource.
      */
     private String deploymentId;
 
     /*
-     * API key for the designated Azure Open AI resource.
+     * API key for the designated Azure OpenAI resource.
      */
     private String apiKey;
 
@@ -53,7 +48,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the resourceUri property: The resource uri for your Azure Open AI resource.
+     * Get the resourceUri property: The resource URI for your Azure OpenAI resource.
      *
      * @return the resourceUri value.
      */
@@ -62,7 +57,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the resourceUri property: The resource uri for your Azure Open AI resource.
+     * Set the resourceUri property: The resource URI for your Azure OpenAI resource.
      *
      * @param resourceUri the resourceUri value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -73,7 +68,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the deploymentId property: ID of your Azure Open AI model deployment on the designated resource.
+     * Get the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
      *
      * @return the deploymentId value.
      */
@@ -82,7 +77,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the deploymentId property: ID of your Azure Open AI model deployment on the designated resource.
+     * Set the deploymentId property: ID of your Azure OpenAI model deployment on the designated resource.
      *
      * @param deploymentId the deploymentId value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -93,7 +88,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Get the apiKey property: API key for the designated Azure Open AI resource.
+     * Get the apiKey property: API key for the designated Azure OpenAI resource.
      *
      * @return the apiKey value.
      */
@@ -102,7 +97,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the apiKey property: API key for the designated Azure Open AI resource.
+     * Set the apiKey property: API key for the designated Azure OpenAI resource.
      *
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIEmbeddingSkill object itself.
@@ -156,7 +151,7 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill");
         jsonWriter.writeArrayField("inputs", getInputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outputs", getOutputs(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("name", getName());
@@ -199,11 +194,9 @@ public final class AzureOpenAIEmbeddingSkill extends SearchIndexerSkill {
 
                         if ("@odata.type".equals(fieldName)) {
                             String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
+                            if (!"#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(odataType)) {
                                 throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill'. The found '@odata.type' was '"
                                                 + odataType
                                                 + "'.");
                             }

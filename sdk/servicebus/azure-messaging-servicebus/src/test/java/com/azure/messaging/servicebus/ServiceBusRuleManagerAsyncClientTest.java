@@ -93,7 +93,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionProcessor, onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, new ConnectionCacheWrapper(connectionProcessor), onClientClose);
 
     }
 

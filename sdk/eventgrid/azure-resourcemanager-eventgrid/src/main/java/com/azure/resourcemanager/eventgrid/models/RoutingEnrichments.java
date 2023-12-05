@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RoutingEnrichments model. */
+/**
+ * The RoutingEnrichments model.
+ */
 @Fluent
 public final class RoutingEnrichments {
     /*
@@ -23,13 +25,15 @@ public final class RoutingEnrichments {
     @JsonProperty(value = "dynamic")
     private List<DynamicRoutingEnrichment> dynamic;
 
-    /** Creates an instance of RoutingEnrichments class. */
+    /**
+     * Creates an instance of RoutingEnrichments class.
+     */
     public RoutingEnrichments() {
     }
 
     /**
      * Get the staticProperty property: The static property.
-     *
+     * 
      * @return the staticProperty value.
      */
     public List<StaticRoutingEnrichment> staticProperty() {
@@ -38,7 +42,7 @@ public final class RoutingEnrichments {
 
     /**
      * Set the staticProperty property: The static property.
-     *
+     * 
      * @param staticProperty the staticProperty value to set.
      * @return the RoutingEnrichments object itself.
      */
@@ -49,7 +53,7 @@ public final class RoutingEnrichments {
 
     /**
      * Get the dynamic property: The dynamic property.
-     *
+     * 
      * @return the dynamic value.
      */
     public List<DynamicRoutingEnrichment> dynamic() {
@@ -58,7 +62,7 @@ public final class RoutingEnrichments {
 
     /**
      * Set the dynamic property: The dynamic property.
-     *
+     * 
      * @param dynamic the dynamic value to set.
      * @return the RoutingEnrichments object itself.
      */
@@ -69,7 +73,7 @@ public final class RoutingEnrichments {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

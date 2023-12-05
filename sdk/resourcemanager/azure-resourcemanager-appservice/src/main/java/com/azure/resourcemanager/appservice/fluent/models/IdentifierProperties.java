@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identifier resource specific properties. */
+/**
+ * Identifier resource specific properties.
+ */
 @Fluent
 public final class IdentifierProperties {
     /*
@@ -16,13 +18,15 @@ public final class IdentifierProperties {
     @JsonProperty(value = "id")
     private String value;
 
-    /** Creates an instance of IdentifierProperties class. */
+    /**
+     * Creates an instance of IdentifierProperties class.
+     */
     public IdentifierProperties() {
     }
 
     /**
      * Get the value property: String representation of the identity.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -31,7 +35,7 @@ public final class IdentifierProperties {
 
     /**
      * Set the value property: String representation of the identity.
-     *
+     * 
      * @param value the value value to set.
      * @return the IdentifierProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class IdentifierProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

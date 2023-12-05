@@ -17,6 +17,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -34,7 +35,7 @@ public final class PacketCoreDataPlanesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneAccessInterface\":{\"name\":\"qagnepzwakl\",\"ipv4Address\":\"sbq\",\"ipv4Subnet\":\"agwwrxaom\",\"ipv4Gateway\":\"sgl\"}},\"location\":\"czezkhhlt\",\"tags\":{\"oyueayfbpcmsp\":\"dhqoawj\",\"mg\":\"byrrueqth\"},\"id\":\"mbscbbx\",\"name\":\"gdhxi\",\"type\":\"d\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneAccessInterface\":{\"name\":\"azlp\",\"ipv4Address\":\"wex\",\"ipv4Subnet\":\"zvlazipbhpwvqsgn\",\"ipv4Gateway\":\"uuzivensrpmeyyvp\"},\"userPlaneAccessVirtualIpv4Addresses\":[\"tlbijpzg\"]},\"location\":\"srfhf\",\"tags\":{\"qa\":\"mknbnxwcdommpv\",\"hajlfn\":\"zfgbrttuiaclkie\",\"b\":\"hiqfyuttdiy\"},\"id\":\"vnwsw\",\"name\":\"txkyctwwgzwxjlm\",\"type\":\"cvogygzyvne\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,26 +66,29 @@ public final class PacketCoreDataPlanesCreateOrUpdateMockTests {
         PacketCoreDataPlane response =
             manager
                 .packetCoreDataPlanes()
-                .define("ypobkdqzr")
-                .withRegion("nbkkjanurnnq")
-                .withExistingPacketCoreControlPlane("wmkoisq", "ssffxuifmc")
+                .define("v")
+                .withRegion("whc")
+                .withExistingPacketCoreControlPlane("yvk", "kmrocxne")
                 .withUserPlaneAccessInterface(
                     new InterfaceProperties()
-                        .withName("lo")
-                        .withIpv4Address("gtrczzydmxzjijpv")
-                        .withIpv4Subnet("urkihci")
-                        .withIpv4Gateway("defxrdc"))
-                .withTags(mapOf("ogypxrxvbfihwu", "bpizxqltgr"))
+                        .withName("dlfp")
+                        .withIpv4Address("pucygvoavyunss")
+                        .withIpv4Subnet("ghiee")
+                        .withIpv4Gateway("lgvvpaseksgbu"))
+                .withTags(mapOf("uuerctatoyi", "ibkeph", "duczkgof", "tqpbrlcy", "srucvcrrpcjtt", "y"))
+                .withUserPlaneAccessVirtualIpv4Addresses(Arrays.asList("tu", "gdhg", "qipir", "iwrqofulopmjnl"))
                 .create();
 
-        Assertions.assertEquals("czezkhhlt", response.location());
-        Assertions.assertEquals("dhqoawj", response.tags().get("oyueayfbpcmsp"));
-        Assertions.assertEquals("qagnepzwakl", response.userPlaneAccessInterface().name());
-        Assertions.assertEquals("sbq", response.userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("agwwrxaom", response.userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("sgl", response.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals("srfhf", response.location());
+        Assertions.assertEquals("mknbnxwcdommpv", response.tags().get("qa"));
+        Assertions.assertEquals("azlp", response.userPlaneAccessInterface().name());
+        Assertions.assertEquals("wex", response.userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("zvlazipbhpwvqsgn", response.userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("uuzivensrpmeyyvp", response.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals("tlbijpzg", response.userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

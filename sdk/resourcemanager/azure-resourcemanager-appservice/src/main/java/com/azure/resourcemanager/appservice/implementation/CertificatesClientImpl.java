@@ -38,26 +38,29 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CertificatesClient. */
-public final class CertificatesClientImpl
-    implements InnerSupportsGet<CertificateInner>,
-        InnerSupportsListing<CertificateInner>,
-        InnerSupportsDelete<Void>,
-        CertificatesClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in CertificatesClient.
+ */
+public final class CertificatesClientImpl implements InnerSupportsGet<CertificateInner>,
+    InnerSupportsListing<CertificateInner>, InnerSupportsDelete<Void>, CertificatesClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of CertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CertificatesClientImpl(WebSiteManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,116 +71,85 @@ public final class CertificatesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
     public interface CertificatesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/certificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollection>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam(value = "$filter", encoded = true) String filter,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CertificateCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam(value = "$filter", encoded = true) String filter, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollection>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CertificateCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<CertificateInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<CertificateInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CertificateInner certificateEnvelope, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CertificateInner certificateEnvelope,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/certificates/{name}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CertificateInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CertificatePatchResource certificateEnvelope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<CertificateCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CertificateCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateCollection>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * $filter=KeyVaultId eq 'KeyVaultId'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -186,48 +158,29 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -237,45 +190,29 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * $filter=KeyVaultId eq 'KeyVaultId'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -288,9 +225,9 @@ public final class CertificatesClientImpl
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificates as paginated response with {@link PagedFlux}.
@@ -303,11 +240,11 @@ public final class CertificatesClientImpl
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -316,15 +253,15 @@ public final class CertificatesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CertificateInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of certificates as paginated response with {@link PagedIterable}.
@@ -337,11 +274,11 @@ public final class CertificatesClientImpl
 
     /**
      * Get all certificates for a subscription.
-     *
-     * <p>Description for Get all certificates for a subscription.
-     *
+     * 
+     * Description for Get all certificates for a subscription.
+     * 
      * @param filter Return only information specified in the filter (using OData syntax). For example:
-     *     $filter=KeyVaultId eq 'KeyVaultId'.
+     * $filter=KeyVaultId eq 'KeyVaultId'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -355,9 +292,9 @@ public final class CertificatesClientImpl
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -367,50 +304,31 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CertificateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,50 +337,34 @@ public final class CertificatesClientImpl
      * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -471,16 +373,15 @@ public final class CertificatesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CertificateInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,16 +391,15 @@ public final class CertificatesClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CertificateInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -513,9 +413,9 @@ public final class CertificatesClientImpl
 
     /**
      * Get all certificates in a resource group.
-     *
-     * <p>Description for Get all certificates in a resource group.
-     *
+     * 
+     * Description for Get all certificates in a resource group.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -530,9 +430,9 @@ public final class CertificatesClientImpl
 
     /**
      * Get a certificate.
-     *
-     * <p>Description for Get a certificate.
-     *
+     * 
+     * Description for Get a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,10 +443,8 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CertificateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,32 +454,21 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a certificate.
-     *
-     * <p>Description for Get a certificate.
-     *
+     * 
+     * Description for Get a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
@@ -591,13 +478,11 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<CertificateInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,29 +492,20 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a certificate.
-     *
-     * <p>Description for Get a certificate.
-     *
+     * 
+     * Description for Get a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -645,9 +521,9 @@ public final class CertificatesClientImpl
 
     /**
      * Get a certificate.
-     *
-     * <p>Description for Get a certificate.
-     *
+     * 
+     * Description for Get a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
@@ -657,16 +533,16 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<CertificateInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
     }
 
     /**
      * Get a certificate.
-     *
-     * <p>Description for Get a certificate.
-     *
+     * 
+     * Description for Get a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -681,9 +557,9 @@ public final class CertificatesClientImpl
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -693,13 +569,11 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope) {
+    public Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        CertificateInner certificateEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -709,10 +583,8 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateEnvelope == null) {
             return Mono
@@ -722,26 +594,16 @@ public final class CertificatesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            certificateEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -752,13 +614,11 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope, Context context) {
+    private Mono<Response<CertificateInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        CertificateInner certificateEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -768,10 +628,8 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateEnvelope == null) {
             return Mono
@@ -781,23 +639,15 @@ public final class CertificatesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                certificateEnvelope,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context);
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -807,17 +657,17 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateInner> createOrUpdateAsync(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope) {
+    public Mono<CertificateInner> createOrUpdateAsync(String resourceGroupName, String name,
+        CertificateInner certificateEnvelope) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, certificateEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -828,16 +678,16 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> createOrUpdateWithResponse(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope, Context context) {
+    public Response<CertificateInner> createOrUpdateWithResponse(String resourceGroupName, String name,
+        CertificateInner certificateEnvelope, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, name, certificateEnvelope, context).block();
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -847,16 +697,16 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner createOrUpdate(
-        String resourceGroupName, String name, CertificateInner certificateEnvelope) {
+    public CertificateInner createOrUpdate(String resourceGroupName, String name,
+        CertificateInner certificateEnvelope) {
         return createOrUpdateWithResponse(resourceGroupName, name, certificateEnvelope, Context.NONE).getValue();
     }
 
     /**
      * Delete a certificate.
-     *
-     * <p>Description for Delete a certificate.
-     *
+     * 
+     * Description for Delete a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,10 +717,8 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -880,32 +728,21 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a certificate.
-     *
-     * <p>Description for Delete a certificate.
-     *
+     * 
+     * Description for Delete a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
@@ -917,10 +754,8 @@ public final class CertificatesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -930,29 +765,20 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a certificate.
-     *
-     * <p>Description for Delete a certificate.
-     *
+     * 
+     * Description for Delete a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -967,9 +793,9 @@ public final class CertificatesClientImpl
 
     /**
      * Delete a certificate.
-     *
-     * <p>Description for Delete a certificate.
-     *
+     * 
+     * Description for Delete a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param context The context to associate with this operation.
@@ -985,9 +811,9 @@ public final class CertificatesClientImpl
 
     /**
      * Delete a certificate.
-     *
-     * <p>Description for Delete a certificate.
-     *
+     * 
+     * Description for Delete a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,9 +827,9 @@ public final class CertificatesClientImpl
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -1013,13 +839,11 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
+    public Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName, String name,
+        CertificatePatchResource certificateEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1029,10 +853,8 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateEnvelope == null) {
             return Mono
@@ -1042,26 +864,16 @@ public final class CertificatesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            certificateEnvelope,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), certificateEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -1072,13 +884,11 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope, Context context) {
+    private Mono<Response<CertificateInner>> updateWithResponseAsync(String resourceGroupName, String name,
+        CertificatePatchResource certificateEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1088,10 +898,8 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (certificateEnvelope == null) {
             return Mono
@@ -1101,23 +909,15 @@ public final class CertificatesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                certificateEnvelope,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), certificateEnvelope, accept, context);
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -1127,17 +927,17 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CertificateInner> updateAsync(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
+    public Mono<CertificateInner> updateAsync(String resourceGroupName, String name,
+        CertificatePatchResource certificateEnvelope) {
         return updateWithResponseAsync(resourceGroupName, name, certificateEnvelope)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -1148,16 +948,16 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateInner> updateWithResponse(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope, Context context) {
+    public Response<CertificateInner> updateWithResponse(String resourceGroupName, String name,
+        CertificatePatchResource certificateEnvelope, Context context) {
         return updateWithResponseAsync(resourceGroupName, name, certificateEnvelope, context).block();
     }
 
     /**
      * Create or update a certificate.
-     *
-     * <p>Description for Create or update a certificate.
-     *
+     * 
+     * Description for Create or update a certificate.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the certificate.
      * @param certificateEnvelope Details of certificate, if it exists already.
@@ -1167,16 +967,17 @@ public final class CertificatesClientImpl
      * @return sSL certificate for an app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateInner update(
-        String resourceGroupName, String name, CertificatePatchResource certificateEnvelope) {
+    public CertificateInner update(String resourceGroupName, String name,
+        CertificatePatchResource certificateEnvelope) {
         return updateWithResponse(resourceGroupName, name, certificateEnvelope, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1188,31 +989,22 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1225,31 +1017,22 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1261,32 +1044,24 @@ public final class CertificatesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CertificateInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CertificateInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1294,29 +1069,19 @@ public final class CertificatesClientImpl
      * @return collection of certificates along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CertificateInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

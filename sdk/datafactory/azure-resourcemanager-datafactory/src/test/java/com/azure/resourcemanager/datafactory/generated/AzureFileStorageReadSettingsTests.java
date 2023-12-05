@@ -10,29 +10,20 @@ import com.azure.resourcemanager.datafactory.models.AzureFileStorageReadSettings
 public final class AzureFileStorageReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileStorageReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureFileStorageReadSettings\",\"recursive\":\"datacpqboubeh\",\"wildcardFolderPath\":\"datapyiafsuuvoqq\",\"wildcardFileName\":\"dataoinxkothrnlgnwwj\",\"prefix\":\"datagpwdczzkz\",\"fileListPath\":\"datapjnhhiofcnyzqz\",\"enablePartitionDiscovery\":\"dataddngq\",\"partitionRootPath\":\"datallegucemags\",\"deleteFilesAfterCompletion\":\"datajwwpzq\",\"modifiedDatetimeStart\":\"datahlajmikqvnrj\",\"modifiedDatetimeEnd\":\"datao\",\"maxConcurrentConnections\":\"datagtzrgyrldoa\",\"disableMetricsCollection\":\"datadglzdk\",\"\":{\"ederkvbdv\":\"dataj\",\"kxau\":\"dataa\",\"ztghdwrvffjpw\":\"datajr\",\"cplxid\":\"datazlfyftgae\"}}")
-                .toObject(AzureFileStorageReadSettings.class);
+        AzureFileStorageReadSettings model = BinaryData.fromString(
+            "{\"type\":\"AzureFileStorageReadSettings\",\"recursive\":\"datamptapyqeesgi\",\"wildcardFolderPath\":\"dataixhulfjlmwhv\",\"wildcardFileName\":\"datakwrvtflotjizvi\",\"prefix\":\"dataixlvnwznfx\",\"fileListPath\":\"dataylsl\",\"enablePartitionDiscovery\":\"datadtrwkpelyglf\",\"partitionRootPath\":\"dataajllatbldhcfhwni\",\"deleteFilesAfterCompletion\":\"dataxnainss\",\"modifiedDatetimeStart\":\"datakzslylioguwshrmc\",\"modifiedDatetimeEnd\":\"datamyghqtth\",\"maxConcurrentConnections\":\"datablwkqztqrnre\",\"disableMetricsCollection\":\"datafmnrweevtun\",\"\":{\"qvg\":\"datalugvsjfps\",\"gxcewz\":\"dataaymfkexhiwmkljh\",\"crcctted\":\"dataoxzkk\"}}")
+            .toObject(AzureFileStorageReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileStorageReadSettings model =
-            new AzureFileStorageReadSettings()
-                .withMaxConcurrentConnections("datagtzrgyrldoa")
-                .withDisableMetricsCollection("datadglzdk")
-                .withRecursive("datacpqboubeh")
-                .withWildcardFolderPath("datapyiafsuuvoqq")
-                .withWildcardFileName("dataoinxkothrnlgnwwj")
-                .withPrefix("datagpwdczzkz")
-                .withFileListPath("datapjnhhiofcnyzqz")
-                .withEnablePartitionDiscovery("dataddngq")
-                .withPartitionRootPath("datallegucemags")
-                .withDeleteFilesAfterCompletion("datajwwpzq")
-                .withModifiedDatetimeStart("datahlajmikqvnrj")
-                .withModifiedDatetimeEnd("datao");
+        AzureFileStorageReadSettings model = new AzureFileStorageReadSettings()
+            .withMaxConcurrentConnections("datablwkqztqrnre").withDisableMetricsCollection("datafmnrweevtun")
+            .withRecursive("datamptapyqeesgi").withWildcardFolderPath("dataixhulfjlmwhv")
+            .withWildcardFileName("datakwrvtflotjizvi").withPrefix("dataixlvnwznfx").withFileListPath("dataylsl")
+            .withEnablePartitionDiscovery("datadtrwkpelyglf").withPartitionRootPath("dataajllatbldhcfhwni")
+            .withDeleteFilesAfterCompletion("dataxnainss").withModifiedDatetimeStart("datakzslylioguwshrmc")
+            .withModifiedDatetimeEnd("datamyghqtth");
         model = BinaryData.fromObject(model).toObject(AzureFileStorageReadSettings.class);
     }
 }

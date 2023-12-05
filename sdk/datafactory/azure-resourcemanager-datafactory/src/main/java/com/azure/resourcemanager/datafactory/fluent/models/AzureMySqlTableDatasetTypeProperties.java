@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure MySQL database dataset properties. */
+/**
+ * Azure MySQL database dataset properties.
+ */
 @Fluent
 public final class AzureMySqlTableDatasetTypeProperties {
     /*
@@ -22,14 +24,16 @@ public final class AzureMySqlTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of AzureMySqlTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AzureMySqlTableDatasetTypeProperties class.
+     */
     public AzureMySqlTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -39,7 +43,7 @@ public final class AzureMySqlTableDatasetTypeProperties {
     /**
      * Set the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureMySqlTableDatasetTypeProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class AzureMySqlTableDatasetTypeProperties {
     /**
      * Get the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -61,7 +65,7 @@ public final class AzureMySqlTableDatasetTypeProperties {
     /**
      * Set the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureMySqlTableDatasetTypeProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class AzureMySqlTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

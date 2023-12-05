@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MediaStreamingContentTypeInternal. */
+/**
+ * Content type to stream, eg. audio, audio/video.
+ */
 public final class MediaStreamingContentTypeInternal extends ExpandableStringEnum<MediaStreamingContentTypeInternal> {
-    /** Static value audio for MediaStreamingContentTypeInternal. */
+    /**
+     * Static value audio for MediaStreamingContentTypeInternal.
+     */
     public static final MediaStreamingContentTypeInternal AUDIO = fromString("audio");
 
     /**
+     * Creates a new instance of MediaStreamingContentTypeInternal value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MediaStreamingContentTypeInternal() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingContentTypeInternal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MediaStreamingContentTypeInternal.
      */
@@ -24,7 +37,11 @@ public final class MediaStreamingContentTypeInternal extends ExpandableStringEnu
         return fromString(name, MediaStreamingContentTypeInternal.class);
     }
 
-    /** @return known MediaStreamingContentTypeInternal values. */
+    /**
+     * Gets known MediaStreamingContentTypeInternal values.
+     * 
+     * @return known MediaStreamingContentTypeInternal values.
+     */
     public static Collection<MediaStreamingContentTypeInternal> values() {
         return values(MediaStreamingContentTypeInternal.class);
     }

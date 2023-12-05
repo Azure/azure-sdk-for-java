@@ -9,6 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,17 +19,16 @@ import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_N
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@EnabledIf("shouldRunHsmTest")
 public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientManagedHsmTestBase {
     public KeyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
+        this.runManagedHsmTest = shouldRunHsmTest();
     }
 
-    @Override
-    protected void beforeTest() {
-        Assumptions.assumeTrue(runManagedHsmTest);
-
-        super.beforeTest();
+    public static boolean shouldRunHsmTest() {
+        return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
+               || TEST_MODE == TestMode.PLAYBACK;
     }
 
     /**

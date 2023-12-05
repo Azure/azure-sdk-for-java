@@ -5,6 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 import java.util.List;
@@ -13,22 +14,29 @@ import java.util.List;
 @Fluent
 public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOptions {
     /*
-     * List of recognize choice.
+     * List of recognition choices.
      */
-    private final List<RecognizeChoice> recognizeChoices;
+    private final List<RecognitionChoice> choices;
 
     /*
      * Speech language to be recognized, If not set default is en-US
      */
+    @JsonProperty(value = "speechLanguage")
     private String speechLanguage;
 
-    /**
-     * Get the list of recognize choice.
-     *
-     * @return the list of recognize choice.
+    /*
+     * Endpoint where the custom model was deployed.
      */
-    public List<RecognizeChoice> getRecognizeChoices() {
-        return this.recognizeChoices;
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /**
+     * Get the list of recognition choices.
+     *
+     * @return the list of recognition choices.
+     */
+    public List<RecognitionChoice> getChoices() {
+        return this.choices;
     }
 
     /**
@@ -42,12 +50,32 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
     }
 
     /**
-     * Get the list of recognize choice.
+     * Get the speech language property.
      *
      * @return the speech language.
      */
     public String getSpeechLanguage() {
         return this.speechLanguage;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     *
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the CallMediaRecognizeChoiceOptions object itself.
+     */
+    public CallMediaRecognizeChoiceOptions setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
     }
 
     /**
@@ -141,10 +169,10 @@ public final class CallMediaRecognizeChoiceOptions extends CallMediaRecognizeOpt
      * Initializes a CallMediaRecognizeDtmfOptions object.
      *
      * @param targetParticipant Target participant of DTFM tone recognition.
-     * @param recognizeChoices Maximum number of DTMF tones to be collected.
+     * @param choices Maximum number of DTMF tones to be collected.
      */
-    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognizeChoice> recognizeChoices) {
+    public CallMediaRecognizeChoiceOptions(CommunicationIdentifier targetParticipant,  List<RecognitionChoice> choices) {
         super(RecognizeInputType.CHOICES, targetParticipant);
-        this.recognizeChoices = recognizeChoices;
+        this.choices = choices;
     }
 }

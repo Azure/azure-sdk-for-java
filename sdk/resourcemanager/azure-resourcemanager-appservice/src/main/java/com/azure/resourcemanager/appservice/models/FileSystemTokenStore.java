@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the storage of the tokens if a file system is used. */
+/**
+ * The configuration settings of the storage of the tokens if a file system is used.
+ */
 @Fluent
 public final class FileSystemTokenStore {
     /*
@@ -16,13 +18,15 @@ public final class FileSystemTokenStore {
     @JsonProperty(value = "directory")
     private String directory;
 
-    /** Creates an instance of FileSystemTokenStore class. */
+    /**
+     * Creates an instance of FileSystemTokenStore class.
+     */
     public FileSystemTokenStore() {
     }
 
     /**
      * Get the directory property: The directory in which the tokens will be stored.
-     *
+     * 
      * @return the directory value.
      */
     public String directory() {
@@ -31,7 +35,7 @@ public final class FileSystemTokenStore {
 
     /**
      * Set the directory property: The directory in which the tokens will be stored.
-     *
+     * 
      * @param directory the directory value to set.
      * @return the FileSystemTokenStore object itself.
      */
@@ -42,7 +46,7 @@ public final class FileSystemTokenStore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
