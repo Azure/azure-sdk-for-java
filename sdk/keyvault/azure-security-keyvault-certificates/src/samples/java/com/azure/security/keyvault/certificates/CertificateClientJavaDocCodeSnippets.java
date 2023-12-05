@@ -312,14 +312,14 @@ public final class CertificateClientJavaDocCodeSnippets {
     public void deleteCertificateIssuefrCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context
-        CertificateIssuer deletedIssuer = certificateClient.deleteIssuer("issuerName");
+        CertificateIssuer deletedIssuer = certificateClient.deleteIssuer("certificateName");
         System.out.printf("Deleted certificate issuer with name %s and provider id %s%n", deletedIssuer.getName(),
             deletedIssuer.getProvider());
         // END: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuerWithResponse#string-context
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.deleteIssuer#string
         Response<CertificateIssuer> deletedIssuerWithResponse = certificateClient.
-            deleteIssuerWithResponse("issuerName", new Context(key1, value1));
+            deleteIssuerWithResponse("certificateName", new Context(key1, value1));
         System.out.printf("Deleted certificate issuer with name %s and provider id %s%n",
             deletedIssuerWithResponse.getValue().getName(),
             deletedIssuerWithResponse.getValue().getProvider());

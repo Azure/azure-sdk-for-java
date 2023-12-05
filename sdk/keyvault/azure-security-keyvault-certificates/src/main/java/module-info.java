@@ -3,13 +3,11 @@
 
 module com.azure.security.keyvault.certificates {
     requires transitive com.azure.core;
-    requires com.azure.json;
 
     exports com.azure.security.keyvault.certificates;
     exports com.azure.security.keyvault.certificates.models;
 
-    opens com.azure.security.keyvault.certificates to com.azure.core;
-    opens com.azure.security.keyvault.certificates.implementation to com.azure.core;
-    opens com.azure.security.keyvault.certificates.implementation.models to com.azure.core;
-    opens com.azure.security.keyvault.certificates.models to com.azure.core;
+    opens com.azure.security.keyvault.certificates to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.certificates.implementation to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.security.keyvault.certificates.models to com.azure.core, com.fasterxml.jackson.databind;
 }

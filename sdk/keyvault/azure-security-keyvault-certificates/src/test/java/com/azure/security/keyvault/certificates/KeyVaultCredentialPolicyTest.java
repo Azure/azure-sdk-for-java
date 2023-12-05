@@ -4,11 +4,8 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.credential.BasicAuthenticationCredential;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -16,7 +13,6 @@ import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +25,7 @@ import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,17 +33,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class KeyVaultCredentialPolicyTest {
+    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String AUTHENTICATE_HEADER =
         "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", "
             + "resource=\"https://vault.azure.net\"";
-
+    private static final String AUTHORIZATION = "Authorization";
     private static final String BEARER = "Bearer";
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
-        Flux.fromStream(Stream.of(BODY.split("")).map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))));
+        Flux.fromStream(
+            Stream.of(BODY.split(""))
+                .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+        ));
     private BasicAuthenticationCredential credential;
     private HttpResponse unauthorizedHttpResponseWithHeader;
     private HttpResponse unauthorizedHttpResponseWithoutHeader;
@@ -57,48 +59,49 @@ public class KeyVaultCredentialPolicyTest {
     private HttpPipelineCallContext bodyContext;
     private HttpPipelineCallContext bodyFluxContext;
 
-    private static HttpPipelineCallContext createCallContext(HttpRequest request, Context context) {
-        AtomicReference<HttpPipelineCallContext> callContextReference = new AtomicReference<>();
-
-        HttpPipeline callContextCreator = new HttpPipelineBuilder()
-            .policies((callContext, next) -> {
-                callContextReference.set(callContext);
-                return next.process();
-            })
-            .httpClient(ignored -> Mono.empty())
-            .build();
-
-        callContextCreator.send(request, context).block();
-
-        return callContextReference.get();
-    }
-
     @BeforeEach
     public void setup() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://kvtest.vault.azure.net");
         HttpRequest requestWithDifferentScope = new HttpRequest(HttpMethod.GET, "https://mytest.azurecr.io");
 
-        Context bodyContextContext = new Context("KeyVaultCredentialPolicyStashedBody", BinaryData.fromString(BODY))
-            .addData("KeyVaultCredentialPolicyStashedContentLength", "21");
+        HttpPipelineCallContext plainContext = mock(HttpPipelineCallContext.class);
+        when(plainContext.getHttpRequest()).thenReturn(request);
 
-        Context bodyFluxContextContext = new Context("KeyVaultCredentialPolicyStashedBody", BODY_FLUX)
-            .addData("KeyVaultCredentialPolicyStashedContentLength", "21");
+        HttpPipelineCallContext differentScopeContext = mock(HttpPipelineCallContext.class);
+        when(differentScopeContext.getHttpRequest()).thenReturn(requestWithDifferentScope);
+
+        HttpPipelineCallContext testContext = mock(HttpPipelineCallContext.class);
+        when(testContext.getHttpRequest()).thenReturn(request);
+
+        HttpPipelineCallContext bodyContext = mock(HttpPipelineCallContext.class);
+        when(bodyContext.getHttpRequest()).thenReturn(request);
+        when(bodyContext.getData("KeyVaultCredentialPolicyStashedBody"))
+            .thenReturn(Optional.of(BinaryData.fromString(BODY)));
+        when(bodyContext.getData("KeyVaultCredentialPolicyStashedContentLength")).thenReturn(Optional.of("21"));
+
+        HttpPipelineCallContext bodyFluxContext = mock(HttpPipelineCallContext.class);
+        when(bodyFluxContext.getHttpRequest()).thenReturn(request);
+        when(bodyFluxContext.getData("KeyVaultCredentialPolicyStashedBody")).thenReturn(Optional.of(BODY_FLUX));
+        when(bodyFluxContext.getData("KeyVaultCredentialPolicyStashedContentLength")).thenReturn(Optional.of("21"));
 
         MockHttpResponse unauthorizedResponseWithHeader = new MockHttpResponse(
-            new HttpRequest(HttpMethod.GET, "https://azure.com"), 500,
-            new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, AUTHENTICATE_HEADER));
+            mock(HttpRequest.class),
+            500,
+            new HttpHeaders().set(WWW_AUTHENTICATE, AUTHENTICATE_HEADER)
+        );
 
         MockHttpResponse unauthorizedResponseWithoutHeader = new MockHttpResponse(
-            new HttpRequest(HttpMethod.GET, "https://azure.com"), 500);
+            mock(HttpRequest.class),
+            500);
 
         this.unauthorizedHttpResponseWithHeader = unauthorizedResponseWithHeader;
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
-        this.callContext = createCallContext(request, Context.NONE);
-        this.differentScopeContext = createCallContext(requestWithDifferentScope, Context.NONE);
+        this.callContext = plainContext;
+        this.differentScopeContext = differentScopeContext;
         this.credential = new BasicAuthenticationCredential("user", "fakePasswordPlaceholder");
-        this.testContext = createCallContext(request, Context.NONE);
-        this.bodyContext = createCallContext(request, bodyContextContext);
-        this.bodyFluxContext = createCallContext(request, bodyFluxContextContext);
+        this.testContext = testContext;
+        this.bodyContext = bodyContext;
+        this.bodyFluxContext = bodyFluxContext;
 
     }
 
@@ -119,7 +122,7 @@ public class KeyVaultCredentialPolicyTest {
         // Validate that the onChallengeSync ran successfully.
         assertTrue(onChallenge);
 
-        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        String tokenValue = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
     }
@@ -133,7 +136,7 @@ public class KeyVaultCredentialPolicyTest {
         // Challenge cache used
         policy.authorizeRequest(this.testContext).block();
 
-        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
     }
@@ -148,7 +151,7 @@ public class KeyVaultCredentialPolicyTest {
             () -> policy.authorizeRequest(this.callContext)
         );
 
-        assertNull(this.callContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        assertNull(this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION));
     }
 
     @SyncAsyncTest
@@ -164,16 +167,16 @@ public class KeyVaultCredentialPolicyTest {
         assertTrue(onChallenge);
 
         HttpHeaders headers = this.bodyFluxContext.getHttpRequest().getHeaders();
-        String tokenValue = headers.getValue(HttpHeaderName.AUTHORIZATION);
+        String tokenValue = headers.getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
-        assertEquals("21", headers.getValue(HttpHeaderName.CONTENT_LENGTH));
+        assertEquals("21", headers.getValue("content-length"));
 
         HttpHeaders syncHeaders = this.bodyContext.getHttpRequest().getHeaders();
-        String syncTokenValue = headers.getValue(HttpHeaderName.AUTHORIZATION);
+        String syncTokenValue = headers.getValue(AUTHORIZATION);
         assertFalse(syncTokenValue.isEmpty());
         assertTrue(syncTokenValue.startsWith(BEARER));
-        assertEquals("21", syncHeaders.getValue(HttpHeaderName.CONTENT_LENGTH));
+        assertEquals("21", syncHeaders.getValue("content-length"));
     }
 
     @SyncAsyncTest
@@ -223,7 +226,7 @@ public class KeyVaultCredentialPolicyTest {
         // Challenge cache used
         policy.authorizeRequestSync(this.testContext);
 
-        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
         assertTrue(tokenValue.startsWith(BEARER));
     }
