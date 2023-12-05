@@ -67,14 +67,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
@@ -102,6 +106,38 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    @Disabled("The `userData` is not returned, so can not use `Assertions.assertEquals` be determine whether the returned `userData` is correctly.")
+    public void canCreateAndUpdateVirtualMachineWithUserData() {
+        String userDataForCreate = new String(Base64.getEncoder().encode(
+            UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
+        String userDataForUpdate = new String(Base64.getEncoder().encode(
+            UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
+
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .withUserData(userDataForCreate)
+            .create();
+        Assertions.assertEquals(userDataForCreate, vm.userData());
+
+        vm = vm.update().withUserData(userDataForUpdate).apply();
+        Assertions.assertEquals(userDataForUpdate, vm.userData());
     }
 
     @Test

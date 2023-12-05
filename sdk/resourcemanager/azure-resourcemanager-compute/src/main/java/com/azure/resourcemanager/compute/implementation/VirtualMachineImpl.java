@@ -875,6 +875,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withUserData(String base64EncodedUserData) {
+        this.innerModel().withUserData(base64EncodedUserData);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withComputerName(String computerName) {
         this.innerModel().osProfile().withComputerName(computerName);
         return this;
@@ -2033,6 +2039,11 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineEvictionPolicyTypes evictionPolicy() {
         return this.innerModel().evictionPolicy();
+    }
+
+    @Override
+    public String userData() {
+        return this.innerModel().userData();
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
