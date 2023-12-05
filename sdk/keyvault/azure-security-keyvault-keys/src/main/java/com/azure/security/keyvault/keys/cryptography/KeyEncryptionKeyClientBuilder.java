@@ -22,7 +22,6 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -91,7 +90,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
         builder.keyIdentifier(keyId);
 
-        if (CoreUtils.isNullOrEmpty(keyId)) {
+        if (Strings.isNullOrEmpty(keyId)) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
                     + "client."));
@@ -165,7 +164,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
         builder.keyIdentifier(keyId);
 
-        if (CoreUtils.isNullOrEmpty(keyId)) {
+        if (Strings.isNullOrEmpty(keyId)) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
                     + "client."));

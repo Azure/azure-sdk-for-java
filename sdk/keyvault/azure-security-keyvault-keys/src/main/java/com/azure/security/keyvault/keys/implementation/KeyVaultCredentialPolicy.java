@@ -4,7 +4,6 @@ package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -36,8 +35,10 @@ import java.util.concurrent.ConcurrentMap;
 public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCredentialPolicy.class);
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
+    private static final String CONTENT_LENGTH_HEADER = "Content-Length";
     private static final String KEY_VAULT_STASHED_CONTENT_KEY = "KeyVaultCredentialPolicyStashedBody";
     private static final String KEY_VAULT_STASHED_CONTENT_LENGTH_KEY = "KeyVaultCredentialPolicyStashedContentLength";
+    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final ConcurrentMap<String, ChallengeParameters> CHALLENGE_CACHE = new ConcurrentHashMap<>();
     private ChallengeParameters challenge;
     private final boolean disableChallengeResourceVerification;
@@ -125,8 +126,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 if (request.getBody() != null) {
                     context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBody());
                     context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
-                        request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+                        request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
+                    request.setHeader(CONTENT_LENGTH_HEADER, "0");
                     request.setBody((Flux<ByteBuffer>) null);
                 }
             }
@@ -145,12 +146,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
                 request.setBody((Flux<ByteBuffer>) contentOptional.get());
-                request.setHeader(HttpHeaderName.CONTENT_LENGTH, (String) contentLengthOptional.get());
+                request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
             }
 
             String authority = getRequestAuthority(request);
-            Map<String, String> challengeAttributes = extractChallengeAttributes(
-                response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+            Map<String, String> challengeAttributes =
+                extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
             String scope = challengeAttributes.get("resource");
 
             if (scope != null) {
@@ -237,8 +238,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             if (request.getBodyAsBinaryData() != null) {
                 context.setData(KEY_VAULT_STASHED_CONTENT_KEY, request.getBodyAsBinaryData());
                 context.setData(KEY_VAULT_STASHED_CONTENT_LENGTH_KEY,
-                    request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+                    request.getHeaders().getValue(CONTENT_LENGTH_HEADER));
+                request.setHeader(CONTENT_LENGTH_HEADER, "0");
                 request.setBody((BinaryData) null);
             }
         }
@@ -253,12 +254,12 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (request.getBody() == null && contentOptional.isPresent() && contentLengthOptional.isPresent()) {
             request.setBody((BinaryData) (contentOptional.get()));
-            request.setHeader(HttpHeaderName.CONTENT_LENGTH, (String) contentLengthOptional.get());
+            request.setHeader(CONTENT_LENGTH_HEADER, (String) contentLengthOptional.get());
         }
 
         String authority = getRequestAuthority(request);
         Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {

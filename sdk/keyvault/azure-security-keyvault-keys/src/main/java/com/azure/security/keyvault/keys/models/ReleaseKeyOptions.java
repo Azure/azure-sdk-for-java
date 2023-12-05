@@ -21,12 +21,6 @@ public final class ReleaseKeyOptions {
     private KeyExportEncryptionAlgorithm algorithm;
 
     /**
-     * Creates a new instance of {@link ReleaseKeyOptions}.
-     */
-    public ReleaseKeyOptions() {
-    }
-
-    /**
      * Get a client provided nonce for freshness.
      *
      * @return A client provided nonce for freshness.

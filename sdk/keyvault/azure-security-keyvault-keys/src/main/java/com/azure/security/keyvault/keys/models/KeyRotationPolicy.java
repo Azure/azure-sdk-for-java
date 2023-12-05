@@ -3,12 +3,13 @@
 
 package com.azure.security.keyvault.keys.models;
 
-import com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
-import com.azure.security.keyvault.keys.implementation.KeyRotationPolicyHelper;
 import com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicyAttributes;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeActions;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeAction;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,36 +17,13 @@ import java.util.List;
  * The complete key rotation policy that belongs to a key.
  */
 public final class KeyRotationPolicy {
-    static {
-        KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {
-            @Override
-            public KeyRotationPolicy createPolicy(
-                com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
-                return new KeyRotationPolicy(impl);
-            }
-
-            @Override
-            public com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(
-                KeyRotationPolicy policy) {
-                return policy.impl;
-            }
-        });
-    }
-
-    private final com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl;
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     private List<KeyRotationLifetimeAction> lifetimeActions;
-
-    /**
-     * Creates an instance of {@link KeyRotationPolicy}.
-     */
-    public KeyRotationPolicy() {
-        this(new com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy());
-    }
-
-    KeyRotationPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
-        this.impl = impl;
-    }
+    private KeyRotationPolicyAttributes attributes;
+    private OffsetDateTime createdOn;
+    private OffsetDateTime updatedOn;
 
     /**
      * Get the identifier of the {@link KeyRotationPolicy policy}.
@@ -55,7 +33,7 @@ public final class KeyRotationPolicy {
      * @return The identifier of the {@link KeyRotationPolicy policy}.
      */
     public String getId() {
-        return impl.getId();
+        return this.id;
     }
 
     /**
@@ -66,19 +44,6 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationLifetimeAction actions} in this {@link KeyRotationPolicy policy}.
      */
     public List<KeyRotationLifetimeAction> getLifetimeActions() {
-        if (this.lifetimeActions == null && impl.getLifetimeActions() != null) {
-            List<KeyRotationLifetimeAction> mappedActions = new ArrayList<>(impl.getLifetimeActions().size());
-
-            for (LifetimeActions action : impl.getLifetimeActions()) {
-                KeyRotationLifetimeAction mappedAction = KeyRotationLifetimeActionHelper.createLifetimeAction(
-                    action.getTrigger(), action.getAction());
-
-                mappedActions.add(mappedAction);
-            }
-
-            this.lifetimeActions = mappedActions;
-        }
-
         return this.lifetimeActions;
     }
 
@@ -92,22 +57,7 @@ public final class KeyRotationPolicy {
      * @return The updated {@link KeyRotationPolicy} object.
      */
     public KeyRotationPolicy setLifetimeActions(List<KeyRotationLifetimeAction> lifetimeActions) {
-        if (lifetimeActions == null) {
-            this.lifetimeActions = null;
-            impl.setLifetimeActions(null);
-            return this;
-        }
-
-        List<LifetimeActions> mappedActions = new ArrayList<>(lifetimeActions.size());
-
-        for (KeyRotationLifetimeAction action : lifetimeActions) {
-            mappedActions.add(new LifetimeActions()
-                .setAction(KeyRotationLifetimeActionHelper.getActionType(action))
-                .setTrigger(KeyRotationLifetimeActionHelper.getTrigger(action)));
-        }
-
         this.lifetimeActions = lifetimeActions;
-        impl.setLifetimeActions(mappedActions);
 
         return this;
     }
@@ -121,7 +71,7 @@ public final class KeyRotationPolicy {
      * @return The expiration time in ISO 8601 format.
      */
     public String getExpiresIn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getExpiryTime();
+        return this.attributes == null ? null : this.attributes.getExpiryTime();
     }
 
     /**
@@ -135,11 +85,11 @@ public final class KeyRotationPolicy {
      * @return The updated {@link KeyRotationPolicy} object.
      */
     public KeyRotationPolicy setExpiresIn(String expiresIn) {
-        if (impl.getAttributes() == null) {
-            impl.setAttributes(new KeyRotationPolicyAttributes());
+        if (attributes == null) {
+            this.attributes = new KeyRotationPolicyAttributes();
         }
 
-        impl.getAttributes().setExpiryTime(expiresIn);
+        this.attributes.setExpiryTime(expiresIn);
 
         return this;
     }
@@ -152,7 +102,7 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationPolicy policy's} created time in UTC.
      */
     public OffsetDateTime getCreatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getCreated();
+        return this.createdOn;
     }
 
     /**
@@ -163,6 +113,31 @@ public final class KeyRotationPolicy {
      * @return The {@link KeyRotationPolicy policy's} last updated time in UTC.
      */
     public OffsetDateTime getUpdatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
+        return this.updatedOn;
+    }
+
+    @JsonProperty(value = "lifetimeActions")
+    private void unpackLifetimeActions(List<LifetimeAction> lifetimeActions) {
+        if (lifetimeActions != null) {
+            this.lifetimeActions = new ArrayList<>();
+
+            for (LifetimeAction lifetimeAction : lifetimeActions) {
+                this.lifetimeActions.add(new KeyRotationLifetimeAction(lifetimeAction.getAction().getType())
+                    .setTimeBeforeExpiry(lifetimeAction.getTrigger().getTimeBeforeExpiry())
+                    .setTimeAfterCreate(lifetimeAction.getTrigger().getTimeAfterCreate()));
+            }
+        }
+    }
+
+    @JsonProperty("attributes")
+    private void unpackAttributes(KeyRotationPolicyAttributes attributes) {
+        if (attributes != null) {
+            this.attributes = attributes;
+
+            this.createdOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getCreatedOn(), 0, ZoneOffset.UTC),
+                ZoneOffset.UTC);
+            this.updatedOn = OffsetDateTime.of(LocalDateTime.ofEpochSecond(attributes.getUpdatedOn(), 0, ZoneOffset.UTC),
+                ZoneOffset.UTC);
+        }
     }
 }
