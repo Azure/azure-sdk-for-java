@@ -13,14 +13,6 @@ public final class ListTablesOptions {
     private Integer top;
     private String filter;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Returns an empty instance of {@link ListTablesOptions}.
-     */
-    public ListTablesOptions() {
-
-    }
-
     /**
      * Gets the value of the `top` OData query option which limits the number of returned entities.
      *

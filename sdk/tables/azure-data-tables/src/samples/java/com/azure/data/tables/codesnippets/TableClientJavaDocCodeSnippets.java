@@ -48,23 +48,6 @@ public class TableClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for creating a {@link TableClient} using a connection string.
-     *
-     * @return An instance of {@link TableClient}.
-     */
-    public TableClient createClientWithConnectionString() {
-        // BEGIN: com.azure.data.tables.tableClient.connectionstring.instantiation
-        TableClient tableClient = new TableClientBuilder()
-            .connectionString("connectionstring")
-            .tableName("myTable")
-            .buildClient();
-        // END: com.azure.data.tables.tableClient.connectionstring.instantiation
-
-        return tableClient;
-    }
-
-
-    /**
      * Generates code samples for using {@link TableClient#createTable()} and
      * {@link TableClient#createTableWithResponse(Duration, Context)}.
      */
@@ -115,24 +98,29 @@ public class TableClientJavaDocCodeSnippets {
         TableClient tableClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableClient.createEntity#TableEntity
-        TableEntity tableEntity = new TableEntity("partitionKey", "rowKey")
+        String partitionKey = "partitionKey";
+        String rowKey = "rowKey";
+
+        TableEntity tableEntity = new TableEntity(partitionKey, rowKey)
             .addProperty("Property", "Value");
 
         tableClient.createEntity(tableEntity);
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was created.", "partitionKey", "rowKey");
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was created.", partitionKey, rowKey);
         // END: com.azure.data.tables.tableClient.createEntity#TableEntity
 
         // BEGIN: com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context
+        String myPartitionKey = "partitionKey";
+        String myRowKey = "rowKey";
 
-        TableEntity myTableEntity = new TableEntity("partitionKey", "rowKey")
+        TableEntity myTableEntity = new TableEntity(myPartitionKey, myRowKey)
             .addProperty("Property", "Value");
 
         Response<Void> response = tableClient.createEntityWithResponse(myTableEntity, Duration.ofSeconds(5),
             new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table entity with partition key '%s' and row key"
-            + " '%s' was created.", response.getStatusCode(), "partitionKey", "rowKey");
+            + " '%s' was created.", response.getStatusCode(), myPartitionKey, myRowKey);
         // END: com.azure.data.tables.tableClient.createEntityWithResponse#TableEntity-Duration-Context
     }
 
@@ -144,24 +132,30 @@ public class TableClientJavaDocCodeSnippets {
         TableClient tableClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableClient.upsertEntity#TableEntity
-        TableEntity tableEntity = new TableEntity("partitionKey", "rowKey")
+        String partitionKey = "partitionKey";
+        String rowKey = "rowKey";
+
+        TableEntity tableEntity = new TableEntity(partitionKey, rowKey)
             .addProperty("Property", "Value");
 
         tableClient.upsertEntity(tableEntity);
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", "partitionKey",
-            "rowKey");
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", partitionKey,
+            rowKey);
         // END: com.azure.data.tables.tableClient.upsertEntity#TableEntity
 
         // BEGIN: com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context
-        TableEntity myTableEntity = new TableEntity("partitionKey", "rowKey")
+        String myPartitionKey = "partitionKey";
+        String myRowKey = "rowKey";
+
+        TableEntity myTableEntity = new TableEntity(myPartitionKey, myRowKey)
             .addProperty("Property", "Value");
 
         Response<Void> response = tableClient.upsertEntityWithResponse(myTableEntity, TableEntityUpdateMode.REPLACE,
             Duration.ofSeconds(5), new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table entity with partition key '%s' and row key"
-            + " '%s' was updated/created.", response.getStatusCode(), "partitionKey", "rowKey");
+            + " '%s' was updated/created.", response.getStatusCode(), partitionKey, rowKey);
         // END: com.azure.data.tables.tableClient.upsertEntityWithResponse#TableEntity-TableEntityUpdateMode-Duration-Context
     }
 
@@ -174,35 +168,43 @@ public class TableClientJavaDocCodeSnippets {
         TableClient tableClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableClient.updateEntity#TableEntity
-        TableEntity tableEntity = new TableEntity("partitionKey", "rowKey")
+        String partitionKey = "partitionKey";
+        String rowKey = "rowKey";
+
+        TableEntity tableEntity = new TableEntity(partitionKey, rowKey)
             .addProperty("Property", "Value");
 
         tableClient.updateEntity(tableEntity);
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", "partitionKey",
-            "rowKey");
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", partitionKey,
+            rowKey);
         // END: com.azure.data.tables.tableClient.updateEntity#TableEntity
 
         // BEGIN: com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode
+        String myPartitionKey = "partitionKey";
+        String myRowKey = "rowKey";
 
-        TableEntity myTableEntity = new TableEntity("paritionKey", "rowKey")
+        TableEntity myTableEntity = new TableEntity(myPartitionKey, myRowKey)
             .addProperty("Property", "Value");
 
         tableClient.updateEntity(myTableEntity, TableEntityUpdateMode.REPLACE);
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", "partitionKey",
-            "rowKey");
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was updated/created.", partitionKey,
+            rowKey);
         // END: com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode
 
         // BEGIN: com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context
-        TableEntity someTableEntity = new TableEntity("partitionKey", "rowKey")
+        String somePartitionKey = "partitionKey";
+        String someRowKey = "rowKey";
+
+        TableEntity someTableEntity = new TableEntity(somePartitionKey, someRowKey)
             .addProperty("Property", "Value");
 
         Response<Void> response = tableClient.updateEntityWithResponse(someTableEntity, TableEntityUpdateMode.REPLACE,
             true, Duration.ofSeconds(5), new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table entity with partition key '%s' and row key"
-            + " '%s' was updated.", response.getStatusCode(), "partitionKey", "rowKey");
+            + " '%s' was updated.", response.getStatusCode(), partitionKey, rowKey);
         // END: com.azure.data.tables.tableClient.updateEntityWithResponse#TableEntity-TableEntityUpdateMode-boolean-Duration-Context
     }
 
@@ -215,29 +217,38 @@ public class TableClientJavaDocCodeSnippets {
         TableClient tableClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableClient.deleteEntity#String-String
-        tableClient.deleteEntity("partitionKey", "rowKey");
+        String partitionKey = "partitionKey";
+        String rowKey = "rowKey";
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was deleted.", "partitionKey", "rowKey");
+        tableClient.deleteEntity(partitionKey, rowKey);
+
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was deleted.", partitionKey, rowKey);
         // END: com.azure.data.tables.tableClient.deleteEntity#String-String
 
         // BEGIN: com.azure.data.tables.tableClient.deleteEntity#TableEntity
-        TableEntity myTableEntity = new TableEntity("partitionKey", "rowKey")
+        String myPartitionKey = "partitionKey";
+        String myRowKey = "rowKey";
+
+        TableEntity myTableEntity = new TableEntity(myPartitionKey, myRowKey)
             .addProperty("Property", "Value");
 
         tableClient.deleteEntity(myTableEntity);
 
-        System.out.printf("Table entity with partition key '%s' and row key: '%s' was created.", "partitionKey", "rowKey");
+        System.out.printf("Table entity with partition key '%s' and row key: '%s' was created.", partitionKey, rowKey);
         // END: com.azure.data.tables.tableClient.deleteEntity#TableEntity
 
         // BEGIN: com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context
-        TableEntity someTableEntity = new TableEntity("partitionKey", "rowKey")
+        String somePartitionKey = "partitionKey";
+        String someRowKey = "rowKey";
+
+        TableEntity someTableEntity = new TableEntity(somePartitionKey, someRowKey)
             .addProperty("Property", "Value");
 
         Response<Void> response = tableClient.deleteEntityWithResponse(someTableEntity, true, Duration.ofSeconds(5),
             new Context("key1", "value1"));
 
         System.out.printf("Response successful with status code: %d. Table entity with partition key '%s' and row key"
-            + " '%s' was deleted.", response.getStatusCode(), "partitionKey", "rowKey");
+            + " '%s' was deleted.", response.getStatusCode(), somePartitionKey, someRowKey);
         // END: com.azure.data.tables.tableClient.deleteEntityWithResponse#TableEntity-Duration-Context
     }
 
@@ -268,7 +279,7 @@ public class TableClientJavaDocCodeSnippets {
             .setSelect(propertiesToSelect);
 
         PagedIterable<TableEntity> myTableEntities = tableClient.listEntities(listEntitiesOptions,
-            Duration.ofSeconds(5), null);
+            Duration.ofSeconds(5), new Context("key1", "value1"));
 
         myTableEntities.forEach(tableEntity -> {
             System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:%n",
@@ -288,19 +299,25 @@ public class TableClientJavaDocCodeSnippets {
         TableClient tableClient = createClient();
 
         // BEGIN: com.azure.data.tables.tableClient.getEntity#String-String
-        TableEntity tableEntity = tableClient.getEntity("partitionKey", "rowKey");
+        String partitionKey = "partitionKey";
+        String rowKey = "rowKey";
+
+        TableEntity tableEntity = tableClient.getEntity(partitionKey, rowKey);
 
         System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.", tableEntity.getPartitionKey(),
             tableEntity.getRowKey());
         // END: com.azure.data.tables.tableClient.getEntity#String-String
 
         // BEGIN: com.azure.data.tables.tableClient.getEntityWithResponse#String-String-ListEntitiesOptions-Duration-Context
+        String myPartitionKey = "partitionKey";
+        String myRowKey = "rowKey";
+
         List<String> propertiesToSelect = new ArrayList<>();
         propertiesToSelect.add("name");
         propertiesToSelect.add("lastname");
         propertiesToSelect.add("age");
 
-        Response<TableEntity> response = tableClient.getEntityWithResponse("partitionKey", "rowKey", propertiesToSelect,
+        Response<TableEntity> response = tableClient.getEntityWithResponse(myPartitionKey, myRowKey, propertiesToSelect,
             Duration.ofSeconds(5), new Context("key1", "value1"));
 
         TableEntity myTableEntity = response.getValue();

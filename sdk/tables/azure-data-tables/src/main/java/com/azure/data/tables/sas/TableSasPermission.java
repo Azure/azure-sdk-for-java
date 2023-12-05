@@ -29,14 +29,6 @@ public final class TableSasPermission {
     private boolean updatePermission;
     private boolean deletePermission;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates an {@link TableSasPermission} with all fields set to false.
-     */
-    public TableSasPermission() {
-
-    }
-
     /**
      * Creates a {@link TableSasPermission} from the specified permissions string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
