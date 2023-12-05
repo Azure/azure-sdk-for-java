@@ -154,3 +154,7 @@ extends:
       groupId: com.azure
       safeName: azureidentityextensions
       ServiceDirectory: identity
+    - name: azure-security-keyvault-jca
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultjca
+      ServiceDirectory: keyvault
