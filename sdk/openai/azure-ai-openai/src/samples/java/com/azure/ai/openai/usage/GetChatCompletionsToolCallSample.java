@@ -17,7 +17,6 @@ import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
@@ -31,7 +30,7 @@ import java.util.List;
  * Sample demonstrates the usage for using tool_calls. This allows the LLM to request additional information from the client
  * to fulfill the request. Particularly, this sample shows how to handle responses in a non-streaming scenario.
  */
-public class GetChatCompletionsToolCall {
+public class GetChatCompletionsToolCallSample {
 
     /**
      * Running this sample will result in 2 requests. The first offering the LLM our function and a prompt that will
