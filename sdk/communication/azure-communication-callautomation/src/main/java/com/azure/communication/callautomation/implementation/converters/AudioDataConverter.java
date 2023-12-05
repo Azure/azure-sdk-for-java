@@ -5,8 +5,8 @@ package com.azure.communication.callautomation.implementation.converters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaStreamingAudioInternal model. */
-public final class MediaStreamingAudioDataConverter {
+/** The AudioDataInternal model. */
+public final class AudioDataConverter {
 
     /*
      * The audio data.

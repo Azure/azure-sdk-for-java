@@ -1,42 +1,54 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.implementation.converters;
+package com.azure.communication.callautomation.models.streaming.media;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.communication.callautomation.models.streaming.StreamingData;
 
-/** The MediaStreamingMetadataInternal model. */
-public final class MediaStreamingMetadataConverter {
+/** The MediaStreamingMetadata model. */
+public final class AudioMetadata extends StreamingData {
 
     /*
      * The mediaSubscriptionId.
      */
-    @JsonProperty(value = "subscriptionId")
-    private String mediaSubscriptionId;
+    private final String mediaSubscriptionId;
 
     /*
      * The encoding.
      */
-    @JsonProperty(value = "encoding")
-    private String encoding;
+    private final String encoding;
 
     /*
      * The sampleRate.
      */
-    @JsonProperty(value = "sampleRate")
-    private int sampleRate;
+    private final int sampleRate;
 
     /*
      * The channels.
      */
-    @JsonProperty(value = "channels")
-    private int channels;
+    private final int channels;
 
     /*
      * The length.
      */
-    @JsonProperty(value = "length")
-    private int length;
+    private final int length;
+
+    /**
+     * The constructor
+     *
+     * @param mediaSubscriptionId The mediaSubscriptionId.
+     * @param encoding The encoding.
+     * @param sampleRate The sampleRate.
+     * @param channels The channels.
+     * @param length The length.
+     */
+    public AudioMetadata(String mediaSubscriptionId, String encoding, int sampleRate, int channels, int length) {
+        this.mediaSubscriptionId = mediaSubscriptionId;
+        this.encoding = encoding;
+        this.sampleRate = sampleRate;
+        this.channels = channels;
+        this.length = length;
+    }
 
     /**
      * Get the mediaSubscriptionId property.

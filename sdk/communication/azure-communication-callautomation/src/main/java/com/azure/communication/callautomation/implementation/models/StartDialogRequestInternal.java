@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StartDialogRequestInternal model.
- */
+/** The StartDialogRequestInternal model. */
 @Fluent
 public final class StartDialogRequestInternal {
     /*
@@ -19,9 +17,10 @@ public final class StartDialogRequestInternal {
     private BaseDialog dialog;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
@@ -33,14 +32,8 @@ public final class StartDialogRequestInternal {
     private String operationContext;
 
     /**
-     * Creates an instance of StartDialogRequestInternal class.
-     */
-    public StartDialogRequestInternal() {
-    }
-
-    /**
      * Get the dialog property: Defines the dialog.
-     * 
+     *
      * @return the dialog value.
      */
     public BaseDialog getDialog() {
@@ -49,7 +42,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the dialog property: Defines the dialog.
-     * 
+     *
      * @param dialog the dialog value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -60,10 +53,9 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -72,10 +64,9 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StartDialogRequestInternal object itself.
      */
@@ -86,7 +77,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -95,7 +86,7 @@ public final class StartDialogRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the StartDialogRequestInternal object itself.
      */
