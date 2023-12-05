@@ -5,9 +5,9 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
-import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
-import com.azure.security.keyvault.keys.implementation.models.SecretKey;
+import com.azure.security.keyvault.keys.cryptography.implementation.SecretKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     protected KeyEncryptionKey keyEncryptionKey;
+    private SecretKey secretKey;
 
     @Override
     protected void beforeTest() {
@@ -31,25 +32,27 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     }
 
     private void setupSecretKeyAndClient(byte[] kek, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        String secretName = testResourceNamer.randomName("secretKey", 20);
-        HttpClient actualHttpClient = buildSyncAssertingClient(interceptorManager.isPlaybackMode()
-            ? interceptorManager.getPlaybackClient() : httpClient);
+        HttpPipeline pipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
 
-        String keyId = getEndpoint();
-        keyId = keyId.endsWith("/") ? keyId + "secrets/" + secretName : keyId + "/secrets/" + secretName;
-        CryptographyClientImpl implClient = getCryptographyClientImpl(actualHttpClient, keyId, serviceVersion);
-        SecretKey secretKey = implClient
-            .setSecretKey(new SecretKey(secretName, Base64.getEncoder().encodeToString(kek)), Context.NONE)
-            .getValue();
-
-        keyEncryptionKey = getKeyEncryptionKeyClientBuilder(actualHttpClient, serviceVersion)
-            .buildKeyEncryptionKey(secretKey.getId());
+        if (secretKey == null) {
+            CryptographyClientImpl implClient =
+                new CryptographyClientImpl(getEndpoint(), pipeline, serviceVersion);
+            secretKey = implClient.setSecretKey(new SecretKey(testResourceNamer.randomName("secretKey", 20),
+                Base64.getEncoder().encodeToString(kek)), Context.NONE).getValue();
+            keyEncryptionKey = new KeyEncryptionKeyClientBuilder()
+                .pipeline(pipeline)
+                .serviceVersion(serviceVersion)
+                .buildKeyEncryptionKey(secretKey.getId());
+        }
     }
 
     private KeyEncryptionKey setupKeyEncryptionKey(JsonWebKey jsonWebKey) {
-        return (jsonWebKey != null)
-            ? new KeyEncryptionKeyClientBuilder().buildKeyEncryptionKey(jsonWebKey)
-            : null;
+        if (jsonWebKey != null) {
+            return new KeyEncryptionKeyClientBuilder().buildKeyEncryptionKey(jsonWebKey);
+        }
+
+        return null;
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

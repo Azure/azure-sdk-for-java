@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -103,30 +104,17 @@ public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAl
     public static final EncryptionAlgorithm A256KW = fromString("A256KW");
 
     /**
-     * Creates a new instance of {@link EncryptionAlgorithm} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link EncryptionAlgorithm} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public EncryptionAlgorithm() {
-    }
-
-    /**
      * Creates or finds a EncryptionAlgorithm from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding EncryptionAlgorithm.
      */
+    @JsonCreator
     public static EncryptionAlgorithm fromString(String name) {
         return fromString(name, EncryptionAlgorithm.class);
     }
 
     /**
-     * Gets known EncryptionAlgorithm values.
-     *
      * @return known EncryptionAlgorithm values.
      */
     public static Collection<EncryptionAlgorithm> values() {

@@ -5,42 +5,46 @@ package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.implementation.BinaryDataJsonDeserializer;
+import com.azure.security.keyvault.keys.implementation.BinaryDataJsonSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.Objects;
 
 /**
  * A model that represents the policy rules under which the key can be exported.
  */
 @Fluent
-public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy> {
+public final class KeyReleasePolicy {
     /**
      * The policy rules under which the key can be released. Encoded based on the {@link KeyReleasePolicy#contentType}.
-     * <p>
+     *
      * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
      * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
      * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
      */
-    private final BinaryData encodedPolicy;
+    @JsonProperty(value = "data")
+    @JsonSerialize(using = BinaryDataJsonSerializer.class)
+    @JsonDeserialize(using = BinaryDataJsonDeserializer.class)
+    private BinaryData encodedPolicy;
 
     /*
      * Content type and version of key release policy.
      */
+    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Defines the mutability state of the policy. Once marked immutable on the service side, this flag cannot be reset
      * and the policy cannot be changed under any circumstances.
      */
+    @JsonProperty(value = "immutable")
     private Boolean immutable;
 
-    KeyReleasePolicy(BinaryData encodedPolicy, boolean ignored) {
-        this.encodedPolicy = null;
+    KeyReleasePolicy() {
+        // Empty constructor for Jackson Deserialization
     }
 
     /**
@@ -48,7 +52,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      *
      * @param encodedPolicy The policy rules under which the key can be released. Encoded based on the
      * {@link KeyReleasePolicy#contentType}.
-     * <p>
+     *
      * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
      * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
      * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
@@ -64,7 +68,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      *
      * @return encodedPolicy The policy rules under which the key can be released. Encoded based on the
      * {@link KeyReleasePolicy#contentType}.
-     * <p>
+     *
      * For more information regarding the release policy grammar for Azure Key Vault, please refer to:
      * - https://aka.ms/policygrammarkeys for Azure Key Vault release policy grammar.
      * - https://aka.ms/policygrammarmhsm for Azure Managed HSM release policy grammar.
@@ -119,66 +123,5 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
         this.immutable = immutable;
 
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-
-        String encodedPolicyText;
-        if (encodedPolicy == null) {
-            encodedPolicyText = null;
-        } else {
-            byte[] bytes = encodedPolicy.toBytes();
-
-            if (bytes == null) {
-                encodedPolicyText = null;
-            } else if (bytes.length == 0) {
-                encodedPolicyText = "";
-            } else {
-                encodedPolicyText = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
-            }
-        }
-
-        jsonWriter.writeStringField("data", encodedPolicyText);
-        jsonWriter.writeStringField("contentType", contentType);
-        jsonWriter.writeBooleanField("immutable", immutable);
-
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads a JSON stream into a {@link KeyReleasePolicy}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return An instance of {@link KeyReleasePolicy} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link KeyReleasePolicy} fails to be read from the {@code jsonReader}.
-     */
-    public static KeyReleasePolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            BinaryData encodedPolicy = null;
-            String contentType = null;
-            Boolean immutable = null;
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("data".equals(fieldName)) {
-                    encodedPolicy = reader.getNullable(nonNullReader ->
-                        BinaryData.fromString(nonNullReader.getString()));
-                } else if ("contentType".equals(fieldName)) {
-                    contentType = reader.getString();
-                } else if ("immutable".equals(fieldName)) {
-                    immutable = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return new KeyReleasePolicy(encodedPolicy, false)
-                .setContentType(contentType)
-                .setImmutable(immutable);
-        });
     }
 }

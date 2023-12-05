@@ -6,14 +6,17 @@ package com.azure.security.keyvault.keys;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
@@ -30,7 +33,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.security.keyvault.keys.TestUtils.buildAsyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -39,6 +46,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
     protected KeyAsyncClient keyAsyncClient;
@@ -53,10 +63,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
-        keyAsyncClient = getKeyClientBuilder(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId,
-            getEndpoint(), serviceVersion)
-            .buildAsyncClient();
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(implClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
+
+        keyAsyncClient = new KeyAsyncClient(implClient);
     }
 
     /**
@@ -223,13 +238,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createKeyAsyncClient(httpClient, serviceVersion);
 
         getKeySpecificVersionRunner((keyWithOriginalValue, keyWithNewValue) -> {
-            StepVerifier.create(keyAsyncClient.createKey(keyWithOriginalValue).flatMap(keyVersionOne ->
-                keyAsyncClient.getKey(keyWithOriginalValue.getName(), keyVersionOne.getProperties().getVersion())))
+            final KeyVaultKey keyVersionOne = keyAsyncClient.createKey(keyWithOriginalValue).block();
+            final KeyVaultKey keyVersionTwo = keyAsyncClient.createKey(keyWithNewValue).block();
+
+            StepVerifier.create(keyAsyncClient.getKey(keyWithOriginalValue.getName(),
+                    keyVersionOne.getProperties().getVersion()))
                 .assertNext(response -> assertKeyEquals(keyWithOriginalValue, response))
                 .verifyComplete();
 
-            StepVerifier.create(keyAsyncClient.createKey(keyWithNewValue).flatMap(keyVersionTwo ->
-                    keyAsyncClient.getKey(keyWithNewValue.getName(), keyVersionTwo.getProperties().getVersion())))
+            StepVerifier.create(keyAsyncClient.getKey(keyWithNewValue.getName(),
+                    keyVersionTwo.getProperties().getVersion()))
                 .assertNext(response -> assertKeyEquals(keyWithNewValue, response))
                 .verifyComplete();
         });
@@ -261,17 +279,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             StepVerifier.create(keyAsyncClient.createKey(keyToDelete))
                 .assertNext(keyResponse -> assertKeyEquals(keyToDelete, keyResponse)).verifyComplete();
 
-            PollerFlux<DeletedKey, Void> poller = setPlaybackPollerFluxPollInterval(
-                keyAsyncClient.beginDeleteKey(keyToDelete.getName()));
+            PollerFlux<DeletedKey, Void> poller = keyAsyncClient.beginDeleteKey(keyToDelete.getName());
+            AsyncPollResponse<DeletedKey, Void> deletedKeyPollResponse = poller
+                .takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                .blockLast();
+            DeletedKey deletedKeyResponse = deletedKeyPollResponse.getValue();
 
-            StepVerifier.create(poller.last().map(AsyncPollResponse::getValue))
-                .assertNext(deletedKeyResponse -> {
-                    assertNotNull(deletedKeyResponse.getDeletedOn());
-                    assertNotNull(deletedKeyResponse.getRecoveryId());
-                    assertNotNull(deletedKeyResponse.getScheduledPurgeDate());
-                    assertEquals(keyToDelete.getName(), deletedKeyResponse.getName());
-                })
-                .verifyComplete();
+            assertNotNull(deletedKeyResponse.getDeletedOn());
+            assertNotNull(deletedKeyResponse.getRecoveryId());
+            assertNotNull(deletedKeyResponse.getScheduledPurgeDate());
+            assertEquals(keyToDelete.getName(), deletedKeyResponse.getName());
         });
     }
 
@@ -307,26 +324,25 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         recoverDeletedKeyRunner((keyToDeleteAndRecover) -> {
             StepVerifier.create(keyAsyncClient.createKey(keyToDeleteAndRecover))
-                .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndRecover, keyResponse))
-                .verifyComplete();
+                .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndRecover, keyResponse)).verifyComplete();
 
-            PollerFlux<DeletedKey, Void> poller = setPlaybackPollerFluxPollInterval(
-                keyAsyncClient.beginDeleteKey(keyToDeleteAndRecover.getName()));
+            PollerFlux<DeletedKey, Void> poller = keyAsyncClient.beginDeleteKey(keyToDeleteAndRecover.getName());
+            AsyncPollResponse<DeletedKey, Void> deleteKeyPollResponse =
+                poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .blockLast();
 
-            StepVerifier.create(poller.last())
-                .expectNextCount(1)
-                .verifyComplete();
+            assertNotNull(deleteKeyPollResponse.getValue());
 
-            PollerFlux<KeyVaultKey, Void> recoverPoller = setPlaybackPollerFluxPollInterval(
-                keyAsyncClient.beginRecoverDeletedKey(keyToDeleteAndRecover.getName()));
+            PollerFlux<KeyVaultKey, Void> recoverPoller =
+                keyAsyncClient.beginRecoverDeletedKey(keyToDeleteAndRecover.getName());
+            AsyncPollResponse<KeyVaultKey, Void> recoverKeyPollResponse =
+                recoverPoller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .blockLast();
+            KeyVaultKey keyResponse = recoverKeyPollResponse.getValue();
 
-            StepVerifier.create(recoverPoller.last().map(AsyncPollResponse::getValue))
-                .assertNext(keyResponse -> {
-                    assertEquals(keyToDeleteAndRecover.getName(), keyResponse.getName());
-                    assertEquals(keyToDeleteAndRecover.getNotBefore(), keyResponse.getProperties().getNotBefore());
-                    assertEquals(keyToDeleteAndRecover.getExpiresOn(), keyResponse.getProperties().getExpiresOn());
-                })
-                .verifyComplete();
+            assertEquals(keyToDeleteAndRecover.getName(), keyResponse.getName());
+            assertEquals(keyToDeleteAndRecover.getNotBefore(), keyResponse.getProperties().getNotBefore());
+            assertEquals(keyToDeleteAndRecover.getExpiresOn(), keyResponse.getProperties().getExpiresOn());
         });
     }
 
@@ -391,12 +407,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             byte[] backup = keyAsyncClient.backupKey(keyToBackupAndRestore.getName()).block();
 
-            PollerFlux<DeletedKey, Void> poller = setPlaybackPollerFluxPollInterval(
-                keyAsyncClient.beginDeleteKey(keyToBackupAndRestore.getName()));
+            PollerFlux<DeletedKey, Void> poller = keyAsyncClient.beginDeleteKey(keyToBackupAndRestore.getName());
+            AsyncPollResponse<DeletedKey, Void> pollResponse =
+                poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .blockLast();
 
-            StepVerifier.create(poller.last())
-                .expectNextCount(1)
-                .verifyComplete();
+            assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(keyAsyncClient.purgeDeletedKeyWithResponse(keyToBackupAndRestore.getName()))
                 .assertNext(voidResponse ->
@@ -405,7 +421,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             pollOnKeyPurge(keyToBackupAndRestore.getName());
 
-            sleepIfRunningAgainstService(60000);
+            sleepInRecordMode(60000);
 
             StepVerifier.create(keyAsyncClient.restoreKeyBackup(backup))
                 .assertNext(response -> {
@@ -444,12 +460,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 .assertNext(keyResponse -> assertKeyEquals(keyToDeleteAndGet, keyResponse))
                 .verifyComplete();
 
-            PollerFlux<DeletedKey, Void> poller = setPlaybackPollerFluxPollInterval(
-                keyAsyncClient.beginDeleteKey(keyToDeleteAndGet.getName()));
+            PollerFlux<DeletedKey, Void> poller = keyAsyncClient.beginDeleteKey(keyToDeleteAndGet.getName());
+            AsyncPollResponse<DeletedKey, Void> pollResponse =
+                poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+                    .blockLast();
 
-            StepVerifier.create(poller.last())
-                .expectNextCount(1)
-                .verifyComplete();
+            assertNotNull(pollResponse.getValue());
 
             StepVerifier.create(keyAsyncClient.getDeletedKey(keyToDeleteAndGet.getName()))
                 .assertNext(deletedKeyResponse -> {
@@ -475,31 +491,34 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         }
 
         listDeletedKeysRunner((keysToList) -> {
+            List<DeletedKey> deletedKeys = new ArrayList<>();
+
             for (CreateKeyOptions key : keysToList.values()) {
                 StepVerifier.create(keyAsyncClient.createKey(key))
                     .assertNext(keyResponse -> assertKeyEquals(key, keyResponse)).verifyComplete();
             }
 
-            sleepIfRunningAgainstService(10000);
+            sleepInRecordMode(10000);
 
             for (CreateKeyOptions key : keysToList.values()) {
-                PollerFlux<DeletedKey, Void> poller = setPlaybackPollerFluxPollInterval(
-                    keyAsyncClient.beginDeleteKey(key.getName()));
+                PollerFlux<DeletedKey, Void> poller = keyAsyncClient.beginDeleteKey(key.getName());
+                AsyncPollResponse<DeletedKey, Void> response = poller.blockLast();
 
-                StepVerifier.create(poller.last())
-                    .expectNextCount(1)
-                    .verifyComplete();
+                assertNotNull(response.getValue());
             }
 
-            sleepIfRunningAgainstService(90000);
+            sleepInRecordMode(90000);
 
-            StepVerifier.create(keyAsyncClient.listDeletedKeys()
-                .doOnNext(actualKey -> {
+            DeletedKey deletedKey = keyAsyncClient.listDeletedKeys()
+                .map(actualKey -> {
+                    deletedKeys.add(actualKey);
                     assertNotNull(actualKey.getDeletedOn());
                     assertNotNull(actualKey.getRecoveryId());
-                }).last())
-                .expectNextCount(1)
-                .verifyComplete();
+
+                    return actualKey;
+                }).blockLast();
+
+            assertNotNull(deletedKey);
         });
     }
 
@@ -522,7 +541,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     .verifyComplete();
             }
 
-            sleepIfRunningAgainstService(30000);
+            sleepInRecordMode(30000);
 
             StepVerifier.create(keyAsyncClient.listPropertiesOfKeyVersions(keyName).collectList())
                 .assertNext(actualKeys -> assertEquals(keysToList.size(), actualKeys.size()))
@@ -541,14 +560,12 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         listKeysRunner((keysToList) -> {
             for (CreateKeyOptions key : keysToList.values()) {
-                StepVerifier.create(keyAsyncClient.createKey(key))
-                    .assertNext(keyResponse -> assertKeyEquals(key, keyResponse))
-                    .verifyComplete();
+                assertKeyEquals(key, keyAsyncClient.createKey(key).block());
             }
 
-            sleepIfRunningAgainstService(10000);
+            sleepInRecordMode(10000);
 
-            StepVerifier.create(keyAsyncClient.listPropertiesOfKeys().map(actualKey -> {
+            keyAsyncClient.listPropertiesOfKeys().map(actualKey -> {
                 if (keysToList.containsKey(actualKey.getName())) {
                     CreateKeyOptions expectedKey = keysToList.get(actualKey.getName());
                     assertEquals(expectedKey.getExpiresOn(), actualKey.getExpiresOn());
@@ -557,9 +574,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 }
 
                 return actualKey;
-            }).last())
-                .expectNextCount(1)
-                .verifyComplete();
+            }).blockLast();
 
             assertEquals(0, keysToList.size());
         });
@@ -588,7 +603,11 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     attestationUrl = attestationUrl + "/";
                 }
 
-                targetAttestationToken = getAttestationToken(attestationUrl + "generate-test-token");
+                try {
+                    targetAttestationToken = getAttestationToken(attestationUrl + "generate-test-token");
+                } catch (IOException e) {
+                    fail("Found error when deserializing attestation token.", e);
+                }
             }
 
             StepVerifier.create(keyAsyncClient.releaseKey(keyToRelease.getName(), targetAttestationToken))
@@ -821,7 +840,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             }
 
             if (deletedKey != null) {
-                sleepIfRunningAgainstService(2000);
+                sleepInRecordMode(2000);
 
                 pendingPollCount += 1;
             } else {

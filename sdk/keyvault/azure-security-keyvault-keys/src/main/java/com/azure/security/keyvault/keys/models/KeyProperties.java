@@ -4,17 +4,18 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.Instant;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,56 +26,13 @@ import java.util.Map;
  * @see KeyAsyncClient
  */
 @Fluent
-public class KeyProperties implements JsonSerializable<KeyProperties> {
-    static {
-        KeyPropertiesHelper.setAccessor(new KeyPropertiesHelper.KeyPropertiesAccessor() {
-            @Override
-            public void setCreatedOn(KeyProperties keyProperties, OffsetDateTime createdOn) {
-                keyProperties.createdOn = createdOn;
-            }
-
-            @Override
-            public void setUpdatedOn(KeyProperties keyProperties, OffsetDateTime updatedOn) {
-                keyProperties.updatedOn = updatedOn;
-            }
-
-            @Override
-            public void setRecoveryLevel(KeyProperties keyProperties, String recoveryLevel) {
-                keyProperties.recoveryLevel = recoveryLevel;
-            }
-
-            @Override
-            public void setName(KeyProperties keyProperties, String name) {
-                keyProperties.name = name;
-            }
-
-            @Override
-            public void setVersion(KeyProperties keyProperties, String version) {
-                keyProperties.version = version;
-            }
-
-            @Override
-            public void setId(KeyProperties keyProperties, String id) {
-                keyProperties.id = id;
-            }
-
-            @Override
-            public void setManaged(KeyProperties keyProperties, Boolean managed) {
-                keyProperties.managed = managed;
-            }
-
-            @Override
-            public void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays) {
-                keyProperties.recoverableDays = recoverableDays;
-            }
-        });
-    }
+public class KeyProperties {
     /**
      * Determines whether the object is enabled.
      */
     Boolean enabled;
 
-    /**
+    /*
      * Indicates if the private key can be exported.
      */
     Boolean exportable;
@@ -97,12 +55,12 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     /**
      * Creation time in UTC.
      */
-    OffsetDateTime createdOn;
+    private OffsetDateTime createdOn;
 
     /**
      * Last updated time in UTC.
      */
-    OffsetDateTime updatedOn;
+    private OffsetDateTime updatedOn;
 
     /**
      * Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains
@@ -110,7 +68,7 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
      * key, at the end of the retention interval. Possible values include: 'Purgeable', 'Recoverable+Purgeable',
      * 'Recoverable', 'Recoverable+ProtectedSubscription'.
      */
-    String recoveryLevel;
+    private String recoveryLevel;
 
     /**
      * The key name.
@@ -120,39 +78,33 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     /**
      * Key identifier.
      */
+    @JsonProperty(value = "kid")
     String id;
 
     /**
      * Application specific metadata in the form of key-value pairs.
      */
+    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
      * True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will
      * be true.
      */
-    Boolean managed;
+    @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean managed;
 
     /**
      * The number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      */
-    Integer recoverableDays;
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
 
-    /**
+    /*
      * The policy rules under which the key can be exported.
      */
-    KeyReleasePolicy releasePolicy;
-
-    /**
-     * The underlying HSM Platform the key was generated with.
-     */
-    private String hsmPlatform;
-
-    /**
-     * Creates a new instance of {@link KeyProperties}.
-     */
-    public KeyProperties() {
-    }
+    @JsonProperty(value = "release_policy")
+    private KeyReleasePolicy releasePolicy;
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
@@ -361,83 +313,102 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     }
 
     /**
-     * Get the underlying HSM Platform the key was generated with.
+     * Unpacks the attributes JSON response and updates the variables in the Key Attributes object. Uses Lazy Update to
+     * set values for variables id, contentType, and id as these variables are part of main JSON body and not attributes
+     * JSON body when the key response comes from list keys operations.
      *
-     * @return The key's underlying HSM Platform.
+     * @param attributes The key value mapping of the key attributes
      */
-    public String getHsmPlatform() {
-        return hsmPlatform;
+    @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
+    void unpackAttributes(Map<String, Object> attributes) {
+        this.enabled = (Boolean) attributes.get("enabled");
+        this.exportable = (Boolean) attributes.get("exportable");
+        this.notBefore = epochToOffsetDateTime(attributes.get("nbf"));
+        this.expiresOn = epochToOffsetDateTime(attributes.get("exp"));
+        this.createdOn = epochToOffsetDateTime(attributes.get("created"));
+        this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
+        this.recoveryLevel = (String) attributes.get("recoveryLevel");
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("kid", id)
-            .writeMapField("tags", tags, JsonWriter::writeString)
-            .writeJsonField("release_policy", releasePolicy)
-            .writeEndObject();
+    private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
+        if (epochValue != null) {
+            Instant instant = Instant.ofEpochMilli(((Number) epochValue).longValue() * 1000L);
+
+            return OffsetDateTime.ofInstant(instant, ZoneOffset.UTC);
+        }
+
+        return null;
     }
 
-    /**
-     * Reads a JSON stream into a {@link KeyProperties}.
-    *
-    * @param jsonReader The {@link JsonReader} being read.
-    * @return An instance of {@link KeyProperties} that the JSON stream represented, may return null.
-    * @throws IOException If a {@link KeyProperties} fails to be read from the {@code jsonReader}.
-    */
-    public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            KeyProperties properties = new KeyProperties();
+    Object lazyValueSelection(Object input1, Object input2) {
+        if (input1 == null) {
+            return input2;
+        }
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return input1;
+    }
 
-                if ("kid".equals(fieldName)) {
-                    properties.id = reader.getString();
-                    KeyVaultKeysUtils.unpackId(properties.id, name -> properties.name = name,
-                        version -> properties.version = version);
-                } else if ("tags".equals(fieldName)) {
-                    properties.tags = reader.readMap(JsonReader::getString);
-                } else if ("immutable".equals(fieldName)) {
-                    properties.managed = reader.getNullable(JsonReader::getBoolean);
-                } else if ("recoverableDays".equals(fieldName)) {
-                    properties.recoverableDays = reader.getNullable(JsonReader::getInt);
-                } else if ("release_policy".equals(fieldName)) {
-                    properties.releasePolicy = KeyReleasePolicy.fromJson(reader);
-                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
+    @JsonProperty(value = "kid")
+    void unpackId(String keyId) {
+        if (keyId != null && keyId.length() > 0) {
+            this.id = keyId;
 
-                        if ("enabled".equals(fieldName)) {
-                            properties.enabled = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("exportable".equals(fieldName)) {
-                            properties.exportable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("nbf".equals(fieldName)) {
-                            properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("exp".equals(fieldName)) {
-                            properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("created".equals(fieldName)) {
-                            properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("updated".equals(fieldName)) {
-                            properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("recoveryLevel".equals(fieldName)) {
-                            properties.recoveryLevel = reader.getString();
-                        } else if ("recoverableDays".equals(fieldName)) {
-                            properties.recoverableDays = reader.getNullable(JsonReader::getInt);
-                        } else if ("hsmPlatform".equals(fieldName)) {
-                            properties.hsmPlatform = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                } else {
-                    reader.skipChildren();
-                }
+            try {
+                URL url = new URL(keyId);
+                String[] tokens = url.getPath().split("/");
+                this.name = (tokens.length >= 3 ? tokens[2] : null);
+                this.version = (tokens.length >= 4 ? tokens[3] : null);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
             }
+        }
+    }
 
-            return properties;
-        });
+    List<KeyOperation> getKeyOperations(List<String> jsonWebKeyOps) {
+        List<KeyOperation> output = new ArrayList<>();
+
+        for (String keyOp : jsonWebKeyOps) {
+            output.add(KeyOperation.fromString(keyOp));
+        }
+
+        return output;
+    }
+
+    @SuppressWarnings("unchecked")
+    JsonWebKey createKeyMaterialFromJson(Map<String, Object> key) {
+        JsonWebKey outputKey = new JsonWebKey()
+            .setY(decode((String) key.get("y")))
+            .setX(decode((String) key.get("x")))
+            .setCurveName(KeyCurveName.fromString((String) key.get("crv")))
+            .setKeyOps(getKeyOperations((List<String>) key.get("key_ops")))
+            .setT(decode((String) key.get("key_hsm")))
+            .setK(decode((String) key.get("k")))
+            .setQ(decode((String) key.get("q")))
+            .setP(decode((String) key.get("p")))
+            .setQi(decode((String) key.get("qi")))
+            .setDq(decode((String) key.get("dq")))
+            .setDp(decode((String) key.get("dp")))
+            .setD(decode((String) key.get("d")))
+            .setE(decode((String) key.get("e")))
+            .setN(decode((String) key.get("n")))
+            .setKeyType(KeyType.fromString((String) key.get("kty")))
+            .setId((String) key.get("kid"));
+        unpackId((String) key.get("kid"));
+
+        return outputKey;
+    }
+
+    void setManaged(boolean managed) {
+        this.managed = managed;
+    }
+
+    private byte[] decode(String in) {
+        if (in != null) {
+            return Base64.getUrlDecoder().decode(in);
+        }
+
+        return null;
     }
 }
