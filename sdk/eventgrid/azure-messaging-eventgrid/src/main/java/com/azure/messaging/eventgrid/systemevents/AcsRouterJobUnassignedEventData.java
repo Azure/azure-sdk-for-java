@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobUnassigned event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobUnassigned event.
+ */
 @Fluent
 public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData {
     /*
@@ -23,12 +25,15 @@ public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData
     @JsonProperty(value = "workerId")
     private String workerId;
 
-    /** Creates an instance of AcsRouterJobUnassignedEventData class. */
-    public AcsRouterJobUnassignedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobUnassignedEventData class.
+     */
+    public AcsRouterJobUnassignedEventData() {
+    }
 
     /**
      * Get the assignmentId property: Router Job Unassigned Assignment Id.
-     *
+     * 
      * @return the assignmentId value.
      */
     public String getAssignmentId() {
@@ -37,7 +42,7 @@ public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData
 
     /**
      * Set the assignmentId property: Router Job Unassigned Assignment Id.
-     *
+     * 
      * @param assignmentId the assignmentId value to set.
      * @return the AcsRouterJobUnassignedEventData object itself.
      */
@@ -48,7 +53,7 @@ public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData
 
     /**
      * Get the workerId property: Router Job Unassigned Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -57,7 +62,7 @@ public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData
 
     /**
      * Set the workerId property: Router Job Unassigned Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterJobUnassignedEventData object itself.
      */
@@ -66,42 +71,54 @@ public final class AcsRouterJobUnassignedEventData extends AcsRouterJobEventData
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobUnassignedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

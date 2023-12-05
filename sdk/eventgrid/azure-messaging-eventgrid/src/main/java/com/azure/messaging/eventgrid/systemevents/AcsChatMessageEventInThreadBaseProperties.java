@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of common properties of all thread-level chat message events. */
+/**
+ * Schema of common properties of all thread-level chat message events.
+ */
 @Fluent
 public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThreadBaseProperties {
     /*
@@ -47,12 +49,15 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
     @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatMessageEventInThreadBaseProperties class. */
-    public AcsChatMessageEventInThreadBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatMessageEventInThreadBaseProperties class.
+     */
+    public AcsChatMessageEventInThreadBaseProperties() {
+    }
 
     /**
      * Get the messageId property: The chat message id.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -61,7 +66,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the messageId property: The chat message id.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
@@ -72,7 +77,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Get the senderCommunicationIdentifier property: The communication identifier of the sender.
-     *
+     * 
      * @return the senderCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getSenderCommunicationIdentifier() {
@@ -81,19 +86,19 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the senderCommunicationIdentifier property: The communication identifier of the sender.
-     *
+     * 
      * @param senderCommunicationIdentifier the senderCommunicationIdentifier value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
-    public AcsChatMessageEventInThreadBaseProperties setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageEventInThreadBaseProperties
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         this.senderCommunicationIdentifier = senderCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the senderDisplayName property: The display name of the sender.
-     *
+     * 
      * @return the senderDisplayName value.
      */
     public String getSenderDisplayName() {
@@ -102,7 +107,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the senderDisplayName property: The display name of the sender.
-     *
+     * 
      * @param senderDisplayName the senderDisplayName value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
@@ -113,7 +118,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Get the composeTime property: The original compose time of the message.
-     *
+     * 
      * @return the composeTime value.
      */
     public OffsetDateTime getComposeTime() {
@@ -122,7 +127,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the composeTime property: The original compose time of the message.
-     *
+     * 
      * @param composeTime the composeTime value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
@@ -133,7 +138,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Get the type property: The type of the message.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -142,7 +147,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the type property: The type of the message.
-     *
+     * 
      * @param type the type value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
@@ -153,7 +158,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Get the version property: The version of the message.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -162,7 +167,7 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
 
     /**
      * Set the version property: The version of the message.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatMessageEventInThreadBaseProperties object itself.
      */
@@ -171,14 +176,18 @@ public class AcsChatMessageEventInThreadBaseProperties extends AcsChatEventInThr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEventInThreadBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);

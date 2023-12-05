@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event. */
+/**
+ * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.IncomingCall event.
+ */
 @Fluent
 public final class AcsIncomingCallEventData {
     /*
@@ -52,12 +54,15 @@ public final class AcsIncomingCallEventData {
     @JsonProperty(value = "correlationId")
     private String correlationId;
 
-    /** Creates an instance of AcsIncomingCallEventData class. */
-    public AcsIncomingCallEventData() {}
+    /**
+     * Creates an instance of AcsIncomingCallEventData class.
+     */
+    public AcsIncomingCallEventData() {
+    }
 
     /**
      * Get the toCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @return the toCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getToCommunicationIdentifier() {
@@ -66,19 +71,19 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the toCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @param toCommunicationIdentifier the toCommunicationIdentifier value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
-    public AcsIncomingCallEventData setToCommunicationIdentifier(
-            CommunicationIdentifierModel toCommunicationIdentifier) {
+    public AcsIncomingCallEventData
+        setToCommunicationIdentifier(CommunicationIdentifierModel toCommunicationIdentifier) {
         this.toCommunicationIdentifier = toCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the fromCommunicationIdentifier property: The communication identifier of the user who initiated the call.
-     *
+     * 
      * @return the fromCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getFromCommunicationIdentifier() {
@@ -87,19 +92,19 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the fromCommunicationIdentifier property: The communication identifier of the user who initiated the call.
-     *
+     * 
      * @param fromCommunicationIdentifier the fromCommunicationIdentifier value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
-    public AcsIncomingCallEventData setFromCommunicationIdentifier(
-            CommunicationIdentifierModel fromCommunicationIdentifier) {
+    public AcsIncomingCallEventData
+        setFromCommunicationIdentifier(CommunicationIdentifierModel fromCommunicationIdentifier) {
         this.fromCommunicationIdentifier = fromCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the serverCallId property: The Id of the server call.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -108,7 +113,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the serverCallId property: The Id of the server call.
-     *
+     * 
      * @param serverCallId the serverCallId value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
@@ -119,7 +124,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Get the callerDisplayName property: Display name of caller.
-     *
+     * 
      * @return the callerDisplayName value.
      */
     public String getCallerDisplayName() {
@@ -128,7 +133,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the callerDisplayName property: Display name of caller.
-     *
+     * 
      * @param callerDisplayName the callerDisplayName value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
@@ -139,7 +144,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Get the customContext property: Custom Context of Incoming Call.
-     *
+     * 
      * @return the customContext value.
      */
     public AcsIncomingCallCustomContext getCustomContext() {
@@ -148,7 +153,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the customContext property: Custom Context of Incoming Call.
-     *
+     * 
      * @param customContext the customContext value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
@@ -159,7 +164,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Get the incomingCallContext property: Signed incoming call context.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -168,7 +173,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the incomingCallContext property: Signed incoming call context.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AcsIncomingCallEventData object itself.
      */
@@ -179,7 +184,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Get the correlationId property: CorrelationId (CallId).
-     *
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
@@ -188,7 +193,7 @@ public final class AcsIncomingCallEventData {
 
     /**
      * Set the correlationId property: CorrelationId (CallId).
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the AcsIncomingCallEventData object itself.
      */

@@ -20,12 +20,15 @@ public final class MediaJobErroredEventData extends MediaJobStateChangeEventData
     @JsonProperty(value = "outputs")
     private List<MediaJobOutput> outputs;
 
-    /** Creates an instance of MediaJobErroredEventData class. */
-    public MediaJobErroredEventData() {}
+    /**
+     * Creates an instance of MediaJobErroredEventData class.
+     */
+    public MediaJobErroredEventData() {
+    }
 
     /**
      * Get the outputs property: Gets the Job outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public List<MediaJobOutput> getOutputs() {
@@ -34,7 +37,7 @@ public final class MediaJobErroredEventData extends MediaJobStateChangeEventData
 
     /**
      * Set the outputs property: Gets the Job outputs.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the MediaJobErroredEventData object itself.
      */
@@ -43,7 +46,9 @@ public final class MediaJobErroredEventData extends MediaJobStateChangeEventData
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobErroredEventData setCorrelationData(Map<String, String> correlationData) {
         super.setCorrelationData(correlationData);

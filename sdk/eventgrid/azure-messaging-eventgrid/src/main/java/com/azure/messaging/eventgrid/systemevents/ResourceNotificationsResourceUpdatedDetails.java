@@ -9,7 +9,9 @@ import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes the schema of the properties under resource info which are common across all ARN system topic events. */
+/**
+ * Describes the schema of the properties under resource info which are common across all ARN system topic events.
+ */
 @Fluent
 public final class ResourceNotificationsResourceUpdatedDetails {
 
@@ -49,8 +51,11 @@ public final class ResourceNotificationsResourceUpdatedDetails {
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
-    /** Creates an instance of ResourceNotificationsResourceUpdatedDetails class. */
-    public ResourceNotificationsResourceUpdatedDetails() {}
+    /**
+     * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
+     */
+    public ResourceNotificationsResourceUpdatedDetails() {
+    }
 
     /**
      * Get the id property: id of the resource for which the event is being emitted.
@@ -172,7 +177,7 @@ public final class ResourceNotificationsResourceUpdatedDetails {
         return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
+    static final private ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
 
     /**
      * Get the tags property: The resource tags.

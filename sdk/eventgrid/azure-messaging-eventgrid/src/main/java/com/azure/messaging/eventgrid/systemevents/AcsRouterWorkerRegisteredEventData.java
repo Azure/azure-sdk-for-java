@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerRegistered event.
+ */
 @Fluent
 public final class AcsRouterWorkerRegisteredEventData {
     /*
@@ -48,12 +50,15 @@ public final class AcsRouterWorkerRegisteredEventData {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of AcsRouterWorkerRegisteredEventData class. */
-    public AcsRouterWorkerRegisteredEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerRegisteredEventData class.
+     */
+    public AcsRouterWorkerRegisteredEventData() {
+    }
 
     /**
      * Get the workerId property: Router Worker Registered Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -62,7 +67,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the workerId property: Router Worker Registered Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */
@@ -73,7 +78,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Get the queueAssignments property: Router Worker Registered Queue Info.
-     *
+     * 
      * @return the queueAssignments value.
      */
     public List<AcsRouterQueueDetails> getQueueAssignments() {
@@ -82,7 +87,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the queueAssignments property: Router Worker Registered Queue Info.
-     *
+     * 
      * @param queueAssignments the queueAssignments value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */
@@ -93,7 +98,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Get the channelConfigurations property: Router Worker Registered Channel Configuration.
-     *
+     * 
      * @return the channelConfigurations value.
      */
     public List<AcsRouterChannelConfiguration> getChannelConfigurations() {
@@ -102,19 +107,19 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the channelConfigurations property: Router Worker Registered Channel Configuration.
-     *
+     * 
      * @param channelConfigurations the channelConfigurations value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */
-    public AcsRouterWorkerRegisteredEventData setChannelConfigurations(
-            List<AcsRouterChannelConfiguration> channelConfigurations) {
+    public AcsRouterWorkerRegisteredEventData
+        setChannelConfigurations(List<AcsRouterChannelConfiguration> channelConfigurations) {
         this.channelConfigurations = channelConfigurations;
         return this;
     }
 
     /**
      * Get the totalCapacity property: Router Worker Register Total Capacity.
-     *
+     * 
      * @return the totalCapacity value.
      */
     public Integer getTotalCapacity() {
@@ -123,7 +128,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the totalCapacity property: Router Worker Register Total Capacity.
-     *
+     * 
      * @param totalCapacity the totalCapacity value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */
@@ -134,7 +139,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Get the labels property: Router Worker Registered Labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, String> getLabels() {
@@ -143,7 +148,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the labels property: Router Worker Registered Labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */
@@ -154,7 +159,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Get the tags property: Router Worker Registered Tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -163,7 +168,7 @@ public final class AcsRouterWorkerRegisteredEventData {
 
     /**
      * Set the tags property: Router Worker Registered Tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AcsRouterWorkerRegisteredEventData object itself.
      */

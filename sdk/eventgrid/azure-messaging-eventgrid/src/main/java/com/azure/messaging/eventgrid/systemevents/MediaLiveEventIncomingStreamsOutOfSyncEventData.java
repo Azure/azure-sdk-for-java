@@ -49,12 +49,15 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
     @JsonProperty(value = "timescaleOfMaxLastTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String timescaleOfMaxLastTimestamp;
 
-    /** Creates an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData class. */
-    public MediaLiveEventIncomingStreamsOutOfSyncEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIncomingStreamsOutOfSyncEventData class.
+     */
+    public MediaLiveEventIncomingStreamsOutOfSyncEventData() {
+    }
 
     /**
      * Get the minLastTimestamp property: Gets the minimum last timestamp received.
-     *
+     * 
      * @return the minLastTimestamp value.
      */
     public String getMinLastTimestamp() {
@@ -63,7 +66,7 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
 
     /**
      * Get the typeOfStreamWithMinLastTimestamp property: Gets the type of stream with minimum last timestamp.
-     *
+     * 
      * @return the typeOfStreamWithMinLastTimestamp value.
      */
     public String getTypeOfStreamWithMinLastTimestamp() {
@@ -72,7 +75,7 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
 
     /**
      * Get the maxLastTimestamp property: Gets the maximum timestamp among all the tracks (audio or video).
-     *
+     * 
      * @return the maxLastTimestamp value.
      */
     public String getMaxLastTimestamp() {
@@ -81,7 +84,7 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
 
     /**
      * Get the typeOfStreamWithMaxLastTimestamp property: Gets the type of stream with maximum last timestamp.
-     *
+     * 
      * @return the typeOfStreamWithMaxLastTimestamp value.
      */
     public String getTypeOfStreamWithMaxLastTimestamp() {
@@ -90,7 +93,7 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
 
     /**
      * Get the timescaleOfMinLastTimestamp property: Gets the timescale in which "MinLastTimestamp" is represented.
-     *
+     * 
      * @return the timescaleOfMinLastTimestamp value.
      */
     public String getTimescaleOfMinLastTimestamp() {
@@ -99,7 +102,7 @@ public final class MediaLiveEventIncomingStreamsOutOfSyncEventData {
 
     /**
      * Get the timescaleOfMaxLastTimestamp property: Gets the timescale in which "MaxLastTimestamp" is represented.
-     *
+     * 
      * @return the timescaleOfMaxLastTimestamp value.
      */
     public String getTimescaleOfMaxLastTimestamp() {

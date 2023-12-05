@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of common properties of all chat thread events. */
+/**
+ * Schema of common properties of all chat thread events.
+ */
 @Fluent
 public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThreadBaseProperties {
     /*
@@ -23,12 +25,15 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
     @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatThreadEventInThreadBaseProperties class. */
-    public AcsChatThreadEventInThreadBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatThreadEventInThreadBaseProperties class.
+     */
+    public AcsChatThreadEventInThreadBaseProperties() {
+    }
 
     /**
      * Get the createTime property: The original creation time of the thread.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime getCreateTime() {
@@ -37,7 +42,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the createTime property: The original creation time of the thread.
-     *
+     * 
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -48,7 +53,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Get the version property: The version of the thread.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -57,7 +62,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the version property: The version of the thread.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -66,14 +71,18 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventInThreadBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);

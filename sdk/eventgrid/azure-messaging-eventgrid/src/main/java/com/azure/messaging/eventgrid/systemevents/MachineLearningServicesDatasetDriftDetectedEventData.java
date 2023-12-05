@@ -61,12 +61,15 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
-    /** Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class. */
-    public MachineLearningServicesDatasetDriftDetectedEventData() {}
+    /**
+     * Creates an instance of MachineLearningServicesDatasetDriftDetectedEventData class.
+     */
+    public MachineLearningServicesDatasetDriftDetectedEventData() {
+    }
 
     /**
      * Get the dataDriftId property: The ID of the data drift monitor that triggered the event.
-     *
+     * 
      * @return the dataDriftId value.
      */
     public String getDataDriftId() {
@@ -75,7 +78,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the dataDriftId property: The ID of the data drift monitor that triggered the event.
-     *
+     * 
      * @param dataDriftId the dataDriftId value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -86,7 +89,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the dataDriftName property: The name of the data drift monitor that triggered the event.
-     *
+     * 
      * @return the dataDriftName value.
      */
     public String getDataDriftName() {
@@ -95,7 +98,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the dataDriftName property: The name of the data drift monitor that triggered the event.
-     *
+     * 
      * @param dataDriftName the dataDriftName value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -106,7 +109,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the runId property: The ID of the Run that detected data drift.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -115,7 +118,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the runId property: The ID of the Run that detected data drift.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -126,7 +129,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the baseDatasetId property: The ID of the base Dataset used to detect drift.
-     *
+     * 
      * @return the baseDatasetId value.
      */
     public String getBaseDatasetId() {
@@ -135,7 +138,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the baseDatasetId property: The ID of the base Dataset used to detect drift.
-     *
+     * 
      * @param baseDatasetId the baseDatasetId value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -146,7 +149,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the targetDatasetId property: The ID of the target Dataset used to detect drift.
-     *
+     * 
      * @return the targetDatasetId value.
      */
     public String getTargetDatasetId() {
@@ -155,7 +158,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the targetDatasetId property: The ID of the target Dataset used to detect drift.
-     *
+     * 
      * @param targetDatasetId the targetDatasetId value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -166,7 +169,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the driftCoefficient property: The coefficient result that triggered the event.
-     *
+     * 
      * @return the driftCoefficient value.
      */
     public Double getDriftCoefficient() {
@@ -175,7 +178,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the driftCoefficient property: The coefficient result that triggered the event.
-     *
+     * 
      * @param driftCoefficient the driftCoefficient value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -186,7 +189,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the startTime property: The start time of the target dataset time series that resulted in drift detection.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -195,7 +198,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the startTime property: The start time of the target dataset time series that resulted in drift detection.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */
@@ -206,7 +209,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Get the endTime property: The end time of the target dataset time series that resulted in drift detection.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -215,7 +218,7 @@ public final class MachineLearningServicesDatasetDriftDetectedEventData {
 
     /**
      * Set the endTime property: The end time of the target dataset time series that resulted in drift detection.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the MachineLearningServicesDatasetDriftDetectedEventData object itself.
      */

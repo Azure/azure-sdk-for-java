@@ -37,12 +37,15 @@ public final class MediaLiveEventEncoderConnectedEventData {
     @JsonProperty(value = "encoderPort", access = JsonProperty.Access.WRITE_ONLY)
     private String encoderPort;
 
-    /** Creates an instance of MediaLiveEventEncoderConnectedEventData class. */
-    public MediaLiveEventEncoderConnectedEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventEncoderConnectedEventData class.
+     */
+    public MediaLiveEventEncoderConnectedEventData() {
+    }
 
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-     *
+     * 
      * @return the ingestUrl value.
      */
     public String getIngestUrl() {
@@ -51,7 +54,7 @@ public final class MediaLiveEventEncoderConnectedEventData {
 
     /**
      * Get the streamId property: Gets the stream Id.
-     *
+     * 
      * @return the streamId value.
      */
     public String getStreamId() {
@@ -60,7 +63,7 @@ public final class MediaLiveEventEncoderConnectedEventData {
 
     /**
      * Get the encoderIp property: Gets the remote IP.
-     *
+     * 
      * @return the encoderIp value.
      */
     public String getEncoderIp() {
@@ -69,7 +72,7 @@ public final class MediaLiveEventEncoderConnectedEventData {
 
     /**
      * Get the encoderPort property: Gets the remote port.
-     *
+     * 
      * @return the encoderPort value.
      */
     public String getEncoderPort() {

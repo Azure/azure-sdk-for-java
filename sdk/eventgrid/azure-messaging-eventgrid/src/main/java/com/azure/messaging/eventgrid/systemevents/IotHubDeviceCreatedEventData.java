@@ -6,27 +6,38 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Event data for Microsoft.Devices.DeviceCreated event. */
+/**
+ * Event data for Microsoft.Devices.DeviceCreated event.
+ */
 @Fluent
 public final class IotHubDeviceCreatedEventData extends DeviceLifeCycleEventProperties {
-    /** Creates an instance of IotHubDeviceCreatedEventData class. */
-    public IotHubDeviceCreatedEventData() {}
+    /**
+     * Creates an instance of IotHubDeviceCreatedEventData class.
+     */
+    public IotHubDeviceCreatedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceCreatedEventData setDeviceId(String deviceId) {
         super.setDeviceId(deviceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceCreatedEventData setHubName(String hubName) {
         super.setHubName(hubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceCreatedEventData setTwin(DeviceTwinInfo twin) {
         super.setTwin(twin);

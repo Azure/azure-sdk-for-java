@@ -26,13 +26,16 @@ public final class ContainerRegistryEventSource {
     @JsonProperty(value = "instanceID")
     private String instanceID;
 
-    /** Creates an instance of ContainerRegistryEventSource class. */
-    public ContainerRegistryEventSource() {}
+    /**
+     * Creates an instance of ContainerRegistryEventSource class.
+     */
+    public ContainerRegistryEventSource() {
+    }
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @return the addr value.
      */
     public String getAddr() {
@@ -42,7 +45,7 @@ public final class ContainerRegistryEventSource {
     /**
      * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
      * this will be resolved by os.Hostname() along with the running port.
-     *
+     * 
      * @param addr the addr value to set.
      * @return the ContainerRegistryEventSource object itself.
      */
@@ -53,7 +56,7 @@ public final class ContainerRegistryEventSource {
 
     /**
      * Get the instanceID property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @return the instanceID value.
      */
     public String getInstanceID() {
@@ -62,7 +65,7 @@ public final class ContainerRegistryEventSource {
 
     /**
      * Set the instanceID property: The running instance of an application. Changes after each restart.
-     *
+     * 
      * @param instanceID the instanceID value to set.
      * @return the ContainerRegistryEventSource object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of JobOutput errors. */
+/**
+ * Details of JobOutput errors.
+ */
 @Immutable
 public final class MediaJobErrorDetail {
     /*
@@ -22,12 +24,15 @@ public final class MediaJobErrorDetail {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of MediaJobErrorDetail class. */
-    public MediaJobErrorDetail() {}
+    /**
+     * Creates an instance of MediaJobErrorDetail class.
+     */
+    public MediaJobErrorDetail() {
+    }
 
     /**
      * Get the code property: Code describing the error detail.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -36,7 +41,7 @@ public final class MediaJobErrorDetail {
 
     /**
      * Get the message property: A human-readable representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {

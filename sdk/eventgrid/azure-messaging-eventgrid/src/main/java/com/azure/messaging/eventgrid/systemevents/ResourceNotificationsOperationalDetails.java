@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** details of operational info. */
+/**
+ * details of operational info.
+ */
 @Fluent
 public final class ResourceNotificationsOperationalDetails {
     /*
@@ -17,12 +19,15 @@ public final class ResourceNotificationsOperationalDetails {
     @JsonProperty(value = "resourceEventTime")
     private OffsetDateTime resourceEventTime;
 
-    /** Creates an instance of ResourceNotificationsOperationalDetails class. */
-    public ResourceNotificationsOperationalDetails() {}
+    /**
+     * Creates an instance of ResourceNotificationsOperationalDetails class.
+     */
+    public ResourceNotificationsOperationalDetails() {
+    }
 
     /**
      * Get the resourceEventTime property: Date and Time when resource was updated.
-     *
+     * 
      * @return the resourceEventTime value.
      */
     public OffsetDateTime getResourceEventTime() {
@@ -31,7 +36,7 @@ public final class ResourceNotificationsOperationalDetails {
 
     /**
      * Set the resourceEventTime property: Date and Time when resource was updated.
-     *
+     * 
      * @param resourceEventTime the resourceEventTime value to set.
      * @return the ResourceNotificationsOperationalDetails object itself.
      */

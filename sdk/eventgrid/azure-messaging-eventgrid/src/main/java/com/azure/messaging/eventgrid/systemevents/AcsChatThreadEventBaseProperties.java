@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of common properties of all chat thread events. */
+/**
+ * Schema of common properties of all chat thread events.
+ */
 @Fluent
 public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties {
     /*
@@ -23,12 +25,15 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatThreadEventBaseProperties class. */
-    public AcsChatThreadEventBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatThreadEventBaseProperties class.
+     */
+    public AcsChatThreadEventBaseProperties() {
+    }
 
     /**
      * Get the createTime property: The original creation time of the thread.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime getCreateTime() {
@@ -37,7 +42,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Set the createTime property: The original creation time of the thread.
-     *
+     * 
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventBaseProperties object itself.
      */
@@ -48,7 +53,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Get the version property: The version of the thread.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -57,7 +62,7 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
 
     /**
      * Set the version property: The version of the thread.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatThreadEventBaseProperties object itself.
      */
@@ -66,22 +71,28 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatThreadEventBaseProperties setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatThreadEventBaseProperties
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);

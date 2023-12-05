@@ -43,12 +43,15 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
     @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
-    /** Creates an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData class. */
-    public MediaLiveEventIncomingVideoStreamsOutOfSyncEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIncomingVideoStreamsOutOfSyncEventData class.
+     */
+    public MediaLiveEventIncomingVideoStreamsOutOfSyncEventData() {
+    }
 
     /**
      * Get the firstTimestamp property: Gets the first timestamp received for one of the quality levels.
-     *
+     * 
      * @return the firstTimestamp value.
      */
     public String getFirstTimestamp() {
@@ -57,7 +60,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
 
     /**
      * Get the firstDuration property: Gets the duration of the data chunk with first timestamp.
-     *
+     * 
      * @return the firstDuration value.
      */
     public String getFirstDuration() {
@@ -66,7 +69,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
 
     /**
      * Get the secondTimestamp property: Gets the timestamp received for some other quality levels.
-     *
+     * 
      * @return the secondTimestamp value.
      */
     public String getSecondTimestamp() {
@@ -75,7 +78,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
 
     /**
      * Get the secondDuration property: Gets the duration of the data chunk with second timestamp.
-     *
+     * 
      * @return the secondDuration value.
      */
     public String getSecondDuration() {
@@ -84,7 +87,7 @@ public final class MediaLiveEventIncomingVideoStreamsOutOfSyncEventData {
 
     /**
      * Get the timescale property: Gets the timescale in which both the timestamps and durations are represented.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {

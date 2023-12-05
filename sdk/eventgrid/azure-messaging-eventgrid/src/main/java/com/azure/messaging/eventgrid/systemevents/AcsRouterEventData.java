@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of all Router events. */
+/**
+ * Schema of common properties of all Router events.
+ */
 @Fluent
 public class AcsRouterEventData {
     /*
@@ -28,12 +30,15 @@ public class AcsRouterEventData {
     @JsonProperty(value = "channelId")
     private String channelId;
 
-    /** Creates an instance of AcsRouterEventData class. */
-    public AcsRouterEventData() {}
+    /**
+     * Creates an instance of AcsRouterEventData class.
+     */
+    public AcsRouterEventData() {
+    }
 
     /**
      * Get the jobId property: Router Event Job ID.
-     *
+     * 
      * @return the jobId value.
      */
     public String getJobId() {
@@ -42,7 +47,7 @@ public class AcsRouterEventData {
 
     /**
      * Set the jobId property: Router Event Job ID.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the AcsRouterEventData object itself.
      */
@@ -53,7 +58,7 @@ public class AcsRouterEventData {
 
     /**
      * Get the channelReference property: Router Event Channel Reference.
-     *
+     * 
      * @return the channelReference value.
      */
     public String getChannelReference() {
@@ -62,7 +67,7 @@ public class AcsRouterEventData {
 
     /**
      * Set the channelReference property: Router Event Channel Reference.
-     *
+     * 
      * @param channelReference the channelReference value to set.
      * @return the AcsRouterEventData object itself.
      */
@@ -73,7 +78,7 @@ public class AcsRouterEventData {
 
     /**
      * Get the channelId property: Router Event Channel ID.
-     *
+     * 
      * @return the channelId value.
      */
     public String getChannelId() {
@@ -82,7 +87,7 @@ public class AcsRouterEventData {
 
     /**
      * Set the channelId property: Router Event Channel ID.
-     *
+     * 
      * @param channelId the channelId value to set.
      * @return the AcsRouterEventData object itself.
      */

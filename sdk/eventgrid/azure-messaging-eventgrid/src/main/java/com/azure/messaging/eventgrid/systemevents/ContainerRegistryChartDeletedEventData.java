@@ -7,51 +7,68 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event.
+ */
 @Fluent
 public final class ContainerRegistryChartDeletedEventData extends ContainerRegistryArtifactEventData {
-    /** Creates an instance of ContainerRegistryChartDeletedEventData class. */
-    public ContainerRegistryChartDeletedEventData() {}
+    /**
+     * Creates an instance of ContainerRegistryChartDeletedEventData class.
+     */
+    public ContainerRegistryChartDeletedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartDeletedEventData setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartDeletedEventData setTimestamp(OffsetDateTime timestamp) {
         super.setTimestamp(timestamp);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartDeletedEventData setAction(String action) {
         super.setAction(action);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartDeletedEventData setLocation(String location) {
         super.setLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerRegistryChartDeletedEventData setTarget(ContainerRegistryArtifactEventTarget target) {
         super.setTarget(target);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ContainerRegistryChartDeletedEventData setConnectedRegistry(
-            ContainerRegistryEventConnectedRegistry connectedRegistry) {
+    public ContainerRegistryChartDeletedEventData
+        setConnectedRegistry(ContainerRegistryEventConnectedRegistry connectedRegistry) {
         super.setConnectedRegistry(connectedRegistry);
         return this;
     }

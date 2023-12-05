@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed information about the status if any. */
+/**
+ * Detailed information about the status if any.
+ */
 @Fluent
 public final class AcsEmailDeliveryReportStatusDetails {
     /*
@@ -16,12 +18,15 @@ public final class AcsEmailDeliveryReportStatusDetails {
     @JsonProperty(value = "statusMessage")
     private String statusMessage;
 
-    /** Creates an instance of AcsEmailDeliveryReportStatusDetails class. */
-    public AcsEmailDeliveryReportStatusDetails() {}
+    /**
+     * Creates an instance of AcsEmailDeliveryReportStatusDetails class.
+     */
+    public AcsEmailDeliveryReportStatusDetails() {
+    }
 
     /**
      * Get the statusMessage property: Detailed status message.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String getStatusMessage() {
@@ -30,7 +35,7 @@ public final class AcsEmailDeliveryReportStatusDetails {
 
     /**
      * Set the statusMessage property: Detailed status message.
-     *
+     * 
      * @param statusMessage the statusMessage value to set.
      * @return the AcsEmailDeliveryReportStatusDetails object itself.
      */

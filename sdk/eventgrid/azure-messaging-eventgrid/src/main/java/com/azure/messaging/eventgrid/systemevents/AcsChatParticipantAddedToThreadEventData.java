@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadParticipantAdded event.
+ */
 @Fluent
 public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEventInThreadBaseProperties {
     /*
@@ -35,12 +37,15 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
     @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatParticipantAddedToThreadEventData class. */
-    public AcsChatParticipantAddedToThreadEventData() {}
+    /**
+     * Creates an instance of AcsChatParticipantAddedToThreadEventData class.
+     */
+    public AcsChatParticipantAddedToThreadEventData() {
+    }
 
     /**
      * Get the time property: The time at which the user was added to the thread.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -49,7 +54,7 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
 
     /**
      * Set the time property: The time at which the user was added to the thread.
-     *
+     * 
      * @param time the time value to set.
      * @return the AcsChatParticipantAddedToThreadEventData object itself.
      */
@@ -60,7 +65,7 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
 
     /**
      * Get the addedByCommunicationIdentifier property: The communication identifier of the user who added the user.
-     *
+     * 
      * @return the addedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getAddedByCommunicationIdentifier() {
@@ -69,19 +74,19 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
 
     /**
      * Set the addedByCommunicationIdentifier property: The communication identifier of the user who added the user.
-     *
+     * 
      * @param addedByCommunicationIdentifier the addedByCommunicationIdentifier value to set.
      * @return the AcsChatParticipantAddedToThreadEventData object itself.
      */
-    public AcsChatParticipantAddedToThreadEventData setAddedByCommunicationIdentifier(
-            CommunicationIdentifierModel addedByCommunicationIdentifier) {
+    public AcsChatParticipantAddedToThreadEventData
+        setAddedByCommunicationIdentifier(CommunicationIdentifierModel addedByCommunicationIdentifier) {
         this.addedByCommunicationIdentifier = addedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the participantAdded property: The details of the user who was added.
-     *
+     * 
      * @return the participantAdded value.
      */
     public AcsChatThreadParticipantProperties getParticipantAdded() {
@@ -90,19 +95,19 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
 
     /**
      * Set the participantAdded property: The details of the user who was added.
-     *
+     * 
      * @param participantAdded the participantAdded value to set.
      * @return the AcsChatParticipantAddedToThreadEventData object itself.
      */
-    public AcsChatParticipantAddedToThreadEventData setParticipantAdded(
-            AcsChatThreadParticipantProperties participantAdded) {
+    public AcsChatParticipantAddedToThreadEventData
+        setParticipantAdded(AcsChatThreadParticipantProperties participantAdded) {
         this.participantAdded = participantAdded;
         return this;
     }
 
     /**
      * Get the version property: The version of the thread.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -111,7 +116,7 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
 
     /**
      * Set the version property: The version of the thread.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatParticipantAddedToThreadEventData object itself.
      */
@@ -120,14 +125,18 @@ public final class AcsChatParticipantAddedToThreadEventData extends AcsChatEvent
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

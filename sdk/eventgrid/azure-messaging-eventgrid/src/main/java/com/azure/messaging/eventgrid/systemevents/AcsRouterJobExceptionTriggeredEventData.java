@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobExceptionTriggered event.
+ */
 @Fluent
 public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobEventData {
     /*
@@ -23,12 +25,15 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
     @JsonProperty(value = "exceptionRuleId")
     private String exceptionRuleId;
 
-    /** Creates an instance of AcsRouterJobExceptionTriggeredEventData class. */
-    public AcsRouterJobExceptionTriggeredEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobExceptionTriggeredEventData class.
+     */
+    public AcsRouterJobExceptionTriggeredEventData() {
+    }
 
     /**
      * Get the ruleKey property: Router Job Exception Triggered Rule Key.
-     *
+     * 
      * @return the ruleKey value.
      */
     public String getRuleKey() {
@@ -37,7 +42,7 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
 
     /**
      * Set the ruleKey property: Router Job Exception Triggered Rule Key.
-     *
+     * 
      * @param ruleKey the ruleKey value to set.
      * @return the AcsRouterJobExceptionTriggeredEventData object itself.
      */
@@ -48,7 +53,7 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
 
     /**
      * Get the exceptionRuleId property: Router Job Exception Triggered Rule Id.
-     *
+     * 
      * @return the exceptionRuleId value.
      */
     public String getExceptionRuleId() {
@@ -57,7 +62,7 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
 
     /**
      * Set the exceptionRuleId property: Router Job Exception Triggered Rule Id.
-     *
+     * 
      * @param exceptionRuleId the exceptionRuleId value to set.
      * @return the AcsRouterJobExceptionTriggeredEventData object itself.
      */
@@ -66,42 +71,54 @@ public final class AcsRouterJobExceptionTriggeredEventData extends AcsRouterJobE
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobExceptionTriggeredEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

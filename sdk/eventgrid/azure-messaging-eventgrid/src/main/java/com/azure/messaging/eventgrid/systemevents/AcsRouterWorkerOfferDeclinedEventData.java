@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferDeclined event.
+ */
 @Fluent
 public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorkerEventData {
     /*
@@ -22,12 +24,15 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
     @JsonProperty(value = "offerId")
     private String offerId;
 
-    /** Creates an instance of AcsRouterWorkerOfferDeclinedEventData class. */
-    public AcsRouterWorkerOfferDeclinedEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerOfferDeclinedEventData class.
+     */
+    public AcsRouterWorkerOfferDeclinedEventData() {
+    }
 
     /**
      * Get the queueId property: Router Worker Offer Declined Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -36,7 +41,7 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
 
     /**
      * Set the queueId property: Router Worker Offer Declined Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
      */
@@ -47,7 +52,7 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
 
     /**
      * Get the offerId property: Router Worker Offer Declined Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String getOfferId() {
@@ -56,7 +61,7 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
 
     /**
      * Set the offerId property: Router Worker Offer Declined Offer Id.
-     *
+     * 
      * @param offerId the offerId value to set.
      * @return the AcsRouterWorkerOfferDeclinedEventData object itself.
      */
@@ -65,28 +70,36 @@ public final class AcsRouterWorkerOfferDeclinedEventData extends AcsRouterWorker
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferDeclinedEventData setWorkerId(String workerId) {
         super.setWorkerId(workerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferDeclinedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferDeclinedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferDeclinedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

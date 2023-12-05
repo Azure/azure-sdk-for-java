@@ -56,12 +56,15 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
     @JsonProperty(value = "engagementType")
     private AcsUserEngagement engagement;
 
-    /** Creates an instance of AcsEmailEngagementTrackingReportReceivedEventData class. */
-    public AcsEmailEngagementTrackingReportReceivedEventData() {}
+    /**
+     * Creates an instance of AcsEmailEngagementTrackingReportReceivedEventData class.
+     */
+    public AcsEmailEngagementTrackingReportReceivedEventData() {
+    }
 
     /**
      * Get the sender property: The Sender Email Address.
-     *
+     * 
      * @return the sender value.
      */
     public String getSender() {
@@ -70,7 +73,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the sender property: The Sender Email Address.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
@@ -81,7 +84,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Get the recipient property: The Recipient Email Address.
-     *
+     * 
      * @return the recipient value.
      */
     public String getRecipient() {
@@ -90,7 +93,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the recipient property: The Recipient Email Address.
-     *
+     * 
      * @param recipient the recipient value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
@@ -101,7 +104,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Get the messageId property: The Id of the email that has been sent.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -110,7 +113,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the messageId property: The Id of the email that has been sent.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
@@ -121,7 +124,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Get the userActionTimestamp property: The time at which the user interacted with the email.
-     *
+     * 
      * @return the userActionTimestamp value.
      */
     public OffsetDateTime getUserActionTimestamp() {
@@ -130,19 +133,19 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the userActionTimestamp property: The time at which the user interacted with the email.
-     *
+     * 
      * @param userActionTimestamp the userActionTimestamp value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
-    public AcsEmailEngagementTrackingReportReceivedEventData setUserActionTimestamp(
-            OffsetDateTime userActionTimestamp) {
+    public AcsEmailEngagementTrackingReportReceivedEventData
+        setUserActionTimestamp(OffsetDateTime userActionTimestamp) {
         this.userActionTimestamp = userActionTimestamp;
         return this;
     }
 
     /**
      * Get the engagementContext property: The context of the type of engagement user had with email.
-     *
+     * 
      * @return the engagementContext value.
      */
     public String getEngagementContext() {
@@ -151,7 +154,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the engagementContext property: The context of the type of engagement user had with email.
-     *
+     * 
      * @param engagementContext the engagementContext value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
@@ -162,7 +165,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Get the userAgent property: The user agent interacting with the email.
-     *
+     * 
      * @return the userAgent value.
      */
     public String getUserAgent() {
@@ -171,7 +174,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the userAgent property: The user agent interacting with the email.
-     *
+     * 
      * @param userAgent the userAgent value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */
@@ -182,7 +185,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Get the engagement property: The type of engagement user have with email.
-     *
+     * 
      * @return the engagement value.
      */
     public AcsUserEngagement getEngagement() {
@@ -191,7 +194,7 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
 
     /**
      * Set the engagement property: The type of engagement user have with email.
-     *
+     * 
      * @param engagement the engagement value to set.
      * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
      */

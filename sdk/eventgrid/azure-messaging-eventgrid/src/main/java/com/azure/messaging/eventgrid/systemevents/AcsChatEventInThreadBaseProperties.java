@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of all thread-level chat events. */
+/**
+ * Schema of common properties of all thread-level chat events.
+ */
 @Fluent
 public class AcsChatEventInThreadBaseProperties {
     /*
@@ -22,12 +24,15 @@ public class AcsChatEventInThreadBaseProperties {
     @JsonProperty(value = "threadId")
     private String threadId;
 
-    /** Creates an instance of AcsChatEventInThreadBaseProperties class. */
-    public AcsChatEventInThreadBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatEventInThreadBaseProperties class.
+     */
+    public AcsChatEventInThreadBaseProperties() {
+    }
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @return the transactionId value.
      */
     public String getTransactionId() {
@@ -36,7 +41,7 @@ public class AcsChatEventInThreadBaseProperties {
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */
@@ -47,7 +52,7 @@ public class AcsChatEventInThreadBaseProperties {
 
     /**
      * Get the threadId property: The chat thread id.
-     *
+     * 
      * @return the threadId value.
      */
     public String getThreadId() {
@@ -56,7 +61,7 @@ public class AcsChatEventInThreadBaseProperties {
 
     /**
      * Set the threadId property: The chat thread id.
-     *
+     * 
      * @param threadId the threadId value to set.
      * @return the AcsChatEventInThreadBaseProperties object itself.
      */

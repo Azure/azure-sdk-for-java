@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobQueued event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobQueued event.
+ */
 @Fluent
 public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
     /*
@@ -30,12 +32,15 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
     @JsonProperty(value = "requestedWorkerSelectors")
     private List<AcsRouterWorkerSelector> requestedWorkerSelectors;
 
-    /** Creates an instance of AcsRouterJobQueuedEventData class. */
-    public AcsRouterJobQueuedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobQueuedEventData class.
+     */
+    public AcsRouterJobQueuedEventData() {
+    }
 
     /**
      * Get the priority property: Router Job Priority.
-     *
+     * 
      * @return the priority value.
      */
     public Integer getPriority() {
@@ -44,7 +49,7 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the priority property: Router Job Priority.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
@@ -55,7 +60,7 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the attachedWorkerSelectors property: Router Job Queued Attached Worker Selector.
-     *
+     * 
      * @return the attachedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getAttachedWorkerSelectors() {
@@ -64,19 +69,19 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the attachedWorkerSelectors property: Router Job Queued Attached Worker Selector.
-     *
+     * 
      * @param attachedWorkerSelectors the attachedWorkerSelectors value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
-    public AcsRouterJobQueuedEventData setAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
+    public AcsRouterJobQueuedEventData
+        setAttachedWorkerSelectors(List<AcsRouterWorkerSelector> attachedWorkerSelectors) {
         this.attachedWorkerSelectors = attachedWorkerSelectors;
         return this;
     }
 
     /**
      * Get the requestedWorkerSelectors property: Router Job Queued Requested Worker Selector.
-     *
+     * 
      * @return the requestedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getRequestedWorkerSelectors() {
@@ -85,52 +90,64 @@ public final class AcsRouterJobQueuedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the requestedWorkerSelectors property: Router Job Queued Requested Worker Selector.
-     *
+     * 
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the AcsRouterJobQueuedEventData object itself.
      */
-    public AcsRouterJobQueuedEventData setRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
+    public AcsRouterJobQueuedEventData
+        setRequestedWorkerSelectors(List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobQueuedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

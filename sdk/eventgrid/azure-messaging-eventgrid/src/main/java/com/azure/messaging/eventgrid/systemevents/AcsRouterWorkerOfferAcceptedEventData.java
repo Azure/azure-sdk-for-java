@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferAccepted event.
+ */
 @Fluent
 public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorkerEventData {
     /*
@@ -59,12 +61,15 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
     @JsonProperty(value = "jobTags")
     private Map<String, String> jobTags;
 
-    /** Creates an instance of AcsRouterWorkerOfferAcceptedEventData class. */
-    public AcsRouterWorkerOfferAcceptedEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerOfferAcceptedEventData class.
+     */
+    public AcsRouterWorkerOfferAcceptedEventData() {
+    }
 
     /**
      * Get the queueId property: Router Worker Offer Accepted Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -73,7 +78,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the queueId property: Router Worker Offer Accepted Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -84,7 +89,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the offerId property: Router Worker Offer Accepted Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String getOfferId() {
@@ -93,7 +98,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the offerId property: Router Worker Offer Accepted Offer Id.
-     *
+     * 
      * @param offerId the offerId value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -104,7 +109,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the assignmentId property: Router Worker Offer Accepted Assignment Id.
-     *
+     * 
      * @return the assignmentId value.
      */
     public String getAssignmentId() {
@@ -113,7 +118,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the assignmentId property: Router Worker Offer Accepted Assignment Id.
-     *
+     * 
      * @param assignmentId the assignmentId value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -124,7 +129,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the jobPriority property: Router Worker Offer Accepted Job Priority.
-     *
+     * 
      * @return the jobPriority value.
      */
     public Integer getJobPriority() {
@@ -133,7 +138,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the jobPriority property: Router Worker Offer Accepted Job Priority.
-     *
+     * 
      * @param jobPriority the jobPriority value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -144,7 +149,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the workerLabels property: Router Worker Offer Accepted Worker Labels.
-     *
+     * 
      * @return the workerLabels value.
      */
     public Map<String, String> getWorkerLabels() {
@@ -153,7 +158,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the workerLabels property: Router Worker Offer Accepted Worker Labels.
-     *
+     * 
      * @param workerLabels the workerLabels value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -164,7 +169,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the workerTags property: Router Worker Offer Accepted Worker Tags.
-     *
+     * 
      * @return the workerTags value.
      */
     public Map<String, String> getWorkerTags() {
@@ -173,7 +178,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the workerTags property: Router Worker Offer Accepted Worker Tags.
-     *
+     * 
      * @param workerTags the workerTags value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -184,7 +189,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the jobLabels property: Router Worker Offer Accepted Job Labels.
-     *
+     * 
      * @return the jobLabels value.
      */
     public Map<String, String> getJobLabels() {
@@ -193,7 +198,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the jobLabels property: Router Worker Offer Accepted Job Labels.
-     *
+     * 
      * @param jobLabels the jobLabels value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -204,7 +209,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Get the jobTags property: Router Worker Offer Accepted Job Tags.
-     *
+     * 
      * @return the jobTags value.
      */
     public Map<String, String> getJobTags() {
@@ -213,7 +218,7 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
 
     /**
      * Set the jobTags property: Router Worker Offer Accepted Job Tags.
-     *
+     * 
      * @param jobTags the jobTags value to set.
      * @return the AcsRouterWorkerOfferAcceptedEventData object itself.
      */
@@ -222,28 +227,36 @@ public final class AcsRouterWorkerOfferAcceptedEventData extends AcsRouterWorker
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferAcceptedEventData setWorkerId(String workerId) {
         super.setWorkerId(workerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferAcceptedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferAcceptedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferAcceptedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

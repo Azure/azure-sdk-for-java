@@ -9,7 +9,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobReceived event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobReceived event.
+ */
 @Fluent
 public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
 
@@ -49,8 +51,11 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
     @JsonProperty(value = "unavailableForMatching", required = true)
     private boolean unavailableForMatching;
 
-    /** Creates an instance of AcsRouterJobReceivedEventData class. */
-    public AcsRouterJobReceivedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobReceivedEventData class.
+     */
+    public AcsRouterJobReceivedEventData() {
+    }
 
     /**
      * Get the jobStatus property: Router Job Received Job Status.
@@ -127,8 +132,8 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
      * @param requestedWorkerSelectors the requestedWorkerSelectors value to set.
      * @return the AcsRouterJobReceivedEventData object itself.
      */
-    public AcsRouterJobReceivedEventData setRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
+    public AcsRouterJobReceivedEventData
+        setRequestedWorkerSelectors(List<AcsRouterWorkerSelector> requestedWorkerSelectors) {
         this.requestedWorkerSelectors = requestedWorkerSelectors;
         return this;
     }
@@ -173,42 +178,54 @@ public final class AcsRouterJobReceivedEventData extends AcsRouterJobEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobReceivedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

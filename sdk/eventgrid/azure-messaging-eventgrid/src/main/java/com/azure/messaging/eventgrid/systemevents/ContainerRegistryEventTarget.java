@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The target of the event. */
+/**
+ * The target of the event.
+ */
 @Fluent
 public final class ContainerRegistryEventTarget {
     /*
@@ -52,12 +54,15 @@ public final class ContainerRegistryEventTarget {
     @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of ContainerRegistryEventTarget class. */
-    public ContainerRegistryEventTarget() {}
+    /**
+     * Creates an instance of ContainerRegistryEventTarget class.
+     */
+    public ContainerRegistryEventTarget() {
+    }
 
     /**
      * Get the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -66,7 +71,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the mediaType property: The MIME type of the referenced object.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -77,7 +82,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @return the size value.
      */
     public Long getSize() {
@@ -86,7 +91,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the size property: The number of bytes of the content. Same as Length field.
-     *
+     * 
      * @param size the size value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -97,7 +102,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -106,7 +111,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the digest property: The digest of the content, as defined by the Registry V2 HTTP API Specification.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -117,7 +122,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @return the length value.
      */
     public Long getLength() {
@@ -126,7 +131,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the length property: The number of bytes of the content. Same as Size field.
-     *
+     * 
      * @param length the length value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -137,7 +142,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the repository property: The repository name.
-     *
+     * 
      * @return the repository value.
      */
     public String getRepository() {
@@ -146,7 +151,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the repository property: The repository name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -157,7 +162,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the url property: The direct URL to the content.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -166,7 +171,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the url property: The direct URL to the content.
-     *
+     * 
      * @param url the url value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */
@@ -177,7 +182,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Get the tag property: The tag name.
-     *
+     * 
      * @return the tag value.
      */
     public String getTag() {
@@ -186,7 +191,7 @@ public final class ContainerRegistryEventTarget {
 
     /**
      * Set the tag property: The tag name.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the ContainerRegistryEventTarget object itself.
      */

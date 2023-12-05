@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event. */
+/**
+ * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event.
+ */
 @Fluent
 public final class AcsUserDisconnectedEventData {
     /*
@@ -16,12 +18,15 @@ public final class AcsUserDisconnectedEventData {
     @JsonProperty(value = "userCommunicationIdentifier")
     private CommunicationIdentifierModel userCommunicationIdentifier;
 
-    /** Creates an instance of AcsUserDisconnectedEventData class. */
-    public AcsUserDisconnectedEventData() {}
+    /**
+     * Creates an instance of AcsUserDisconnectedEventData class.
+     */
+    public AcsUserDisconnectedEventData() {
+    }
 
     /**
      * Get the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
-     *
+     * 
      * @return the userCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getUserCommunicationIdentifier() {
@@ -30,12 +35,12 @@ public final class AcsUserDisconnectedEventData {
 
     /**
      * Set the userCommunicationIdentifier property: The communication identifier of the user who was disconnected.
-     *
+     * 
      * @param userCommunicationIdentifier the userCommunicationIdentifier value to set.
      * @return the AcsUserDisconnectedEventData object itself.
      */
-    public AcsUserDisconnectedEventData setUserCommunicationIdentifier(
-            CommunicationIdentifierModel userCommunicationIdentifier) {
+    public AcsUserDisconnectedEventData
+        setUserCommunicationIdentifier(CommunicationIdentifierModel userCommunicationIdentifier) {
         this.userCommunicationIdentifier = userCommunicationIdentifier;
         return this;
     }

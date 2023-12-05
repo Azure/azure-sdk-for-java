@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled event.
+ */
 @Fluent
 public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData {
     /*
@@ -23,12 +25,15 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of AcsRouterJobCancelledEventData class. */
-    public AcsRouterJobCancelledEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobCancelledEventData class.
+     */
+    public AcsRouterJobCancelledEventData() {
+    }
 
     /**
      * Get the note property: Router Job Note.
-     *
+     * 
      * @return the note value.
      */
     public String getNote() {
@@ -37,7 +42,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Set the note property: Router Job Note.
-     *
+     * 
      * @param note the note value to set.
      * @return the AcsRouterJobCancelledEventData object itself.
      */
@@ -48,7 +53,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Get the dispositionCode property: Router Job Disposition Code.
-     *
+     * 
      * @return the dispositionCode value.
      */
     public String getDispositionCode() {
@@ -57,7 +62,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Set the dispositionCode property: Router Job Disposition Code.
-     *
+     * 
      * @param dispositionCode the dispositionCode value to set.
      * @return the AcsRouterJobCancelledEventData object itself.
      */
@@ -66,42 +71,54 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

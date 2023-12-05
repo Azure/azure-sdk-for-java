@@ -13,17 +13,24 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputCanceledEventData extends MediaJobOutputStateChangeEventData {
-    /** Creates an instance of MediaJobOutputCanceledEventData class. */
-    public MediaJobOutputCanceledEventData() {}
+    /**
+     * Creates an instance of MediaJobOutputCanceledEventData class.
+     */
+    public MediaJobOutputCanceledEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputCanceledEventData setOutput(MediaJobOutput output) {
         super.setOutput(output);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputCanceledEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
         super.setJobCorrelationData(jobCorrelationData);

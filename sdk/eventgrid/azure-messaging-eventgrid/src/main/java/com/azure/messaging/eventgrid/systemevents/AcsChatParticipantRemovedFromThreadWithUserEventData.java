@@ -32,12 +32,15 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
     @JsonProperty(value = "participantRemoved")
     private AcsChatThreadParticipantProperties participantRemoved;
 
-    /** Creates an instance of AcsChatParticipantRemovedFromThreadWithUserEventData class. */
-    public AcsChatParticipantRemovedFromThreadWithUserEventData() {}
+    /**
+     * Creates an instance of AcsChatParticipantRemovedFromThreadWithUserEventData class.
+     */
+    public AcsChatParticipantRemovedFromThreadWithUserEventData() {
+    }
 
     /**
      * Get the time property: The time at which the user was removed to the thread.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -46,7 +49,7 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
 
     /**
      * Set the time property: The time at which the user was removed to the thread.
-     *
+     * 
      * @param time the time value to set.
      * @return the AcsChatParticipantRemovedFromThreadWithUserEventData object itself.
      */
@@ -56,8 +59,9 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
     }
 
     /**
-     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
-     *
+     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
+     * user.
+     * 
      * @return the removedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getRemovedByCommunicationIdentifier() {
@@ -65,20 +69,21 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
     }
 
     /**
-     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
-     *
+     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
+     * user.
+     * 
      * @param removedByCommunicationIdentifier the removedByCommunicationIdentifier value to set.
      * @return the AcsChatParticipantRemovedFromThreadWithUserEventData object itself.
      */
-    public AcsChatParticipantRemovedFromThreadWithUserEventData setRemovedByCommunicationIdentifier(
-            CommunicationIdentifierModel removedByCommunicationIdentifier) {
+    public AcsChatParticipantRemovedFromThreadWithUserEventData
+        setRemovedByCommunicationIdentifier(CommunicationIdentifierModel removedByCommunicationIdentifier) {
         this.removedByCommunicationIdentifier = removedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the participantRemoved property: The details of the user who was removed.
-     *
+     * 
      * @return the participantRemoved value.
      */
     public AcsChatThreadParticipantProperties getParticipantRemoved() {
@@ -87,46 +92,56 @@ public final class AcsChatParticipantRemovedFromThreadWithUserEventData extends 
 
     /**
      * Set the participantRemoved property: The details of the user who was removed.
-     *
+     * 
      * @param participantRemoved the participantRemoved value to set.
      * @return the AcsChatParticipantRemovedFromThreadWithUserEventData object itself.
      */
-    public AcsChatParticipantRemovedFromThreadWithUserEventData setParticipantRemoved(
-            AcsChatThreadParticipantProperties participantRemoved) {
+    public AcsChatParticipantRemovedFromThreadWithUserEventData
+        setParticipantRemoved(AcsChatThreadParticipantProperties participantRemoved) {
         this.participantRemoved = participantRemoved;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadWithUserEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadWithUserEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatParticipantRemovedFromThreadWithUserEventData setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatParticipantRemovedFromThreadWithUserEventData
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadWithUserEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadWithUserEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

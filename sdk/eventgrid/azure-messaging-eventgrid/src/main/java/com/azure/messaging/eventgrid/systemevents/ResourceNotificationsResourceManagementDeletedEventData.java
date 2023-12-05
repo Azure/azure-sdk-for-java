@@ -6,25 +6,34 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.Deleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ResourceNotifications.Resources.Deleted event.
+ */
 @Fluent
 public final class ResourceNotificationsResourceManagementDeletedEventData
-        extends ResourceNotificationsResourceDeletedEventData {
-    /** Creates an instance of ResourceNotificationsResourceManagementDeletedEventData class. */
-    public ResourceNotificationsResourceManagementDeletedEventData() {}
+    extends ResourceNotificationsResourceDeletedEventData {
+    /**
+     * Creates an instance of ResourceNotificationsResourceManagementDeletedEventData class.
+     */
+    public ResourceNotificationsResourceManagementDeletedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsResourceManagementDeletedEventData setResourceDetails(
-            ResourceNotificationsResourceDeletedDetails resourceDetails) {
+    public ResourceNotificationsResourceManagementDeletedEventData
+        setResourceDetails(ResourceNotificationsResourceDeletedDetails resourceDetails) {
         super.setResourceDetails(resourceDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsResourceManagementDeletedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsResourceManagementDeletedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         super.setOperationalDetails(operationalDetails);
         return this;
     }

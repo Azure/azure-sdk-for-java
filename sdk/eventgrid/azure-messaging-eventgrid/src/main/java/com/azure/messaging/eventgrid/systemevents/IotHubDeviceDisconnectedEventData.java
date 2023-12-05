@@ -6,37 +6,50 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Event data for Microsoft.Devices.DeviceDisconnected event. */
+/**
+ * Event data for Microsoft.Devices.DeviceDisconnected event.
+ */
 @Fluent
 public final class IotHubDeviceDisconnectedEventData extends DeviceConnectionStateEventProperties {
-    /** Creates an instance of IotHubDeviceDisconnectedEventData class. */
-    public IotHubDeviceDisconnectedEventData() {}
+    /**
+     * Creates an instance of IotHubDeviceDisconnectedEventData class.
+     */
+    public IotHubDeviceDisconnectedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDisconnectedEventData setDeviceId(String deviceId) {
         super.setDeviceId(deviceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDisconnectedEventData setModuleId(String moduleId) {
         super.setModuleId(moduleId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDisconnectedEventData setHubName(String hubName) {
         super.setHubName(hubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IotHubDeviceDisconnectedEventData setDeviceConnectionStateEventInfo(
-            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+    public IotHubDeviceDisconnectedEventData
+        setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
         super.setDeviceConnectionStateEventInfo(deviceConnectionStateEventInfo);
         return this;
     }

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the schema of the common properties across all ARN system topic events. */
+/**
+ * Describes the schema of the common properties across all ARN system topic events.
+ */
 @Fluent
 public class ResourceNotificationsResourceUpdatedEventData {
     /*
@@ -28,12 +30,15 @@ public class ResourceNotificationsResourceUpdatedEventData {
     @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
-    /** Creates an instance of ResourceNotificationsResourceUpdatedEventData class. */
-    public ResourceNotificationsResourceUpdatedEventData() {}
+    /**
+     * Creates an instance of ResourceNotificationsResourceUpdatedEventData class.
+     */
+    public ResourceNotificationsResourceUpdatedEventData() {
+    }
 
     /**
      * Get the resourceDetails property: resourceInfo details for update event.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceNotificationsResourceUpdatedDetails getResourceDetails() {
@@ -42,19 +47,19 @@ public class ResourceNotificationsResourceUpdatedEventData {
 
     /**
      * Set the resourceDetails property: resourceInfo details for update event.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the ResourceNotificationsResourceUpdatedEventData object itself.
      */
-    public ResourceNotificationsResourceUpdatedEventData setResourceDetails(
-            ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+    public ResourceNotificationsResourceUpdatedEventData
+        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
         this.resourceDetails = resourceDetails;
         return this;
     }
 
     /**
      * Get the operationalDetails property: details about operational info.
-     *
+     * 
      * @return the operationalDetails value.
      */
     public ResourceNotificationsOperationalDetails getOperationalDetails() {
@@ -63,19 +68,19 @@ public class ResourceNotificationsResourceUpdatedEventData {
 
     /**
      * Set the operationalDetails property: details about operational info.
-     *
+     * 
      * @param operationalDetails the operationalDetails value to set.
      * @return the ResourceNotificationsResourceUpdatedEventData object itself.
      */
-    public ResourceNotificationsResourceUpdatedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsResourceUpdatedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         this.operationalDetails = operationalDetails;
         return this;
     }
 
     /**
      * Get the apiVersion property: api version of the resource properties bag.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -84,7 +89,7 @@ public class ResourceNotificationsResourceUpdatedEventData {
 
     /**
      * Set the apiVersion property: api version of the resource properties bag.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the ResourceNotificationsResourceUpdatedEventData object itself.
      */

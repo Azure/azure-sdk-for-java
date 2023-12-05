@@ -110,15 +110,17 @@ public final class MediaLiveEventIngestHeartbeatEventData {
      */
     @JsonProperty(value = "healthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean healthy;
-
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventIngestHeartbeatEventData.class);
 
-    /** Creates an instance of MediaLiveEventIngestHeartbeatEventData class. */
-    public MediaLiveEventIngestHeartbeatEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIngestHeartbeatEventData class.
+     */
+    public MediaLiveEventIngestHeartbeatEventData() {
+    }
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
+     * 
      * @return the trackType value.
      */
     public String getTrackType() {
@@ -127,7 +129,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the trackName property: Gets the track name.
-     *
+     * 
      * @return the trackName value.
      */
     public String getTrackName() {
@@ -136,7 +138,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the transcriptionLanguage property: Gets the Live Transcription language.
-     *
+     * 
      * @return the transcriptionLanguage value.
      */
     public String getTranscriptionLanguage() {
@@ -145,7 +147,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the transcriptionState property: Gets the Live Transcription state.
-     *
+     * 
      * @return the transcriptionState value.
      */
     public String getTranscriptionState() {
@@ -154,7 +156,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the bitrate property: Gets the bitrate of the track.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long getBitrate() {
@@ -163,7 +165,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the incomingBitrate property: Gets the incoming bitrate.
-     *
+     * 
      * @return the incomingBitrate value.
      */
     public Long getIncomingBitrate() {
@@ -172,7 +174,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the ingestDriftValue property: Gets the track ingest drift value.
-     *
+     * 
      * @return the ingestDriftValue value.
      */
     public Integer getIngestDriftValue() {
@@ -189,7 +191,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the lastFragmentArrivalTime property: Gets the arrival UTC time of the last fragment.
-     *
+     * 
      * @return the lastFragmentArrivalTime value.
      */
     public OffsetDateTime getLastFragmentArrivalTime() {
@@ -198,7 +200,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the lastTimestamp property: Gets the last timestamp.
-     *
+     * 
      * @return the lastTimestamp value.
      */
     public String getLastTimestamp() {
@@ -207,7 +209,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the timescale property: Gets the timescale of the last timestamp.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {
@@ -216,7 +218,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the overlapCount property: Gets the fragment Overlap count.
-     *
+     * 
      * @return the overlapCount value.
      */
     public Long getOverlapCount() {
@@ -225,7 +227,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the discontinuityCount property: Gets the fragment Discontinuity count.
-     *
+     * 
      * @return the discontinuityCount value.
      */
     public Long getDiscontinuityCount() {
@@ -234,7 +236,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the nonincreasingCount property: Gets Non increasing count.
-     *
+     * 
      * @return the nonincreasingCount value.
      */
     public Long getNonincreasingCount() {
@@ -243,7 +245,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the unexpectedBitrate property: Gets a value indicating whether unexpected bitrate is present or not.
-     *
+     * 
      * @return the unexpectedBitrate value.
      */
     public Boolean isUnexpectedBitrate() {
@@ -252,7 +254,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the state property: Gets the state of the live event.
-     *
+     * 
      * @return the state value.
      */
     public String getState() {
@@ -261,7 +263,7 @@ public final class MediaLiveEventIngestHeartbeatEventData {
 
     /**
      * Get the healthy property: Gets a value indicating whether preview is healthy or not.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean isHealthy() {

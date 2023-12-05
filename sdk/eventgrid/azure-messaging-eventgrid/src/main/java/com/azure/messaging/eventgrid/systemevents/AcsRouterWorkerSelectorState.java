@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Router Job Worker Selector State. */
+/**
+ * Router Job Worker Selector State.
+ */
 public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<AcsRouterWorkerSelectorState> {
-    /** Router Job Worker Selector is Active. */
+    /**
+     * Router Job Worker Selector is Active.
+     */
     public static final AcsRouterWorkerSelectorState ACTIVE = fromString("active");
 
-    /** Router Job Worker Selector has Expire. */
+    /**
+     * Router Job Worker Selector has Expire.
+     */
     public static final AcsRouterWorkerSelectorState EXPIRED = fromString("expired");
 
     /**
      * Creates a new instance of AcsRouterWorkerSelectorState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AcsRouterWorkerSelectorState() {}
+    public AcsRouterWorkerSelectorState() {
+    }
 
     /**
      * Creates or finds a AcsRouterWorkerSelectorState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AcsRouterWorkerSelectorState.
      */
@@ -37,7 +44,7 @@ public final class AcsRouterWorkerSelectorState extends ExpandableStringEnum<Acs
 
     /**
      * Gets known AcsRouterWorkerSelectorState values.
-     *
+     * 
      * @return known AcsRouterWorkerSelectorState values.
      */
     public static Collection<AcsRouterWorkerSelectorState> values() {

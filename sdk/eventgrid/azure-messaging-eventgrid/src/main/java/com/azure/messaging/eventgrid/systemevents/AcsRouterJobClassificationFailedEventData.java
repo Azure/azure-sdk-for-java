@@ -29,8 +29,11 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
     @JsonProperty(value = "errors")
     private List<AcsRouterCommunicationError> errors;
 
-    /** Creates an instance of AcsRouterJobClassificationFailedEventData class. */
-    public AcsRouterJobClassificationFailedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobClassificationFailedEventData class.
+     */
+    public AcsRouterJobClassificationFailedEventData() {
+    }
 
     /**
      * Get the classificationPolicyId property: Router Job Classification Policy Id.
@@ -58,9 +61,8 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @return the errors value.
      */
     public List<ResponseError> getErrors() {
-        return this.errors.stream()
-                .map(e -> new ResponseError(e.getCode(), e.getMessage()))
-                .collect(Collectors.toList());
+        return this.errors.stream().map(e -> new ResponseError(e.getCode(), e.getMessage()))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -70,49 +72,60 @@ public final class AcsRouterJobClassificationFailedEventData extends AcsRouterJo
      * @return the AcsRouterJobClassificationFailedEventData object itself.
      */
     public AcsRouterJobClassificationFailedEventData setErrors(List<ResponseError> errors) {
-        this.errors =
-                errors.stream()
-                        .map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage()))
-                        .collect(Collectors.toList());
+        this.errors = errors.stream()
+            .map(e -> new AcsRouterCommunicationError().setCode(e.getCode()).setMessage(e.getMessage()))
+            .collect(Collectors.toList());
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClassificationFailedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

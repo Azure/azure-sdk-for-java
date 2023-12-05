@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema for all properties of Recording Chunk Information. */
+/**
+ * Schema for all properties of Recording Chunk Information.
+ */
 @Fluent
 public final class AcsRecordingChunkInfoProperties {
     /*
@@ -46,12 +48,15 @@ public final class AcsRecordingChunkInfoProperties {
     @JsonProperty(value = "deleteLocation")
     private String deleteLocation;
 
-    /** Creates an instance of AcsRecordingChunkInfoProperties class. */
-    public AcsRecordingChunkInfoProperties() {}
+    /**
+     * Creates an instance of AcsRecordingChunkInfoProperties class.
+     */
+    public AcsRecordingChunkInfoProperties() {
+    }
 
     /**
      * Get the documentId property: The documentId of the recording chunk.
-     *
+     * 
      * @return the documentId value.
      */
     public String getDocumentId() {
@@ -60,7 +65,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the documentId property: The documentId of the recording chunk.
-     *
+     * 
      * @param documentId the documentId value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -71,7 +76,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Get the index property: The index of the recording chunk.
-     *
+     * 
      * @return the index value.
      */
     public Long getIndex() {
@@ -80,7 +85,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the index property: The index of the recording chunk.
-     *
+     * 
      * @param index the index value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -91,7 +96,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Get the endReason property: The reason for ending the recording chunk.
-     *
+     * 
      * @return the endReason value.
      */
     public String getEndReason() {
@@ -100,7 +105,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the endReason property: The reason for ending the recording chunk.
-     *
+     * 
      * @param endReason the endReason value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -111,7 +116,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Get the metadataLocation property: The location of the metadata for this chunk.
-     *
+     * 
      * @return the metadataLocation value.
      */
     public String getMetadataLocation() {
@@ -120,7 +125,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the metadataLocation property: The location of the metadata for this chunk.
-     *
+     * 
      * @param metadataLocation the metadataLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -131,7 +136,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Get the contentLocation property: The location of the content for this chunk.
-     *
+     * 
      * @return the contentLocation value.
      */
     public String getContentLocation() {
@@ -140,7 +145,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the contentLocation property: The location of the content for this chunk.
-     *
+     * 
      * @param contentLocation the contentLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */
@@ -151,7 +156,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Get the deleteLocation property: The location to delete all chunk storage.
-     *
+     * 
      * @return the deleteLocation value.
      */
     public String getDeleteLocation() {
@@ -160,7 +165,7 @@ public final class AcsRecordingChunkInfoProperties {
 
     /**
      * Set the deleteLocation property: The location to delete all chunk storage.
-     *
+     * 
      * @param deleteLocation the deleteLocation value to set.
      * @return the AcsRecordingChunkInfoProperties object itself.
      */

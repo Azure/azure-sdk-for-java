@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detail of action on the app. */
+/**
+ * Detail of action on the app.
+ */
 @Fluent
 public final class AppEventTypeDetail {
     /*
@@ -16,12 +18,15 @@ public final class AppEventTypeDetail {
     @JsonProperty(value = "action")
     private AppAction action;
 
-    /** Creates an instance of AppEventTypeDetail class. */
-    public AppEventTypeDetail() {}
+    /**
+     * Creates an instance of AppEventTypeDetail class.
+     */
+    public AppEventTypeDetail() {
+    }
 
     /**
      * Get the action property: Type of action of the operation.
-     *
+     * 
      * @return the action value.
      */
     public AppAction getAction() {
@@ -30,7 +35,7 @@ public final class AppEventTypeDetail {
 
     /**
      * Set the action property: Type of action of the operation.
-     *
+     * 
      * @param action the action value to set.
      * @return the AppEventTypeDetail object itself.
      */

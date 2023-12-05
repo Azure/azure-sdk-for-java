@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of cluster support events. */
+/**
+ * Schema of common properties of cluster support events.
+ */
 @Fluent
 public class ContainerServiceClusterSupportEventData {
     /*
@@ -16,12 +18,15 @@ public class ContainerServiceClusterSupportEventData {
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
-    /** Creates an instance of ContainerServiceClusterSupportEventData class. */
-    public ContainerServiceClusterSupportEventData() {}
+    /**
+     * Creates an instance of ContainerServiceClusterSupportEventData class.
+     */
+    public ContainerServiceClusterSupportEventData() {
+    }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String getKubernetesVersion() {
@@ -30,7 +35,7 @@ public class ContainerServiceClusterSupportEventData {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ContainerServiceClusterSupportEventData object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of all chat events. */
+/**
+ * Schema of common properties of all chat events.
+ */
 @Fluent
 public class AcsChatEventBaseProperties {
     /*
@@ -28,12 +30,15 @@ public class AcsChatEventBaseProperties {
     @JsonProperty(value = "threadId")
     private String threadId;
 
-    /** Creates an instance of AcsChatEventBaseProperties class. */
-    public AcsChatEventBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatEventBaseProperties class.
+     */
+    public AcsChatEventBaseProperties() {
+    }
 
     /**
      * Get the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @return the recipientCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getRecipientCommunicationIdentifier() {
@@ -42,19 +47,19 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the recipientCommunicationIdentifier property: The communication identifier of the target user.
-     *
+     * 
      * @param recipientCommunicationIdentifier the recipientCommunicationIdentifier value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
-    public AcsChatEventBaseProperties setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatEventBaseProperties
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         this.recipientCommunicationIdentifier = recipientCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @return the transactionId value.
      */
     public String getTransactionId() {
@@ -63,7 +68,7 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the transactionId property: The transaction id will be used as co-relation vector.
-     *
+     * 
      * @param transactionId the transactionId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */
@@ -74,7 +79,7 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Get the threadId property: The chat thread id.
-     *
+     * 
      * @return the threadId value.
      */
     public String getThreadId() {
@@ -83,7 +88,7 @@ public class AcsChatEventBaseProperties {
 
     /**
      * Set the threadId property: The chat thread id.
-     *
+     * 
      * @param threadId the threadId value to set.
      * @return the AcsChatEventBaseProperties object itself.
      */

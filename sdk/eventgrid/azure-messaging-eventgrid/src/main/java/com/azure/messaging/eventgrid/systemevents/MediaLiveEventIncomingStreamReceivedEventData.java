@@ -67,12 +67,15 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
     @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
-    /** Creates an instance of MediaLiveEventIncomingStreamReceivedEventData class. */
-    public MediaLiveEventIncomingStreamReceivedEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIncomingStreamReceivedEventData class.
+     */
+    public MediaLiveEventIncomingStreamReceivedEventData() {
+    }
 
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
-     *
+     * 
      * @return the ingestUrl value.
      */
     public String getIngestUrl() {
@@ -81,7 +84,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
+     * 
      * @return the trackType value.
      */
     public String getTrackType() {
@@ -90,7 +93,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the trackName property: Gets the track name.
-     *
+     * 
      * @return the trackName value.
      */
     public String getTrackName() {
@@ -99,7 +102,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the bitrate property: Gets the bitrate of the track.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long getBitrate() {
@@ -108,7 +111,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the encoderIp property: Gets the remote IP.
-     *
+     * 
      * @return the encoderIp value.
      */
     public String getEncoderIp() {
@@ -117,7 +120,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the encoderPort property: Gets the remote port.
-     *
+     * 
      * @return the encoderPort value.
      */
     public String getEncoderPort() {
@@ -126,7 +129,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the timestamp property: Gets the first timestamp of the data chunk received.
-     *
+     * 
      * @return the timestamp value.
      */
     public String getTimestamp() {
@@ -135,7 +138,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the duration property: Gets the duration of the first data chunk.
-     *
+     * 
      * @return the duration value.
      */
     public String getDuration() {
@@ -144,7 +147,7 @@ public final class MediaLiveEventIncomingStreamReceivedEventData {
 
     /**
      * Get the timescale property: Gets the timescale in which timestamp is represented.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {

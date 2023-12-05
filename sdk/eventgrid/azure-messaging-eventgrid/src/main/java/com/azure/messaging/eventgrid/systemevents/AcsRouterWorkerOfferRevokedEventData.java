@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked event.
+ */
 @Fluent
 public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerEventData {
     /*
@@ -22,12 +24,15 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
     @JsonProperty(value = "offerId")
     private String offerId;
 
-    /** Creates an instance of AcsRouterWorkerOfferRevokedEventData class. */
-    public AcsRouterWorkerOfferRevokedEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerOfferRevokedEventData class.
+     */
+    public AcsRouterWorkerOfferRevokedEventData() {
+    }
 
     /**
      * Get the queueId property: Router Worker Offer Revoked Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -36,7 +41,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Set the queueId property: Router Worker Offer Revoked Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterWorkerOfferRevokedEventData object itself.
      */
@@ -47,7 +52,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Get the offerId property: Router Worker Offer Revoked Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String getOfferId() {
@@ -56,7 +61,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Set the offerId property: Router Worker Offer Revoked Offer Id.
-     *
+     * 
      * @param offerId the offerId value to set.
      * @return the AcsRouterWorkerOfferRevokedEventData object itself.
      */
@@ -65,28 +70,36 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setWorkerId(String workerId) {
         super.setWorkerId(workerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

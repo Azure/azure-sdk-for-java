@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Configured state of the client. The value could be Enabled or Disabled. */
+/**
+ * Configured state of the client. The value could be Enabled or Disabled.
+ */
 public final class EventGridMqttClientState extends ExpandableStringEnum<EventGridMqttClientState> {
-    /** Static value Enabled for EventGridMqttClientState. */
+    /**
+     * Static value Enabled for EventGridMqttClientState.
+     */
     public static final EventGridMqttClientState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EventGridMqttClientState. */
+    /**
+     * Static value Disabled for EventGridMqttClientState.
+     */
     public static final EventGridMqttClientState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EventGridMqttClientState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EventGridMqttClientState() {}
+    public EventGridMqttClientState() {
+    }
 
     /**
      * Creates or finds a EventGridMqttClientState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventGridMqttClientState.
      */
@@ -37,7 +44,7 @@ public final class EventGridMqttClientState extends ExpandableStringEnum<EventGr
 
     /**
      * Gets known EventGridMqttClientState values.
-     *
+     * 
      * @return known EventGridMqttClientState values.
      */
     public static Collection<EventGridMqttClientState> values() {

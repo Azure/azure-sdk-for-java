@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The event data for a Job output asset. */
+/**
+ * The event data for a Job output asset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Media.JobOutputAsset")
 @JsonFlatten
@@ -22,12 +24,15 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
     @JsonProperty(value = "assetName")
     private String assetName;
 
-    /** Creates an instance of MediaJobOutputAsset class. */
-    public MediaJobOutputAsset() {}
+    /**
+     * Creates an instance of MediaJobOutputAsset class.
+     */
+    public MediaJobOutputAsset() {
+    }
 
     /**
      * Get the assetName property: Gets the Job output asset name.
-     *
+     * 
      * @return the assetName value.
      */
     public String getAssetName() {
@@ -36,7 +41,7 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
 
     /**
      * Set the assetName property: Gets the Job output asset name.
-     *
+     * 
      * @param assetName the assetName value to set.
      * @return the MediaJobOutputAsset object itself.
      */
@@ -45,28 +50,36 @@ public final class MediaJobOutputAsset extends MediaJobOutput {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputAsset setError(MediaJobError error) {
         super.setError(error);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputAsset setLabel(String label) {
         super.setLabel(label);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputAsset setProgress(long progress) {
         super.setProgress(progress);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputAsset setState(MediaJobState state) {
         super.setState(state);

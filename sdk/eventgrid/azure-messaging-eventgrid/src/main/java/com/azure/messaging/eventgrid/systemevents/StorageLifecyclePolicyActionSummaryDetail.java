@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Execution statistics of a specific policy action in a Blob Management cycle. */
+/**
+ * Execution statistics of a specific policy action in a Blob Management cycle.
+ */
 @Fluent
 public final class StorageLifecyclePolicyActionSummaryDetail {
     /*
@@ -28,12 +30,15 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
     @JsonProperty(value = "errorList")
     private String errorList;
 
-    /** Creates an instance of StorageLifecyclePolicyActionSummaryDetail class. */
-    public StorageLifecyclePolicyActionSummaryDetail() {}
+    /**
+     * Creates an instance of StorageLifecyclePolicyActionSummaryDetail class.
+     */
+    public StorageLifecyclePolicyActionSummaryDetail() {
+    }
 
     /**
      * Get the totalObjectsCount property: Total number of objects to be acted on by this action.
-     *
+     * 
      * @return the totalObjectsCount value.
      */
     public Long getTotalObjectsCount() {
@@ -42,7 +47,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the totalObjectsCount property: Total number of objects to be acted on by this action.
-     *
+     * 
      * @param totalObjectsCount the totalObjectsCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
@@ -53,7 +58,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Get the successCount property: Number of success operations of this action.
-     *
+     * 
      * @return the successCount value.
      */
     public Long getSuccessCount() {
@@ -62,7 +67,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the successCount property: Number of success operations of this action.
-     *
+     * 
      * @param successCount the successCount value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */
@@ -73,7 +78,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Get the errorList property: Error messages of this action if any.
-     *
+     * 
      * @return the errorList value.
      */
     public String getErrorList() {
@@ -82,7 +87,7 @@ public final class StorageLifecyclePolicyActionSummaryDetail {
 
     /**
      * Set the errorList property: Error messages of this action if any.
-     *
+     * 
      * @param errorList the errorList value to set.
      * @return the StorageLifecyclePolicyActionSummaryDetail object itself.
      */

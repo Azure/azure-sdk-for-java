@@ -31,12 +31,15 @@ public final class ResourceNotificationsResourceDeletedDetails {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of ResourceNotificationsResourceDeletedDetails class. */
-    public ResourceNotificationsResourceDeletedDetails() {}
+    /**
+     * Creates an instance of ResourceNotificationsResourceDeletedDetails class.
+     */
+    public ResourceNotificationsResourceDeletedDetails() {
+    }
 
     /**
      * Get the id property: id of the resource for which the event is being emitted.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -45,7 +48,7 @@ public final class ResourceNotificationsResourceDeletedDetails {
 
     /**
      * Set the id property: id of the resource for which the event is being emitted.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */
@@ -56,7 +59,7 @@ public final class ResourceNotificationsResourceDeletedDetails {
 
     /**
      * Get the name property: name of the resource for which the event is being emitted.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -65,7 +68,7 @@ public final class ResourceNotificationsResourceDeletedDetails {
 
     /**
      * Set the name property: name of the resource for which the event is being emitted.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */
@@ -76,7 +79,7 @@ public final class ResourceNotificationsResourceDeletedDetails {
 
     /**
      * Get the type property: the type of the resource for which the event is being emitted.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -85,7 +88,7 @@ public final class ResourceNotificationsResourceDeletedDetails {
 
     /**
      * Set the type property: the type of the resource for which the event is being emitted.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceNotificationsResourceDeletedDetails object itself.
      */

@@ -49,12 +49,15 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
     @JsonProperty(value = "trackName", access = JsonProperty.Access.WRITE_ONLY)
     private String trackName;
 
-    /** Creates an instance of MediaLiveEventIncomingDataChunkDroppedEventData class. */
-    public MediaLiveEventIncomingDataChunkDroppedEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventIncomingDataChunkDroppedEventData class.
+     */
+    public MediaLiveEventIncomingDataChunkDroppedEventData() {
+    }
 
     /**
      * Get the timestamp property: Gets the timestamp of the data chunk dropped.
-     *
+     * 
      * @return the timestamp value.
      */
     public String getTimestamp() {
@@ -63,7 +66,7 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
+     * 
      * @return the trackType value.
      */
     public String getTrackType() {
@@ -72,7 +75,7 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
 
     /**
      * Get the bitrate property: Gets the bitrate of the track.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long getBitrate() {
@@ -81,7 +84,7 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
 
     /**
      * Get the timescale property: Gets the timescale of the Timestamp.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {
@@ -90,7 +93,7 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
 
     /**
      * Get the resultCode property: Gets the result code for fragment drop operation.
-     *
+     * 
      * @return the resultCode value.
      */
     public String getResultCode() {
@@ -99,7 +102,7 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
 
     /**
      * Get the trackName property: Gets the name of the track for which fragment is dropped.
-     *
+     * 
      * @return the trackName value.
      */
     public String getTrackName() {

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Router Channel Configuration. */
+/**
+ * Router Channel Configuration.
+ */
 @Fluent
 public final class AcsRouterChannelConfiguration {
     /*
@@ -28,12 +30,15 @@ public final class AcsRouterChannelConfiguration {
     @JsonProperty(value = "maxNumberOfJobs")
     private Integer maxNumberOfJobs;
 
-    /** Creates an instance of AcsRouterChannelConfiguration class. */
-    public AcsRouterChannelConfiguration() {}
+    /**
+     * Creates an instance of AcsRouterChannelConfiguration class.
+     */
+    public AcsRouterChannelConfiguration() {
+    }
 
     /**
      * Get the channelId property: Channel ID for Router Job.
-     *
+     * 
      * @return the channelId value.
      */
     public String getChannelId() {
@@ -42,7 +47,7 @@ public final class AcsRouterChannelConfiguration {
 
     /**
      * Set the channelId property: Channel ID for Router Job.
-     *
+     * 
      * @param channelId the channelId value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
@@ -53,7 +58,7 @@ public final class AcsRouterChannelConfiguration {
 
     /**
      * Get the capacityCostPerJob property: Capacity Cost Per Job for Router Job.
-     *
+     * 
      * @return the capacityCostPerJob value.
      */
     public Integer getCapacityCostPerJob() {
@@ -62,7 +67,7 @@ public final class AcsRouterChannelConfiguration {
 
     /**
      * Set the capacityCostPerJob property: Capacity Cost Per Job for Router Job.
-     *
+     * 
      * @param capacityCostPerJob the capacityCostPerJob value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */
@@ -73,7 +78,7 @@ public final class AcsRouterChannelConfiguration {
 
     /**
      * Get the maxNumberOfJobs property: Max Number of Jobs for Router Job.
-     *
+     * 
      * @return the maxNumberOfJobs value.
      */
     public Integer getMaxNumberOfJobs() {
@@ -82,7 +87,7 @@ public final class AcsRouterChannelConfiguration {
 
     /**
      * Set the maxNumberOfJobs property: Max Number of Jobs for Router Job.
-     *
+     * 
      * @param maxNumberOfJobs the maxNumberOfJobs value to set.
      * @return the AcsRouterChannelConfiguration object itself.
      */

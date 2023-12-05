@@ -12,27 +12,36 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData
-        extends ResourceNotificationsResourceUpdatedEventData {
-    /** Creates an instance of ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData class. */
-    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData() {}
+    extends ResourceNotificationsResourceUpdatedEventData {
+    /**
+     * Creates an instance of ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData class.
+     */
+    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData setResourceDetails(
-            ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData
+        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
         super.setResourceDetails(resourceDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         super.setOperationalDetails(operationalDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData setApiVersion(String apiVersion) {
         super.setApiVersion(apiVersion);

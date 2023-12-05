@@ -13,10 +13,15 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobProcessingEventData extends MediaJobStateChangeEventData {
-    /** Creates an instance of MediaJobProcessingEventData class. */
-    public MediaJobProcessingEventData() {}
+    /**
+     * Creates an instance of MediaJobProcessingEventData class.
+     */
+    public MediaJobProcessingEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobProcessingEventData setCorrelationData(Map<String, String> correlationData) {
         super.setCorrelationData(correlationData);

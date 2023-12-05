@@ -16,19 +16,23 @@ public final class ApiManagementGatewayCertificateAuthorityCreatedEventData {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
-     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/certificateAuthorities/<ResourceName>`
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
+     * gateways/<GatewayName>/certificateAuthorities/<ResourceName>`
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
-    /** Creates an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData class. */
-    public ApiManagementGatewayCertificateAuthorityCreatedEventData() {}
+    /**
+     * Creates an instance of ApiManagementGatewayCertificateAuthorityCreatedEventData class.
+     */
+    public ApiManagementGatewayCertificateAuthorityCreatedEventData() {
+    }
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -39,7 +43,7 @@ public final class ApiManagementGatewayCertificateAuthorityCreatedEventData {
      * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/certificateAuthorities/&lt;ResourceName&gt;`.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the ApiManagementGatewayCertificateAuthorityCreatedEventData object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueDeleted event.
+ */
 @Fluent
 public final class AppConfigurationKeyValueDeletedEventData {
     /*
@@ -34,12 +36,15 @@ public final class AppConfigurationKeyValueDeletedEventData {
     @JsonProperty(value = "syncToken")
     private String syncToken;
 
-    /** Creates an instance of AppConfigurationKeyValueDeletedEventData class. */
-    public AppConfigurationKeyValueDeletedEventData() {}
+    /**
+     * Creates an instance of AppConfigurationKeyValueDeletedEventData class.
+     */
+    public AppConfigurationKeyValueDeletedEventData() {
+    }
 
     /**
      * Get the key property: The key used to identify the key-value that was deleted.
-     *
+     * 
      * @return the key value.
      */
     public String getKey() {
@@ -48,7 +53,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the key property: The key used to identify the key-value that was deleted.
-     *
+     * 
      * @param key the key value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
@@ -59,7 +64,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the label property: The label, if any, used to identify the key-value that was deleted.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -68,7 +73,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the label property: The label, if any, used to identify the key-value that was deleted.
-     *
+     * 
      * @param label the label value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
@@ -79,7 +84,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the etag property: The etag representing the key-value that was deleted.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -88,7 +93,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the etag property: The etag representing the key-value that was deleted.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */
@@ -99,7 +104,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Get the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -108,7 +113,7 @@ public final class AppConfigurationKeyValueDeletedEventData {
 
     /**
      * Set the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the AppConfigurationKeyValueDeletedEventData object itself.
      */

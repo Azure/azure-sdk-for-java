@@ -6,27 +6,38 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Event data for Microsoft.Devices.DeviceDeleted event. */
+/**
+ * Event data for Microsoft.Devices.DeviceDeleted event.
+ */
 @Fluent
 public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProperties {
-    /** Creates an instance of IotHubDeviceDeletedEventData class. */
-    public IotHubDeviceDeletedEventData() {}
+    /**
+     * Creates an instance of IotHubDeviceDeletedEventData class.
+     */
+    public IotHubDeviceDeletedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDeletedEventData setDeviceId(String deviceId) {
         super.setDeviceId(deviceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDeletedEventData setHubName(String hubName) {
         super.setHubName(hubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceDeletedEventData setTwin(DeviceTwinInfo twin) {
         super.setTwin(twin);

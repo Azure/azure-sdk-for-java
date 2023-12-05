@@ -7,25 +7,31 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated event.
+ */
 @Fluent
 public final class ApiManagementGatewayUpdatedEventData {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
-     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<ResourceName>`
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
+     * gateways/<ResourceName>`
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
-    /** Creates an instance of ApiManagementGatewayUpdatedEventData class. */
-    public ApiManagementGatewayUpdatedEventData() {}
+    /**
+     * Creates an instance of ApiManagementGatewayUpdatedEventData class.
+     */
+    public ApiManagementGatewayUpdatedEventData() {
+    }
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -36,7 +42,7 @@ public final class ApiManagementGatewayUpdatedEventData {
      * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;ResourceName&gt;`.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the ApiManagementGatewayUpdatedEventData object itself.
      */

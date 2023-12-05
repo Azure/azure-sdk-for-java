@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A portion of the properties that can be written only by the application back-end, and read by the device. */
+/**
+ * A portion of the properties that can be written only by the application back-end, and read by the device.
+ */
 @Fluent
 public final class DeviceTwinProperties {
     /*
@@ -22,12 +24,15 @@ public final class DeviceTwinProperties {
     @JsonProperty(value = "version")
     private Float version;
 
-    /** Creates an instance of DeviceTwinProperties class. */
-    public DeviceTwinProperties() {}
+    /**
+     * Creates an instance of DeviceTwinProperties class.
+     */
+    public DeviceTwinProperties() {
+    }
 
     /**
      * Get the metadata property: Metadata information for the properties JSON document.
-     *
+     * 
      * @return the metadata value.
      */
     public DeviceTwinMetadata getMetadata() {
@@ -36,7 +41,7 @@ public final class DeviceTwinProperties {
 
     /**
      * Set the metadata property: Metadata information for the properties JSON document.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DeviceTwinProperties object itself.
      */
@@ -47,7 +52,7 @@ public final class DeviceTwinProperties {
 
     /**
      * Get the version property: Version of device twin properties.
-     *
+     * 
      * @return the version value.
      */
     public Float getVersion() {
@@ -56,7 +61,7 @@ public final class DeviceTwinProperties {
 
     /**
      * Set the version property: Version of device twin properties.
-     *
+     * 
      * @param version the version value to set.
      * @return the DeviceTwinProperties object itself.
      */

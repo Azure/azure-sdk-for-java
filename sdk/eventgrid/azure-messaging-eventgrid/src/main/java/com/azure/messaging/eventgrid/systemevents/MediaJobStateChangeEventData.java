@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobStateChange event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobStateChange event.
+ */
 @Fluent
 public class MediaJobStateChangeEventData {
     /*
@@ -29,12 +31,15 @@ public class MediaJobStateChangeEventData {
     @JsonProperty(value = "correlationData")
     private Map<String, String> correlationData;
 
-    /** Creates an instance of MediaJobStateChangeEventData class. */
-    public MediaJobStateChangeEventData() {}
+    /**
+     * Creates an instance of MediaJobStateChangeEventData class.
+     */
+    public MediaJobStateChangeEventData() {
+    }
 
     /**
      * Get the previousState property: The previous state of the Job.
-     *
+     * 
      * @return the previousState value.
      */
     public MediaJobState getPreviousState() {
@@ -43,7 +48,7 @@ public class MediaJobStateChangeEventData {
 
     /**
      * Get the state property: The new state of the Job.
-     *
+     * 
      * @return the state value.
      */
     public MediaJobState getState() {
@@ -52,7 +57,7 @@ public class MediaJobStateChangeEventData {
 
     /**
      * Get the correlationData property: Gets the Job correlation data.
-     *
+     * 
      * @return the correlationData value.
      */
     public Map<String, String> getCorrelationData() {
@@ -61,7 +66,7 @@ public class MediaJobStateChangeEventData {
 
     /**
      * Set the correlationData property: Gets the Job correlation data.
-     *
+     * 
      * @param correlationData the correlationData value to set.
      * @return the MediaJobStateChangeEventData object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the device connection state event. */
+/**
+ * Information about the device connection state event.
+ */
 @Fluent
 public final class DeviceConnectionStateEventInfo {
     /*
@@ -18,14 +20,17 @@ public final class DeviceConnectionStateEventInfo {
     @JsonProperty(value = "sequenceNumber")
     private String sequenceNumber;
 
-    /** Creates an instance of DeviceConnectionStateEventInfo class. */
-    public DeviceConnectionStateEventInfo() {}
+    /**
+     * Creates an instance of DeviceConnectionStateEventInfo class.
+     */
+    public DeviceConnectionStateEventInfo() {
+    }
 
     /**
-     * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
-     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
-     * converting the string to hex, then the number is a 256 bit number.
-     *
+     * Get the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string
+     * compare can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If
+     * you are converting the string to hex, then the number is a 256 bit number.
+     * 
      * @return the sequenceNumber value.
      */
     public String getSequenceNumber() {
@@ -33,10 +38,10 @@ public final class DeviceConnectionStateEventInfo {
     }
 
     /**
-     * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string compare
-     * can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If you are
-     * converting the string to hex, then the number is a 256 bit number.
-     *
+     * Set the sequenceNumber property: Sequence number is string representation of a hexadecimal number. string
+     * compare can be used to identify the larger number because both in ASCII and HEX numbers come after alphabets. If
+     * you are converting the string to hex, then the number is a 256 bit number.
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the DeviceConnectionStateEventInfo object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Event data for Microsoft.EventGrid.MQTTClientSessionConnected event. */
+/**
+ * Event data for Microsoft.EventGrid.MQTTClientSessionConnected event.
+ */
 @Fluent
 public final class EventGridMqttClientSessionConnectedEventData extends EventGridMqttClientEventData {
     /*
@@ -24,13 +26,16 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
 
-    /** Creates an instance of EventGridMqttClientSessionConnectedEventData class. */
-    public EventGridMqttClientSessionConnectedEventData() {}
+    /**
+     * Creates an instance of EventGridMqttClientSessionConnectedEventData class.
+     */
+    public EventGridMqttClientSessionConnectedEventData() {
+    }
 
     /**
      * Get the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
      * can be up to 128 characters long, and supports UTF-8 characters.
-     *
+     * 
      * @return the clientSessionName value.
      */
     public String getClientSessionName() {
@@ -40,7 +45,7 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     /**
      * Set the clientSessionName property: Unique identifier for the MQTT client's session. This case-sensitive string
      * can be up to 128 characters long, and supports UTF-8 characters.
-     *
+     * 
      * @param clientSessionName the clientSessionName value to set.
      * @return the EventGridMqttClientSessionConnectedEventData object itself.
      */
@@ -52,7 +57,7 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     /**
      * Get the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
      * disconnected events. Latest event will have a sequence number that is higher than the previous event.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public Long getSequenceNumber() {
@@ -62,7 +67,7 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
     /**
      * Set the sequenceNumber property: A number that helps indicate order of MQTT client session connected or
      * disconnected events. Latest event will have a sequence number that is higher than the previous event.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the EventGridMqttClientSessionConnectedEventData object itself.
      */
@@ -71,21 +76,27 @@ public final class EventGridMqttClientSessionConnectedEventData extends EventGri
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientSessionConnectedEventData setClientAuthenticationName(String clientAuthenticationName) {
         super.setClientAuthenticationName(clientAuthenticationName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientSessionConnectedEventData setClientName(String clientName) {
         super.setClientName(clientName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientSessionConnectedEventData setNamespaceName(String namespaceName) {
         super.setNamespaceName(namespaceName);

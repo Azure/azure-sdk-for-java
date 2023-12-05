@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of all SMS events. */
+/**
+ * Schema of common properties of all SMS events.
+ */
 @Fluent
 public class AcsSmsEventBaseProperties {
     /*
@@ -28,12 +30,15 @@ public class AcsSmsEventBaseProperties {
     @JsonProperty(value = "to")
     private String to;
 
-    /** Creates an instance of AcsSmsEventBaseProperties class. */
-    public AcsSmsEventBaseProperties() {}
+    /**
+     * Creates an instance of AcsSmsEventBaseProperties class.
+     */
+    public AcsSmsEventBaseProperties() {
+    }
 
     /**
      * Get the messageId property: The identity of the SMS message.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -42,7 +47,7 @@ public class AcsSmsEventBaseProperties {
 
     /**
      * Set the messageId property: The identity of the SMS message.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
@@ -53,7 +58,7 @@ public class AcsSmsEventBaseProperties {
 
     /**
      * Get the from property: The identity of SMS message sender.
-     *
+     * 
      * @return the from value.
      */
     public String getFrom() {
@@ -62,7 +67,7 @@ public class AcsSmsEventBaseProperties {
 
     /**
      * Set the from property: The identity of SMS message sender.
-     *
+     * 
      * @param from the from value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */
@@ -73,7 +78,7 @@ public class AcsSmsEventBaseProperties {
 
     /**
      * Get the to property: The identity of SMS message receiver.
-     *
+     * 
      * @return the to value.
      */
     public String getTo() {
@@ -82,7 +87,7 @@ public class AcsSmsEventBaseProperties {
 
     /**
      * Set the to property: The identity of SMS message receiver.
-     *
+     * 
      * @param to the to value to set.
      * @return the AcsSmsEventBaseProperties object itself.
      */

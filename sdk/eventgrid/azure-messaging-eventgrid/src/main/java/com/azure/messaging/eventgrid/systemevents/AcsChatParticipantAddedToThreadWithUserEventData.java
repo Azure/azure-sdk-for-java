@@ -32,12 +32,15 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
     @JsonProperty(value = "participantAdded")
     private AcsChatThreadParticipantProperties participantAdded;
 
-    /** Creates an instance of AcsChatParticipantAddedToThreadWithUserEventData class. */
-    public AcsChatParticipantAddedToThreadWithUserEventData() {}
+    /**
+     * Creates an instance of AcsChatParticipantAddedToThreadWithUserEventData class.
+     */
+    public AcsChatParticipantAddedToThreadWithUserEventData() {
+    }
 
     /**
      * Get the time property: The time at which the user was added to the thread.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -46,7 +49,7 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
 
     /**
      * Set the time property: The time at which the user was added to the thread.
-     *
+     * 
      * @param time the time value to set.
      * @return the AcsChatParticipantAddedToThreadWithUserEventData object itself.
      */
@@ -57,7 +60,7 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
 
     /**
      * Get the addedByCommunicationIdentifier property: The communication identifier of the user who added the user.
-     *
+     * 
      * @return the addedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getAddedByCommunicationIdentifier() {
@@ -66,19 +69,19 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
 
     /**
      * Set the addedByCommunicationIdentifier property: The communication identifier of the user who added the user.
-     *
+     * 
      * @param addedByCommunicationIdentifier the addedByCommunicationIdentifier value to set.
      * @return the AcsChatParticipantAddedToThreadWithUserEventData object itself.
      */
-    public AcsChatParticipantAddedToThreadWithUserEventData setAddedByCommunicationIdentifier(
-            CommunicationIdentifierModel addedByCommunicationIdentifier) {
+    public AcsChatParticipantAddedToThreadWithUserEventData
+        setAddedByCommunicationIdentifier(CommunicationIdentifierModel addedByCommunicationIdentifier) {
         this.addedByCommunicationIdentifier = addedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the participantAdded property: The details of the user who was added.
-     *
+     * 
      * @return the participantAdded value.
      */
     public AcsChatThreadParticipantProperties getParticipantAdded() {
@@ -87,46 +90,56 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
 
     /**
      * Set the participantAdded property: The details of the user who was added.
-     *
+     * 
      * @param participantAdded the participantAdded value to set.
      * @return the AcsChatParticipantAddedToThreadWithUserEventData object itself.
      */
-    public AcsChatParticipantAddedToThreadWithUserEventData setParticipantAdded(
-            AcsChatThreadParticipantProperties participantAdded) {
+    public AcsChatParticipantAddedToThreadWithUserEventData
+        setParticipantAdded(AcsChatThreadParticipantProperties participantAdded) {
         this.participantAdded = participantAdded;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadWithUserEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadWithUserEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatParticipantAddedToThreadWithUserEventData setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatParticipantAddedToThreadWithUserEventData
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadWithUserEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantAddedToThreadWithUserEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

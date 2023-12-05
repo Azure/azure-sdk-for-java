@@ -32,12 +32,15 @@ public final class MediaJobOutputProgressEventData {
     @JsonProperty(value = "jobCorrelationData")
     private Map<String, String> jobCorrelationData;
 
-    /** Creates an instance of MediaJobOutputProgressEventData class. */
-    public MediaJobOutputProgressEventData() {}
+    /**
+     * Creates an instance of MediaJobOutputProgressEventData class.
+     */
+    public MediaJobOutputProgressEventData() {
+    }
 
     /**
      * Get the label property: Gets the Job output label.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -46,7 +49,7 @@ public final class MediaJobOutputProgressEventData {
 
     /**
      * Set the label property: Gets the Job output label.
-     *
+     * 
      * @param label the label value to set.
      * @return the MediaJobOutputProgressEventData object itself.
      */
@@ -57,7 +60,7 @@ public final class MediaJobOutputProgressEventData {
 
     /**
      * Get the progress property: Gets the Job output progress.
-     *
+     * 
      * @return the progress value.
      */
     public Long getProgress() {
@@ -66,7 +69,7 @@ public final class MediaJobOutputProgressEventData {
 
     /**
      * Set the progress property: Gets the Job output progress.
-     *
+     * 
      * @param progress the progress value to set.
      * @return the MediaJobOutputProgressEventData object itself.
      */
@@ -77,7 +80,7 @@ public final class MediaJobOutputProgressEventData {
 
     /**
      * Get the jobCorrelationData property: Gets the Job correlation data.
-     *
+     * 
      * @return the jobCorrelationData value.
      */
     public Map<String, String> getJobCorrelationData() {
@@ -86,7 +89,7 @@ public final class MediaJobOutputProgressEventData {
 
     /**
      * Set the jobCorrelationData property: Gets the Job correlation data.
-     *
+     * 
      * @param jobCorrelationData the jobCorrelationData value to set.
      * @return the MediaJobOutputProgressEventData object itself.
      */

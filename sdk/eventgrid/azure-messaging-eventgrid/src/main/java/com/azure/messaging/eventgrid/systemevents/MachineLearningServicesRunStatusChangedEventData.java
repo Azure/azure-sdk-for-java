@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunStatusChanged event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunStatusChanged event.
+ */
 @Fluent
 public final class MachineLearningServicesRunStatusChangedEventData {
     /*
@@ -52,12 +54,15 @@ public final class MachineLearningServicesRunStatusChangedEventData {
     @JsonProperty(value = "runStatus")
     private String runStatus;
 
-    /** Creates an instance of MachineLearningServicesRunStatusChangedEventData class. */
-    public MachineLearningServicesRunStatusChangedEventData() {}
+    /**
+     * Creates an instance of MachineLearningServicesRunStatusChangedEventData class.
+     */
+    public MachineLearningServicesRunStatusChangedEventData() {
+    }
 
     /**
      * Get the experimentId property: The ID of the experiment that the Machine Learning Run belongs to.
-     *
+     * 
      * @return the experimentId value.
      */
     public String getExperimentId() {
@@ -66,7 +71,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the experimentId property: The ID of the experiment that the Machine Learning Run belongs to.
-     *
+     * 
      * @param experimentId the experimentId value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -77,7 +82,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the experimentName property: The name of the experiment that the Machine Learning Run belongs to.
-     *
+     * 
      * @return the experimentName value.
      */
     public String getExperimentName() {
@@ -86,7 +91,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the experimentName property: The name of the experiment that the Machine Learning Run belongs to.
-     *
+     * 
      * @param experimentName the experimentName value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -97,7 +102,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the runId property: The ID of the Machine Learning Run.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -106,7 +111,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the runId property: The ID of the Machine Learning Run.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -117,7 +122,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the runType property: The Run Type of the Machine Learning Run.
-     *
+     * 
      * @return the runType value.
      */
     public String getRunType() {
@@ -126,7 +131,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the runType property: The Run Type of the Machine Learning Run.
-     *
+     * 
      * @param runType the runType value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -137,7 +142,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the runTags property: The tags of the Machine Learning Run.
-     *
+     * 
      * @return the runTags value.
      */
     public Object getRunTags() {
@@ -146,7 +151,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the runTags property: The tags of the Machine Learning Run.
-     *
+     * 
      * @param runTags the runTags value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -157,7 +162,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the runProperties property: The properties of the Machine Learning Run.
-     *
+     * 
      * @return the runProperties value.
      */
     public Object getRunProperties() {
@@ -166,7 +171,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the runProperties property: The properties of the Machine Learning Run.
-     *
+     * 
      * @param runProperties the runProperties value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */
@@ -177,7 +182,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Get the runStatus property: The status of the Machine Learning Run.
-     *
+     * 
      * @return the runStatus value.
      */
     public String getRunStatus() {
@@ -186,7 +191,7 @@ public final class MachineLearningServicesRunStatusChangedEventData {
 
     /**
      * Set the runStatus property: The status of the Machine Learning Run.
-     *
+     * 
      * @param runStatus the runStatus value to set.
      * @return the MachineLearningServicesRunStatusChangedEventData object itself.
      */

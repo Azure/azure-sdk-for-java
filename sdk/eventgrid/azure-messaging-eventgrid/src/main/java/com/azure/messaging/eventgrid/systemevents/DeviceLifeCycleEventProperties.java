@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a device life cycle event (DeviceCreated, DeviceDeleted). */
+/**
+ * Schema of the Data property of an EventGridEvent for a device life cycle event (DeviceCreated, DeviceDeleted).
+ */
 @Fluent
 public class DeviceLifeCycleEventProperties {
     /*
@@ -30,14 +32,17 @@ public class DeviceLifeCycleEventProperties {
     @JsonProperty(value = "twin")
     private DeviceTwinInfo twin;
 
-    /** Creates an instance of DeviceLifeCycleEventProperties class. */
-    public DeviceLifeCycleEventProperties() {}
+    /**
+     * Creates an instance of DeviceLifeCycleEventProperties class.
+     */
+    public DeviceLifeCycleEventProperties() {
+    }
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -48,7 +53,7 @@ public class DeviceLifeCycleEventProperties {
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
@@ -59,7 +64,7 @@ public class DeviceLifeCycleEventProperties {
 
     /**
      * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @return the hubName value.
      */
     public String getHubName() {
@@ -68,7 +73,7 @@ public class DeviceLifeCycleEventProperties {
 
     /**
      * Set the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @param hubName the hubName value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
@@ -78,9 +83,9 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get the twin property: Information about the device twin, which is the cloud representation of application device
-     * metadata.
-     *
+     * Get the twin property: Information about the device twin, which is the cloud representation of application
+     * device metadata.
+     * 
      * @return the twin value.
      */
     public DeviceTwinInfo getTwin() {
@@ -88,9 +93,9 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set the twin property: Information about the device twin, which is the cloud representation of application device
-     * metadata.
-     *
+     * Set the twin property: Information about the device twin, which is the cloud representation of application
+     * device metadata.
+     * 
      * @param twin the twin value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */

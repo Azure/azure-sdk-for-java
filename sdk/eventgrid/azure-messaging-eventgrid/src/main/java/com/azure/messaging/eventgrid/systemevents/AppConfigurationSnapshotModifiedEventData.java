@@ -6,27 +6,38 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified event.
+ */
 @Fluent
 public final class AppConfigurationSnapshotModifiedEventData extends AppConfigurationSnapshotEventData {
-    /** Creates an instance of AppConfigurationSnapshotModifiedEventData class. */
-    public AppConfigurationSnapshotModifiedEventData() {}
+    /**
+     * Creates an instance of AppConfigurationSnapshotModifiedEventData class.
+     */
+    public AppConfigurationSnapshotModifiedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotModifiedEventData setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotModifiedEventData setEtag(String etag) {
         super.setEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotModifiedEventData setSyncToken(String syncToken) {
         super.setSyncToken(syncToken);

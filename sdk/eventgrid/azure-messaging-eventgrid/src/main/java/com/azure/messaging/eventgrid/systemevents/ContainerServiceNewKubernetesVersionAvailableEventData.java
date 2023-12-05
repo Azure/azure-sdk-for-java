@@ -39,13 +39,16 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     @JsonProperty(value = "latestPreviewKubernetesVersion")
     private String latestPreviewKubernetesVersion;
 
-    /** Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class. */
-    public ContainerServiceNewKubernetesVersionAvailableEventData() {}
+    /**
+     * Creates an instance of ContainerServiceNewKubernetesVersionAvailableEventData class.
+     */
+    public ContainerServiceNewKubernetesVersionAvailableEventData() {
+    }
 
     /**
      * Get the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
      * version supported by ManagedCluster resource.
-     *
+     * 
      * @return the latestSupportedKubernetesVersion value.
      */
     public String getLatestSupportedKubernetesVersion() {
@@ -55,12 +58,12 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Set the latestSupportedKubernetesVersion property: The highest PATCH Kubernetes version for the highest MINOR
      * version supported by ManagedCluster resource.
-     *
+     * 
      * @param latestSupportedKubernetesVersion the latestSupportedKubernetesVersion value to set.
      * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
      */
-    public ContainerServiceNewKubernetesVersionAvailableEventData setLatestSupportedKubernetesVersion(
-            String latestSupportedKubernetesVersion) {
+    public ContainerServiceNewKubernetesVersionAvailableEventData
+        setLatestSupportedKubernetesVersion(String latestSupportedKubernetesVersion) {
         this.latestSupportedKubernetesVersion = latestSupportedKubernetesVersion;
         return this;
     }
@@ -68,7 +71,7 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Get the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
      * considered stable for the ManagedCluster resource.
-     *
+     * 
      * @return the latestStableKubernetesVersion value.
      */
     public String getLatestStableKubernetesVersion() {
@@ -78,12 +81,12 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Set the latestStableKubernetesVersion property: The highest PATCH Kubernetes version for the MINOR version
      * considered stable for the ManagedCluster resource.
-     *
+     * 
      * @param latestStableKubernetesVersion the latestStableKubernetesVersion value to set.
      * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
      */
-    public ContainerServiceNewKubernetesVersionAvailableEventData setLatestStableKubernetesVersion(
-            String latestStableKubernetesVersion) {
+    public ContainerServiceNewKubernetesVersionAvailableEventData
+        setLatestStableKubernetesVersion(String latestStableKubernetesVersion) {
         this.latestStableKubernetesVersion = latestStableKubernetesVersion;
         return this;
     }
@@ -91,7 +94,7 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Get the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
      * MINOR version available for the ManagedCluster resource.
-     *
+     * 
      * @return the lowestMinorKubernetesVersion value.
      */
     public String getLowestMinorKubernetesVersion() {
@@ -101,12 +104,12 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Set the lowestMinorKubernetesVersion property: The highest PATCH Kubernetes version for the lowest applicable
      * MINOR version available for the ManagedCluster resource.
-     *
+     * 
      * @param lowestMinorKubernetesVersion the lowestMinorKubernetesVersion value to set.
      * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
      */
-    public ContainerServiceNewKubernetesVersionAvailableEventData setLowestMinorKubernetesVersion(
-            String lowestMinorKubernetesVersion) {
+    public ContainerServiceNewKubernetesVersionAvailableEventData
+        setLowestMinorKubernetesVersion(String lowestMinorKubernetesVersion) {
         this.lowestMinorKubernetesVersion = lowestMinorKubernetesVersion;
         return this;
     }
@@ -114,7 +117,7 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Get the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
      * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
-     *
+     * 
      * @return the latestPreviewKubernetesVersion value.
      */
     public String getLatestPreviewKubernetesVersion() {
@@ -124,12 +127,12 @@ public final class ContainerServiceNewKubernetesVersionAvailableEventData {
     /**
      * Set the latestPreviewKubernetesVersion property: The highest PATCH Kubernetes version considered preview for the
      * ManagedCluster resource. There might not be any version in preview at the time of publishing the event.
-     *
+     * 
      * @param latestPreviewKubernetesVersion the latestPreviewKubernetesVersion value to set.
      * @return the ContainerServiceNewKubernetesVersionAvailableEventData object itself.
      */
-    public ContainerServiceNewKubernetesVersionAvailableEventData setLatestPreviewKubernetesVersion(
-            String latestPreviewKubernetesVersion) {
+    public ContainerServiceNewKubernetesVersionAvailableEventData
+        setLatestPreviewKubernetesVersion(String latestPreviewKubernetesVersion) {
         this.latestPreviewKubernetesVersion = latestPreviewKubernetesVersion;
         return this;
     }

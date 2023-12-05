@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of JobOutput errors. */
+/**
+ * Details of JobOutput errors.
+ */
 @Immutable
 public final class MediaJobError {
     /*
@@ -42,12 +44,15 @@ public final class MediaJobError {
     @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<MediaJobErrorDetail> details;
 
-    /** Creates an instance of MediaJobError class. */
-    public MediaJobError() {}
+    /**
+     * Creates an instance of MediaJobError class.
+     */
+    public MediaJobError() {
+    }
 
     /**
      * Get the code property: Error code describing the error.
-     *
+     * 
      * @return the code value.
      */
     public MediaJobErrorCode getCode() {
@@ -56,7 +61,7 @@ public final class MediaJobError {
 
     /**
      * Get the message property: A human-readable language-dependent representation of the error.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -65,7 +70,7 @@ public final class MediaJobError {
 
     /**
      * Get the category property: Helps with categorization of errors.
-     *
+     * 
      * @return the category value.
      */
     public MediaJobErrorCategory getCategory() {
@@ -75,7 +80,7 @@ public final class MediaJobError {
     /**
      * Get the retry property: Indicates that it may be possible to retry the Job. If retry is unsuccessful, please
      * contact Azure support via Azure Portal.
-     *
+     * 
      * @return the retry value.
      */
     public MediaJobRetry getRetry() {
@@ -84,7 +89,7 @@ public final class MediaJobError {
 
     /**
      * Get the details property: An array of details about specific errors that led to this reported error.
-     *
+     * 
      * @return the details value.
      */
     public List<MediaJobErrorDetail> getDetails() {

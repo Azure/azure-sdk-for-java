@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of common properties of all Router Job events. */
+/**
+ * Schema of common properties of all Router Job events.
+ */
 @Fluent
 public class AcsRouterJobEventData extends AcsRouterEventData {
     /*
@@ -29,12 +31,15 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of AcsRouterJobEventData class. */
-    public AcsRouterJobEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobEventData class.
+     */
+    public AcsRouterJobEventData() {
+    }
 
     /**
      * Get the queueId property: Router Job events Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -43,7 +48,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the queueId property: Router Job events Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -54,7 +59,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Get the labels property: Router Job events Labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, String> getLabels() {
@@ -63,7 +68,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the labels property: Router Job events Labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -74,7 +79,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Get the tags property: Router Jobs events Tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -83,7 +88,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the tags property: Router Jobs events Tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -92,21 +97,27 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

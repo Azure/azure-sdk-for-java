@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.RunCompleted event.
+ */
 @Fluent
 public final class MachineLearningServicesRunCompletedEventData {
     /*
@@ -46,12 +48,15 @@ public final class MachineLearningServicesRunCompletedEventData {
     @JsonProperty(value = "runProperties")
     private Object runProperties;
 
-    /** Creates an instance of MachineLearningServicesRunCompletedEventData class. */
-    public MachineLearningServicesRunCompletedEventData() {}
+    /**
+     * Creates an instance of MachineLearningServicesRunCompletedEventData class.
+     */
+    public MachineLearningServicesRunCompletedEventData() {
+    }
 
     /**
      * Get the experimentId property: The ID of the experiment that the run belongs to.
-     *
+     * 
      * @return the experimentId value.
      */
     public String getExperimentId() {
@@ -60,7 +65,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the experimentId property: The ID of the experiment that the run belongs to.
-     *
+     * 
      * @param experimentId the experimentId value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */
@@ -71,7 +76,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Get the experimentName property: The name of the experiment that the run belongs to.
-     *
+     * 
      * @return the experimentName value.
      */
     public String getExperimentName() {
@@ -80,7 +85,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the experimentName property: The name of the experiment that the run belongs to.
-     *
+     * 
      * @param experimentName the experimentName value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */
@@ -91,7 +96,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Get the runId property: The ID of the Run that was completed.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -100,7 +105,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the runId property: The ID of the Run that was completed.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */
@@ -111,7 +116,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Get the runType property: The Run Type of the completed Run.
-     *
+     * 
      * @return the runType value.
      */
     public String getRunType() {
@@ -120,7 +125,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the runType property: The Run Type of the completed Run.
-     *
+     * 
      * @param runType the runType value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */
@@ -131,7 +136,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Get the runTags property: The tags of the completed Run.
-     *
+     * 
      * @return the runTags value.
      */
     public Object getRunTags() {
@@ -140,7 +145,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the runTags property: The tags of the completed Run.
-     *
+     * 
      * @param runTags the runTags value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */
@@ -151,7 +156,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Get the runProperties property: The properties of the completed Run.
-     *
+     * 
      * @return the runProperties value.
      */
     public Object getRunProperties() {
@@ -160,7 +165,7 @@ public final class MachineLearningServicesRunCompletedEventData {
 
     /**
      * Set the runProperties property: The properties of the completed Run.
-     *
+     * 
      * @param runProperties the runProperties value to set.
      * @return the MachineLearningServicesRunCompletedEventData object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the schema of the common properties across all ARN system topic delete events. */
+/**
+ * Describes the schema of the common properties across all ARN system topic delete events.
+ */
 @Fluent
 public class ResourceNotificationsResourceDeletedEventData {
     /*
@@ -22,12 +24,15 @@ public class ResourceNotificationsResourceDeletedEventData {
     @JsonProperty(value = "operationalInfo")
     private ResourceNotificationsOperationalDetails operationalDetails;
 
-    /** Creates an instance of ResourceNotificationsResourceDeletedEventData class. */
-    public ResourceNotificationsResourceDeletedEventData() {}
+    /**
+     * Creates an instance of ResourceNotificationsResourceDeletedEventData class.
+     */
+    public ResourceNotificationsResourceDeletedEventData() {
+    }
 
     /**
      * Get the resourceDetails property: resourceInfo details for delete event.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceNotificationsResourceDeletedDetails getResourceDetails() {
@@ -36,19 +41,19 @@ public class ResourceNotificationsResourceDeletedEventData {
 
     /**
      * Set the resourceDetails property: resourceInfo details for delete event.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the ResourceNotificationsResourceDeletedEventData object itself.
      */
-    public ResourceNotificationsResourceDeletedEventData setResourceDetails(
-            ResourceNotificationsResourceDeletedDetails resourceDetails) {
+    public ResourceNotificationsResourceDeletedEventData
+        setResourceDetails(ResourceNotificationsResourceDeletedDetails resourceDetails) {
         this.resourceDetails = resourceDetails;
         return this;
     }
 
     /**
      * Get the operationalDetails property: details about operational info.
-     *
+     * 
      * @return the operationalDetails value.
      */
     public ResourceNotificationsOperationalDetails getOperationalDetails() {
@@ -57,12 +62,12 @@ public class ResourceNotificationsResourceDeletedEventData {
 
     /**
      * Set the operationalDetails property: details about operational info.
-     *
+     * 
      * @param operationalDetails the operationalDetails value to set.
      * @return the ResourceNotificationsResourceDeletedEventData object itself.
      */
-    public ResourceNotificationsResourceDeletedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsResourceDeletedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         this.operationalDetails = operationalDetails;
         return this;
     }

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metadata information for the properties JSON document. */
+/**
+ * Metadata information for the properties JSON document.
+ */
 @Fluent
 public final class DeviceTwinMetadata {
     /*
@@ -16,12 +18,15 @@ public final class DeviceTwinMetadata {
     @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
 
-    /** Creates an instance of DeviceTwinMetadata class. */
-    public DeviceTwinMetadata() {}
+    /**
+     * Creates an instance of DeviceTwinMetadata class.
+     */
+    public DeviceTwinMetadata() {
+    }
 
     /**
      * Get the lastUpdated property: The ISO8601 timestamp of the last time the properties were updated.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public String getLastUpdated() {
@@ -30,7 +35,7 @@ public final class DeviceTwinMetadata {
 
     /**
      * Set the lastUpdated property: The ISO8601 timestamp of the last time the properties were updated.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the DeviceTwinMetadata object itself.
      */

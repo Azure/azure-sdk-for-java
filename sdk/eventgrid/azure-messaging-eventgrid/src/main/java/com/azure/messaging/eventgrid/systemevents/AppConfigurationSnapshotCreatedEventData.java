@@ -6,27 +6,38 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotCreated event.
+ */
 @Fluent
 public final class AppConfigurationSnapshotCreatedEventData extends AppConfigurationSnapshotEventData {
-    /** Creates an instance of AppConfigurationSnapshotCreatedEventData class. */
-    public AppConfigurationSnapshotCreatedEventData() {}
+    /**
+     * Creates an instance of AppConfigurationSnapshotCreatedEventData class.
+     */
+    public AppConfigurationSnapshotCreatedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotCreatedEventData setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotCreatedEventData setEtag(String etag) {
         super.setEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppConfigurationSnapshotCreatedEventData setSyncToken(String syncToken) {
         super.setSyncToken(syncToken);

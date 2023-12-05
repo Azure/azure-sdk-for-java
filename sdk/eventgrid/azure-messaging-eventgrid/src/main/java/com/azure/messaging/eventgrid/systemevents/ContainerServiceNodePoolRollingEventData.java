@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of node pool rolling events. */
+/**
+ * Schema of common properties of node pool rolling events.
+ */
 @Fluent
 public class ContainerServiceNodePoolRollingEventData {
     /*
@@ -16,12 +18,15 @@ public class ContainerServiceNodePoolRollingEventData {
     @JsonProperty(value = "nodePoolName")
     private String nodePoolName;
 
-    /** Creates an instance of ContainerServiceNodePoolRollingEventData class. */
-    public ContainerServiceNodePoolRollingEventData() {}
+    /**
+     * Creates an instance of ContainerServiceNodePoolRollingEventData class.
+     */
+    public ContainerServiceNodePoolRollingEventData() {
+    }
 
     /**
      * Get the nodePoolName property: The name of the node pool in the ManagedCluster resource.
-     *
+     * 
      * @return the nodePoolName value.
      */
     public String getNodePoolName() {
@@ -30,7 +35,7 @@ public class ContainerServiceNodePoolRollingEventData {
 
     /**
      * Set the nodePoolName property: The name of the node pool in the ManagedCluster resource.
-     *
+     * 
      * @param nodePoolName the nodePoolName value to set.
      * @return the ContainerServiceNodePoolRollingEventData object itself.
      */

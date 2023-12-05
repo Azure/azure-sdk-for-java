@@ -10,7 +10,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobSchedulingFailed event.
+ */
 @Fluent
 public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEventData {
     /*
@@ -43,12 +45,15 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     @JsonProperty(value = "failureReason")
     private String failureReason;
 
-    /** Creates an instance of AcsRouterJobSchedulingFailedEventData class. */
-    public AcsRouterJobSchedulingFailedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobSchedulingFailedEventData class.
+     */
+    public AcsRouterJobSchedulingFailedEventData() {
+    }
 
     /**
      * Get the priority property: Router Job Priority.
-     *
+     * 
      * @return the priority value.
      */
     public Integer getPriority() {
@@ -57,7 +62,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the priority property: Router Job Priority.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -68,7 +73,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Get the expiredAttachedWorkerSelectors property: Router Job Scheduling Failed Attached Worker Selector Expired.
-     *
+     * 
      * @return the expiredAttachedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredAttachedWorkerSelectors() {
@@ -77,19 +82,20 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the expiredAttachedWorkerSelectors property: Router Job Scheduling Failed Attached Worker Selector Expired.
-     *
+     * 
      * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
-    public AcsRouterJobSchedulingFailedEventData setExpiredAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
+    public AcsRouterJobSchedulingFailedEventData
+        setExpiredAttachedWorkerSelectors(List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
         this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
         return this;
     }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
-     *
+     * Get the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
+     * Expired.
+     * 
      * @return the expiredRequestedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredRequestedWorkerSelectors() {
@@ -97,20 +103,21 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
     }
 
     /**
-     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector Expired.
-     *
+     * Set the expiredRequestedWorkerSelectors property: Router Job Scheduling Failed Requested Worker Selector
+     * Expired.
+     * 
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
-    public AcsRouterJobSchedulingFailedEventData setExpiredRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
+    public AcsRouterJobSchedulingFailedEventData
+        setExpiredRequestedWorkerSelectors(List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
         this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
         return this;
     }
 
     /**
      * Get the scheduledOn property: Router Job Scheduling Failed Scheduled Time in UTC.
-     *
+     * 
      * @return the scheduledOn value.
      */
     public OffsetDateTime getScheduledOn() {
@@ -119,7 +126,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the scheduledOn property: Router Job Scheduling Failed Scheduled Time in UTC.
-     *
+     * 
      * @param scheduledOn the scheduledOn value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -130,7 +137,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Get the failureReason property: Router Job Scheduling Failed Reason.
-     *
+     * 
      * @return the failureReason value.
      */
     public String getFailureReason() {
@@ -139,7 +146,7 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
 
     /**
      * Set the failureReason property: Router Job Scheduling Failed Reason.
-     *
+     * 
      * @param failureReason the failureReason value to set.
      * @return the AcsRouterJobSchedulingFailedEventData object itself.
      */
@@ -148,42 +155,54 @@ public final class AcsRouterJobSchedulingFailedEventData extends AcsRouterJobEve
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobSchedulingFailedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

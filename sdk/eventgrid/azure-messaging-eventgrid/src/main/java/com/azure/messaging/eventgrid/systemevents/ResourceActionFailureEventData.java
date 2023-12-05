@@ -86,8 +86,11 @@ public final class ResourceActionFailureEventData {
     @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
 
-    /** Creates an instance of ResourceActionFailureEventData class. */
-    public ResourceActionFailureEventData() {}
+    /**
+     * Creates an instance of ResourceActionFailureEventData class.
+     */
+    public ResourceActionFailureEventData() {
+    }
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -309,16 +312,17 @@ public final class ResourceActionFailureEventData {
         return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceActionFailureEventData.class);
+    static final private ClientLogger LOGGER = new ClientLogger(ResourceActionFailureEventData.class);
 
-    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#getResourceClaims()} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -339,7 +343,8 @@ public final class ResourceActionFailureEventData {
      * @param claims the claims value to set.
      * @return the ResourceActionFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setClaims(String claims) {
@@ -356,7 +361,8 @@ public final class ResourceActionFailureEventData {
      *
      * @return the httpRequest value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -374,14 +380,14 @@ public final class ResourceActionFailureEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceActionFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setHttpRequest(String httpRequest) {
         try {
-            setResourceHttpRequest(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -393,7 +399,8 @@ public final class ResourceActionFailureEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -411,14 +418,14 @@ public final class ResourceActionFailureEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceActionFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * <p>
+     * Use {@link ResourceActionFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceActionFailureEventData setAuthorization(String authorization) {
         try {
-            setResourceAuthorization(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

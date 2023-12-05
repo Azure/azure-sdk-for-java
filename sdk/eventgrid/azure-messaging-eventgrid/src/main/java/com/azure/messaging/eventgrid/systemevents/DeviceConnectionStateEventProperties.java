@@ -41,14 +41,17 @@ public class DeviceConnectionStateEventProperties {
     @JsonProperty(value = "deviceConnectionStateEventInfo")
     private DeviceConnectionStateEventInfo deviceConnectionStateEventInfo;
 
-    /** Creates an instance of DeviceConnectionStateEventProperties class. */
-    public DeviceConnectionStateEventProperties() {}
+    /**
+     * Creates an instance of DeviceConnectionStateEventProperties class.
+     */
+    public DeviceConnectionStateEventProperties() {
+    }
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -59,7 +62,7 @@ public class DeviceConnectionStateEventProperties {
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
@@ -72,7 +75,7 @@ public class DeviceConnectionStateEventProperties {
      * Get the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @return the moduleId value.
      */
     public String getModuleId() {
@@ -83,7 +86,7 @@ public class DeviceConnectionStateEventProperties {
      * Set the moduleId property: The unique identifier of the module. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @param moduleId the moduleId value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
@@ -94,7 +97,7 @@ public class DeviceConnectionStateEventProperties {
 
     /**
      * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @return the hubName value.
      */
     public String getHubName() {
@@ -103,7 +106,7 @@ public class DeviceConnectionStateEventProperties {
 
     /**
      * Set the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @param hubName the hubName value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
@@ -114,7 +117,7 @@ public class DeviceConnectionStateEventProperties {
 
     /**
      * Get the deviceConnectionStateEventInfo property: Information about the device connection state event.
-     *
+     * 
      * @return the deviceConnectionStateEventInfo value.
      */
     public DeviceConnectionStateEventInfo getDeviceConnectionStateEventInfo() {
@@ -123,12 +126,12 @@ public class DeviceConnectionStateEventProperties {
 
     /**
      * Set the deviceConnectionStateEventInfo property: Information about the device connection state event.
-     *
+     * 
      * @param deviceConnectionStateEventInfo the deviceConnectionStateEventInfo value to set.
      * @return the DeviceConnectionStateEventProperties object itself.
      */
-    public DeviceConnectionStateEventProperties setDeviceConnectionStateEventInfo(
-            DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
+    public DeviceConnectionStateEventProperties
+        setDeviceConnectionStateEventInfo(DeviceConnectionStateEventInfo deviceConnectionStateEventInfo) {
         this.deviceConnectionStateEventInfo = deviceConnectionStateEventInfo;
         return this;
     }

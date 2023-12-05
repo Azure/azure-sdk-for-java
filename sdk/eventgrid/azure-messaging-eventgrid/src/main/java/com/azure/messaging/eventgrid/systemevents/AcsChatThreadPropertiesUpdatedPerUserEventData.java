@@ -39,13 +39,16 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
-    /** Creates an instance of AcsChatThreadPropertiesUpdatedPerUserEventData class. */
-    public AcsChatThreadPropertiesUpdatedPerUserEventData() {}
+    /**
+     * Creates an instance of AcsChatThreadPropertiesUpdatedPerUserEventData class.
+     */
+    public AcsChatThreadPropertiesUpdatedPerUserEventData() {
+    }
 
     /**
-     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @return the editedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getEditedByCommunicationIdentifier() {
@@ -53,21 +56,21 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
     }
 
     /**
-     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
-    public AcsChatThreadPropertiesUpdatedPerUserEventData setEditedByCommunicationIdentifier(
-            CommunicationIdentifierModel editedByCommunicationIdentifier) {
+    public AcsChatThreadPropertiesUpdatedPerUserEventData
+        setEditedByCommunicationIdentifier(CommunicationIdentifierModel editedByCommunicationIdentifier) {
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @return the editTime value.
      */
     public OffsetDateTime getEditTime() {
@@ -76,7 +79,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
 
     /**
      * Set the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @param editTime the editTime value to set.
      * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
@@ -87,7 +90,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
 
     /**
      * Get the metadata property: The thread metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -96,7 +99,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
 
     /**
      * Set the metadata property: The thread metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
@@ -107,7 +110,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
 
     /**
      * Get the properties property: The updated thread properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> getProperties() {
@@ -116,7 +119,7 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
 
     /**
      * Set the properties property: The updated thread properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AcsChatThreadPropertiesUpdatedPerUserEventData object itself.
      */
@@ -125,36 +128,46 @@ public final class AcsChatThreadPropertiesUpdatedPerUserEventData extends AcsCha
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedPerUserEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedPerUserEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatThreadPropertiesUpdatedPerUserEventData setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatThreadPropertiesUpdatedPerUserEventData
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedPerUserEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedPerUserEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

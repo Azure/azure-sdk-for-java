@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry). */
+/**
+ * Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry).
+ */
 @Fluent
 public class DeviceTelemetryEventProperties {
     /*
@@ -29,12 +31,15 @@ public class DeviceTelemetryEventProperties {
     @JsonProperty(value = "systemProperties")
     private Map<String, String> systemProperties;
 
-    /** Creates an instance of DeviceTelemetryEventProperties class. */
-    public DeviceTelemetryEventProperties() {}
+    /**
+     * Creates an instance of DeviceTelemetryEventProperties class.
+     */
+    public DeviceTelemetryEventProperties() {
+    }
 
     /**
      * Get the body property: The content of the message from the device.
-     *
+     * 
      * @return the body value.
      */
     public Object getBody() {
@@ -43,7 +48,7 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Set the body property: The content of the message from the device.
-     *
+     * 
      * @param body the body value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
@@ -55,7 +60,7 @@ public class DeviceTelemetryEventProperties {
     /**
      * Get the properties property: Application properties are user-defined strings that can be added to the message.
      * These fields are optional.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -65,7 +70,7 @@ public class DeviceTelemetryEventProperties {
     /**
      * Set the properties property: Application properties are user-defined strings that can be added to the message.
      * These fields are optional.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
@@ -76,7 +81,7 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Get the systemProperties property: System properties help identify contents and source of the messages.
-     *
+     * 
      * @return the systemProperties value.
      */
     public Map<String, String> getSystemProperties() {
@@ -85,7 +90,7 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Set the systemProperties property: System properties help identify contents and source of the messages.
-     *
+     * 
      * @param systemProperties the systemProperties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */

@@ -16,19 +16,23 @@ public final class ApiManagementGatewayHostnameConfigurationDeletedEventData {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
-     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
+     * gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
-    /** Creates an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData class. */
-    public ApiManagementGatewayHostnameConfigurationDeletedEventData() {}
+    /**
+     * Creates an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData class.
+     */
+    public ApiManagementGatewayHostnameConfigurationDeletedEventData() {
+    }
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -39,7 +43,7 @@ public final class ApiManagementGatewayHostnameConfigurationDeletedEventData {
      * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/gateways/&lt;GatewayName&gt;/hostnameConfigurations/&lt;ResourceName&gt;`.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the ApiManagementGatewayHostnameConfigurationDeletedEventData object itself.
      */

@@ -12,27 +12,36 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ResourceNotificationsResourceManagementCreatedOrUpdatedEventData
-        extends ResourceNotificationsResourceUpdatedEventData {
-    /** Creates an instance of ResourceNotificationsResourceManagementCreatedOrUpdatedEventData class. */
-    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData() {}
+    extends ResourceNotificationsResourceUpdatedEventData {
+    /**
+     * Creates an instance of ResourceNotificationsResourceManagementCreatedOrUpdatedEventData class.
+     */
+    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData setResourceDetails(
-            ResourceNotificationsResourceUpdatedDetails resourceDetails) {
+    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData
+        setResourceDetails(ResourceNotificationsResourceUpdatedDetails resourceDetails) {
         super.setResourceDetails(resourceDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         super.setOperationalDetails(operationalDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceNotificationsResourceManagementCreatedOrUpdatedEventData setApiVersion(String apiVersion) {
         super.setApiVersion(apiVersion);

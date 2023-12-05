@@ -14,8 +14,8 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteSuccess event. This is raised
- * when a resource create or update operation succeeds.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceWriteSuccess event. This is
+ * raised when a resource create or update operation succeeds.
  */
 @Fluent
 public final class ResourceWriteSuccessEventData {
@@ -86,8 +86,11 @@ public final class ResourceWriteSuccessEventData {
     @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
 
-    /** Creates an instance of ResourceWriteSuccessEventData class. */
-    public ResourceWriteSuccessEventData() {}
+    /**
+     * Creates an instance of ResourceWriteSuccessEventData class.
+     */
+    public ResourceWriteSuccessEventData() {
+    }
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -309,16 +312,17 @@ public final class ResourceWriteSuccessEventData {
         return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceWriteSuccessEventData.class);
+    static final private ClientLogger LOGGER = new ClientLogger(ResourceWriteSuccessEventData.class);
 
-    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#getResourceClaims()} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -339,7 +343,8 @@ public final class ResourceWriteSuccessEventData {
      * @param claims the claims value to set.
      * @return the ResourceWriteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#setResourceClaims(Map)} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceWriteSuccessEventData setClaims(String claims) {
@@ -356,7 +361,8 @@ public final class ResourceWriteSuccessEventData {
      *
      * @return the httpRequest value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#getResourceHttpRequest()} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -374,14 +380,14 @@ public final class ResourceWriteSuccessEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceWriteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceWriteSuccessEventData setHttpRequest(String httpRequest) {
         try {
-            setResourceHttpRequest(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -393,7 +399,8 @@ public final class ResourceWriteSuccessEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#getResourceAuthorization()} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -411,14 +418,14 @@ public final class ResourceWriteSuccessEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceWriteSuccessEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceWriteSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * <p>
+     * Use {@link ResourceWriteSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceWriteSuccessEventData setAuthorization(String authorization) {
         try {
-            setResourceAuthorization(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

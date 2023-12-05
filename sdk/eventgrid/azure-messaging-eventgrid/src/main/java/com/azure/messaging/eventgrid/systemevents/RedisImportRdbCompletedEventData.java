@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Cache.ImportRDBCompleted event.
+ */
 @Fluent
 public final class RedisImportRdbCompletedEventData {
     /*
@@ -24,17 +26,20 @@ public final class RedisImportRdbCompletedEventData {
     private String name;
 
     /*
-     * The status of this event. Failed or  succeeded
+     * The status of this event. Failed or succeeded
      */
     @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of RedisImportRdbCompletedEventData class. */
-    public RedisImportRdbCompletedEventData() {}
+    /**
+     * Creates an instance of RedisImportRdbCompletedEventData class.
+     */
+    public RedisImportRdbCompletedEventData() {
+    }
 
     /**
      * Get the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -43,7 +48,7 @@ public final class RedisImportRdbCompletedEventData {
 
     /**
      * Set the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the RedisImportRdbCompletedEventData object itself.
      */
@@ -54,7 +59,7 @@ public final class RedisImportRdbCompletedEventData {
 
     /**
      * Get the name property: The name of this event.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -63,7 +68,7 @@ public final class RedisImportRdbCompletedEventData {
 
     /**
      * Set the name property: The name of this event.
-     *
+     * 
      * @param name the name value to set.
      * @return the RedisImportRdbCompletedEventData object itself.
      */
@@ -74,7 +79,7 @@ public final class RedisImportRdbCompletedEventData {
 
     /**
      * Get the status property: The status of this event. Failed or succeeded.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -83,7 +88,7 @@ public final class RedisImportRdbCompletedEventData {
 
     /**
      * Set the status property: The status of this event. Failed or succeeded.
-     *
+     * 
      * @param status the status value to set.
      * @return the RedisImportRdbCompletedEventData object itself.
      */

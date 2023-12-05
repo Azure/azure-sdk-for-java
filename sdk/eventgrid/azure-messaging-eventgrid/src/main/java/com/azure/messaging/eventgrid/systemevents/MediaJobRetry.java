@@ -18,10 +18,14 @@ public enum MediaJobRetry {
      */
     DO_NOT_RETRY("DoNotRetry"),
 
-    /** Issue may be resolved after waiting for a period of time and resubmitting the same Job. */
+    /**
+     * Issue may be resolved after waiting for a period of time and resubmitting the same Job.
+     */
     MAY_RETRY("MayRetry");
 
-    /** The actual serialized value for a MediaJobRetry instance. */
+    /**
+     * The actual serialized value for a MediaJobRetry instance.
+     */
     private final String value;
 
     MediaJobRetry(String value) {
@@ -30,7 +34,7 @@ public enum MediaJobRetry {
 
     /**
      * Parses a serialized value to a MediaJobRetry instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobRetry object, or null if unable to parse.
      */
@@ -48,7 +52,9 @@ public enum MediaJobRetry {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

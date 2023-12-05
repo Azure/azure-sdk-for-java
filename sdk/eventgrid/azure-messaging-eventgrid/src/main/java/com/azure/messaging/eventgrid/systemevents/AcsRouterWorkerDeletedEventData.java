@@ -6,34 +6,47 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeleted event.
+ */
 @Fluent
 public final class AcsRouterWorkerDeletedEventData extends AcsRouterWorkerEventData {
-    /** Creates an instance of AcsRouterWorkerDeletedEventData class. */
-    public AcsRouterWorkerDeletedEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerDeletedEventData class.
+     */
+    public AcsRouterWorkerDeletedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerDeletedEventData setWorkerId(String workerId) {
         super.setWorkerId(workerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerDeletedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerDeletedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerDeletedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

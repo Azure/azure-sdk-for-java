@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCompleted event.
+ */
 @Fluent
 public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData {
     /*
@@ -23,12 +25,15 @@ public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData 
     @JsonProperty(value = "workerId")
     private String workerId;
 
-    /** Creates an instance of AcsRouterJobCompletedEventData class. */
-    public AcsRouterJobCompletedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobCompletedEventData class.
+     */
+    public AcsRouterJobCompletedEventData() {
+    }
 
     /**
      * Get the assignmentId property: Router Job Completed Assignment Id.
-     *
+     * 
      * @return the assignmentId value.
      */
     public String getAssignmentId() {
@@ -37,7 +42,7 @@ public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData 
 
     /**
      * Set the assignmentId property: Router Job Completed Assignment Id.
-     *
+     * 
      * @param assignmentId the assignmentId value to set.
      * @return the AcsRouterJobCompletedEventData object itself.
      */
@@ -48,7 +53,7 @@ public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData 
 
     /**
      * Get the workerId property: Router Job Completed Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -57,7 +62,7 @@ public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData 
 
     /**
      * Set the workerId property: Router Job Completed Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterJobCompletedEventData object itself.
      */
@@ -66,42 +71,54 @@ public final class AcsRouterJobCompletedEventData extends AcsRouterJobEventData 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCompletedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

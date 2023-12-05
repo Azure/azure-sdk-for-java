@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
+ */
 @Fluent
 public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*
@@ -42,12 +44,15 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
     @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of AcsSmsDeliveryReportReceivedEventData class. */
-    public AcsSmsDeliveryReportReceivedEventData() {}
+    /**
+     * Creates an instance of AcsSmsDeliveryReportReceivedEventData class.
+     */
+    public AcsSmsDeliveryReportReceivedEventData() {
+    }
 
     /**
      * Get the deliveryStatus property: Status of Delivery.
-     *
+     * 
      * @return the deliveryStatus value.
      */
     public String getDeliveryStatus() {
@@ -56,7 +61,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryStatus property: Status of Delivery.
-     *
+     * 
      * @param deliveryStatus the deliveryStatus value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -67,7 +72,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the deliveryStatusDetails property: Details about Delivery Status.
-     *
+     * 
      * @return the deliveryStatusDetails value.
      */
     public String getDeliveryStatusDetails() {
@@ -76,7 +81,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryStatusDetails property: Details about Delivery Status.
-     *
+     * 
      * @param deliveryStatusDetails the deliveryStatusDetails value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -87,7 +92,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the deliveryAttempts property: List of details of delivery attempts made.
-     *
+     * 
      * @return the deliveryAttempts value.
      */
     public List<AcsSmsDeliveryAttemptProperties> getDeliveryAttempts() {
@@ -96,19 +101,19 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryAttempts property: List of details of delivery attempts made.
-     *
+     * 
      * @param deliveryAttempts the deliveryAttempts value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcsSmsDeliveryReportReceivedEventData setDeliveryAttempts(
-            List<AcsSmsDeliveryAttemptProperties> deliveryAttempts) {
+    public AcsSmsDeliveryReportReceivedEventData
+        setDeliveryAttempts(List<AcsSmsDeliveryAttemptProperties> deliveryAttempts) {
         this.deliveryAttempts = deliveryAttempts;
         return this;
     }
 
     /**
      * Get the receivedTimestamp property: The time at which the SMS delivery report was received.
-     *
+     * 
      * @return the receivedTimestamp value.
      */
     public OffsetDateTime getReceivedTimestamp() {
@@ -117,7 +122,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the receivedTimestamp property: The time at which the SMS delivery report was received.
-     *
+     * 
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -128,7 +133,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the tag property: Customer Content.
-     *
+     * 
      * @return the tag value.
      */
     public String getTag() {
@@ -137,7 +142,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the tag property: Customer Content.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -146,21 +151,27 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setFrom(String from) {
         super.setFrom(from);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setTo(String to) {
         super.setTo(to);

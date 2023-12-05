@@ -20,12 +20,15 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
     @JsonProperty(value = "outputs")
     private List<MediaJobOutput> outputs;
 
-    /** Creates an instance of MediaJobCanceledEventData class. */
-    public MediaJobCanceledEventData() {}
+    /**
+     * Creates an instance of MediaJobCanceledEventData class.
+     */
+    public MediaJobCanceledEventData() {
+    }
 
     /**
      * Get the outputs property: Gets the Job outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public List<MediaJobOutput> getOutputs() {
@@ -34,7 +37,7 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
 
     /**
      * Set the outputs property: Gets the Job outputs.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the MediaJobCanceledEventData object itself.
      */
@@ -43,7 +46,9 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobCanceledEventData setCorrelationData(Map<String, String> correlationData) {
         super.setCorrelationData(correlationData);

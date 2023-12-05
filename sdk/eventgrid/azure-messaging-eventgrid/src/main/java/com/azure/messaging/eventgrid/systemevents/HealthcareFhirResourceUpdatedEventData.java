@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event.
+ */
 @Fluent
 public final class HealthcareFhirResourceUpdatedEventData {
     /*
@@ -34,12 +36,15 @@ public final class HealthcareFhirResourceUpdatedEventData {
     @JsonProperty(value = "resourceVersionId")
     private Long fhirResourceVersionId;
 
-    /** Creates an instance of HealthcareFhirResourceUpdatedEventData class. */
-    public HealthcareFhirResourceUpdatedEventData() {}
+    /**
+     * Creates an instance of HealthcareFhirResourceUpdatedEventData class.
+     */
+    public HealthcareFhirResourceUpdatedEventData() {
+    }
 
     /**
      * Get the fhirResourceType property: Type of HL7 FHIR resource.
-     *
+     * 
      * @return the fhirResourceType value.
      */
     public HealthcareFhirResourceType getFhirResourceType() {
@@ -48,7 +53,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
 
     /**
      * Set the fhirResourceType property: Type of HL7 FHIR resource.
-     *
+     * 
      * @param fhirResourceType the fhirResourceType value to set.
      * @return the HealthcareFhirResourceUpdatedEventData object itself.
      */
@@ -59,7 +64,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
 
     /**
      * Get the fhirServiceHostName property: Domain name of FHIR account for this resource.
-     *
+     * 
      * @return the fhirServiceHostName value.
      */
     public String getFhirServiceHostName() {
@@ -68,7 +73,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
 
     /**
      * Set the fhirServiceHostName property: Domain name of FHIR account for this resource.
-     *
+     * 
      * @param fhirServiceHostName the fhirServiceHostName value to set.
      * @return the HealthcareFhirResourceUpdatedEventData object itself.
      */
@@ -79,7 +84,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
 
     /**
      * Get the fhirResourceId property: Id of HL7 FHIR resource.
-     *
+     * 
      * @return the fhirResourceId value.
      */
     public String getFhirResourceId() {
@@ -88,7 +93,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
 
     /**
      * Set the fhirResourceId property: Id of HL7 FHIR resource.
-     *
+     * 
      * @param fhirResourceId the fhirResourceId value to set.
      * @return the HealthcareFhirResourceUpdatedEventData object itself.
      */
@@ -100,7 +105,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
     /**
      * Get the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
      * updated, or deleted(soft-deletion).
-     *
+     * 
      * @return the fhirResourceVersionId value.
      */
     public Long getFhirResourceVersionId() {
@@ -110,7 +115,7 @@ public final class HealthcareFhirResourceUpdatedEventData {
     /**
      * Set the fhirResourceVersionId property: VersionId of HL7 FHIR resource. It changes when the resource is created,
      * updated, or deleted(soft-deletion).
-     *
+     * 
      * @param fhirResourceVersionId the fhirResourceVersionId value to set.
      * @return the HealthcareFhirResourceUpdatedEventData object itself.
      */

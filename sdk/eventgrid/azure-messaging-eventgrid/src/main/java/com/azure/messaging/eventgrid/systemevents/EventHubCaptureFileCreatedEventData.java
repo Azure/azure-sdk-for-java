@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event.
+ */
 @Fluent
 public final class EventHubCaptureFileCreatedEventData {
     /*
@@ -65,12 +67,15 @@ public final class EventHubCaptureFileCreatedEventData {
     @JsonProperty(value = "lastEnqueueTime")
     private OffsetDateTime lastEnqueueTime;
 
-    /** Creates an instance of EventHubCaptureFileCreatedEventData class. */
-    public EventHubCaptureFileCreatedEventData() {}
+    /**
+     * Creates an instance of EventHubCaptureFileCreatedEventData class.
+     */
+    public EventHubCaptureFileCreatedEventData() {
+    }
 
     /**
      * Get the fileurl property: The path to the capture file.
-     *
+     * 
      * @return the fileurl value.
      */
     public String getFileurl() {
@@ -79,7 +84,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the fileurl property: The path to the capture file.
-     *
+     * 
      * @param fileurl the fileurl value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -90,7 +95,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the fileType property: The file type of the capture file.
-     *
+     * 
      * @return the fileType value.
      */
     public String getFileType() {
@@ -99,7 +104,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the fileType property: The file type of the capture file.
-     *
+     * 
      * @param fileType the fileType value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -110,7 +115,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the partitionId property: The shard ID.
-     *
+     * 
      * @return the partitionId value.
      */
     public String getPartitionId() {
@@ -119,7 +124,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the partitionId property: The shard ID.
-     *
+     * 
      * @param partitionId the partitionId value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -130,7 +135,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the sizeInBytes property: The file size.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Integer getSizeInBytes() {
@@ -139,7 +144,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the sizeInBytes property: The file size.
-     *
+     * 
      * @param sizeInBytes the sizeInBytes value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -150,7 +155,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the eventCount property: The number of events in the file.
-     *
+     * 
      * @return the eventCount value.
      */
     public Integer getEventCount() {
@@ -159,7 +164,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the eventCount property: The number of events in the file.
-     *
+     * 
      * @param eventCount the eventCount value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -170,7 +175,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the firstSequenceNumber property: The smallest sequence number from the queue.
-     *
+     * 
      * @return the firstSequenceNumber value.
      */
     public Integer getFirstSequenceNumber() {
@@ -179,7 +184,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the firstSequenceNumber property: The smallest sequence number from the queue.
-     *
+     * 
      * @param firstSequenceNumber the firstSequenceNumber value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -190,7 +195,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the lastSequenceNumber property: The last sequence number from the queue.
-     *
+     * 
      * @return the lastSequenceNumber value.
      */
     public Integer getLastSequenceNumber() {
@@ -199,7 +204,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the lastSequenceNumber property: The last sequence number from the queue.
-     *
+     * 
      * @param lastSequenceNumber the lastSequenceNumber value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -210,7 +215,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the firstEnqueueTime property: The first time from the queue.
-     *
+     * 
      * @return the firstEnqueueTime value.
      */
     public OffsetDateTime getFirstEnqueueTime() {
@@ -219,7 +224,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the firstEnqueueTime property: The first time from the queue.
-     *
+     * 
      * @param firstEnqueueTime the firstEnqueueTime value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */
@@ -230,7 +235,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Get the lastEnqueueTime property: The last time from the queue.
-     *
+     * 
      * @return the lastEnqueueTime value.
      */
     public OffsetDateTime getLastEnqueueTime() {
@@ -239,7 +244,7 @@ public final class EventHubCaptureFileCreatedEventData {
 
     /**
      * Set the lastEnqueueTime property: The last time from the queue.
-     *
+     * 
      * @param lastEnqueueTime the lastEnqueueTime value to set.
      * @return the EventHubCaptureFileCreatedEventData object itself.
      */

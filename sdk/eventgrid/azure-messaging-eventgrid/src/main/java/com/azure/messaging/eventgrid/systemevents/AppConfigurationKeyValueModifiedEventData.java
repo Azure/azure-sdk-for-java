@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event.
+ */
 @Fluent
 public final class AppConfigurationKeyValueModifiedEventData {
     /*
@@ -34,12 +36,15 @@ public final class AppConfigurationKeyValueModifiedEventData {
     @JsonProperty(value = "syncToken")
     private String syncToken;
 
-    /** Creates an instance of AppConfigurationKeyValueModifiedEventData class. */
-    public AppConfigurationKeyValueModifiedEventData() {}
+    /**
+     * Creates an instance of AppConfigurationKeyValueModifiedEventData class.
+     */
+    public AppConfigurationKeyValueModifiedEventData() {
+    }
 
     /**
      * Get the key property: The key used to identify the key-value that was modified.
-     *
+     * 
      * @return the key value.
      */
     public String getKey() {
@@ -48,7 +53,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Set the key property: The key used to identify the key-value that was modified.
-     *
+     * 
      * @param key the key value to set.
      * @return the AppConfigurationKeyValueModifiedEventData object itself.
      */
@@ -59,7 +64,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Get the label property: The label, if any, used to identify the key-value that was modified.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -68,7 +73,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Set the label property: The label, if any, used to identify the key-value that was modified.
-     *
+     * 
      * @param label the label value to set.
      * @return the AppConfigurationKeyValueModifiedEventData object itself.
      */
@@ -79,7 +84,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Get the etag property: The etag representing the new state of the key-value.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -88,7 +93,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Set the etag property: The etag representing the new state of the key-value.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the AppConfigurationKeyValueModifiedEventData object itself.
      */
@@ -99,7 +104,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Get the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -108,7 +113,7 @@ public final class AppConfigurationKeyValueModifiedEventData {
 
     /**
      * Set the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the AppConfigurationKeyValueModifiedEventData object itself.
      */

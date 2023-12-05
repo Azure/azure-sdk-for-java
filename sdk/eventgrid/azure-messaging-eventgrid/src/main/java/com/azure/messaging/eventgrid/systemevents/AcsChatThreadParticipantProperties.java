@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the chat thread participant. */
+/**
+ * Schema of the chat thread participant.
+ */
 @Fluent
 public final class AcsChatThreadParticipantProperties {
     /*
@@ -29,12 +31,15 @@ public final class AcsChatThreadParticipantProperties {
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of AcsChatThreadParticipantProperties class. */
-    public AcsChatThreadParticipantProperties() {}
+    /**
+     * Creates an instance of AcsChatThreadParticipantProperties class.
+     */
+    public AcsChatThreadParticipantProperties() {
+    }
 
     /**
      * Get the displayName property: The name of the user.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -43,7 +48,7 @@ public final class AcsChatThreadParticipantProperties {
 
     /**
      * Set the displayName property: The name of the user.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class AcsChatThreadParticipantProperties {
 
     /**
      * Get the participantCommunicationIdentifier property: The communication identifier of the user.
-     *
+     * 
      * @return the participantCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getParticipantCommunicationIdentifier() {
@@ -63,19 +68,19 @@ public final class AcsChatThreadParticipantProperties {
 
     /**
      * Set the participantCommunicationIdentifier property: The communication identifier of the user.
-     *
+     * 
      * @param participantCommunicationIdentifier the participantCommunicationIdentifier value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */
-    public AcsChatThreadParticipantProperties setParticipantCommunicationIdentifier(
-            CommunicationIdentifierModel participantCommunicationIdentifier) {
+    public AcsChatThreadParticipantProperties
+        setParticipantCommunicationIdentifier(CommunicationIdentifierModel participantCommunicationIdentifier) {
         this.participantCommunicationIdentifier = participantCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the metadata property: The metadata of the user.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -84,7 +89,7 @@ public final class AcsChatThreadParticipantProperties {
 
     /**
      * Set the metadata property: The metadata of the user.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadParticipantProperties object itself.
      */

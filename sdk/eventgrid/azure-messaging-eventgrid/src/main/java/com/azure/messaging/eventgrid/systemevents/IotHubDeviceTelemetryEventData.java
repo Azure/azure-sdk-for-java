@@ -7,27 +7,38 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
-/** Event data for Microsoft.Devices.DeviceTelemetry event. */
+/**
+ * Event data for Microsoft.Devices.DeviceTelemetry event.
+ */
 @Fluent
 public final class IotHubDeviceTelemetryEventData extends DeviceTelemetryEventProperties {
-    /** Creates an instance of IotHubDeviceTelemetryEventData class. */
-    public IotHubDeviceTelemetryEventData() {}
+    /**
+     * Creates an instance of IotHubDeviceTelemetryEventData class.
+     */
+    public IotHubDeviceTelemetryEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceTelemetryEventData setBody(Object body) {
         super.setBody(body);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceTelemetryEventData setProperties(Map<String, String> properties) {
         super.setProperties(properties);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotHubDeviceTelemetryEventData setSystemProperties(Map<String, String> systemProperties) {
         super.setSystemProperties(systemProperties);

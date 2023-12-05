@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The details of the authorization for the resource. */
+/**
+ * The details of the authorization for the resource.
+ */
 @Fluent
 public final class ResourceAuthorization {
     /*
@@ -29,12 +31,15 @@ public final class ResourceAuthorization {
     @JsonProperty(value = "evidence")
     private Map<String, String> evidence;
 
-    /** Creates an instance of ResourceAuthorization class. */
-    public ResourceAuthorization() {}
+    /**
+     * Creates an instance of ResourceAuthorization class.
+     */
+    public ResourceAuthorization() {
+    }
 
     /**
      * Get the scope property: The scope of the authorization.
-     *
+     * 
      * @return the scope value.
      */
     public String getScope() {
@@ -43,7 +48,7 @@ public final class ResourceAuthorization {
 
     /**
      * Set the scope property: The scope of the authorization.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -54,7 +59,7 @@ public final class ResourceAuthorization {
 
     /**
      * Get the action property: The action being requested.
-     *
+     * 
      * @return the action value.
      */
     public String getAction() {
@@ -63,7 +68,7 @@ public final class ResourceAuthorization {
 
     /**
      * Set the action property: The action being requested.
-     *
+     * 
      * @param action the action value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -74,7 +79,7 @@ public final class ResourceAuthorization {
 
     /**
      * Get the evidence property: The evidence for the authorization.
-     *
+     * 
      * @return the evidence value.
      */
     public Map<String, String> getEvidence() {
@@ -83,7 +88,7 @@ public final class ResourceAuthorization {
 
     /**
      * Set the evidence property: The evidence for the authorization.
-     *
+     * 
      * @param evidence the evidence value to set.
      * @return the ResourceAuthorization object itself.
      */

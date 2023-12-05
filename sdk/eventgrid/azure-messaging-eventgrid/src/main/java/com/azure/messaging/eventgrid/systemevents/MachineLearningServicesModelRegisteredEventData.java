@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.MachineLearningServices.ModelRegistered event.
+ */
 @Fluent
 public final class MachineLearningServicesModelRegisteredEventData {
     /*
@@ -34,12 +36,15 @@ public final class MachineLearningServicesModelRegisteredEventData {
     @JsonProperty(value = "modelProperties")
     private Object modelProperties;
 
-    /** Creates an instance of MachineLearningServicesModelRegisteredEventData class. */
-    public MachineLearningServicesModelRegisteredEventData() {}
+    /**
+     * Creates an instance of MachineLearningServicesModelRegisteredEventData class.
+     */
+    public MachineLearningServicesModelRegisteredEventData() {
+    }
 
     /**
      * Get the modelName property: The name of the model that was registered.
-     *
+     * 
      * @return the modelName value.
      */
     public String getModelName() {
@@ -48,7 +53,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Set the modelName property: The name of the model that was registered.
-     *
+     * 
      * @param modelName the modelName value to set.
      * @return the MachineLearningServicesModelRegisteredEventData object itself.
      */
@@ -59,7 +64,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Get the modelVersion property: The version of the model that was registered.
-     *
+     * 
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -68,7 +73,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Set the modelVersion property: The version of the model that was registered.
-     *
+     * 
      * @param modelVersion the modelVersion value to set.
      * @return the MachineLearningServicesModelRegisteredEventData object itself.
      */
@@ -79,7 +84,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Get the modelTags property: The tags of the model that was registered.
-     *
+     * 
      * @return the modelTags value.
      */
     public Object getModelTags() {
@@ -88,7 +93,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Set the modelTags property: The tags of the model that was registered.
-     *
+     * 
      * @param modelTags the modelTags value to set.
      * @return the MachineLearningServicesModelRegisteredEventData object itself.
      */
@@ -99,7 +104,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Get the modelProperties property: The properties of the model that was registered.
-     *
+     * 
      * @return the modelProperties value.
      */
     public Object getModelProperties() {
@@ -108,7 +113,7 @@ public final class MachineLearningServicesModelRegisteredEventData {
 
     /**
      * Set the modelProperties property: The properties of the model that was registered.
-     *
+     * 
      * @param modelProperties the modelProperties value to set.
      * @return the MachineLearningServicesModelRegisteredEventData object itself.
      */

@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Router Job Worker Selector. */
+/**
+ * Router Job Worker Selector.
+ */
 @Fluent
 public final class AcsRouterWorkerSelector {
 
@@ -48,8 +50,11 @@ public final class AcsRouterWorkerSelector {
     @JsonProperty(value = "expirationTime")
     private OffsetDateTime expirationTime;
 
-    /** Creates an instance of AcsRouterWorkerSelector class. */
-    public AcsRouterWorkerSelector() {}
+    /**
+     * Creates an instance of AcsRouterWorkerSelector class.
+     */
+    public AcsRouterWorkerSelector() {
+    }
 
     /**
      * Get the key property: Router Job Worker Selector Key.

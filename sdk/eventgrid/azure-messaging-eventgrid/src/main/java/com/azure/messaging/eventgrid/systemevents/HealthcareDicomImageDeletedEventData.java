@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageDeleted event.
+ */
 @Fluent
 public final class HealthcareDicomImageDeletedEventData {
     /*
@@ -47,12 +49,15 @@ public final class HealthcareDicomImageDeletedEventData {
     @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
 
-    /** Creates an instance of HealthcareDicomImageDeletedEventData class. */
-    public HealthcareDicomImageDeletedEventData() {}
+    /**
+     * Creates an instance of HealthcareDicomImageDeletedEventData class.
+     */
+    public HealthcareDicomImageDeletedEventData() {
+    }
 
     /**
      * Get the partitionName property: Data partition name.
-     *
+     * 
      * @return the partitionName value.
      */
     public String getPartitionName() {
@@ -61,7 +66,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Set the partitionName property: Data partition name.
-     *
+     * 
      * @param partitionName the partitionName value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */
@@ -72,7 +77,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Get the imageStudyInstanceUid property: Unique identifier for the Study.
-     *
+     * 
      * @return the imageStudyInstanceUid value.
      */
     public String getImageStudyInstanceUid() {
@@ -81,7 +86,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Set the imageStudyInstanceUid property: Unique identifier for the Study.
-     *
+     * 
      * @param imageStudyInstanceUid the imageStudyInstanceUid value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */
@@ -92,7 +97,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Get the imageSeriesInstanceUid property: Unique identifier for the Series.
-     *
+     * 
      * @return the imageSeriesInstanceUid value.
      */
     public String getImageSeriesInstanceUid() {
@@ -101,7 +106,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Set the imageSeriesInstanceUid property: Unique identifier for the Series.
-     *
+     * 
      * @param imageSeriesInstanceUid the imageSeriesInstanceUid value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */
@@ -112,7 +117,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Get the imageSopInstanceUid property: Unique identifier for the DICOM Image.
-     *
+     * 
      * @return the imageSopInstanceUid value.
      */
     public String getImageSopInstanceUid() {
@@ -121,7 +126,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Set the imageSopInstanceUid property: Unique identifier for the DICOM Image.
-     *
+     * 
      * @param imageSopInstanceUid the imageSopInstanceUid value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */
@@ -132,7 +137,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Get the serviceHostName property: Host name of the DICOM account for this image.
-     *
+     * 
      * @return the serviceHostName value.
      */
     public String getServiceHostName() {
@@ -141,7 +146,7 @@ public final class HealthcareDicomImageDeletedEventData {
 
     /**
      * Set the serviceHostName property: Host name of the DICOM account for this image.
-     *
+     * 
      * @param serviceHostName the serviceHostName value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */
@@ -153,7 +158,7 @@ public final class HealthcareDicomImageDeletedEventData {
     /**
      * Get the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
      * unique for every image creation and deletion within the service.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public Long getSequenceNumber() {
@@ -163,7 +168,7 @@ public final class HealthcareDicomImageDeletedEventData {
     /**
      * Set the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
      * unique for every image creation and deletion within the service.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the HealthcareDicomImageDeletedEventData object itself.
      */

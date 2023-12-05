@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** sku of app service plan. */
+/**
+ * sku of app service plan.
+ */
 @Fluent
 public final class WebAppServicePlanUpdatedEventDataSku {
     /*
@@ -40,12 +42,15 @@ public final class WebAppServicePlanUpdatedEventDataSku {
     @JsonProperty(value = "Capacity")
     private String capacity;
 
-    /** Creates an instance of WebAppServicePlanUpdatedEventDataSku class. */
-    public WebAppServicePlanUpdatedEventDataSku() {}
+    /**
+     * Creates an instance of WebAppServicePlanUpdatedEventDataSku class.
+     */
+    public WebAppServicePlanUpdatedEventDataSku() {
+    }
 
     /**
      * Get the name property: name of app service plan sku.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -54,7 +59,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the name property: name of app service plan sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -65,7 +70,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the tier property: tier of app service plan sku.
-     *
+     * 
      * @return the tier value.
      */
     public String getTier() {
@@ -74,7 +79,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the tier property: tier of app service plan sku.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -85,7 +90,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the size property: size of app service plan sku.
-     *
+     * 
      * @return the size value.
      */
     public String getSize() {
@@ -94,7 +99,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the size property: size of app service plan sku.
-     *
+     * 
      * @param size the size value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -105,7 +110,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the family property: family of app service plan sku.
-     *
+     * 
      * @return the family value.
      */
     public String getFamily() {
@@ -114,7 +119,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the family property: family of app service plan sku.
-     *
+     * 
      * @param family the family value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */
@@ -125,7 +130,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Get the capacity property: capacity of app service plan sku.
-     *
+     * 
      * @return the capacity value.
      */
     public String getCapacity() {
@@ -134,7 +139,7 @@ public final class WebAppServicePlanUpdatedEventDataSku {
 
     /**
      * Set the capacity property: capacity of app service plan sku.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the WebAppServicePlanUpdatedEventDataSku object itself.
      */

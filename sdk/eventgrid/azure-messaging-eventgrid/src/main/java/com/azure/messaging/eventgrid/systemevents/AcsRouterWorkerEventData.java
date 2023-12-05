@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of all Router Worker events. */
+/**
+ * Schema of common properties of all Router Worker events.
+ */
 @Fluent
 public class AcsRouterWorkerEventData extends AcsRouterEventData {
     /*
@@ -16,12 +18,15 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
     @JsonProperty(value = "workerId")
     private String workerId;
 
-    /** Creates an instance of AcsRouterWorkerEventData class. */
-    public AcsRouterWorkerEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerEventData class.
+     */
+    public AcsRouterWorkerEventData() {
+    }
 
     /**
      * Get the workerId property: Router Worker events Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -30,7 +35,7 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
 
     /**
      * Set the workerId property: Router Worker events Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterWorkerEventData object itself.
      */
@@ -39,21 +44,27 @@ public class AcsRouterWorkerEventData extends AcsRouterEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

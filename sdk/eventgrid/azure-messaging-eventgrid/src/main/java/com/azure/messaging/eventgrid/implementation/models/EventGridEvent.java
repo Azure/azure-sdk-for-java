@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an event published to an Event Grid topic using the EventGrid Schema. */
+/**
+ * Properties of an event published to an Event Grid topic using the EventGrid Schema.
+ */
 @Fluent
 public final class EventGridEvent {
     /*
@@ -59,12 +61,15 @@ public final class EventGridEvent {
     @JsonProperty(value = "dataVersion", required = true)
     private String dataVersion;
 
-    /** Creates an instance of EventGridEvent class. */
-    public EventGridEvent() {}
+    /**
+     * Creates an instance of EventGridEvent class.
+     */
+    public EventGridEvent() {
+    }
 
     /**
      * Get the id property: An unique identifier for the event.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -73,7 +78,7 @@ public final class EventGridEvent {
 
     /**
      * Set the id property: An unique identifier for the event.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventGridEvent object itself.
      */
@@ -84,7 +89,7 @@ public final class EventGridEvent {
 
     /**
      * Get the topic property: The resource path of the event source.
-     *
+     * 
      * @return the topic value.
      */
     public String getTopic() {
@@ -93,7 +98,7 @@ public final class EventGridEvent {
 
     /**
      * Set the topic property: The resource path of the event source.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the EventGridEvent object itself.
      */
@@ -104,7 +109,7 @@ public final class EventGridEvent {
 
     /**
      * Get the subject property: A resource path relative to the topic path.
-     *
+     * 
      * @return the subject value.
      */
     public String getSubject() {
@@ -113,7 +118,7 @@ public final class EventGridEvent {
 
     /**
      * Set the subject property: A resource path relative to the topic path.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the EventGridEvent object itself.
      */
@@ -124,7 +129,7 @@ public final class EventGridEvent {
 
     /**
      * Get the data property: Event data specific to the event type.
-     *
+     * 
      * @return the data value.
      */
     public Object getData() {
@@ -133,7 +138,7 @@ public final class EventGridEvent {
 
     /**
      * Set the data property: Event data specific to the event type.
-     *
+     * 
      * @param data the data value to set.
      * @return the EventGridEvent object itself.
      */
@@ -144,7 +149,7 @@ public final class EventGridEvent {
 
     /**
      * Get the eventType property: The type of the event that occurred.
-     *
+     * 
      * @return the eventType value.
      */
     public String getEventType() {
@@ -153,7 +158,7 @@ public final class EventGridEvent {
 
     /**
      * Set the eventType property: The type of the event that occurred.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the EventGridEvent object itself.
      */
@@ -164,7 +169,7 @@ public final class EventGridEvent {
 
     /**
      * Get the eventTime property: The time (in UTC) the event was generated.
-     *
+     * 
      * @return the eventTime value.
      */
     public OffsetDateTime getEventTime() {
@@ -173,7 +178,7 @@ public final class EventGridEvent {
 
     /**
      * Set the eventTime property: The time (in UTC) the event was generated.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the EventGridEvent object itself.
      */
@@ -184,7 +189,7 @@ public final class EventGridEvent {
 
     /**
      * Get the metadataVersion property: The schema version of the event metadata.
-     *
+     * 
      * @return the metadataVersion value.
      */
     public String getMetadataVersion() {
@@ -193,7 +198,7 @@ public final class EventGridEvent {
 
     /**
      * Get the dataVersion property: The schema version of the data object.
-     *
+     * 
      * @return the dataVersion value.
      */
     public String getDataVersion() {
@@ -202,7 +207,7 @@ public final class EventGridEvent {
 
     /**
      * Set the dataVersion property: The schema version of the data object.
-     *
+     * 
      * @param dataVersion the dataVersion value to set.
      * @return the EventGridEvent object itself.
      */

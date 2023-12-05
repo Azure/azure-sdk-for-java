@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema. */
+/**
+ * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema.
+ */
 @Fluent
 public final class CloudEvent {
     /*
@@ -81,15 +83,19 @@ public final class CloudEvent {
     /*
      * Properties of an event published to an Event Grid topic using the CloudEvent 1.0 Schema
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of CloudEvent class. */
-    public CloudEvent() {}
+    /**
+     * Creates an instance of CloudEvent class.
+     */
+    public CloudEvent() {
+    }
 
     /**
      * Get the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -99,7 +105,7 @@ public final class CloudEvent {
     /**
      * Set the id property: An identifier for the event. The combination of id and source must be unique for each
      * distinct event.
-     *
+     * 
      * @param id the id value to set.
      * @return the CloudEvent object itself.
      */
@@ -109,9 +115,9 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the source property: Identifies the context in which an event happened. The combination of id and source must
-     * be unique for each distinct event.
-     *
+     * Get the source property: Identifies the context in which an event happened. The combination of id and source
+     * must be unique for each distinct event.
+     * 
      * @return the source value.
      */
     public String getSource() {
@@ -119,9 +125,9 @@ public final class CloudEvent {
     }
 
     /**
-     * Set the source property: Identifies the context in which an event happened. The combination of id and source must
-     * be unique for each distinct event.
-     *
+     * Set the source property: Identifies the context in which an event happened. The combination of id and source
+     * must be unique for each distinct event.
+     * 
      * @param source the source value to set.
      * @return the CloudEvent object itself.
      */
@@ -132,7 +138,7 @@ public final class CloudEvent {
 
     /**
      * Get the data property: Event data specific to the event type.
-     *
+     * 
      * @return the data value.
      */
     public Object getData() {
@@ -141,7 +147,7 @@ public final class CloudEvent {
 
     /**
      * Set the data property: Event data specific to the event type.
-     *
+     * 
      * @param data the data value to set.
      * @return the CloudEvent object itself.
      */
@@ -152,7 +158,7 @@ public final class CloudEvent {
 
     /**
      * Get the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     *
+     * 
      * @return the dataBase64 value.
      */
     public byte[] getDataBase64() {
@@ -161,7 +167,7 @@ public final class CloudEvent {
 
     /**
      * Set the dataBase64 property: Event data specific to the event type, encoded as a base64 string.
-     *
+     * 
      * @param dataBase64 the dataBase64 value to set.
      * @return the CloudEvent object itself.
      */
@@ -172,7 +178,7 @@ public final class CloudEvent {
 
     /**
      * Get the type property: Type of event related to the originating occurrence.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -181,7 +187,7 @@ public final class CloudEvent {
 
     /**
      * Set the type property: Type of event related to the originating occurrence.
-     *
+     * 
      * @param type the type value to set.
      * @return the CloudEvent object itself.
      */
@@ -192,7 +198,7 @@ public final class CloudEvent {
 
     /**
      * Get the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -201,7 +207,7 @@ public final class CloudEvent {
 
     /**
      * Set the time property: The time (in UTC) the event was generated, in RFC3339 format.
-     *
+     * 
      * @param time the time value to set.
      * @return the CloudEvent object itself.
      */
@@ -212,7 +218,7 @@ public final class CloudEvent {
 
     /**
      * Get the specversion property: The version of the CloudEvents specification which the event uses.
-     *
+     * 
      * @return the specversion value.
      */
     public String getSpecversion() {
@@ -221,7 +227,7 @@ public final class CloudEvent {
 
     /**
      * Set the specversion property: The version of the CloudEvents specification which the event uses.
-     *
+     * 
      * @param specversion the specversion value to set.
      * @return the CloudEvent object itself.
      */
@@ -232,7 +238,7 @@ public final class CloudEvent {
 
     /**
      * Get the dataschema property: Identifies the schema that data adheres to.
-     *
+     * 
      * @return the dataschema value.
      */
     public String getDataschema() {
@@ -241,7 +247,7 @@ public final class CloudEvent {
 
     /**
      * Set the dataschema property: Identifies the schema that data adheres to.
-     *
+     * 
      * @param dataschema the dataschema value to set.
      * @return the CloudEvent object itself.
      */
@@ -252,7 +258,7 @@ public final class CloudEvent {
 
     /**
      * Get the datacontenttype property: Content type of data value.
-     *
+     * 
      * @return the datacontenttype value.
      */
     public String getDatacontenttype() {
@@ -261,7 +267,7 @@ public final class CloudEvent {
 
     /**
      * Set the datacontenttype property: Content type of data value.
-     *
+     * 
      * @param datacontenttype the datacontenttype value to set.
      * @return the CloudEvent object itself.
      */
@@ -273,7 +279,7 @@ public final class CloudEvent {
     /**
      * Get the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     *
+     * 
      * @return the subject value.
      */
     public String getSubject() {
@@ -283,7 +289,7 @@ public final class CloudEvent {
     /**
      * Set the subject property: This describes the subject of the event in the context of the event producer
      * (identified by source).
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CloudEvent object itself.
      */
@@ -295,7 +301,7 @@ public final class CloudEvent {
     /**
      * Get the additionalProperties property: Properties of an event published to an Event Grid topic using the
      * CloudEvent 1.0 Schema.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -306,7 +312,7 @@ public final class CloudEvent {
     /**
      * Set the additionalProperties property: Properties of an event published to an Event Grid topic using the
      * CloudEvent 1.0 Schema.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CloudEvent object itself.
      */

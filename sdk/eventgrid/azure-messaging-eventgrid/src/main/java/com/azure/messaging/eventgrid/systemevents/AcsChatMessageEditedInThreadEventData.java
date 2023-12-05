@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageEditedInThread event.
+ */
 @Fluent
 public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
     /*
@@ -30,12 +32,15 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
     @JsonProperty(value = "editTime")
     private OffsetDateTime editTime;
 
-    /** Creates an instance of AcsChatMessageEditedInThreadEventData class. */
-    public AcsChatMessageEditedInThreadEventData() {}
+    /**
+     * Creates an instance of AcsChatMessageEditedInThreadEventData class.
+     */
+    public AcsChatMessageEditedInThreadEventData() {
+    }
 
     /**
      * Get the messageBody property: The body of the chat message.
-     *
+     * 
      * @return the messageBody value.
      */
     public String getMessageBody() {
@@ -44,7 +49,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /**
      * Set the messageBody property: The body of the chat message.
-     *
+     * 
      * @param messageBody the messageBody value to set.
      * @return the AcsChatMessageEditedInThreadEventData object itself.
      */
@@ -55,7 +60,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /**
      * Get the metadata property: The chat message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -64,7 +69,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /**
      * Set the metadata property: The chat message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatMessageEditedInThreadEventData object itself.
      */
@@ -75,7 +80,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /**
      * Get the editTime property: The time at which the message was edited.
-     *
+     * 
      * @return the editTime value.
      */
     public OffsetDateTime getEditTime() {
@@ -84,7 +89,7 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
 
     /**
      * Set the editTime property: The time at which the message was edited.
-     *
+     * 
      * @param editTime the editTime value to set.
      * @return the AcsChatMessageEditedInThreadEventData object itself.
      */
@@ -93,57 +98,73 @@ public final class AcsChatMessageEditedInThreadEventData extends AcsChatMessageE
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageEditedInThreadEventData setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageEditedInThreadEventData
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setSenderDisplayName(String senderDisplayName) {
         super.setSenderDisplayName(senderDisplayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setComposeTime(OffsetDateTime composeTime) {
         super.setComposeTime(composeTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setType(String type) {
         super.setType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageEditedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

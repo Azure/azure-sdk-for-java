@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event. */
+/**
+ * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
+ */
 @Fluent
 public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGridMqttClientEventData {
     /*
@@ -37,12 +39,15 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
     @JsonProperty(value = "attributes")
     private Map<String, String> attributes;
 
-    /** Creates an instance of EventGridMqttClientCreatedOrUpdatedEventData class. */
-    public EventGridMqttClientCreatedOrUpdatedEventData() {}
+    /**
+     * Creates an instance of EventGridMqttClientCreatedOrUpdatedEventData class.
+     */
+    public EventGridMqttClientCreatedOrUpdatedEventData() {
+    }
 
     /**
      * Get the state property: Configured state of the client. The value could be Enabled or Disabled.
-     *
+     * 
      * @return the state value.
      */
     public EventGridMqttClientState getState() {
@@ -51,7 +56,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
 
     /**
      * Set the state property: Configured state of the client. The value could be Enabled or Disabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the EventGridMqttClientCreatedOrUpdatedEventData object itself.
      */
@@ -62,7 +67,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
 
     /**
      * Get the createdOn property: Time the client resource is created based on the provider's UTC time.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
@@ -71,7 +76,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
 
     /**
      * Set the createdOn property: Time the client resource is created based on the provider's UTC time.
-     *
+     * 
      * @param createdOn the createdOn value to set.
      * @return the EventGridMqttClientCreatedOrUpdatedEventData object itself.
      */
@@ -83,7 +88,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
     /**
      * Get the updatedOn property: Time the client resource is last updated based on the provider's UTC time. If the
      * client resource was never updated, this value is identical to the value of the 'createdOn' property.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime getUpdatedOn() {
@@ -93,7 +98,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
     /**
      * Set the updatedOn property: Time the client resource is last updated based on the provider's UTC time. If the
      * client resource was never updated, this value is identical to the value of the 'createdOn' property.
-     *
+     * 
      * @param updatedOn the updatedOn value to set.
      * @return the EventGridMqttClientCreatedOrUpdatedEventData object itself.
      */
@@ -104,7 +109,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
 
     /**
      * Get the attributes property: The key-value attributes that are assigned to the client resource.
-     *
+     * 
      * @return the attributes value.
      */
     public Map<String, String> getAttributes() {
@@ -113,7 +118,7 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
 
     /**
      * Set the attributes property: The key-value attributes that are assigned to the client resource.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the EventGridMqttClientCreatedOrUpdatedEventData object itself.
      */
@@ -122,21 +127,27 @@ public final class EventGridMqttClientCreatedOrUpdatedEventData extends EventGri
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientCreatedOrUpdatedEventData setClientAuthenticationName(String clientAuthenticationName) {
         super.setClientAuthenticationName(clientAuthenticationName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientCreatedOrUpdatedEventData setClientName(String clientName) {
         super.setClientName(clientName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientCreatedOrUpdatedEventData setNamespaceName(String namespaceName) {
         super.setNamespaceName(namespaceName);

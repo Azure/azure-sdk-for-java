@@ -37,12 +37,15 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatParticipantRemovedFromThreadEventData class. */
-    public AcsChatParticipantRemovedFromThreadEventData() {}
+    /**
+     * Creates an instance of AcsChatParticipantRemovedFromThreadEventData class.
+     */
+    public AcsChatParticipantRemovedFromThreadEventData() {
+    }
 
     /**
      * Get the time property: The time at which the user was removed to the thread.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime getTime() {
@@ -51,7 +54,7 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
 
     /**
      * Set the time property: The time at which the user was removed to the thread.
-     *
+     * 
      * @param time the time value to set.
      * @return the AcsChatParticipantRemovedFromThreadEventData object itself.
      */
@@ -61,8 +64,9 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     }
 
     /**
-     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
-     *
+     * Get the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
+     * user.
+     * 
      * @return the removedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getRemovedByCommunicationIdentifier() {
@@ -70,20 +74,21 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
     }
 
     /**
-     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the user.
-     *
+     * Set the removedByCommunicationIdentifier property: The communication identifier of the user who removed the
+     * user.
+     * 
      * @param removedByCommunicationIdentifier the removedByCommunicationIdentifier value to set.
      * @return the AcsChatParticipantRemovedFromThreadEventData object itself.
      */
-    public AcsChatParticipantRemovedFromThreadEventData setRemovedByCommunicationIdentifier(
-            CommunicationIdentifierModel removedByCommunicationIdentifier) {
+    public AcsChatParticipantRemovedFromThreadEventData
+        setRemovedByCommunicationIdentifier(CommunicationIdentifierModel removedByCommunicationIdentifier) {
         this.removedByCommunicationIdentifier = removedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the participantRemoved property: The details of the user who was removed.
-     *
+     * 
      * @return the participantRemoved value.
      */
     public AcsChatThreadParticipantProperties getParticipantRemoved() {
@@ -92,19 +97,19 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
 
     /**
      * Set the participantRemoved property: The details of the user who was removed.
-     *
+     * 
      * @param participantRemoved the participantRemoved value to set.
      * @return the AcsChatParticipantRemovedFromThreadEventData object itself.
      */
-    public AcsChatParticipantRemovedFromThreadEventData setParticipantRemoved(
-            AcsChatThreadParticipantProperties participantRemoved) {
+    public AcsChatParticipantRemovedFromThreadEventData
+        setParticipantRemoved(AcsChatThreadParticipantProperties participantRemoved) {
         this.participantRemoved = participantRemoved;
         return this;
     }
 
     /**
      * Get the version property: The version of the thread.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -113,7 +118,7 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
 
     /**
      * Set the version property: The version of the thread.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatParticipantRemovedFromThreadEventData object itself.
      */
@@ -122,14 +127,18 @@ public final class AcsChatParticipantRemovedFromThreadEventData extends AcsChatE
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatParticipantRemovedFromThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

@@ -14,8 +14,8 @@ import java.io.UncheckedIOException;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteCancel event. This is raised
- * when a resource delete operation is canceled.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteCancel event. This is
+ * raised when a resource delete operation is canceled.
  */
 @Fluent
 public final class ResourceDeleteCancelEventData {
@@ -86,8 +86,11 @@ public final class ResourceDeleteCancelEventData {
     @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
 
-    /** Creates an instance of ResourceDeleteCancelEventData class. */
-    public ResourceDeleteCancelEventData() {}
+    /**
+     * Creates an instance of ResourceDeleteCancelEventData class.
+     */
+    public ResourceDeleteCancelEventData() {
+    }
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -309,16 +312,17 @@ public final class ResourceDeleteCancelEventData {
         return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
+    static final private ClientLogger LOGGER = new ClientLogger(ResourceDeleteCancelEventData.class);
 
-    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#getResourceClaims()} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -339,7 +343,8 @@ public final class ResourceDeleteCancelEventData {
      * @param claims the claims value to set.
      * @return the ResourceDeleteCancelEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#setResourceClaims(Map)} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceDeleteCancelEventData setClaims(String claims) {
@@ -356,7 +361,8 @@ public final class ResourceDeleteCancelEventData {
      *
      * @return the httpRequest value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#getResourceHttpRequest()} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -374,14 +380,14 @@ public final class ResourceDeleteCancelEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceDeleteCancelEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceDeleteCancelEventData setHttpRequest(String httpRequest) {
         try {
-            setResourceHttpRequest(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -393,7 +399,8 @@ public final class ResourceDeleteCancelEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#getResourceAuthorization()} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -411,14 +418,14 @@ public final class ResourceDeleteCancelEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceDeleteCancelEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * <p>
+     * Use {@link ResourceDeleteCancelEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceDeleteCancelEventData setAuthorization(String authorization) {
         try {
-            setResourceAuthorization(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

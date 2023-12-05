@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobOutputStateChange event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobOutputStateChange event.
+ */
 @Fluent
 public class MediaJobOutputStateChangeEventData {
     /*
@@ -29,12 +31,15 @@ public class MediaJobOutputStateChangeEventData {
     @JsonProperty(value = "jobCorrelationData")
     private Map<String, String> jobCorrelationData;
 
-    /** Creates an instance of MediaJobOutputStateChangeEventData class. */
-    public MediaJobOutputStateChangeEventData() {}
+    /**
+     * Creates an instance of MediaJobOutputStateChangeEventData class.
+     */
+    public MediaJobOutputStateChangeEventData() {
+    }
 
     /**
      * Get the previousState property: The previous state of the Job.
-     *
+     * 
      * @return the previousState value.
      */
     public MediaJobState getPreviousState() {
@@ -43,7 +48,7 @@ public class MediaJobOutputStateChangeEventData {
 
     /**
      * Get the output property: Gets the output.
-     *
+     * 
      * @return the output value.
      */
     public MediaJobOutput getOutput() {
@@ -52,7 +57,7 @@ public class MediaJobOutputStateChangeEventData {
 
     /**
      * Set the output property: Gets the output.
-     *
+     * 
      * @param output the output value to set.
      * @return the MediaJobOutputStateChangeEventData object itself.
      */
@@ -63,7 +68,7 @@ public class MediaJobOutputStateChangeEventData {
 
     /**
      * Get the jobCorrelationData property: Gets the Job correlation data.
-     *
+     * 
      * @return the jobCorrelationData value.
      */
     public Map<String, String> getJobCorrelationData() {
@@ -72,7 +77,7 @@ public class MediaJobOutputStateChangeEventData {
 
     /**
      * Set the jobCorrelationData property: Gets the Job correlation data.
-     *
+     * 
      * @param jobCorrelationData the jobCorrelationData value to set.
      * @return the MediaJobOutputStateChangeEventData object itself.
      */

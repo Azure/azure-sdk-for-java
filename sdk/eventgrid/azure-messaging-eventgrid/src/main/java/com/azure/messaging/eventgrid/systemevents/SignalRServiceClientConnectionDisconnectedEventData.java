@@ -43,12 +43,15 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class. */
-    public SignalRServiceClientConnectionDisconnectedEventData() {}
+    /**
+     * Creates an instance of SignalRServiceClientConnectionDisconnectedEventData class.
+     */
+    public SignalRServiceClientConnectionDisconnectedEventData() {
+    }
 
     /**
      * Get the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -57,7 +60,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Set the timestamp property: The time at which the event occurred.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
      */
@@ -68,7 +71,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Get the hubName property: The hub of connected client connection.
-     *
+     * 
      * @return the hubName value.
      */
     public String getHubName() {
@@ -77,7 +80,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Set the hubName property: The hub of connected client connection.
-     *
+     * 
      * @param hubName the hubName value to set.
      * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
      */
@@ -88,7 +91,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Get the connectionId property: The connection Id of connected client connection.
-     *
+     * 
      * @return the connectionId value.
      */
     public String getConnectionId() {
@@ -97,7 +100,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Set the connectionId property: The connection Id of connected client connection.
-     *
+     * 
      * @param connectionId the connectionId value to set.
      * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
      */
@@ -108,7 +111,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Get the userId property: The user Id of connected client connection.
-     *
+     * 
      * @return the userId value.
      */
     public String getUserId() {
@@ -117,7 +120,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Set the userId property: The user Id of connected client connection.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
      */
@@ -128,7 +131,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Get the errorMessage property: The message of error that cause the client connection disconnected.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -137,7 +140,7 @@ public final class SignalRServiceClientConnectionDisconnectedEventData {
 
     /**
      * Set the errorMessage property: The message of error that cause the client connection disconnected.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the SignalRServiceClientConnectionDisconnectedEventData object itself.
      */

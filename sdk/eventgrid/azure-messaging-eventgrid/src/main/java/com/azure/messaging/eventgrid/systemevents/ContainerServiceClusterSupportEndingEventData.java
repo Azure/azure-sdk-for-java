@@ -6,13 +6,20 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnding event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.ClusterSupportEnding event.
+ */
 @Fluent
 public final class ContainerServiceClusterSupportEndingEventData extends ContainerServiceClusterSupportEventData {
-    /** Creates an instance of ContainerServiceClusterSupportEndingEventData class. */
-    public ContainerServiceClusterSupportEndingEventData() {}
+    /**
+     * Creates an instance of ContainerServiceClusterSupportEndingEventData class.
+     */
+    public ContainerServiceClusterSupportEndingEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerServiceClusterSupportEndingEventData setKubernetesVersion(String kubernetesVersion) {
         super.setKubernetesVersion(kubernetesVersion);

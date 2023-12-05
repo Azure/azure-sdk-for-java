@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event.
+ */
 @Fluent
 public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*
@@ -36,13 +38,16 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of AcsChatThreadPropertiesUpdatedEventData class. */
-    public AcsChatThreadPropertiesUpdatedEventData() {}
+    /**
+     * Creates an instance of AcsChatThreadPropertiesUpdatedEventData class.
+     */
+    public AcsChatThreadPropertiesUpdatedEventData() {
+    }
 
     /**
-     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @return the editedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getEditedByCommunicationIdentifier() {
@@ -50,21 +55,21 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     }
 
     /**
-     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
-    public AcsChatThreadPropertiesUpdatedEventData setEditedByCommunicationIdentifier(
-            CommunicationIdentifierModel editedByCommunicationIdentifier) {
+    public AcsChatThreadPropertiesUpdatedEventData
+        setEditedByCommunicationIdentifier(CommunicationIdentifierModel editedByCommunicationIdentifier) {
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @return the editTime value.
      */
     public OffsetDateTime getEditTime() {
@@ -73,7 +78,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @param editTime the editTime value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -84,7 +89,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Get the properties property: The updated thread properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> getProperties() {
@@ -93,7 +98,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the properties property: The updated thread properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -104,7 +109,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Get the metadata property: The thread metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -113,7 +118,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the metadata property: The thread metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -122,28 +127,36 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

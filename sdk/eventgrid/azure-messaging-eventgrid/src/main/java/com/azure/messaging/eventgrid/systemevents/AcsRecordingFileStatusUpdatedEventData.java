@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
+ */
 @Fluent
 public final class AcsRecordingFileStatusUpdatedEventData {
     /*
@@ -37,7 +39,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     private RecordingContentType recordingContentType;
 
     /*
-     * The recording  channel type - Mixed, Unmixed
+     * The recording channel type - Mixed, Unmixed
      */
     @JsonProperty(value = "recordingChannelType")
     private RecordingChannelType recordingChannelType;
@@ -54,12 +56,15 @@ public final class AcsRecordingFileStatusUpdatedEventData {
     @JsonProperty(value = "sessionEndReason")
     private String sessionEndReason;
 
-    /** Creates an instance of AcsRecordingFileStatusUpdatedEventData class. */
-    public AcsRecordingFileStatusUpdatedEventData() {}
+    /**
+     * Creates an instance of AcsRecordingFileStatusUpdatedEventData class.
+     */
+    public AcsRecordingFileStatusUpdatedEventData() {
+    }
 
     /**
      * Get the recordingStorageInfo property: The details of recording storage information.
-     *
+     * 
      * @return the recordingStorageInfo value.
      */
     public AcsRecordingStorageInfoProperties getRecordingStorageInfo() {
@@ -68,19 +73,19 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingStorageInfo property: The details of recording storage information.
-     *
+     * 
      * @param recordingStorageInfo the recordingStorageInfo value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
-    public AcsRecordingFileStatusUpdatedEventData setRecordingStorageInfo(
-            AcsRecordingStorageInfoProperties recordingStorageInfo) {
+    public AcsRecordingFileStatusUpdatedEventData
+        setRecordingStorageInfo(AcsRecordingStorageInfoProperties recordingStorageInfo) {
         this.recordingStorageInfo = recordingStorageInfo;
         return this;
     }
 
     /**
      * Get the recordingStartTime property: The time at which the recording started.
-     *
+     * 
      * @return the recordingStartTime value.
      */
     public OffsetDateTime getRecordingStartTime() {
@@ -89,7 +94,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingStartTime property: The time at which the recording started.
-     *
+     * 
      * @param recordingStartTime the recordingStartTime value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -100,7 +105,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingDuration property: The recording duration.
-     *
+     * 
      * @return the recordingDuration value.
      */
     public Duration getRecordingDuration() {
@@ -112,7 +117,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingDuration property: The recording duration.
-     *
+     * 
      * @param recordingDuration the recordingDuration value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -127,7 +132,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingContentType property: The recording content type- AudioVideo, or Audio.
-     *
+     * 
      * @return the recordingContentType value.
      */
     public RecordingContentType getRecordingContentType() {
@@ -136,7 +141,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingContentType property: The recording content type- AudioVideo, or Audio.
-     *
+     * 
      * @param recordingContentType the recordingContentType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -147,7 +152,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingChannelType property: The recording channel type - Mixed, Unmixed.
-     *
+     * 
      * @return the recordingChannelType value.
      */
     public RecordingChannelType getRecordingChannelType() {
@@ -156,7 +161,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingChannelType property: The recording channel type - Mixed, Unmixed.
-     *
+     * 
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -167,7 +172,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
-     *
+     * 
      * @return the recordingFormatType value.
      */
     public RecordingFormatType getRecordingFormatType() {
@@ -176,7 +181,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
-     *
+     * 
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -187,7 +192,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the sessionEndReason property: The reason for ending recording session.
-     *
+     * 
      * @return the sessionEndReason value.
      */
     public String getSessionEndReason() {
@@ -196,7 +201,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the sessionEndReason property: The reason for ending recording session.
-     *
+     * 
      * @param sessionEndReason the sessionEndReason value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */

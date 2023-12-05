@@ -7,35 +7,48 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Maps.GeofenceExited event.
+ */
 @Fluent
 public final class MapsGeofenceExitedEventData extends MapsGeofenceEventProperties {
-    /** Creates an instance of MapsGeofenceExitedEventData class. */
-    public MapsGeofenceExitedEventData() {}
+    /**
+     * Creates an instance of MapsGeofenceExitedEventData class.
+     */
+    public MapsGeofenceExitedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MapsGeofenceExitedEventData setExpiredGeofenceGeometryId(List<String> expiredGeofenceGeometryId) {
         super.setExpiredGeofenceGeometryId(expiredGeofenceGeometryId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MapsGeofenceExitedEventData setGeometries(List<MapsGeofenceGeometry> geometries) {
         super.setGeometries(geometries);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public MapsGeofenceExitedEventData setInvalidPeriodGeofenceGeometryId(
-            List<String> invalidPeriodGeofenceGeometryId) {
+    public MapsGeofenceExitedEventData
+        setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
         super.setInvalidPeriodGeofenceGeometryId(invalidPeriodGeofenceGeometryId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MapsGeofenceExitedEventData setIsEventPublished(Boolean isEventPublished) {
         super.setIsEventPublished(isEventPublished);

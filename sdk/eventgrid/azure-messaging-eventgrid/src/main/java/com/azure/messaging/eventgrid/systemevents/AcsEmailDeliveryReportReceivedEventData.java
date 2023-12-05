@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event.
+ */
 @Fluent
 public final class AcsEmailDeliveryReportReceivedEventData {
     /*
@@ -47,12 +49,15 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     @JsonProperty(value = "deliveryAttemptTimeStamp")
     private OffsetDateTime deliveryAttemptTimestamp;
 
-    /** Creates an instance of AcsEmailDeliveryReportReceivedEventData class. */
-    public AcsEmailDeliveryReportReceivedEventData() {}
+    /**
+     * Creates an instance of AcsEmailDeliveryReportReceivedEventData class.
+     */
+    public AcsEmailDeliveryReportReceivedEventData() {
+    }
 
     /**
      * Get the sender property: The Sender Email Address.
-     *
+     * 
      * @return the sender value.
      */
     public String getSender() {
@@ -61,7 +66,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the sender property: The Sender Email Address.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
@@ -72,7 +77,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Get the recipient property: The recipient Email Address.
-     *
+     * 
      * @return the recipient value.
      */
     public String getRecipient() {
@@ -81,7 +86,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the recipient property: The recipient Email Address.
-     *
+     * 
      * @param recipient the recipient value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
@@ -92,7 +97,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Get the messageId property: The Id of the email been sent.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -101,7 +106,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the messageId property: The Id of the email been sent.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
@@ -112,7 +117,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Get the status property: The status of the email. Any value other than Delivered is considered failed.
-     *
+     * 
      * @return the status value.
      */
     public AcsEmailDeliveryReportStatus getStatus() {
@@ -121,7 +126,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the status property: The status of the email. Any value other than Delivered is considered failed.
-     *
+     * 
      * @param status the status value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
@@ -132,7 +137,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Get the deliveryStatusDetails property: Detailed information about the status if any.
-     *
+     * 
      * @return the deliveryStatusDetails value.
      */
     public AcsEmailDeliveryReportStatusDetails getDeliveryStatusDetails() {
@@ -141,19 +146,19 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the deliveryStatusDetails property: Detailed information about the status if any.
-     *
+     * 
      * @param deliveryStatusDetails the deliveryStatusDetails value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
-    public AcsEmailDeliveryReportReceivedEventData setDeliveryStatusDetails(
-            AcsEmailDeliveryReportStatusDetails deliveryStatusDetails) {
+    public AcsEmailDeliveryReportReceivedEventData
+        setDeliveryStatusDetails(AcsEmailDeliveryReportStatusDetails deliveryStatusDetails) {
         this.deliveryStatusDetails = deliveryStatusDetails;
         return this;
     }
 
     /**
      * Get the deliveryAttemptTimestamp property: The time at which the email delivery report received timestamp.
-     *
+     * 
      * @return the deliveryAttemptTimestamp value.
      */
     public OffsetDateTime getDeliveryAttemptTimestamp() {
@@ -162,12 +167,12 @@ public final class AcsEmailDeliveryReportReceivedEventData {
 
     /**
      * Set the deliveryAttemptTimestamp property: The time at which the email delivery report received timestamp.
-     *
+     * 
      * @param deliveryAttemptTimestamp the deliveryAttemptTimestamp value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
-    public AcsEmailDeliveryReportReceivedEventData setDeliveryAttemptTimestamp(
-            OffsetDateTime deliveryAttemptTimestamp) {
+    public AcsEmailDeliveryReportReceivedEventData
+        setDeliveryAttemptTimestamp(OffsetDateTime deliveryAttemptTimestamp) {
         this.deliveryAttemptTimestamp = deliveryAttemptTimestamp;
         return this;
     }

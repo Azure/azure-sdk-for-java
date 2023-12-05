@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of common properties of snapshot events. */
+/**
+ * Schema of common properties of snapshot events.
+ */
 @Fluent
 public class AppConfigurationSnapshotEventData {
     /*
@@ -28,12 +30,15 @@ public class AppConfigurationSnapshotEventData {
     @JsonProperty(value = "syncToken")
     private String syncToken;
 
-    /** Creates an instance of AppConfigurationSnapshotEventData class. */
-    public AppConfigurationSnapshotEventData() {}
+    /**
+     * Creates an instance of AppConfigurationSnapshotEventData class.
+     */
+    public AppConfigurationSnapshotEventData() {
+    }
 
     /**
      * Get the name property: The name of the snapshot.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -42,7 +47,7 @@ public class AppConfigurationSnapshotEventData {
 
     /**
      * Set the name property: The name of the snapshot.
-     *
+     * 
      * @param name the name value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */
@@ -53,7 +58,7 @@ public class AppConfigurationSnapshotEventData {
 
     /**
      * Get the etag property: The etag representing the new state of the snapshot.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -62,7 +67,7 @@ public class AppConfigurationSnapshotEventData {
 
     /**
      * Set the etag property: The etag representing the new state of the snapshot.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */
@@ -73,7 +78,7 @@ public class AppConfigurationSnapshotEventData {
 
     /**
      * Get the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -82,7 +87,7 @@ public class AppConfigurationSnapshotEventData {
 
     /**
      * Set the syncToken property: The sync token representing the server state after the event.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the AppConfigurationSnapshotEventData object itself.
      */

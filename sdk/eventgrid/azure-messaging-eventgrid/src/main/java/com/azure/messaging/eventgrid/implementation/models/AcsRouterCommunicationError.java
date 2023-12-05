@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Router Communication Error. */
+/**
+ * Router Communication Error.
+ */
 @Fluent
 public final class AcsRouterCommunicationError {
     /*
@@ -41,12 +43,15 @@ public final class AcsRouterCommunicationError {
     @JsonProperty(value = "details")
     private List<AcsRouterCommunicationError> details;
 
-    /** Creates an instance of AcsRouterCommunicationError class. */
-    public AcsRouterCommunicationError() {}
+    /**
+     * Creates an instance of AcsRouterCommunicationError class.
+     */
+    public AcsRouterCommunicationError() {
+    }
 
     /**
      * Get the code property: Router Communication Error Code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -55,7 +60,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Set the code property: Router Communication Error Code.
-     *
+     * 
      * @param code the code value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
@@ -66,7 +71,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Get the message property: Router Communication Error Message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -75,7 +80,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Set the message property: Router Communication Error Message.
-     *
+     * 
      * @param message the message value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
@@ -86,7 +91,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Get the target property: Router Communication Error Target.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -95,7 +100,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Set the target property: Router Communication Error Target.
-     *
+     * 
      * @param target the target value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
@@ -106,7 +111,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Get the innererror property: Router Communication Inner Error.
-     *
+     * 
      * @return the innererror value.
      */
     public AcsRouterCommunicationError getInnererror() {
@@ -115,7 +120,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Set the innererror property: Router Communication Inner Error.
-     *
+     * 
      * @param innererror the innererror value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
@@ -126,7 +131,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Get the details property: List of Router Communication Errors.
-     *
+     * 
      * @return the details value.
      */
     public List<AcsRouterCommunicationError> getDetails() {
@@ -135,7 +140,7 @@ public final class AcsRouterCommunicationError {
 
     /**
      * Set the details property: List of Router Communication Errors.
-     *
+     * 
      * @param details the details value to set.
      * @return the AcsRouterCommunicationError object itself.
      */

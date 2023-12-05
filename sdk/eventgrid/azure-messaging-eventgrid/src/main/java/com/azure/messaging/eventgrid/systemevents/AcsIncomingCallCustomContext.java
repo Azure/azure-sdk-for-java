@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Custom Context of Incoming Call. */
+/**
+ * Custom Context of Incoming Call.
+ */
 @Fluent
 public final class AcsIncomingCallCustomContext {
     /*
@@ -23,12 +25,15 @@ public final class AcsIncomingCallCustomContext {
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
-    /** Creates an instance of AcsIncomingCallCustomContext class. */
-    public AcsIncomingCallCustomContext() {}
+    /**
+     * Creates an instance of AcsIncomingCallCustomContext class.
+     */
+    public AcsIncomingCallCustomContext() {
+    }
 
     /**
      * Get the sipHeaders property: Sip Headers for incoming call.
-     *
+     * 
      * @return the sipHeaders value.
      */
     public Map<String, String> getSipHeaders() {
@@ -37,7 +42,7 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Set the sipHeaders property: Sip Headers for incoming call.
-     *
+     * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */
@@ -48,7 +53,7 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Get the voipHeaders property: Voip Headers for incoming call.
-     *
+     * 
      * @return the voipHeaders value.
      */
     public Map<String, String> getVoipHeaders() {
@@ -57,7 +62,7 @@ public final class AcsIncomingCallCustomContext {
 
     /**
      * Set the voipHeaders property: Voip Headers for incoming call.
-     *
+     * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the AcsIncomingCallCustomContext object itself.
      */

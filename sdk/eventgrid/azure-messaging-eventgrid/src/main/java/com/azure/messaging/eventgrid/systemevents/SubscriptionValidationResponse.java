@@ -21,13 +21,16 @@ public final class SubscriptionValidationResponse {
     @JsonProperty(value = "validationResponse")
     private String validationResponse;
 
-    /** Creates an instance of SubscriptionValidationResponse class. */
-    public SubscriptionValidationResponse() {}
+    /**
+     * Creates an instance of SubscriptionValidationResponse class.
+     */
+    public SubscriptionValidationResponse() {
+    }
 
     /**
      * Get the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
      * complete the validation of an event subscription.
-     *
+     * 
      * @return the validationResponse value.
      */
     public String getValidationResponse() {
@@ -37,7 +40,7 @@ public final class SubscriptionValidationResponse {
     /**
      * Set the validationResponse property: The validation response sent by the subscriber to Azure Event Grid to
      * complete the validation of an event subscription.
-     *
+     * 
      * @param validationResponse the validationResponse value to set.
      * @return the SubscriptionValidationResponse object itself.
      */

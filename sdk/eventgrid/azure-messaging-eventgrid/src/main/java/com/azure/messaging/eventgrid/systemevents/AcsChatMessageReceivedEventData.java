@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceived event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceived event.
+ */
 @Fluent
 public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBaseProperties {
     /*
@@ -24,12 +26,15 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
     @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of AcsChatMessageReceivedEventData class. */
-    public AcsChatMessageReceivedEventData() {}
+    /**
+     * Creates an instance of AcsChatMessageReceivedEventData class.
+     */
+    public AcsChatMessageReceivedEventData() {
+    }
 
     /**
      * Get the messageBody property: The body of the chat message.
-     *
+     * 
      * @return the messageBody value.
      */
     public String getMessageBody() {
@@ -38,7 +43,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
 
     /**
      * Set the messageBody property: The body of the chat message.
-     *
+     * 
      * @param messageBody the messageBody value to set.
      * @return the AcsChatMessageReceivedEventData object itself.
      */
@@ -49,7 +54,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
 
     /**
      * Get the metadata property: The chat message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -58,7 +63,7 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
 
     /**
      * Set the metadata property: The chat message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatMessageReceivedEventData object itself.
      */
@@ -67,65 +72,83 @@ public final class AcsChatMessageReceivedEventData extends AcsChatMessageEventBa
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageReceivedEventData setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageReceivedEventData
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setSenderDisplayName(String senderDisplayName) {
         super.setSenderDisplayName(senderDisplayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setComposeTime(OffsetDateTime composeTime) {
         super.setComposeTime(composeTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setType(String type) {
         super.setType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageReceivedEventData setRecipientCommunicationIdentifier(
-            CommunicationIdentifierModel recipientCommunicationIdentifier) {
+    public AcsChatMessageReceivedEventData
+        setRecipientCommunicationIdentifier(CommunicationIdentifierModel recipientCommunicationIdentifier) {
         super.setRecipientCommunicationIdentifier(recipientCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);

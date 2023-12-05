@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.CopyCompleted event.
+ */
 @Fluent
 public final class DataBoxCopyCompletedEventData {
     /*
@@ -30,13 +32,16 @@ public final class DataBoxCopyCompletedEventData {
     @JsonProperty(value = "stageTime")
     private OffsetDateTime stageTime;
 
-    /** Creates an instance of DataBoxCopyCompletedEventData class. */
-    public DataBoxCopyCompletedEventData() {}
+    /**
+     * Creates an instance of DataBoxCopyCompletedEventData class.
+     */
+    public DataBoxCopyCompletedEventData() {
+    }
 
     /**
-     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
-     * if more than one serial number is associated.
-     *
+     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma
+     * separated if more than one serial number is associated.
+     * 
      * @return the serialNumber value.
      */
     public String getSerialNumber() {
@@ -44,9 +49,9 @@ public final class DataBoxCopyCompletedEventData {
     }
 
     /**
-     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
-     * if more than one serial number is associated.
-     *
+     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma
+     * separated if more than one serial number is associated.
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the DataBoxCopyCompletedEventData object itself.
      */
@@ -57,7 +62,7 @@ public final class DataBoxCopyCompletedEventData {
 
     /**
      * Get the stageName property: Name of the current Stage.
-     *
+     * 
      * @return the stageName value.
      */
     public DataBoxStageName getStageName() {
@@ -66,7 +71,7 @@ public final class DataBoxCopyCompletedEventData {
 
     /**
      * Set the stageName property: Name of the current Stage.
-     *
+     * 
      * @param stageName the stageName value to set.
      * @return the DataBoxCopyCompletedEventData object itself.
      */
@@ -77,7 +82,7 @@ public final class DataBoxCopyCompletedEventData {
 
     /**
      * Get the stageTime property: The time at which the stage happened.
-     *
+     * 
      * @return the stageTime value.
      */
     public OffsetDateTime getStageTime() {
@@ -86,7 +91,7 @@ public final class DataBoxCopyCompletedEventData {
 
     /**
      * Set the stageTime property: The time at which the stage happened.
-     *
+     * 
      * @param stageTime the stageTime value to set.
      * @return the DataBoxCopyCompletedEventData object itself.
      */

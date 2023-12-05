@@ -40,13 +40,16 @@ public class MapsGeofenceEventProperties {
     @JsonProperty(value = "isEventPublished")
     private Boolean isEventPublished;
 
-    /** Creates an instance of MapsGeofenceEventProperties class. */
-    public MapsGeofenceEventProperties() {}
+    /**
+     * Creates an instance of MapsGeofenceEventProperties class.
+     */
+    public MapsGeofenceEventProperties() {
+    }
 
     /**
-     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
-     * the user time in the request.
-     *
+     * Get the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative
+     * to the user time in the request.
+     * 
      * @return the expiredGeofenceGeometryId value.
      */
     public List<String> getExpiredGeofenceGeometryId() {
@@ -54,9 +57,9 @@ public class MapsGeofenceEventProperties {
     }
 
     /**
-     * Set the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative to
-     * the user time in the request.
-     *
+     * Set the expiredGeofenceGeometryId property: Lists of the geometry ID of the geofence which is expired relative
+     * to the user time in the request.
+     * 
      * @param expiredGeofenceGeometryId the expiredGeofenceGeometryId value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
@@ -66,9 +69,9 @@ public class MapsGeofenceEventProperties {
     }
 
     /**
-     * Get the geometries property: Lists the fence geometries that either fully contain the coordinate position or have
-     * an overlap with the searchBuffer around the fence.
-     *
+     * Get the geometries property: Lists the fence geometries that either fully contain the coordinate position or
+     * have an overlap with the searchBuffer around the fence.
+     * 
      * @return the geometries value.
      */
     public List<MapsGeofenceGeometry> getGeometries() {
@@ -76,9 +79,9 @@ public class MapsGeofenceEventProperties {
     }
 
     /**
-     * Set the geometries property: Lists the fence geometries that either fully contain the coordinate position or have
-     * an overlap with the searchBuffer around the fence.
-     *
+     * Set the geometries property: Lists the fence geometries that either fully contain the coordinate position or
+     * have an overlap with the searchBuffer around the fence.
+     * 
      * @param geometries the geometries value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
@@ -90,7 +93,7 @@ public class MapsGeofenceEventProperties {
     /**
      * Get the invalidPeriodGeofenceGeometryId property: Lists of the geometry ID of the geofence which is in invalid
      * period relative to the user time in the request.
-     *
+     * 
      * @return the invalidPeriodGeofenceGeometryId value.
      */
     public List<String> getInvalidPeriodGeofenceGeometryId() {
@@ -100,12 +103,12 @@ public class MapsGeofenceEventProperties {
     /**
      * Set the invalidPeriodGeofenceGeometryId property: Lists of the geometry ID of the geofence which is in invalid
      * period relative to the user time in the request.
-     *
+     * 
      * @param invalidPeriodGeofenceGeometryId the invalidPeriodGeofenceGeometryId value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */
-    public MapsGeofenceEventProperties setInvalidPeriodGeofenceGeometryId(
-            List<String> invalidPeriodGeofenceGeometryId) {
+    public MapsGeofenceEventProperties
+        setInvalidPeriodGeofenceGeometryId(List<String> invalidPeriodGeofenceGeometryId) {
         this.invalidPeriodGeofenceGeometryId = invalidPeriodGeofenceGeometryId;
         return this;
     }
@@ -113,7 +116,7 @@ public class MapsGeofenceEventProperties {
     /**
      * Get the isEventPublished property: True if at least one event is published to the Azure Maps event subscriber,
      * false if no event is published to the Azure Maps event subscriber.
-     *
+     * 
      * @return the isEventPublished value.
      */
     public Boolean isEventPublished() {
@@ -123,7 +126,7 @@ public class MapsGeofenceEventProperties {
     /**
      * Set the isEventPublished property: True if at least one event is published to the Azure Maps event subscriber,
      * false if no event is published to the Azure Maps event subscriber.
-     *
+     * 
      * @param isEventPublished the isEventPublished value to set.
      * @return the MapsGeofenceEventProperties object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detail of action on the app service plan. */
+/**
+ * Detail of action on the app service plan.
+ */
 @Fluent
 public final class AppServicePlanEventTypeDetail {
     /*
@@ -28,12 +30,15 @@ public final class AppServicePlanEventTypeDetail {
     @JsonProperty(value = "status")
     private AsyncStatus status;
 
-    /** Creates an instance of AppServicePlanEventTypeDetail class. */
-    public AppServicePlanEventTypeDetail() {}
+    /**
+     * Creates an instance of AppServicePlanEventTypeDetail class.
+     */
+    public AppServicePlanEventTypeDetail() {
+    }
 
     /**
      * Get the stampKind property: Kind of environment where app service plan is.
-     *
+     * 
      * @return the stampKind value.
      */
     public StampKind getStampKind() {
@@ -42,7 +47,7 @@ public final class AppServicePlanEventTypeDetail {
 
     /**
      * Set the stampKind property: Kind of environment where app service plan is.
-     *
+     * 
      * @param stampKind the stampKind value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
@@ -53,7 +58,7 @@ public final class AppServicePlanEventTypeDetail {
 
     /**
      * Get the action property: Type of action on the app service plan.
-     *
+     * 
      * @return the action value.
      */
     public AppServicePlanAction getAction() {
@@ -62,7 +67,7 @@ public final class AppServicePlanEventTypeDetail {
 
     /**
      * Set the action property: Type of action on the app service plan.
-     *
+     * 
      * @param action the action value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */
@@ -73,7 +78,7 @@ public final class AppServicePlanEventTypeDetail {
 
     /**
      * Get the status property: Asynchronous operation status of the operation on the app service plan.
-     *
+     * 
      * @return the status value.
      */
     public AsyncStatus getStatus() {
@@ -82,7 +87,7 @@ public final class AppServicePlanEventTypeDetail {
 
     /**
      * Set the status property: Asynchronous operation status of the operation on the app service plan.
-     *
+     * 
      * @param status the status value to set.
      * @return the AppServicePlanEventTypeDetail object itself.
      */

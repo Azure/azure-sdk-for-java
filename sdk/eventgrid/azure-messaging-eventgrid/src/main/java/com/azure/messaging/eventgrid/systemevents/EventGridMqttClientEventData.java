@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for MQTT Client state changes. */
+/**
+ * Schema of the Data property of an EventGridEvent for MQTT Client state changes.
+ */
 @Fluent
 public class EventGridMqttClientEventData {
     /*
@@ -29,14 +31,17 @@ public class EventGridMqttClientEventData {
     @JsonProperty(value = "namespaceName")
     private String namespaceName;
 
-    /** Creates an instance of EventGridMqttClientEventData class. */
-    public EventGridMqttClientEventData() {}
+    /**
+     * Creates an instance of EventGridMqttClientEventData class.
+     */
+    public EventGridMqttClientEventData() {
+    }
 
     /**
      * Get the clientAuthenticationName property: Unique identifier for the MQTT client that the client presents to the
      * service for authentication. This case-sensitive string can be up to 128 characters long, and supports UTF-8
      * characters.
-     *
+     * 
      * @return the clientAuthenticationName value.
      */
     public String getClientAuthenticationName() {
@@ -47,7 +52,7 @@ public class EventGridMqttClientEventData {
      * Set the clientAuthenticationName property: Unique identifier for the MQTT client that the client presents to the
      * service for authentication. This case-sensitive string can be up to 128 characters long, and supports UTF-8
      * characters.
-     *
+     * 
      * @param clientAuthenticationName the clientAuthenticationName value to set.
      * @return the EventGridMqttClientEventData object itself.
      */
@@ -58,7 +63,7 @@ public class EventGridMqttClientEventData {
 
     /**
      * Get the clientName property: Name of the client resource in the Event Grid namespace.
-     *
+     * 
      * @return the clientName value.
      */
     public String getClientName() {
@@ -67,7 +72,7 @@ public class EventGridMqttClientEventData {
 
     /**
      * Set the clientName property: Name of the client resource in the Event Grid namespace.
-     *
+     * 
      * @param clientName the clientName value to set.
      * @return the EventGridMqttClientEventData object itself.
      */
@@ -78,7 +83,7 @@ public class EventGridMqttClientEventData {
 
     /**
      * Get the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
-     *
+     * 
      * @return the namespaceName value.
      */
     public String getNamespaceName() {
@@ -87,7 +92,7 @@ public class EventGridMqttClientEventData {
 
     /**
      * Set the namespaceName property: Name of the Event Grid namespace where the MQTT client was created or updated.
-     *
+     * 
      * @param namespaceName the namespaceName value to set.
      * @return the EventGridMqttClientEventData object itself.
      */

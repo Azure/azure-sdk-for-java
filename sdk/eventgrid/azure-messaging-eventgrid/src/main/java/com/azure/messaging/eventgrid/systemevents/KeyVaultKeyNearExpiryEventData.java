@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNearExpiry event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.KeyNearExpiry event.
+ */
 @Fluent
 public final class KeyVaultKeyNearExpiryEventData {
     /*
@@ -52,12 +54,15 @@ public final class KeyVaultKeyNearExpiryEventData {
     @JsonProperty(value = "EXP")
     private Float exp;
 
-    /** Creates an instance of KeyVaultKeyNearExpiryEventData class. */
-    public KeyVaultKeyNearExpiryEventData() {}
+    /**
+     * Creates an instance of KeyVaultKeyNearExpiryEventData class.
+     */
+    public KeyVaultKeyNearExpiryEventData() {
+    }
 
     /**
      * Get the id property: The id of the object that triggered this event.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -66,7 +71,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the id property: The id of the object that triggered this event.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -77,7 +82,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the vaultName property: Key vault name of the object that triggered this event.
-     *
+     * 
      * @return the vaultName value.
      */
     public String getVaultName() {
@@ -86,7 +91,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the vaultName property: Key vault name of the object that triggered this event.
-     *
+     * 
      * @param vaultName the vaultName value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -97,7 +102,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the objectType property: The type of the object that triggered this event.
-     *
+     * 
      * @return the objectType value.
      */
     public String getObjectType() {
@@ -106,7 +111,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the objectType property: The type of the object that triggered this event.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -117,7 +122,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the objectName property: The name of the object that triggered this event.
-     *
+     * 
      * @return the objectName value.
      */
     public String getObjectName() {
@@ -126,7 +131,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the objectName property: The name of the object that triggered this event.
-     *
+     * 
      * @param objectName the objectName value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -137,7 +142,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the version property: The version of the object that triggered this event.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -146,7 +151,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the version property: The version of the object that triggered this event.
-     *
+     * 
      * @param version the version value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -157,7 +162,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the nbf property: Not before date of the object that triggered this event.
-     *
+     * 
      * @return the nbf value.
      */
     public Float getNbf() {
@@ -166,7 +171,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the nbf property: Not before date of the object that triggered this event.
-     *
+     * 
      * @param nbf the nbf value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */
@@ -177,7 +182,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Get the exp property: The expiration date of the object that triggered this event.
-     *
+     * 
      * @return the exp value.
      */
     public Float getExp() {
@@ -186,7 +191,7 @@ public final class KeyVaultKeyNearExpiryEventData {
 
     /**
      * Set the exp property: The expiration date of the object that triggered this event.
-     *
+     * 
      * @param exp the exp value to set.
      * @return the KeyVaultKeyNearExpiryEventData object itself.
      */

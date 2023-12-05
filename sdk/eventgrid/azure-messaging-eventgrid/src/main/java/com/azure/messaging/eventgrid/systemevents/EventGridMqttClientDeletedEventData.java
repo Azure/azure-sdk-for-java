@@ -6,27 +6,38 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Event data for Microsoft.EventGrid.MQTTClientDeleted event. */
+/**
+ * Event data for Microsoft.EventGrid.MQTTClientDeleted event.
+ */
 @Fluent
 public final class EventGridMqttClientDeletedEventData extends EventGridMqttClientEventData {
-    /** Creates an instance of EventGridMqttClientDeletedEventData class. */
-    public EventGridMqttClientDeletedEventData() {}
+    /**
+     * Creates an instance of EventGridMqttClientDeletedEventData class.
+     */
+    public EventGridMqttClientDeletedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientDeletedEventData setClientAuthenticationName(String clientAuthenticationName) {
         super.setClientAuthenticationName(clientAuthenticationName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientDeletedEventData setClientName(String clientName) {
         super.setClientName(clientName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridMqttClientDeletedEventData setNamespaceName(String namespaceName) {
         super.setNamespaceName(namespaceName);

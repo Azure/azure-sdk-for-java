@@ -6,13 +6,20 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NodePoolRollingFailed event.
+ */
 @Fluent
 public final class ContainerServiceNodePoolRollingFailedEventData extends ContainerServiceNodePoolRollingEventData {
-    /** Creates an instance of ContainerServiceNodePoolRollingFailedEventData class. */
-    public ContainerServiceNodePoolRollingFailedEventData() {}
+    /**
+     * Creates an instance of ContainerServiceNodePoolRollingFailedEventData class.
+     */
+    public ContainerServiceNodePoolRollingFailedEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerServiceNodePoolRollingFailedEventData setNodePoolName(String nodePoolName) {
         super.setNodePoolName(nodePoolName);

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request that generated the event. */
+/**
+ * The request that generated the event.
+ */
 @Fluent
 public final class ContainerRegistryEventRequest {
     /*
@@ -42,12 +44,15 @@ public final class ContainerRegistryEventRequest {
     @JsonProperty(value = "useragent")
     private String useragent;
 
-    /** Creates an instance of ContainerRegistryEventRequest class. */
-    public ContainerRegistryEventRequest() {}
+    /**
+     * Creates an instance of ContainerRegistryEventRequest class.
+     */
+    public ContainerRegistryEventRequest() {
+    }
 
     /**
      * Get the id property: The ID of the request that initiated the event.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +61,7 @@ public final class ContainerRegistryEventRequest {
 
     /**
      * Set the id property: The ID of the request that initiated the event.
-     *
+     * 
      * @param id the id value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
@@ -68,7 +73,7 @@ public final class ContainerRegistryEventRequest {
     /**
      * Get the addr property: The IP or hostname and possibly port of the client connection that initiated the event.
      * This is the RemoteAddr from the standard http request.
-     *
+     * 
      * @return the addr value.
      */
     public String getAddr() {
@@ -78,7 +83,7 @@ public final class ContainerRegistryEventRequest {
     /**
      * Set the addr property: The IP or hostname and possibly port of the client connection that initiated the event.
      * This is the RemoteAddr from the standard http request.
-     *
+     * 
      * @param addr the addr value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
@@ -88,9 +93,9 @@ public final class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http host
-     * header on incoming requests.
-     *
+     * Get the host property: The externally accessible hostname of the registry instance, as specified by the http
+     * host header on incoming requests.
+     * 
      * @return the host value.
      */
     public String getHost() {
@@ -98,9 +103,9 @@ public final class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the host property: The externally accessible hostname of the registry instance, as specified by the http host
-     * header on incoming requests.
-     *
+     * Set the host property: The externally accessible hostname of the registry instance, as specified by the http
+     * host header on incoming requests.
+     * 
      * @param host the host value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
@@ -111,7 +116,7 @@ public final class ContainerRegistryEventRequest {
 
     /**
      * Get the method property: The request method that generated the event.
-     *
+     * 
      * @return the method value.
      */
     public String getMethod() {
@@ -120,7 +125,7 @@ public final class ContainerRegistryEventRequest {
 
     /**
      * Set the method property: The request method that generated the event.
-     *
+     * 
      * @param method the method value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */
@@ -131,7 +136,7 @@ public final class ContainerRegistryEventRequest {
 
     /**
      * Get the useragent property: The user agent header of the request.
-     *
+     * 
      * @return the useragent value.
      */
     public String getUseragent() {
@@ -140,7 +145,7 @@ public final class ContainerRegistryEventRequest {
 
     /**
      * Set the useragent property: The user agent header of the request.
-     *
+     * 
      * @param useragent the useragent value to set.
      * @return the ContainerRegistryEventRequest object itself.
      */

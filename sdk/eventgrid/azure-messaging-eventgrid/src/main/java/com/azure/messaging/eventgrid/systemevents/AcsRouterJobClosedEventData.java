@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClosed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClosed event.
+ */
 @Fluent
 public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
     /*
@@ -29,12 +31,15 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of AcsRouterJobClosedEventData class. */
-    public AcsRouterJobClosedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobClosedEventData class.
+     */
+    public AcsRouterJobClosedEventData() {
+    }
 
     /**
      * Get the assignmentId property: Router Job Closed Assignment Id.
-     *
+     * 
      * @return the assignmentId value.
      */
     public String getAssignmentId() {
@@ -43,7 +48,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the assignmentId property: Router Job Closed Assignment Id.
-     *
+     * 
      * @param assignmentId the assignmentId value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -54,7 +59,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the workerId property: Router Job Closed Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -63,7 +68,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the workerId property: Router Job Closed Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -74,7 +79,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the dispositionCode property: Router Job Closed Disposition Code.
-     *
+     * 
      * @return the dispositionCode value.
      */
     public String getDispositionCode() {
@@ -83,7 +88,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the dispositionCode property: Router Job Closed Disposition Code.
-     *
+     * 
      * @param dispositionCode the dispositionCode value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -92,42 +97,54 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

@@ -86,8 +86,11 @@ public final class ResourceDeleteFailureEventData {
     @JsonProperty(value = "httpRequest")
     private ResourceHttpRequest httpRequest;
 
-    /** Creates an instance of ResourceDeleteFailureEventData class. */
-    public ResourceDeleteFailureEventData() {}
+    /**
+     * Creates an instance of ResourceDeleteFailureEventData class.
+     */
+    public ResourceDeleteFailureEventData() {
+    }
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -309,16 +312,17 @@ public final class ResourceDeleteFailureEventData {
         return this;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteFailureEventData.class);
+    static final private ClientLogger LOGGER = new ClientLogger(ResourceDeleteFailureEventData.class);
 
-    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#getResourceClaims()} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#getResourceClaims()} instead.
      */
     @Deprecated
     public String getClaims() {
@@ -339,7 +343,8 @@ public final class ResourceDeleteFailureEventData {
      * @param claims the claims value to set.
      * @return the ResourceDeleteFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#setResourceClaims(Map)} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#setResourceClaims(Map)} instead.
      */
     @Deprecated
     public ResourceDeleteFailureEventData setClaims(String claims) {
@@ -356,7 +361,8 @@ public final class ResourceDeleteFailureEventData {
      *
      * @return the httpRequest value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#getResourceHttpRequest()} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#getResourceHttpRequest()} instead.
      */
     @Deprecated
     public String getHttpRequest() {
@@ -374,14 +380,14 @@ public final class ResourceDeleteFailureEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceDeleteFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
      */
     @Deprecated
     public ResourceDeleteFailureEventData setHttpRequest(String httpRequest) {
         try {
-            setResourceHttpRequest(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+            setResourceHttpRequest(DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
@@ -393,7 +399,8 @@ public final class ResourceDeleteFailureEventData {
      *
      * @return the authorization value.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#getResourceAuthorization()} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#getResourceAuthorization()} instead.
      */
     @Deprecated
     public String getAuthorization() {
@@ -411,14 +418,14 @@ public final class ResourceDeleteFailureEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceDeleteFailureEventData object itself.
      * @deprecated This method is no longer supported since v4.9.0.
-     *     <p>Use {@link ResourceDeleteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     * <p>
+     * Use {@link ResourceDeleteFailureEventData#setResourceAuthorization(ResourceAuthorization)} instead.
      */
     @Deprecated
     public ResourceDeleteFailureEventData setAuthorization(String authorization) {
         try {
-            setResourceAuthorization(
-                    DEFAULT_SERIALIZER_ADAPTER.deserialize(
-                            authorization, ResourceAuthorization.class, SerializerEncoding.JSON));
+            setResourceAuthorization(DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                SerializerEncoding.JSON));
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }

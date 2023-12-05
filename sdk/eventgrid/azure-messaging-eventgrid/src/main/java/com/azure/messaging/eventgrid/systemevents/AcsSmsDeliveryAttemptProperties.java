@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema for details of a delivery attempt. */
+/**
+ * Schema for details of a delivery attempt.
+ */
 @Fluent
 public final class AcsSmsDeliveryAttemptProperties {
     /*
@@ -29,12 +31,15 @@ public final class AcsSmsDeliveryAttemptProperties {
     @JsonProperty(value = "segmentsFailed")
     private Integer segmentsFailed;
 
-    /** Creates an instance of AcsSmsDeliveryAttemptProperties class. */
-    public AcsSmsDeliveryAttemptProperties() {}
+    /**
+     * Creates an instance of AcsSmsDeliveryAttemptProperties class.
+     */
+    public AcsSmsDeliveryAttemptProperties() {
+    }
 
     /**
      * Get the timestamp property: TimeStamp when delivery was attempted.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -43,7 +48,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the timestamp property: TimeStamp when delivery was attempted.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Get the segmentsSucceeded property: Number of segments that were successfully delivered.
-     *
+     * 
      * @return the segmentsSucceeded value.
      */
     public Integer getSegmentsSucceeded() {
@@ -63,7 +68,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the segmentsSucceeded property: Number of segments that were successfully delivered.
-     *
+     * 
      * @param segmentsSucceeded the segmentsSucceeded value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Get the segmentsFailed property: Number of segments whose delivery failed.
-     *
+     * 
      * @return the segmentsFailed value.
      */
     public Integer getSegmentsFailed() {
@@ -83,7 +88,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the segmentsFailed property: Number of segments whose delivery failed.
-     *
+     * 
      * @param segmentsFailed the segmentsFailed value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */

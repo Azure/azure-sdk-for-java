@@ -55,12 +55,15 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
     @JsonProperty(value = "discontinuityGap", access = JsonProperty.Access.WRITE_ONLY)
     private String discontinuityGap;
 
-    /** Creates an instance of MediaLiveEventTrackDiscontinuityDetectedEventData class. */
-    public MediaLiveEventTrackDiscontinuityDetectedEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventTrackDiscontinuityDetectedEventData class.
+     */
+    public MediaLiveEventTrackDiscontinuityDetectedEventData() {
+    }
 
     /**
      * Get the trackType property: Gets the type of the track (Audio / Video).
-     *
+     * 
      * @return the trackType value.
      */
     public String getTrackType() {
@@ -69,7 +72,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the trackName property: Gets the track name.
-     *
+     * 
      * @return the trackName value.
      */
     public String getTrackName() {
@@ -78,7 +81,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the bitrate property: Gets the bitrate.
-     *
+     * 
      * @return the bitrate value.
      */
     public Long getBitrate() {
@@ -87,7 +90,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the previousTimestamp property: Gets the timestamp of the previous fragment.
-     *
+     * 
      * @return the previousTimestamp value.
      */
     public String getPreviousTimestamp() {
@@ -96,7 +99,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the newTimestamp property: Gets the timestamp of the current fragment.
-     *
+     * 
      * @return the newTimestamp value.
      */
     public String getNewTimestamp() {
@@ -105,7 +108,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the timescale property: Gets the timescale in which both timestamps and discontinuity gap are represented.
-     *
+     * 
      * @return the timescale value.
      */
     public String getTimescale() {
@@ -114,7 +117,7 @@ public final class MediaLiveEventTrackDiscontinuityDetectedEventData {
 
     /**
      * Get the discontinuityGap property: Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
-     *
+     * 
      * @return the discontinuityGap value.
      */
     public String getDiscontinuityGap() {

@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties JSON element. */
+/**
+ * Properties JSON element.
+ */
 @Fluent
 public final class DeviceTwinInfoProperties {
     /*
@@ -22,13 +24,16 @@ public final class DeviceTwinInfoProperties {
     @JsonProperty(value = "reported")
     private DeviceTwinProperties reported;
 
-    /** Creates an instance of DeviceTwinInfoProperties class. */
-    public DeviceTwinInfoProperties() {}
+    /**
+     * Creates an instance of DeviceTwinInfoProperties class.
+     */
+    public DeviceTwinInfoProperties() {
+    }
 
     /**
      * Get the desired property: A portion of the properties that can be written only by the application back-end, and
      * read by the device.
-     *
+     * 
      * @return the desired value.
      */
     public DeviceTwinProperties getDesired() {
@@ -38,7 +43,7 @@ public final class DeviceTwinInfoProperties {
     /**
      * Set the desired property: A portion of the properties that can be written only by the application back-end, and
      * read by the device.
-     *
+     * 
      * @param desired the desired value to set.
      * @return the DeviceTwinInfoProperties object itself.
      */
@@ -50,7 +55,7 @@ public final class DeviceTwinInfoProperties {
     /**
      * Get the reported property: A portion of the properties that can be written only by the device, and read by the
      * application back-end.
-     *
+     * 
      * @return the reported value.
      */
     public DeviceTwinProperties getReported() {
@@ -60,7 +65,7 @@ public final class DeviceTwinInfoProperties {
     /**
      * Set the reported property: A portion of the properties that can be written only by the device, and read by the
      * application back-end.
-     *
+     * 
      * @param reported the reported value to set.
      * @return the DeviceTwinInfoProperties object itself.
      */

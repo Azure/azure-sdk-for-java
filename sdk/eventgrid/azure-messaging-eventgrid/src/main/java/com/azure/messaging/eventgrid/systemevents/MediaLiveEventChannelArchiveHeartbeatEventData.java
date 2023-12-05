@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /**
- * Channel Archive heartbeat event data. Schema of the data property of an EventGridEvent for a
+ * Channel Archive heartbeat event data. Schema of the data property of an
+ * EventGridEvent for a
  * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
  */
 @Immutable
@@ -26,15 +27,17 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
      */
     @JsonProperty(value = "latencyResultCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String latencyResultCode;
-
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);
 
-    /** Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class. */
-    public MediaLiveEventChannelArchiveHeartbeatEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class.
+     */
+    public MediaLiveEventChannelArchiveHeartbeatEventData() {
+    }
 
     /**
      * Gets the duration of channel latency.
-     *
+     * 
      * @return the duration of channel latency.
      */
     public Duration getChannelLatency() {
@@ -53,7 +56,7 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
 
     /**
      * Get the latencyResultCode property: Gets the latency result code.
-     *
+     * 
      * @return the latencyResultCode value.
      */
     public String getLatencyResultCode() {

@@ -45,8 +45,11 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
     @JsonProperty(value = "unavailableForMatching", required = true)
     private boolean unavailableForMatching;
 
-    /** Creates an instance of AcsRouterJobWaitingForActivationEventData class. */
-    public AcsRouterJobWaitingForActivationEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobWaitingForActivationEventData class.
+     */
+    public AcsRouterJobWaitingForActivationEventData() {
+    }
 
     /**
      * Get the priority property: Router Job Waiting For Activation Priority.
@@ -83,8 +86,8 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    public AcsRouterJobWaitingForActivationEventData setExpiredAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
+    public AcsRouterJobWaitingForActivationEventData
+        setExpiredAttachedWorkerSelectors(List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
         this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
         return this;
     }
@@ -106,8 +109,8 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobWaitingForActivationEventData object itself.
      */
-    public AcsRouterJobWaitingForActivationEventData setExpiredRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
+    public AcsRouterJobWaitingForActivationEventData
+        setExpiredRequestedWorkerSelectors(List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
         this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
         return this;
     }
@@ -152,42 +155,54 @@ public final class AcsRouterJobWaitingForActivationEventData extends AcsRouterJo
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWaitingForActivationEventData setChannelId(String channelId) {
         super.setChannelId(channelId);

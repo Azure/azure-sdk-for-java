@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of the HTTP request. */
+/**
+ * The details of the HTTP request.
+ */
 @Fluent
 public final class ResourceHttpRequest {
     /*
@@ -34,12 +36,15 @@ public final class ResourceHttpRequest {
     @JsonProperty(value = "url")
     private String url;
 
-    /** Creates an instance of ResourceHttpRequest class. */
-    public ResourceHttpRequest() {}
+    /**
+     * Creates an instance of ResourceHttpRequest class.
+     */
+    public ResourceHttpRequest() {
+    }
 
     /**
      * Get the clientRequestId property: The client request ID.
-     *
+     * 
      * @return the clientRequestId value.
      */
     public String getClientRequestId() {
@@ -48,7 +53,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Set the clientRequestId property: The client request ID.
-     *
+     * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -59,7 +64,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Get the clientIpAddress property: The client IP address.
-     *
+     * 
      * @return the clientIpAddress value.
      */
     public String getClientIpAddress() {
@@ -68,7 +73,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Set the clientIpAddress property: The client IP address.
-     *
+     * 
      * @param clientIpAddress the clientIpAddress value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -79,7 +84,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Get the method property: The request method.
-     *
+     * 
      * @return the method value.
      */
     public String getMethod() {
@@ -88,7 +93,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Set the method property: The request method.
-     *
+     * 
      * @param method the method value to set.
      * @return the ResourceHttpRequest object itself.
      */
@@ -99,7 +104,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Get the url property: The url used in the request.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -108,7 +113,7 @@ public final class ResourceHttpRequest {
 
     /**
      * Set the url property: The url used in the request.
-     *
+     * 
      * @param url the url value to set.
      * @return the ResourceHttpRequest object itself.
      */

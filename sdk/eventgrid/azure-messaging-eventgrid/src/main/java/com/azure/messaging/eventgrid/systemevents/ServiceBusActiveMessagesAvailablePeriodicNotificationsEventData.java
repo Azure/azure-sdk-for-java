@@ -51,12 +51,15 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     @JsonProperty(value = "subscriptionName")
     private String subscriptionName;
 
-    /** Creates an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData class. */
-    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData() {}
+    /**
+     * Creates an instance of ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData class.
+     */
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData() {
+    }
 
     /**
      * Get the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
-     *
+     * 
      * @return the namespaceName value.
      */
     public String getNamespaceName() {
@@ -65,7 +68,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
 
     /**
      * Set the namespaceName property: The namespace name of the Microsoft.ServiceBus resource.
-     *
+     * 
      * @param namespaceName the namespaceName value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
@@ -76,7 +79,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
 
     /**
      * Get the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
-     *
+     * 
      * @return the requestUri value.
      */
     public String getRequestUri() {
@@ -85,7 +88,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
 
     /**
      * Set the requestUri property: The endpoint of the Microsoft.ServiceBus resource.
-     *
+     * 
      * @param requestUri the requestUri value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
@@ -97,7 +100,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Get the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
      * 'subscriber'.
-     *
+     * 
      * @return the entityType value.
      */
     public String getEntityType() {
@@ -107,7 +110,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Set the entityType property: The entity type of the Microsoft.ServiceBus resource. Could be one of 'queue' or
      * 'subscriber'.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
@@ -119,7 +122,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Get the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
      * 'subscriber', then this value will be null.
-     *
+     * 
      * @return the queueName value.
      */
     public String getQueueName() {
@@ -129,7 +132,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Set the queueName property: The name of the Microsoft.ServiceBus queue. If the entity type is of type
      * 'subscriber', then this value will be null.
-     *
+     * 
      * @param queueName the queueName value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
@@ -141,7 +144,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Get the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
      * then this value will be null.
-     *
+     * 
      * @return the topicName value.
      */
     public String getTopicName() {
@@ -151,7 +154,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Set the topicName property: The name of the Microsoft.ServiceBus topic. If the entity type is of type 'queue',
      * then this value will be null.
-     *
+     * 
      * @param topicName the topicName value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
@@ -163,7 +166,7 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Get the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
      * is of type 'queue', then this value will be null.
-     *
+     * 
      * @return the subscriptionName value.
      */
     public String getSubscriptionName() {
@@ -173,12 +176,12 @@ public final class ServiceBusActiveMessagesAvailablePeriodicNotificationsEventDa
     /**
      * Set the subscriptionName property: The name of the Microsoft.ServiceBus topic's subscription. If the entity type
      * is of type 'queue', then this value will be null.
-     *
+     * 
      * @param subscriptionName the subscriptionName value to set.
      * @return the ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData object itself.
      */
-    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData setSubscriptionName(
-            String subscriptionName) {
+    public ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData
+        setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
         return this;
     }

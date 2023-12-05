@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event.
+ */
 @Fluent
 public final class StorageTaskCompletedEventData {
     /*
@@ -41,12 +43,15 @@ public final class StorageTaskCompletedEventData {
     @JsonProperty(value = "summaryReportBlobUrl")
     private String summaryReportBlobUrl;
 
-    /** Creates an instance of StorageTaskCompletedEventData class. */
-    public StorageTaskCompletedEventData() {}
+    /**
+     * Creates an instance of StorageTaskCompletedEventData class.
+     */
+    public StorageTaskCompletedEventData() {
+    }
 
     /**
      * Get the status property: The status for a storage task.
-     *
+     * 
      * @return the status value.
      */
     public StorageTaskCompletedStatus getStatus() {
@@ -55,7 +60,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Set the status property: The status for a storage task.
-     *
+     * 
      * @param status the status value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */
@@ -66,7 +71,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Get the completedDateTime property: The time at which a storage task was completed.
-     *
+     * 
      * @return the completedDateTime value.
      */
     public OffsetDateTime getCompletedDateTime() {
@@ -75,7 +80,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Set the completedDateTime property: The time at which a storage task was completed.
-     *
+     * 
      * @param completedDateTime the completedDateTime value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */
@@ -86,7 +91,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Get the taskExecutionId property: The execution id for a storage task.
-     *
+     * 
      * @return the taskExecutionId value.
      */
     public String getTaskExecutionId() {
@@ -95,7 +100,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Set the taskExecutionId property: The execution id for a storage task.
-     *
+     * 
      * @param taskExecutionId the taskExecutionId value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */
@@ -106,7 +111,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Get the taskName property: The task name for a storage task.
-     *
+     * 
      * @return the taskName value.
      */
     public String getTaskName() {
@@ -115,7 +120,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Set the taskName property: The task name for a storage task.
-     *
+     * 
      * @param taskName the taskName value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */
@@ -126,7 +131,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Get the summaryReportBlobUrl property: The summary report blob url for a storage task.
-     *
+     * 
      * @return the summaryReportBlobUrl value.
      */
     public String getSummaryReportBlobUrl() {
@@ -135,7 +140,7 @@ public final class StorageTaskCompletedEventData {
 
     /**
      * Set the summaryReportBlobUrl property: The summary report blob url for a storage task.
-     *
+     * 
      * @param summaryReportBlobUrl the summaryReportBlobUrl value to set.
      * @return the StorageTaskCompletedEventData object itself.
      */

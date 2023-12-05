@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerDeregistered event.
+ */
 @Fluent
 public final class AcsRouterWorkerDeregisteredEventData {
     /*
@@ -16,12 +18,15 @@ public final class AcsRouterWorkerDeregisteredEventData {
     @JsonProperty(value = "workerId")
     private String workerId;
 
-    /** Creates an instance of AcsRouterWorkerDeregisteredEventData class. */
-    public AcsRouterWorkerDeregisteredEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerDeregisteredEventData class.
+     */
+    public AcsRouterWorkerDeregisteredEventData() {
+    }
 
     /**
      * Get the workerId property: Router Worker Deregistered Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -30,7 +35,7 @@ public final class AcsRouterWorkerDeregisteredEventData {
 
     /**
      * Set the workerId property: Router Worker Deregistered Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterWorkerDeregisteredEventData object itself.
      */

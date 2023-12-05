@@ -11,14 +11,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The event data for a Job output. */
+/**
+ * The event data for a Job output.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@odata\\.type",
-        defaultImpl = MediaJobOutput.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "@odata\\.type",
+    defaultImpl = MediaJobOutput.class)
 @JsonTypeName("MediaJobOutput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = MediaJobOutputAsset.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "#Microsoft.Media.JobOutputAsset", value = MediaJobOutputAsset.class) })
 @JsonFlatten
 @Fluent
 public class MediaJobOutput {
@@ -46,12 +48,15 @@ public class MediaJobOutput {
     @JsonProperty(value = "state", required = true)
     private MediaJobState state;
 
-    /** Creates an instance of MediaJobOutput class. */
-    public MediaJobOutput() {}
+    /**
+     * Creates an instance of MediaJobOutput class.
+     */
+    public MediaJobOutput() {
+    }
 
     /**
      * Get the error property: Gets the Job output error.
-     *
+     * 
      * @return the error value.
      */
     public MediaJobError getError() {
@@ -60,7 +65,7 @@ public class MediaJobOutput {
 
     /**
      * Set the error property: Gets the Job output error.
-     *
+     * 
      * @param error the error value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -71,7 +76,7 @@ public class MediaJobOutput {
 
     /**
      * Get the label property: Gets the Job output label.
-     *
+     * 
      * @return the label value.
      */
     public String getLabel() {
@@ -80,7 +85,7 @@ public class MediaJobOutput {
 
     /**
      * Set the label property: Gets the Job output label.
-     *
+     * 
      * @param label the label value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -91,7 +96,7 @@ public class MediaJobOutput {
 
     /**
      * Get the progress property: Gets the Job output progress.
-     *
+     * 
      * @return the progress value.
      */
     public long getProgress() {
@@ -100,7 +105,7 @@ public class MediaJobOutput {
 
     /**
      * Set the progress property: Gets the Job output progress.
-     *
+     * 
      * @param progress the progress value to set.
      * @return the MediaJobOutput object itself.
      */
@@ -111,7 +116,7 @@ public class MediaJobOutput {
 
     /**
      * Get the state property: Gets the Job output state.
-     *
+     * 
      * @return the state value.
      */
     public MediaJobState getState() {
@@ -120,7 +125,7 @@ public class MediaJobOutput {
 
     /**
      * Set the state property: Gets the Job output state.
-     *
+     * 
      * @param state the state value to set.
      * @return the MediaJobOutput object itself.
      */

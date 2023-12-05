@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Router Queue Details. */
+/**
+ * Router Queue Details.
+ */
 @Fluent
 public final class AcsRouterQueueDetails {
     /*
@@ -29,12 +31,15 @@ public final class AcsRouterQueueDetails {
     @JsonProperty(value = "labels")
     private Map<String, String> labels;
 
-    /** Creates an instance of AcsRouterQueueDetails class. */
-    public AcsRouterQueueDetails() {}
+    /**
+     * Creates an instance of AcsRouterQueueDetails class.
+     */
+    public AcsRouterQueueDetails() {
+    }
 
     /**
      * Get the id property: Router Queue Id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +48,7 @@ public final class AcsRouterQueueDetails {
 
     /**
      * Set the id property: Router Queue Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the AcsRouterQueueDetails object itself.
      */
@@ -54,7 +59,7 @@ public final class AcsRouterQueueDetails {
 
     /**
      * Get the name property: Router Queue Name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -63,7 +68,7 @@ public final class AcsRouterQueueDetails {
 
     /**
      * Set the name property: Router Queue Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AcsRouterQueueDetails object itself.
      */
@@ -74,7 +79,7 @@ public final class AcsRouterQueueDetails {
 
     /**
      * Get the labels property: Router Queue Labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, String> getLabels() {
@@ -83,7 +88,7 @@ public final class AcsRouterQueueDetails {
 
     /**
      * Set the labels property: Router Queue Labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the AcsRouterQueueDetails object itself.
      */

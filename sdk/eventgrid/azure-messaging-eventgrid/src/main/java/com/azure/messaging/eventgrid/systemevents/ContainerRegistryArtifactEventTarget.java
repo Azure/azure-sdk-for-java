@@ -7,7 +7,9 @@ package com.azure.messaging.eventgrid.systemevents;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The target of the event. */
+/**
+ * The target of the event.
+ */
 @Fluent
 public final class ContainerRegistryArtifactEventTarget {
     /*
@@ -52,12 +54,15 @@ public final class ContainerRegistryArtifactEventTarget {
     @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ContainerRegistryArtifactEventTarget class. */
-    public ContainerRegistryArtifactEventTarget() {}
+    /**
+     * Creates an instance of ContainerRegistryArtifactEventTarget class.
+     */
+    public ContainerRegistryArtifactEventTarget() {
+    }
 
     /**
      * Get the mediaType property: The MIME type of the artifact.
-     *
+     * 
      * @return the mediaType value.
      */
     public String getMediaType() {
@@ -66,7 +71,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the mediaType property: The MIME type of the artifact.
-     *
+     * 
      * @param mediaType the mediaType value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -77,7 +82,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the size property: The size in bytes of the artifact.
-     *
+     * 
      * @return the size value.
      */
     public Long getSize() {
@@ -86,7 +91,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the size property: The size in bytes of the artifact.
-     *
+     * 
      * @param size the size value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -97,7 +102,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the digest property: The digest of the artifact.
-     *
+     * 
      * @return the digest value.
      */
     public String getDigest() {
@@ -106,7 +111,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the digest property: The digest of the artifact.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -117,7 +122,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the repository property: The repository name of the artifact.
-     *
+     * 
      * @return the repository value.
      */
     public String getRepository() {
@@ -126,7 +131,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the repository property: The repository name of the artifact.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -137,7 +142,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the tag property: The tag of the artifact.
-     *
+     * 
      * @return the tag value.
      */
     public String getTag() {
@@ -146,7 +151,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the tag property: The tag of the artifact.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -157,7 +162,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the name property: The name of the artifact.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -166,7 +171,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the name property: The name of the artifact.
-     *
+     * 
      * @param name the name value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */
@@ -177,7 +182,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Get the version property: The version of the artifact.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -186,7 +191,7 @@ public final class ContainerRegistryArtifactEventTarget {
 
     /**
      * Set the version property: The version of the artifact.
-     *
+     * 
      * @param version the version value to set.
      * @return the ContainerRegistryArtifactEventTarget object itself.
      */

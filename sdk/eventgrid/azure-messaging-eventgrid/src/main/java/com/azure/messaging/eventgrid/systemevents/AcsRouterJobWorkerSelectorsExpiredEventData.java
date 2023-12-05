@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobWorkerSelectorsExpired
+ * event.
  */
 @Fluent
 public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouterJobEventData {
@@ -26,12 +27,16 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
     @JsonProperty(value = "expiredAttachedWorkerSelectors")
     private List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors;
 
-    /** Creates an instance of AcsRouterJobWorkerSelectorsExpiredEventData class. */
-    public AcsRouterJobWorkerSelectorsExpiredEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobWorkerSelectorsExpiredEventData class.
+     */
+    public AcsRouterJobWorkerSelectorsExpiredEventData() {
+    }
 
     /**
-     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker Selectors.
-     *
+     * Get the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker
+     * Selectors.
+     * 
      * @return the expiredRequestedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredRequestedWorkerSelectors() {
@@ -39,20 +44,21 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
     }
 
     /**
-     * Set the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker Selectors.
-     *
+     * Set the expiredRequestedWorkerSelectors property: Router Job Worker Selectors Expired Requested Worker
+     * Selectors.
+     * 
      * @param expiredRequestedWorkerSelectors the expiredRequestedWorkerSelectors value to set.
      * @return the AcsRouterJobWorkerSelectorsExpiredEventData object itself.
      */
-    public AcsRouterJobWorkerSelectorsExpiredEventData setExpiredRequestedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
+    public AcsRouterJobWorkerSelectorsExpiredEventData
+        setExpiredRequestedWorkerSelectors(List<AcsRouterWorkerSelector> expiredRequestedWorkerSelectors) {
         this.expiredRequestedWorkerSelectors = expiredRequestedWorkerSelectors;
         return this;
     }
 
     /**
      * Get the expiredAttachedWorkerSelectors property: Router Job Worker Selectors Expired Attached Worker Selectors.
-     *
+     * 
      * @return the expiredAttachedWorkerSelectors value.
      */
     public List<AcsRouterWorkerSelector> getExpiredAttachedWorkerSelectors() {
@@ -61,52 +67,64 @@ public final class AcsRouterJobWorkerSelectorsExpiredEventData extends AcsRouter
 
     /**
      * Set the expiredAttachedWorkerSelectors property: Router Job Worker Selectors Expired Attached Worker Selectors.
-     *
+     * 
      * @param expiredAttachedWorkerSelectors the expiredAttachedWorkerSelectors value to set.
      * @return the AcsRouterJobWorkerSelectorsExpiredEventData object itself.
      */
-    public AcsRouterJobWorkerSelectorsExpiredEventData setExpiredAttachedWorkerSelectors(
-            List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
+    public AcsRouterJobWorkerSelectorsExpiredEventData
+        setExpiredAttachedWorkerSelectors(List<AcsRouterWorkerSelector> expiredAttachedWorkerSelectors) {
         this.expiredAttachedWorkerSelectors = expiredAttachedWorkerSelectors;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobWorkerSelectorsExpiredEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
