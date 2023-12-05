@@ -38,10 +38,6 @@ public class RecurrenceEvaluator {
         if (!tryValidateSettings(settings)) {
             throw new IllegalArgumentException(String.format(reason, paramName));
         }
-        // todo do we really need this check?
-        if (now.isBefore(settings.getStart())) {
-            return false;
-        }
 
         final ZonedDateTime previousOccurrence = tryGetPreviousOccurrence(now, settings);
         if (previousOccurrence == null) {
@@ -210,7 +206,7 @@ public class RecurrenceEvaluator {
         }
 
         final int numberOfInterval = monthGap / interval;
-        return new OccurrenceInfo(start.plusMonths(numberOfInterval * interval), numberOfInterval);
+        return new OccurrenceInfo(alignedStart.plusMonths(numberOfInterval * interval), numberOfInterval);
     }
 
     /**
@@ -278,8 +274,6 @@ public class RecurrenceEvaluator {
 
         final int interval = settings.getRecurrence().getPattern().getInterval();
         final int numberOfInterval = yearGap / interval;
-        // todo when to use start, when to use align start
-//        previousOccurrence = start.AddYears(numberOfInterval * interval);
         return new OccurrenceInfo(alignedStart.plusYears(numberOfInterval * interval), numberOfInterval);
     }
 
@@ -527,8 +521,7 @@ public class RecurrenceEvaluator {
 
         // Get the date of first day of the week
         final ZonedDateTime today = ZonedDateTime.now();
-        // todo do we really need to %7?
-        final int offset = remainingDaysOfWeek(today.getDayOfWeek().getValue(), convertToWeekDayNumber(firstDayOfWeek)) % 7;
+        final int offset = remainingDaysOfWeek(today.getDayOfWeek().getValue(), convertToWeekDayNumber(firstDayOfWeek));
         final ZonedDateTime firstDateOfWeek = today.plusDays(offset);
 
         // Loop the whole week to get the min gap between the two consecutive recurrences
@@ -797,7 +790,6 @@ public class RecurrenceEvaluator {
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0)  {
             paramName = TIME_WINDOW_FILTER_SETTING_END;
-            // todo do we need more clear error info? like "Time window duration must be shorter than how frequently it occurs"
             reason = OUT_OF_RANGE;
             return false;
         }
