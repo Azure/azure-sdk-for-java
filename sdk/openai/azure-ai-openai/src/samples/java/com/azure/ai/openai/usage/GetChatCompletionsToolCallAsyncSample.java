@@ -26,10 +26,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates the usage for using tool_calls. This allows the LLM to request additional information from the client
- * to fulfill the request. Particularly, this sample shows how to handle responses in a non-streaming scenario.
+ * to fulfill the request. Particularly, this sample shows how to handle responses in an async non-streaming scenario.
  */
 public class GetChatCompletionsToolCallAsyncSample {
 
@@ -40,7 +41,7 @@ public class GetChatCompletionsToolCallAsyncSample {
      *
      * @param args – Unused. Arguments to the program.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
@@ -60,49 +61,58 @@ public class GetChatCompletionsToolCallAsyncSample {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
-//        ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionsOptions);
-//
-//        ChatChoice choice = chatCompletions.getChoices().get(0);
-//        // The LLM is requesting the calling of the function we defined in the original request
-//        if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
-//            ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) choice.getMessage().getToolCalls().get(0);
-//            String functionName = toolCall.getFunction().getName();
-//            String functionArguments = toolCall.getFunction().getArguments();
-//
-//            System.out.println("Function Name: " + functionName);
-//            System.out.println("Function Arguments: " + functionArguments);
-//
-//            // As an additional step, you may want to deserialize the parameters, so you can call your function
-//            FunctionArguments parameters = BinaryData.fromString(functionArguments).toObject(FunctionArguments.class);
-//            System.out.println("Location Name: " + parameters.locationName);
-//            System.out.println("Date: " + parameters.date);
-//
-//            String functionCallResult = FutureTemperature(parameters.locationName, parameters.date);
-//
-//            ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
-//            assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
-//
-//            // We include:
-//            // - The past 2 messages from the original request
-//            // - A new ChatRequestAssistantMessage with the tool calls from the original request
-//            // - A new ChatRequestToolMessage with the result of our function call
-//            List<ChatRequestMessage> followUpMessages = Arrays.asList(
-//                    chatMessages.get(0),
-//                    chatMessages.get(1),
-//                    assistantMessage,
-//                    new ChatRequestToolMessage(functionCallResult, toolCall.getId())
-//            );
-//
-//            ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
-//
-//            ChatCompletions followUpChatCompletions = client.getChatCompletions(deploymentOrModelId, followUpChatCompletionsOptions);
-//
-//            // This time the finish reason is STOPPED
-//            ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
-//            if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
-//                System.out.println("Chat Completions Result: " + followUpChoice.getMessage().getContent());
-//            }
-//        }
+
+        client.getChatCompletions(deploymentOrModelId, chatCompletionsOptions)
+                // The LLM is requesting the calling of the function we defined in the original request
+                .filter(chatCompletions -> chatCompletions.getChoices().get(0).getFinishReason() == CompletionsFinishReason.TOOL_CALLS)
+                .flatMap(chatCompletions -> {
+                    ChatChoice choice = chatCompletions.getChoices().get(0);
+                    ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) choice.getMessage().getToolCalls().get(0);
+                    String functionName = toolCall.getFunction().getName();
+                    String functionArguments = toolCall.getFunction().getArguments();
+
+                    System.out.println("Function Name: " + functionName);
+                    System.out.println("Function Arguments: " + functionArguments);
+
+                    // As an additional step, you may want to deserialize the parameters, so you can call your function
+                    FunctionArguments parameters = BinaryData.fromString(functionArguments).toObject(FunctionArguments.class);
+                    System.out.println("Location Name: " + parameters.locationName);
+                    System.out.println("Date: " + parameters.date);
+
+                    String functionCallResult = FutureTemperature(parameters.locationName, parameters.date);
+
+                    ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
+                    assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
+
+                    // We include:
+                    // - The past 2 messages from the original request
+                    // - A new ChatRequestAssistantMessage with the tool calls from the original request
+                    // - A new ChatRequestToolMessage with the result of our function call
+                    List<ChatRequestMessage> followUpMessages = Arrays.asList(
+                            chatMessages.get(0),
+                            chatMessages.get(1),
+                            assistantMessage,
+                            new ChatRequestToolMessage(functionCallResult, toolCall.getId())
+                    );
+
+                    ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
+
+                    return client.getChatCompletions(deploymentOrModelId, followUpChatCompletionsOptions);
+                })
+                .subscribe(
+                        followUpChatCompletions -> {
+                            // This time the finish reason is STOPPED
+                            ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
+                            if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
+                                System.out.println("Chat Completions Result: " + followUpChoice.getMessage().getContent());
+                            }
+                        },
+                        error -> System.err.println("There was an error getting chat completions." + error),
+                        () -> System.out.println("Completed called getChatCompletions."));
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        TimeUnit.SECONDS.sleep(10);
     }
 
     // In this example we ignore the parameters for our tool function

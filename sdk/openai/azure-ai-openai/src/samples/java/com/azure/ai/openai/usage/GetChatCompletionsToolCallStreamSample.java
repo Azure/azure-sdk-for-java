@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * Sample demonstrates the usage for using tool_calls. This allows the LLM to request additional information from the client
- * to fulfill the request. Particularly, this sample shows how to handle responses in a streaming scenario.
+ * to fulfill the request. Particularly, this sample shows how to handle responses in a sync streaming scenario.
  */
 public class GetChatCompletionsToolCallStreamSample {
 
