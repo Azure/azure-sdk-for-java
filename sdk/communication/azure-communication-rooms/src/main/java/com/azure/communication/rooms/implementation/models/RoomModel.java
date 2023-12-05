@@ -38,13 +38,6 @@ public final class RoomModel {
     @JsonProperty(value = "validUntil", required = true)
     private OffsetDateTime validUntil;
 
-    /*
-     * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
-     * default, this flag is set to false.
-     */
-    @JsonProperty(value = "pstnDialOutEnabled", required = true)
-    private boolean pstnDialOutEnabled;
-
     /** Creates an instance of RoomModel class. */
     public RoomModel() {}
 
@@ -131,28 +124,6 @@ public final class RoomModel {
      */
     public RoomModel setValidUntil(OffsetDateTime validUntil) {
         this.validUntil = validUntil;
-        return this;
-    }
-
-    /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
-     * is enabled in a particular room. By default, this flag is set to false.
-     *
-     * @return the pstnDialOutEnabled value.
-     */
-    public boolean isPstnDialOutEnabled() {
-        return this.pstnDialOutEnabled;
-    }
-
-    /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
-     * is enabled in a particular room. By default, this flag is set to false.
-     *
-     * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
-     * @return the RoomModel object itself.
-     */
-    public RoomModel setPstnDialOutEnabled(boolean pstnDialOutEnabled) {
-        this.pstnDialOutEnabled = pstnDialOutEnabled;
         return this;
     }
 }
