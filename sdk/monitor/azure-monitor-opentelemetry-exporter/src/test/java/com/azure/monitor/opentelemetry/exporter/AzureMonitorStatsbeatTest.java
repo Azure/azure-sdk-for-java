@@ -22,6 +22,8 @@ import io.opentelemetry.api.metrics.LongCounter;
 import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
@@ -36,6 +38,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class AzureMonitorStatsbeatTest {
     private static final String STATSBEAT_CONNECTION_STRING =
         "InstrumentationKey=00000000-0000-0000-0000-000000000000;"
