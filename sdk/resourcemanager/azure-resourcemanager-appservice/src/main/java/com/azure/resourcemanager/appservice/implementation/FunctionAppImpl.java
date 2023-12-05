@@ -199,7 +199,7 @@ class FunctionAppImpl
         }
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
-        } else if (isFunctionAppOnACA()) {
+        } else {
             return storageAccountToSet
                 .getKeysAsync()
                 .flatMap(storageAccountKeys -> {
@@ -209,28 +209,9 @@ class FunctionAppImpl
                             manager().environment());
                     addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                     addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
-                    return FunctionAppImpl.super.submitAppSettings();
-                }).then(
-                    Mono
-                        .fromCallable(
-                            () -> {
-                                resetStorageInfo();
-                                return this;
-                            }));
-        } else {
-            return Flux
-                .concat(
-                    storageAccountToSet
-                        .getKeysAsync()
-                        .map(storageAccountKeys -> storageAccountKeys.get(0))
-                        .zipWith(
-                            this.manager().appServicePlans().getByIdAsync(this.appServicePlanId()),
-                            (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                                String connectionString = ResourceManagerUtils
-                                    .getStorageConnectionString(storageAccountToSet.name(), storageAccountKey.value(),
-                                        manager().environment());
-                                addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                                addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+                    if (!isFunctionAppOnACA()) {
+                        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())
+                            .flatMap(appServicePlan -> {
                                 if (appServicePlan == null
                                     || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier())) {
 
@@ -242,27 +223,27 @@ class FunctionAppImpl
                                             .randomResourceName(name(), 32));
                                 }
                                 return FunctionAppImpl.super.submitAppSettings();
-                            }))
-                .last()
-                .then(
+                            });
+                    } else {
+                        return FunctionAppImpl.super.submitAppSettings();
+                    }
+                }).then(
                     Mono
                         .fromCallable(
                             () -> {
-                                resetStorageInfo();
+                                currentStorageAccount = storageAccountToSet;
+                                storageAccountToSet = null;
+                                storageAccountCreatable = null;
                                 return this;
                             }));
         }
     }
 
-    private void resetStorageInfo() {
-        currentStorageAccount = storageAccountToSet;
-        storageAccountToSet = null;
-        storageAccountCreatable = null;
-    }
-
     @Override
     public OperatingSystem operatingSystem() {
         if (isFunctionAppOnACA()) {
+            // TODO(xiaofei) Current Function App on ACA only supports LINUX containers.
+            //  This logic will change after service supports Windows containers.
             return OperatingSystem.LINUX;
         }
         return (innerModel().reserved() == null || !innerModel().reserved())
