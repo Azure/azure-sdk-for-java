@@ -6,60 +6,64 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 
 /** The HealthcareEntity model. */
 @Fluent
-public final class HealthcareEntity implements JsonSerializable<HealthcareEntity> {
+public final class HealthcareEntity {
     /*
      * Entity text as appears in the request.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Healthcare Entity Category.
      */
+    @JsonProperty(value = "category", required = true)
     private HealthcareEntityCategory category;
 
     /*
      * (Optional) Entity sub type.
      */
+    @JsonProperty(value = "subcategory")
     private String subcategory;
 
     /*
      * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @JsonProperty(value = "length", required = true)
     private int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
+    @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
 
     /*
      * The assertion property.
      */
+    @JsonProperty(value = "assertion")
     private HealthcareAssertion assertion;
 
     /*
      * Preferred name for the entity. Example: 'histologically' would have a 'name' of 'histologic'.
      */
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Entity references in known data sources.
      */
+    @JsonProperty(value = "links")
     private List<HealthcareEntityLink> links;
 
     /** Creates an instance of HealthcareEntity class. */
@@ -249,67 +253,5 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
     public HealthcareEntity setLinks(List<HealthcareEntityLink> links) {
         this.links = links;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("category", Objects.toString(this.category, null));
-        jsonWriter.writeIntField("offset", this.offset);
-        jsonWriter.writeIntField("length", this.length);
-        jsonWriter.writeDoubleField("confidenceScore", this.confidenceScore);
-        jsonWriter.writeStringField("subcategory", this.subcategory);
-        jsonWriter.writeJsonField("assertion", this.assertion);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HealthcareEntity from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HealthcareEntity if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HealthcareEntity.
-     */
-    public static HealthcareEntity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    HealthcareEntity deserializedHealthcareEntity = new HealthcareEntity();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("text".equals(fieldName)) {
-                            deserializedHealthcareEntity.text = reader.getString();
-                        } else if ("category".equals(fieldName)) {
-                            deserializedHealthcareEntity.category =
-                                    HealthcareEntityCategory.fromString(reader.getString());
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedHealthcareEntity.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedHealthcareEntity.length = reader.getInt();
-                        } else if ("confidenceScore".equals(fieldName)) {
-                            deserializedHealthcareEntity.confidenceScore = reader.getDouble();
-                        } else if ("subcategory".equals(fieldName)) {
-                            deserializedHealthcareEntity.subcategory = reader.getString();
-                        } else if ("assertion".equals(fieldName)) {
-                            deserializedHealthcareEntity.assertion = HealthcareAssertion.fromJson(reader);
-                        } else if ("name".equals(fieldName)) {
-                            deserializedHealthcareEntity.name = reader.getString();
-                        } else if ("links".equals(fieldName)) {
-                            List<HealthcareEntityLink> links =
-                                    reader.readArray(reader1 -> HealthcareEntityLink.fromJson(reader1));
-                            deserializedHealthcareEntity.links = links;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedHealthcareEntity;
-                });
     }
 }
