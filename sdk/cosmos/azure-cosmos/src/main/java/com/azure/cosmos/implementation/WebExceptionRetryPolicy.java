@@ -73,9 +73,8 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             }
         }
 
-
         logger
-            .warn(
+            .debug(
                 "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                     "isAddressRefresh = {}",
                 this.locationEndpoint,
