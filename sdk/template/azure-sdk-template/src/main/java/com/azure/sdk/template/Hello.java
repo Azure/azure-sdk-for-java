@@ -13,4 +13,11 @@ public class Hello {
     public final String getMessage() {
         return "hello";
     }
+    /**
+     * Sample method.
+     * @return message
+     */
+    public final String getMessage() {
+        return "hello";
+    }
 }
