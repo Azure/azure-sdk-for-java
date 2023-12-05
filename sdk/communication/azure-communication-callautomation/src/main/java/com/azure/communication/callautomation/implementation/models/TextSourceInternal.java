@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TextSourceInternal model.
- */
+/** The TextSourceInternal model. */
 @Fluent
 public final class TextSourceInternal {
     /*
@@ -48,15 +46,12 @@ public final class TextSourceInternal {
     @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
-    /**
-     * Creates an instance of TextSourceInternal class.
-     */
-    public TextSourceInternal() {
-    }
+    /** Creates an instance of TextSourceInternal class. */
+    public TextSourceInternal() {}
 
     /**
      * Get the text property: Text for the cognitive service to be played.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -65,7 +60,7 @@ public final class TextSourceInternal {
 
     /**
      * Set the text property: Text for the cognitive service to be played.
-     * 
+     *
      * @param text the text value to set.
      * @return the TextSourceInternal object itself.
      */
@@ -75,11 +70,10 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Get the sourceLocale property: Source language locale to be played
-     * Refer to available locales here: &lt;seealso
+     * Get the sourceLocale property: Source language locale to be played Refer to available locales here: &lt;seealso
      * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
      * /&gt;.
-     * 
+     *
      * @return the sourceLocale value.
      */
     public String getSourceLocale() {
@@ -87,11 +81,10 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Set the sourceLocale property: Source language locale to be played
-     * Refer to available locales here: &lt;seealso
+     * Set the sourceLocale property: Source language locale to be played Refer to available locales here: &lt;seealso
      * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
      * /&gt;.
-     * 
+     *
      * @param sourceLocale the sourceLocale value to set.
      * @return the TextSourceInternal object itself.
      */
@@ -102,7 +95,7 @@ public final class TextSourceInternal {
 
     /**
      * Get the voiceKind property: Voice kind type.
-     * 
+     *
      * @return the voiceKind value.
      */
     public VoiceKindInternal getVoiceKind() {
@@ -111,7 +104,7 @@ public final class TextSourceInternal {
 
     /**
      * Set the voiceKind property: Voice kind type.
-     * 
+     *
      * @param voiceKind the voiceKind value to set.
      * @return the TextSourceInternal object itself.
      */
@@ -121,11 +114,10 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Get the voiceName property: Voice name to be played
-     * Refer to available Text-to-speech voices here: &lt;seealso
+     * Get the voiceName property: Voice name to be played Refer to available Text-to-speech voices here: &lt;seealso
      * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
      * /&gt;.
-     * 
+     *
      * @return the voiceName value.
      */
     public String getVoiceName() {
@@ -133,11 +125,10 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Set the voiceName property: Voice name to be played
-     * Refer to available Text-to-speech voices here: &lt;seealso
+     * Set the voiceName property: Voice name to be played Refer to available Text-to-speech voices here: &lt;seealso
      * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
      * /&gt;.
-     * 
+     *
      * @param voiceName the voiceName value to set.
      * @return the TextSourceInternal object itself.
      */
@@ -148,7 +139,7 @@ public final class TextSourceInternal {
 
     /**
      * Get the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     * 
+     *
      * @return the customVoiceEndpointId value.
      */
     public String getCustomVoiceEndpointId() {
@@ -157,7 +148,7 @@ public final class TextSourceInternal {
 
     /**
      * Set the customVoiceEndpointId property: Endpoint where the custom voice was deployed.
-     * 
+     *
      * @param customVoiceEndpointId the customVoiceEndpointId value to set.
      * @return the TextSourceInternal object itself.
      */

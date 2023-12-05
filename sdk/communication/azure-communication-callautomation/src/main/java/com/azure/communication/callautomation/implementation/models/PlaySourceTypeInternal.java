@@ -8,37 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines the type of the play source.
- */
+/** Defines the type of the play source. */
 public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourceTypeInternal> {
-    /**
-     * Static value file for PlaySourceTypeInternal.
-     */
+    /** Static value file for PlaySourceTypeInternal. */
     public static final PlaySourceTypeInternal FILE = fromString("file");
 
-    /**
-     * Static value text for PlaySourceTypeInternal.
-     */
+    /** Static value text for PlaySourceTypeInternal. */
     public static final PlaySourceTypeInternal TEXT = fromString("text");
 
-    /**
-     * Static value ssml for PlaySourceTypeInternal.
-     */
+    /** Static value ssml for PlaySourceTypeInternal. */
     public static final PlaySourceTypeInternal SSML = fromString("ssml");
 
     /**
      * Creates a new instance of PlaySourceTypeInternal value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public PlaySourceTypeInternal() {
-    }
+    public PlaySourceTypeInternal() {}
 
     /**
      * Creates or finds a PlaySourceTypeInternal from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PlaySourceTypeInternal.
      */
@@ -49,7 +40,7 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
 
     /**
      * Gets known PlaySourceTypeInternal values.
-     * 
+     *
      * @return known PlaySourceTypeInternal values.
      */
     public static Collection<PlaySourceTypeInternal> values() {
