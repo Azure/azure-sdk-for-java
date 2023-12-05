@@ -33,15 +33,13 @@ import java.util.Objects;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
- * <p>Fluent builder for instantiating a {@link ContainerRegistryClient} and {@link ContainerRegistryAsyncClient}. which are used to
- * list and delete repositories and artifacts, obtain metadata and configure read/write permissions.</p>
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
+ * ContainerRegistryClient ContainerRegistryClients} and {@link ContainerRegistryAsyncClient ContainerRegistryAsyncClients}, call {@link
+ * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * the desired client.
  *
- * <p>The client needs the service endpoint of the Azure Container Registry and Azure access credentials to use for authentication.
- *
+ * <p>The client needs the service endpoint of the Azure Container Registry, Audience for ACR that you want to target and Azure access credentials to use for authentication.
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
- *
- * <br/>
- *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  * <pre>
  * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -52,9 +50,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client</strong></p>
- *
- * <br/>
- *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.instantiation -->
  * <pre>
  * ContainerRegistryClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
@@ -75,9 +70,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
  * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
- *
- * <br/>
- *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -93,9 +85,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Container Registry client with custom pipeline</strong></p>
- *
- * <br/>
- *
  * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -110,21 +99,7 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * </pre>
  * <!-- end com.azure.containers.containerregistry.ContainerRegistryClient.pipeline.instantiation -->
  *
- * <p>Azure Container Registry could be configured for <a href="https://learn.microsoft.com/azure/container-registry/anonymous-pull-access">anonymous access</a></p>
  *
- * <p><strong>Instantiating an asynchronous Container Registry client for anonymous access</strong></p>
- *
- * <br/>
- *
- * <!-- src_embed readme-sample-createAnonymousAsyncAccessClient -->
- * <pre>
- * ContainerRegistryAsyncClient registryClient = new ContainerRegistryClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end readme-sample-createAnonymousAsyncAccessClient -->
- *
- * @see com.azure.containers.containerregistry
  * @see ContainerRegistryAsyncClient
  * @see ContainerRegistryClient
  */
@@ -157,12 +132,6 @@ public final class ContainerRegistryClientBuilder implements
     private RetryOptions retryOptions;
     private ContainerRegistryServiceVersion version;
     private ContainerRegistryAudience audience;
-
-    /**
-     * Creates a new instance of {@link ContainerRegistryClientBuilder}.
-     */
-    public ContainerRegistryClientBuilder() {
-    }
 
     /**
      * Sets the service endpoint for the Azure Container Registry instance.
