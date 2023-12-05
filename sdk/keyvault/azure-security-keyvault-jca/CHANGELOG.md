@@ -1,5 +1,12 @@
 # Release History
 
+## 2.8.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+
 ## 2.8.0 (2023-09-28)
 
 ### Features Added
