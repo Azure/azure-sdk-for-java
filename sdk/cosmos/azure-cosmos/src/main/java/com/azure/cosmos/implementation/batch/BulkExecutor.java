@@ -289,7 +289,10 @@ public final class BulkExecutor<TContext> implements Disposable {
             .getMaxConcurrentCosmosPartitions(cosmosBulkExecutionOptions);
         Mono<Integer> maxConcurrentCosmosPartitionsMono = nullableMaxConcurrentCosmosPartitions != null ?
             Mono.just(Math.max(256, nullableMaxConcurrentCosmosPartitions)) :
-            this.container.getFeedRanges().map(ranges -> Math.max(256, ranges.size() * 2));
+            ImplementationBridgeHelpers
+                .CosmosAsyncContainerHelper
+                .getCosmosAsyncContainerAccessor()
+                .getFeedRanges(this.container, false).map(ranges -> Math.max(256, ranges.size() * 2));
 
         return
             maxConcurrentCosmosPartitionsMono

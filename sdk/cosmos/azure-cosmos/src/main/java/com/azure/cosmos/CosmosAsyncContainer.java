@@ -2539,7 +2539,11 @@ public class CosmosAsyncContainer {
      * @return An unmodifiable list of {@link FeedRange}
      */
     public Mono<List<FeedRange>> getFeedRanges() {
-        return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
+        return this.getFeedRanges(true);
+    }
+
+    Mono<List<FeedRange>> getFeedRanges(boolean forceRefresh) {
+        return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink(), forceRefresh);
     }
 
     /**
@@ -2758,6 +2762,11 @@ public class CosmosAsyncContainer {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions,
                     Class<T> classType) {
                     return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpecMono, cosmosQueryRequestOptions, classType);
+                }
+
+                @Override
+                public Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh) {
+                    return cosmosAsyncContainer.getFeedRanges(forceRefresh);
                 }
             });
     }
