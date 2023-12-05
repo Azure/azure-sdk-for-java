@@ -3,47 +3,29 @@
 
 package com.azure.security.keyvault.certificates.models;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.security.keyvault.certificates.implementation.CertificatePolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.KeyVaultCertificateWithPolicyHelper;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateAttributes;
-import com.azure.security.keyvault.certificates.implementation.models.CertificateBundle;
-
-import java.io.IOException;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a certificate with all of its properties including {@link CertificatePolicy}.
  */
 public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
-    static {
-        KeyVaultCertificateWithPolicyHelper.setAccessor(KeyVaultCertificateWithPolicy::new);
-    }
 
     /**
      * The Certificate policy.
      */
+    @JsonProperty("policy")
     private CertificatePolicy policy;
+
+    /**
+     * Create the certificate
+     * @param name the name of the certificate.
+     */
+    KeyVaultCertificateWithPolicy(String name) {
+        super(name);
+    }
 
     KeyVaultCertificateWithPolicy() {
         super();
-    }
-
-    KeyVaultCertificateWithPolicy(CertificateBundle bundle) {
-        this(bundle.getCer(), bundle.getKid(), bundle.getSid(), new CertificateProperties(bundle),
-            CertificatePolicyHelper.createCertificatePolicy(bundle.getPolicy()));
-    }
-
-    KeyVaultCertificateWithPolicy(byte[] cer, String kid, String sid, CertificateProperties properties) {
-        this(cer, kid, sid, properties, null);
-    }
-
-    KeyVaultCertificateWithPolicy(byte[] cer, String kid, String sid, CertificateProperties properties,
-        CertificatePolicy policy) {
-        super(cer, kid, sid, properties);
-        this.policy = policy;
     }
 
     /**
@@ -74,61 +56,5 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
     public KeyVaultCertificateWithPolicy setPolicy(CertificatePolicy certificatePolicy) {
         this.policy = certificatePolicy;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeBinaryField("cer", getCer())
-            .writeJsonField("policy", policy)
-            .writeEndObject();
-    }
-
-    /**
-     * Reads a JSON stream into a {@link KeyVaultCertificateWithPolicy}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link KeyVaultCertificateWithPolicy} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link KeyVaultCertificateWithPolicy} fails to be read from the {@code jsonReader}.
-     */
-    public static KeyVaultCertificateWithPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            CertificateAttributes attributes = null;
-            Map<String, String> tags = null;
-            byte[] wireThumbprint = null;
-            byte[] cer = null;
-            String keyId = null;
-            String secretId = null;
-            CertificatePolicy policy = null;
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("attributes".equals(fieldName)) {
-                    attributes = CertificateAttributes.fromJson(reader);
-                } else if ("tags".equals(fieldName)) {
-                    tags = reader.readMap(JsonReader::getString);
-                } else if ("x5t".equals(fieldName)) {
-                    wireThumbprint = reader.getBinary();
-                } else if ("cer".equals(fieldName)) {
-                    cer = reader.getBinary();
-                } else if ("kid".equals(fieldName)) {
-                    keyId = reader.getString();
-                } else if ("sid".equals(fieldName)) {
-                    secretId = reader.getString();
-                } else if ("policy".equals(fieldName)) {
-                    policy = CertificatePolicy.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return new KeyVaultCertificateWithPolicy(cer, keyId, secretId,
-                new CertificateProperties(id, attributes, tags, wireThumbprint, null), policy);
-        });
     }
 }
