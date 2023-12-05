@@ -162,4 +162,7 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationemail
       ServiceDirectory: communication
-
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
