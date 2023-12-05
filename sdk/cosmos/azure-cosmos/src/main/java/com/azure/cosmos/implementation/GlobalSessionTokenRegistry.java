@@ -3,12 +3,17 @@
 
 package com.azure.cosmos.implementation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GlobalSessionTokenRegistry {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalSessionTokenRegistry.class);
+    private static final int SESSION_TOKEN_COUNT_THRESHOLD = 5_000;
     private final AtomicInteger sessionTokenCount;
     private final ConcurrentHashMap<Long, CollectionScopedSessionTokenRegistry> collectionRidToPkScopedSessionTokens;
 
@@ -18,6 +23,7 @@ public class GlobalSessionTokenRegistry {
     }
 
     public void setupCollectionRidScopedRegistry(Long collectionRid, String partitionKey, ISessionToken parsedSessionToken) {
+        this.tryEvict(null);
         this.collectionRidToPkScopedSessionTokens.compute(collectionRid, (rid, collectionScopedSessionTokenRegistry) -> {
 
             if (collectionScopedSessionTokenRegistry == null) {
@@ -43,6 +49,22 @@ public class GlobalSessionTokenRegistry {
         CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry,
         String partitionKey,
         ISessionToken parsedSessionToken) {
+        this.tryEvict(collectionScopedSessionTokenRegistry);
         collectionScopedSessionTokenRegistry.tryMergeSessionToken(partitionKey, parsedSessionToken, this.sessionTokenCount);
+    }
+
+    private void tryEvict(CollectionScopedSessionTokenRegistry collectionScopedSessionTokenRegistry) {
+        if (this.sessionTokenCount.get() >= SESSION_TOKEN_COUNT_THRESHOLD) {
+            if (collectionScopedSessionTokenRegistry != null) {
+                collectionScopedSessionTokenRegistry.evictSessionToken(this.sessionTokenCount);
+                logger.info("Evicted session token");
+            } else {
+                for (Long collectionRid : this.collectionRidToPkScopedSessionTokens.keySet()) {
+                    this.collectionRidToPkScopedSessionTokens.get(collectionRid).evictSessionToken(this.sessionTokenCount);
+                    logger.info("Evicted session token");
+                    break;
+                }
+            }
+        }
     }
 }
