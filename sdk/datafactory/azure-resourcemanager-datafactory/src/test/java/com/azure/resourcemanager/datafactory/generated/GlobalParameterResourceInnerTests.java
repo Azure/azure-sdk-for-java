@@ -15,32 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class GlobalParameterResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GlobalParameterResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"xcptsoqfyiaseqc\":{\"type\":\"Object\",\"value\":\"databxcea\"},\"mvanbwzo\":{\"type\":\"Array\",\"value\":\"datarttzrazisgykiu\"},\"mdptys\":{\"type\":\"String\",\"value\":\"datanrxxbsojklin\"}},\"name\":\"qsgnzxojpsl\",\"type\":\"jgpliuf\",\"etag\":\"woyxqvapcohhou\",\"id\":\"pqojxcx\"}")
-                .toObject(GlobalParameterResourceInner.class);
+        GlobalParameterResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"xcptsoqfyiaseqc\":{\"type\":\"Object\",\"value\":\"databxcea\"},\"mvanbwzo\":{\"type\":\"Array\",\"value\":\"datarttzrazisgykiu\"},\"mdptys\":{\"type\":\"String\",\"value\":\"datanrxxbsojklin\"}},\"name\":\"qsgnzxojpsl\",\"type\":\"jgpliuf\",\"etag\":\"woyxqvapcohhou\",\"id\":\"pqojxcx\"}")
+            .toObject(GlobalParameterResourceInner.class);
         Assertions.assertEquals("pqojxcx", model.id());
         Assertions.assertEquals(GlobalParameterType.OBJECT, model.properties().get("xcptsoqfyiaseqc").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalParameterResourceInner model =
-            new GlobalParameterResourceInner()
-                .withId("pqojxcx")
-                .withProperties(
-                    mapOf(
-                        "xcptsoqfyiaseqc",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("databxcea"),
-                        "mvanbwzo",
-                        new GlobalParameterSpecification()
-                            .withType(GlobalParameterType.ARRAY)
-                            .withValue("datarttzrazisgykiu"),
-                        "mdptys",
-                        new GlobalParameterSpecification()
-                            .withType(GlobalParameterType.STRING)
-                            .withValue("datanrxxbsojklin")));
+        GlobalParameterResourceInner model = new GlobalParameterResourceInner().withId("pqojxcx")
+            .withProperties(mapOf("xcptsoqfyiaseqc",
+                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("databxcea"),
+                "mvanbwzo",
+                new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datarttzrazisgykiu"),
+                "mdptys",
+                new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("datanrxxbsojklin")));
         model = BinaryData.fromObject(model).toObject(GlobalParameterResourceInner.class);
         Assertions.assertEquals("pqojxcx", model.id());
         Assertions.assertEquals(GlobalParameterType.OBJECT, model.properties().get("xcptsoqfyiaseqc").type());

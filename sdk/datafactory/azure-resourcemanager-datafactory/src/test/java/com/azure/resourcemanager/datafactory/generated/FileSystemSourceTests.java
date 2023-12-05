@@ -10,23 +10,16 @@ import com.azure.resourcemanager.datafactory.models.FileSystemSource;
 public final class FileSystemSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSystemSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FileSystemSource\",\"recursive\":\"dataatcistdbe\",\"additionalColumns\":\"databuajkodpzqtg\",\"sourceRetryCount\":\"datazwx\",\"sourceRetryWait\":\"dataaask\",\"maxConcurrentConnections\":\"datasjbuhzucdljqj\",\"disableMetricsCollection\":\"datancjwzeatezlt\",\"\":{\"hhxivshju\":\"datadkjph\",\"xearlp\":\"datamcjyt\",\"uxbungmpnrytguc\":\"dataajjticlydo\",\"cjugoa\":\"datafxgl\"}}")
-                .toObject(FileSystemSource.class);
+        FileSystemSource model = BinaryData.fromString(
+            "{\"type\":\"FileSystemSource\",\"recursive\":\"datadmtfnbv\",\"additionalColumns\":\"dataqqlb\",\"sourceRetryCount\":\"dataqbdiahjxcdhp\",\"sourceRetryWait\":\"dataxwsfddy\",\"maxConcurrentConnections\":\"datafyntow\",\"disableMetricsCollection\":\"datasur\",\"\":{\"izqvga\":\"datajzsjhhru\",\"epnglzjhaqx\":\"datao\"}}")
+            .toObject(FileSystemSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSource model =
-            new FileSystemSource()
-                .withSourceRetryCount("datazwx")
-                .withSourceRetryWait("dataaask")
-                .withMaxConcurrentConnections("datasjbuhzucdljqj")
-                .withDisableMetricsCollection("datancjwzeatezlt")
-                .withRecursive("dataatcistdbe")
-                .withAdditionalColumns("databuajkodpzqtg");
+        FileSystemSource model = new FileSystemSource().withSourceRetryCount("dataqbdiahjxcdhp")
+            .withSourceRetryWait("dataxwsfddy").withMaxConcurrentConnections("datafyntow")
+            .withDisableMetricsCollection("datasur").withRecursive("datadmtfnbv").withAdditionalColumns("dataqqlb");
         model = BinaryData.fromObject(model).toObject(FileSystemSource.class);
     }
 }

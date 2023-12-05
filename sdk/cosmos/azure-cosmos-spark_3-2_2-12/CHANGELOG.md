@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.24.0-beta.1 (Unreleased)
+### 4.25.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,16 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.24.0 (2023-12-01)
+
+#### Features Added
+
+* Added hierarchical partition key support. See [PR 37184](https://github.com/Azure/azure-sdk-for-java/pull/37184)
+* Added `bytesWritten`, `recordsWritten` and `cosmos.totalRequestCharge` metrics in the sink of the Azure Cosmos DB connector. - See [PR 37510](https://github.com/Azure/azure-sdk-for-java/pull/37510)
+
+#### Other Changes
+* Improved DirectTcp config Defaults for Spark workloads - transit timeout health checks as well as request and connect timeout are too aggressive considering that many Spark jobs unlike latency sensitive apps is throughput optimized and executors will often hit CPU usage >70%. - See [PR 37878](https://github.com/Azure/azure-sdk-for-java/pull/37878)
 
 ### 4.23.0 (2023-10-09)
 

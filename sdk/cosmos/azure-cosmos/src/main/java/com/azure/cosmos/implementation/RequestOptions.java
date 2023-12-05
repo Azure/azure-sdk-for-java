@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 /**
@@ -53,7 +55,11 @@ public class RequestOptions {
 
     private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
 
-    public RequestOptions() {}
+    private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
+
+    public RequestOptions() {
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+    }
 
     public RequestOptions(RequestOptions toBeCloned) {
         this.indexingDirective = toBeCloned.indexingDirective;
@@ -78,6 +84,7 @@ public class RequestOptions {
         this.nonIdempotentWriteRetriesEnabled = toBeCloned.nonIdempotentWriteRetriesEnabled;
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
         this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
+        this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
 
         if (toBeCloned.customOptions != null) {
             this.customOptions = new HashMap<>(toBeCloned.customOptions);
@@ -524,5 +531,9 @@ public class RequestOptions {
 
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
+    }
+
+    public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
+        return this.markE2ETimeoutInRequestContextCallbackHook;
     }
 }

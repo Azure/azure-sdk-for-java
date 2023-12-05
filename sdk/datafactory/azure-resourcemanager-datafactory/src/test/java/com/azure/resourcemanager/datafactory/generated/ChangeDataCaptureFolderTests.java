@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeDataCaptureFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeDataCaptureFolder model =
-            BinaryData.fromString("{\"name\":\"pkcvmwf\"}").toObject(ChangeDataCaptureFolder.class);
+        ChangeDataCaptureFolder model
+            = BinaryData.fromString("{\"name\":\"pkcvmwf\"}").toObject(ChangeDataCaptureFolder.class);
         Assertions.assertEquals("pkcvmwf", model.name());
     }
 

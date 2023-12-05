@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Synapse notebook reference type. */
+/**
+ * Synapse notebook reference type.
+ */
 @Fluent
 public final class SynapseNotebookReference {
     /*
@@ -23,13 +25,15 @@ public final class SynapseNotebookReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of SynapseNotebookReference class. */
+    /**
+     * Creates an instance of SynapseNotebookReference class.
+     */
     public SynapseNotebookReference() {
     }
 
     /**
      * Get the type property: Synapse notebook reference type.
-     *
+     * 
      * @return the type value.
      */
     public NotebookReferenceType type() {
@@ -38,7 +42,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Set the type property: Synapse notebook reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SynapseNotebookReference object itself.
      */
@@ -49,7 +53,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Get the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object referenceName() {
@@ -58,7 +62,7 @@ public final class SynapseNotebookReference {
 
     /**
      * Set the referenceName property: Reference notebook name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SynapseNotebookReference object itself.
      */
@@ -69,20 +73,17 @@ public final class SynapseNotebookReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model SynapseNotebookReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model SynapseNotebookReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model SynapseNotebookReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property referenceName in model SynapseNotebookReference"));
         }
     }
 

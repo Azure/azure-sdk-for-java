@@ -136,4 +136,15 @@ public class ExceptionPolicyAdapter {
             })
             .collect(Collectors.toList()) : new ArrayList<ExceptionRule>();
     }
+
+    public static ExceptionPolicyInternal convertExceptionPolicyToInternal(ExceptionPolicy exceptionPolicy) {
+        return new ExceptionPolicyInternal()
+            .setEtag(exceptionPolicy.getEtag())
+            .setId(exceptionPolicy.getId())
+            .setName(exceptionPolicy.getName())
+            .setExceptionRules(exceptionPolicy.getExceptionRules().stream()
+                .map(exceptionRule -> convertExceptionRule(exceptionRule))
+                .collect(Collectors.toList())
+            );
+    }
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TumblingWindowTriggerDependencyReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TumblingWindowTriggerDependencyReference model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"TumblingWindowTriggerDependencyReference\",\"offset\":\"qyknivkmdfw\",\"size\":\"ko\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"jwjm\"}}")
-                .toObject(TumblingWindowTriggerDependencyReference.class);
+        TumblingWindowTriggerDependencyReference model = BinaryData.fromString(
+            "{\"type\":\"TumblingWindowTriggerDependencyReference\",\"offset\":\"qyknivkmdfw\",\"size\":\"ko\",\"referenceTrigger\":{\"type\":\"TriggerReference\",\"referenceName\":\"jwjm\"}}")
+            .toObject(TumblingWindowTriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
         Assertions.assertEquals("jwjm", model.referenceTrigger().referenceName());
         Assertions.assertEquals("qyknivkmdfw", model.offset());
@@ -26,12 +24,10 @@ public final class TumblingWindowTriggerDependencyReferenceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TumblingWindowTriggerDependencyReference model =
-            new TumblingWindowTriggerDependencyReference()
-                .withReferenceTrigger(
-                    new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("jwjm"))
-                .withOffset("qyknivkmdfw")
-                .withSize("ko");
+        TumblingWindowTriggerDependencyReference model = new TumblingWindowTriggerDependencyReference()
+            .withReferenceTrigger(
+                new TriggerReference().withType(TriggerReferenceType.TRIGGER_REFERENCE).withReferenceName("jwjm"))
+            .withOffset("qyknivkmdfw").withSize("ko");
         model = BinaryData.fromObject(model).toObject(TumblingWindowTriggerDependencyReference.class);
         Assertions.assertEquals(TriggerReferenceType.TRIGGER_REFERENCE, model.referenceTrigger().type());
         Assertions.assertEquals("jwjm", model.referenceTrigger().referenceName());

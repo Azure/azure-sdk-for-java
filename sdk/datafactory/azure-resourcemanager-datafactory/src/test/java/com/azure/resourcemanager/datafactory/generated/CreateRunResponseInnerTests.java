@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateRunResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateRunResponseInner model =
-            BinaryData.fromString("{\"runId\":\"vvhmxtdrj\"}").toObject(CreateRunResponseInner.class);
+        CreateRunResponseInner model
+            = BinaryData.fromString("{\"runId\":\"vvhmxtdrj\"}").toObject(CreateRunResponseInner.class);
         Assertions.assertEquals("vvhmxtdrj", model.runId());
     }
 

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for MongoDB data source. */
+/**
+ * Linked service for MongoDB data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbV2")
 @Fluent
@@ -24,41 +26,51 @@ public final class MongoDbV2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbV2LinkedServiceTypeProperties innerTypeProperties = new MongoDbV2LinkedServiceTypeProperties();
 
-    /** Creates an instance of MongoDbV2LinkedService class. */
+    /**
+     * Creates an instance of MongoDbV2LinkedService class.
+     */
     public MongoDbV2LinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: MongoDB linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private MongoDbV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class MongoDbV2LinkedService extends LinkedService {
     /**
      * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -78,7 +90,7 @@ public final class MongoDbV2LinkedService extends LinkedService {
     /**
      * Set the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
@@ -93,7 +105,7 @@ public final class MongoDbV2LinkedService extends LinkedService {
     /**
      * Get the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -103,7 +115,7 @@ public final class MongoDbV2LinkedService extends LinkedService {
     /**
      * Set the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
@@ -117,17 +129,15 @@ public final class MongoDbV2LinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model MongoDbV2LinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model MongoDbV2LinkedService"));
         } else {
             innerTypeProperties().validate();
         }

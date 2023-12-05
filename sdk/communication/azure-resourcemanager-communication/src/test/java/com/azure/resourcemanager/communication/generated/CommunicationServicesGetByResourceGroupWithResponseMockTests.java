@@ -31,45 +31,31 @@ public final class CommunicationServicesGetByResourceGroupWithResponseMockTests 
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"vmkfssxqu\",\"dataLocation\":\"kfplgmgsxnk\",\"notificationHubId\":\"kde\",\"version\":\"pvlopwiyighxpkd\",\"immutableResourceId\":\"baiuebbaumny\",\"linkedDomains\":[\"edeojnabc\"]},\"identity\":{\"principalId\":\"9ca91c4c-eb77-48ff-8df7-d7d30dd80067\",\"tenantId\":\"626adb71-13ff-4e78-93db-c9c10d1e889d\",\"type\":\"None\",\"userAssignedIdentities\":{\"ebtfhvpesap\":{\"principalId\":\"5efe3ae4-5dda-4b46-a657-863c7d7a3134\",\"clientId\":\"ec5a4207-5b87-4d64-8ad0-c932e18734c4\"},\"dqmh\":{\"principalId\":\"c721a48d-37cd-4722-9efb-5846687230ab\",\"clientId\":\"6e7d41fd-0909-4b2c-94cc-8360097e88c0\"},\"htldwk\":{\"principalId\":\"77d62b26-1736-4568-85b6-89536e6d799a\",\"clientId\":\"1f043065-64cf-49cc-a1a8-0d1b57934b86\"}}},\"location\":\"xuutkncwscwsv\",\"tags\":{\"rupqsxvnmicy\":\"togt\",\"vei\":\"vce\",\"dhbt\":\"ovnotyfjfcnjbkcn\"},\"id\":\"kphywpnvjto\",\"name\":\"nermcl\",\"type\":\"plpho\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Unknown\",\"hostName\":\"zvlvqhjkbegib\",\"dataLocation\":\"nmxiebwwaloayqc\",\"notificationHubId\":\"rtzju\",\"version\":\"wyzmhtxon\",\"immutableResourceId\":\"ts\",\"linkedDomains\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"]},\"identity\":{\"principalId\":\"0d7ca64b-8a60-40d3-b8a4-0fb239e8b065\",\"tenantId\":\"704faab2-1e7c-4462-83e3-6c11b6771823\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nmefqsgzvahapj\":{\"principalId\":\"720a123b-41c3-43db-a217-e374a01ddf7b\",\"clientId\":\"db121949-3483-4c70-87bf-9e3eec546ade\"}}},\"location\":\"hpvgqz\",\"tags\":{\"zovawjvz\":\"vxdjzlmwlxkvugf\",\"nxipeil\":\"nluthnnp\",\"dzumveekg\":\"jzuaejxdultskzbb\"},\"id\":\"wozuhkf\",\"name\":\"bsjyofdx\",\"type\":\"uusdttouwa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommunicationServiceResource response =
-            manager
-                .communicationServices()
-                .getByResourceGroupWithResponse("ovplw", "bhvgy", com.azure.core.util.Context.NONE)
-                .getValue();
+        CommunicationServiceResource response = manager.communicationServices()
+            .getByResourceGroupWithResponse("riplrbpbewtg", "fgb", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("xuutkncwscwsv", response.location());
-        Assertions.assertEquals("togt", response.tags().get("rupqsxvnmicy"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
-        Assertions.assertEquals("kfplgmgsxnk", response.dataLocation());
-        Assertions.assertEquals("edeojnabc", response.linkedDomains().get(0));
+        Assertions.assertEquals("hpvgqz", response.location());
+        Assertions.assertEquals("vxdjzlmwlxkvugf", response.tags().get("zovawjvz"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("nmxiebwwaloayqc", response.dataLocation());
+        Assertions.assertEquals("cbpwxqpsrknft", response.linkedDomains().get(0));
     }
 }

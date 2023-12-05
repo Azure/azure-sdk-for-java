@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Monitoring data for integration runtime node. */
+/**
+ * Monitoring data for integration runtime node.
+ */
 @Fluent
 public final class IntegrationRuntimeNodeMonitoringData {
     /*
@@ -66,15 +68,18 @@ public final class IntegrationRuntimeNodeMonitoringData {
     /*
      * Monitoring data for integration runtime node.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeNodeMonitoringData class. */
+    /**
+     * Creates an instance of IntegrationRuntimeNodeMonitoringData class.
+     */
     public IntegrationRuntimeNodeMonitoringData() {
     }
 
     /**
      * Get the nodeName property: Name of the integration runtime node.
-     *
+     * 
      * @return the nodeName value.
      */
     public String nodeName() {
@@ -83,7 +88,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the availableMemoryInMB property: Available memory (MB) on the integration runtime node.
-     *
+     * 
      * @return the availableMemoryInMB value.
      */
     public Integer availableMemoryInMB() {
@@ -92,7 +97,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the cpuUtilization property: CPU percentage on the integration runtime node.
-     *
+     * 
      * @return the cpuUtilization value.
      */
     public Integer cpuUtilization() {
@@ -101,7 +106,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the concurrentJobsLimit property: Maximum concurrent jobs on the integration runtime node.
-     *
+     * 
      * @return the concurrentJobsLimit value.
      */
     public Integer concurrentJobsLimit() {
@@ -110,7 +115,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the concurrentJobsRunning property: The number of jobs currently running on the integration runtime node.
-     *
+     * 
      * @return the concurrentJobsRunning value.
      */
     public Integer concurrentJobsRunning() {
@@ -119,7 +124,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the maxConcurrentJobs property: The maximum concurrent jobs in this integration runtime.
-     *
+     * 
      * @return the maxConcurrentJobs value.
      */
     public Integer maxConcurrentJobs() {
@@ -128,7 +133,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the sentBytes property: Sent bytes on the integration runtime node.
-     *
+     * 
      * @return the sentBytes value.
      */
     public Float sentBytes() {
@@ -137,7 +142,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the receivedBytes property: Received bytes on the integration runtime node.
-     *
+     * 
      * @return the receivedBytes value.
      */
     public Float receivedBytes() {
@@ -146,7 +151,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Get the additionalProperties property: Monitoring data for integration runtime node.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -156,7 +161,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Set the additionalProperties property: Monitoring data for integration runtime node.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeNodeMonitoringData object itself.
      */
@@ -175,7 +180,7 @@ public final class IntegrationRuntimeNodeMonitoringData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

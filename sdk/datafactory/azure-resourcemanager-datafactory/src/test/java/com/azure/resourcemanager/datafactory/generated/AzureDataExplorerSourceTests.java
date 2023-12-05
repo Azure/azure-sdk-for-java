@@ -10,25 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureDataExplorerSource;
 public final class AzureDataExplorerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataExplorerSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDataExplorerSource\",\"query\":\"datatasidityvvgxejh\",\"noTruncation\":\"dataswjwbhtawb\",\"queryTimeout\":\"dataybneuzueikadhusg\",\"additionalColumns\":\"databgljcy\",\"sourceRetryCount\":\"datarzxipxhlxxkviyj\",\"sourceRetryWait\":\"dataqyejyavxgm\",\"maxConcurrentConnections\":\"datacnwxkqqxpnj\",\"disableMetricsCollection\":\"datazdahvethn\",\"\":{\"tymbccmwsyfsg\":\"dataggyqlvnhmuutkw\",\"cbjclfbpfd\":\"datak\",\"q\":\"dataatr\",\"bifktnxugiorb\":\"datatuxwtdaz\"}}")
-                .toObject(AzureDataExplorerSource.class);
+        AzureDataExplorerSource model = BinaryData.fromString(
+            "{\"type\":\"AzureDataExplorerSource\",\"query\":\"dataxbckxen\",\"noTruncation\":\"dataowguirhexjpw\",\"queryTimeout\":\"datamktpykoicpk\",\"additionalColumns\":\"datamqfdtbaobjaof\",\"sourceRetryCount\":\"datavhhrgvkuuikr\",\"sourceRetryWait\":\"dataelrwsjvdxe\",\"maxConcurrentConnections\":\"datajva\",\"disableMetricsCollection\":\"dataqgfvy\",\"\":{\"cimjmuro\":\"datayyknxuacfmbyn\",\"vbqbro\":\"dataryfuvktcyzu\",\"kbok\":\"datarwbtbbfweo\"}}")
+            .toObject(AzureDataExplorerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataExplorerSource model =
-            new AzureDataExplorerSource()
-                .withSourceRetryCount("datarzxipxhlxxkviyj")
-                .withSourceRetryWait("dataqyejyavxgm")
-                .withMaxConcurrentConnections("datacnwxkqqxpnj")
-                .withDisableMetricsCollection("datazdahvethn")
-                .withQuery("datatasidityvvgxejh")
-                .withNoTruncation("dataswjwbhtawb")
-                .withQueryTimeout("dataybneuzueikadhusg")
-                .withAdditionalColumns("databgljcy");
+        AzureDataExplorerSource model = new AzureDataExplorerSource().withSourceRetryCount("datavhhrgvkuuikr")
+            .withSourceRetryWait("dataelrwsjvdxe").withMaxConcurrentConnections("datajva")
+            .withDisableMetricsCollection("dataqgfvy").withQuery("dataxbckxen").withNoTruncation("dataowguirhexjpw")
+            .withQueryTimeout("datamktpykoicpk").withAdditionalColumns("datamqfdtbaobjaof");
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerSource.class);
     }
 }

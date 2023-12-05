@@ -1,6 +1,16 @@
 # Release History
 
-## 1.5.0 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.5.0 (2023-11-29)
 
 ### Features Added
 - Introduction of new scopes for token generation.
@@ -9,11 +19,14 @@
     - `VOIP_JOIN` (Access to Calling APIs but without the authorization to start new calls)
 - Added a new API version `CommunicationIdentityServiceVersion.V2023_10_01` that is now the default API version.
 
-### Breaking Changes
-
-### Bugs Fixed
+## 1.4.12 (2023-11-20)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
 ## 1.4.11 (2023-10-20)
 
