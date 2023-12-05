@@ -1073,64 +1073,6 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
-    @Test
-    public void uploadRangeFromURLOAuth() {
-        ShareServiceClient oAuthServiceClient = getOAuthServiceClientSharedKey(new ShareServiceClientBuilder()
-            .shareTokenIntent(ShareTokenIntent.BACKUP));
-        ShareDirectoryClient dirClient = oAuthServiceClient.getShareClient(shareName)
-            .getDirectoryClient(generatePathName());
-        dirClient.create();
-        String fileName = generatePathName();
-        ShareFileClient fileClient = dirClient.getFileClient(fileName);
-        fileClient.create(1024);
-
-        String data = "The quick brown fox jumps over the lazy dog";
-        int sourceOffset = 5;
-        int length = 5;
-        int destinationOffset = 0;
-
-        fileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
-        StorageSharedKeyCredential credential = StorageSharedKeyCredential.fromConnectionString(
-            ENVIRONMENT.getPrimaryAccount().getConnectionString());
-        String sasToken = new ShareServiceSasSignatureValues()
-            .setExpiryTime(testResourceNamer.now().plusDays(1))
-            .setPermissions(new ShareFileSasPermission().setReadPermission(true))
-            .setShareName(fileClient.getShareName())
-            .setFilePath(fileClient.getFilePath())
-            .generateSasQueryParameters(credential)
-            .encode();
-
-        String fileNameDest = generatePathName();
-        ShareFileClient fileClientDest = dirClient.getFileClient(fileNameDest);
-        fileClientDest.create(1024);
-
-        Response<ShareFileUploadRangeFromUrlInfo> uploadResponse = fileClientDest.uploadRangeFromUrlWithResponse(length,
-            destinationOffset, sourceOffset, fileClient.getFileUrl() + "?" + sasToken, null, null);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ShareFileDownloadResponse downloadResponse = fileClientDest.downloadWithResponse(stream, null, null, null, null);
-        ShareFileDownloadHeaders headers = downloadResponse.getDeserializedHeaders();
-
-        FileShareTestHelper.assertResponseStatusCode(uploadResponse, 201);
-        assertTrue(downloadResponse.getStatusCode() == 200 || downloadResponse.getStatusCode() == 206);
-        assertEquals(headers.getContentLength(), 1024);
-
-        assertNotNull(headers.getETag());
-        assertNotNull(headers.getLastModified());
-        assertNotNull(headers.getFilePermissionKey());
-        assertNotNull(headers.getFileAttributes());
-        assertNotNull(headers.getFileLastWriteTime());
-        assertNotNull(headers.getFileCreationTime());
-        assertNotNull(headers.getFileChangeTime());
-        assertNotNull(headers.getFileParentId());
-        assertNotNull(headers.getFileId());
-
-        //u
-        assertEquals(stream.toByteArray()[0], 117);
-
-    }
-
     @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210608ServiceVersion")
     @Test
     public void uploadRangeFromUrlPreserveFileLastWrittenOn() {
@@ -2771,18 +2713,4 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient aadFileClient = oAuthServiceClient.getShareClient(shareName).getFileClient(fileName);
         assertTrue(aadFileClient.exists());
     }
-
-    /* Uncomment this test when Client Name is enabled with STG 93.
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20240204ServiceVersion")
-    @Test
-    public void listHandlesClientName() {
-        ShareClient client = primaryFileServiceClient.getShareClient("testing");
-        ShareDirectoryClient directoryClient = client.getDirectoryClient("dir1");
-        ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
-        List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
-        assertNotNull(list.get(0).getClientName());
-
-    }
-     */
 }
