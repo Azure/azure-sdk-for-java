@@ -36,7 +36,6 @@ public class AnalyzeLayoutMarkdownOutputAsync {
 
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/Invoice_6.pdf");
 
-
         PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
                         null,

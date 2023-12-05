@@ -31,7 +31,6 @@ public class AnalyzeLayoutMarkdownOutput {
                 .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                 .buildClient();
 
-        //
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/Invoice_6.pdf");
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =

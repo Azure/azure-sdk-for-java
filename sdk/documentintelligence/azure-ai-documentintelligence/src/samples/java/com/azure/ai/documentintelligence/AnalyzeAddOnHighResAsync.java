@@ -40,7 +40,7 @@ public class AnalyzeAddOnHighResAsync {
                 .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                 .buildAsyncClient();
 
-        File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
+        File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/highres.png");
 
         PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
@@ -51,7 +51,7 @@ public class AnalyzeAddOnHighResAsync {
                 Arrays.asList(DocumentAnalysisFeature.OCR_HIGH_RESOLUTION),
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
+                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

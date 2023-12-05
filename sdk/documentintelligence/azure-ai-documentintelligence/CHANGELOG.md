@@ -12,9 +12,9 @@
 
 ## 1.0.0-beta.1 (2023-11-16)
 
-_**Note: [Form Recognizer has been rebranded to Document Intelligence](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-Rebranding)**_
+_**Note: Form Recognizer has been rebranded to Document Intelligence**_
 
-This marks the first preview of `azure-ai-documentintelligence` REST level client library for the `Azure AI Document
+This marks the first preview of `azure-ai-documentintelligence` client library for the `Azure AI Document
 Intelligence` service (formerly known as Form Recognizer), targeting service API version `"2023-10-31-preview"`.
 
 It is developer-friendly and idiomatic to the Java ecosystem. The principles that guide our efforts can be found in the
@@ -24,17 +24,14 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 ### Features Added
 
-- Updates all REST API operation paths from `{endpoint}/formrecognizer` to `{endpoint}/documentintelligence`. SDK would
-  handle this change automatically, users would not have to do additional work to support this.
 - [azure-ai-documentintelligence](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence) 
   is the new package, replacing [azure-ai-formrecognizer](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer)
-  package. The new package supports a REST level client, which is part of the new generation of Azure SDKs to simplify 
-  the development experience.
-  The new package is not compatible with the previous `azure-ai-formrecognizer` package without necessary changes to your code.
+  package. The new package is not compatible with the previous `azure-ai-formrecognizer` package without necessary 
+  changes to your code.
 - The new `"2023-10-31-preview"` service version comes with some new features
-  and a few [breaking changes](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-BreakingChanges)
+  and a few breaking changes
   when compared to the API versions supported by the `azure-ai-formrecognizer` library.
-  - [Markdown content format](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-MarkdownConversion)
+  - **Markdown content format**
   
     Supports output with Markdown content format along with the default plain _text_. For now, this is only supported for 
     "prebuilt-layout". Markdown content format is deemed a more friendly format for LLM consumption in a chat or 
@@ -42,12 +39,38 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
     for the Markdown format. Also introduces a new _contentFormat_ property with value "text" or "markdown" to indicate 
     the result content format.
 
-  - [Query Fields](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-QueryFields)
+    ```java
+    File document = new File("{your-file-to-analyze}");
+    SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+            client.beginAnalyzeDocument("prebuilt-layout", null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    ContentFormat.MARKDOWN,
+                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+    ```
+    For the complete sample, see [Sample: Markdown](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutMarkdownOutput.java).
+
+  - **Query Fields**
 
     When this feature flag is specified, the service will further extract the values of the fields specified via the 
     `queryFields` query parameter to supplement any existing fields defined by the model as fallback.
 
-  - [Split Options](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-SplitOptions)
+    ```java
+    File document = new File("{your-file-to-analyze}");
+    SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+            client.beginAnalyzeDocument("prebuilt-layout", null,
+                    null,
+                    null,
+                    Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
+                    Arrays.asList("Address", "InvoiceNumber"),
+                    null,
+                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+    ```
+    For the complete sample, see [Sample: Query Fields](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnQueryFields.java).
+
+  - **Split Options**
 
     In the previous API versions supported by the older `azure-ai-formrecognizer` library, document splitting and 
     classification operation (`"/documentClassifiers/{classifierId}:analyze"`) always tried to split the input file 
@@ -70,9 +93,12 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 ### Breaking Changes
 
-- The SDKs targeting API 2023-10-31-preview have renamed the clients:
+- The SDKs targeting service API version `2023-10-31-preview` have renamed the clients to
     - `DocumentIntelligenceAdministrationClient`/`DocumentIntelligenceAdministrationAsyncClient`
     - `DocumentIntelligenceClient`/`DocumentIntelligenceAsyncClient`
+  which is different from older `azure-ai-formrecognizer` SDKs which targeting service API version `2023-07-31` and `2022-08-31`.
+    - `DocumentAnalysisClient`/`DocumentAnalysisAsyncClient`
+    - `DocumentModelAdministrationClient`/`DocumentModelAdministrationAsyncClient`
   
 - **prebuilt-receipt** - Currency related fields have been updated. Currency symbol ("$") and code ("USD") are returned along with the amount as shown below.
 
@@ -89,7 +115,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
   }
   ...
   ```
-- API shapes have been designed from scratch to support the new Rest level client for the Document Intelligence service.
+- API shapes have been designed from scratch to support new SDK client for the Document Intelligence service.
   Please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md)
   and [Samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/README.md) 
   for more understanding.
@@ -99,6 +125,21 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 #### Retirements/Deprecations
 
 - `"prebuilt-businessCard"` model is retired.
-- `"prebuilt-document"` model is retired, this model is essentially `"prebuilt-layout"` with `features=keyValuePairs` specified. _(This is only supported as an optional feature for "prebuilt-layout" and "prebuilt-invoice".)_
+- `"prebuilt-document"` model is retired, this model is essentially `"prebuilt-layout"` with `DocumentAnalysisFeature.FORMULAS` specified.
+  _(This is only supported as an optional feature for "prebuilt-layout" and "prebuilt-invoice".)_.
 
-If you wish to still use these models, please rely on the older `azure-ai-formrecognizer` library through the older service API versions.
+  ```java
+  File document = new File("{your-file-to-analyze}");
+  SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+          client.beginAnalyzeDocument("prebuilt-layout", null,
+                  null,
+                  null,
+                  Arrays.asList(DocumentAnalysisFeature.FORMULAS),
+                  null,
+                  null,
+                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+    ```
+  
+  For the complete sample, see [Sample: KeyValuePair](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnKeyValuePair.java).
+
+- If you wish to still use these models, please rely on the older `azure-ai-formrecognizer` library through the older service API versions.

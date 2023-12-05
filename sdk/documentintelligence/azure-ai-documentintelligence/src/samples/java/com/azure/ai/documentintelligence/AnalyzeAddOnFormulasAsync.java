@@ -41,7 +41,7 @@ public class AnalyzeAddOnFormulasAsync {
                 .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                 .buildAsyncClient();
 
-        File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
+        File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/addOns/formulas.pdf");
 
         PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
@@ -52,7 +52,7 @@ public class AnalyzeAddOnFormulasAsync {
                 Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
+                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =
             analyzeLayoutPoller

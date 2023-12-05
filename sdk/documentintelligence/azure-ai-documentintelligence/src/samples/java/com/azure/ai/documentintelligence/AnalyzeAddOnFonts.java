@@ -42,7 +42,7 @@ public class AnalyzeAddOnFonts {
                 .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
                 .buildClient();
 
-        File barcodesDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
+        File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
@@ -52,7 +52,7 @@ public class AnalyzeAddOnFonts {
                 Arrays.asList(DocumentAnalysisFeature.STYLE_FONT),
                 null,
                 null,
-                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
+                new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
 
