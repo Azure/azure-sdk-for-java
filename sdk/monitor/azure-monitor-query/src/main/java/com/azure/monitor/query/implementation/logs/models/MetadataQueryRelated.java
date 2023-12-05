@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The related metadata items for the query.
- */
+/** The related metadata items for the query. */
 @Fluent
 public final class MetadataQueryRelated {
     /*
@@ -37,15 +35,12 @@ public final class MetadataQueryRelated {
     @JsonProperty(value = "tables")
     private List<String> tables;
 
-    /**
-     * Creates an instance of MetadataQueryRelated class.
-     */
-    public MetadataQueryRelated() {
-    }
+    /** Creates an instance of MetadataQueryRelated class. */
+    public MetadataQueryRelated() {}
 
     /**
      * Get the categories property: The related categories for the query.
-     * 
+     *
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -54,7 +49,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Set the categories property: The related categories for the query.
-     * 
+     *
      * @param categories the categories value to set.
      * @return the MetadataQueryRelated object itself.
      */
@@ -65,7 +60,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the query.
-     * 
+     *
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -74,7 +69,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the query.
-     * 
+     *
      * @param solutions the solutions value to set.
      * @return the MetadataQueryRelated object itself.
      */
@@ -85,7 +80,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the query.
-     * 
+     *
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -94,7 +89,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the query.
-     * 
+     *
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataQueryRelated object itself.
      */
@@ -105,7 +100,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Get the tables property: The related tables for the query.
-     * 
+     *
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -114,7 +109,7 @@ public final class MetadataQueryRelated {
 
     /**
      * Set the tables property: The related tables for the query.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the MetadataQueryRelated object itself.
      */
@@ -122,4 +117,11 @@ public final class MetadataQueryRelated {
         this.tables = tables;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

@@ -1,0 +1,1112 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED//subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/Microsoft.Insights/metricDefinitions?api-version=2018-01-01",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Tue, 18 Apr 2023 18:01:11 GMT",
+        "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "26abb60d-3a46-4ea2-9253-01c80ede7ed7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-cache",
+        "Content-Length": "19756",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 18 Apr 2023 18:01:11 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=cid-v1:b021da79-5252-4375-9df5-2e17c1dcd822",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "e1437002-d32a-457b-bd93-285771f87176",
+        "x-ms-ratelimit-remaining-subscription-resource-requests": "399",
+        "x-ms-request-id": "{e1437002-d32a-457b-bd93-285771f87176}",
+        "x-ms-routing-request-id": "WESTUS2:20230418T180111Z:e1437002-d32a-457b-bd93-285771f87176"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/TotalCalls",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "TotalCalls",
+              "localizedValue": "Total Calls"
+            },
+            "displayDescription": "Total number of calls.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/SuccessfulCalls",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "SuccessfulCalls",
+              "localizedValue": "Successful Calls"
+            },
+            "displayDescription": "Number of successful calls.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/TotalErrors",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "TotalErrors",
+              "localizedValue": "Total Errors"
+            },
+            "displayDescription": "Total number of calls with error response (HTTP response code 4xx or 5xx).",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/BlockedCalls",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "BlockedCalls",
+              "localizedValue": "Blocked Calls"
+            },
+            "displayDescription": "Number of calls that exceeded rate or quota limit.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/ServerErrors",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "ServerErrors",
+              "localizedValue": "Server Errors"
+            },
+            "displayDescription": "Number of calls with service internal error (HTTP response code 5xx).",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/ClientErrors",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "ClientErrors",
+              "localizedValue": "Client Errors"
+            },
+            "displayDescription": "Number of calls with client side error (HTTP response code 4xx).",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/SuccessRate",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "SuccessRate",
+              "localizedValue": "Availability"
+            },
+            "displayDescription": "Availability percentage with the following calculation: (Total Calls - Server Errors)/Total Calls. Server Errors include any HTTP responses \u003E=500.",
+            "isDimensionRequired": false,
+            "unit": "Percent",
+            "primaryAggregationType": "Average",
+            "supportedAggregationTypes": [
+              "Minimum",
+              "Maximum",
+              "Average"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/DataIn",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "DataIn",
+              "localizedValue": "Data In"
+            },
+            "displayDescription": "Size of incoming data in bytes.",
+            "isDimensionRequired": false,
+            "unit": "Bytes",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/DataOut",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "DataOut",
+              "localizedValue": "Data Out"
+            },
+            "displayDescription": "Size of outgoing data in bytes.",
+            "isDimensionRequired": false,
+            "unit": "Bytes",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/Latency",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "Latency",
+              "localizedValue": "Latency"
+            },
+            "displayDescription": "Latency in milliseconds.",
+            "isDimensionRequired": false,
+            "unit": "MilliSeconds",
+            "primaryAggregationType": "Average",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "OperationName",
+                "localizedValue": "OperationName"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/Ratelimit",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "HTTP Requests",
+            "name": {
+              "value": "Ratelimit",
+              "localizedValue": "Ratelimit"
+            },
+            "displayDescription": "The current ratelimit of the ratelimit key.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              },
+              {
+                "value": "RatelimitKey",
+                "localizedValue": "RatelimitKey"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/TotalTransactions",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "Usage",
+            "name": {
+              "value": "TotalTransactions",
+              "localizedValue": "Total Transactions (Deprecated)"
+            },
+            "displayDescription": "Total number of transactions.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/ProcessedTextRecords",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "Usage",
+            "name": {
+              "value": "ProcessedTextRecords",
+              "localizedValue": "Processed Text Records"
+            },
+            "displayDescription": "Count of Text Records.",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "FeatureName",
+                "localizedValue": "FeatureName"
+              },
+              {
+                "value": "UsageChannel",
+                "localizedValue": "UsageChannel"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/ProcessedHealthTextRecords",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "Usage",
+            "name": {
+              "value": "ProcessedHealthTextRecords",
+              "localizedValue": "Processed Health Text Records"
+            },
+            "displayDescription": "Number of health text records processed",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "FeatureName",
+                "localizedValue": "FeatureName"
+              },
+              {
+                "value": "UsageChannel",
+                "localizedValue": "UsageChannel"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              }
+            ]
+          },
+          {
+            "id": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics/providers/microsoft.insights/metricdefinitions/QuestionAnsweringTextRecords",
+            "resourceId": "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics",
+            "namespace": "Microsoft.CognitiveServices/accounts",
+            "category": "Usage",
+            "name": {
+              "value": "QuestionAnsweringTextRecords",
+              "localizedValue": "QA Text Records"
+            },
+            "displayDescription": "Number of text records processed",
+            "isDimensionRequired": false,
+            "unit": "Count",
+            "primaryAggregationType": "Total",
+            "supportedAggregationTypes": [
+              "None",
+              "Average",
+              "Minimum",
+              "Maximum",
+              "Total",
+              "Count"
+            ],
+            "metricAvailabilities": [
+              {
+                "timeGrain": "PT1M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT5M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT15M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT30M",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT1H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT6H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "PT12H",
+                "retention": "P93D"
+              },
+              {
+                "timeGrain": "P1D",
+                "retention": "P93D"
+              }
+            ],
+            "dimensions": [
+              {
+                "value": "ApiName",
+                "localizedValue": "ApiName"
+              },
+              {
+                "value": "FeatureName",
+                "localizedValue": "FeatureName"
+              },
+              {
+                "value": "UsageChannel",
+                "localizedValue": "UsageChannel"
+              },
+              {
+                "value": "Region",
+                "localizedValue": "Region"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
+}
