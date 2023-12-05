@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The related metadata items for the resource-type.
- */
+/** The related metadata items for the resource-type. */
 @Fluent
 public final class MetadataResourceTypeRelated {
     /*
@@ -49,15 +47,12 @@ public final class MetadataResourceTypeRelated {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
-    /**
-     * Creates an instance of MetadataResourceTypeRelated class.
-     */
-    public MetadataResourceTypeRelated() {
-    }
+    /** Creates an instance of MetadataResourceTypeRelated class. */
+    public MetadataResourceTypeRelated() {}
 
     /**
      * Get the tables property: The tables related to the resource-type.
-     * 
+     *
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -66,7 +61,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the tables property: The tables related to the resource-type.
-     * 
+     *
      * @param tables the tables value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -77,7 +72,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Get the functions property: The functions related to the resource-type.
-     * 
+     *
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -86,7 +81,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the functions property: The functions related to the resource-type.
-     * 
+     *
      * @param functions the functions value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -97,7 +92,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Get the categories property: The categories related to the resource-type.
-     * 
+     *
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -106,7 +101,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the categories property: The categories related to the resource-type.
-     * 
+     *
      * @param categories the categories value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -117,7 +112,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Get the queries property: The queries related to the resource-type.
-     * 
+     *
      * @return the queries value.
      */
     public List<String> getQueries() {
@@ -126,7 +121,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the queries property: The queries related to the resource-type.
-     * 
+     *
      * @param queries the queries value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -137,7 +132,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Get the workspaces property: The Log Analytics workspaces related to the resource-type.
-     * 
+     *
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -146,7 +141,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the workspaces property: The Log Analytics workspaces related to the resource-type.
-     * 
+     *
      * @param workspaces the workspaces value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -157,7 +152,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Get the resources property: The Azure resources related to the resource-type.
-     * 
+     *
      * @return the resources value.
      */
     public List<String> getResources() {
@@ -166,7 +161,7 @@ public final class MetadataResourceTypeRelated {
 
     /**
      * Set the resources property: The Azure resources related to the resource-type.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the MetadataResourceTypeRelated object itself.
      */
@@ -174,4 +169,11 @@ public final class MetadataResourceTypeRelated {
         this.resources = resources;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

@@ -93,7 +93,7 @@ public final class MergeCertificateOptions {
     /**
      * Get the certificate or certificate chain to merge.
      *
-     * @return the x509 certificates.
+     * @return the x509 certficiates.
      */
     public List<byte[]> getX509Certificates() {
         return this.x509Certificates;

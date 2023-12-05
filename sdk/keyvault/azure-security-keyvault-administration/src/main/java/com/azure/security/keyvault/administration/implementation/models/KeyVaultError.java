@@ -34,6 +34,7 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
 

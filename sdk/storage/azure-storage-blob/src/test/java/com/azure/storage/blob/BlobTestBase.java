@@ -38,7 +38,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
-import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
 import com.azure.storage.blob.specialized.BlobLeaseClient;
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -53,7 +52,6 @@ import okhttp3.ConnectionPool;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -472,14 +470,6 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected String setupContainerAsyncLeaseCondition(BlobContainerAsyncClient cu, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseAsyncClient(cu).acquireLease(-1).block();
-        } else {
-            return leaseID;
-        }
-    }
-
     protected BlobServiceClient getOAuthServiceClient() {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
@@ -576,17 +566,6 @@ public class BlobTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient) {
-        return createLeaseAsyncClient(blobAsyncClient, null);
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobAsyncClientBase blobAsyncClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobAsyncClient(blobAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
-    }
-
     protected static BlobLeaseClient createLeaseClient(BlobContainerClient containerClient) {
         return createLeaseClient(containerClient, null);
     }
@@ -596,17 +575,6 @@ public class BlobTestBase extends TestProxyTestBase {
             .containerClient(containerClient)
             .leaseId(leaseId)
             .buildClient();
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient) {
-        return createLeaseAsyncClient(containerAsyncClient, null);
-    }
-
-    protected static BlobLeaseAsyncClient createLeaseAsyncClient(BlobContainerAsyncClient containerAsyncClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .containerAsyncClient(containerAsyncClient)
-            .leaseId(leaseId)
-            .buildAsyncClient();
     }
 
     /**
@@ -1009,12 +977,6 @@ public class BlobTestBase extends TestProxyTestBase {
     protected static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
         assertEquals(expectedStatusCode, response.getStatusCode());
         return response;
-    }
-
-    protected static <T> void assertAsyncResponseStatusCode(Mono<Response<T>> response, int expectedStatusCode) {
-        StepVerifier.create(response)
-            .assertNext(r -> assertEquals(expectedStatusCode, r.getStatusCode()))
-            .verifyComplete();
     }
 
     protected static Stream<Arguments> allConditionsSupplier() {

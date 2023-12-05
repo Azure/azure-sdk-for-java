@@ -7,9 +7,8 @@ import com.azure.core.http.RequestConditions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.storage.blob.BlobAsyncClient;
-import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -57,8 +56,8 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("unused")
 public class BlobAsyncClientBaseJavaDocCodeSnippets {
-    private BlobAsyncClient client = new BlobClientBuilder().endpoint("https://storageaccount.blob.core.windows.net")
-        .containerName("containerName").blobName("blobName").sasToken("sasToken").buildAsyncClient();
+    private BlobAsyncClientBase client = new BlobAsyncClientBase(null, null, BlobServiceVersion.getLatest(),
+        null, null, null, null, null, null, null);
     private String leaseId = "leaseId";
     private String tags = "tags";
     private String copyId = "copyId";

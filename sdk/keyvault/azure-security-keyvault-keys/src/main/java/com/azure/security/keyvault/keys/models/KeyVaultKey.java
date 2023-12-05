@@ -4,17 +4,12 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeyHelper;
-import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
@@ -24,15 +19,12 @@ import java.util.List;
  * @see KeyAsyncClient
  */
 @Fluent
-public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
-    static {
-        KeyVaultKeyHelper.setAccessor(KeyVaultKey::new);
-    }
-
+public class KeyVaultKey {
     /**
      * The Json Web Key.
      */
-    private final JsonWebKey key;
+    @JsonProperty(value = "key")
+    private JsonWebKey key;
 
     /**
      * The key properties.
@@ -40,23 +32,18 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
     final KeyProperties properties;
 
     KeyVaultKey() {
-        this.key = null;
         this.properties = new KeyProperties();
     }
 
     /**
      * Creates an instance of {@link KeyVaultKey}.
      *
+     * @param keyProperties The {@link KeyProperties}.
      * @param jsonWebKey The {@link JsonWebKey} to be used for crypto operations.
      */
-    KeyVaultKey(JsonWebKey jsonWebKey) {
+    KeyVaultKey(KeyProperties keyProperties, JsonWebKey jsonWebKey) {
+        this.properties = keyProperties;
         this.key = jsonWebKey;
-        this.properties = new KeyProperties();
-    }
-
-    KeyVaultKey(JsonWebKey jsonWebKey, KeyProperties properties) {
-        this.key = jsonWebKey;
-        this.properties = properties;
     }
 
     /**
@@ -113,70 +100,34 @@ public class KeyVaultKey implements JsonSerializable<KeyVaultKey> {
         return key.getKeyOps();
     }
 
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeJsonField("key", key)
-            .writeEndObject();
+    /**
+     * Unpacks the key material JSON response and updates the variables in the key base object.
+     *
+     * @param key The key value mapping of the key material.
+     */
+    @JsonProperty("key")
+    private void unpackKeyMaterial(Map<String, Object> key) {
+        this.key = properties.createKeyMaterialFromJson(key);
     }
 
-    /**
-     * Reads a JSON stream into a {@link KeyVaultKey}.
-     *
-     * @param jsonReader The {@link JsonReader} being read.
-     * @return An instance of {@link KeyVaultKey} that the JSON stream represented, may return null.
-     * @throws IOException If a {@link KeyVaultKey} fails to be read from the {@code jsonReader}.
-     */
-    public static KeyVaultKey fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            JsonWebKey webKey = null;
-            KeyProperties properties = new KeyProperties();
+    @JsonProperty("attributes")
+    @SuppressWarnings("unchecked")
+    private void unpackAttributes(Map<String, Object> attributes) {
+        properties.unpackAttributes(attributes);
+    }
 
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    @JsonProperty("tags")
+    private void setTags(Map<String, String> tags) {
+        properties.setTags(tags);
+    }
 
-                if ("key".equals(fieldName)) {
-                    webKey = JsonWebKey.fromJson(reader);
-                    KeyVaultKeysUtils.unpackId(webKey.getId(), name -> properties.name = name,
-                        version -> properties.version = version);
-                } else if ("attributes".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        fieldName = reader.getFieldName();
-                        reader.nextToken();
+    @JsonProperty("managed")
+    private void setManaged(boolean managed) {
+        properties.setManaged(managed);
+    }
 
-                        if ("enabled".equals(fieldName)) {
-                            properties.enabled = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("exportable".equals(fieldName)) {
-                            properties.exportable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("nbf".equals(fieldName)) {
-                            properties.notBefore = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("exp".equals(fieldName)) {
-                            properties.expiresOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("created".equals(fieldName)) {
-                            properties.createdOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("updated".equals(fieldName)) {
-                            properties.updatedOn = reader.getNullable(KeyVaultKeysUtils::epochToOffsetDateTime);
-                        } else if ("recoveryLevel".equals(fieldName)) {
-                            properties.recoveryLevel = reader.getString();
-                        } else if ("recoverableDays".equals(fieldName)) {
-                            properties.recoverableDays = reader.getNullable(JsonReader::getInt);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                } else if ("tags".equals(fieldName)) {
-                    properties.setTags(reader.readMap(JsonReader::getString));
-                } else if ("managed".equals(fieldName)) {
-                    properties.managed = reader.getNullable(JsonReader::getBoolean);
-                } else if ("release_policy".equals(fieldName)) {
-                    properties.setReleasePolicy(KeyReleasePolicy.fromJson(reader));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return new KeyVaultKey(webKey, properties);
-        });
+    @JsonProperty("release_policy")
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
     }
 }

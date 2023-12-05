@@ -1,0 +1,200 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : {
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "C0tCupDBYUSzHeETb2lvjQ.0",
+      "retry-after" : "0",
+      "Content-Length" : "435",
+      "StatusCode" : "201",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"NotStarted\"}",
+      "Date" : "Mon, 08 Feb 2021 12:36:51 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "5anGpOoukkWbMVV9HxUa0Q.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:36:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "kM6EqdA1K0qhhngiDGNpkg.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:36:54 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "mETCe0+o9E6dQ8yoM3vx3A.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:04 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "7sbP7kWY+kWZfepqv7i9nQ.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:14 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "ImJFGO6bmkSjlfjxiqYifw.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:25 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "wnyFxtW8rUy/P/eLDe/nOg.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:35 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "rj2jwdBekEKT8SO/LxsX2A.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:46 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "CGljSlW/tEGH1y+fYIjWSA.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "432",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"error\":null,\"status\":\"Running\"}",
+      "Date" : "Mon, 08 Feb 2021 12:37:56 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions/conversionTest?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "Cache-Control" : "no-store,no-cache",
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "oluZ2VVL/0yWkSOnUyoN5w.0",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "Content-Length" : "531",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"}",
+      "Date" : "Mon, 08 Feb 2021 12:38:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:8080/accounts/d879da79-415d-45f0-b641-1cfec1386ddf/conversions?api-version=2021-01-01",
+    "Headers" : { },
+    "Response" : {
+      "api-supported-versions" : "2021-01-01-preview, 2021-01-01",
+      "X-Content-Type-Options" : "nosniff",
+      "MS-CV" : "wM+rxWhrlEKc4R0qiRA30g.0",
+      "retry-after" : "0",
+      "Content-Length" : "4326",
+      "StatusCode" : "200",
+      "Body" : "{\"conversions\":[{\"id\":\"044a3fa2-b708-43b4-ae06-794ad3086d17\",\"creationTime\":\"2021-02-07T14:09:06.4180763Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"801ce6fe-1384-4303-b6dd-453af8f6ccca\",\"creationTime\":\"2021-02-07T14:09:40.7852698Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"fc7a338a-f11d-4076-8be6-67b946760ff6\",\"creationTime\":\"2021-02-07T14:41:39.1473616Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"40a3b704-ff53-4d5e-841e-446950b33f09\",\"creationTime\":\"2021-02-07T14:43:04.9164742Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"d1391890-e231-4cfc-b5c4-75ec38285a37\",\"creationTime\":\"2021-02-07T14:46:24.1747807Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"c82ebabb-db1b-43fa-824b-07cd68690318\",\"creationTime\":\"2021-02-07T15:25:32.5509678Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"},{\"id\":\"c6ce9fe5-7ffb-47bf-b2fc-e642ff6d357c\",\"creationTime\":\"2021-02-08T10:49:45.9358185Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"boxWhichDoesNotExist.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"boxWhichDoesNotExist.arrAsset\"}},\"error\":{\"code\":\"ConversionProcessFailed\",\"message\":\"Invalid input provided. Check logs in output container for details.\"},\"status\":\"Failed\"},{\"id\":\"conversionTest\",\"creationTime\":\"2021-02-08T12:36:52.0822426Z\",\"settings\":{\"inputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Input/\",\"relativeInputAssetPath\":\"testBox.fbx\"},\"outputLocation\":{\"storageContainerUri\":\"https://sdktest.blob.core.windows.net/test\",\"blobPrefix\":\"Output/\",\"outputAssetFilename\":\"testBox.arrAsset\"}},\"output\":{\"outputAssetUri\":\"https://sdktest.blob.core.windows.net/test/Output/testBox.arrAsset\"},\"error\":null,\"status\":\"Succeeded\"}],\"@nextLink\":null}",
+      "Date" : "Mon, 08 Feb 2021 12:38:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

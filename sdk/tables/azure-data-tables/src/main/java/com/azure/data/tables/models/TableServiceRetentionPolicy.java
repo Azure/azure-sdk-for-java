@@ -21,14 +21,6 @@ public final class TableServiceRetentionPolicy {
      */
     private Integer daysToRetain;
 
-    // empty constructor necessary due to Javadoc warnings
-    /**
-     * Creates a {@link TableServiceRetentionPolicy}.
-     */
-    public TableServiceRetentionPolicy() {
-
-    }
-
     /**
      * Get a value that indicates whether a retention policy is enabled for the Table service.
      *

@@ -23,7 +23,6 @@ public final class TableAccessPolicies {
     }
 
     /**
-     * Returns the {@link TableSignedIdentifier TableSignedIdentifiesrs} associated with the table
      * @return the {@link TableSignedIdentifier TableSignedIdentifiers} associated with the table.
      */
     public List<TableSignedIdentifier> getIdentifiers() {

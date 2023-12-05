@@ -1,15 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.9 (2023-12-04)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- An `EmailMessage` with null recipient addresses can no longer be sent.
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-communication-common` from `1.2.14` to version `1.2.15`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.0.8 (2023-11-20)
 
@@ -21,6 +21,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 - Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
+
 ## 1.0.7 (2023-10-20)
 
 ### Other Changes
@@ -30,6 +31,7 @@
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-communication-common` from `1.2.12` to version `1.2.13`.
+
 
 ## 1.0.6 (2023-09-22)
 
@@ -41,6 +43,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 - Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
 
+
 ## 1.0.5 (2023-08-18)
 
 ### Other Changes
@@ -49,6 +52,8 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
 - Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+- Upgraded `azure-communication-common` from `1.2.10` to version `1.2.11`.
+
 
 ## 1.0.4 (2023-07-25)
 
@@ -71,6 +76,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
 
+
 ## 1.0.2 (2023-05-23)
 
 ### Other Changes
@@ -80,6 +86,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 - Upgraded `azure-communication-common` from `1.2.6` to version `1.2.8`.
 - Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
 
 ## 1.0.1 (2023-04-25)
 

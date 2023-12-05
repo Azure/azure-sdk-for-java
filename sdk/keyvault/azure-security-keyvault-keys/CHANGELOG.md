@@ -1,14 +1,14 @@
 # Release History
 
-## 4.8.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 4.7.3 (2023-12-04)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 4.7.2 (2023-11-20)
 
@@ -19,15 +19,6 @@
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
-## 4.8.0-beta.1 (2023-11-09)
-
-### Features Added
-- Added support for service version `7.5-preview.1`.
-- Added `KeyProperties.getHsmPlatform()` to get the underlying HSM platform that a key was generated with.
-
-#### Dependency Updates
-- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
-- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
 
 ## 4.7.1 (2023-10-20)
 
@@ -37,6 +28,7 @@
 
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
 
 ## 4.7.0 (2023-09-25)
 

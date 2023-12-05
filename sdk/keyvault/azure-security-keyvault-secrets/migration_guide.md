@@ -1,5 +1,5 @@
 # Guide for migrating to azure-security-keyvault-secrets from azure-keyvault
-This guide is intended to assist in the migration to `azure-security-keyvault-secrets` from [deprecated] `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
+This guide is intended to assist in the migration to `azure-security-keyvault-secrets` from `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
 
 Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Secret client library for Java, please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/README.md) rather than this guide.
 
@@ -18,7 +18,6 @@ Familiarity with the `azure-keyvault` package is assumed. For those new to the K
         - [List properties of secrets](#list-properties-of-secrets)
         - [Delete a secret](#delete-a-secret)
 - [Additional samples](#additional-samples)
-- [Support](#support)
 
 ## Migration benefits
 A natural question to ask when considering whether or not to adopt a new version or library is what the benefits of doing so would be. As Azure has matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and practices to best support developer productivity and to understand the gaps that the Java client libraries have.
@@ -229,13 +228,3 @@ secretClient.purgeDeletedSecret("<secret-name>");
 
 ## Additional samples
 More examples can be found [here](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples).
-
-## Support
-
-If you have migrated your code base and experiencing errors, see our [troubleshooting guide][troubleshooting_guide]. For additional support, please search our [existing issues][existing_issues] or [open a new issue][open_new_issue]. You may also find existing answers on community sites like [Stack Overflow].
-
-[deprecated]: https://aka.ms/azsdk/deprecated
-[existing_issues]: https://github.com/Azure/azure-sdk-for-java/issues
-[open_new_issue]: https://github.com/Azure/azure-sdk-for-java/issues/new/choose
-[stack_overflow]: https://stackoverflow.com/questions/tagged/azure-keyvault+java
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/TROUBLESHOOTING.md

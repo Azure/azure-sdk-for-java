@@ -75,9 +75,9 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
  *
- * <br>
+ * <br/>
  *
- * <hr>
+ * <hr/>
  *
  * <h2>Encrypt Data</h2>
  * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} or
@@ -102,9 +102,9 @@
  * <p><strong>Note:</strong> For the asynchronous sample, refer to
  * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}.</p>
  *
- * <br>
+ * <br/>
  *
- * <hr>
+ * <hr/>
  *
  * <h2>Decrypt Data</h2>
  * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} or

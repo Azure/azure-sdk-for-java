@@ -10,9 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 
 /** Restore operation. */
 @Fluent
@@ -135,11 +132,8 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      *
      * @return the startTime value.
      */
-    public OffsetDateTime getStartTime() {
-        if (this.startTime == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startTime), ZoneOffset.UTC);
+    public Long getStartTime() {
+        return this.startTime;
     }
 
     /**
@@ -148,12 +142,8 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      * @param startTime the startTime value to set.
      * @return the RestoreOperation object itself.
      */
-    public RestoreOperation setStartTime(OffsetDateTime startTime) {
-        if (startTime == null) {
-            this.startTime = null;
-        } else {
-            this.startTime = startTime.toEpochSecond();
-        }
+    public RestoreOperation setStartTime(Long startTime) {
+        this.startTime = startTime;
         return this;
     }
 
@@ -162,11 +152,8 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      *
      * @return the endTime value.
      */
-    public OffsetDateTime getEndTime() {
-        if (this.endTime == null) {
-            return null;
-        }
-        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
+    public Long getEndTime() {
+        return this.endTime;
     }
 
     /**
@@ -175,12 +162,8 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
      * @param endTime the endTime value to set.
      * @return the RestoreOperation object itself.
      */
-    public RestoreOperation setEndTime(OffsetDateTime endTime) {
-        if (endTime == null) {
-            this.endTime = null;
-        } else {
-            this.endTime = endTime.toEpochSecond();
-        }
+    public RestoreOperation setEndTime(Long endTime) {
+        this.endTime = endTime;
         return this;
     }
 
