@@ -1,0 +1,27 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/phoneNumbers/invalid-phone-number/capabilities?api-version=2022-01-11-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "aa5584a3-62e9-4133-a8d7-343117f7fbf8",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2021-03-07, 2022-01-11-preview2, 2022-06-01-preview, 2022-12-01",
+      "X-Processing-Time" : "267ms",
+      "MS-CV" : "mSLGbh5nJ0uDckDfWq42BQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05zC3YwAAAADS56k9qb/MQain7/VaNVhyU0FPMzFFREdFMTEwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"InternalError\",\"message\":\"The server encountered an internal error.\"}}",
+      "Date" : "Thu, 05 Jan 2023 20:19:51 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
