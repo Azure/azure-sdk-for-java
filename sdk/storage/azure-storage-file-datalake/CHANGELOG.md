@@ -1,16 +1,5 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-- Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
-
-### Other Changes
-
 ## 12.18.0 (2023-11-08)
 
 ### Features Added
