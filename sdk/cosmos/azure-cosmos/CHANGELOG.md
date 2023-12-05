@@ -7,8 +7,10 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed high number of PKRangeFeed calls when using BulkExecution without SparkConnector - See [PR 37920](https://github.com/Azure/azure-sdk-for-java/pull/37920) 
 
 #### Other Changes
+* Changed to `DEBUG` log level in `WebExceptionRetryPolicy` for non-handled exception scenario and retry scenario - See [PR 37918](https://github.com/Azure/azure-sdk-for-java/pull/37918)
 
 ### 4.53.0 (2023-12-01)
 #### Bugs Fixed
