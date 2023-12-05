@@ -21,21 +21,18 @@ public final class MetricAvailability {
     private Duration timeGrain;
 
     /*
-     * the retention period for the metric at the specified timegrain. Expressed as a duration 'PT1M', 'P1D', etc.
+     * the retention period for the metric at the specified timegrain.  Expressed as a duration 'PT1M', 'P1D', etc.
      */
     @JsonProperty(value = "retention")
     private Duration retention;
 
-    /**
-     * Creates an instance of MetricAvailability class.
-     */
-    public MetricAvailability() {
-    }
+    /** Creates an instance of MetricAvailability class. */
+    public MetricAvailability() {}
 
     /**
      * Get the timeGrain property: the time grain specifies the aggregation interval for the metric. Expressed as a
      * duration 'PT1M', 'P1D', etc.
-     * 
+     *
      * @return the timeGrain value.
      */
     public Duration getTimeGrain() {
@@ -45,7 +42,7 @@ public final class MetricAvailability {
     /**
      * Set the timeGrain property: the time grain specifies the aggregation interval for the metric. Expressed as a
      * duration 'PT1M', 'P1D', etc.
-     * 
+     *
      * @param timeGrain the timeGrain value to set.
      * @return the MetricAvailability object itself.
      */
@@ -57,7 +54,7 @@ public final class MetricAvailability {
     /**
      * Get the retention property: the retention period for the metric at the specified timegrain. Expressed as a
      * duration 'PT1M', 'P1D', etc.
-     * 
+     *
      * @return the retention value.
      */
     public Duration getRetention() {
@@ -67,7 +64,7 @@ public final class MetricAvailability {
     /**
      * Set the retention property: the retention period for the metric at the specified timegrain. Expressed as a
      * duration 'PT1M', 'P1D', etc.
-     * 
+     *
      * @param retention the retention value to set.
      * @return the MetricAvailability object itself.
      */
@@ -75,4 +72,11 @@ public final class MetricAvailability {
         this.retention = retention;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

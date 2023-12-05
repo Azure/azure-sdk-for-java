@@ -8,7 +8,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.LogsQueryAsyncClient;
-import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -180,7 +179,7 @@ public final class MetricsHelper {
             ? null
             : AggregationType.fromString(definition.getPrimaryAggregationType().toString());
         List<AggregationType> supportedAggregationTypes = null;
-        if (!CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
+        if (CoreUtils.isNullOrEmpty(definition.getSupportedAggregationTypes())) {
             supportedAggregationTypes = definition.getSupportedAggregationTypes()
                 .stream()
                 .map(aggregationType -> AggregationType.fromString(aggregationType.toString()))
@@ -208,44 +207,5 @@ public final class MetricsHelper {
     private MetricsHelper() {
         // private ctor
     }
-
-
-    public static MetricsQueryResult mapToMetricsQueryResult(MetricResultsResponseValuesItem item) {
-        List<MetricResult> metrics = item.getValue()
-            .stream()
-            .map(metric -> mapToMetrics(metric))
-            .collect(Collectors.toList());
-
-        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(/* TODO (srnagar): fix this item.getCost() */ null,
-            new QueryTimeInterval(item.getInterval()), item.getInterval(), item.getNamespace(), item.getResourceregion(), metrics);
-        return metricsQueryResult;
-    }
-
-    public static MetricResult mapToMetrics(com.azure.monitor.query.implementation.metricsbatch.models.Metric metric) {
-        List<com.azure.monitor.query.models.TimeSeriesElement> timeSeries = metric.getTimeseries().stream().map(ts -> mapToTimeSeries(ts)).collect(Collectors.toList());
-        MetricResult metricResult = new MetricResult(metric.getId(), metric.getType(), MetricUnit.fromString(metric.getUnit().toString()),
-            metric.getName().getValue(), timeSeries, metric.getDisplayDescription(),
-            new ResponseError(metric.getErrorCode(), metric.getErrorMessage()));
-        return metricResult;
-    }
-
-    public static com.azure.monitor.query.models.TimeSeriesElement mapToTimeSeries(com.azure.monitor.query.implementation.metricsbatch.models.TimeSeriesElement ts) {
-        List<com.azure.monitor.query.models.MetricValue> values = ts.getData().stream().map(mv -> mapToMetricValue(mv)).collect(Collectors.toList());
-        Map<String, String> metadata = ts.getMetadatavalues().stream().collect(Collectors.toMap(md -> md.getName().getValue(), md -> md.getValue()));
-        com.azure.monitor.query.models.TimeSeriesElement timeSeriesElement = new com.azure.monitor.query.models.TimeSeriesElement(values, metadata);
-        return timeSeriesElement;
-    }
-
-    public static com.azure.monitor.query.models.MetricValue mapToMetricValue(com.azure.monitor.query.implementation.metricsbatch.models.MetricValue mv) {
-        com.azure.monitor.query.models.MetricValue metricValue = new com.azure.monitor.query.models.MetricValue(mv.getTimeStamp(), mv.getAverage(), mv.getMinimum(), mv.getMaximum(), mv.getTotal(), mv.getCount());
-        return metricValue;
-    }
-
-    public static String getSubscriptionFromResourceId(String s) {
-        int i = s.indexOf("subscriptions/") + 14;
-        String subscriptionId = s.substring(i, s.indexOf("/", i));
-        return subscriptionId;
-    }
-
 
 }

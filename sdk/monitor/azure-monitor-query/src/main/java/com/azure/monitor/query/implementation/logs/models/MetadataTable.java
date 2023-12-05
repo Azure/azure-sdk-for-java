@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * A data table that takes part in a workspace schema.
- * 
- * Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
+ *
+ * <p>Tables are part of the workspace schema, and contain a list of columns and a reference to other relevant metadata
  * items.
  */
 @Fluent
@@ -73,20 +73,21 @@ public final class MetadataTable {
 
     /**
      * Creates an instance of MetadataTable class.
-     * 
+     *
      * @param id the id value to set.
      * @param name the name value to set.
      */
     @JsonCreator
-    public MetadataTable(@JsonProperty(value = "id", required = true) String id,
-        @JsonProperty(value = "name", required = true) String name) {
+    public MetadataTable(
+            @JsonProperty(value = "id", required = true) String id,
+            @JsonProperty(value = "name", required = true) String name) {
         this.id = id;
         this.name = name;
     }
 
     /**
      * Get the id property: The ID of the table.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -95,7 +96,7 @@ public final class MetadataTable {
 
     /**
      * Get the name property: The name of the table.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -104,7 +105,7 @@ public final class MetadataTable {
 
     /**
      * Get the description property: The description of the table.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -113,7 +114,7 @@ public final class MetadataTable {
 
     /**
      * Set the description property: The description of the table.
-     * 
+     *
      * @param description the description value to set.
      * @return the MetadataTable object itself.
      */
@@ -124,7 +125,7 @@ public final class MetadataTable {
 
     /**
      * Get the timespanColumn property: The column associated with the timespan query parameter for the table.
-     * 
+     *
      * @return the timespanColumn value.
      */
     public String getTimespanColumn() {
@@ -133,7 +134,7 @@ public final class MetadataTable {
 
     /**
      * Set the timespanColumn property: The column associated with the timespan query parameter for the table.
-     * 
+     *
      * @param timespanColumn the timespanColumn value to set.
      * @return the MetadataTable object itself.
      */
@@ -144,7 +145,7 @@ public final class MetadataTable {
 
     /**
      * Get the labels property: The user defined labels of the table.
-     * 
+     *
      * @return the labels value.
      */
     public List<String> getLabels() {
@@ -153,7 +154,7 @@ public final class MetadataTable {
 
     /**
      * Set the labels property: The user defined labels of the table.
-     * 
+     *
      * @param labels the labels value to set.
      * @return the MetadataTable object itself.
      */
@@ -164,7 +165,7 @@ public final class MetadataTable {
 
     /**
      * Get the tags property: The tags associated with the table.
-     * 
+     *
      * @return the tags value.
      */
     public Object getTags() {
@@ -173,7 +174,7 @@ public final class MetadataTable {
 
     /**
      * Set the tags property: The tags associated with the table.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the MetadataTable object itself.
      */
@@ -184,7 +185,7 @@ public final class MetadataTable {
 
     /**
      * Get the properties property: The properties of the table.
-     * 
+     *
      * @return the properties value.
      */
     public Object getProperties() {
@@ -193,7 +194,7 @@ public final class MetadataTable {
 
     /**
      * Set the properties property: The properties of the table.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the MetadataTable object itself.
      */
@@ -204,7 +205,7 @@ public final class MetadataTable {
 
     /**
      * Get the columns property: The list of columns defined on the table.
-     * 
+     *
      * @return the columns value.
      */
     public List<MetadataTableColumnsItem> getColumns() {
@@ -213,7 +214,7 @@ public final class MetadataTable {
 
     /**
      * Set the columns property: The list of columns defined on the table.
-     * 
+     *
      * @param columns the columns value to set.
      * @return the MetadataTable object itself.
      */
@@ -224,7 +225,7 @@ public final class MetadataTable {
 
     /**
      * Get the related property: The related metadata items for the table.
-     * 
+     *
      * @return the related value.
      */
     public MetadataTableRelated getRelated() {
@@ -233,12 +234,32 @@ public final class MetadataTable {
 
     /**
      * Set the related property: The related metadata items for the table.
-     * 
+     *
      * @param related the related value to set.
      * @return the MetadataTable object itself.
      */
     public MetadataTable setRelated(MetadataTableRelated related) {
         this.related = related;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getId() == null) {
+            throw new IllegalArgumentException("Missing required property id in model MetadataTable");
+        }
+        if (getName() == null) {
+            throw new IllegalArgumentException("Missing required property name in model MetadataTable");
+        }
+        if (getColumns() != null) {
+            getColumns().forEach(e -> e.validate());
+        }
+        if (getRelated() != null) {
+            getRelated().validate();
+        }
     }
 }
