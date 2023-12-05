@@ -14,7 +14,7 @@
 
 _**Note: [Form Recognizer has been rebranded to Document Intelligence](https://mixedrealitywiki.com/display/VTI/Document+Intelligence+2023-10-31-preview#DocumentIntelligence20231031preview-Rebranding)**_
 
-This marks the first preview of `azure-ai-documentintelligence` REST level client library for the `Azure AI Document
+This marks the first preview of `azure-ai-documentintelligence` client library for the `Azure AI Document
 Intelligence` service (formerly known as Form Recognizer), targeting service API version `"2023-10-31-preview"`.
 
 It is developer-friendly and idiomatic to the Java ecosystem. The principles that guide our efforts can be found in the
@@ -24,8 +24,6 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 ### Features Added
 
-- Updates all REST API operation paths from `{endpoint}/formrecognizer` to `{endpoint}/documentintelligence`. SDK would
-  handle this change automatically, users would not have to do additional work to support this.
 - [azure-ai-documentintelligence](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence) 
   is the new package, replacing [azure-ai-formrecognizer](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer)
   package. The new package supports a REST level client, which is part of the new generation of Azure SDKs to simplify 
@@ -70,9 +68,12 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 ### Breaking Changes
 
-- The SDKs targeting API 2023-10-31-preview have renamed the clients:
+- The SDKs targeting service API version `2023-10-31-preview` have renamed the clients to
     - `DocumentIntelligenceAdministrationClient`/`DocumentIntelligenceAdministrationAsyncClient`
     - `DocumentIntelligenceClient`/`DocumentIntelligenceAsyncClient`
+  which is different from older `azure-ai-formrecognizer` SDKs which targeting service API version `2023-07-31` and `2022-08-31`.
+    - `DocumentAnalysisClient`/`DocumentAnalysisAsyncClient`
+    - `DocumentModelAdministrationClient`/`DocumentModelAdministrationAsyncClient`
   
 - **prebuilt-receipt** - Currency related fields have been updated. Currency symbol ("$") and code ("USD") are returned along with the amount as shown below.
 

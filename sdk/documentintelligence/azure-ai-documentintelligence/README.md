@@ -40,11 +40,9 @@ This table shows the relationship between SDK versions and supported API version
 |--------------|-
 | 1.0.0-beta.1 | 2023-10-31-preview
 
-> Note: `Azure AI Document Intelligence` service (formerly known as Form Recognizer), start targeting service API 
-> version `"2023-10-31-preview"`. Please rely on the older `azure-ai-formrecognizer` library through the older service 
-> API versions for retired models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. 
-> For more information, see [Changelog][changelog]. The below table describes the relationship of each client and its
-> supported API version(s):
+> Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
+> models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
+> The below table describes the relationship of each client and its supported API version(s):
 
 | API version        |Supported clients
 |--------------------|-
