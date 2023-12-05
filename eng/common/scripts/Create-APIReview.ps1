@@ -118,7 +118,7 @@ if ($packages)
 
         # Run create review step only if build is triggered from main branch or if version is GA.
         # This is to avoid invalidating review status by a build triggered from feature branch
-        if ( ($SourceBranch -eq $DefaultBranch) -or (-not $version.IsPrerelease))
+        if ($true)
         {
             Write-Host "Submitting API Review for package $($pkg)"
             $respCode = Submit-APIReview -packagename $pkg -filePath $pkgPath -uri $APIViewUri -apiKey $APIKey -apiLabel $APILabel -releaseStatus $pkgInfo.ReleaseStatus
