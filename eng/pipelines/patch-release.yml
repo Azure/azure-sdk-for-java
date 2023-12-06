@@ -20,10 +20,6 @@ extends:
       groupId: com.azure
       safeName: azuresearch
       ServiceDirectory: search
-    - name: azure-communication-jobrouter
-      groupId: com.azure
-      safeName: azurecommunicationjobrouterclient
-      ServiceDirectory: communication
     - name: azure-messaging-servicebus
       groupId: com.azure
       safeName: azuremessagingservicebus
@@ -36,4 +32,3 @@ extends:
       groupId: com.azure
       safeName: azurecommunicationcallautomation
       ServiceDirectory: communication
-
