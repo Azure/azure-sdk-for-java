@@ -12,7 +12,7 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,8 +96,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final Mono<ServiceBusAmqpConnection> connectionProcessor;
-    private final String fullyQualifiedNamespace;
+    private final ServiceBusConnectionProcessor connectionProcessor;
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
@@ -106,17 +105,15 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
-     * @param connectionCacheWrapper The AMQP connection to the Service Bus resource.
+     * @param connectionProcessor The AMQP connection to the Service Bus resource.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        ConnectionCacheWrapper connectionCacheWrapper, Runnable onClientClose) {
+        ServiceBusConnectionProcessor connectionProcessor, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        Objects.requireNonNull(connectionCacheWrapper,
-            "'connectionSupport' cannot be null.");
-        this.connectionProcessor = connectionCacheWrapper.getConnection();
-        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
+            "'connectionProcessor' cannot be null.");
         this.onClientClose = onClientClose;
     }
 
@@ -126,7 +123,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return fullyQualifiedNamespace;
+        return connectionProcessor.getFullyQualifiedNamespace();
     }
 
     /**

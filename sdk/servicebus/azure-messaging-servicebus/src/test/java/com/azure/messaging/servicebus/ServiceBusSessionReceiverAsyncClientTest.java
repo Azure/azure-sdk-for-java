@@ -71,7 +71,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.ASYNC_RECEIVER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
-    private ConnectionCacheWrapper connectionCacheWrapper;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable autoCloseable;
 
@@ -119,7 +118,6 @@ class ServiceBusSessionReceiverAsyncClientTest {
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
-        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
     }
 
     @AfterEach
@@ -171,7 +169,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionCacheWrapper, instrumentation,
+            connectionProcessor, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER
         );
@@ -198,7 +196,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
             false, null, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, instrumentation.getTracer());
 
         final int numberOfMessages = 5;
@@ -267,7 +265,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionCacheWrapper, instrumentation,
+            connectionProcessor, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER
         );
@@ -335,7 +333,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
             any(MessagingEntityType.class), eq(CLIENT_IDENTIFIER), eq(sessionId))).thenReturn(Mono.just(amqpReceiveLink));
 
         final ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, receiverOptions, connectionCacheWrapper, instrumentation,
+            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, instrumentation,
             messageSerializer, () -> {
         }, CLIENT_IDENTIFIER);
 

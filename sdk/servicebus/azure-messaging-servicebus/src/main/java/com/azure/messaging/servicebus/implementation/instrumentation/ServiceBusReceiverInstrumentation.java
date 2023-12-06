@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.function.Function;
 
 /**
  * Contains convenience methods to instrument specific calls with traces and metrics.
@@ -37,28 +36,11 @@ public final class ServiceBusReceiverInstrumentation {
     }
 
     /**
-     * Checks if any receiver instrumentation is enabled
-     */
-    public boolean isEnabled() {
-        return tracer.isEnabled() || meter.isSettlementEnabled() || meter.isConsumerLagEnabled();
-    }
-
-    /**
      * Checks if the instrumentation is created for processor client.
-     *
-     * @return true if the instrumentation is created to instrument message receive using processor client, false otherwise.
+     * @return
      */
     public boolean isProcessorInstrumentation() {
         return receiverKind == ReceiverKind.PROCESSOR;
-    }
-
-    /**
-     * Checks if the instrumentation is created for Reactor async receiver client.
-     *
-     * @return true if the instrumentation is created to instrument message receive using Reactor receiver client, false otherwise.
-     */
-    public boolean isAsyncReceiverInstrumentation() {
-        return receiverKind == ReceiverKind.ASYNC_RECEIVER;
     }
 
     /**
@@ -67,37 +49,15 @@ public final class ServiceBusReceiverInstrumentation {
      * for sync receiver.
      * Reports consumer lag metric.
      */
-    public Context startProcessInstrumentation(String name, ServiceBusReceivedMessage message, Context parent) {
+    public Context instrumentProcess(String name, ServiceBusReceivedMessage message, Context parent) {
         if (message == null || (!tracer.isEnabled() && !meter.isConsumerLagEnabled())) {
             return parent;
         }
 
         Context span = (tracer.isEnabled() && receiverKind != ReceiverKind.SYNC_RECEIVER) ? tracer.startProcessSpan(name, message, parent) : parent;
-
-        // important to record metric after span is started
         meter.reportConsumerLag(message.getEnqueuedTime(), span);
 
         return span;
-    }
-
-    public void instrumentProcess(ServiceBusReceivedMessage message, ReceiverKind caller, Function<ServiceBusReceivedMessage, Throwable> handleMessage) {
-        if (receiverKind != caller) {
-            handleMessage.apply(message);
-            return;
-        }
-
-        Context span = startProcessInstrumentation("ServiceBus.process", message, Context.NONE);
-        ContextAccessor.setContext(message, span);
-        AutoCloseable scope = tracer.makeSpanCurrent(span);
-        Throwable error = null;
-        try {
-            error = handleMessage.apply(message);
-        } catch (Throwable t) {
-            error = t;
-            throw t;
-        } finally {
-            tracer.endSpan(error, span, scope);
-        }
     }
 
     /**

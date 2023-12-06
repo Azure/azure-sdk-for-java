@@ -205,7 +205,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final ServiceBusTracer tracer;
     private Disposable monitorDisposable;
     private boolean wasStopped = false;
-    private final ServiceBusProcessor processorV2;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -229,24 +228,17 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
+        ServiceBusReceiverAsyncClient client = sessionReceiverBuilder.buildAsyncClientForProcessor();
+        this.asyncClient.set(client);
         this.receiverBuilder = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        if (processorOptions.isV2()) {
-            final int concurrencyPerSession = this.processorOptions.getMaxConcurrentCalls();
-            this.processorV2 = new ServiceBusProcessor(sessionReceiverBuilder, processMessage, processError, concurrencyPerSession);
-            this.tracer = null;
-        } else {
-            this.processorV2 = null;
-            ServiceBusReceiverAsyncClient client = sessionReceiverBuilder.buildAsyncClientForProcessor();
-            this.asyncClient.set(client);
-            this.tracer = client.getInstrumentation().getTracer();
-        }
+        this.tracer = client.getInstrumentation().getTracer();
     }
 
     /**
-     * Constructor to create a non-session processor.
+     * Constructor to create a processor.
      *
      * @param receiverBuilder The processor builder to create new instances of async clients.
      * @param queueName The name of the queue this processor is associated with.
@@ -265,21 +257,13 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
 
+        ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
+        this.asyncClient.set(client);
         this.sessionReceiverBuilder = null;
         this.queueName = queueName;
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
-        if (this.processorOptions.isV2()) {
-            final int concurrency = this.processorOptions.getMaxConcurrentCalls();
-            final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
-            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency, enableAutoDisposition);
-            this.tracer = null;
-        } else {
-            this.processorV2 = null;
-            final ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClientForProcessor();
-            this.asyncClient.set(client);
-            this.tracer = client.getInstrumentation().getTracer();
-        }
+        this.tracer = client.getInstrumentation().getTracer();
     }
 
     /**
@@ -295,10 +279,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * </p>
      */
     public synchronized void start() {
-        if (processorV2 != null) {
-            processorV2.start();
-            return;
-        }
         if (isRunning.getAndSet(true)) {
             LOGGER.info("Processor is already running");
             return;
@@ -335,10 +315,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * processor can resume processing messages by calling {@link #start()} again.
      */
     public synchronized void stop() {
-        if (processorV2 != null) {
-            processorV2.stop();
-            return;
-        }
         wasStopped = true;
         isRunning.set(false);
     }
@@ -349,10 +325,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     @Override
     public synchronized void close() {
-        if (processorV2 != null) {
-            processorV2.close();
-            return;
-        }
         isRunning.set(false);
         receiverSubscriptions.keySet().forEach(Subscription::cancel);
         receiverSubscriptions.clear();
@@ -373,9 +345,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @return {@code true} if the processor is running; {@code false} otherwise.
      */
     public synchronized boolean isRunning() {
-        if (processorV2 != null) {
-            return processorV2.isRunning();
-        }
         return isRunning.get();
     }
 
@@ -415,9 +384,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @return The identifier that can identify the instance of {@link ServiceBusProcessorClient}.
      */
     public synchronized String getIdentifier() {
-        if (processorV2 != null) {
-            return processorV2.getIdentifier();
-        }
         if (asyncClient.get() == null) {
             asyncClient.set(createNewReceiver());
         }
