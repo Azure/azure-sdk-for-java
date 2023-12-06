@@ -11,6 +11,7 @@
 
   <modules>
     <module>generic-core</module>
+    <module>generic-core-http-okhttp</module>
     <module>generic-json</module>
   </modules>
 </project>
