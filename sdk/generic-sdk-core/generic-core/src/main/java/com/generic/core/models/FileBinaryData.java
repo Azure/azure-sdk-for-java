@@ -113,6 +113,10 @@ public class FileBinaryData extends BinaryData {
 
     @Override
     public byte[] toBytes() {
+        if (length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
@@ -136,7 +140,7 @@ public class FileBinaryData extends BinaryData {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        if (length > Integer.MAX_VALUE) {
+        if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 

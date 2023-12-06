@@ -61,6 +61,10 @@ public final class InputStreamBinaryData extends BinaryData {
 
     @Override
     public byte[] toBytes() {
+        if (length != null && length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 

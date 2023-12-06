@@ -50,6 +50,10 @@ public final class ListByteBufferBinaryData extends BinaryData {
 
     @Override
     public byte[] toBytes() {
+        if (getLength() > MAX_ARRAY_SIZE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + getLength()));
+        }
+
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
