@@ -34,6 +34,16 @@
   <!-- Repositories definitions -->
   <repositories>
     <repository>
+      <id>azure-sdk-for-java-playground</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground/maven/v1</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>ossrh</id>
       <name>Sonatype Snapshots</name>
       <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
