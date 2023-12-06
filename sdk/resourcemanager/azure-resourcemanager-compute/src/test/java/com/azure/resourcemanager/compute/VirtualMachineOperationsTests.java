@@ -6,13 +6,17 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -24,6 +28,7 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.PowerState;
@@ -125,9 +130,16 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withUserData(userDataForCreate)
             .create();
+        Response<VirtualMachineInner> response = computeManager.serviceClient().getVirtualMachines()
+            .getByResourceGroupWithResponse(rgName, vmName, InstanceViewTypes.USER_DATA, Context.NONE);
+        Assertions.assertEquals(userDataForCreate, response.getValue().userData());
 
         // Update
-        vm.update().withUserData(userDataForUpdate).apply();
+        computeManager.serviceClient().getVirtualMachines()
+            .update(rgName, vmName, new VirtualMachineUpdateInner().withUserData(userDataForUpdate));
+        response = computeManager.serviceClient().getVirtualMachines()
+            .getByResourceGroupWithResponse(rgName, vmName, InstanceViewTypes.USER_DATA, Context.NONE);
+        Assertions.assertEquals(userDataForUpdate, response.getValue().userData());
     }
 
     @Test

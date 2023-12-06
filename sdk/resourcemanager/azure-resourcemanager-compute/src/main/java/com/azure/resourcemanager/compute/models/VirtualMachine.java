@@ -441,6 +441,13 @@ public interface VirtualMachine
      */
     DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
 
+    /**
+     * Gets the user data for the virtual machine.
+     *
+     * @return the user data for the virtual machine.
+     */
+    String userData();
+
     // Setters
     //
 

@@ -2041,6 +2041,11 @@ class VirtualMachineImpl
         return this.innerModel().evictionPolicy();
     }
 
+    @Override
+    public String userData() {
+        return this.innerModel().userData();
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
     @Override
     public void beforeGroupCreateOrUpdate() {
