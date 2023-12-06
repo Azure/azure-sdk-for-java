@@ -714,7 +714,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                                     }
                                     argumentsBuilder.append(functionCall.getArguments());
                                 }
-                                if(i < totalStreamMessages - 1) {
+                                if (i < totalStreamMessages - 1) {
                                     assertNull(chatChoice.getFinishReason());
                                 } else {
                                     assertEquals(CompletionsFinishReason.TOOL_CALLS, chatChoice.getFinishReason());
@@ -743,7 +743,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertEquals(1, chatChoices.size());
                         ChatChoice chatChoice = chatChoices.get(0);
                         contentBuilder.append(chatChoice.getDelta().getContent());
-                        if(j < totalStreamFollowUpMessages - 1) {
+                        if (j < totalStreamFollowUpMessages - 1) {
                             assertNull(chatChoice.getFinishReason());
                         } else {
                             assertEquals(CompletionsFinishReason.STOPPED, chatChoice.getFinishReason());

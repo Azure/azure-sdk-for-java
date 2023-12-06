@@ -4,10 +4,8 @@
 package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
-import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
-import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -79,7 +77,7 @@ public class GetChatCompletionsToolCallAsyncSample {
                     System.out.println("Location Name: " + parameters.locationName);
                     System.out.println("Date: " + parameters.date);
 
-                    String functionCallResult = FutureTemperature(parameters.locationName, parameters.date);
+                    String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
                     ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
                     assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
@@ -116,7 +114,7 @@ public class GetChatCompletionsToolCallAsyncSample {
     }
 
     // In this example we ignore the parameters for our tool function
-    private static String FutureTemperature(String locationName, String data) {
+    private static String futureTemperature(String locationName, String data) {
         return "-7 C";
     }
 

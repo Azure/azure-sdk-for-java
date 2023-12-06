@@ -74,14 +74,14 @@ public class GetChatCompletionsToolCallStreamSample {
                 continue;
             }
             ChatChoice choice = chatCompletions.getChoices().get(0);
-            if (choice.getFinishReason() != null){
+            if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
             }
             List<ChatCompletionsToolCall> toolCalls = choice.getDelta().getToolCalls();
             // We take the functionName when it's available, and we aggregate the arguments.
             // We also monitor FinishReason for TOOL_CALL. That's the LLM signaling we should
             // call our function
-            if(toolCalls != null) {
+            if (toolCalls != null) {
                 ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                 if (toolCall != null) {
                     functionArguments.append(toolCall.getFunction().getArguments());
@@ -89,7 +89,7 @@ public class GetChatCompletionsToolCallStreamSample {
                         toolCallId = toolCall.getId();
                     }
 
-                    if(toolCall.getFunction().getName() != null) {
+                    if (toolCall.getFunction().getName() != null) {
                         functionName = toolCall.getFunction().getName();
                     }
                 }
@@ -120,7 +120,7 @@ public class GetChatCompletionsToolCallStreamSample {
             FunctionArguments parameters = BinaryData.fromString(functionArguments.toString()).toObject(FunctionArguments.class);
             System.out.println("Location Name: " + parameters.locationName);
             System.out.println("Date: " + parameters.date);
-            String functionCallResult = FutureTemperature(parameters.locationName, parameters.date);
+            String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
             // This message contains the information that will allow the LLM to resume the text generation
             ChatRequestToolMessage toolRequestMessage = new ChatRequestToolMessage(functionCallResult, toolCallId);
@@ -142,7 +142,7 @@ public class GetChatCompletionsToolCallStreamSample {
                     continue;
                 }
                 ChatChoice choice = chatCompletions.getChoices().get(0);
-                if (choice.getFinishReason() != null){
+                if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
                 }
                 if (choice.getDelta().getContent() != null) {
@@ -158,7 +158,7 @@ public class GetChatCompletionsToolCallStreamSample {
     }
 
     // In this example we ignore the parameters for our tool function
-    private static String FutureTemperature(String locationName, String data) {
+    private static String futureTemperature(String locationName, String data) {
         return "-7 C";
     }
 

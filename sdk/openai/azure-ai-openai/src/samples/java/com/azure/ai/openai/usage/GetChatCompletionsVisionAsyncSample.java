@@ -48,8 +48,8 @@ public class GetChatCompletionsVisionAsyncSample {
         chatCompletionsOptions.setMaxTokens(2048);
         client.getChatCompletions(modelId, chatCompletionsOptions)
                 .subscribe(chatCompletions -> System.out.println("Chat completion: " + chatCompletions.getChoices().get(0).getMessage().getContent()),
-                error -> System.err.println("There was an error getting chat completions." + error),
-                () -> System.out.println("Completed called getChatCompletions."));
+                    error -> System.err.println("There was an error getting chat completions." + error),
+                    () -> System.out.println("Completed called getChatCompletions."));
 
         TimeUnit.SECONDS.sleep(10);
     }

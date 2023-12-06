@@ -76,7 +76,7 @@ public class GetChatCompletionsToolCallSample {
             System.out.println("Location Name: " + parameters.locationName);
             System.out.println("Date: " + parameters.date);
 
-            String functionCallResult = FutureTemperature(parameters.locationName, parameters.date);
+            String functionCallResult = futureTemperature(parameters.locationName, parameters.date);
 
             ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
             assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
@@ -105,7 +105,7 @@ public class GetChatCompletionsToolCallSample {
     }
 
     // In this example we ignore the parameters for our tool function
-    private static String FutureTemperature(String locationName, String data) {
+    private static String futureTemperature(String locationName, String data) {
         return "-7 C";
     }
 
