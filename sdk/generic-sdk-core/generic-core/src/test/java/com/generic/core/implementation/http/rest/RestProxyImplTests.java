@@ -112,8 +112,13 @@ public class RestProxyImplTests {
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
                                            Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues =
-            RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> actualContextValues = new HashMap<>();
+
+        Context merged = RestProxyUtils.mergeRequestOptionsContext(context, options);
+        while (merged != null) {
+            actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
+            merged = merged.getParent();
+        }
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
 

@@ -7,8 +7,6 @@ import com.generic.core.annotation.Immutable;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,7 +28,7 @@ public class Context {
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null, 0) {
+    public static final Context NONE = new Context(null, new Object(), null, 0) {
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
@@ -38,11 +36,6 @@ public class Context {
             }
 
             return Optional.empty();
-        }
-
-        @Override
-        public Map<Object, Object> getValues() {
-            return Collections.emptyMap();
         }
 
         @Override
@@ -55,8 +48,6 @@ public class Context {
     private final Object key;
     private final Object value;
     private final int contextCount;
-
-    private Map<Object, Object> valuesMap;
 
     /**
      * Constructs a new {@link Context} object.
@@ -85,11 +76,36 @@ public class Context {
         this.contextCount = contextCount;
     }
 
-    Object getKey() {
+    /**
+     * Gets the parent {@link Context} object.
+     * <p>
+     * Returns null is this is the root {@link Context}.
+     *
+     * @return The parent {@link Context} object, or null if this is the root {@link Context}.
+     */
+    public Context getParent() {
+        return parent;
+    }
+
+    /**
+     * Gets the key associated with this {@link Context} object.
+     * <p>
+     * The key will never be null.
+     *
+     * @return The key associated with this {@link Context} object.
+     */
+    public Object getKey() {
         return key;
     }
 
-    Object getValue() {
+    /**
+     * Gets the value associated with this {@link Context} object.
+     * <p>
+     * The value may be null.
+     *
+     * @return The value associated with this {@link Context} object.
+     */
+    public Object getValue() {
         return value;
     }
 
@@ -115,38 +131,6 @@ public class Context {
         }
 
         return new Context(this, key, value, contextCount + 1);
-    }
-
-    /**
-     * Creates a new immutable {@link Context} object with all the keys and values provided by the input {@link Map}.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <!-- src_embed com.generic.core.util.context.of#map -->
-     * <!-- end com.generic.core.util.context.of#map -->
-     *
-     * @param keyValues The input key value pairs that will be added to this context.
-     *
-     * @return Context object containing all the key-value pairs in the input map.
-     *
-     * @throws IllegalArgumentException If {@code keyValues} is {@code null} or empty
-     */
-    public static Context of(Map<Object, Object> keyValues) {
-        if (CoreUtils.isNullOrEmpty(keyValues)) {
-            throw new IllegalArgumentException("Key value map cannot be null or empty");
-        }
-
-        Context context = null;
-
-        for (Map.Entry<Object, Object> entry : keyValues.entrySet()) {
-            if (context == null) {
-                context = new Context(entry.getKey(), entry.getValue());
-            } else {
-                context = context.addData(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return context;
     }
 
     /**
@@ -183,46 +167,6 @@ public class Context {
 
         // This should never be reached but is required by the compiler.
         return Optional.empty();
-    }
-
-    /**
-     * Scans the linked-list of {@link Context} objects populating a {@link Map} with the values of the context.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <!-- src_embed com.generic.core.util.Context.getValues -->
-     * <!-- end com.generic.core.util.Context.getValues -->
-     *
-     * @return A map containing all values of the context linked-list.
-     */
-    public Map<Object, Object> getValues() {
-        if (valuesMap != null) {
-            return valuesMap;
-        }
-
-        if (contextCount == 1) {
-            this.valuesMap = Collections.singletonMap(key, value);
-
-            return this.valuesMap;
-        }
-
-        Map<Object, Object> map = new HashMap<>((int) Math.ceil(contextCount / 0.75F));
-
-        for (Context pointer = this; pointer != null; pointer = pointer.parent) {
-            if (pointer.key != null) {
-                map.putIfAbsent(pointer.key, pointer.value);
-            }
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Break out of the loop to prevent a meaningless check.
-            if (pointer.contextCount == 1) {
-                break;
-            }
-        }
-
-        this.valuesMap = Collections.unmodifiableMap(map);
-
-        return this.valuesMap;
     }
 
     /**
