@@ -96,7 +96,7 @@ public class RecurrenceEvaluatorTest {
 
     @Test
     public void invalidValueTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
+        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
         final ZonedDateTime endTime = startTime.plusHours(2);
 
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
@@ -207,6 +207,89 @@ public class RecurrenceEvaluatorTest {
         recurrence10.setRange(range10);
         settings.setRecurrence(recurrence10);
         consumeValidationTestData(settings, NumberOfOccurrences, RecurrenceEvaluator.OUT_OF_RANGE);
+    }
+
+    @Test
+    public void invalidTimeWindowTest() {
+        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 25, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final Recurrence recurrence = new Recurrence();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        recurrence.setPattern(pattern);
+        recurrence.setRange(range);
+        settings.setRecurrence(recurrence);
+
+        // time window is zero
+        pattern.setType("Daily");
+        range.setType("NoEnd");
+        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // time window is bigger than interval when pattern is daily
+        final ZonedDateTime endTime1 = startTime.plusDays(2).plusMinutes(1);
+        settings.setEnd(endTime1.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setInterval(2);
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // time window is bigger than interval when pattern is weekly
+        final ZonedDateTime endTime2 = startTime.plusDays(7).plusMinutes(1);
+        settings.setEnd(endTime2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setType("Weekly");
+        pattern.setInterval(1);
+        pattern.setDaysOfWeek(List.of("Monday"));
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // time window is bigger than interval when pattern is weekly
+        final ZonedDateTime endTime3 = startTime.plusDays(2).plusMinutes(1);
+        settings.setEnd(endTime3.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setInterval(1);
+        pattern.setDaysOfWeek(List.of("Monday", "Thursday", "Sunday"));
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // time window is bigger than interval when pattern is absoluteMonthly
+        final ZonedDateTime startTime4 = ZonedDateTime.of(2023, 2, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        final ZonedDateTime endTime4 = ZonedDateTime.of(2023, 3, 31, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
+        settings.setStart(startTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd(endTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setType("AbsoluteMonthly");
+        pattern.setInterval(2);
+        pattern.setDayOfMonth(1);
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // time window is bigger than interval when patter is absoluteYearly
+        final ZonedDateTime startTime5 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        final ZonedDateTime endTime5 = ZonedDateTime.of(2024, 9, 1, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
+        settings.setStart(startTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd(endTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setType("AbsoluteYearly");
+        pattern.setInterval(1);
+        pattern.setDayOfMonth(1);
+        pattern.setMonth(9);
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // endDate is before first start time
+        final ZonedDateTime startTime6 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        final ZonedDateTime endTime6 = ZonedDateTime.of(2023, 9, 1, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
+        final ZonedDateTime endDate = ZonedDateTime.of(2023, 8, 31, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        settings.setStart(startTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd(endTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        pattern.setType("Daily");
+        range.setType("EndDate");
+        range.setEndDate(endDate.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
+        // endDate is before first start time when different zone id
+        final ZonedDateTime startTime7 = ZonedDateTime.of(2023, 9, 1, 23, 0, 0, 0, ZoneId.of("UTC"));
+        final ZonedDateTime endTime7 = ZonedDateTime.of(2023, 9, 1, 23, 1, 0, 0, ZoneId.of("UTC"));
+        final ZonedDateTime endDate2 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
+        settings.setStart(startTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd(endTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        range.setEndDate(endDate2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        range.setRecurrenceTimeZone("UTC+08:00");
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
+
     }
 
     private void consumeValidationTestData(TimeWindowFilterSettings settings, String parameterName, String errorMessage) {
