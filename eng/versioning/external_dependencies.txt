@@ -343,7 +343,7 @@ org.testcontainers:junit-jupiter;1.17.6
 # sdk\keyvault\microsoft-azure-keyvault\pom.xml
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
-test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
+test-jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.13.5
