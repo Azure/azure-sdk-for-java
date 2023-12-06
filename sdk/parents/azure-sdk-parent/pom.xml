@@ -35,7 +35,7 @@
   <repositories>
     <repository>
       <id>azure-sdk-for-java-playground</id>
-      <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground/maven/v1</url>
+      <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground2/maven/v1</url>
       <releases>
         <enabled>true</enabled>
       </releases>
