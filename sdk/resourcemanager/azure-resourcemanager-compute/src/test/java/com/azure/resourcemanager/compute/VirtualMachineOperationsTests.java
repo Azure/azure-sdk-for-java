@@ -109,13 +109,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
-    @Disabled("The `userData` is not returned, so can not use `Assertions.assertEquals` be determine whether the returned `userData` is correctly.")
     public void canCreateAndUpdateVirtualMachineWithUserData() {
         String userDataForCreate = new String(Base64.getEncoder().encode(
             UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
         String userDataForUpdate = new String(Base64.getEncoder().encode(
             UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
 
+        // Create
         VirtualMachine vm = computeManager
             .virtualMachines()
             .define(vmName)
@@ -127,17 +127,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
-            .withUnmanagedDisks()
+            .withNewDataDisk(127)
             .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-            .withOSDiskCaching(CachingTypes.READ_WRITE)
-            .withOSDiskName("javatest")
-            .withLicenseType("Windows_Server")
             .withUserData(userDataForCreate)
             .create();
-        Assertions.assertEquals(userDataForCreate, vm.userData());
 
-        vm = vm.update().withUserData(userDataForUpdate).apply();
-        Assertions.assertEquals(userDataForUpdate, vm.userData());
+        // Update
+        vm.update().withUserData(userDataForUpdate).apply();
     }
 
     @Test
