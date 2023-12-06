@@ -126,23 +126,6 @@ public final class ChatChoice {
     private AzureChatEnhancements enhancements;
 
     /**
-     * Creates an instance of ChatChoice class.
-     *
-     * @param index the index value to set.
-     * @param finishReason the finishReason value to set.
-     * @param enhancements the enhancements value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ChatChoice(@JsonProperty(value = "index") int index,
-        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason,
-        @JsonProperty(value = "enhancements") AzureChatEnhancements enhancements) {
-        this.index = index;
-        this.finishReason = finishReason;
-        this.enhancements = enhancements;
-    }
-
-    /**
      * Get the finishDetails property: The reason the model stopped generating tokens, together with any applicable
      * details.
      * This structured representation replaces 'finish_reason' for some models.
@@ -166,5 +149,19 @@ public final class ChatChoice {
     @Generated
     public AzureChatEnhancements getEnhancements() {
         return this.enhancements;
+    }
+
+    /**
+     * Creates an instance of ChatChoice class.
+     *
+     * @param index the index value to set.
+     * @param finishReason the finishReason value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ChatChoice(@JsonProperty(value = "index") int index,
+        @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
+        this.index = index;
+        this.finishReason = finishReason;
     }
 }

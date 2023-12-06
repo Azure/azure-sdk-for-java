@@ -855,7 +855,7 @@ public final class OpenAIAsyncClient {
      *                     license: String (Required)
      *                 }
      *             }
-     *             enhancements (Required): {
+     *             enhancements (Optional): {
      *                 grounding (Optional): {
      *                     lines (Required): [
      *                          (Required){
@@ -882,7 +882,7 @@ public final class OpenAIAsyncClient {
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
-     *             content_filter_results (Optional): {
+     *             content_filter_results (Required): {
      *                 sexual (Optional): (recursive schema, see sexual above)
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)

@@ -29,17 +29,6 @@ public final class ContentFilterResultsForPrompt {
     private ContentFilterResultDetailsForPrompt contentFilterResults;
 
     /**
-     * Creates an instance of ContentFilterResultsForPrompt class.
-     *
-     * @param promptIndex the promptIndex value to set.
-     */
-    @Generated
-    @JsonCreator
-    private ContentFilterResultsForPrompt(@JsonProperty(value = "prompt_index") int promptIndex) {
-        this.promptIndex = promptIndex;
-    }
-
-    /**
      * Get the promptIndex property: The index of this prompt in the set of prompt results.
      *
      * @return the promptIndex value.
@@ -57,5 +46,19 @@ public final class ContentFilterResultsForPrompt {
     @Generated
     public ContentFilterResultDetailsForPrompt getContentFilterResults() {
         return this.contentFilterResults;
+    }
+
+    /**
+     * Creates an instance of ContentFilterResultsForPrompt class.
+     *
+     * @param promptIndex the promptIndex value to set.
+     * @param contentFilterResults the contentFilterResults value to set.
+     */
+    @Generated
+    @JsonCreator
+    private ContentFilterResultsForPrompt(@JsonProperty(value = "prompt_index") int promptIndex,
+        @JsonProperty(value = "content_filter_results") ContentFilterResultDetailsForPrompt contentFilterResults) {
+        this.promptIndex = promptIndex;
+        this.contentFilterResults = contentFilterResults;
     }
 }
