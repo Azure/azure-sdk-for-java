@@ -62,7 +62,7 @@ public final class OkHttpHttpClientProvider implements HttpClientProvider {
         }
 
         OkHttpHttpClientBuilder builder = new OkHttpHttpClientBuilder();
-        builder = builder.proxyOptions(clientOptions.getProxyOptions())
+        builder = builder.proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectionTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())
