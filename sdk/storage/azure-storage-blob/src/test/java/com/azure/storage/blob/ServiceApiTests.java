@@ -124,7 +124,7 @@ public class ServiceApiTests extends BlobTestBase {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void sasSanitization(boolean unsanitize) {
-        String identifier = "id with spaces";
+        String identifier = "id with spaces" + getRandomNumber();
         String blobName = generateBlobName();
         cc.setAccessPolicy(null, Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
@@ -139,6 +139,7 @@ public class ServiceApiTests extends BlobTestBase {
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
+        System.out.println("isbr: " + unsanitize + " - " + finalSas);
         assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + finalSas))
             .buildClient()
