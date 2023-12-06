@@ -13,6 +13,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.DependencyExtractor;
 import com.azure.monitor.opentelemetry.exporter.implementation.preaggregatedmetrics.RequestExtractor;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedTime;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.sdk.metrics.data.DoublePointData;
 import io.opentelemetry.sdk.metrics.data.HistogramPointData;
@@ -149,9 +150,17 @@ public class MetricDataMapper {
         }
 
         pointBuilder.setValue(pointDataValue);
-        // TODO (heya) why give it the same name as otel metric?
-        //  it seems this field doesn't matter and only _MS.MetricId property matters?
-        pointBuilder.setName(metricData.getName());
+
+        // We emit some metrics via OpenTelemetry that have names which use characters that aren't
+        // supported in OpenTelemetry metric names, and so we put the real metric names into an attribute
+        // (where these characters are supported) and then pull the name back out when sending it to Breeze.
+        String metricName = pointData.getAttributes().get(AttributeKey.stringKey("applicationinsights_internal_metric_name"));
+        if (metricName != null) {
+            pointBuilder.setName(metricName);
+        } else {
+            pointBuilder.setName(metricData.getName());
+        }
+
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
 
         Attributes attributes = pointData.getAttributes();
