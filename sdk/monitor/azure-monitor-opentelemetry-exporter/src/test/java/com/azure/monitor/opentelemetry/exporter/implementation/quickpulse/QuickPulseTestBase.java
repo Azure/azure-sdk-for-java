@@ -64,7 +64,7 @@ public class QuickPulseTestBase extends TestProxyTestBase {
             httpClient = interceptorManager.getPlaybackClient();
             interceptorManager.addMatchers(
                 Arrays.asList(new BodilessMatcher(), new CustomMatcher()
-                    .setHeadersKeyOnlyMatch(List.of("x-ms-qps-transmission-time"))));
+                    .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-qps-transmission-time"))));
         }
         return new HttpPipelineBuilder()
             .httpClient(httpClient)
