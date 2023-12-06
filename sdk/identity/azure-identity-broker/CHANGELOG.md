@@ -6,7 +6,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-identity` from `1.11.0` to version `1.12.0-beta.1`.
+- Upgraded `azure-identity` from `1.11.0` to version `1.11.1`.
 
 
 ## 1.0.0 (2023-11-07)
