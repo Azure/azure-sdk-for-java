@@ -31,7 +31,6 @@ import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
-import com.azure.ai.openai.models.ContentFilterResults;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
@@ -508,14 +507,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
         assertFalse(contentFilterResults.getViolence().isFiltered());
         assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
-    }
-
-    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
-        assertNotNull(contentFilterResults);
-        assertNull(contentFilterResults.getHate());
-        assertNull(contentFilterResults.getSexual());
-        assertNull(contentFilterResults.getViolence());
-        assertNull(contentFilterResults.getSelfHarm());
     }
 
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
