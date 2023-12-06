@@ -69,7 +69,6 @@ public final class DataSourcesImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
                 @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource,
                 Context context);
@@ -85,7 +84,6 @@ public final class DataSourcesImpl {
                 @HeaderParam("If-None-Match") String ifNoneMatch,
                 @HeaderParam("Prefer") String prefer,
                 @QueryParam("api-version") String apiVersion,
-                @QueryParam("ignoreResetRequirements") Boolean skipIndexerResetRequirementForCache,
                 @HeaderParam("Accept") String accept,
                 @BodyParam("application/json") SearchIndexerDataSourceConnection dataSource,
                 Context context);
@@ -192,7 +190,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -206,7 +203,6 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
@@ -225,7 +221,6 @@ public final class DataSourcesImpl {
                                 ifNoneMatch,
                                 prefer,
                                 this.client.getApiVersion(),
-                                skipIndexerResetRequirementForCache,
                                 accept,
                                 dataSource,
                                 context));
@@ -240,7 +235,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +249,6 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -273,7 +266,6 @@ public final class DataSourcesImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
-                skipIndexerResetRequirementForCache,
                 accept,
                 dataSource,
                 context);
@@ -288,7 +280,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -302,15 +293,8 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(
-                        dataSourceName,
-                        dataSource,
-                        ifMatch,
-                        ifNoneMatch,
-                        skipIndexerResetRequirementForCache,
-                        requestOptions)
+        return createOrUpdateWithResponseAsync(dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -323,7 +307,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,17 +321,10 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions,
             Context context) {
         return createOrUpdateWithResponseAsync(
-                        dataSourceName,
-                        dataSource,
-                        ifMatch,
-                        ifNoneMatch,
-                        skipIndexerResetRequirementForCache,
-                        requestOptions,
-                        context)
+                        dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -361,7 +337,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -376,7 +351,6 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions,
             Context context) {
         final String prefer = "return=representation";
@@ -394,7 +368,6 @@ public final class DataSourcesImpl {
                 ifNoneMatch,
                 prefer,
                 this.client.getApiVersion(),
-                skipIndexerResetRequirementForCache,
                 accept,
                 dataSource,
                 context);
@@ -409,7 +382,6 @@ public final class DataSourcesImpl {
      *     matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
      *     server does not match this value.
-     * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -422,16 +394,9 @@ public final class DataSourcesImpl {
             SearchIndexerDataSourceConnection dataSource,
             String ifMatch,
             String ifNoneMatch,
-            Boolean skipIndexerResetRequirementForCache,
             RequestOptions requestOptions) {
         return createOrUpdateWithResponse(
-                        dataSourceName,
-                        dataSource,
-                        ifMatch,
-                        ifNoneMatch,
-                        skipIndexerResetRequirementForCache,
-                        requestOptions,
-                        Context.NONE)
+                        dataSourceName, dataSource, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
                 .getValue();
     }
 
@@ -747,7 +712,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -778,7 +743,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,7 +769,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -820,7 +785,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -837,7 +802,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,7 +827,7 @@ public final class DataSourcesImpl {
      * Lists all datasources available for a search service.
      *
      * @param select Selects which top-level properties of the data sources to retrieve. Specified as a comma-separated
-     *     list of JSON property names, or '*' for all properties. The default is all properties.
+     *     list of JSON property names, or `*` for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
