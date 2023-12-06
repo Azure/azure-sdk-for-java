@@ -62,7 +62,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "testSdkVersion");
     }
 
-    @Disabled
+
     @Test
     public void testPing() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender();
