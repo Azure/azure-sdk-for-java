@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Azure-Identity not using SharedTokenCacheCredential for IntelliJCredential plugin [#35419](https://github.com/Azure/azure-sdk-for-java/pull/35419)
+- Authenticating to Azure with DefaultAzureCredential and IntelliJ Authentication not available [#27307](https://github.com/Azure/azure-sdk-for-java/pull/27307)
 
 ### Other Changes
 

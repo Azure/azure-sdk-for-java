@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -17,6 +18,7 @@ import com.azure.identity.implementation.IntelliJCacheAccessor;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -73,6 +75,7 @@ public class IntelliJCredential implements TokenCredential {
     private static final String AZURE_TOOLS_FOR_INTELLIJ_CLIENT_ID = "61d65f5a-6e3b-468b-af73-a033f5098c5c";
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
+    private final String username;
 
     /**
      * Creates an {@link IntelliJCredential} with default identity client options.
@@ -83,6 +86,19 @@ public class IntelliJCredential implements TokenCredential {
 
         IdentityClientOptions options =
                 identityClientOptions == null ? new IdentityClientOptions() : identityClientOptions;
+        options.setTokenCacheOptions(new TokenCachePersistenceOptions().setName("azure-toolkit.cache"));
+
+        final Configuration configuration = options.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : options.getConfiguration();
+
+        this.username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
+        final String clientId = configuration.contains(Configuration.PROPERTY_AZURE_CLIENT_ID)
+            ? configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID) : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
+        if (tenantId == null) {
+            tenantId = configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+                ? configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID) : "common";
+            ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
+        }
 
         IntelliJCacheAccessor accessor =
                 new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
@@ -100,16 +116,10 @@ public class IntelliJCredential implements TokenCredential {
             options.setAuthorityHost(cloudInstance);
         }
 
-        String tenant = tenantId;
-
-        if (tenant == null) {
-            tenant = "common";
-        }
-
         identityClient = new IdentityClientBuilder()
                              .identityClientOptions(options)
-                             .tenantId(tenant)
-                             .clientId(IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID)
+                             .tenantId(tenantId)
+                             .clientId(clientId)
                              .build();
 
         this.cachedToken = new AtomicReference<>();
@@ -125,6 +135,9 @@ public class IntelliJCredential implements TokenCredential {
                 return Mono.empty();
             }
         }).switchIfEmpty(
+            Mono.defer(() -> identityClient.authenticateWithSharedTokenCache(request, this.username)
+                .onErrorResume(t -> Mono.empty())))
+        .switchIfEmpty(
             Mono.defer(() -> identityClient.authenticateWithIntelliJ(request)))
                    .map(msalToken -> {
                        cachedToken.set(msalToken);
