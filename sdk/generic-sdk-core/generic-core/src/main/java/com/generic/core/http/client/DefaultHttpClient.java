@@ -209,9 +209,7 @@ class DefaultHttpClient implements HttpClient {
 
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
-                    List<String> values = new ArrayList<>();
-
-                    entry.getValue().forEach(v -> values.add(0, v));
+                    List<String> values = new ArrayList<>(entry.getValue());
 
                     for (String headerValue : values) {
                         responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
