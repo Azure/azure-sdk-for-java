@@ -40,6 +40,18 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     }
 
     /**
+     * Returns a {@code byte[]} representation of the content written to this stream.
+     * <p>
+     * If the internal buffer is the same size as the number of bytes written to the stream, then the internal buffer
+     * will be returned. Otherwise, a copy of the internal buffer will be returned.
+     *
+     * @return A {@code byte[]} representation of the content written to this stream.
+     */
+    public byte[] toByteArrayUnsafe() {
+        return (buf.length == count) ? buf : toByteArray();
+    }
+
+    /**
      * Returns a {@link ByteBuffer} representation of the content written to this stream.
      * <p>
      * The {@link ByteBuffer} will use a direct reference to the internal {@code byte[]} being written, so any

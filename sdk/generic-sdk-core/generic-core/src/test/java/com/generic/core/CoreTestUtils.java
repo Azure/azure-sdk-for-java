@@ -3,6 +3,7 @@
 
 package com.generic.core;
 
+import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.util.UrlBuilder;
 
 import java.io.IOException;
@@ -117,7 +118,7 @@ public final class CoreTestUtils {
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStream(InputStream stream, int bufferSize) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         byte[] buffer = new byte[bufferSize];
         int length;
 
@@ -138,7 +139,7 @@ public final class CoreTestUtils {
      * @throws IOException If an error happens during reading.
      */
     public static byte[] readStreamByteByByte(InputStream stream) throws IOException {
-        TestByteArrayOutputStream outputStream = new TestByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         byte[] buffer = new byte[8192];
         int bufferPosition = 0;
         int tmp;

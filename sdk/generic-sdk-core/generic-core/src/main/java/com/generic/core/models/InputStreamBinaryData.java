@@ -3,12 +3,12 @@
 
 package com.generic.core.models;
 
+import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.implementation.util.StreamUtil;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -134,14 +134,14 @@ public final class InputStreamBinaryData extends BinaryData {
 
     private byte[] getBytes() {
         try {
-            ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
+            AccessibleByteArrayOutputStream dataOutputBuffer = new AccessibleByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);
             }
-            return dataOutputBuffer.toByteArray();
+            return dataOutputBuffer.toByteArrayUnsafe();
         } catch (IOException ex) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
         }
