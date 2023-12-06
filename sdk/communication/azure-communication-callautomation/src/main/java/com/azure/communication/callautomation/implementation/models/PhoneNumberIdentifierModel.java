@@ -16,6 +16,9 @@ public final class PhoneNumberIdentifierModel {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of PhoneNumberIdentifierModel class. */
+    public PhoneNumberIdentifierModel() {}
+
     /**
      * Get the value property: The phone number in E.164 format.
      *

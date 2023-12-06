@@ -18,7 +18,7 @@ public final class RoomModelConverter {
             return null;
         }
 
-        CommunicationRoom communicationRoom = new CommunicationRoom(room.getId(), room.getValidFrom(), room.getValidUntil(), room.getCreatedAt(), room.isPstnDialOutEnabled());
+        CommunicationRoom communicationRoom = new CommunicationRoom(room.getId(), room.getValidFrom(), room.getValidUntil(), room.getCreatedAt());
 
         return communicationRoom;
     }

@@ -99,8 +99,7 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .createWithResponseAsync(toCreateRoomRequest(createRoomOptions.getValidFrom(),
-                            createRoomOptions.getValidUntil(), createRoomOptions.isPstnDialOutEnabled(),
-                            createRoomOptions.getParticipants()), context)
+                            createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()), context)
                     .flatMap((Response<RoomModel> response) -> {
                         return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
                     });
@@ -126,8 +125,7 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .createWithResponseAsync(toCreateRoomRequest(createRoomOptions.getValidFrom(),
-                            createRoomOptions.getValidUntil(), createRoomOptions.isPstnDialOutEnabled(),
-                            createRoomOptions.getParticipants()), context)
+                            createRoomOptions.getValidUntil(), createRoomOptions.getParticipants()), context)
                     .flatMap((Response<RoomModel> response) -> {
                         CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                         return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
@@ -154,8 +152,8 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .updateWithResponseAsync(roomId,
-                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
-                            updateRoomOptions.isPstnDialOutEnabled()), context)
+                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
+                            context)
                     .flatMap((Response<RoomModel> response) -> {
                         return Mono.just(getCommunicationRoomFromResponse(response.getValue()));
                     });
@@ -183,8 +181,8 @@ public final class RoomsAsyncClient {
         try {
             return this.roomsClient
                     .updateWithResponseAsync(roomId,
-                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil(),
-                            updateRoomOptions.isPstnDialOutEnabled()), context)
+                            toUpdateRoomRequest(updateRoomOptions.getValidFrom(), updateRoomOptions.getValidUntil()),
+                            context)
                     .flatMap((Response<RoomModel> response) -> {
                         CommunicationRoom communicationRoom = getCommunicationRoomFromResponse(response.getValue());
                         return Mono.just(new SimpleResponse<CommunicationRoom>(response, communicationRoom));
@@ -531,8 +529,7 @@ public final class RoomsAsyncClient {
                 room.getId(),
                 room.getValidFrom(),
                 room.getValidUntil(),
-                room.getCreatedAt(),
-                room.isPstnDialOutEnabled());
+                room.getCreatedAt());
     }
 
     /**
@@ -541,7 +538,7 @@ public final class RoomsAsyncClient {
      * @return The create room request.
      */
     private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
-            Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
+            Iterable<RoomParticipant> participants) {
         CreateRoomRequest createRoomRequest = new CreateRoomRequest();
         if (validFrom != null) {
             createRoomRequest.setValidFrom(validFrom);
@@ -550,8 +547,6 @@ public final class RoomsAsyncClient {
         if (validUntil != null) {
             createRoomRequest.setValidUntil(validUntil);
         }
-
-        createRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
 
         Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
 
@@ -571,7 +566,7 @@ public final class RoomsAsyncClient {
      *
      * @return The update room request.
      */
-    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil) {
         UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
 
         if (validFrom != null) {
@@ -580,10 +575,6 @@ public final class RoomsAsyncClient {
 
         if (validUntil != null) {
             updateRoomRequest.setValidUntil(validUntil);
-        }
-
-        if (isPstnDialOutEnabled != null) {
-            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
         }
 
         return updateRoomRequest;
