@@ -67,18 +67,18 @@ object SparkInternalsBridge extends BasicLoggingTrait {
     }
   }
 
-  private def setBytesWritten(outputMetrics: Object, metricValue: Long): Unit = {
+  private def setBytesWritten(outputMetrics: Object, metricValue: Object): Unit = {
     try {
       val method = Option(setBytesWrittenMethod.get) match {
         case Some(existing) => existing
         case None =>
-          val newMethod = outputMetrics.getClass.getMethod("setBytesWritten", Long.getClass)
+          val newMethod = outputMetrics.getClass.getMethod("setBytesWritten", java.lang.Long.TYPE)
           newMethod.setAccessible(true)
           setBytesWrittenMethod.set(newMethod)
           newMethod
       }
 
-      method.invoke(metricValue)
+      method.invoke(outputMetrics, metricValue)
     } catch {
       case e: Exception =>
         logInfo(s"Could not invoke setBytesWritten via reflection - Error ${e.getMessage}", e)
@@ -88,17 +88,17 @@ object SparkInternalsBridge extends BasicLoggingTrait {
     }
   }
 
-  private def setRecordsWritten(outputMetrics: Object, metricValue: Long): Unit = {
+  private def setRecordsWritten(outputMetrics: Object, metricValue: Object): Unit = {
     try {
       val method = Option(setRecordsWrittenMethod.get) match {
         case Some(existing) => existing
         case None =>
-          val newMethod = outputMetrics.getClass.getMethod("setRecordsWritten", Long.getClass)
+          val newMethod = outputMetrics.getClass.getMethod("setRecordsWritten", java.lang.Long.TYPE)
           newMethod.setAccessible(true)
           setRecordsWrittenMethod.set(newMethod)
           newMethod
       }
-      method.invoke(metricValue)
+      method.invoke(outputMetrics, metricValue)
     } catch {
       case e: Exception =>
         logInfo(s"Could not invoke setRecordsWritten via reflection - Error ${e.getMessage}", e)
@@ -114,8 +114,8 @@ object SparkInternalsBridge extends BasicLoggingTrait {
         case Some(taskContext) =>
           getOutputMetrics(taskContext) match {
             case Some(outputMetrics) =>
-              setRecordsWritten(outputMetrics, recordsWrittenSnapshot)
-              setBytesWritten(outputMetrics, bytesWrittenSnapshot)
+              setRecordsWritten(outputMetrics, recordsWrittenSnapshot.asInstanceOf[Object])
+              setBytesWritten(outputMetrics, bytesWrittenSnapshot.asInstanceOf[Object])
             case None =>
           }
       }
