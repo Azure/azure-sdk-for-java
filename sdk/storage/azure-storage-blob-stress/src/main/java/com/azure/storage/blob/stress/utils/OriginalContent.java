@@ -10,11 +10,16 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.stress.CrcInputStream;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +52,7 @@ public class OriginalContent {
             data -> blobClient
                 .upload(BinaryData.fromStream(data))
                 .doFinally(i -> dataChecksum = data.getCrc()),
-            data -> data.close())
+                CrcInputStream::close)
             .then();
     }
 
@@ -56,8 +61,7 @@ public class OriginalContent {
             return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
         }
 
-        return calculateCrc(downloadPath)
-            .map(crc -> {
+        return calculateCrc(BinaryData.fromFile(downloadPath).toFluxByteBuffer()).map(crc -> {
                 if (crc != dataChecksum) {
                     try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
                         logMismatch(crc, getFileSize(downloadPath), readHead(downloadPath));
@@ -70,10 +74,26 @@ public class OriginalContent {
             });
    }
 
-    private static Mono<Long> calculateCrc(Path downloadPath) {
-        return BinaryData
-            .fromFile(downloadPath)
-            .toFluxByteBuffer()
+   public Mono<Boolean> checkMatch(Flux<ByteBuffer> data, Context span) {
+       if (dataChecksum == -1) {
+           return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
+       }
+       return calculateCrc(data)
+           .map(crc -> {
+               if (crc != dataChecksum) {
+                   try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
+                       logMismatch(crc, blobSize, BLOB_CONTENT_HEAD_STRING.getBytes(StandardCharsets.UTF_8));
+                   } catch (Exception e) {
+                       throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                   }
+                   return false;
+               }
+               return true;
+           });
+   }
+
+    public Mono<Long> calculateCrc(Flux<ByteBuffer> data) {
+        return data
             .reduce(new CRC32(),
                 (crc, bb) -> {
                     crc.update(bb);
@@ -115,5 +135,32 @@ public class OriginalContent {
         catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    public Flux<ByteBuffer> convertInputStreamToFluxByteBuffer(InputStream inputStream) {
+        byte[] buffer = new byte[4096];
+        int b;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            while ((b = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, b);
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+
+        return Flux.just(ByteBuffer.wrap(outputStream.toByteArray()));
+    }
+
+    public Flux<ByteBuffer> copySeekableByteChannelToFluxByteBuffer(SeekableByteChannel src) throws IOException {
+        int read;
+        byte[] temp = new byte[4096];
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteBuffer bb = ByteBuffer.wrap(temp);
+        while ((read = src.read(bb)) != -1) {
+            outputStream.write(temp, 0, read);
+            bb.clear();
+        }
+        return Flux.just(ByteBuffer.wrap(outputStream.toByteArray()));
     }
 }

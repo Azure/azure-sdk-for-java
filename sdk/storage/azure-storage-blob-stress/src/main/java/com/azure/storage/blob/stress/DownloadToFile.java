@@ -44,7 +44,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
-            return ORIGINAL_CONTENT.checkMatch(downloadPath, span).block();
+            return Boolean.TRUE.equals(ORIGINAL_CONTENT.checkMatch(downloadPath, span).block());
         } finally {
             deleteFile(downloadPath);
         }
@@ -56,7 +56,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
             path ->  asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
                     .flatMap(ignored -> ORIGINAL_CONTENT.checkMatch(path, span)),
-            path -> deleteFile(path));
+            DownloadToFile::deleteFile);
     }
 
     private static void deleteFile(Path path) {

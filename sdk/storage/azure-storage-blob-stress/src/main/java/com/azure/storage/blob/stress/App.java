@@ -9,6 +9,8 @@ public class App {
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
             DownloadToFile.class,
+            DownloadStream.class,
+            DownloadContent.class,
         }, args);
     }
 }
