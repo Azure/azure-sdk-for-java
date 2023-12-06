@@ -39,7 +39,6 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
-import com.azure.ai.openai.usage.GetChatCompletionsToolCallSample;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -308,7 +307,7 @@ public final class ReadmeSamples {
             // As an additional step, you may want to deserialize the parameters, so you can call your function
             MyFunctionCallArguments parameters = BinaryData.fromString(functionArguments).toObject(MyFunctionCallArguments.class);
 
-            String functionCallResult = "{the-result-of-my-function}";// myFunction(parameters...);
+            String functionCallResult = "{the-result-of-my-function}"; // myFunction(parameters...);
 
             ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
             assistantMessage.setToolCalls(choice.getMessage().getToolCalls());

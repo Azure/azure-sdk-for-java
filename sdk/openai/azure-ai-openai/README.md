@@ -333,9 +333,9 @@ By providing image URLs, it is possible to use images along with prompts. For mo
 List<ChatRequestMessage> chatMessages = new ArrayList<>();
 chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
 chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
-new ChatMessageTextContentItem("Please describe this image"),
-new ChatMessageImageContentItem(
-new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+        new ChatMessageTextContentItem("Please describe this image"),
+        new ChatMessageImageContentItem(
+                new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
 )));
 
 ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
@@ -371,7 +371,7 @@ if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
     // As an additional step, you may want to deserialize the parameters, so you can call your function
     MyFunctionCallArguments parameters = BinaryData.fromString(functionArguments).toObject(MyFunctionCallArguments.class);
 
-    String functionCallResult = "{the-result-of-my-function}";// myFunction(parameters...);
+    String functionCallResult = "{the-result-of-my-function}"; // myFunction(parameters...);
 
     ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
     assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
