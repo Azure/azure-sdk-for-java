@@ -24,6 +24,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
 import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    //@DoNotRecord(skipInPlayback = true)
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -161,7 +162,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
-    //@DoNotRecord(skipInPlayback = true)
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -293,6 +294,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
