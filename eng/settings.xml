@@ -1,4 +1,4 @@
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                       https://maven.apache.org/xsd/settings-1.0.0.xsd">
     <!--
@@ -21,4 +21,11 @@
             <mirrorOf>ossrh</mirrorOf>
         </mirror>
     </mirrors> -->
+  <mirrors>
+    <mirror>
+      <id>azure-sdk-for-java-playground</id>
+      <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground/maven/v1</url>
+      <mirrorOf>central</mirrorOf>
+    </mirror>
+  </mirrors>
 </settings>
