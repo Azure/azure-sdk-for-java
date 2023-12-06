@@ -3,47 +3,15 @@
 
 package com.azure.ai.openai.functions;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class FutureTemperatureProperties {
     @JsonProperty
-    private StringField date = new StringField();
+    private StringField date = new StringField("The date of the weather forecast.");
 
     @JsonProperty
-    private StringField locationName = new StringField();
+    private StringField locationName = new StringField("The name of the location to forecast the weather for.");
 
     @JsonProperty
-    private StringField unit = new StringField();
-
-    @JsonGetter
-    public StringField getDate() {
-        return date;
-    }
-
-    @JsonSetter
-    public void setDate(StringField date) {
-        this.date = date;
-    }
-
-    @JsonGetter
-    public StringField getLocationName() {
-        return locationName;
-    }
-
-    @JsonSetter
-    public void setLocationName(StringField locationName) {
-        this.locationName = locationName;
-    }
-
-    @JsonGetter
-    public StringField getUnit() {
-        return unit;
-    }
-
-    @JsonSetter
-    public void setUnit(StringField unit) {
-        this.unit = unit;
-    }
+    private StringField unit = new StringField("The unit of measurement for the temperature.");
 }
