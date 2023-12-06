@@ -24,20 +24,24 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 The following sections provide several code snippets covering some of the most common OpenAI service tasks, including:
 
 Synchronous:
-- [Text Completions][sample_get_completions]
+- [Legacy Completions][sample_get_completions]
 - [Chat Completions][sample_get_chat_completions]
 - [Embeddings][sample_get_embedding]
 - [Image Generation][sample_image_generation]
 - [Audio Transcription][sample_audio_transcription]
 - [Audio Translation][sample_audio_translation]
+- [Chat with Images][sample_chat_with_images]
+- [Tool Calls][sample_tool_calls]
 
 Asynchronous:
-- [Text Completions][async_sample_get_completions]
+- [Legacy Completions][async_sample_get_completions]
 - [Chat Completions][async_sample_get_chat_completions]
 - [Embeddings][async_sample_get_embedding]
 - [Image Generation][async_sample_image_generation]
 - [Audio Transcription][async_sample_audio_transcription]
 - [Audio Translation][async_sample_audio_translation]
+- [Chat with Images][async_sample_chat_with_images]
+- [Tool Calls][async_sample_tool_calls]
 
 Cookbook:
 - [Chat bot][cookbook_chat_bot]
@@ -47,6 +51,7 @@ Cookbook:
 - [OpenAIProxy][cookbook_openai_proxy]
 - [Streaming Chat][cookbook_streaming_chat]
 - [Summarize Text][cookbook_summarize_text]
+- [Streaming Tool Call][cookbook_streaming_tool_call]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -72,6 +77,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesAsyncSample.java
 [async_sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionAsyncSample.java
 [async_sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationAsyncSample.java
+[async_sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionAsyncSample.java
+[async_sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallAsyncSample.java
 
 [sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetCompletionsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
@@ -79,6 +86,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
 [sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
+[sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
+[sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 
 [cookbook_chat_bot]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotSample.java
 [cookbook_chat_bot_with_key]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotWithKeySample.java
@@ -87,5 +96,5 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [cookbook_openai_proxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/OpenAIProxySample.java
 [cookbook_streaming_chat]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingChatSample.java
 [cookbook_summarize_text]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/SummarizeTextSample.java
-
+[cookbook_streaming_tool_call]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingToolCall.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fazure-ai-openai%2FREADME.png)

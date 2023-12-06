@@ -155,7 +155,9 @@ The following sections provide several code snippets covering some of the most c
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
 
-### Text completions
+### Legacy completions
+
+It is generally preferable to use Chat Completions instead. However, Completions are still supported:
 
 ``` java readme-sample-getCompletions
 List<String> prompt = new ArrayList<>();
@@ -171,7 +173,7 @@ for (Choice choice : completions.getChoices()) {
 
 For a complete sample example, see sample [Text Completions][sample_get_completions].
 
-### Streaming text completions
+### Streaming legacy completions
 
 ```java readme-sample-getCompletionsStream
 List<String> prompt = new ArrayList<>();
@@ -213,7 +215,7 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-For `function call` sample, see [function call][sample_chat_completion_function_call].
+For `function call` sample, see [function call][sample_chat_completion_function_call]. However, they are considered a legacy feature. Using tools is the preferred way. For more details see the [tool call sample][sample_tool_calls]
 
 For `Bring Your Own Data` sample, see [Bring Your Own Data][sample_chat_completion_function_call].
 
@@ -322,6 +324,81 @@ System.out.println("Translation: " + translation.getText());
 For a complete sample example, see sample [Audio Translation][sample_audio_translation].
 Please refer to the service documentation for a conceptual discussion of [Whisper][microsoft_docs_whisper_model].
 
+### Text completions with images
+
+Currently, only available in OpenAI. For more details please visit the [OpenAI vision documentation page](https://platform.openai.com/docs/guides/vision). 
+By providing image URLs, it is possible to use images along with prompts. For more details see the usage samples for [chat completions with images][sample_chat_with_images].
+
+```java readme-sample-chatWithImages
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
+chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+new ChatMessageTextContentItem("Please describe this image"),
+new ChatMessageImageContentItem(
+new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+)));
+
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+System.out.println("Chat completion: " + chatCompletions.getChoices().get(0).getMessage().getContent());
+```
+
+### Tool calls
+
+**Tools** extend chat completions by allowing an assistant to invoke defined functions and other capabilities in the
+process of fulfilling a chat completions request. To use chat tools, start by defining a function tool:
+
+```java readme-sample-toolCalls
+List<ChatRequestMessage> chatMessages = Arrays.asList(
+        new ChatRequestSystemMessage("You are a helpful assistant."),
+        new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
+);
+ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+        new FunctionDefinition("MyFunctionName"));
+
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
+chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+ChatCompletions chatCompletions = client.getChatCompletions("{deploymentOrModelName}", chatCompletionsOptions);
+
+ChatChoice choice = chatCompletions.getChoices().get(0);
+// The LLM is requesting the calling of the function we defined in the original request
+if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
+    ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) choice.getMessage().getToolCalls().get(0);
+    String functionArguments = toolCall.getFunction().getArguments();
+
+    // As an additional step, you may want to deserialize the parameters, so you can call your function
+    MyFunctionCallArguments parameters = BinaryData.fromString(functionArguments).toObject(MyFunctionCallArguments.class);
+
+    String functionCallResult = "{the-result-of-my-function}";// myFunction(parameters...);
+
+    ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage("");
+    assistantMessage.setToolCalls(choice.getMessage().getToolCalls());
+
+    // We include:
+    // - The past 2 messages from the original request
+    // - A new ChatRequestAssistantMessage with the tool calls from the original request
+    // - A new ChatRequestToolMessage with the result of our function call
+    List<ChatRequestMessage> followUpMessages = Arrays.asList(
+            chatMessages.get(0),
+            chatMessages.get(1),
+            assistantMessage,
+            new ChatRequestToolMessage(functionCallResult, toolCall.getId())
+    );
+
+    ChatCompletionsOptions followUpChatCompletionsOptions = new ChatCompletionsOptions(followUpMessages);
+
+    ChatCompletions followUpChatCompletions = client.getChatCompletions("{deploymentOrModelName}", followUpChatCompletionsOptions);
+
+    // This time the finish reason is STOPPED
+    ChatChoice followUpChoice = followUpChatCompletions.getChoices().get(0);
+    if (followUpChoice.getFinishReason() == CompletionsFinishReason.STOPPED) {
+        System.out.println("Chat Completions Result: " + followUpChoice.getMessage().getContent());
+    }
+}
+```
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -381,6 +458,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_image_generation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetImagesSample.java
 [sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
+[sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
+[sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
