@@ -17,7 +17,7 @@ public class Hello {
      * Sample method.
      * @return message
      */
-    public final String getMessage2() {
+    public final String getMessage1() {
         return "hello";
     }
 }
