@@ -4,16 +4,36 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-messaging-eventhubs
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuremessagingeventhubs
+      ServiceDirectory: eventhubs
+    - name: azure-messaging-eventhubs-checkpointstore-blob
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azuremessagingeventhubscheckpointstoreblob
+      ServiceDirectory: eventhubs
+    - name: azure-communication-rooms
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azurecommunicationrooms
+      ServiceDirectory: communication
+    - name: azure-search-documents
+      groupId: com.azure
+      safeName: azuresearch
+      ServiceDirectory: search
+    - name: azure-communication-jobrouter
+      groupId: com.azure
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication
+    - name: azure-messaging-servicebus
+      groupId: com.azure
+      safeName: azuremessagingservicebus
+      ServiceDirectory: servicebus
+    - name: azure-identity-broker
+      groupId: com.azure
+      safeName: azureidentitybroker
+      ServiceDirectory: identity
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
 
