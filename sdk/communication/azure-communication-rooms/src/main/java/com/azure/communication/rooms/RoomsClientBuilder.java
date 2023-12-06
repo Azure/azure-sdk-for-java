@@ -270,7 +270,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @return RoomsClient instance
      */
     public RoomsClient buildClient() {
-        return new RoomsClient(createServiceImpl());
+        return new RoomsClient(buildAsyncClient());
     }
 
     private AzureCommunicationRoomServiceImpl createServiceImpl() {
