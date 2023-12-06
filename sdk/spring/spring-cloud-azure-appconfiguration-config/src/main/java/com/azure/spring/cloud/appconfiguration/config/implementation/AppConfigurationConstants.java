@@ -51,16 +51,6 @@ public class AppConfigurationConstants {
      * Constant for tracing for Replica Count
      */
     public static final String REPLICA_COUNT = "ReplicaCount";
-    
-    /**
-     * Http Header User Agent
-     */
-    public static final String USER_AGENT_TYPE = "User-Agent";
-
-    /**
-     * Http Header Correlation Context
-     */
-    public static final String CORRELATION_CONTEXT = "Correlation-Context";
 
     /**
      * Configuration Label for loading configurations with no label.

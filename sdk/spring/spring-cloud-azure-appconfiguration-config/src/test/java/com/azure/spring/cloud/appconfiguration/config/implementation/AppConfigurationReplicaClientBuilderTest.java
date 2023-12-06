@@ -19,18 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientBuilderTest {
 
@@ -46,12 +43,6 @@ public class AppConfigurationReplicaClientBuilderTest {
     AppConfigurationReplicaClientsBuilder clientBuilder;
 
     private ConfigStore configStore;
-    
-    @Mock
-    private ConfigurationClientBuilderFactory clientFactoryMock;
-    
-    @Mock
-    private Environment envMock;
 
     @BeforeEach
     public void setup() {
@@ -63,14 +54,11 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.validateAndInit();
 
         clientBuilder = null;
-        when(envMock.getActiveProfiles()).thenReturn(new String[0]);
-        when(clientFactoryMock.build()).thenReturn(builderMock);
     }
 
     @Test
     public void buildClientFromEndpointTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
         ConfigurationClientBuilder builder = new ConfigurationClientBuilder();
@@ -91,12 +79,10 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-        
-        when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
 
+        when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
 
         List<AppConfigurationReplicaClient> clients = spy.buildClients(configStore);
 
@@ -109,9 +95,8 @@ public class AppConfigurationReplicaClientBuilderTest {
 
     @Test
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
         clientBuilder.setClientProvider(modifierMock);
-        clientBuilder.setEnvironment(envMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -126,7 +111,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         assertEquals(TEST_ENDPOINT, replicaClient.getEndpoint());
         assertEquals(0, replicaClient.getFailedAttempts());
 
-        verify(modifierMock, times(1)).customize(Mockito.eq(builderMock), Mockito.eq(TEST_ENDPOINT));
+        verify(modifierMock, times(1)).customize(Mockito.any(), Mockito.eq(TEST_ENDPOINT));
     }
 
     @Test
@@ -141,8 +126,7 @@ public class AppConfigurationReplicaClientBuilderTest {
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -156,7 +140,6 @@ public class AppConfigurationReplicaClientBuilderTest {
     }
 
     @Test
-    @Disabled // Waiting on Server Side Support for connection strings
     public void buildClientsFromMultipleConnectionStringsTest() {
         configStore = new ConfigStore();
         List<String> connectionStrings = new ArrayList<>();
@@ -164,12 +147,11 @@ public class AppConfigurationReplicaClientBuilderTest {
         connectionStrings.add(TEST_CONN_STRING);
         connectionStrings.add(TEST_CONN_STRING_GEO);
 
-        // configStore.setConnectionStrings(connectionStrings);
+        configStore.setConnectionStrings(connectionStrings);
 
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
@@ -193,8 +175,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.setConnectionString(TEST_CONN_STRING);
         configStore.validateAndInit();
 
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
-        clientBuilder.setEnvironment(envMock);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0);
 
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();

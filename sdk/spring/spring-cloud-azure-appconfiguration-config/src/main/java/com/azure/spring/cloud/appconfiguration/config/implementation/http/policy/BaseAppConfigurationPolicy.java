@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USER_AGENT_TYPE;
-
 import org.springframework.util.StringUtils;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -13,6 +12,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
 
 import reactor.core.publisher.Mono;
+
 /**
  * HttpPipelinePolicy for connecting to Azure App Configuration.
  */
@@ -43,9 +43,10 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String sdkUserAgent = context.getHttpRequest().getHeaders().get(USER_AGENT_TYPE).getValue();
-        context.getHttpRequest().getHeaders().set(USER_AGENT_TYPE, USER_AGENT + " " + sdkUserAgent);
-        context.getHttpRequest().getHeaders().set(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
+        String sdkUserAgent = context.getHttpRequest().getHeaders().get(HttpHeaderName.USER_AGENT).getValue();
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
+        context.getHttpRequest().getHeaders().set(
+            HttpHeaderName.fromString(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString()),
             tracingInfo.getValue(watchRequests));
 
         return next.process();
