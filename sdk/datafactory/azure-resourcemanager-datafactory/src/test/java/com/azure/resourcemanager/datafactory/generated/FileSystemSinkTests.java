@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.FileSystemSink;
 public final class FileSystemSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileSystemSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datagw\",\"writeBatchSize\":\"dataujshcsnk\",\"writeBatchTimeout\":\"datagpqxqevt\",\"sinkRetryCount\":\"datavyy\",\"sinkRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
-                .toObject(FileSystemSink.class);
+        FileSystemSink model = BinaryData.fromString(
+            "{\"type\":\"FileSystemSink\",\"copyBehavior\":\"datahllmblls\",\"writeBatchSize\":\"datafdrimoopfr\",\"writeBatchTimeout\":\"datajjrhxornuoqpob\",\"sinkRetryCount\":\"datarsdx\",\"sinkRetryWait\":\"datamq\",\"maxConcurrentConnections\":\"dataxbqyavcxjols\",\"disableMetricsCollection\":\"datai\",\"\":{\"uwcmzpwk\":\"datanmsfqntakroxkurf\"}}")
+            .toObject(FileSystemSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileSystemSink model =
-            new FileSystemSink()
-                .withWriteBatchSize("dataujshcsnk")
-                .withWriteBatchTimeout("datagpqxqevt")
-                .withSinkRetryCount("datavyy")
-                .withSinkRetryWait("datakjirvjogsalvjl")
-                .withMaxConcurrentConnections("dataimua")
-                .withDisableMetricsCollection("datakympwquu")
-                .withCopyBehavior("datagw");
+        FileSystemSink model = new FileSystemSink().withWriteBatchSize("datafdrimoopfr")
+            .withWriteBatchTimeout("datajjrhxornuoqpob").withSinkRetryCount("datarsdx").withSinkRetryWait("datamq")
+            .withMaxConcurrentConnections("dataxbqyavcxjols").withDisableMetricsCollection("datai")
+            .withCopyBehavior("datahllmblls");
         model = BinaryData.fromObject(model).toObject(FileSystemSink.class);
     }
 }

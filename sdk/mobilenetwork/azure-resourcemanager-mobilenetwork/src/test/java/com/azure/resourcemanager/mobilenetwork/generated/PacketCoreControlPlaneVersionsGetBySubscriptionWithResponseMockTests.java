@@ -35,7 +35,7 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionWithResponseMo
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Unknown\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"bukklels\",\"maximumPlatformSoftwareVersion\":\"blycsxzujksr\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"vmjcdoewb\",\"maximumPlatformSoftwareVersion\":\"yvteowxvgpiudeu\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"ecpaxwkufyk\",\"name\":\"vuhx\",\"type\":\"pmru\"}";
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"pd\",\"maximumPlatformSoftwareVersion\":\"mkoisqcssf\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"obkdqzrdzsyl\",\"maximumPlatformSoftwareVersion\":\"lgtrczzy\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}]},\"id\":\"jpvuaurkihcirld\",\"name\":\"fx\",\"type\":\"dcoxnbk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,14 +66,14 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionWithResponseMo
         PacketCoreControlPlaneVersion response =
             manager
                 .packetCoreControlPlaneVersions()
-                .getBySubscriptionWithResponse("eml", com.azure.core.util.Context.NONE)
+                .getBySubscriptionWithResponse("jjkhvyomaclu", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(PlatformType.AKS_HCI, response.platforms().get(0).platformType());
         Assertions.assertEquals(VersionState.PREVIEW, response.platforms().get(0).versionState());
-        Assertions.assertEquals("bukklels", response.platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("blycsxzujksr", response.platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals("pd", response.platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("mkoisqcssf", response.platforms().get(0).maximumPlatformSoftwareVersion());
         Assertions.assertEquals(RecommendedVersion.RECOMMENDED, response.platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.OBSOLETE, response.platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE, response.platforms().get(0).obsoleteVersion());
     }
 }

@@ -10,18 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDeltaL
 public final class AzureDatabricksDeltaLakeDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDatabricksDeltaLakeDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"table\":\"datassvnonijcqcjo\",\"database\":\"datajkugpdqqbt\"}")
+        AzureDatabricksDeltaLakeDatasetTypeProperties model
+            = BinaryData.fromString("{\"table\":\"datassvnonijcqcjo\",\"database\":\"datajkugpdqqbt\"}")
                 .toObject(AzureDatabricksDeltaLakeDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDatabricksDeltaLakeDatasetTypeProperties model =
-            new AzureDatabricksDeltaLakeDatasetTypeProperties()
-                .withTable("datassvnonijcqcjo")
-                .withDatabase("datajkugpdqqbt");
+        AzureDatabricksDeltaLakeDatasetTypeProperties model = new AzureDatabricksDeltaLakeDatasetTypeProperties()
+            .withTable("datassvnonijcqcjo").withDatabase("datajkugpdqqbt");
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeDatasetTypeProperties.class);
     }
 }

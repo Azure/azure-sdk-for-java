@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 5.17.0 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.11` to version `2.8.13`.
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+
 ## 5.16.1 (2023-10-25)
 
 ### Other Changes

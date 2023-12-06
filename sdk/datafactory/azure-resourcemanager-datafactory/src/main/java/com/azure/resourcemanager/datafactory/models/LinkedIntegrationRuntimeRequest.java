@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data factory name for linked integration runtime request. */
+/**
+ * Data factory name for linked integration runtime request.
+ */
 @Fluent
 public final class LinkedIntegrationRuntimeRequest {
     /*
@@ -17,13 +19,15 @@ public final class LinkedIntegrationRuntimeRequest {
     @JsonProperty(value = "factoryName", required = true)
     private String linkedFactoryName;
 
-    /** Creates an instance of LinkedIntegrationRuntimeRequest class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeRequest class.
+     */
     public LinkedIntegrationRuntimeRequest() {
     }
 
     /**
      * Get the linkedFactoryName property: The data factory name for linked integration runtime.
-     *
+     * 
      * @return the linkedFactoryName value.
      */
     public String linkedFactoryName() {
@@ -32,7 +36,7 @@ public final class LinkedIntegrationRuntimeRequest {
 
     /**
      * Set the linkedFactoryName property: The data factory name for linked integration runtime.
-     *
+     * 
      * @param linkedFactoryName the linkedFactoryName value to set.
      * @return the LinkedIntegrationRuntimeRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class LinkedIntegrationRuntimeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkedFactoryName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedFactoryName in model LinkedIntegrationRuntimeRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property linkedFactoryName in model LinkedIntegrationRuntimeRequest"));
         }
     }
 

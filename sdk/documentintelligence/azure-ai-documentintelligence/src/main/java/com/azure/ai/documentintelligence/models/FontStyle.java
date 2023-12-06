@@ -9,26 +9,35 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Font style. */
+/**
+ * Font style.
+ */
 public final class FontStyle extends ExpandableStringEnum<FontStyle> {
-    /** Characters are represented normally. */
-    @Generated public static final FontStyle NORMAL = fromString("normal");
+    /**
+     * Characters are represented normally.
+     */
+    @Generated
+    public static final FontStyle NORMAL = fromString("normal");
 
-    /** Characters are visually slanted to the right. */
-    @Generated public static final FontStyle ITALIC = fromString("italic");
+    /**
+     * Characters are visually slanted to the right.
+     */
+    @Generated
+    public static final FontStyle ITALIC = fromString("italic");
 
     /**
      * Creates a new instance of FontStyle value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public FontStyle() {}
+    public FontStyle() {
+    }
 
     /**
      * Creates or finds a FontStyle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FontStyle.
      */
@@ -40,7 +49,7 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
 
     /**
      * Gets known FontStyle values.
-     *
+     * 
      * @return known FontStyle values.
      */
     @Generated

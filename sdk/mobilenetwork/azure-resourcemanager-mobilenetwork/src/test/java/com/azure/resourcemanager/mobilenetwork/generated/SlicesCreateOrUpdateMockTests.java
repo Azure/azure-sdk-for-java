@@ -34,7 +34,7 @@ public final class SlicesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":772892522,\"sd\":\"mbjwcolbmxlb\"},\"description\":\"tpc\"},\"location\":\"hprzrvxhmtfho\",\"tags\":{\"isn\":\"zcmjhngxnoqrxt\",\"hepfwwtjfdoes\":\"evhdlmydid\",\"dbckyo\":\"xhmw\"},\"id\":\"kxkxhnegk\",\"name\":\"jzrbhtmeplv\",\"type\":\"kaobrl\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1368337074,\"sd\":\"izhyhnep\"},\"description\":\"etiarxqiubxdukec\"},\"location\":\"dazvdhctm\",\"tags\":{\"iofkbtfmh\":\"szudblnsntrpcaq\"},\"id\":\"lbnld\",\"name\":\"vcb\",\"type\":\"hez\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,21 +65,22 @@ public final class SlicesCreateOrUpdateMockTests {
         Slice response =
             manager
                 .slices()
-                .define("y")
-                .withRegion("zvdhctmmkosz")
-                .withExistingMobileNetwork("f", "kzxuiz")
-                .withSnssai(new Snssai().withSst(905530117).withSd("peti"))
-                .withTags(mapOf("qkio", "lnsntrpc", "fmhklbnld", "kb", "hez", "vcb"))
-                .withDescription("xqiubxdukecpx")
+                .define("kqevadrmmw")
+                .withRegion("iidisczskoswoqiq")
+                .withExistingMobileNetwork("c", "equygdjboqgrmtq")
+                .withSnssai(new Snssai().withSst(1097578040).withSd("c"))
+                .withTags(mapOf("amnppcce", "gamxzkrrcoiis"))
+                .withDescription("z")
                 .create();
 
-        Assertions.assertEquals("hprzrvxhmtfho", response.location());
-        Assertions.assertEquals("zcmjhngxnoqrxt", response.tags().get("isn"));
-        Assertions.assertEquals(772892522, response.snssai().sst());
-        Assertions.assertEquals("mbjwcolbmxlb", response.snssai().sd());
-        Assertions.assertEquals("tpc", response.description());
+        Assertions.assertEquals("dazvdhctm", response.location());
+        Assertions.assertEquals("szudblnsntrpcaq", response.tags().get("iofkbtfmh"));
+        Assertions.assertEquals(1368337074, response.snssai().sst());
+        Assertions.assertEquals("izhyhnep", response.snssai().sd());
+        Assertions.assertEquals("etiarxqiubxdukec", response.description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

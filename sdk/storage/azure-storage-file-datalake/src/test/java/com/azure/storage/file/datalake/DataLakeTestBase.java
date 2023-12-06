@@ -264,6 +264,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return getServiceClientBuilder(null, endpoint).sasToken(sasToken).buildClient();
     }
 
+    protected DataLakeServiceAsyncClient getServiceAsyncClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint).sasToken(sasToken).buildAsyncClient();
+    }
+
     protected DataLakeServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceClientBuilder(account.getCredential(), account.getDataLakeEndpoint()).buildAsyncClient();
     }
@@ -421,6 +425,14 @@ public class DataLakeTestBase extends TestProxyTestBase {
             .buildFileClient();
     }
 
+    protected DataLakeFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint, String pathName) {
+        DataLakePathClientBuilder builder = new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName);
+
+        return instrument(builder)
+            .credential(credential)
+            .buildFileAsyncClient();
+    }
+
     protected DataLakeFileClient getFileClient(String sasToken, String endpoint, String pathName) {
         return instrument(new DataLakePathClientBuilder().endpoint(endpoint).pathName(pathName))
             .sasToken(sasToken)
@@ -505,6 +517,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected DataLakeFileSystemClient getFileSystemClient(String sasToken, String endpoint) {
         return getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildClient();
+    }
+
+    protected DataLakeFileSystemAsyncClient getFileSystemAsyncClient(String sasToken, String endpoint) {
+        return getFileSystemClientBuilder(endpoint).sasToken(sasToken).buildAsyncClient();
     }
 
     protected DataLakeFileSystemClientBuilder getFileSystemClientBuilder(String endpoint) {

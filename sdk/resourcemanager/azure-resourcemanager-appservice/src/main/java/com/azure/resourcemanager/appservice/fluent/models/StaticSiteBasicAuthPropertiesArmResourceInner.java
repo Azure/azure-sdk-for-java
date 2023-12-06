@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Static site basic auth properties ARM resource. */
+/**
+ * Static site basic auth properties ARM resource.
+ */
 @Fluent
 public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
     @JsonProperty(value = "properties")
     private StaticSiteBasicAuthPropertiesArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteBasicAuthPropertiesArmResourceInner class. */
+    /**
+     * Creates an instance of StaticSiteBasicAuthPropertiesArmResourceInner class.
+     */
     public StaticSiteBasicAuthPropertiesArmResourceInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteBasicAuthPropertiesARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteBasicAuthPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteBasicAuthPropertiesArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Get the password property: The password for basic auth.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -49,7 +55,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Set the password property: The password for basic auth.
-     *
+     * 
      * @param password the password value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
@@ -63,7 +69,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Get the secretUrl property: Url to the secret in Key Vault.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -72,7 +78,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Set the secretUrl property: Url to the secret in Key Vault.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
@@ -87,7 +93,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
     /**
      * Get the applicableEnvironmentsMode property: State indicating if basic auth is enabled and for what environments
      * it is active.
-     *
+     * 
      * @return the applicableEnvironmentsMode value.
      */
     public String applicableEnvironmentsMode() {
@@ -97,12 +103,12 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
     /**
      * Set the applicableEnvironmentsMode property: State indicating if basic auth is enabled and for what environments
      * it is active.
-     *
+     * 
      * @param applicableEnvironmentsMode the applicableEnvironmentsMode value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
-    public StaticSiteBasicAuthPropertiesArmResourceInner withApplicableEnvironmentsMode(
-        String applicableEnvironmentsMode) {
+    public StaticSiteBasicAuthPropertiesArmResourceInner
+        withApplicableEnvironmentsMode(String applicableEnvironmentsMode) {
         if (this.innerProperties() == null) {
             this.innerProperties = new StaticSiteBasicAuthPropertiesArmResourceProperties();
         }
@@ -113,7 +119,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
     /**
      * Get the environments property: The list of enabled environments for Basic Auth if ApplicableEnvironmentsMode is
      * set to SpecifiedEnvironments.
-     *
+     * 
      * @return the environments value.
      */
     public List<String> environments() {
@@ -123,7 +129,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
     /**
      * Set the environments property: The list of enabled environments for Basic Auth if ApplicableEnvironmentsMode is
      * set to SpecifiedEnvironments.
-     *
+     * 
      * @param environments the environments value to set.
      * @return the StaticSiteBasicAuthPropertiesArmResourceInner object itself.
      */
@@ -137,7 +143,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Get the secretState property: State indicating if basic auth has a secret and what type it is.
-     *
+     * 
      * @return the secretState value.
      */
     public String secretState() {
@@ -146,7 +152,7 @@ public final class StaticSiteBasicAuthPropertiesArmResourceInner extends ProxyOn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

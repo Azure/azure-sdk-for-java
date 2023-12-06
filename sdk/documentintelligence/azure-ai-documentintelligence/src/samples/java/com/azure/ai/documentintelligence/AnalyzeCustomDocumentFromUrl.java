@@ -30,14 +30,14 @@ public class AnalyzeCustomDocumentFromUrl {
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
+        DocumentIntelligenceClient client = new DocumentIntelligenceClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
-        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
+        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller = client.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
             StringIndexType.TEXT_ELEMENTS,
@@ -46,7 +46,7 @@ public class AnalyzeCustomDocumentFromUrl {
             ContentFormat.TEXT,
             new AnalyzeDocumentRequest().setUrlSource(documentUrl));
 
-        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult();
+        AnalyzeResult analyzeResult = analyzeDocumentPoller.getFinalResult().getAnalyzeResult();
 
         for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {
             final Document analyzedDocument = analyzeResult.getDocuments().get(i);

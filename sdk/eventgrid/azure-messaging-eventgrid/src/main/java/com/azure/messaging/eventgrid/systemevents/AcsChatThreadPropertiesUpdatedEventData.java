@@ -30,6 +30,12 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
+    /*
+     * The thread metadata
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
+
     /** Creates an instance of AcsChatThreadPropertiesUpdatedEventData class. */
     public AcsChatThreadPropertiesUpdatedEventData() {}
 
@@ -93,6 +99,26 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      */
     public AcsChatThreadPropertiesUpdatedEventData setProperties(Map<String, Object> properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The thread metadata.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The thread metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
+     */
+    public AcsChatThreadPropertiesUpdatedEventData setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 

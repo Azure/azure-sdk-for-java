@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Cookie model. */
+/**
+ * The Cookie model.
+ */
 @Immutable
 public final class Cookie {
 
@@ -61,9 +63,12 @@ public final class Cookie {
     @JsonProperty(value = "cookieExpiryDate")
     private OffsetDateTime cookieExpiryDate;
 
-    /** Creates an instance of Cookie class. */
+    /**
+     * Creates an instance of Cookie class.
+     */
     @Generated
-    private Cookie() {}
+    private Cookie() {
+    }
 
     /**
      * Get the cookieName property: The cookieName property.

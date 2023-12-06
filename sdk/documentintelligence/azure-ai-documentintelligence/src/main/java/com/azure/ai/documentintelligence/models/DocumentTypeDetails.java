@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Document type info. */
+/**
+ * Document type info.
+ */
 @Immutable
 public final class DocumentTypeDetails {
     /*
@@ -43,7 +45,7 @@ public final class DocumentTypeDetails {
 
     /**
      * Creates an instance of DocumentTypeDetails class.
-     *
+     * 
      * @param fieldSchema the fieldSchema value to set.
      */
     @Generated
@@ -54,7 +56,7 @@ public final class DocumentTypeDetails {
 
     /**
      * Get the description property: Document model description.
-     *
+     * 
      * @return the description value.
      */
     @Generated
@@ -64,7 +66,7 @@ public final class DocumentTypeDetails {
 
     /**
      * Get the buildMode property: Custom document model build mode.
-     *
+     * 
      * @return the buildMode value.
      */
     @Generated
@@ -74,7 +76,7 @@ public final class DocumentTypeDetails {
 
     /**
      * Get the fieldSchema property: Description of the document semantic schema using a JSON Schema style syntax.
-     *
+     * 
      * @return the fieldSchema value.
      */
     @Generated
@@ -84,7 +86,7 @@ public final class DocumentTypeDetails {
 
     /**
      * Get the fieldConfidence property: Estimated confidence for each field.
-     *
+     * 
      * @return the fieldConfidence value.
      */
     @Generated

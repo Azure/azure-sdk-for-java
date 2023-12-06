@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobEventsTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobEventsTriggerTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"blobPathBeginsWith\":\"zjwugrjio\",\"blobPathEndsWith\":\"cuxgimfftvylfke\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobCreated\"],\"scope\":\"x\"}")
-                .toObject(BlobEventsTriggerTypeProperties.class);
+        BlobEventsTriggerTypeProperties model = BinaryData.fromString(
+            "{\"blobPathBeginsWith\":\"zjwugrjio\",\"blobPathEndsWith\":\"cuxgimfftvylfke\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobCreated\"],\"scope\":\"x\"}")
+            .toObject(BlobEventsTriggerTypeProperties.class);
         Assertions.assertEquals("zjwugrjio", model.blobPathBeginsWith());
         Assertions.assertEquals("cuxgimfftvylfke", model.blobPathEndsWith());
         Assertions.assertEquals(true, model.ignoreEmptyBlobs());
@@ -27,13 +25,9 @@ public final class BlobEventsTriggerTypePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobEventsTriggerTypeProperties model =
-            new BlobEventsTriggerTypeProperties()
-                .withBlobPathBeginsWith("zjwugrjio")
-                .withBlobPathEndsWith("cuxgimfftvylfke")
-                .withIgnoreEmptyBlobs(true)
-                .withEvents(Arrays.asList(BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED))
-                .withScope("x");
+        BlobEventsTriggerTypeProperties model = new BlobEventsTriggerTypeProperties()
+            .withBlobPathBeginsWith("zjwugrjio").withBlobPathEndsWith("cuxgimfftvylfke").withIgnoreEmptyBlobs(true)
+            .withEvents(Arrays.asList(BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED)).withScope("x");
         model = BinaryData.fromObject(model).toObject(BlobEventsTriggerTypeProperties.class);
         Assertions.assertEquals("zjwugrjio", model.blobPathBeginsWith());
         Assertions.assertEquals("cuxgimfftvylfke", model.blobPathEndsWith());

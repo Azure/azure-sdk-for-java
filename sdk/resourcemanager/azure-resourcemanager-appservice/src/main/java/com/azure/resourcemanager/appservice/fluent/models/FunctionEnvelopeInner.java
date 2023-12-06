@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Function information. */
+/**
+ * Function information.
+ */
 @Fluent
 public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private FunctionEnvelopeProperties innerProperties;
 
-    /** Creates an instance of FunctionEnvelopeInner class. */
+    /**
+     * Creates an instance of FunctionEnvelopeInner class.
+     */
     public FunctionEnvelopeInner() {
     }
 
     /**
      * Get the innerProperties property: FunctionEnvelope resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FunctionEnvelopeProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FunctionEnvelopeInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the functionAppId property: Function App ID.
-     *
+     * 
      * @return the functionAppId value.
      */
     public String functionAppId() {
@@ -49,7 +55,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the functionAppId property: Function App ID.
-     *
+     * 
      * @param functionAppId the functionAppId value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -63,7 +69,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @return the scriptRootPathHref value.
      */
     public String scriptRootPathHref() {
@@ -72,7 +78,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @param scriptRootPathHref the scriptRootPathHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -86,7 +92,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the scriptHref property: Script URI.
-     *
+     * 
      * @return the scriptHref value.
      */
     public String scriptHref() {
@@ -95,7 +101,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the scriptHref property: Script URI.
-     *
+     * 
      * @param scriptHref the scriptHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -109,7 +115,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the configHref property: Config URI.
-     *
+     * 
      * @return the configHref value.
      */
     public String configHref() {
@@ -118,7 +124,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the configHref property: Config URI.
-     *
+     * 
      * @param configHref the configHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -132,7 +138,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the testDataHref property: Test data URI.
-     *
+     * 
      * @return the testDataHref value.
      */
     public String testDataHref() {
@@ -141,7 +147,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the testDataHref property: Test data URI.
-     *
+     * 
      * @param testDataHref the testDataHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -155,7 +161,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @return the secretsFileHref value.
      */
     public String secretsFileHref() {
@@ -164,7 +170,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @param secretsFileHref the secretsFileHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -178,7 +184,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the href property: Function URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -187,7 +193,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the href property: Function URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -201,7 +207,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the config property: Config information.
-     *
+     * 
      * @return the config value.
      */
     public Object config() {
@@ -210,7 +216,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the config property: Config information.
-     *
+     * 
      * @param config the config value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -224,7 +230,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the files property: File list.
-     *
+     * 
      * @return the files value.
      */
     public Map<String, String> files() {
@@ -233,7 +239,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the files property: File list.
-     *
+     * 
      * @param files the files value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -247,7 +253,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @return the testData value.
      */
     public String testData() {
@@ -256,7 +262,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @param testData the testData value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -270,7 +276,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @return the invokeUrlTemplate value.
      */
     public String invokeUrlTemplate() {
@@ -279,7 +285,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @param invokeUrlTemplate the invokeUrlTemplate value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -293,7 +299,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the language property: The function language.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -302,7 +308,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the language property: The function language.
-     *
+     * 
      * @param language the language value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -316,7 +322,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -325,7 +331,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @param isDisabled the isDisabled value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -339,7 +345,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

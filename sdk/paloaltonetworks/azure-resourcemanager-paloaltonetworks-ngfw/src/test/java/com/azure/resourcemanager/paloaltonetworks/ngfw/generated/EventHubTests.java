@@ -11,32 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHub model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"rn\",\"subscriptionId\":\"x\",\"name\":\"uwrykqgaifmvikl\",\"nameSpace\":\"dvk\",\"policyName\":\"ejd\"}")
-                .toObject(EventHub.class);
-        Assertions.assertEquals("rn", model.id());
-        Assertions.assertEquals("x", model.subscriptionId());
-        Assertions.assertEquals("uwrykqgaifmvikl", model.name());
-        Assertions.assertEquals("dvk", model.nameSpace());
-        Assertions.assertEquals("ejd", model.policyName());
+        EventHub model = BinaryData.fromString(
+            "{\"id\":\"togebjoxsl\",\"subscriptionId\":\"nhl\",\"name\":\"rqnkkzjcjbtr\",\"nameSpace\":\"ehvvib\",\"policyName\":\"jj\"}")
+            .toObject(EventHub.class);
+        Assertions.assertEquals("togebjoxsl", model.id());
+        Assertions.assertEquals("nhl", model.subscriptionId());
+        Assertions.assertEquals("rqnkkzjcjbtr", model.name());
+        Assertions.assertEquals("ehvvib", model.nameSpace());
+        Assertions.assertEquals("jj", model.policyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHub model =
-            new EventHub()
-                .withId("rn")
-                .withSubscriptionId("x")
-                .withName("uwrykqgaifmvikl")
-                .withNameSpace("dvk")
-                .withPolicyName("ejd");
+        EventHub model = new EventHub().withId("togebjoxsl").withSubscriptionId("nhl").withName("rqnkkzjcjbtr")
+            .withNameSpace("ehvvib").withPolicyName("jj");
         model = BinaryData.fromObject(model).toObject(EventHub.class);
-        Assertions.assertEquals("rn", model.id());
-        Assertions.assertEquals("x", model.subscriptionId());
-        Assertions.assertEquals("uwrykqgaifmvikl", model.name());
-        Assertions.assertEquals("dvk", model.nameSpace());
-        Assertions.assertEquals("ejd", model.policyName());
+        Assertions.assertEquals("togebjoxsl", model.id());
+        Assertions.assertEquals("nhl", model.subscriptionId());
+        Assertions.assertEquals("rqnkkzjcjbtr", model.name());
+        Assertions.assertEquals("ehvvib", model.nameSpace());
+        Assertions.assertEquals("jj", model.policyName());
     }
 }

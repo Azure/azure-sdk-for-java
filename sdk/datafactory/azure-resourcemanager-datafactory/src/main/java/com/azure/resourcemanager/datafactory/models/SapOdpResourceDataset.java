@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** SAP ODP Resource properties. */
+/**
+ * SAP ODP Resource properties.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapOdpResource")
 @Fluent
@@ -24,62 +26,78 @@ public final class SapOdpResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private SapOdpResourceDatasetTypeProperties innerTypeProperties = new SapOdpResourceDatasetTypeProperties();
 
-    /** Creates an instance of SapOdpResourceDataset class. */
+    /**
+     * Creates an instance of SapOdpResourceDataset class.
+     */
     public SapOdpResourceDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: SAP ODP Resource properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SapOdpResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpResourceDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,8 +105,9 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Get the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the context value.
      */
     public Object context() {
@@ -96,8 +115,9 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Set the context property: The context of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param context the context value to set.
      * @return the SapOdpResourceDataset object itself.
      */
@@ -110,8 +130,9 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Get the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the objectName value.
      */
     public Object objectName() {
@@ -119,8 +140,9 @@ public final class SapOdpResourceDataset extends Dataset {
     }
 
     /**
-     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType string).
-     *
+     * Set the objectName property: The name of the SAP ODP Object. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDataset object itself.
      */
@@ -134,17 +156,15 @@ public final class SapOdpResourceDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SapOdpResourceDataset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model SapOdpResourceDataset"));
         } else {
             innerTypeProperties().validate();
         }

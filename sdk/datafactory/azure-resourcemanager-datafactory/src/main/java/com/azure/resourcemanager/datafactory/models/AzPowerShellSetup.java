@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The express custom setup of installing Azure PowerShell. */
+/**
+ * The express custom setup of installing Azure PowerShell.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzPowerShellSetup")
 @Fluent
@@ -22,13 +24,15 @@ public final class AzPowerShellSetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private AzPowerShellSetupTypeProperties innerTypeProperties = new AzPowerShellSetupTypeProperties();
 
-    /** Creates an instance of AzPowerShellSetup class. */
+    /**
+     * Creates an instance of AzPowerShellSetup class.
+     */
     public AzPowerShellSetup() {
     }
 
     /**
      * Get the innerTypeProperties property: Install Azure PowerShell type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzPowerShellSetupTypeProperties innerTypeProperties() {
@@ -37,7 +41,7 @@ public final class AzPowerShellSetup extends CustomSetupBase {
 
     /**
      * Get the version property: The required version of Azure PowerShell to install.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -46,7 +50,7 @@ public final class AzPowerShellSetup extends CustomSetupBase {
 
     /**
      * Set the version property: The required version of Azure PowerShell to install.
-     *
+     * 
      * @param version the version value to set.
      * @return the AzPowerShellSetup object itself.
      */
@@ -60,17 +64,15 @@ public final class AzPowerShellSetup extends CustomSetupBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzPowerShellSetup"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzPowerShellSetup"));
         } else {
             innerTypeProperties().validate();
         }

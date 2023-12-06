@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A class that describes the reason for a validation failure. */
+/**
+ * A class that describes the reason for a validation failure.
+ */
 @Fluent
 public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private VnetValidationFailureDetailsProperties innerProperties;
 
-    /** Creates an instance of VnetValidationFailureDetailsInner class. */
+    /**
+     * Creates an instance of VnetValidationFailureDetailsInner class.
+     */
     public VnetValidationFailureDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: VnetValidationFailureDetails resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetValidationFailureDetailsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetValidationFailureDetailsInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the message property: Text describing the validation outcome.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -50,7 +56,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the message property: Text describing the validation outcome.
-     *
+     * 
      * @param message the message value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -64,7 +70,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @return the failed value.
      */
     public Boolean failed() {
@@ -73,7 +79,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @param failed the failed value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -87,7 +93,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @return the failedTests value.
      */
     public List<VnetValidationTestFailure> failedTests() {
@@ -96,7 +102,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @param failedTests the failedTests value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -110,7 +116,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @return the warnings value.
      */
     public List<VnetValidationTestFailure> warnings() {
@@ -119,7 +125,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @param warnings the warnings value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -133,7 +139,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The compression method used on a dataset. */
+/**
+ * The compression method used on a dataset.
+ */
 @Fluent
 public final class DatasetCompression {
     /*
@@ -31,15 +33,18 @@ public final class DatasetCompression {
     /*
      * The compression method used on a dataset.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DatasetCompression class. */
+    /**
+     * Creates an instance of DatasetCompression class.
+     */
     public DatasetCompression() {
     }
 
     /**
      * Get the type property: Type of dataset compression. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the type value.
      */
     public Object type() {
@@ -48,7 +53,7 @@ public final class DatasetCompression {
 
     /**
      * Set the type property: Type of dataset compression. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param type the type value to set.
      * @return the DatasetCompression object itself.
      */
@@ -59,7 +64,7 @@ public final class DatasetCompression {
 
     /**
      * Get the level property: The dataset compression level. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the level value.
      */
     public Object level() {
@@ -68,7 +73,7 @@ public final class DatasetCompression {
 
     /**
      * Set the level property: The dataset compression level. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param level the level value to set.
      * @return the DatasetCompression object itself.
      */
@@ -79,7 +84,7 @@ public final class DatasetCompression {
 
     /**
      * Get the additionalProperties property: The compression method used on a dataset.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -89,7 +94,7 @@ public final class DatasetCompression {
 
     /**
      * Set the additionalProperties property: The compression method used on a dataset.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetCompression object itself.
      */
@@ -108,14 +113,13 @@ public final class DatasetCompression {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model DatasetCompression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model DatasetCompression"));
         }
     }
 

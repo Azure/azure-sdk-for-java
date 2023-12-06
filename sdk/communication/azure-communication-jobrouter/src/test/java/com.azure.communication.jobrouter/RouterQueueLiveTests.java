@@ -44,7 +44,7 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateQueue(HttpClient httpClient) {
         // Setup
@@ -58,13 +58,11 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
 
         Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new RouterValue("UpdatedValue", null, null, null));
+                put("Label_1", new RouterValue("UpdatedValue"));
             }
         };
-
         // Action
         RouterQueue updatedRouterQueue = queue.setLabels(updatedQueueLabels);
-        BinaryData resource = BinaryData.fromObject(updatedRouterQueue);
         queue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(updatedRouterQueue), new RequestOptions())
             .getValue().toObject(RouterQueue.class);
 

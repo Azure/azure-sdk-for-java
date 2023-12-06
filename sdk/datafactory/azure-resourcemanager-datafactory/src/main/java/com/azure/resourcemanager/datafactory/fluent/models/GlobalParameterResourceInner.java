@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Global parameters resource type. */
+/**
+ * Global parameters resource type.
+ */
 @Fluent
 public final class GlobalParameterResourceInner extends SubResource {
     /*
@@ -40,13 +42,15 @@ public final class GlobalParameterResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of GlobalParameterResourceInner class. */
+    /**
+     * Creates an instance of GlobalParameterResourceInner class.
+     */
     public GlobalParameterResourceInner() {
     }
 
     /**
      * Get the properties property: Properties of the global parameter.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, GlobalParameterSpecification> properties() {
@@ -55,7 +59,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Set the properties property: Properties of the global parameter.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the GlobalParameterResourceInner object itself.
      */
@@ -66,7 +70,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +79,7 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -84,14 +88,16 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GlobalParameterResourceInner withId(String id) {
         super.withId(id);
@@ -100,24 +106,19 @@ public final class GlobalParameterResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model GlobalParameterResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model GlobalParameterResourceInner"));
         } else {
-            properties()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            properties().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 

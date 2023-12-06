@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PowerQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PowerQuerySource model =
-            BinaryData
-                .fromString(
-                    "{\"script\":\"wqikwepwogggic\",\"schemaLinkedService\":{\"referenceName\":\"xhtfmcqbsudzpgch\",\"parameters\":{\"djxh\":\"datafqum\",\"v\":\"dataghgodkynrceq\",\"mmxjdnajuopj\":\"datadbd\",\"cwlo\":\"datayqmkwlh\"}},\"name\":\"dejkluxxrwzobuz\",\"description\":\"xga\",\"dataset\":{\"referenceName\":\"dtkwppth\",\"parameters\":{\"imrljdp\":\"datapr\",\"mhk\":\"dataqfxy\",\"loamfmxtllfltym\":\"datatbaewhte\",\"rfijhggabq\":\"datacn\"}},\"linkedService\":{\"referenceName\":\"amklilirwdv\",\"parameters\":{\"jxrdfd\":\"datasdpzouhktqrxqwq\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"llygta\",\"datasetParameters\":\"datazcxdfweapyfmlxrl\",\"parameters\":{\"x\":\"dataraspifleim\"},\"\":{\"cehfgsm\":\"databg\",\"mtznpaxwfqtyyqi\":\"datarjuqbpxtokl\",\"i\":\"datarcltungbsoljckm\",\"iiqqcqikclsmalns\":\"datazbkuckgkdsksw\"}}}")
-                .toObject(PowerQuerySource.class);
+        PowerQuerySource model = BinaryData.fromString(
+            "{\"script\":\"wqikwepwogggic\",\"schemaLinkedService\":{\"referenceName\":\"xhtfmcqbsudzpgch\",\"parameters\":{\"djxh\":\"datafqum\",\"v\":\"dataghgodkynrceq\",\"mmxjdnajuopj\":\"datadbd\",\"cwlo\":\"datayqmkwlh\"}},\"name\":\"dejkluxxrwzobuz\",\"description\":\"xga\",\"dataset\":{\"referenceName\":\"dtkwppth\",\"parameters\":{\"imrljdp\":\"datapr\",\"mhk\":\"dataqfxy\",\"loamfmxtllfltym\":\"datatbaewhte\",\"rfijhggabq\":\"datacn\"}},\"linkedService\":{\"referenceName\":\"amklilirwdv\",\"parameters\":{\"jxrdfd\":\"datasdpzouhktqrxqwq\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"llygta\",\"datasetParameters\":\"datazcxdfweapyfmlxrl\",\"parameters\":{\"x\":\"dataraspifleim\"},\"\":{\"cehfgsm\":\"databg\",\"mtznpaxwfqtyyqi\":\"datarjuqbpxtokl\",\"i\":\"datarcltungbsoljckm\",\"iiqqcqikclsmalns\":\"datazbkuckgkdsksw\"}}}")
+            .toObject(PowerQuerySource.class);
         Assertions.assertEquals("dejkluxxrwzobuz", model.name());
         Assertions.assertEquals("xga", model.description());
         Assertions.assertEquals("dtkwppth", model.dataset().referenceName());
@@ -34,48 +32,18 @@ public final class PowerQuerySourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PowerQuerySource model =
-            new PowerQuerySource()
-                .withName("dejkluxxrwzobuz")
-                .withDescription("xga")
-                .withDataset(
-                    new DatasetReference()
-                        .withReferenceName("dtkwppth")
-                        .withParameters(
-                            mapOf(
-                                "imrljdp",
-                                "datapr",
-                                "mhk",
-                                "dataqfxy",
-                                "loamfmxtllfltym",
-                                "datatbaewhte",
-                                "rfijhggabq",
-                                "datacn")))
-                .withLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("amklilirwdv")
-                        .withParameters(mapOf("jxrdfd", "datasdpzouhktqrxqwq")))
-                .withFlowlet(
-                    new DataFlowReference()
-                        .withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                        .withReferenceName("llygta")
-                        .withDatasetParameters("datazcxdfweapyfmlxrl")
-                        .withParameters(mapOf("x", "dataraspifleim"))
-                        .withAdditionalProperties(mapOf()))
-                .withSchemaLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("xhtfmcqbsudzpgch")
-                        .withParameters(
-                            mapOf(
-                                "djxh",
-                                "datafqum",
-                                "v",
-                                "dataghgodkynrceq",
-                                "mmxjdnajuopj",
-                                "datadbd",
-                                "cwlo",
-                                "datayqmkwlh")))
-                .withScript("wqikwepwogggic");
+        PowerQuerySource model = new PowerQuerySource().withName("dejkluxxrwzobuz").withDescription("xga")
+            .withDataset(new DatasetReference().withReferenceName("dtkwppth")
+                .withParameters(mapOf("imrljdp", "datapr", "mhk", "dataqfxy", "loamfmxtllfltym", "datatbaewhte",
+                    "rfijhggabq", "datacn")))
+            .withLinkedService(new LinkedServiceReference().withReferenceName("amklilirwdv")
+                .withParameters(mapOf("jxrdfd", "datasdpzouhktqrxqwq")))
+            .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                .withReferenceName("llygta").withDatasetParameters("datazcxdfweapyfmlxrl")
+                .withParameters(mapOf("x", "dataraspifleim")).withAdditionalProperties(mapOf()))
+            .withSchemaLinkedService(new LinkedServiceReference().withReferenceName("xhtfmcqbsudzpgch").withParameters(
+                mapOf("djxh", "datafqum", "v", "dataghgodkynrceq", "mmxjdnajuopj", "datadbd", "cwlo", "datayqmkwlh")))
+            .withScript("wqikwepwogggic");
         model = BinaryData.fromObject(model).toObject(PowerQuerySource.class);
         Assertions.assertEquals("dejkluxxrwzobuz", model.name());
         Assertions.assertEquals("xga", model.description());

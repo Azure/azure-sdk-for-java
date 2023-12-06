@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security services type list. */
+/**
+ * Security services type list.
+ */
 @Fluent
 public final class SecurityServicesTypeList {
     /*
@@ -24,13 +26,15 @@ public final class SecurityServicesTypeList {
     @JsonProperty(value = "entry", required = true)
     private List<NameDescriptionObject> entry;
 
-    /** Creates an instance of SecurityServicesTypeList class. */
+    /**
+     * Creates an instance of SecurityServicesTypeList class.
+     */
     public SecurityServicesTypeList() {
     }
 
     /**
      * Get the type property: security services type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -39,7 +43,7 @@ public final class SecurityServicesTypeList {
 
     /**
      * Set the type property: security services type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SecurityServicesTypeList object itself.
      */
@@ -50,7 +54,7 @@ public final class SecurityServicesTypeList {
 
     /**
      * Get the entry property: list.
-     *
+     * 
      * @return the entry value.
      */
     public List<NameDescriptionObject> entry() {
@@ -59,7 +63,7 @@ public final class SecurityServicesTypeList {
 
     /**
      * Set the entry property: list.
-     *
+     * 
      * @param entry the entry value to set.
      * @return the SecurityServicesTypeList object itself.
      */
@@ -70,14 +74,13 @@ public final class SecurityServicesTypeList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property entry in model SecurityServicesTypeList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property entry in model SecurityServicesTypeList"));
         } else {
             entry().forEach(e -> e.validate());
         }

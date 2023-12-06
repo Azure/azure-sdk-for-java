@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** Get Operation response object. */
+/**
+ * Get Operation response object.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("documentModelBuild")
 @Immutable
@@ -26,7 +28,7 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
 
     /**
      * Creates an instance of DocumentModelBuildOperationDetails class.
-     *
+     * 
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
@@ -34,17 +36,16 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
      */
     @Generated
     @JsonCreator
-    private DocumentModelBuildOperationDetails(
-            @JsonProperty(value = "status") OperationStatus status,
-            @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
-            @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
-            @JsonProperty(value = "resourceLocation") String resourceLocation) {
+    private DocumentModelBuildOperationDetails(@JsonProperty(value = "status") OperationStatus status,
+        @JsonProperty(value = "createdDateTime") OffsetDateTime createdDateTime,
+        @JsonProperty(value = "lastUpdatedDateTime") OffsetDateTime lastUpdatedDateTime,
+        @JsonProperty(value = "resourceLocation") String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
     }
 
     /**
      * Get the result property: Operation result upon success.
-     *
+     * 
      * @return the result value.
      */
     @Generated

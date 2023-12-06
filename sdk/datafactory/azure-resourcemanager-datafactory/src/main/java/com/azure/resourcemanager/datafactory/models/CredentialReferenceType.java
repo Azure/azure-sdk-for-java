@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Credential reference type. */
+/**
+ * Credential reference type.
+ */
 public final class CredentialReferenceType extends ExpandableStringEnum<CredentialReferenceType> {
-    /** Static value CredentialReference for CredentialReferenceType. */
+    /**
+     * Static value CredentialReference for CredentialReferenceType.
+     */
     public static final CredentialReferenceType CREDENTIAL_REFERENCE = fromString("CredentialReference");
 
     /**
      * Creates a new instance of CredentialReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
 
     /**
      * Creates or finds a CredentialReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CredentialReferenceType.
      */
@@ -35,7 +39,7 @@ public final class CredentialReferenceType extends ExpandableStringEnum<Credenti
 
     /**
      * Gets known CredentialReferenceType values.
-     *
+     * 
      * @return known CredentialReferenceType values.
      */
     public static Collection<CredentialReferenceType> values() {

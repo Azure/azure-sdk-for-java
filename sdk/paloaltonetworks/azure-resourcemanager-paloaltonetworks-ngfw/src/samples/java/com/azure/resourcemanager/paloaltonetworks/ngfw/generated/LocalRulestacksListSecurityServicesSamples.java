@@ -6,47 +6,39 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTypeEnum;
 
-/** Samples for LocalRulestacks ListSecurityServices. */
+/**
+ * Samples for LocalRulestacks ListSecurityServices.
+ */
 public final class LocalRulestacksListSecurityServicesSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listSecurityServices_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListSecurityServicesMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRulestacks()
-            .listSecurityServicesWithResponse(
-                "rgopenapi",
-                "lrs1",
-                SecurityServicesTypeEnum.fromString("localRulestacks"),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+        manager.localRulestacks().listSecurityServicesWithResponse("rgopenapi", "lrs1",
+            SecurityServicesTypeEnum.fromString("localRulestacks"), null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: LocalRulestacks_listSecurityServices_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void localRulestacksListSecurityServicesMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager
-            .localRulestacks()
-            .listSecurityServicesWithResponse(
-                "rgopenapi",
-                "lrs1",
-                SecurityServicesTypeEnum.fromString("localRulestacks"),
-                "a6a321",
-                20,
-                com.azure.core.util.Context.NONE);
+        manager.localRulestacks().listSecurityServicesWithResponse("rgopenapi", "lrs1",
+            SecurityServicesTypeEnum.fromString("localRulestacks"), "a6a321", 20, com.azure.core.util.Context.NONE);
     }
 }

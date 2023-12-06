@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AgentPool Name. */
+/**
+ * AgentPool Name.
+ */
 @Fluent
 public class AgentPoolName {
     /*
@@ -16,14 +18,16 @@ public class AgentPoolName {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of AgentPoolName class. */
+    /**
+     * Creates an instance of AgentPoolName class.
+     */
     public AgentPoolName() {
     }
 
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +37,7 @@ public class AgentPoolName {
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * @param name the name value to set.
      * @return the AgentPoolName object itself.
      */
@@ -44,7 +48,7 @@ public class AgentPoolName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

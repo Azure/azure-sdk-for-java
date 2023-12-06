@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** AuthenticationPolicy of type Open. */
+/**
+ * AuthenticationPolicy of type Open.
+ */
 @Fluent
 public final class OpenAuthenticationAccessPolicies {
     /*
@@ -19,13 +21,15 @@ public final class OpenAuthenticationAccessPolicies {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, OpenAuthenticationAccessPolicy> policies;
 
-    /** Creates an instance of OpenAuthenticationAccessPolicies class. */
+    /**
+     * Creates an instance of OpenAuthenticationAccessPolicies class.
+     */
     public OpenAuthenticationAccessPolicies() {
     }
 
     /**
      * Get the policies property: Open authentication policies.
-     *
+     * 
      * @return the policies value.
      */
     public Map<String, OpenAuthenticationAccessPolicy> policies() {
@@ -34,7 +38,7 @@ public final class OpenAuthenticationAccessPolicies {
 
     /**
      * Set the policies property: Open authentication policies.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the OpenAuthenticationAccessPolicies object itself.
      */
@@ -45,19 +49,16 @@ public final class OpenAuthenticationAccessPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policies() != null) {
-            policies()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            policies().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

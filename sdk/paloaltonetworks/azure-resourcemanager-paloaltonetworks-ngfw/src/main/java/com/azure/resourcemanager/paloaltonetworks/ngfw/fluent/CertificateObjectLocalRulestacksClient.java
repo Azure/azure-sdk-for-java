@@ -19,22 +19,22 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.Certificate
 public interface CertificateObjectLocalRulestacksClient {
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName);
+    PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName);
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -42,15 +42,15 @@ public interface CertificateObjectLocalRulestacksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context);
+    PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context);
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -61,12 +61,12 @@ public interface CertificateObjectLocalRulestacksClient {
      * @return a CertificateObjectLocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CertificateObjectLocalRulestackResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    Response<CertificateObjectLocalRulestackResourceInner> getWithResponse(String resourceGroupName,
+        String localRulestackName, String name, Context context);
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -80,7 +80,7 @@ public interface CertificateObjectLocalRulestacksClient {
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -92,15 +92,12 @@ public interface CertificateObjectLocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
             CertificateObjectLocalRulestackResourceInner resource);
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -113,16 +110,12 @@ public interface CertificateObjectLocalRulestacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            CertificateObjectLocalRulestackResourceInner resource,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
+            CertificateObjectLocalRulestackResourceInner resource, Context context);
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -133,15 +126,12 @@ public interface CertificateObjectLocalRulestacksClient {
      * @return localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateObjectLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource);
+    CertificateObjectLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        String name, CertificateObjectLocalRulestackResourceInner resource);
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -153,16 +143,12 @@ public interface CertificateObjectLocalRulestacksClient {
      * @return localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CertificateObjectLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource,
-        Context context);
+    CertificateObjectLocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        String name, CertificateObjectLocalRulestackResourceInner resource, Context context);
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -176,7 +162,7 @@ public interface CertificateObjectLocalRulestacksClient {
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -187,12 +173,12 @@ public interface CertificateObjectLocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName, String name,
+        Context context);
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -205,7 +191,7 @@ public interface CertificateObjectLocalRulestacksClient {
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.

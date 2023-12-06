@@ -16,8 +16,8 @@ public final class PipelineRunImpl implements PipelineRun {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    PipelineRunImpl(
-        PipelineRunInner innerObject, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    PipelineRunImpl(PipelineRunInner innerObject,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

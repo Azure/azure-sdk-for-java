@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.DocumentDbCollectionD
 public final class DocumentDbCollectionDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DocumentDbCollectionDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"collectionName\":\"datakplobzgottaksadz\"}")
+        DocumentDbCollectionDatasetTypeProperties model
+            = BinaryData.fromString("{\"collectionName\":\"datakplobzgottaksadz\"}")
                 .toObject(DocumentDbCollectionDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionDatasetTypeProperties model =
-            new DocumentDbCollectionDatasetTypeProperties().withCollectionName("datakplobzgottaksadz");
+        DocumentDbCollectionDatasetTypeProperties model
+            = new DocumentDbCollectionDatasetTypeProperties().withCollectionName("datakplobzgottaksadz");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionDatasetTypeProperties.class);
     }
 }

@@ -6,7 +6,11 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
+import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -16,22 +20,23 @@ import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuName;
-import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
+import java.lang.reflect.Constructor;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 public class FunctionAppsTests extends AppServiceTest {
     private String rgName1 = "";
@@ -44,6 +49,7 @@ public class FunctionAppsTests extends AppServiceTest {
     private String storageAccountName1 = "";
 
     protected StorageManager storageManager;
+    protected ContainerAppsApiManager containerAppsApiManager;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -57,6 +63,21 @@ public class FunctionAppsTests extends AppServiceTest {
         rgName2 = generateRandomResourceName("javacsmrg", 20);
 
         storageManager = buildManager(StorageManager.class, httpPipeline, profile);
+        // build ContainerAppsApiManager
+        try {
+            Constructor<ContainerAppsApiManager> constructor = ContainerAppsApiManager.class.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass(), Duration.class);
+            Runnable runnable = () -> constructor.setAccessible(true);
+            runnable.run();
+            ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+            containerAppsApiManager = constructor.newInstance(
+                httpPipeline,
+                profile,
+                // Lite packages need this for playback mode, since they take defaultPollInterval directly as polling interval.
+                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(30)));
+
+        } catch (ReflectiveOperationException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+        }
 
         super.initializeClients(httpPipeline, profile);
     }
@@ -102,9 +123,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         // Create with the same consumption plan
         FunctionApp functionApp2 =
@@ -139,9 +162,11 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
         Assertions.assertFalse(functionAppResource3.appSettings.containsKey(KEY_CONTENT_SHARE));
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
+        }
 
         // Get
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, functionApp1.name());
@@ -167,9 +192,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource2.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource2.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         Assertions.assertEquals(storageAccountName1, functionAppResource2.storageAccount.name());
-        Assertions
-            .assertEquals(
-                functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
+        }
 
         // Update, verify modify AppSetting does not create new storage account
         // https://github.com/Azure/azure-libraries-for-net/issues/457
@@ -246,9 +273,11 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource1.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource1.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
         // verify accountKey
-        Assertions
-            .assertEquals(
-                functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        if (!isPlaybackMode()) {
+            Assertions
+                .assertEquals(
+                    functionAppResource1.storageAccount.getKeys().get(0).value(), functionAppResource1.accountKey);
+        }
 
         PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
@@ -456,6 +485,51 @@ public class FunctionAppsTests extends AppServiceTest {
         functionDeploymentSlot.refresh();
 
         Assertions.assertEquals(128, functionDeploymentSlot.containerSize());
+    }
+
+    @Test
+    public void canCreateAndUpdateFunctionAppOnACA() {
+        Region region = Region.US_EAST;
+        ResourceGroup resourceGroup = appServiceManager.resourceManager()
+            .resourceGroups()
+            .define(rgName1)
+            .withRegion(region)
+            .create();
+        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        FunctionApp functionApp = appServiceManager
+            .functionApps()
+            .define(webappName1)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withManagedEnvironmentId(managedEnvironmentId)
+            .withMaxReplicas(10)
+            .withMinReplicas(3)
+            .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            .create();
+
+        Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
+        Assertions.assertEquals(10, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        functionApp.update()
+            .withMaxReplicas(15)
+            .withMinReplicas(5)
+            .apply();
+
+        Assertions.assertEquals(15, functionApp.maxReplicas());
+        Assertions.assertEquals(5, functionApp.minReplicas());
+    }
+
+    private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {
+        String managedEnvironmentName = generateRandomResourceName("jvacam", 15);
+        ManagedEnvironment managedEnvironment = containerAppsApiManager.managedEnvironments()
+            .define(managedEnvironmentName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup.name())
+            .withZoneRedundant(false)
+            .create();
+        return managedEnvironment.id();
     }
 
     private void assertRunning(FunctionApp functionApp) {

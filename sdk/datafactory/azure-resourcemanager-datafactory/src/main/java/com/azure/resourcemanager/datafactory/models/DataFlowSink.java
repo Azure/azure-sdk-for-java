@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Transformation for data flow sink. */
+/**
+ * Transformation for data flow sink.
+ */
 @Fluent
 public class DataFlowSink extends Transformation {
     /*
@@ -22,13 +24,15 @@ public class DataFlowSink extends Transformation {
     @JsonProperty(value = "rejectedDataLinkedService")
     private LinkedServiceReference rejectedDataLinkedService;
 
-    /** Creates an instance of DataFlowSink class. */
+    /**
+     * Creates an instance of DataFlowSink class.
+     */
     public DataFlowSink() {
     }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference schemaLinkedService() {
@@ -37,7 +41,7 @@ public class DataFlowSink extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
@@ -48,7 +52,7 @@ public class DataFlowSink extends Transformation {
 
     /**
      * Get the rejectedDataLinkedService property: Rejected data linked service reference.
-     *
+     * 
      * @return the rejectedDataLinkedService value.
      */
     public LinkedServiceReference rejectedDataLinkedService() {
@@ -57,7 +61,7 @@ public class DataFlowSink extends Transformation {
 
     /**
      * Set the rejectedDataLinkedService property: Rejected data linked service reference.
-     *
+     * 
      * @param rejectedDataLinkedService the rejectedDataLinkedService value to set.
      * @return the DataFlowSink object itself.
      */
@@ -66,35 +70,45 @@ public class DataFlowSink extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink withDataset(DatasetReference dataset) {
         super.withDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink withLinkedService(LinkedServiceReference linkedService) {
         super.withLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSink withFlowlet(DataFlowReference flowlet) {
         super.withFlowlet(flowlet);
@@ -103,7 +117,7 @@ public class DataFlowSink extends Transformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
