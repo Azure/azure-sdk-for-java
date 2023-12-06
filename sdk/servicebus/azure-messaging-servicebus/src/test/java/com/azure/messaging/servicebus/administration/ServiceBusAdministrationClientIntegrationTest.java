@@ -779,7 +779,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = getEntityName(getQueueBaseName(), 9);
+        final String queueName = testResourceNamer.randomName("queue", 10);
 
         client.createQueue(queueName);
         client.deleteQueue(queueName);
@@ -847,7 +847,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteTopic() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = getEntityName(getTopicBaseName(), 9);
+        final String topicName = testResourceNamer.randomName("topic", 10);
 
         client.createTopic(topicName);
         client.deleteTopic(topicName);
