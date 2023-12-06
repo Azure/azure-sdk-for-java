@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.implementation.util.FileContent;
+import com.generic.core.models.FileBinaryData;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ByteString;
@@ -36,7 +36,7 @@ public class OkHttpFileRequestBodyTest {
         Files.write(file, bytes);
 
         OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+            new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
 
         TestSink sink = new TestSink(false);
 
@@ -55,7 +55,7 @@ public class OkHttpFileRequestBodyTest {
         Files.write(file, bytes);
 
         OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+            new FileBinaryData(file, 1024, 0L, null), bytes.length, null);
 
         TestSink sink = new TestSink(true);
 
@@ -74,7 +74,7 @@ public class OkHttpFileRequestBodyTest {
         Files.write(file, bytes);
 
         OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, size + 112L), bytes.length, null);
+            new FileBinaryData(file, 1024, 0L, size + 112L), bytes.length, null);
 
         TestSink sink = new TestSink(true);
 

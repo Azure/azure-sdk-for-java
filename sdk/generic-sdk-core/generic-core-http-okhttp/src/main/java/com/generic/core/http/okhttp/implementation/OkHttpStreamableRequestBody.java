@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.implementation.util.BinaryDataContent;
+import com.generic.core.models.BinaryData;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -12,10 +12,11 @@ import java.util.Objects;
 /**
  * Base class for streamable request bodies.
  *
- * @param <T> BinaryDataContent.
+ * @param <T> BinaryData.
  */
-public abstract class OkHttpStreamableRequestBody<T extends BinaryDataContent> extends RequestBody {
+public abstract class OkHttpStreamableRequestBody<T extends BinaryData> extends RequestBody {
     protected final T content;
+
     /**
      * Content length or -1 if unspecified (i.e. chunked encoding)
      */

@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.’
+package com.generic.core.models;
 
-package com.generic.core.implementation.util;
-
-import com.generic.core.models.TypeReference;
+import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -16,26 +13,26 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a {@link List} of {@link ByteBuffer}.
+ * A {@link BinaryData} implementation backed by a {@link List} of {@link ByteBuffer}.
  */
-public class ListByteBufferContent extends BinaryDataContent {
-    private static final ClientLogger LOGGER = new ClientLogger(ListByteBufferContent.class);
+public final class ListByteBufferBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(ListByteBufferBinaryData.class);
 
     private final List<ByteBuffer> content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ListByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ListByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ListByteBufferBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(ListByteBufferBinaryData.class, byte[].class, "bytes");
 
     private Long cachedLength;
 
     /**
-     * Creates a new instance of {@link BinaryDataContent}.
+     * Creates a new instance of {@link ListByteBufferBinaryData}.
      *
-     * @param content The {@link ByteBuffer} content.
+     * @param content The {@link List} of {@link ByteBuffer} content.
      * @throws NullPointerException If {@code content} is null.
      */
-    public ListByteBufferContent(List<ByteBuffer> content) {
+    public ListByteBufferBinaryData(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
     @Override
@@ -77,13 +74,8 @@ public class ListByteBufferContent extends BinaryDataContent {
     }
 
     @Override
-    public BinaryDataContent toReplayableContent() {
+    public BinaryData toReplayableBinaryData() {
         return this;
-    }
-
-    @Override
-    public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.BINARY;
     }
 
     private byte[] getBytes() {
@@ -105,4 +97,3 @@ public class ListByteBufferContent extends BinaryDataContent {
         return bytes;
     }
 }
-

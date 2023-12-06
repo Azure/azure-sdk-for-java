@@ -3,27 +3,24 @@
 
 package com.generic.core.models;
 
-import com.generic.core.implementation.util.FileContent;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 
 /**
- * Implementation of {@link FileContent} used for mocking.
+ * Implementation of {@link FileBinaryData} used for mocking.
  */
-public class MockFileContent extends FileContent {
+public class MockFileBinaryData extends FileBinaryData {
     private final MockPath mockPath;
 
-    public MockFileContent(MockPath file) {
+    public MockFileBinaryData(MockPath file) {
         this(file, 8192, null, null);
     }
 
-    public MockFileContent(MockPath file, int chunkSize, Long position, Long length) {
+    public MockFileBinaryData(MockPath file, int chunkSize, Long position, Long length) {
         super(file, chunkSize, position, length);
 
         this.mockPath = file;

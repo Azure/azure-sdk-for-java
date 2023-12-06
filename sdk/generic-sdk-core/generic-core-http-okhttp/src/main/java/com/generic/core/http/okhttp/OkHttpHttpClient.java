@@ -12,13 +12,11 @@ import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.FileContent;
-import com.generic.core.implementation.util.InputStreamContent;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.FileBinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
+import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -108,25 +106,24 @@ class OkHttpHttpClient implements HttpClient {
 
         String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
-        BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof InputStreamContent) {
-            long effectiveContentLength = getRequestContentLength(content, headers);
+        if (bodyContent instanceof InputStreamBinaryData) {
+            long effectiveContentLength = getRequestContentLength(bodyContent, headers);
 
             // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return new OkHttpInputStreamRequestBody(
-                (InputStreamContent) content, effectiveContentLength, mediaType);
-        } else if (content instanceof FileContent) {
-            long effectiveContentLength = getRequestContentLength(content, headers);
+            return new OkHttpInputStreamRequestBody((InputStreamBinaryData) bodyContent, effectiveContentLength,
+                mediaType);
+        } else if (bodyContent instanceof FileBinaryData) {
+            long effectiveContentLength = getRequestContentLength(bodyContent, headers);
 
             // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
+            return new OkHttpFileRequestBody((FileBinaryData) bodyContent, effectiveContentLength, mediaType);
         } else {
-            return RequestBody.create(content.toBytes(), mediaType);
+            return RequestBody.create(bodyContent.toBytes(), mediaType);
         }
     }
 
-    private static long getRequestContentLength(BinaryDataContent content, Headers headers) {
+    private static long getRequestContentLength(BinaryData content, Headers headers) {
         Long contentLength = content.getLength();
 
         if (contentLength == null) {

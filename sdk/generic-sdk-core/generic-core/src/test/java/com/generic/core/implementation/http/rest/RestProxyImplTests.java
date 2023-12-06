@@ -119,7 +119,7 @@ public class RestProxyImplTests {
             if (merged == Context.NONE) {
                 break;
             }
-            
+
             actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
             merged = merged.getParent();
         }

@@ -4,16 +4,6 @@
 package com.generic.core.models;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.ByteArrayContent;
-import com.generic.core.implementation.util.ByteBufferContent;
-import com.generic.core.implementation.util.FileContent;
-import com.generic.core.implementation.util.InputStreamContent;
-import com.generic.core.implementation.util.ListByteBufferContent;
-import com.generic.core.implementation.util.SerializableContent;
-import com.generic.core.implementation.util.StringContent;
-import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.InputStream;
@@ -25,8 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
-
-import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 
 /**
  * BinaryData is a convenient data interchange class for use throughout the SDK for Java. Put simply, BinaryData enables
@@ -91,26 +79,17 @@ import static com.generic.core.implementation.util.BinaryDataContent.STREAM_READ
  * @see ObjectSerializer
  * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
  */
-public final class BinaryData {
+public abstract class BinaryData {
     static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
-    private final BinaryDataContent content;
+    static final int STREAM_READ_SIZE = 8192;
+    static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    static final String TOO_LARGE_FOR_BYTE_ARRAY
+        = "The content length is too large for a byte array. Content length is: ";
 
-    BinaryData(BinaryDataContent content) {
-        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
-    }
-
-    static {
-        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
-            @Override
-            public BinaryData createBinaryData(BinaryDataContent content) {
-                return new BinaryData(content);
-            }
-
-            @Override
-            public BinaryDataContent getContent(BinaryData binaryData) {
-                return binaryData.content;
-            }
-        });
+    /**
+     * Creates a new instance of {@link BinaryData}.
+     */
+    public BinaryData() {
     }
 
     /**
@@ -159,7 +138,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream, Long length) {
-        return new BinaryData(new InputStreamContent(inputStream, length));
+        return new InputStreamBinaryData(inputStream, length);
     }
 
     /**
@@ -180,7 +159,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromString(String data) {
-        return new BinaryData(new StringContent(data));
+        return new StringBinaryData(data);
     }
 
     /**
@@ -203,7 +182,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromBytes(byte[] data) {
-        return new BinaryData(new ByteArrayContent(data));
+        return new ByteArrayBinaryData(data);
     }
 
     /**
@@ -221,13 +200,11 @@ public final class BinaryData {
      * <!-- end com.generic.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
      *
      * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
-     *
      * @return A {@link BinaryData} representing the {@link ByteBuffer}.
-     *
      * @throws NullPointerException If {@code data} is null.
      */
     public static BinaryData fromByteBuffer(ByteBuffer data) {
-        return new BinaryData(new ByteBufferContent(data));
+        return new ByteBufferBinaryData(data);
     }
 
     /**
@@ -248,7 +225,7 @@ public final class BinaryData {
      * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
      */
     public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
-        return new BinaryData(new ListByteBufferContent(data));
+        return new ListByteBufferBinaryData(data);
     }
 
     /**
@@ -294,7 +271,7 @@ public final class BinaryData {
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public static BinaryData fromObject(Object data, ObjectSerializer serializer) {
-        return new BinaryData(new SerializableContent(data, serializer));
+        return new SerializableBinaryData(data, serializer);
     }
 
     /**
@@ -340,7 +317,7 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize, null, null));
+        return new FileBinaryData(file, chunkSize, null, null);
     }
 
     /**
@@ -367,7 +344,7 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length) {
-        return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
+        return new FileBinaryData(file, STREAM_READ_SIZE, position, length);
     }
 
     /**
@@ -393,7 +370,7 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
-        return new BinaryData(new FileContent(file, chunkSize, position, length));
+        return new FileBinaryData(file, chunkSize, position, length);
     }
 
     /**
@@ -412,9 +389,7 @@ public final class BinaryData {
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@code byte[]}.
      */
-    public byte[] toBytes() {
-        return content.toBytes();
-    }
+    public abstract byte[] toBytes();
 
     /**
      * Returns a {@link String} representation of this {@link BinaryData} by converting its data using the UTF-8
@@ -428,9 +403,7 @@ public final class BinaryData {
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@link String}.
      */
-    public String toString() {
-        return content.toString();
-    }
+    public abstract String toString();
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
@@ -455,7 +428,7 @@ public final class BinaryData {
      * @see ObjectSerializer
      */
     public <T> T toObject(Class<T> clazz) {
-        return toObject(TypeReference.createInstance(clazz), SERIALIZER);
+        return toObject(clazz, SERIALIZER);
     }
 
     /**
@@ -518,6 +491,8 @@ public final class BinaryData {
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
     public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
+        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         return toObject(TypeReference.createInstance(clazz), serializer);
     }
 
@@ -554,12 +529,7 @@ public final class BinaryData {
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
-
-        return content.toObject(typeReference, serializer);
-    }
+    public abstract <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer);
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.
@@ -571,9 +541,7 @@ public final class BinaryData {
      *
      * @return An {@link InputStream} representing the {@link BinaryData}.
      */
-    public InputStream toStream() {
-        return content.toStream();
-    }
+    public abstract InputStream toStream();
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
@@ -587,9 +555,7 @@ public final class BinaryData {
      *
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */
-    public ByteBuffer toByteBuffer() {
-        return content.toByteBuffer();
-    }
+    public abstract ByteBuffer toByteBuffer();
 
     /**
      * Returns the length of the content, if it is known. The length can be {@code null} if the source did not specify
@@ -597,9 +563,7 @@ public final class BinaryData {
      *
      * @return The length of the content, if it is known.
      */
-    public Long getLength() {
-        return content.getLength();
-    }
+    public abstract Long getLength();
 
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including
@@ -613,9 +577,7 @@ public final class BinaryData {
      *
      * @return A flag indicating whether the content can be repeatedly consumed using all accessors.
      */
-    public boolean isReplayable() {
-        return content.isReplayable();
-    }
+    public abstract boolean isReplayable();
 
     /**
      * Converts the {@link BinaryData} into a {@link BinaryData} that is replayable, i.e. content can be consumed
@@ -632,11 +594,5 @@ public final class BinaryData {
      *
      * @return A replayable {@link BinaryData}.
      */
-    public BinaryData toReplayableBinaryData() {
-        if (this.isReplayable()) {
-            return this;
-        } else {
-            return new BinaryData(content.toReplayableContent());
-        }
-    }
+    public abstract BinaryData toReplayableBinaryData();
 }

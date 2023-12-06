@@ -1,9 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+package com.generic.core.models;
 
-package com.generic.core.implementation.util;
-
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -14,26 +10,25 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a serializable object.
+ * A {@link BinaryData} implementation backed by a serializable object.
  */
-public final class SerializableContent extends BinaryDataContent {
-
+public final class SerializableBinaryData extends BinaryData {
     private final Object content;
     private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SerializableBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link SerializableContent}.
+     * Creates a new instance of {@link SerializableBinaryData}.
      *
      * @param content The serializable object that forms the content of this instance.
      * @param serializer The serializer that serializes the {@code content}.
      *
      * @throws NullPointerException if {@code serializer} is null.
      */
-    public SerializableContent(Object content, ObjectSerializer serializer) {
+    public SerializableBinaryData(Object content, ObjectSerializer serializer) {
         this.content = content;
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
@@ -74,13 +69,8 @@ public final class SerializableContent extends BinaryDataContent {
     }
 
     @Override
-    public BinaryDataContent toReplayableContent() {
+    public BinaryData toReplayableBinaryData() {
         return this;
-    }
-
-    @Override
-    public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.OBJECT;
     }
 
     private byte[] getBytes() {

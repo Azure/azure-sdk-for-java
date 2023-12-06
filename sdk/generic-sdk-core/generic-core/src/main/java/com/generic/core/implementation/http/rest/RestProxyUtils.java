@@ -11,11 +11,9 @@ import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.InputStreamContent;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
+import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -50,25 +48,22 @@ public final class RestProxyUtils {
         }
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-        Long length = binaryData.getLength();
-        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
 
-        if (bdc instanceof InputStreamContent) {
-            InputStream inputStream = bdc.toStream();
+        if (binaryData instanceof InputStreamBinaryData) {
+            InputStream inputStream = binaryData.toStream();
             LengthValidatingInputStream lengthValidatingInputStream =
                 new LengthValidatingInputStream(inputStream, expectedLength);
 
             return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
         } else {
-            if (length == null) {
-                byte[] b = (bdc).toBytes();
-                length = ((Integer) b.length).longValue();
+            if (binaryData.getLength() == null) {
+                byte[] b = binaryData.toBytes();
 
-                validateLengthInternal(length, expectedLength);
+                validateLengthInternal(b.length, expectedLength);
 
                 return BinaryData.fromBytes(b);
             } else {
-                validateLengthInternal(length, expectedLength);
+                validateLengthInternal(binaryData.getLength(), expectedLength);
 
                 return binaryData;
             }

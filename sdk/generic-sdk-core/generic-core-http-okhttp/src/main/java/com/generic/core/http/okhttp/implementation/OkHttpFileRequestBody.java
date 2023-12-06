@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.implementation.util.FileContent;
+import com.generic.core.models.FileBinaryData;
 import okhttp3.MediaType;
 import okio.BufferedSink;
 
@@ -12,11 +12,11 @@ import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 
 /**
- * An {@link okhttp3.RequestBody} subtype that sends {@link FileContent} in an unbuffered manner.
+ * An {@link okhttp3.RequestBody} subtype that sends {@link FileBinaryData} in an unbuffered manner.
  */
-public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileContent> {
+public class OkHttpFileRequestBody extends OkHttpStreamableRequestBody<FileBinaryData> {
 
-    public OkHttpFileRequestBody(FileContent content, long effectiveContentLength, MediaType mediaType) {
+    public OkHttpFileRequestBody(FileBinaryData content, long effectiveContentLength, MediaType mediaType) {
         super(content, effectiveContentLength, mediaType);
     }
 

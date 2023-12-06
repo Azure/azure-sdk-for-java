@@ -22,8 +22,6 @@ import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.RequestOptions;
@@ -165,15 +163,14 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
+        Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
 
-        Class<? extends BinaryDataContent> actualContentClazz =
-            BinaryDataHelper.getContent(client.getLastHttpRequest().getBody()).getClass();
+        Class<? extends BinaryData> actualContentClazz = client.getLastHttpRequest().getBody().getClass();
 
         assertEquals(expectedContentClazz, actualContentClazz);
     }
