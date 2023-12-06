@@ -1,5 +1,16 @@
 # Release History
 
+## 7.14.7 (2023-12-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.8.13` to version `2.8.14`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+
+
 ## 7.14.6 (2023-11-15)
 
 ### Other Changes
