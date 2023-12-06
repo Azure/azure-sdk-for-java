@@ -27,6 +27,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -59,6 +60,7 @@ public class EventData extends MessageContent {
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
         properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
+        properties.add(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
