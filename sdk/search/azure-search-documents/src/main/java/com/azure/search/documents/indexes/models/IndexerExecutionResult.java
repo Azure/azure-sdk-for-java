@@ -25,16 +25,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     private final IndexerExecutionStatus status;
 
     /*
-     * The outcome of this indexer execution.
-     */
-    private IndexerExecutionStatusDetail statusDetail;
-
-    /*
-     * All of the state that defines and dictates the indexer's current execution.
-     */
-    private IndexerCurrentState currentState;
-
-    /*
      * The error message indicating the top-level error, if any.
      */
     private String errorMessage;
@@ -109,24 +99,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
      */
     public IndexerExecutionStatus getStatus() {
         return this.status;
-    }
-
-    /**
-     * Get the statusDetail property: The outcome of this indexer execution.
-     *
-     * @return the statusDetail value.
-     */
-    public IndexerExecutionStatusDetail getStatusDetail() {
-        return this.statusDetail;
-    }
-
-    /**
-     * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
-     * @return the currentState value.
-     */
-    public IndexerCurrentState getCurrentState() {
-        return this.currentState;
     }
 
     /**
@@ -239,8 +211,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     int itemCount = 0;
                     boolean failedItemCountFound = false;
                     int failedItemCount = 0;
-                    IndexerExecutionStatusDetail statusDetail = null;
-                    IndexerCurrentState currentState = null;
                     String errorMessage = null;
                     OffsetDateTime startTime = null;
                     OffsetDateTime endTime = null;
@@ -265,10 +235,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                         } else if ("itemsFailed".equals(fieldName)) {
                             failedItemCount = reader.getInt();
                             failedItemCountFound = true;
-                        } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
-                        } else if ("currentState".equals(fieldName)) {
-                            currentState = IndexerCurrentState.fromJson(reader);
                         } else if ("errorMessage".equals(fieldName)) {
                             errorMessage = reader.getString();
                         } else if ("startTime".equals(fieldName)) {
@@ -290,8 +256,6 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
                     if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
                         IndexerExecutionResult deserializedIndexerExecutionResult =
                                 new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
-                        deserializedIndexerExecutionResult.statusDetail = statusDetail;
-                        deserializedIndexerExecutionResult.currentState = currentState;
                         deserializedIndexerExecutionResult.errorMessage = errorMessage;
                         deserializedIndexerExecutionResult.startTime = startTime;
                         deserializedIndexerExecutionResult.endTime = endTime;

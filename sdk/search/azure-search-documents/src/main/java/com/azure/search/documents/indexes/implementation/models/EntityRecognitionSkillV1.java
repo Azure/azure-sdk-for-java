@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/** This skill is deprecated. Use the V3.EntityRecognitionSkill instead. */
+/** Text analytics entity recognition. */
 @Fluent
 public final class EntityRecognitionSkillV1 extends SearchIndexerSkill {
     /*
