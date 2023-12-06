@@ -18,8 +18,7 @@ public final class CreateCallRequestInternal {
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN participant being invited.
      * Required only when calling a PSTN callee.
      */
     @JsonProperty(value = "sourceCallerIdNumber")
@@ -50,28 +49,13 @@ public final class CreateCallRequestInternal {
     private String callbackUri;
 
     /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
-
-    /*
      * AI options for the call.
      */
     @JsonProperty(value = "callIntelligenceOptions")
     private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
-    /*
-     * Used by customer to send custom calling context to targets
-     */
-    @JsonProperty(value = "customCallingContext")
-    private CustomCallingContext customCallingContext;
+    /** Creates an instance of CreateCallRequestInternal class. */
+    public CreateCallRequestInternal() {}
 
     /**
      * Get the targets property: The targets of the call.
@@ -196,48 +180,6 @@ public final class CreateCallRequestInternal {
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
-        return this;
-    }
-
-    /**
      * Get the callIntelligenceOptions property: AI options for the call.
      *
      * @return the callIntelligenceOptions value.
@@ -255,26 +197,6 @@ public final class CreateCallRequestInternal {
     public CreateCallRequestInternal setCallIntelligenceOptions(
             CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the CreateCallRequestInternal object itself.
-     */
-    public CreateCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 }

@@ -22,6 +22,9 @@ public final class CancelAddParticipantResponse {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /** Creates an instance of CancelAddParticipantResponse class. */
+    public CancelAddParticipantResponse() {}
+
     /**
      * Get the invitationId property: Invitation ID used to cancel the add participant action.
      *

@@ -32,12 +32,12 @@ public final class MuteParticipantResult {
     /**
      * Package-private constructor of the class, used internally only.
      *
-     * @param  MuteParticipantsResultInternal The response from the service
+     * @param  muteParticipantsResultInternal The response from the service
      */
-    MuteParticipantResult(MuteParticipantsResultInternal muteParticipantsResponseInternal) {
-        Objects.requireNonNull(muteParticipantsResponseInternal, "muteParticipantsResponseInternal must not be null");
+    MuteParticipantResult(MuteParticipantsResultInternal muteParticipantsResultInternal) {
+        Objects.requireNonNull(muteParticipantsResultInternal, "muteParticipantsResultInternal must not be null");
 
-        this.operationContext = muteParticipantsResponseInternal.getOperationContext();
+        this.operationContext = muteParticipantsResultInternal.getOperationContext();
     }
 
     /**
