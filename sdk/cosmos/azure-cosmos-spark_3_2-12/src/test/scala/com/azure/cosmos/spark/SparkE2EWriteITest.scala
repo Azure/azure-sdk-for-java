@@ -50,7 +50,7 @@ class SparkE2EWriteITest
       val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
       val configMapBuilder = scala.collection.mutable.Map(
-        "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountEndpoint" -> cosmosEndpoint, 
         "spark.cosmos.accountKey" -> cosmosMasterKey,
         "spark.cosmos.database" -> cosmosDatabase,
         "spark.cosmos.container" -> cosmosContainer,
