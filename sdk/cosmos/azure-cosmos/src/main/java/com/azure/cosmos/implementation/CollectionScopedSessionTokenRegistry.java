@@ -13,19 +13,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class CollectionScopedSessionTokenRegistry {
 
-    private static final int GLOBAL_SESSION_TOKEN_COUNT_LIMIT = 1000;
     private static final Logger logger = LoggerFactory.getLogger(CollectionScopedSessionTokenRegistry.class);
     private final ConcurrentHashMap<String, ISessionToken> sessionTokens;
     private final ConcurrentLinkedQueue<String> pkQueue;
-    private final ReentrantReadWriteLock reentrantReadWriteLock;
     private final SessionTokenRegistryMetadata sessionTokenRegistryMetadata;
-
 
     public CollectionScopedSessionTokenRegistry() {
         this.sessionTokens = new ConcurrentHashMap<>();
         this.pkQueue = new ConcurrentLinkedQueue<>();
         this.sessionTokenRegistryMetadata = new SessionTokenRegistryMetadata();
-        this.reentrantReadWriteLock = new ReentrantReadWriteLock();
     }
 
     public void tryMergeSessionToken(String partitionKey, ISessionToken parsedSessionToken, AtomicInteger globalSessionTokenCount) {
