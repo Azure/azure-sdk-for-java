@@ -67,18 +67,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
@@ -110,10 +106,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canCreateAndUpdateVirtualMachineWithUserData() {
-        String userDataForCreate = new String(Base64.getEncoder().encode(
-            UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
-        String userDataForUpdate = new String(Base64.getEncoder().encode(
-            UUID.randomUUID().toString().toUpperCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8)));
+        String userDataForCreate = "N0ZBN0MxRkYtMkNCMC00RUM3LUE1RDctMDY2MUI0RTdDNzY4";
+        String userDataForUpdate = "Njc5MDI3MUItQ0RGRC00RjdELUI5NTEtMTA4QjA2RTNGNDRE" ;
 
         // Create
         VirtualMachine vm = computeManager
@@ -124,7 +118,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withNewDataDisk(127)
