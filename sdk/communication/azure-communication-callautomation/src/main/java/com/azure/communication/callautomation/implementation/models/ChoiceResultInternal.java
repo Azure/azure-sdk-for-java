@@ -18,11 +18,14 @@ public final class ChoiceResultInternal {
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the
-     * choice detected and phrases will be set to null
+     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
+     * to null
      */
     @JsonProperty(value = "recognizedPhrase")
     private String recognizedPhrase;
+
+    /** Creates an instance of ChoiceResultInternal class. */
+    public ChoiceResultInternal() {}
 
     /**
      * Get the label property: Label is the primary identifier for the choice detected.

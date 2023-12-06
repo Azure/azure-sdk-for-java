@@ -29,8 +29,6 @@ public final class CallConnectionProperties {
     private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final String callbackUrl;
-    private final String mediaSubscriptionId;
-    private final String dataSubscriptionId;
     private final CommunicationUserIdentifier answeredBy;
     private final String correlationId;
 
@@ -57,8 +55,6 @@ public final class CallConnectionProperties {
         this.targetParticipants = null;
         this.callConnectionState = null;
         this.callbackUrl = null;
-        this.mediaSubscriptionId = null;
-        this.dataSubscriptionId = null;
         this.answeredBy = null;
         this.correlationId = null;
     }
@@ -77,8 +73,6 @@ public final class CallConnectionProperties {
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
-        this.dataSubscriptionId = callConnectionPropertiesInternal.getDataSubscriptionId();
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
@@ -95,7 +89,7 @@ public final class CallConnectionProperties {
     /**
      * Get the source identity.
      *
-     * @return source value.
+     * @return sourceIdentity value.
      */
     public CommunicationIdentifier getSource() {
         return source;
@@ -153,24 +147,6 @@ public final class CallConnectionProperties {
      */
     public String getCallConnectionId() {
         return callConnectionId;
-    }
-
-    /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return mediaSubscriptionId;
-    }
-
-    /**
-     * Get the dataSubscriptionId property: SubscriptionId for transcription.
-     *
-     * @return the dataSubscriptionId value.
-     */
-    public String getDataSubscriptionId() {
-        return dataSubscriptionId;
     }
 
     /**

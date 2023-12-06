@@ -29,6 +29,9 @@ public final class DtmfOptionsInternal {
     @JsonProperty(value = "stopTones")
     private List<DtmfToneInternal> stopTones;
 
+    /** Creates an instance of DtmfOptionsInternal class. */
+    public DtmfOptionsInternal() {}
+
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
      *
