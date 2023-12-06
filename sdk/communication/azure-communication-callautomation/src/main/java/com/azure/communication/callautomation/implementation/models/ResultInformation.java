@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ResultInformation {
     /*
-     * Code of the current result. This can be helpful to Call Automation team
-     * to troubleshoot the issue if this result was unexpected.
+     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result
+     * was unexpected.
      */
     @JsonProperty(value = "code")
     private Integer code;
 
     /*
-     * Subcode of the current result. This can be helpful to Call Automation
-     * team to troubleshoot the issue if this result was unexpected.
+     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this
+     * result was unexpected.
      */
     @JsonProperty(value = "subCode")
     private Integer subCode;
@@ -29,6 +29,9 @@ public final class ResultInformation {
      */
     @JsonProperty(value = "message")
     private String message;
+
+    /** Creates an instance of ResultInformation class. */
+    public ResultInformation() {}
 
     /**
      * Get the code property: Code of the current result. This can be helpful to Call Automation team to troubleshoot

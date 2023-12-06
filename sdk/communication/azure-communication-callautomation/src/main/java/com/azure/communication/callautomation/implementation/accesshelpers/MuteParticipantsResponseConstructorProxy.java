@@ -7,7 +7,7 @@ import com.azure.communication.callautomation.implementation.models.MuteParticip
 import com.azure.communication.callautomation.models.MuteParticipantResult;
 
 /**
- * Helper class to access private values of {@link MuteParticipantsResultInternal} across package boundaries.
+ * Helper class to access private values of {@link MuteParticipantResult} across package boundaries.
  */
 public final class MuteParticipantsResponseConstructorProxy {
     private static MuteParticipantsResponseConstructorAccessor accessor;
@@ -21,7 +21,7 @@ public final class MuteParticipantsResponseConstructorProxy {
     public interface MuteParticipantsResponseConstructorAccessor {
         /**
          * Creates a new instance of {@link MuteParticipantResult} backed by an internal instance of
-         * {@link MuteParticipantsResultInternal}.
+         * {@link MuteParticipantResult}.
          *
          * @param internalResponse The internal response.
          * @return A new instance of {@link MuteParticipantResult}.
@@ -40,7 +40,7 @@ public final class MuteParticipantsResponseConstructorProxy {
 
     /**
      * Creates a new instance of {@link MuteParticipantResult} backed by an internal instance of
-     * {@link MuteParticipantsResultInternal}.
+     * {@link MuteParticipantResult}.
      *
      * @param internalResponse The internal response.
      * @return A new instance of {@link MuteParticipantResult}.
