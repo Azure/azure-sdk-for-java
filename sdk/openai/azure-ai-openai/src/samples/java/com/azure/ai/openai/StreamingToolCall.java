@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai.usage;
+package com.azure.ai.openai;
 
-import com.azure.ai.openai.OpenAIClient;
-import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -33,7 +31,7 @@ import java.util.List;
  * Sample demonstrates the usage for using tool_calls. This allows the LLM to request additional information from the client
  * to fulfill the request. Particularly, this sample shows how to handle responses in a sync streaming scenario.
  */
-public class GetChatCompletionsToolCallStreamSample {
+public class StreamingToolCall {
 
     /**
      * Running this sample will result in 2 requests. The first offering the LLM our function and a prompt that will
