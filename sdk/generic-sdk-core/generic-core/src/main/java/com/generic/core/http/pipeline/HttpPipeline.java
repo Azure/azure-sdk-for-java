@@ -7,7 +7,6 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.HttpPipelineCallState;
-import com.generic.core.models.Context;
 
 import java.util.Collections;
 import java.util.List;

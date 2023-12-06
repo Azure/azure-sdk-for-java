@@ -116,6 +116,10 @@ public class RestProxyImplTests {
 
         Context merged = RestProxyUtils.mergeRequestOptionsContext(context, options);
         while (merged != null) {
+            if (merged == Context.NONE) {
+                break;
+            }
+            
             actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
             merged = merged.getParent();
         }

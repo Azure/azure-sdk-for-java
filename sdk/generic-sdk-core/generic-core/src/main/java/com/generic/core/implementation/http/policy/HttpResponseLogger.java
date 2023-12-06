@@ -7,6 +7,8 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
 
+import java.time.Duration;
+
 /**
  * Manages logging HTTP responses in {@link HttpLoggingPolicy}.
  */
@@ -17,20 +19,22 @@ public interface HttpResponseLogger {
      * <p>
      * By default, this will return {@link LogLevel#INFORMATIONAL}.
      *
-     * @param loggingOptions The information available during response logging.
+     * @param response The response being logged.
      * @return The {@link LogLevel} used to log the HTTP response.
      */
-    default LogLevel getLogLevel(HttpResponseLoggingContext loggingOptions) {
+    default LogLevel getLogLevel(HttpResponse response) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
      * Logs the HTTP response.
-     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponseLoggingContext)} .
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponse)} .
      *
      * @param logger The {@link ClientLogger} used to log the response.
-     * @param loggingOptions The information available during response logging.
-     * @return A response that returns the HTTP response that was logged.
+     * @param response The response being logged.
+     * @param duration The duration of the HTTP call.
+     * @return The HTTP response that was logged.
      */
-    HttpResponse logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions);
+    HttpResponse logResponse(ClientLogger logger, HttpResponse response, Duration duration);
 }

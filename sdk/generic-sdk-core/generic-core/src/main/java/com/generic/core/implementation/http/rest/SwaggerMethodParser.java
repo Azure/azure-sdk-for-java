@@ -37,6 +37,7 @@ import com.generic.core.models.Context;
 import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.models.Headers;
 import com.generic.core.models.RequestOptions;
+import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
@@ -78,6 +79,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // to search the raw value on each call.
     private final String rawHost;
     private final String fullyQualifiedMethodName;
+    private final ClientLogger methodLogger;
     private final HttpMethod httpMethod;
     private final String relativePath;
     final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
@@ -120,6 +122,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
+        methodLogger = new ClientLogger(fullyQualifiedMethodName);
 
         if (swaggerMethod.isAnnotationPresent(Get.class)) {
             this.httpMethod = HttpMethod.GET;
@@ -274,6 +277,15 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public String getFullyQualifiedMethodName() {
         return fullyQualifiedMethodName;
+    }
+
+    /**
+     * Gets the {@link ClientLogger} that will be used to log during the request and response.
+     *
+     * @return The {@link ClientLogger} that will be used to log during the request and response.
+     */
+    public ClientLogger getMethodLogger() {
+        return methodLogger;
     }
 
     /**

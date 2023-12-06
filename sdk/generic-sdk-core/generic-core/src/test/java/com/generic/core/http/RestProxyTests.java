@@ -203,9 +203,8 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
+        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
     }
 
     @Test
@@ -219,9 +218,8 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
+        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
     }
 
     @Test
@@ -235,7 +233,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
@@ -296,6 +294,10 @@ public class RestProxyTests {
 
         Context merged = RestProxyUtils.mergeRequestOptionsContext(context, options);
         while (merged != null) {
+            if (merged == Context.NONE) {
+                break;
+            }
+
             actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
             merged = merged.getParent();
         }

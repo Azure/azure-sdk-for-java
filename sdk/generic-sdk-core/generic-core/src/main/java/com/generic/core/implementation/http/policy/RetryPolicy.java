@@ -115,7 +115,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
                                  final int tryCount, final List<Throwable> suppressed) {
-        httpRequest.getContext().addData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+        httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
         HttpResponse httpResponse;
 

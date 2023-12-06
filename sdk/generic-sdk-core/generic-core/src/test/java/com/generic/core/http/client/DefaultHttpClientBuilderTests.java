@@ -14,7 +14,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import javax.servlet.ServletException;
 import java.net.InetSocketAddress;
@@ -136,9 +135,7 @@ public class DefaultHttpClientBuilderTests {
         try {
             proxyServer.start();
 
-            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-            Mockito.when(mockPoxyOptions.getType()).thenReturn(ProxyOptions.Type.HTTP);
-            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(null);
+            ProxyOptions mockPoxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, null);
 
             HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(mockPoxyOptions)
@@ -155,10 +152,7 @@ public class DefaultHttpClientBuilderTests {
 
     @Test
     public void buildWithInvalidProxyType() {
-        ProxyOptions.Type mockProxyType = Mockito.mock(ProxyOptions.Type.class);
-        Mockito.when(mockProxyType.name()).thenReturn("INVALID");
-
-        ProxyOptions clientProxyOptions = new ProxyOptions(mockProxyType,
+        ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.SOCKS5,
             new InetSocketAddress("test.com", 8080));
 
         assertThrows(IllegalArgumentException.class, () -> new DefaultHttpClientBuilder()
@@ -174,9 +168,8 @@ public class DefaultHttpClientBuilderTests {
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
-            ProxyOptions mockPoxyOptions = Mockito.mock(ProxyOptions.class);
-            Mockito.when(mockPoxyOptions.getType()).thenReturn(null);
-            Mockito.when(mockPoxyOptions.getAddress()).thenReturn(new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
+            ProxyOptions mockPoxyOptions = new ProxyOptions(null,
+                new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
             HttpClient httpClient = new DefaultHttpClientBuilder()
                 .proxy(mockPoxyOptions)

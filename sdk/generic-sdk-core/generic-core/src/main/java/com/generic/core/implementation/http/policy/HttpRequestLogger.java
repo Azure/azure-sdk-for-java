@@ -3,6 +3,7 @@
 
 package com.generic.core.implementation.http.policy;
 
+import com.generic.core.http.models.HttpRequest;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.logging.LogLevel;
 
@@ -16,19 +17,20 @@ public interface HttpRequestLogger {
      * <p>
      * By default, this will return {@link LogLevel#INFORMATIONAL}.
      *
-     * @param loggingOptions The information available during request logging.
+     * @param request The request being logged.
      * @return The {@link LogLevel} used to log the HTTP request.
      */
-    default LogLevel getLogLevel(HttpRequestLoggingContext loggingOptions) {
+    default LogLevel getLogLevel(HttpRequest request) {
         return LogLevel.INFORMATIONAL;
     }
 
     /**
      * Logs the HTTP request.
-     * To get the {@link LogLevel} used to log the HTTP request use {@link #getLogLevel(HttpRequestLoggingContext)}.
+     * <p>
+     * To get the {@link LogLevel} used to log the HTTP request use {@link #getLogLevel(HttpRequest)}.
      *
      * @param logger The {@link ClientLogger} used to log the HTTP request.
-     * @param loggingOptions The information available during request logging.
+     * @param request The request being logged.
      */
-    void logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions);
+    void logRequest(ClientLogger logger, HttpRequest request);
 }

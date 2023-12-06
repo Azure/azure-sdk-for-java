@@ -4,14 +4,14 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
-import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
-import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
-import com.generic.core.http.okhttp.implementation.OkHttpResponse;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
+import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
+import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
+import com.generic.core.http.okhttp.implementation.OkHttpResponse;
 import com.generic.core.implementation.util.BinaryDataContent;
 import com.generic.core.implementation.util.BinaryDataHelper;
 import com.generic.core.implementation.util.FileContent;
@@ -39,9 +39,6 @@ class OkHttpHttpClient implements HttpClient {
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
-    private static final String EAGERLY_CONVERT_HEADERS = "eagerly-convert-headers";
-    private static final String EAGERLY_READ_RESPONSE = "eagerly-read-response";
-    private static final String IGNORE_RESPONSE_BODY = "ignore-response-body";
     private static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.generic.core.http.request.progress.reporter";
 
     final OkHttpClient httpClient;
@@ -52,9 +49,9 @@ class OkHttpHttpClient implements HttpClient {
 
     @Override
     public HttpResponse send(HttpRequest request) {
-        boolean eagerlyConvertHeaders = (boolean) request.getContext().getData(EAGERLY_CONVERT_HEADERS).orElse(false);
-        boolean eagerlyReadResponse = (boolean) request.getContext().getData(EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) request.getContext().getData(IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
+        boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
+        boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
 
         Request okHttpRequest = toOkHttpRequest(request);
         try {

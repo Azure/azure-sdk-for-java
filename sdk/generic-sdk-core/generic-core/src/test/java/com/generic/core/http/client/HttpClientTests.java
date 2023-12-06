@@ -31,6 +31,7 @@ import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.policy.HttpLoggingPolicy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
+import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
@@ -187,7 +188,7 @@ public abstract class HttpClientTests {
     public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = new String(sendRequest(UTF_8_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_8);
+        String actual = CoreUtils.bomAwareToString(sendRequest(UTF_8_BOM_RESPONSE).toBytes(), null);
 
         assertEquals(expected, actual);
     }
@@ -199,7 +200,7 @@ public abstract class HttpClientTests {
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        String actual = new String(sendRequest(UTF_16BE_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_16BE);
+        String actual = CoreUtils.bomAwareToString(sendRequest(UTF_16BE_BOM_RESPONSE).toBytes(), null);
 
         assertEquals(expected, actual);
     }
@@ -211,7 +212,7 @@ public abstract class HttpClientTests {
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
 
-        String actual = new String(sendRequest(UTF_16LE_BOM_RESPONSE).toBytes(), StandardCharsets.UTF_16LE);
+        String actual = CoreUtils.bomAwareToString(sendRequest(UTF_16LE_BOM_RESPONSE).toBytes(), null);
 
         assertEquals(expected, actual);
     }
@@ -247,7 +248,7 @@ public abstract class HttpClientTests {
     public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = new String(sendRequest(BOM_WITH_SAME_HEADER).toBytes(), StandardCharsets.UTF_8);
+        String actual = CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), "charset=utf-8");
 
         assertEquals(expected, actual);
     }
@@ -259,7 +260,7 @@ public abstract class HttpClientTests {
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
-        String actual = new String(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), StandardCharsets.UTF_8);
+        String actual = CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), "charset=utf-16");
 
         assertEquals(expected, actual);
     }
@@ -284,15 +285,12 @@ public abstract class HttpClientTests {
     /**
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
      *
-     * @throws IOException When IO fails.
      */
     @Test
-    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
+    public void bufferedResponseCanBeReadMultipleTimes() {
         BinaryData requestBody = BinaryData.fromString("test body");
-        Context context = Context.NONE.addData("eagerly-read-response", true);
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
-            .setBody(requestBody)
-            .setContext(context);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
+        request.getMetadata().setEagerlyReadResponse(true);
 
         try (HttpResponse response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
@@ -316,10 +314,8 @@ public abstract class HttpClientTests {
     @Test
     public void eagerlyConvertedHeadersAreHeaders() {
         BinaryData requestBody = BinaryData.fromString("test body");
-        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
-            .setBody(requestBody)
-            .setContext(context);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
+        request.getMetadata().setEagerlyConvertHeaders(true);
 
         try (HttpResponse response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
