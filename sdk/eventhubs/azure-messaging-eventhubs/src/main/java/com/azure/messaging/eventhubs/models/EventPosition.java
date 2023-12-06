@@ -32,24 +32,26 @@ public final class EventPosition {
     private static final String END_OF_STREAM = "@latest";
 
     private static final EventPosition EARLIEST = fromOffset(START_OF_STREAM, false);
-    private static final EventPosition LATEST =  new EventPosition(false, END_OF_STREAM, null, null);
+    private static final EventPosition LATEST =  new EventPosition(false, END_OF_STREAM, null, null, null);
 
     private final boolean isInclusive;
     private final String offset;
     private final Long sequenceNumber;
     private final Instant enqueuedDateTime;
+    private final Long replicationSegment;
 
     private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
                           final Instant enqueuedDateTime) {
-        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime);
+        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime, null);
     }
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
-                          final Instant enqueuedDateTime) {
+                          final Instant enqueuedDateTime, final Long replicationSegment) {
         this.offset = offset;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
+        this.replicationSegment = replicationSegment;
     }
 
     /**
@@ -82,7 +84,7 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromEnqueuedTime(Instant enqueuedDateTime) {
-        return new EventPosition(false, (String) null, null, enqueuedDateTime);
+        return new EventPosition(false, (String) null, null, enqueuedDateTime, null);
     }
 
     /**
@@ -136,8 +138,37 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromSequenceNumber(long sequenceNumber, boolean isInclusive) {
-        return new EventPosition(isInclusive, (String) null, sequenceNumber, null);
+        return new EventPosition(isInclusive, null, sequenceNumber, null, null);
     }
+
+    /**
+     * Creates a position at the given sequence number with the same replication segment. Replication segments exist
+     * for geo-disaster recovery enabled Event Hub namespaces. The event with the same sequence number will not be
+     * included.  Instead, the next event is returned.
+     *
+     * @param sequenceNumber is the sequence number of the event.
+     * @param replicationSegment the replication segment.
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromSequenceNumber(long sequenceNumber, long replicationSegment) {
+        return fromSequenceNumber(sequenceNumber, replicationSegment, false);
+    }
+
+    /**
+     * Creates a position at the given sequence number with the same replication segment. Replication segments exist
+     * for geo-disaster recovery enabled Event Hub namespaces.  If {@code isInclusive} is true, the event with the same
+     * sequence number is returned. Otherwise, the next event in the sequence is received.
+     *
+     * @param sequenceNumber is the sequence number of the event.
+     * @param isInclusive If true, the event with the {@code sequenceNumber} and {@code replicationSegment}is included;
+     *     otherwise, the next event will be received.
+     * @param replicationSegment the replication segment.
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromSequenceNumber(long sequenceNumber, long replicationSegment, boolean isInclusive) {
+        return new EventPosition(isInclusive, null, sequenceNumber, null, replicationSegment);
+    }
+
 
     /**
      * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is
@@ -176,6 +207,16 @@ public final class EventPosition {
      */
     public Instant getEnqueuedDateTime() {
         return this.enqueuedDateTime;
+    }
+
+    /**
+     * Gets the replication segment for a geo-disaster recovery enabled Event Hub namespace.
+     *
+     * @return The replication segment or {@code null} if geo-disaster recovery is not enabled or there is no
+     * replication segment.
+     */
+    public Long getReplicationSegment() {
+        return this.replicationSegment;
     }
 
     @Override
