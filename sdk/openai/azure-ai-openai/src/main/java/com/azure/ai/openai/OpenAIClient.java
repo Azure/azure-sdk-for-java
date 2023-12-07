@@ -967,7 +967,7 @@ public final class OpenAIClient {
             audioTranscriptionOptions.setFilename(fileName);
         }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1032,7 +1032,7 @@ public final class OpenAIClient {
             audioTranscriptionOptions.setFilename(fileName);
         }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1097,7 +1097,7 @@ public final class OpenAIClient {
             audioTranslationOptions.setFilename(fileName);
         }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1161,7 +1161,7 @@ public final class OpenAIClient {
             audioTranslationOptions.setFilename(fileName);
         }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
