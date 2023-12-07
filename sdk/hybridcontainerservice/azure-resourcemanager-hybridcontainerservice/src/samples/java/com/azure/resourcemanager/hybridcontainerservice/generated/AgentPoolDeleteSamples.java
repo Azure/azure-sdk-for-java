@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-/** Samples for AgentPool Delete. */
+/**
+ * Samples for AgentPool Delete.
+ */
 public final class AgentPoolDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/DeleteAgentPool.json
+     * x-ms-original-file:
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/
+     * DeleteAgentPool.json
      */
     /**
      * Sample code: DeleteAgentPool.
-     *
+     * 
      * @param manager Entry point to HybridContainerServiceManager.
      */
-    public static void deleteAgentPool(
-        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager
-            .agentPools()
-            .deleteWithResponse(
-                "test-arcappliance-resgrp",
-                "test-hybridakscluster",
-                "test-hybridaksnodepool",
-                com.azure.core.util.Context.NONE);
+    public static void
+        deleteAgentPool(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
+        manager.agentPools().delete(
+            "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+            "test-hybridaksnodepool", com.azure.core.util.Context.NONE);
     }
 }

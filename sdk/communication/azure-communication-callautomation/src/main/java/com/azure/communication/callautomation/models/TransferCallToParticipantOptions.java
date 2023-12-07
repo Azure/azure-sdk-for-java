@@ -3,7 +3,12 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
+
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -11,22 +16,63 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class TransferCallToParticipantOptions {
-
+    /**
+     * The identity of the target where call should be transferred to.
+     */
     private final CommunicationIdentifier targetParticipant;
+    private final CustomCallingContext customCallingContext;
+    private String operationCallbackUrl;
+
+    /**
+     *  Transferee is the participant who is transferred away
+     */
+    private CommunicationIdentifier transferee;
+
+
 
     /**
      * The operational context
      */
     private String operationContext;
 
+    /**
+     * Constructor
+     *
+     * @param targetParticipant {@link CommunicationIdentifier} contains information for TransferTarget(to whom the call is transferred).
+     */
+    public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), new HashMap<>());
+    }
 
     /**
      * Constructor
      *
-     * @param targetParticipant {@link CommunicationIdentifier}contains information for TranferTarget.
+     * @param targetParticipant {@link CommunicationUserIdentifier} contains information for TransferTarget(to whom the call is transferred).
      */
-    public TransferCallToParticipantOptions(CommunicationIdentifier targetParticipant) {
+    public TransferCallToParticipantOptions(CommunicationUserIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
+    }
+
+    /**
+     * Constructor
+     *
+     * @param targetParticipant {@link PhoneNumberIdentifier} contains information for TransferTarget(to whom the call is transferred).
+     */
+    public TransferCallToParticipantOptions(PhoneNumberIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(new HashMap<>(), null);
+    }
+
+    /**
+     * Constructor
+     *
+     * @param targetParticipant {@link MicrosoftTeamsUserIdentifier} contains information for TransferTarget(to whom the call is transferred).
+     */
+    public TransferCallToParticipantOptions(MicrosoftTeamsUserIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
+        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
 
     /**
@@ -50,10 +96,59 @@ public final class TransferCallToParticipantOptions {
     }
 
     /**
-     * Get the call information to transfer target
+     * Get the participant who is being transferred away.
+     *
+     * @return the transferee
+     */
+    public CommunicationIdentifier getTransferee() {
+        return transferee;
+    }
+
+    /**
+     * Set the participant who is being transferred away.
+     *
+     * @param transferee the participant who is being transferred away
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setTransferee(CommunicationIdentifier transferee) {
+        this.transferee = transferee;
+        return this;
+    }
+
+    /**
+     * Get the transfer target to whom the call is transferred
      * @return a {@link CommunicationIdentifier} with information to transfer target
      */
     public CommunicationIdentifier getTargetParticipant() {
         return targetParticipant;
+    }
+
+    /**
+     *  get custom context
+     * @return custom context
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
+    }
+
+    /**
+     * Get the overridden call back URL override for operation.
+     *
+     * @return the operationCallbackUrl
+     */
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
+    }
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the TransferCallToParticipantOptions object itself.
+     */
+    public TransferCallToParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
+        return this;
     }
 }

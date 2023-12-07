@@ -57,25 +57,34 @@ def get_repo_position(pom_file_content):
         return pom_file_content.find("<properties>")
 
 
-def get_repo_content_without_tag():
-    return """
+def get_repo_content_without_tag(repo_type):
+    if repo_type == "snapshot":
+        return """
+    <repository>
+      <id>repository.springframework.maven.snapshot</id>
+      <name>Spring Framework Maven SNAPSHOT Repository</name>
+      <url>https://repo.spring.io/snapshot/</url>
+    </repository>
+  """
+    elif repo_type == "milestone":
+        return """
     <repository>
       <id>repository.springframework.maven.milestone</id>
       <name>Spring Framework Maven Milestone Repository</name>
-      <url>https://repo.spring.io/snapshot/</url>
+      <url>https://repo.spring.io/milestone/</url>
     </repository>
   """
 
 
-def get_repo_content(pom_file_content):
+def get_repo_content(pom_file_content, repo_type):
     if contains_repositories(pom_file_content):
-        return get_repo_content_without_tag()
+        return get_repo_content_without_tag(repo_type)
     else:
         return """
   <repositories>
     {}
   </repositories>
-  """.format(get_repo_content_without_tag())
+  """.format(get_repo_content_without_tag(repo_type))
 
 
 def contains_properties(pom_file_content):
@@ -114,13 +123,20 @@ def add_dependency_management_for_file(file_path, spring_boot_dependencies_versi
         with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
             updated_pom_file.writelines(prop_content)
     if spring_cloud_version.endswith("-SNAPSHOT"):
-        with open(file_path, 'r', encoding = 'utf-8') as pom_file:
-            pom_file_content = pom_file.read()
-            insert_position = get_repo_position(pom_file_content)
-            insert_content = get_repo_content(pom_file_content)
-            repo_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
-            with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
-                updated_pom_file.writelines(repo_content)
+        add_repo_path(file_path, "snapshot")
+    if "-RC" in spring_cloud_version:
+        add_repo_path(file_path, "milestone")
+
+
+def add_repo_path(file_path, repo_type):
+    with open(file_path, 'r', encoding = 'utf-8') as pom_file:
+        pom_file_content = pom_file.read()
+        insert_position = get_repo_position(pom_file_content)
+        insert_content = get_repo_content(pom_file_content, repo_type)
+        repo_content = pom_file_content[:insert_position] + insert_content + pom_file_content[insert_position:]
+        with open(file_path, 'r+', encoding = 'utf-8') as updated_pom_file:
+            updated_pom_file.writelines(repo_content)
+
 
 def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependencies_version):
      with open(file_path, 'r', encoding = 'utf-8') as pom_file:
@@ -133,6 +149,7 @@ def update_spring_boot_starter_parent_for_file(file_path, spring_boot_dependenci
              new_content = pom_file_content.replace('<artifactId>spring-boot-starter-parent</artifactId>',
                  '<artifactId>spring-boot-starter-parent</artifactId>\n<version>{}</version>'.format(spring_boot_dependencies_version))
              updated_pom_file.writelines(new_content)
+
 
 def get_dependency_management_content():
     return """
@@ -157,6 +174,7 @@ def get_dependency_management_content():
 
 """
 
+
 def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_cloud_dependencies_version):
     return """
   <properties>
@@ -165,11 +183,13 @@ def get_properties_contend_with_tag(spring_boot_dependencies_version, spring_clo
   
   """.format(get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version))
 
+
 def get_properties_contend(spring_boot_dependencies_version, spring_cloud_dependencies_version):
     return """
     <spring.boot.version>{}</spring.boot.version>
     <spring.cloud.version>{}</spring.cloud.version>
   """.format(spring_boot_dependencies_version, spring_cloud_dependencies_version)
+
 
 if __name__ == '__main__':
     main()

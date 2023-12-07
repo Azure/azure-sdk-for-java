@@ -4,18 +4,19 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.condition.EnabledIf;
 
+import static com.azure.security.keyvault.keys.KeyClientTestBase.TEST_MODE;
+
+@EnabledIf("shouldRunHsmTest")
 public class CryptographyClientManagedHsmTest extends CryptographyClientTest {
     public CryptographyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
+        this.runManagedHsmTest = shouldRunHsmTest();
     }
 
-    @Override
-    protected void beforeTest() {
-        Assumptions.assumeTrue(runManagedHsmTest);
-
-        super.beforeTest();
+    public static boolean shouldRunHsmTest() {
+        return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
+               || TEST_MODE == TestMode.PLAYBACK;
     }
 }

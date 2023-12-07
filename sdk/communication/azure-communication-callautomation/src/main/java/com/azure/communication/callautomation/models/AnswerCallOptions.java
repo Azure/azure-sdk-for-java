@@ -21,6 +21,21 @@ public final class AnswerCallOptions {
     private final String callbackUrl;
 
     /**
+     * Media Streaming Configuration.
+     */
+    private MediaStreamingOptions mediaStreamingOptions;
+
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /*
+     * AI options for the call.
+     */
+    private CallIntelligenceOptions callIntelligenceOptions;
+
+    /**
      * The operational context
      */
     private String operationContext;
@@ -55,12 +70,32 @@ public final class AnswerCallOptions {
     }
 
     /**
+     * Get the Transcription configuration.
+     *
+     * @return the transcriptionConfiguration.
+     */
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
+    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
     }
 
      /**
@@ -71,6 +106,46 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+    /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingOptions The media streaming configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }

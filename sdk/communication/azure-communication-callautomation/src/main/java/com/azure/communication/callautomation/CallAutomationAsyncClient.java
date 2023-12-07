@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
+import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
@@ -12,20 +13,30 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.AnswerCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CallIntelligenceOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CustomCallingContext;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
+import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionConfigurationInternal;
+import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -65,17 +76,21 @@ public final class CallAutomationAsyncClient {
     private final AzureCommunicationCallAutomationServiceImpl azureCommunicationCallAutomationServiceInternal;
     private final CallRecordingsImpl callRecordingsInternal;
     private final CallMediasImpl callMediasInternal;
+    private final CallDialogsImpl callDialogsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
     private final String resourceUrl;
     private final CommunicationUserIdentifierModel sourceIdentity;
+    private final CallAutomationEventProcessor eventProcessor;
 
-    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity) {
+    CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient, CommunicationUserIdentifier sourceIdentity, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
+        this.callDialogsInternal = callServiceClient.getCallDialogs();
+        this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
@@ -83,7 +98,14 @@ public final class CallAutomationAsyncClient {
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
-    //region Pre-call Actions
+    /**
+     * Get the event processor for handling events.
+     * @return {@link CallAutomationEventProcessor} as event processor
+     */
+    public CallAutomationEventProcessor getEventProcessor() {
+        return eventProcessor;
+    }
+
     /**
      * Get Source Identity that is used for create and answer call
      * @return {@link CommunicationUserIdentifier} represent source
@@ -92,6 +114,7 @@ public final class CallAutomationAsyncClient {
         return sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
+    //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
@@ -151,36 +174,18 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
-                    request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
-                    context)
-                .map(response -> {
-                    try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-
-                        return new SimpleResponse<>(response,
-                            new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
-                    } catch (URISyntaxException e) {
-                        throw logger.logExceptionAsError(new RuntimeException(e));
-                    }
-                });
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getCreateCallResponseMono(context, getCreateCallRequestInternal(createCallOptions));
     }
 
     Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
+        return getCreateCallResponseMono(context, getCreateCallRequestInternal(createGroupCallOptions));
+    }
+
+    private Mono<Response<CreateCallResult>> getCreateCallResponseMono(Context context, CreateCallRequestInternal createCallRequestInternal) {
         try {
             context = context == null ? Context.NONE : context;
-            CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
-                    request,
+                    createCallRequestInternal,
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
                     context)
@@ -204,13 +209,40 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>();
         targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTargetParticipant()));
 
+        CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
+        if (createCallOptions.getCallIntelligenceOptions() != null && createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+            callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+        }
+
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
+            .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallOptions.getOperationContext());
+
+        // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+        if (createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders() != null || createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders() != null) {
+            CustomCallingContext customContext = new CustomCallingContext();
+            customContext.setSipHeaders(createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders());
+            request.setCustomCallingContext(customContext);
+        }
+
+        if (createCallOptions.getMediaStreamingConfiguration() != null) {
+            MediaStreamingConfigurationInternal streamingConfigurationInternal =
+                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
+            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        }
+
+        if (createCallOptions.getTranscriptionConfiguration() != null) {
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                getTranscriptionConfigurationInternal(createCallOptions.getTranscriptionConfiguration());
+            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        }
 
         return request;
     }
@@ -219,15 +251,67 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargetParticipants()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
+        CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
+        if (createCallGroupOptions.getCallIntelligenceOptions() != null && createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+            callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+        }
+
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
+            .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
+            CustomCallingContext customContext = new CustomCallingContext();
+            customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
+            customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
+            request.setCustomCallingContext(customContext);
+        }
+
+        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
+            MediaStreamingConfigurationInternal streamingConfigurationInternal =
+                getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
+            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
+        }
+
+        if (createCallGroupOptions.getTranscriptionConfiguration() != null) {
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                getTranscriptionConfigurationInternal(createCallGroupOptions.getTranscriptionConfiguration());
+            request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+        }
+
         return request;
+    }
+
+    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
+        MediaStreamingOptions mediaStreamingOptions) {
+        return new MediaStreamingConfigurationInternal()
+            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
+            .setAudioChannelType(
+                MediaStreamingAudioChannelTypeInternal.fromString(
+                    mediaStreamingOptions.getAudioChannelType().toString()))
+            .setContentType(
+                MediaStreamingContentTypeInternal.fromString(
+                    mediaStreamingOptions.getContentType().toString()))
+            .setTransportType(
+                MediaStreamingTransportTypeInternal.fromString(
+                    mediaStreamingOptions.getTransportType().toString()));
+    }
+
+    private TranscriptionConfigurationInternal getTranscriptionConfigurationInternal(
+        TranscriptionOptions transcriptionOptions) {
+        return new TranscriptionConfigurationInternal()
+            .setTransportUrl(transcriptionOptions.getTransportUrl())
+            .setTransportType(
+                TranscriptionTransportTypeInternal.fromString(
+                    transcriptionOptions.getTransportType().toString()))
+            .setLocale(transcriptionOptions.getLocale())
+            .setStartTranscription(transcriptionOptions.getStartTranscription());
     }
 
     /**
@@ -269,6 +353,24 @@ public final class CallAutomationAsyncClient {
                 .setAnsweredBy(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
 
+            if (answerCallOptions.getCallIntelligenceOptions() != null && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+                CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
+            }
+
+            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
+                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
+                    getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
+                request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
+            }
+
+            if (answerCallOptions.getTranscriptionConfiguration() != null) {
+                TranscriptionConfigurationInternal transcriptionConfigurationInternal =
+                    getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
+                request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
+            }
+
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
@@ -277,9 +379,11 @@ public final class CallAutomationAsyncClient {
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-                        return new SimpleResponse<>(response,
-                            new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                        AnswerCallResult result = new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
+
+                        return new SimpleResponse<>(response, result);
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));
                     }
@@ -324,6 +428,14 @@ public final class CallAutomationAsyncClient {
             RedirectCallRequestInternal request = new RedirectCallRequestInternal()
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
+
+            // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
+            if (redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
+                CustomCallingContext customContext = new CustomCallingContext();
+                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                request.setCustomCallingContext(customContext);
+            }
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
                     request,
@@ -391,7 +503,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal, callDialogsInternal, eventProcessor);
     }
     //endregion
 

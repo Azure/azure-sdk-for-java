@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.JiraSource;
 public final class JiraSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JiraSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"JiraSource\",\"query\":\"dataoqldnhwdfxgec\",\"queryTimeout\":\"datakkdbzbhsnimompxd\",\"additionalColumns\":\"datap\",\"sourceRetryCount\":\"databdmoawh\",\"sourceRetryWait\":\"dataxxnmyxzh\",\"maxConcurrentConnections\":\"datacqoyd\",\"disableMetricsCollection\":\"datazhfnylgbwdsa\",\"\":{\"jinlsktprnknnqlt\":\"datawa\",\"wgen\":\"datagyeyxmuwgnwxtm\",\"ew\":\"datamoswcxlgzquq\"}}")
-                .toObject(JiraSource.class);
+        JiraSource model = BinaryData.fromString(
+            "{\"type\":\"JiraSource\",\"query\":\"databggsnanojty\",\"queryTimeout\":\"datahzxzazofr\",\"additionalColumns\":\"datasxjdgaimk\",\"sourceRetryCount\":\"datasowszb\",\"sourceRetryWait\":\"datalhxik\",\"maxConcurrentConnections\":\"dataokyngarwzutzjxga\",\"disableMetricsCollection\":\"datamnatnpolueylqys\",\"\":{\"inmhlgpef\":\"dataixngekcwecbqtkd\",\"wrwvbqv\":\"dataqccey\",\"iqfaxtljpyzcgugs\":\"datacqgqrsopq\"}}")
+            .toObject(JiraSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JiraSource model =
-            new JiraSource()
-                .withSourceRetryCount("databdmoawh")
-                .withSourceRetryWait("dataxxnmyxzh")
-                .withMaxConcurrentConnections("datacqoyd")
-                .withDisableMetricsCollection("datazhfnylgbwdsa")
-                .withQueryTimeout("datakkdbzbhsnimompxd")
-                .withAdditionalColumns("datap")
-                .withQuery("dataoqldnhwdfxgec");
+        JiraSource model = new JiraSource().withSourceRetryCount("datasowszb").withSourceRetryWait("datalhxik")
+            .withMaxConcurrentConnections("dataokyngarwzutzjxga").withDisableMetricsCollection("datamnatnpolueylqys")
+            .withQueryTimeout("datahzxzazofr").withAdditionalColumns("datasxjdgaimk").withQuery("databggsnanojty");
         model = BinaryData.fromObject(model).toObject(JiraSource.class);
     }
 }

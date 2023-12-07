@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeNodeMonito
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Get monitoring data response. */
+/**
+ * Get monitoring data response.
+ */
 @Fluent
 public final class IntegrationRuntimeMonitoringDataInner {
     /*
@@ -24,13 +26,15 @@ public final class IntegrationRuntimeMonitoringDataInner {
     @JsonProperty(value = "nodes")
     private List<IntegrationRuntimeNodeMonitoringData> nodes;
 
-    /** Creates an instance of IntegrationRuntimeMonitoringDataInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeMonitoringDataInner class.
+     */
     public IntegrationRuntimeMonitoringDataInner() {
     }
 
     /**
      * Get the name property: Integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Set the name property: Integration runtime name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IntegrationRuntimeMonitoringDataInner object itself.
      */
@@ -50,7 +54,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Get the nodes property: Integration runtime node monitoring data.
-     *
+     * 
      * @return the nodes value.
      */
     public List<IntegrationRuntimeNodeMonitoringData> nodes() {
@@ -59,7 +63,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Set the nodes property: Integration runtime node monitoring data.
-     *
+     * 
      * @param nodes the nodes value to set.
      * @return the IntegrationRuntimeMonitoringDataInner object itself.
      */
@@ -70,7 +74,7 @@ public final class IntegrationRuntimeMonitoringDataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

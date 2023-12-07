@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Response body structure for get data factory operation status. */
+/**
+ * Response body structure for get data factory operation status.
+ */
 @Fluent
 public final class GetDataFactoryOperationStatusResponse {
     /*
@@ -24,15 +26,18 @@ public final class GetDataFactoryOperationStatusResponse {
     /*
      * Response body structure for get data factory operation status.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of GetDataFactoryOperationStatusResponse class. */
+    /**
+     * Creates an instance of GetDataFactoryOperationStatusResponse class.
+     */
     public GetDataFactoryOperationStatusResponse() {
     }
 
     /**
      * Get the status property: Status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -41,7 +46,7 @@ public final class GetDataFactoryOperationStatusResponse {
 
     /**
      * Set the status property: Status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the GetDataFactoryOperationStatusResponse object itself.
      */
@@ -52,7 +57,7 @@ public final class GetDataFactoryOperationStatusResponse {
 
     /**
      * Get the additionalProperties property: Response body structure for get data factory operation status.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -62,7 +67,7 @@ public final class GetDataFactoryOperationStatusResponse {
 
     /**
      * Set the additionalProperties property: Response body structure for get data factory operation status.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the GetDataFactoryOperationStatusResponse object itself.
      */
@@ -81,7 +86,7 @@ public final class GetDataFactoryOperationStatusResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

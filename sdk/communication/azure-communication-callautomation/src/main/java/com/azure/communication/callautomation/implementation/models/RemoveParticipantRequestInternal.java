@@ -23,6 +23,15 @@ public final class RemoveParticipantRequestInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
+    /*
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     */
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
+
     /**
      * Get the participantToRemove property: The participants to be removed from the call.
      *
@@ -62,6 +71,30 @@ public final class RemoveParticipantRequestInternal {
      */
     public RemoveParticipantRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the RemoveParticipantRequestInternal object itself.
+     */
+    public RemoveParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

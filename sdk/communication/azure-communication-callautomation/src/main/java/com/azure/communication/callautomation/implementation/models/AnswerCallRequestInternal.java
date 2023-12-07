@@ -29,6 +29,24 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
+     * Media Streaming Configuration.
+     */
+    @JsonProperty(value = "mediaStreamingConfiguration")
+    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
+
+    /*
+     * Live Transcription Configuration.
+     */
+    @JsonProperty(value = "transcriptionConfiguration")
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
+
+    /*
+     * AI options for the call.
+     */
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
+
+    /*
      * The identifier of the call automation entity which answers the call
      */
     @JsonProperty(value = "answeredBy")
@@ -91,6 +109,69 @@ public final class AnswerCallRequestInternal {
      */
     public AnswerCallRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @return the mediaStreamingConfiguration value.
+     */
+    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
+        return this.mediaStreamingConfiguration;
+    }
+
+    /**
+     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
+     *
+     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setMediaStreamingConfiguration(
+            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the transcriptionConfiguration property: Live Transcription Configuration.
+     *
+     * @return the transcriptionConfiguration value.
+     */
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
+        return this.transcriptionConfiguration;
+    }
+
+    /**
+     * Set the transcriptionConfiguration property: Live Transcription Configuration.
+     *
+     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfigurationInternal transcriptionConfiguration) {
+        this.transcriptionConfiguration = transcriptionConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the callIntelligenceOptions property: AI options for the call.
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the callIntelligenceOptions property: AI options for the call.
+     *
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 

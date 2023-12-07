@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.QuickBooksSource;
 public final class QuickBooksSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuickBooksSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"QuickBooksSource\",\"query\":\"dataq\",\"queryTimeout\":\"dataykagsx\",\"additionalColumns\":\"datahervvlibrolqxloe\",\"sourceRetryCount\":\"datazrvf\",\"sourceRetryWait\":\"datasyqbfgwujw\",\"maxConcurrentConnections\":\"datathvue\",\"disableMetricsCollection\":\"datazznvdjnspy\",\"\":{\"nmavf\":\"dataygutqtjwiv\",\"nx\":\"datajwdw\",\"nd\":\"datae\"}}")
-                .toObject(QuickBooksSource.class);
+        QuickBooksSource model = BinaryData.fromString(
+            "{\"type\":\"QuickBooksSource\",\"query\":\"datagyivsiirx\",\"queryTimeout\":\"datappqpsiniidaxbesb\",\"additionalColumns\":\"dataizyjch\",\"sourceRetryCount\":\"dataasjrseqpo\",\"sourceRetryWait\":\"datahgksqwzuosyyxl\",\"maxConcurrentConnections\":\"dataxzudfarzayrdyrow\",\"disableMetricsCollection\":\"datakpdpudqiwhvxb\",\"\":{\"deffrbxzjedy\":\"dataoeuufws\",\"no\":\"datajisxspnmfydphls\",\"vjlqfzlbpe\":\"dataqb\",\"nlxstp\":\"datavjpgllr\"}}")
+            .toObject(QuickBooksSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuickBooksSource model =
-            new QuickBooksSource()
-                .withSourceRetryCount("datazrvf")
-                .withSourceRetryWait("datasyqbfgwujw")
-                .withMaxConcurrentConnections("datathvue")
-                .withDisableMetricsCollection("datazznvdjnspy")
-                .withQueryTimeout("dataykagsx")
-                .withAdditionalColumns("datahervvlibrolqxloe")
-                .withQuery("dataq");
+        QuickBooksSource model = new QuickBooksSource().withSourceRetryCount("dataasjrseqpo")
+            .withSourceRetryWait("datahgksqwzuosyyxl").withMaxConcurrentConnections("dataxzudfarzayrdyrow")
+            .withDisableMetricsCollection("datakpdpudqiwhvxb").withQueryTimeout("datappqpsiniidaxbesb")
+            .withAdditionalColumns("dataizyjch").withQuery("datagyivsiirx");
         model = BinaryData.fromObject(model).toObject(QuickBooksSource.class);
     }
 }

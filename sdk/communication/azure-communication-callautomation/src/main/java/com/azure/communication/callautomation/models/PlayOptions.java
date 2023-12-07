@@ -14,6 +14,7 @@ import java.util.List;
 public final class PlayOptions {
     /*
      * A List of {@link PlaySource} representing the sources to play.
+     * Currently only single play source per request is supported.
      */
     private final List<PlaySource> playSources;
 
@@ -31,6 +32,12 @@ public final class PlayOptions {
      * The operation context
      */
     private String operationContext;
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUrl;
 
     /**
      * Constructor
@@ -108,6 +115,27 @@ public final class PlayOptions {
      */
     public PlayOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the overridden call back URL override for operation.
+     *
+     * @return the operationCallbackUrl
+     */
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
+    }
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the PlayOptions object itself.
+     */
+    public PlayOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.annotation.Fluent;
 public final class PlayToAllOptions {
     /*
      * A List of {@link PlaySource} representing the sources to play.
+     * Currently only single play source per request is supported.
      */
     private final List<PlaySource> playSources;
 
@@ -25,6 +26,12 @@ public final class PlayToAllOptions {
      * The operation context
      */
     private String operationContext;
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUrl;
 
     /**
      * Constructor
@@ -71,6 +78,15 @@ public final class PlayToAllOptions {
     }
 
     /**
+     * Get the overridden call back URL override for operation.
+     *
+     * @return the operationCallbackUrl
+     */
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
+    }
+
+    /**
      * Set the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @param loop the loop value to set.
@@ -89,6 +105,18 @@ public final class PlayToAllOptions {
      */
     public PlayToAllOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the PlayToAllOptions object itself.
+     */
+    public PlayToAllOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

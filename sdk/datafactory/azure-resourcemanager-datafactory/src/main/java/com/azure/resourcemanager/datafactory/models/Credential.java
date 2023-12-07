@@ -28,8 +28,7 @@ import java.util.Map;
 @JsonTypeName("Credential")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class)
-})
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class) })
 @Fluent
 public class Credential {
     /*
@@ -48,15 +47,18 @@ public class Credential {
      * The Azure Data Factory nested object which contains the information and credential which can be used to connect
      * with related store or compute resource.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of Credential class. */
+    /**
+     * Creates an instance of Credential class.
+     */
     public Credential() {
     }
 
     /**
      * Get the description property: Credential description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +67,7 @@ public class Credential {
 
     /**
      * Set the description property: Credential description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Credential object itself.
      */
@@ -76,7 +78,7 @@ public class Credential {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Credential.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> annotations() {
@@ -85,7 +87,7 @@ public class Credential {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Credential.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the Credential object itself.
      */
@@ -97,7 +99,7 @@ public class Credential {
     /**
      * Get the additionalProperties property: The Azure Data Factory nested object which contains the information and
      * credential which can be used to connect with related store or compute resource.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -108,7 +110,7 @@ public class Credential {
     /**
      * Set the additionalProperties property: The Azure Data Factory nested object which contains the information and
      * credential which can be used to connect with related store or compute resource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the Credential object itself.
      */
@@ -127,7 +129,7 @@ public class Credential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

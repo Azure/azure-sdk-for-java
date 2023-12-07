@@ -23,6 +23,12 @@ public final class RemoveParticipantOptions {
     private String operationContext;
 
     /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUrl;
+
+    /**
      * Constructor
      *
      * @param participant The list of participants to invite.
@@ -50,6 +56,15 @@ public final class RemoveParticipantOptions {
     }
 
     /**
+     * Get the overridden call back URL override for operation.
+     *
+     * @return the operationCallbackUrl
+     */
+    public String getOperationCallbackUrl() {
+        return operationCallbackUrl;
+    }
+
+    /**
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
@@ -57,6 +72,18 @@ public final class RemoveParticipantOptions {
      */
     public RemoveParticipantOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUrl the operationCallbackUrl to set
+     * @return the RemoveParticipantOptions object itself.
+     */
+    public RemoveParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

@@ -10,29 +10,20 @@ import com.azure.resourcemanager.datafactory.models.FileServerReadSettings;
 public final class FileServerReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileServerReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FileServerReadSettings\",\"recursive\":\"datakobxvexusjfjuphj\",\"wildcardFolderPath\":\"dataeksvj\",\"wildcardFileName\":\"datapyoatlp\",\"fileListPath\":\"datasxqmmxjdkvy\",\"enablePartitionDiscovery\":\"datalrlfgowvvxjqrus\",\"partitionRootPath\":\"databqyfecnsqeewf\",\"deleteFilesAfterCompletion\":\"datagmkc\",\"modifiedDatetimeStart\":\"dataazi\",\"modifiedDatetimeEnd\":\"datawybwmebmxzwcfd\",\"fileFilter\":\"datakurppwksixh\",\"maxConcurrentConnections\":\"datanvydxjkdsqe\",\"disableMetricsCollection\":\"datajd\",\"\":{\"vahbwhrguqet\":\"dataiqwixsdxxflw\",\"dciwxlgg\":\"databqhyszflzj\",\"cmsqznv\":\"datatpayfklbgshbkdp\",\"loeq\":\"datahjtrashnfofiy\"}}")
-                .toObject(FileServerReadSettings.class);
+        FileServerReadSettings model = BinaryData.fromString(
+            "{\"type\":\"FileServerReadSettings\",\"recursive\":\"datakudhjztbwzjbqzqw\",\"wildcardFolderPath\":\"dataznhqzdbzlkds\",\"wildcardFileName\":\"datakvprk\",\"fileListPath\":\"datavxieqcnv\",\"enablePartitionDiscovery\":\"datashfafbeh\",\"partitionRootPath\":\"dataeiuexkpgrmwdwlr\",\"deleteFilesAfterCompletion\":\"dataplpfrecri\",\"modifiedDatetimeStart\":\"dataaba\",\"modifiedDatetimeEnd\":\"datalsizaobsgpdbhb\",\"fileFilter\":\"datasjsoxuuwuungdvvd\",\"maxConcurrentConnections\":\"datacpquyi\",\"disableMetricsCollection\":\"datagttvonwrpel\",\"\":{\"pevthuvupdsafqag\":\"dataitmtkcqixgqxs\",\"kodkqffhuxoxqt\":\"datawqumecqyianjmv\",\"zc\":\"dataz\",\"lvfzwt\":\"datamwfogjrhmtbpnhjo\"}}")
+            .toObject(FileServerReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerReadSettings model =
-            new FileServerReadSettings()
-                .withMaxConcurrentConnections("datanvydxjkdsqe")
-                .withDisableMetricsCollection("datajd")
-                .withRecursive("datakobxvexusjfjuphj")
-                .withWildcardFolderPath("dataeksvj")
-                .withWildcardFileName("datapyoatlp")
-                .withFileListPath("datasxqmmxjdkvy")
-                .withEnablePartitionDiscovery("datalrlfgowvvxjqrus")
-                .withPartitionRootPath("databqyfecnsqeewf")
-                .withDeleteFilesAfterCompletion("datagmkc")
-                .withModifiedDatetimeStart("dataazi")
-                .withModifiedDatetimeEnd("datawybwmebmxzwcfd")
-                .withFileFilter("datakurppwksixh");
+        FileServerReadSettings model = new FileServerReadSettings().withMaxConcurrentConnections("datacpquyi")
+            .withDisableMetricsCollection("datagttvonwrpel").withRecursive("datakudhjztbwzjbqzqw")
+            .withWildcardFolderPath("dataznhqzdbzlkds").withWildcardFileName("datakvprk")
+            .withFileListPath("datavxieqcnv").withEnablePartitionDiscovery("datashfafbeh")
+            .withPartitionRootPath("dataeiuexkpgrmwdwlr").withDeleteFilesAfterCompletion("dataplpfrecri")
+            .withModifiedDatetimeStart("dataaba").withModifiedDatetimeEnd("datalsizaobsgpdbhb")
+            .withFileFilter("datasjsoxuuwuungdvvd");
         model = BinaryData.fromObject(model).toObject(FileServerReadSettings.class);
     }
 }

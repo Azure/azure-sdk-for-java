@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficControllerUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficControllerUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"fxqeof\":\"fublj\",\"jqul\":\"aeqjhqjbasvms\"}}")
-                .toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("fublj", model.tags().get("fxqeof"));
+        TrafficControllerUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"mgxsab\":\"lljfmppeeb\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\",\"xhocdgeablgphuti\":\"eltmrldhugjzzdat\"}}")
+            .toObject(TrafficControllerUpdate.class);
+        Assertions.assertEquals("lljfmppeeb", model.tags().get("mgxsab"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerUpdate model =
-            new TrafficControllerUpdate().withTags(mapOf("fxqeof", "fublj", "jqul", "aeqjhqjbasvms"));
+        TrafficControllerUpdate model = new TrafficControllerUpdate().withTags(mapOf("mgxsab", "lljfmppeeb",
+            "jczdzevndh", "yqduujit", "feusnhut", "rwpdappdsbdkvwrw", "xhocdgeablgphuti", "eltmrldhugjzzdat"));
         model = BinaryData.fromObject(model).toObject(TrafficControllerUpdate.class);
-        Assertions.assertEquals("fublj", model.tags().get("fxqeof"));
+        Assertions.assertEquals("lljfmppeeb", model.tags().get("mgxsab"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

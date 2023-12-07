@@ -49,26 +49,198 @@ import java.util.stream.Collectors;
 
 
 /**
+ *
  * Provides a synchronous service client for accessing the Azure Tables service.
+ *
+ * <h2>Overview</h2>
  *
  * <p>The client encapsulates the URL for the Tables service endpoint and the credentials for accessing the storage or
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
- * {@link TableServiceClientBuilder} object.</p>
+ * <h2>Getting Started</h2>
  *
- * <p><strong>Samples to construct a sync client</strong></p>
- * <!-- src_embed com.azure.data.tables.tableServiceClient.instantiation -->
+ * <p>The building and authenticating of instances of this client are handled by {@link TableServiceClientBuilder} instances. The following
+ * sample shows how to authenticate and build a TableServiceClient using a connection string.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.connectionstring.instantiation -->
  * <pre>
  * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .connectionString&#40;&quot;connectionstring&quot;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.data.tables.tableServiceClient.instantiation -->
+ * <!-- end com.azure.data.tables.tableServiceClient.connectionstring.instantiation -->
+ *
+ * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
+ *
+ * <p>The following samples show the various ways you can interact with the tables service using this client.</p>
+ *
+ * <hr/>
+ *
+ *
+ *
+ * <h3>Create a Table</h3>
+ *
+ * <p>The {@link #createTable(String) createTable} method can be used to create a new table within an Azure Storage or Azure Cosmos account.
+ * It returns a TableClient for the newly created table.</p>
+ *
+ * <p>The following sample creates a table with the name "myTable".</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.createTable#String -->
+ * <pre>
+ * TableClient tableClient = tableServiceClient.createTable&#40;&quot;myTable&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Table with name '%s' was created.&quot;, tableClient.getTableName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.createTable#String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>Delete a Table</h3>
+ *
+ * <p>The {@link #deleteTable(String) deleteTable} method can be used to delete a table within an Azure Storage or Azure Cosmos account.</p>
+ *
+ * <p>The following sample deletes the table with the name "myTable".</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
+ * <pre>
+ * tableServiceClient.deleteTable&#40;&quot;myTable&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.deleteTable#String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>Get a {@link TableClient}</h3>
+ *
+ * <p>The {@link #getTableClient(String) getTableClient} method can be used to retrieve a {@link TableClient} for a table within an Azure Storage or Azure Cosmos account.</p>
+ *
+ * <p>The following sample gets a {@link TableClient} for the table with the name "myTable".</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.getTableClient#String -->
+ * <pre>
+ * TableClient tableClient = tableServiceClient.getTableClient&#40;&quot;myTable&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Table with name '%s' was retrieved.&quot;, tableClient.getTableName&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.getTableClient#String -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>List Tables</h3>
+ *
+ * <p>The {@link #listTables() listTables} method can be used to list all the tables in an Azure Storage or Azure Cosmos account.</p>
+ *
+ * <p>The following samples lists the tables in the Tables service account.</p>
+ *
+ * <p>Without filtering, returning all tables:</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables -->
+ * <pre>
+ * PagedIterable&lt;TableItem&gt; tableItems = tableServiceClient.listTables&#40;&#41;;
+ *
+ * tableItems.forEach&#40;tableItem -&gt;
+ *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.listTables -->
+ *
+ * <p>With filtering:</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
+ * <pre>
+ * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
+ *
+ * PagedIterable&lt;TableItem&gt; retrievedTableItems = tableServiceClient.listTables&#40;options, Duration.ofSeconds&#40;5&#41;,
+ *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+ *
+ * retrievedTableItems.forEach&#40;tableItem -&gt;
+ *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>Get Table Properties</h3>
+ *
+ * <p>The {@link #getProperties() getProperties} method can be used to get the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
+ *
+ * <p>The following sample gets the properties of the Tables service account.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.getProperties -->
+ * <pre>
+ * TableServiceProperties properties = tableServiceClient.getProperties&#40;&#41;;
+ *
+ * System.out.print&#40;&quot;Retrieved service properties successfully.&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.getProperties -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>Set Table Properties</h3>
+ *
+ * <p>The {@link #setProperties(TableServiceProperties) setProperties} method can be used to set the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+ * This operation is only supported on Azure Storage endpoints.</p>
+ *
+ * <p>The following sample sets the properties of the Tables service account.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
+ * <pre>
+ * TableServiceProperties properties = new TableServiceProperties&#40;&#41;
+ *     .setHourMetrics&#40;new TableServiceMetrics&#40;&#41;
+ *         .setVersion&#40;&quot;1.0&quot;&#41;
+ *         .setEnabled&#40;true&#41;
+ *         .setIncludeApis&#40;true&#41;
+ *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+ *             .setEnabled&#40;true&#41;
+ *             .setDaysToRetain&#40;5&#41;&#41;&#41;
+ *     .setLogging&#40;new TableServiceLogging&#40;&#41;
+ *         .setAnalyticsVersion&#40;&quot;1.0&quot;&#41;
+ *         .setReadLogged&#40;true&#41;
+ *         .setRetentionPolicy&#40;new TableServiceRetentionPolicy&#40;&#41;
+ *             .setEnabled&#40;true&#41;
+ *             .setDaysToRetain&#40;5&#41;&#41;&#41;;
+ *
+ * tableServiceClient.setProperties&#40;properties&#41;;
+ *
+ * System.out.printf&#40;&quot;Set service properties successfully.&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
+ *
+ * <hr/>
+ *
+ * <h3>Get Table Statistics</h3>
+ *
+ * <p>The {@link #getStatistics() getStatistics} method can be used to retrieve statistics related to replication for the account's Table service. It is only available on the secondary location endpoint when read-access geo-redundant replication is enabled for the account.
+ * This operation is only supported on Azure Storage endpoints.</p>
+ *
+ * <p>The following sample gets the statistics of the Tables service account.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.getStatistics -->
+ * <pre>
+ * TableServiceStatistics statistics = tableServiceClient.getStatistics&#40;&#41;;
+ *
+ * System.out.print&#40;&quot;Retrieved service statistics successfully.&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.getStatistics -->
+ *
+ * <em><strong>Note: </strong>for asynchronous sample, refer to {@link TableServiceAsyncClient asynchronous client}.</em>
  *
  * @see TableServiceClientBuilder
+ * @see com.azure.data.tables
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
 public final class TableServiceClient {
@@ -341,11 +513,9 @@ public final class TableServiceClient {
      * <p>Deletes a table.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
      * <pre>
-     * String tableName = &quot;myTable&quot;;
+     * tableServiceClient.deleteTable&#40;&quot;myTable&quot;&#41;;
      *
-     * tableServiceClient.deleteTable&#40;tableName&#41;;
-     *
-     * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, tableName&#41;;
+     * System.out.printf&#40;&quot;Table with name '%s' was deleted.&quot;, &quot;myTable&quot;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceClient.deleteTable#String -->
      *
@@ -366,13 +536,11 @@ public final class TableServiceClient {
      * <p>Deletes a table. Prints out the details of the {@link Response HTTP response}.</p>
      * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context -->
      * <pre>
-     * String myTableName = &quot;myTable&quot;;
-     *
-     * Response&lt;Void&gt; response = tableServiceClient.deleteTableWithResponse&#40;myTableName, Duration.ofSeconds&#40;5&#41;,
+     * Response&lt;Void&gt; response = tableServiceClient.deleteTableWithResponse&#40;&quot;myTable&quot;, Duration.ofSeconds&#40;5&#41;,
      *     new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response successful with status code: %d. Table with name '%s' was deleted.&quot;,
-     *     response.getStatusCode&#40;&#41;, myTableName&#41;;
+     *     response.getStatusCode&#40;&#41;, &quot;myTable&quot;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceClient.deleteTableWithResponse#String-Duration-Context -->
      *
@@ -619,7 +787,7 @@ public final class TableServiceClient {
      *
      * tableServiceClient.setProperties&#40;properties&#41;;
      *
-     * System.out.print&#40;&quot;Set service properties successfully.&quot;&#41;;
+     * System.out.printf&#40;&quot;Set service properties successfully.&quot;&#41;;
      * </pre>
      * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
      *

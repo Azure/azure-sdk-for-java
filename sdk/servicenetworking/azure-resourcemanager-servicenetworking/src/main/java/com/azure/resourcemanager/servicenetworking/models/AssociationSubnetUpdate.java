@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicenetworking.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Association Subnet. */
+/**
+ * Association Subnet.
+ */
 @Fluent
 public final class AssociationSubnetUpdate {
     /*
@@ -16,13 +18,15 @@ public final class AssociationSubnetUpdate {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of AssociationSubnetUpdate class. */
+    /**
+     * Creates an instance of AssociationSubnetUpdate class.
+     */
     public AssociationSubnetUpdate() {
     }
 
     /**
      * Get the id property: Association ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class AssociationSubnetUpdate {
 
     /**
      * Set the id property: Association ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AssociationSubnetUpdate object itself.
      */
@@ -42,7 +46,7 @@ public final class AssociationSubnetUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
