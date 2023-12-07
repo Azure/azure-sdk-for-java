@@ -48,8 +48,8 @@ public class RestProxyXmlSerializableTests {
     @Test
     public void sendXmlSerializableRequest() {
         SimpleXmlSerializable xmlSerializable = new SimpleXmlSerializable(true, 10, 10.D, "10");
-        String singleQuoteXmlDeclaration = "<?xml version='1.0' encoding='utf-8'?>";
-        String doubleQuoteXmlDeclaration = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+        String singleQuoteXmlDeclaration = "<?xml version='1.0' encoding='UTF-8'?>";
+        String doubleQuoteXmlDeclaration = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         String expectedBody
             = "<SimpleXml boolean=\"true\" decimal=\"10.0\"><int>10</int><string>10</string></SimpleXml>";
 
@@ -71,7 +71,7 @@ public class RestProxyXmlSerializableTests {
 
     @Test
     public void receiveXmlSerializableResponse() {
-        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        String response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\">"
             + "<int>10</int>"
             + "<string>10</string>"
@@ -94,7 +94,7 @@ public class RestProxyXmlSerializableTests {
 
     @Test
     public void invalidXmlSerializableResponse() {
-        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        String response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

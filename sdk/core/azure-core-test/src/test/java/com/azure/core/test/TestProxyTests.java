@@ -21,7 +21,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
-import com.azure.core.util.UrlBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,12 +35,10 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -93,15 +90,10 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port());
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -134,13 +126,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
-        URL url;
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setScheme("http").setPath("first/path").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path");
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
         assertTrue(thrown.getMessage().contains("Uri doesn't match"));
     }
@@ -153,15 +140,11 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url;
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url).setBody(TEST_DATA)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost:" + server.port() + "/first/path")
+            .setBody(TEST_DATA)
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(TEST_DATA.length()));
 
@@ -177,15 +160,10 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(interceptorManager.getRecordPolicy()).build();
-        URL url;
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("echoheaders").setScheme("http").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/echoheaders")
             .setHeader(HttpHeaderName.fromString("header1"), "value1")
             .setHeader(HttpHeaderName.fromString("header2"), "value2");
 
@@ -200,14 +178,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
 
-        URL url;
-        try {
-            url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
             // test being flaky
             .setHeader(HttpHeaderName.ACCEPT, "*/*");
@@ -241,19 +212,8 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client).build();
-        URL url;
-        try {
-            url = new UrlBuilder()
-                .setHost("localhost")
-                .setPath("/fr/path/1")
-                .setPort(3000)
-                .setScheme("http")
-                .toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/path/1")
             .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
@@ -281,22 +241,11 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new ArrayList<>(Arrays.asList(new CustomMatcher()
-            .setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key")))));
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+            .setExcludedHeaders(Collections.singletonList("Ocp-Apim-Subscription-Key"))));
         HttpClient client = interceptorManager.getPlaybackClient();
-        URL url;
 
-        try {
-            url = new UrlBuilder()
-                .setHost("localhost")
-                .setPort(3000)
-                .setPath("/fr/models")
-                .setScheme("http")
-                .toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url)
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/models")
             .setHeader(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
@@ -314,23 +263,12 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Accept")));
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client).build();
-        URL url;
-        try {
-            url = new UrlBuilder()
-                .setHost("localhost")
-                .setPath("/fr/path/2")
-                .setPort(3000)
-                .setScheme("http")
-                .toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/path/2");
         request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
@@ -367,8 +305,8 @@ public class TestProxyTests extends TestProxyTestBase {
             .policies(interceptorManager.getRecordPolicy())
             .build();
 
-        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost:3000"),
-            Context.NONE)) {
+        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET,
+                "http://localhost:" + server.port()), Context.NONE)) {
             assertEquals(200, response.getStatusCode());
             HttpHeaders headers = response.getRequest().getHeaders();
             assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
@@ -386,23 +324,12 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .policies(new RedirectPolicy(), interceptorManager.getRecordPolicy()).build();
-        URL url;
-        try {
-            url = new UrlBuilder()
-                .setHost("localhost")
-                .setPath("/getRedirect")
-                .setPort(3000)
-                .setScheme("http")
-                .toUrl();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/getRedirect");
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
-            assertEquals("http://localhost:3000/echoheaders", response.getRequest().getUrl().toString());
+            assertEquals("http://localhost:" + server.port() + "/echoheaders", response.getRequest().getUrl().toString());
             assertNull(response.getRequest().getHeaders().get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
         }
     }
