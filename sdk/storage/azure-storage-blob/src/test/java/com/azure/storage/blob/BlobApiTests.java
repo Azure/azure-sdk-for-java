@@ -2021,6 +2021,9 @@ public class BlobApiTests extends BlobTestBase {
     public void syncCopyDestAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+
+        sleepIfRunningAgainstService(30 * 1000);
+
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         Map<String, String> t = new HashMap<>();
@@ -2043,6 +2046,9 @@ public class BlobApiTests extends BlobTestBase {
     public void syncCopyDestACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
         String leaseID, String tags) {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+
+        sleepIfRunningAgainstService(30 * 1000);
+
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         bu2.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         noneMatch = setupBlobMatchCondition(bu2, noneMatch);

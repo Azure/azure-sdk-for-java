@@ -593,6 +593,8 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
@@ -621,6 +623,8 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
@@ -636,6 +640,8 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch) {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+
+        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
@@ -668,6 +674,8 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+
+        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();

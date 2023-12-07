@@ -1530,6 +1530,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                            String noneMatch, String tags) {
         ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
+
+        sleepIfRunningAgainstService(30 * 1000);
+
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
         bu2.copyIncremental(bc.getBlobUrl(), snapshot).block();

@@ -625,6 +625,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
@@ -654,6 +656,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
@@ -670,6 +674,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
                                            String sourceIfMatch, String sourceIfNoneMatch) {
         ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
+        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
@@ -703,6 +709,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                                                OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
                                                String sourceIfNoneMatch) {
         ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+
+        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
