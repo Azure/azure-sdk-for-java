@@ -14,6 +14,7 @@ import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransactionCoordinator;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
@@ -93,7 +94,6 @@ public class ReactorSession implements AmqpSession {
     private final AmqpRetryOptions retryOptions;
 
     private final ReactorHandlerProvider handlerProvider;
-    private final AmqpLinkProvider linkProvider;
     private final Mono<ClaimsBasedSecurityNode> cbsNodeSupplier;
     private final Disposable.Composite subscriptions = Disposables.composite();
 
@@ -114,7 +114,7 @@ public class ReactorSession implements AmqpSession {
      * @param retryOptions for the session operations.
      */
     public ReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions) {
         this.amqpConnection = amqpConnection;
@@ -123,7 +123,6 @@ public class ReactorSession implements AmqpSession {
         this.handlerProvider = handlerProvider;
         this.sessionName = sessionName;
         this.provider = provider;
-        this.linkProvider = linkProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
@@ -233,11 +232,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        // Note: As part of removing the v1 stack receiver, the 'createConsumer' invoked below will be updated by removing
-        // ConsumerFactory parameter and adding two additional parameters (DeliverySettleMode, includeDeliveryTagInMessage).
-        // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
-            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, new ConsumerFactory())
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND)
             .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
             .cast(AmqpLink.class);
     }
@@ -344,15 +340,13 @@ public class ReactorSession implements AmqpSession {
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
      * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
      * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
-     * @param consumerFactory a temporary parameter to support both v1 and v2 receivers. When removing the v1
-     *       receiver support, two new parameters, 'ReceiverSettleMode' and 'includeDeliveryTagInMessage' will be introduced,
-     *       and 'consumerFactory' will be removed.
+     *
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties,
         Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode, ConsumerFactory consumerFactory) {
+        ReceiverSettleMode receiverSettleMode) {
 
         if (isDisposed()) {
             LoggingEventBuilder logBuilder = logger.atError()
@@ -400,7 +394,7 @@ public class ReactorSession implements AmqpSession {
                                     .log("Creating a new receiver link.");
 
                                 return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
-                                    receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager, consumerFactory);
+                                    receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
                             });
 
                         sink.success(computed.getLink());
@@ -413,6 +407,16 @@ public class ReactorSession implements AmqpSession {
                 tokenManager.close();
                 return t;
             }));
+    }
+
+    /**
+     * Given the entity path, associated receiver and link handler, creates the receive link instance.
+     */
+    protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
+        ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
+        AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+            reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
     }
 
     /**
@@ -542,7 +546,7 @@ public class ReactorSession implements AmqpSession {
 
         sender.open();
 
-        final AmqpSendLink reactorSender = linkProvider.createSendLink(amqpConnection, entityPath, sender, sendLinkHandler,
+        final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
             provider, tokenManager, messageSerializer, options, timeoutScheduler, handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath));
 
         //@formatter:off
@@ -573,7 +577,7 @@ public class ReactorSession implements AmqpSession {
     private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
         Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties,
         Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode,
-        TokenManager tokenManager, ConsumerFactory consumerFactory) {
+        TokenManager tokenManager) {
 
         final Receiver receiver = session.receiver(linkName);
         final Source source = new Source();
@@ -603,10 +607,14 @@ public class ReactorSession implements AmqpSession {
             receiver.setDesiredCapabilities(receiverDesiredCapabilities);
         }
 
-        // When removing v1 receiver support, the type 'ConsumerFactory' will be deleted, and we'll replace
-        // the logic here with the logic in ConsumerFactory.createConsumer' that uses the new v2 receiver types.
-        final AmqpReceiveLink reactorReceiver = consumerFactory.createConsumer(amqpConnection, linkName, entityPath, receiver,
-            tokenManager, provider, handlerProvider, linkProvider, retryOptions);
+        final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(
+            sessionHandler.getConnectionId(), sessionHandler.getHostname(), linkName, entityPath);
+        BaseHandler.setHandler(receiver, receiveLinkHandler);
+
+        receiver.open();
+
+        final AmqpReceiveLink reactorReceiver = createConsumer(entityPath, receiver, receiveLinkHandler,
+            tokenManager, provider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
