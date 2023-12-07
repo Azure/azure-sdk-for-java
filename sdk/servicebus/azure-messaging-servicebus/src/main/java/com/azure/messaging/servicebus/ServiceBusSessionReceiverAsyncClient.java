@@ -12,6 +12,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -154,37 +155,29 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
-    private final ConnectionCacheWrapper connectionCacheWrapper;
+    private final ServiceBusConnectionProcessor connectionProcessor;
     private final ServiceBusReceiverInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
-    private final ServiceBusSessionManager unNamedSessionManager;  // to obtain a session in V1
-    private final ServiceBusSessionAcquirer sessionAcquirer;       // to obtain a session in V2
+    private final ServiceBusSessionManager unNamedSessionManager;  // for acceptNextSession()
     private final String identifier;
 
     ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath,
         MessagingEntityType entityType, ReceiverOptions receiverOptions,
-        ConnectionCacheWrapper connectionCacheWrapper, ServiceBusReceiverInstrumentation instrumentation,
+        ServiceBusConnectionProcessor connectionProcessor, ServiceBusReceiverInstrumentation instrumentation,
         MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
-        this.connectionCacheWrapper = Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
-        if (connectionCacheWrapper.isV2()) {
-            this.sessionAcquirer = new ServiceBusSessionAcquirer(LOGGER, identifier, entityPath, entityType,
-                receiverOptions.getReceiveMode(), connectionCacheWrapper.getRetryOptions().getTryTimeout(), connectionCacheWrapper);
-            this.unNamedSessionManager = null;
-        } else {
-            this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType, connectionCacheWrapper,
-                messageSerializer, receiverOptions, identifier, instrumentation.getTracer());
-            this.sessionAcquirer = null;
-        }
+        this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType, connectionProcessor,
+             messageSerializer, receiverOptions, identifier, instrumentation.getTracer());
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
     }
@@ -202,20 +195,16 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceBusReceiverAsyncClient> acceptNextSession() {
-        if (sessionAcquirer != null) {
-            return acquireSpecificOrNextSession(null, sessionAcquirer);
-        }
-
         return tracer.traceMono("ServiceBus.acceptNextSession", unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
                 final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
                     receiverOptions.isEnableAutoComplete(), sessionId);
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
-                    entityType, connectionCacheWrapper, messageSerializer, newReceiverOptions,
+                    entityType, connectionProcessor, messageSerializer, newReceiverOptions,
                     receiveLink, identifier, instrumentation.getTracer());
                 return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
-                    entityType, newReceiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
+                    entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                     instrumentation, messageSerializer, () -> { }, sessionSpecificManager);
             })));
 
@@ -244,54 +233,22 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             return monoError(LOGGER, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
 
-        if (sessionAcquirer != null) {
-            return acquireSpecificOrNextSession(sessionId, sessionAcquirer);
-        }
-
         final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
             receiverOptions.isEnableAutoComplete(), sessionId);
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionCacheWrapper, messageSerializer, newReceiverOptions, identifier, instrumentation.getTracer());
+            connectionProcessor, messageSerializer, newReceiverOptions, identifier, instrumentation.getTracer());
 
         return tracer.traceMono("ServiceBus.acceptSession",
             sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
-                fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionCacheWrapper,
-                ServiceBusConstants.OPERATION_TIMEOUT, instrumentation, messageSerializer, () -> { },
-                sessionSpecificManager)));
+                        fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
+                        ServiceBusConstants.OPERATION_TIMEOUT, instrumentation, messageSerializer, () -> { },
+                        sessionSpecificManager)));
     }
-
-    private Mono<ServiceBusReceiverAsyncClient> acquireSpecificOrNextSession(String specificSessionId, ServiceBusSessionAcquirer sessionAcquirer) {
-        final Mono<ServiceBusSessionAcquirer.Session> acquireSession;
-        if (specificSessionId != null) {
-            acquireSession = sessionAcquirer.acquire(specificSessionId);
-        } else {
-            acquireSession = sessionAcquirer.acquire();
-        }
-        final Mono<ServiceBusReceiverAsyncClient> acquireSessionReceiver = acquireSession
-            .map(session -> {
-                final ServiceBusSessionReactorReceiver sessionReceiver = new ServiceBusSessionReactorReceiver(LOGGER, tracer,
-                    session, null, receiverOptions.getMaxLockRenewDuration());
-
-                final ServiceBusSingleSessionManager sessionManager = new ServiceBusSingleSessionManager(LOGGER, identifier,
-                    sessionReceiver, receiverOptions.getPrefetchCount(), messageSerializer, connectionCacheWrapper.getRetryOptions());
-
-                final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
-                    receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-                    receiverOptions.isEnableAutoComplete(), session.getId());
-                return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
-                    entityType, newReceiverOptions, connectionCacheWrapper, ServiceBusConstants.OPERATION_TIMEOUT,
-                    instrumentation, messageSerializer, () -> { }, sessionManager);
-            });
-        return tracer.traceMono("ServiceBus.acceptSession", acquireSessionReceiver);
-    }
-
 
     @Override
     public void close() {
-        if (this.unNamedSessionManager != null) {
-            this.unNamedSessionManager.close();
-        }
+        this.unNamedSessionManager.close();
         this.onClientClose.run();
     }
 }

@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
-import com.azure.core.amqp.implementation.handler.MessageWithDeliveryTag;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
@@ -510,11 +509,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             setValues(messageAnnotations.getValue(), brokeredAmqpAnnotatedMessage.getMessageAnnotations());
         }
 
-        if (amqpMessage instanceof MessageWithDeliveryTag) {
-            // In the V2-stack, a new amqp-core type, 'MessageWithDeliveryTag,' represents a tagged message.
-            // The equivalent SB-specific type 'MessageWithLockToken' will be deleted as part of V1-stack removal.
-            brokeredMessage.setLockToken(((MessageWithDeliveryTag) amqpMessage).getDeliveryTag());
-        } else if (amqpMessage instanceof MessageWithLockToken) {
+        if (amqpMessage instanceof MessageWithLockToken) {
             brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());
         }
 

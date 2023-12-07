@@ -20,11 +20,9 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
  * Base class for all proton-j handlers.
  */
 public abstract class Handler extends BaseHandler implements Closeable {
-    // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
+    private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
         .latestOrDefault(EndpointState.UNINITIALIZED);
-    // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
-    private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final String connectionId;
     private final String hostname;
 
