@@ -35,41 +35,21 @@
   <repositories>
     <repository>
       <id>azure-sdk-for-java-playground</id>
+      <name>Azure SDK artifact feed</name>
       <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground2/maven/v1</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
       <layout>default</layout>
       <snapshots>
         <enabled>true</enabled>
         <updatePolicy>daily</updatePolicy>
       </snapshots>
     </repository>
-    <repository>
-      <id>azure-sdk-for-java</id>
-      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <id>azure-sdk-for-java-playground</id>
+      <name>Azure SDK artifact feed</name>
+      <url>https://pkgs.dev.azure.com/azure-sdk/playground/_packaging/azure-sdk-for-java-playground2/maven/v1</url>
       <layout>default</layout>
       <snapshots>
         <enabled>true</enabled>
