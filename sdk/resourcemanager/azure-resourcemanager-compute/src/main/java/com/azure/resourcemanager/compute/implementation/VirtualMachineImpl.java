@@ -2789,6 +2789,7 @@ class VirtualMachineImpl
         updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
         updateParameter.withPriority(this.innerModel().priority());
         updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
+        updateParameter.withUserData(this.innerModel().userData());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {

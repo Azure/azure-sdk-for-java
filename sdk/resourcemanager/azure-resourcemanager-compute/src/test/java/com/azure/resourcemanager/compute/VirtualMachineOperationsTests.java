@@ -16,7 +16,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -135,8 +134,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(userDataForCreate, response.getValue().userData());
 
         // Update
-        computeManager.serviceClient().getVirtualMachines()
-            .update(rgName, vmName, new VirtualMachineUpdateInner().withUserData(userDataForUpdate));
+        vm.update().withUserData(userDataForUpdate).apply();
         response = computeManager.serviceClient().getVirtualMachines()
             .getByResourceGroupWithResponse(rgName, vmName, InstanceViewTypes.USER_DATA, Context.NONE);
         Assertions.assertEquals(userDataForUpdate, response.getValue().userData());
