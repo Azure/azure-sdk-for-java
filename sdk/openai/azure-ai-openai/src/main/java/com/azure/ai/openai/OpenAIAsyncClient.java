@@ -39,6 +39,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
@@ -1049,8 +1050,12 @@ public final class OpenAIAsyncClient {
         if (this.openAIServiceClient != null) {
             audioTranscriptionOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
+            audioTranscriptionOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Mono<Response<BinaryData>> response = openAIServiceClient != null
@@ -1117,8 +1122,12 @@ public final class OpenAIAsyncClient {
         if (this.openAIServiceClient != null) {
             audioTranscriptionOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
+            audioTranscriptionOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Mono<Response<BinaryData>> response = openAIServiceClient != null
@@ -1182,8 +1191,12 @@ public final class OpenAIAsyncClient {
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Mono<Response<BinaryData>> response = openAIServiceClient != null
@@ -1248,8 +1261,12 @@ public final class OpenAIAsyncClient {
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Mono<Response<BinaryData>> response = openAIServiceClient != null
