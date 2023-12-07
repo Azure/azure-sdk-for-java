@@ -141,7 +141,6 @@ public class ServiceApiTests extends BlobTestBase {
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
-        System.out.println("isbr: " + unsanitize + " - " + finalSas);
         assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + finalSas))
             .buildClient()

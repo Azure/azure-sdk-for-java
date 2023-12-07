@@ -142,7 +142,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
-        System.out.println("isbr: " + unsanitize + " - " + finalSas);
         BlobContainerAsyncClient client1 = instrument(new BlobContainerClientBuilder()
             .endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
             .buildAsyncClient();
