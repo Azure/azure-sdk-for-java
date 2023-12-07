@@ -6,7 +6,7 @@
 
 #### gpt-4-vision-preview
 
-With the new `gpt-4-vision-preview` model, chat completions can now include user input of images. This is achieved by providing a collection of `ChatRequestContentItem` instances to as the `Content` of a `ChatRequestUserMessage`. For more information on `gpt-4-vision-preview` capabilities and current limitations, see [OpenAI's Vision guide](https://platform.openai.com/docs/guides/vision).
+With the new `gpt-4-vision-preview` model, chat completions can now include user input of images. This is achieved by providing a collection of `ChatMessageContentItem ` instances to as the `content` of a `ChatRequestUserMessage`. For more information on `gpt-4-vision-preview` capabilities and current limitations, see [OpenAI's Vision guide](https://platform.openai.com/docs/guides/vision).
 
 #### Chat tools and parallel function calling
 
