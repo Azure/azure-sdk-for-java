@@ -442,9 +442,9 @@ public interface VirtualMachine
     DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
 
     /**
-     * Gets the user data for the virtual machine.
+     * Gets the base64 encoded user data for the virtual machine.
      *
-     * @return the user data for the virtual machine.
+     * @return the base64 encoded user data for the virtual machine.
      */
     String userData();
 

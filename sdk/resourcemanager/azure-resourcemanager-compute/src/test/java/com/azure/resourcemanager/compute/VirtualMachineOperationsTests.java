@@ -112,7 +112,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     @Test
     public void canCreateAndUpdateVirtualMachineWithUserData() {
         String userDataForCreate = "N0ZBN0MxRkYtMkNCMC00RUM3LUE1RDctMDY2MUI0RTdDNzY4";
-        String userDataForUpdate = "Njc5MDI3MUItQ0RGRC00RjdELUI5NTEtMTA4QjA2RTNGNDRE" ;
+        String userDataForUpdate = "Njc5MDI3MUItQ0RGRC00RjdELUI5NTEtMTA4QjA2RTNGNDRE";
 
         // Create
         VirtualMachine vm = computeManager
