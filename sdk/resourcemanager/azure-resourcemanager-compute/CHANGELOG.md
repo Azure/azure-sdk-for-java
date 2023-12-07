@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `userData` for `VirtualMachine` in create and update.
 
 ## 2.33.0 (2023-11-24)
 
