@@ -25,11 +25,11 @@ Azure OpenAI On Your Data previously supported Azure Cognitive Search data sourc
 | Azure Machine Learning Index | System Managed Identity, User Managed Identity, Access Token |
 | Microsoft Search | Access Token |
 
-To use these new sources, provide an instance of the appropriate derived type of `OnYourDataChatExtensionConfiguration` for the desired data source and use a supported `OnYourDataAuthentication` instance for its `Authentication`.
+To use these new sources, provide an instance of the appropriate derived type of `OnYourDataVectorizationSource` for the desired data source and use a supported `OnYourDataAuthenticationOptions` instance for its `Authentication`.
 
 #### dall-e-3 image generation
 
-Azure OpenAI now supports image generation with the improved `dall-e-3` models and this library supports the corresponding new features for quality level selection, prompt adjustment, and style. Use `OpenAIClient.GetImageGenerations()` and note that Azure OpenAI will *only* support `dall-e-3` models moving forward.
+Azure OpenAI now supports image generation with the improved `dall-e-3` models and this library supports the corresponding new features for quality level selection, prompt adjustment, and style. Use `getImageGenerations()` and note that Azure OpenAI will *only* support `dall-e-3` models moving forward.
 
 #### Expanded responsible AI content filter annotations
 
@@ -41,7 +41,6 @@ Azure OpenAI content filter annotations now include substantial additional infor
 Use `getAudioTranscription` or `getAudioTranscriptionWithResponse` convenience methods from respective classes.
 - Removed methods `getAudioTranslationAsResponseObject` and `getAudioTranslationAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
 Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience methods from respective classes.
-- Removed property, ResponseError `error` from `ImageLocation` class.
 
 #### `ChatRequestMessage` and `ChatResponseMessage` separation
 
@@ -50,8 +49,8 @@ With all of the above expanded capabilities, a few breaking changes manifest in 
 - `ChatMessage` is replaced by a number of new, role- and usage-specific types:
   - `ChatRequestMessage` is the abstract base type for messages provided as options/input, with derived types:
     - `ChatRequestSystemMessage`, for assistant instructions and constraints
-    - `ChatRequestUserMessage`, which accepts either conventional string `content` or the new `ChatRequestContentItem` used for `gpt-4-vision`
-    - `ChatRequestToolMessage`, used to respond to `ToolCall` finish reasons when providing new `ChatCompletionToolDefinitions` on a request
+    - `ChatRequestUserMessage`, which accepts either conventional string `content` or the new `ChatMessageContentItem ` used for `gpt-4-vision`
+    - `ChatRequestToolMessage`, used to respond to `ToolCall` finish reasons when providing new `ChatCompletionsToolDefinition` on a request
     - `ChatRequestAssistantMessage`, used to capture conversation history for prior responses or few-shot examples from the assistant
   - `ChatResponseMessage` is the type used for chat messages received as part of `ChatChoice` instances in `ChatCompletions`
 
