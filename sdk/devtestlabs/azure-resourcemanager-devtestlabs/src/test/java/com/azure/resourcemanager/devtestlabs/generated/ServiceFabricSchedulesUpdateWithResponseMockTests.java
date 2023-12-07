@@ -35,7 +35,7 @@ public final class ServiceFabricSchedulesUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"jhunhghcg\",\"weeklyRecurrence\":{\"weekdays\":[],\"time\":\"rnquoxso\"},\"dailyRecurrence\":{\"time\":\"eimseobfsxstcyil\"},\"hourlyRecurrence\":{\"minute\":226397391},\"timeZoneId\":\"xcjzlquze\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1203865254,\"webhookUrl\":\"jvbzinzabwmvog\",\"emailRecipient\":\"svlpgidn\",\"notificationLocale\":\"ehaqidoyzltgio\"},\"createdDate\":\"2021-07-13T23:42:30Z\",\"targetResourceId\":\"pepiaeapfs\",\"provisioningState\":\"gdtpe\",\"uniqueIdentifier\":\"acyh\"},\"location\":\"qwbp\",\"tags\":{\"upyvqyvliq\":\"cjubkhjozfymcwm\",\"eswhd\":\"ipsejbsvsia\"},\"id\":\"zydisnuep\",\"name\":\"wyj\",\"type\":\"nldpxottd\"}";
+            "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"bzzxezm\",\"weeklyRecurrence\":{\"weekdays\":[\"gpjeuxsphlokfp\",\"ijpdvzvfbhwbdquf\"],\"time\":\"gnrglaqrwyamb\"},\"dailyRecurrence\":{\"time\":\"febzxf\"},\"hourlyRecurrence\":{\"minute\":1911300905},\"timeZoneId\":\"ibhlenntrv\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1274004293,\"webhookUrl\":\"u\",\"emailRecipient\":\"zmlghny\",\"notificationLocale\":\"lpyeu\"},\"createdDate\":\"2021-04-16T06:06:20Z\",\"targetResourceId\":\"dixqbo\",\"provisioningState\":\"vhh\",\"uniqueIdentifier\":\"qe\"},\"location\":\"at\",\"tags\":{\"nmtsdixc\":\"znmg\",\"ibmg\":\"w\",\"gair\":\"ymncjc\",\"fbhtleberp\":\"cqzoofjnqjsve\"},\"id\":\"ljekn\",\"name\":\"qnwjjq\",\"type\":\"owkdnjr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,41 +67,33 @@ public final class ServiceFabricSchedulesUpdateWithResponseMockTests {
             manager
                 .serviceFabricSchedules()
                 .updateWithResponse(
-                    "obektmbozo",
-                    "tzamicbig",
-                    "cdgzseznux",
-                    "euairaabmdlqjb",
-                    "dp",
-                    new ScheduleFragment()
-                        .withTags(
-                            mapOf(
-                                "cdpreyxelyicg",
-                                "lhupmomihzbdnpxp",
-                                "fss",
-                                "flr",
-                                "rkbhammgmqfm",
-                                "yghsf",
-                                "gquxweysland",
-                                "fgvqcpdw")),
+                    "kj",
+                    "oywlunpipcwyb",
+                    "zfn",
+                    "npatpftsae",
+                    "wf",
+                    new ScheduleFragment().withTags(mapOf("cylht", "orpwaltzwugexojf", "dr", "hthvazjpwex")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("qwbp", response.location());
-        Assertions.assertEquals("cjubkhjozfymcwm", response.tags().get("upyvqyvliq"));
-        Assertions.assertEquals(EnableStatus.ENABLED, response.status());
-        Assertions.assertEquals("jhunhghcg", response.taskType());
-        Assertions.assertEquals("rnquoxso", response.weeklyRecurrence().time());
-        Assertions.assertEquals("eimseobfsxstcyil", response.dailyRecurrence().time());
-        Assertions.assertEquals(226397391, response.hourlyRecurrence().minute());
-        Assertions.assertEquals("xcjzlquze", response.timeZoneId());
+        Assertions.assertEquals("at", response.location());
+        Assertions.assertEquals("znmg", response.tags().get("nmtsdixc"));
+        Assertions.assertEquals(EnableStatus.DISABLED, response.status());
+        Assertions.assertEquals("bzzxezm", response.taskType());
+        Assertions.assertEquals("gpjeuxsphlokfp", response.weeklyRecurrence().weekdays().get(0));
+        Assertions.assertEquals("gnrglaqrwyamb", response.weeklyRecurrence().time());
+        Assertions.assertEquals("febzxf", response.dailyRecurrence().time());
+        Assertions.assertEquals(1911300905, response.hourlyRecurrence().minute());
+        Assertions.assertEquals("ibhlenntrv", response.timeZoneId());
         Assertions.assertEquals(EnableStatus.ENABLED, response.notificationSettings().status());
-        Assertions.assertEquals(1203865254, response.notificationSettings().timeInMinutes());
-        Assertions.assertEquals("jvbzinzabwmvog", response.notificationSettings().webhookUrl());
-        Assertions.assertEquals("svlpgidn", response.notificationSettings().emailRecipient());
-        Assertions.assertEquals("ehaqidoyzltgio", response.notificationSettings().notificationLocale());
-        Assertions.assertEquals("pepiaeapfs", response.targetResourceId());
+        Assertions.assertEquals(1274004293, response.notificationSettings().timeInMinutes());
+        Assertions.assertEquals("u", response.notificationSettings().webhookUrl());
+        Assertions.assertEquals("zmlghny", response.notificationSettings().emailRecipient());
+        Assertions.assertEquals("lpyeu", response.notificationSettings().notificationLocale());
+        Assertions.assertEquals("dixqbo", response.targetResourceId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

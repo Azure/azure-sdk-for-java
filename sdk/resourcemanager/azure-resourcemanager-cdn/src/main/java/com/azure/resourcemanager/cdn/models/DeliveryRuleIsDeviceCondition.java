@@ -21,6 +21,10 @@ public final class DeliveryRuleIsDeviceCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private IsDeviceMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleIsDeviceCondition class. */
+    public DeliveryRuleIsDeviceCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

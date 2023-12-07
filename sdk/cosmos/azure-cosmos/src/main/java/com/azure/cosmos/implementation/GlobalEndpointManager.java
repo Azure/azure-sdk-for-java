@@ -49,13 +49,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
         try {
             this.locationCache = new LocationCache(
-                    new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
-                            connectionPolicy.getPreferredRegions():
-                            Collections.emptyList()
-                    ),
+                    connectionPolicy,
                     owner.getServiceEndpoint(),
-                    connectionPolicy.isEndpointDiscoveryEnabled(),
-                    connectionPolicy.isMultipleWriteRegionsEnabled(),
                     configs);
 
             this.owner = owner;
@@ -94,6 +89,16 @@ public class GlobalEndpointManager implements AutoCloseable {
     public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(request);
+    }
+
+    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+        // readonly
+        return this.locationCache.getApplicableReadEndpoints(excludedRegions);
+    }
+
+    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+        //readonly
+        return this.locationCache.getApplicableWriteEndpoints(excludedRegions);
     }
 
     public List<URI> getAvailableReadEndpoints() {
@@ -149,6 +154,10 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void markEndpointUnavailableForWrite(URI endpoint) {
         logger.debug("Marking  endpoint {} unavailable for Write",endpoint);
         this.locationCache.markEndpointUnavailableForWrite(endpoint);
+    }
+
+    public boolean canUseMultipleWriteLocations() {
+        return this.locationCache.canUseMultipleWriteLocations();
     }
 
     public boolean canUseMultipleWriteLocations(RxDocumentServiceRequest request) {

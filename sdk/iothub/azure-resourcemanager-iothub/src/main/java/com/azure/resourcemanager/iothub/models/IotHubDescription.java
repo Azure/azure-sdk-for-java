@@ -121,11 +121,13 @@ public interface IotHubDescription {
             DefinitionStages.WithSku,
             DefinitionStages.WithCreate {
     }
+
     /** The IotHubDescription definition stages. */
     interface DefinitionStages {
         /** The first stage of the IotHubDescription definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the IotHubDescription definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -144,6 +146,7 @@ public interface IotHubDescription {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -154,6 +157,7 @@ public interface IotHubDescription {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -164,6 +168,7 @@ public interface IotHubDescription {
              */
             WithCreate withSku(IotHubSkuInfo sku);
         }
+
         /**
          * The stage of the IotHubDescription definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -189,6 +194,7 @@ public interface IotHubDescription {
              */
             IotHubDescription create(Context context);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -199,6 +205,7 @@ public interface IotHubDescription {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -211,6 +218,7 @@ public interface IotHubDescription {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -221,6 +229,7 @@ public interface IotHubDescription {
              */
             WithCreate withProperties(IotHubProperties properties);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -231,6 +240,7 @@ public interface IotHubDescription {
              */
             WithCreate withIdentity(ArmIdentity identity);
         }
+
         /** The stage of the IotHubDescription definition allowing to specify ifMatch. */
         interface WithIfMatch {
             /**
@@ -244,6 +254,7 @@ public interface IotHubDescription {
             WithCreate withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Begins update for the IotHubDescription resource.
      *
@@ -268,6 +279,7 @@ public interface IotHubDescription {
          */
         IotHubDescription apply(Context context);
     }
+
     /** The IotHubDescription update stages. */
     interface UpdateStages {
         /** The stage of the IotHubDescription update allowing to specify tags. */
@@ -281,6 +293,7 @@ public interface IotHubDescription {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

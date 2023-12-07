@@ -17,7 +17,7 @@ Now, we'll break down on how to control these pool size to meet your need.
 ## Prerequisites
 * [Azure Resource Manager](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager#getting-started) to get start with Azure client
 * [Azure Core Netty HTTP client](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) for Reactor Netty implementation of [Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core) HttpClient
-* [Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity) for Azure Active Directory token authentication support across the Azure SDK
+* [Azure Identity](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity) for Microsoft Entra ID token authentication support across the Azure SDK
 * Basic concepts of [Project Reactor](https://projectreactor.io/)
 
 ## Code Example

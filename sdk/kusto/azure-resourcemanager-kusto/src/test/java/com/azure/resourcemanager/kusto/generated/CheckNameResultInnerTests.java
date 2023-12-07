@@ -15,11 +15,11 @@ public final class CheckNameResultInnerTests {
         CheckNameResultInner model =
             BinaryData
                 .fromString(
-                    "{\"nameAvailable\":false,\"name\":\"rkujy\",\"message\":\"l\",\"reason\":\"AlreadyExists\"}")
+                    "{\"nameAvailable\":false,\"name\":\"jq\",\"message\":\"hmuouqfprwzwbn\",\"reason\":\"AlreadyExists\"}")
                 .toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("rkujy", model.name());
-        Assertions.assertEquals("l", model.message());
+        Assertions.assertEquals("jq", model.name());
+        Assertions.assertEquals("hmuouqfprwzwbn", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 
@@ -28,13 +28,13 @@ public final class CheckNameResultInnerTests {
         CheckNameResultInner model =
             new CheckNameResultInner()
                 .withNameAvailable(false)
-                .withName("rkujy")
-                .withMessage("l")
+                .withName("jq")
+                .withMessage("hmuouqfprwzwbn")
                 .withReason(Reason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
-        Assertions.assertEquals("rkujy", model.name());
-        Assertions.assertEquals("l", model.message());
+        Assertions.assertEquals("jq", model.name());
+        Assertions.assertEquals("hmuouqfprwzwbn", model.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, model.reason());
     }
 }

@@ -33,6 +33,10 @@ public final class WorkbookUpdateParameters {
     @JsonProperty(value = "properties")
     private WorkbookPropertiesUpdateParameters innerProperties;
 
+    /** Creates an instance of WorkbookUpdateParameters class. */
+    public WorkbookUpdateParameters() {
+    }
+
     /**
      * Get the kind property: The kind of workbook. Only valid value is shared.
      *

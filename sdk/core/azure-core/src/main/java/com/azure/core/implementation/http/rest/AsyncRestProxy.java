@@ -63,7 +63,7 @@ public class AsyncRestProxy extends RestProxyBase {
     }
 
     @Override
-    @SuppressWarnings("try")
+    @SuppressWarnings({"try", "unused"})
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
@@ -286,6 +286,10 @@ public class AsyncRestProxy extends RestProxyBase {
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
         SwaggerMethodParser methodParser = requestDataConfiguration.getMethodParser();
+
+        if (bodyContentObject == null) {
+            return;
+        }
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {

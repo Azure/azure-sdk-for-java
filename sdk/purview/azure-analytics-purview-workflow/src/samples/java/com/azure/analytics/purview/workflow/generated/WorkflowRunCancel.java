@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowRunClient;
+import com.azure.analytics.purview.workflow.WorkflowRunClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,17 +14,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkflowRunCancel {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        WorkflowRunClient workflowRunClient =
+                new WorkflowRunClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.cancelworkflowrun.workflowruncancel
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowruncancel.workflowruncancel
         BinaryData runCancelReply = BinaryData.fromString("{\"comment\":\"Thanks!\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response =
-                purviewWorkflowClient.cancelWorkflowRunWithResponse(
+                workflowRunClient.cancelWithResponse(
                         "b7aaf54b-59c2-4a0e-a7d0-f431044f2198", runCancelReply, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.cancelworkflowrun.workflowruncancel
+        // END:com.azure.analytics.purview.workflow.generated.workflowruncancel.workflowruncancel
     }
 }

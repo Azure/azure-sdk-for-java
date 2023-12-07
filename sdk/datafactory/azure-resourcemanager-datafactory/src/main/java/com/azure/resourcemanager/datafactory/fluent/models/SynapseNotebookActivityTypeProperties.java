@@ -7,13 +7,17 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.BigDataPoolParametrizationReference;
+import com.azure.resourcemanager.datafactory.models.ConfigurationType;
 import com.azure.resourcemanager.datafactory.models.NotebookParameter;
+import com.azure.resourcemanager.datafactory.models.SparkConfigurationParametrizationReference;
 import com.azure.resourcemanager.datafactory.models.SynapseNotebookReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Execute Synapse notebook activity properties. */
+/**
+ * Execute Synapse notebook activity properties.
+ */
 @Fluent
 public final class SynapseNotebookActivityTypeProperties {
     /*
@@ -59,18 +63,39 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /*
      * Number of executors to launch for this session, which will override the 'numExecutors' of the notebook you
-     * provide.
+     * provide. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "numExecutors")
-    private Integer numExecutors;
+    private Object numExecutors;
 
-    /** Creates an instance of SynapseNotebookActivityTypeProperties class. */
+    /*
+     * The type of the spark config.
+     */
+    @JsonProperty(value = "configurationType")
+    private ConfigurationType configurationType;
+
+    /*
+     * The spark configuration of the spark job.
+     */
+    @JsonProperty(value = "targetSparkConfiguration")
+    private SparkConfigurationParametrizationReference targetSparkConfiguration;
+
+    /*
+     * Spark configuration property.
+     */
+    @JsonProperty(value = "sparkConfig")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> sparkConfig;
+
+    /**
+     * Creates an instance of SynapseNotebookActivityTypeProperties class.
+     */
     public SynapseNotebookActivityTypeProperties() {
     }
 
     /**
      * Get the notebook property: Synapse notebook reference.
-     *
+     * 
      * @return the notebook value.
      */
     public SynapseNotebookReference notebook() {
@@ -79,7 +104,7 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Set the notebook property: Synapse notebook reference.
-     *
+     * 
      * @param notebook the notebook value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -90,7 +115,7 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Get the sparkPool property: The name of the big data pool which will be used to execute the notebook.
-     *
+     * 
      * @return the sparkPool value.
      */
     public BigDataPoolParametrizationReference sparkPool() {
@@ -99,7 +124,7 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Set the sparkPool property: The name of the big data pool which will be used to execute the notebook.
-     *
+     * 
      * @param sparkPool the sparkPool value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -110,7 +135,7 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Get the parameters property: Notebook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, NotebookParameter> parameters() {
@@ -119,7 +144,7 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Set the parameters property: Notebook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -132,7 +157,7 @@ public final class SynapseNotebookActivityTypeProperties {
      * Get the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the
      * notebook you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the executorSize value.
      */
     public Object executorSize() {
@@ -143,7 +168,7 @@ public final class SynapseNotebookActivityTypeProperties {
      * Set the executorSize property: Number of core and memory to be used for executors allocated in the specified
      * Spark pool for the session, which will be used for overriding 'executorCores' and 'executorMemory' of the
      * notebook you provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param executorSize the executorSize value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -155,7 +180,7 @@ public final class SynapseNotebookActivityTypeProperties {
     /**
      * Get the conf property: Spark configuration properties, which will override the 'conf' of the notebook you
      * provide.
-     *
+     * 
      * @return the conf value.
      */
     public Object conf() {
@@ -165,7 +190,7 @@ public final class SynapseNotebookActivityTypeProperties {
     /**
      * Set the conf property: Spark configuration properties, which will override the 'conf' of the notebook you
      * provide.
-     *
+     * 
      * @param conf the conf value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -178,7 +203,7 @@ public final class SynapseNotebookActivityTypeProperties {
      * Get the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you
      * provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the driverSize value.
      */
     public Object driverSize() {
@@ -189,7 +214,7 @@ public final class SynapseNotebookActivityTypeProperties {
      * Set the driverSize property: Number of core and memory to be used for driver allocated in the specified Spark
      * pool for the session, which will be used for overriding 'driverCores' and 'driverMemory' of the notebook you
      * provide. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param driverSize the driverSize value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
@@ -200,37 +225,96 @@ public final class SynapseNotebookActivityTypeProperties {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
-     *
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @return the numExecutors value.
      */
-    public Integer numExecutors() {
+    public Object numExecutors() {
         return this.numExecutors;
     }
 
     /**
      * Set the numExecutors property: Number of executors to launch for this session, which will override the
-     * 'numExecutors' of the notebook you provide.
-     *
+     * 'numExecutors' of the notebook you provide. Type: integer (or Expression with resultType integer).
+     * 
      * @param numExecutors the numExecutors value to set.
      * @return the SynapseNotebookActivityTypeProperties object itself.
      */
-    public SynapseNotebookActivityTypeProperties withNumExecutors(Integer numExecutors) {
+    public SynapseNotebookActivityTypeProperties withNumExecutors(Object numExecutors) {
         this.numExecutors = numExecutors;
         return this;
     }
 
     /**
+     * Get the configurationType property: The type of the spark config.
+     * 
+     * @return the configurationType value.
+     */
+    public ConfigurationType configurationType() {
+        return this.configurationType;
+    }
+
+    /**
+     * Set the configurationType property: The type of the spark config.
+     * 
+     * @param configurationType the configurationType value to set.
+     * @return the SynapseNotebookActivityTypeProperties object itself.
+     */
+    public SynapseNotebookActivityTypeProperties withConfigurationType(ConfigurationType configurationType) {
+        this.configurationType = configurationType;
+        return this;
+    }
+
+    /**
+     * Get the targetSparkConfiguration property: The spark configuration of the spark job.
+     * 
+     * @return the targetSparkConfiguration value.
+     */
+    public SparkConfigurationParametrizationReference targetSparkConfiguration() {
+        return this.targetSparkConfiguration;
+    }
+
+    /**
+     * Set the targetSparkConfiguration property: The spark configuration of the spark job.
+     * 
+     * @param targetSparkConfiguration the targetSparkConfiguration value to set.
+     * @return the SynapseNotebookActivityTypeProperties object itself.
+     */
+    public SynapseNotebookActivityTypeProperties
+        withTargetSparkConfiguration(SparkConfigurationParametrizationReference targetSparkConfiguration) {
+        this.targetSparkConfiguration = targetSparkConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the sparkConfig property: Spark configuration property.
+     * 
+     * @return the sparkConfig value.
+     */
+    public Map<String, Object> sparkConfig() {
+        return this.sparkConfig;
+    }
+
+    /**
+     * Set the sparkConfig property: Spark configuration property.
+     * 
+     * @param sparkConfig the sparkConfig value to set.
+     * @return the SynapseNotebookActivityTypeProperties object itself.
+     */
+    public SynapseNotebookActivityTypeProperties withSparkConfig(Map<String, Object> sparkConfig) {
+        this.sparkConfig = sparkConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (notebook() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property notebook in model SynapseNotebookActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property notebook in model SynapseNotebookActivityTypeProperties"));
         } else {
             notebook().validate();
         }
@@ -238,14 +322,14 @@ public final class SynapseNotebookActivityTypeProperties {
             sparkPool().validate();
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (targetSparkConfiguration() != null) {
+            targetSparkConfiguration().validate();
         }
     }
 

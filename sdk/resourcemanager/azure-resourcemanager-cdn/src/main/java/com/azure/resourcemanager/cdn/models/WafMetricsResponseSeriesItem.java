@@ -21,7 +21,7 @@ public final class WafMetricsResponseSeriesItem {
      * The unit property.
      */
     @JsonProperty(value = "unit")
-    private WafMetricsResponseSeriesItemUnit unit;
+    private WafMetricsSeriesUnit unit;
 
     /*
      * The groups property.
@@ -34,6 +34,10 @@ public final class WafMetricsResponseSeriesItem {
      */
     @JsonProperty(value = "data")
     private List<WafMetricsResponseSeriesItemData> data;
+
+    /** Creates an instance of WafMetricsResponseSeriesItem class. */
+    public WafMetricsResponseSeriesItem() {
+    }
 
     /**
      * Get the metric property: The metric property.
@@ -60,7 +64,7 @@ public final class WafMetricsResponseSeriesItem {
      *
      * @return the unit value.
      */
-    public WafMetricsResponseSeriesItemUnit unit() {
+    public WafMetricsSeriesUnit unit() {
         return this.unit;
     }
 
@@ -70,7 +74,7 @@ public final class WafMetricsResponseSeriesItem {
      * @param unit the unit value to set.
      * @return the WafMetricsResponseSeriesItem object itself.
      */
-    public WafMetricsResponseSeriesItem withUnit(WafMetricsResponseSeriesItemUnit unit) {
+    public WafMetricsResponseSeriesItem withUnit(WafMetricsSeriesUnit unit) {
         this.unit = unit;
         return this;
     }

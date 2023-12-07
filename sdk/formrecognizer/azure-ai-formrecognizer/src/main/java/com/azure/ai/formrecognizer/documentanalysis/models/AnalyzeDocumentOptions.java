@@ -18,6 +18,12 @@ public final class AnalyzeDocumentOptions {
     private List<DocumentAnalysisFeature> documentAnalysisFeatures;
 
     /**
+     * Creates a new instance of AnalyzeDocumentOptions.
+     */
+    public AnalyzeDocumentOptions() {
+    }
+
+    /**
      * Get the custom page numbers for multipage documents(PDF/TIFF). Input the number of the
      * pages you want to get the recognized result for.
      * <p>For a range of pages, use a hyphen, ex - ["1-3"]. Separate each page or a page

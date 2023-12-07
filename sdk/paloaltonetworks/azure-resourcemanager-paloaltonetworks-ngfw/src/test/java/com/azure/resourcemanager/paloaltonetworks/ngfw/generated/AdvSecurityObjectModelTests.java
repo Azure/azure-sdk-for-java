@@ -13,30 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AdvSecurityObjectModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdvSecurityObjectModel model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"qsc\",\"entry\":[{\"name\":\"ypvhezrkg\",\"description\":\"c\"},{\"name\":\"refovgmkqsleyyvx\",\"description\":\"jpkcattpng\"},{\"name\":\"cr\",\"description\":\"zsqpjhvmdajvny\"}]}")
-                .toObject(AdvSecurityObjectModel.class);
-        Assertions.assertEquals("qsc", model.type());
-        Assertions.assertEquals("ypvhezrkg", model.entry().get(0).name());
-        Assertions.assertEquals("c", model.entry().get(0).description());
+        AdvSecurityObjectModel model = BinaryData.fromString(
+            "{\"type\":\"bldngkpoc\",\"entry\":[{\"name\":\"azyxoegukg\",\"description\":\"piu\"},{\"name\":\"gygev\",\"description\":\"ntypmrbpizcdrqj\"},{\"name\":\"dpydn\",\"description\":\"hxdeoejz\"}]}")
+            .toObject(AdvSecurityObjectModel.class);
+        Assertions.assertEquals("bldngkpoc", model.type());
+        Assertions.assertEquals("azyxoegukg", model.entry().get(0).name());
+        Assertions.assertEquals("piu", model.entry().get(0).description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdvSecurityObjectModel model =
-            new AdvSecurityObjectModel()
-                .withType("qsc")
-                .withEntry(
-                    Arrays
-                        .asList(
-                            new NameDescriptionObject().withName("ypvhezrkg").withDescription("c"),
-                            new NameDescriptionObject().withName("refovgmkqsleyyvx").withDescription("jpkcattpng"),
-                            new NameDescriptionObject().withName("cr").withDescription("zsqpjhvmdajvny")));
+        AdvSecurityObjectModel model = new AdvSecurityObjectModel().withType("bldngkpoc")
+            .withEntry(Arrays.asList(new NameDescriptionObject().withName("azyxoegukg").withDescription("piu"),
+                new NameDescriptionObject().withName("gygev").withDescription("ntypmrbpizcdrqj"),
+                new NameDescriptionObject().withName("dpydn").withDescription("hxdeoejz")));
         model = BinaryData.fromObject(model).toObject(AdvSecurityObjectModel.class);
-        Assertions.assertEquals("qsc", model.type());
-        Assertions.assertEquals("ypvhezrkg", model.entry().get(0).name());
-        Assertions.assertEquals("c", model.entry().get(0).description());
+        Assertions.assertEquals("bldngkpoc", model.type());
+        Assertions.assertEquals("azyxoegukg", model.entry().get(0).name());
+        Assertions.assertEquals("piu", model.entry().get(0).description());
     }
 }

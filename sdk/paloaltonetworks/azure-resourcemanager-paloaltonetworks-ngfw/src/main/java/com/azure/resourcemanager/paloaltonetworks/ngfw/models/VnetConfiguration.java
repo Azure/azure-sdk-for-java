@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VnetInfo for Firewall Networking. */
+/**
+ * VnetInfo for Firewall Networking.
+ */
 @Fluent
 public final class VnetConfiguration {
     /*
@@ -35,13 +37,15 @@ public final class VnetConfiguration {
     @JsonProperty(value = "ipOfTrustSubnetForUdr")
     private IpAddress ipOfTrustSubnetForUdr;
 
-    /** Creates an instance of VnetConfiguration class. */
+    /**
+     * Creates an instance of VnetConfiguration class.
+     */
     public VnetConfiguration() {
     }
 
     /**
      * Get the vnet property: Azure Virtual Network.
-     *
+     * 
      * @return the vnet value.
      */
     public IpAddressSpace vnet() {
@@ -50,7 +54,7 @@ public final class VnetConfiguration {
 
     /**
      * Set the vnet property: Azure Virtual Network.
-     *
+     * 
      * @param vnet the vnet value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -61,7 +65,7 @@ public final class VnetConfiguration {
 
     /**
      * Get the trustSubnet property: Trust Subnet.
-     *
+     * 
      * @return the trustSubnet value.
      */
     public IpAddressSpace trustSubnet() {
@@ -70,7 +74,7 @@ public final class VnetConfiguration {
 
     /**
      * Set the trustSubnet property: Trust Subnet.
-     *
+     * 
      * @param trustSubnet the trustSubnet value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -81,7 +85,7 @@ public final class VnetConfiguration {
 
     /**
      * Get the unTrustSubnet property: Untrust Subnet.
-     *
+     * 
      * @return the unTrustSubnet value.
      */
     public IpAddressSpace unTrustSubnet() {
@@ -90,7 +94,7 @@ public final class VnetConfiguration {
 
     /**
      * Set the unTrustSubnet property: Untrust Subnet.
-     *
+     * 
      * @param unTrustSubnet the unTrustSubnet value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -101,7 +105,7 @@ public final class VnetConfiguration {
 
     /**
      * Get the ipOfTrustSubnetForUdr property: IP of trust subnet for UDR.
-     *
+     * 
      * @return the ipOfTrustSubnetForUdr value.
      */
     public IpAddress ipOfTrustSubnetForUdr() {
@@ -110,7 +114,7 @@ public final class VnetConfiguration {
 
     /**
      * Set the ipOfTrustSubnetForUdr property: IP of trust subnet for UDR.
-     *
+     * 
      * @param ipOfTrustSubnetForUdr the ipOfTrustSubnetForUdr value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -121,28 +125,25 @@ public final class VnetConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vnet in model VnetConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vnet in model VnetConfiguration"));
         } else {
             vnet().validate();
         }
         if (trustSubnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property trustSubnet in model VnetConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property trustSubnet in model VnetConfiguration"));
         } else {
             trustSubnet().validate();
         }
         if (unTrustSubnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property unTrustSubnet in model VnetConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property unTrustSubnet in model VnetConfiguration"));
         } else {
             unTrustSubnet().validate();
         }

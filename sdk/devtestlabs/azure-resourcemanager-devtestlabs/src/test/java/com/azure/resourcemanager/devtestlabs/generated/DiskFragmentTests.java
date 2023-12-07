@@ -15,23 +15,19 @@ public final class DiskFragmentTests {
     public void testDeserialize() throws Exception {
         DiskFragment model =
             BinaryData
-                .fromString(
-                    "{\"tags\":{\"qfby\":\"awiuagyd\",\"giagtcojo\":\"yr\",\"zldmozuxy\":\"qwogfnzjvus\",\"ysownbtgkbug\":\"fsbtkad\"}}")
+                .fromString("{\"tags\":{\"bphbqzmizakakank\":\"etpwbralll\",\"n\":\"p\"}}")
                 .toObject(DiskFragment.class);
-        Assertions.assertEquals("awiuagyd", model.tags().get("qfby"));
+        Assertions.assertEquals("etpwbralll", model.tags().get("bphbqzmizakakank"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskFragment model =
-            new DiskFragment()
-                .withTags(
-                    mapOf(
-                        "qfby", "awiuagyd", "giagtcojo", "yr", "zldmozuxy", "qwogfnzjvus", "ysownbtgkbug", "fsbtkad"));
+        DiskFragment model = new DiskFragment().withTags(mapOf("bphbqzmizakakank", "etpwbralll", "n", "p"));
         model = BinaryData.fromObject(model).toObject(DiskFragment.class);
-        Assertions.assertEquals("awiuagyd", model.tags().get("qfby"));
+        Assertions.assertEquals("etpwbralll", model.tags().get("bphbqzmizakakank"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

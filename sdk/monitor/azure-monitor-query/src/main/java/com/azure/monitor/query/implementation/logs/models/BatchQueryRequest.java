@@ -9,17 +9,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An single request in a batch. */
+/**
+ * An single request in a batch.
+ */
 @Fluent
 public final class BatchQueryRequest {
     /*
-     * The error details.
+     * Unique ID corresponding to each request in the batch.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * Dictionary of <string>
+     * Headers of the request. Can use prefer header to set server timeout and to query statistics and visualization
+     * information.
      */
     @JsonProperty(value = "headers")
     private Map<String, String> headers;
@@ -32,45 +35,42 @@ public final class BatchQueryRequest {
     private QueryBody body;
 
     /*
-     * The path property.
+     * The query path of a single request in a batch, defaults to /query
      */
     @JsonProperty(value = "path")
     private String path = "/query";
 
     /*
-     * The method property.
+     * The method of a single request in a batch, defaults to POST
      */
     @JsonProperty(value = "method")
     private String method = "POST";
 
     /*
-     * Workspace Id to be included in the query
+     * Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
      */
     @JsonProperty(value = "workspace", required = true)
     private String workspace;
 
     /**
      * Creates an instance of BatchQueryRequest class.
-     *
+     * 
      * @param id the id value to set.
      * @param body the body value to set.
      * @param workspace the workspace value to set.
      */
     @JsonCreator
-    public BatchQueryRequest(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "body", required = true) QueryBody body,
-            @JsonProperty(value = "workspace", required = true) String workspace) {
-        path = "/query";
-        method = "POST";
+    public BatchQueryRequest(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "body", required = true) QueryBody body,
+        @JsonProperty(value = "workspace", required = true) String workspace) {
         this.id = id;
         this.body = body;
         this.workspace = workspace;
     }
 
     /**
-     * Get the id property: The error details.
-     *
+     * Get the id property: Unique ID corresponding to each request in the batch.
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -78,8 +78,9 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Get the headers property: Dictionary of &lt;string&gt;.
-     *
+     * Get the headers property: Headers of the request. Can use prefer header to set server timeout and to query
+     * statistics and visualization information.
+     * 
      * @return the headers value.
      */
     public Map<String, String> getHeaders() {
@@ -87,8 +88,9 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Set the headers property: Dictionary of &lt;string&gt;.
-     *
+     * Set the headers property: Headers of the request. Can use prefer header to set server timeout and to query
+     * statistics and visualization information.
+     * 
      * @param headers the headers value to set.
      * @return the BatchQueryRequest object itself.
      */
@@ -100,7 +102,7 @@ public final class BatchQueryRequest {
     /**
      * Get the body property: The Analytics query. Learn more about the [Analytics query
      * syntax](https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/).
-     *
+     * 
      * @return the body value.
      */
     public QueryBody getBody() {
@@ -108,8 +110,8 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Get the path property: The path property.
-     *
+     * Get the path property: The query path of a single request in a batch, defaults to /query.
+     * 
      * @return the path value.
      */
     public String getPath() {
@@ -117,8 +119,8 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Set the path property: The path property.
-     *
+     * Set the path property: The query path of a single request in a batch, defaults to /query.
+     * 
      * @param path the path value to set.
      * @return the BatchQueryRequest object itself.
      */
@@ -128,8 +130,8 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Get the method property: The method property.
-     *
+     * Get the method property: The method of a single request in a batch, defaults to POST.
+     * 
      * @return the method value.
      */
     public String getMethod() {
@@ -137,8 +139,8 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Set the method property: The method property.
-     *
+     * Set the method property: The method of a single request in a batch, defaults to POST.
+     * 
      * @param method the method value to set.
      * @return the BatchQueryRequest object itself.
      */
@@ -148,30 +150,12 @@ public final class BatchQueryRequest {
     }
 
     /**
-     * Get the workspace property: Workspace Id to be included in the query.
-     *
+     * Get the workspace property: Primary Workspace ID of the query. This is the Workspace ID from the Properties
+     * blade in the Azure portal.
+     * 
      * @return the workspace value.
      */
     public String getWorkspace() {
         return this.workspace;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model BatchQueryRequest");
-        }
-        if (getBody() == null) {
-            throw new IllegalArgumentException("Missing required property body in model BatchQueryRequest");
-        } else {
-            getBody().validate();
-        }
-        if (getWorkspace() == null) {
-            throw new IllegalArgumentException("Missing required property workspace in model BatchQueryRequest");
-        }
     }
 }

@@ -33,7 +33,7 @@ public final class JobDefinitionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"nnprn\",\"copyMode\":\"Additive\",\"sourceName\":\"peilpjzuaejxdu\",\"sourceResourceId\":\"skzbb\",\"sourceSubpath\":\"zumveekgpwo\",\"targetName\":\"uh\",\"targetResourceId\":\"p\",\"targetSubpath\":\"jyofdxluusdtto\",\"latestJobRunName\":\"aboekqv\",\"latestJobRunResourceId\":\"lns\",\"latestJobRunStatus\":\"Failed\",\"agentName\":\"wyjsflhhcaalnjix\",\"agentResourceId\":\"xyawj\",\"provisioningState\":\"Succeeded\"},\"id\":\"qcslyjpkiid\",\"name\":\"yexz\",\"type\":\"eli\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"xc\",\"copyMode\":\"Additive\",\"sourceName\":\"bfovasrruvwbhsq\",\"sourceResourceId\":\"ubcgjbirxb\",\"sourceSubpath\":\"bsrfbj\",\"targetName\":\"dtws\",\"targetResourceId\":\"t\",\"targetSubpath\":\"pvjzbe\",\"latestJobRunName\":\"l\",\"latestJobRunResourceId\":\"nfqqnvwp\",\"latestJobRunStatus\":\"Canceled\",\"agentName\":\"ruoujmk\",\"agentResourceId\":\"hwqytj\",\"provisioningState\":\"Succeeded\"},\"id\":\"wj\",\"name\":\"wgdrjervnaenqp\",\"type\":\"hin\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,16 +62,14 @@ public final class JobDefinitionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JobDefinition> response =
-            manager
-                .jobDefinitions()
-                .list("zhpvgqzcjrvxd", "zlmwlxkvugfhz", "vawjvzunlu", com.azure.core.util.Context.NONE);
+            manager.jobDefinitions().list("obl", "tkblmpewww", "bkrvrnsvshqj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nnprn", response.iterator().next().description());
+        Assertions.assertEquals("xc", response.iterator().next().description());
         Assertions.assertEquals(CopyMode.ADDITIVE, response.iterator().next().copyMode());
-        Assertions.assertEquals("peilpjzuaejxdu", response.iterator().next().sourceName());
-        Assertions.assertEquals("zumveekgpwo", response.iterator().next().sourceSubpath());
-        Assertions.assertEquals("uh", response.iterator().next().targetName());
-        Assertions.assertEquals("jyofdxluusdtto", response.iterator().next().targetSubpath());
-        Assertions.assertEquals("wyjsflhhcaalnjix", response.iterator().next().agentName());
+        Assertions.assertEquals("bfovasrruvwbhsq", response.iterator().next().sourceName());
+        Assertions.assertEquals("bsrfbj", response.iterator().next().sourceSubpath());
+        Assertions.assertEquals("dtws", response.iterator().next().targetName());
+        Assertions.assertEquals("pvjzbe", response.iterator().next().targetSubpath());
+        Assertions.assertEquals("ruoujmk", response.iterator().next().agentName());
     }
 }

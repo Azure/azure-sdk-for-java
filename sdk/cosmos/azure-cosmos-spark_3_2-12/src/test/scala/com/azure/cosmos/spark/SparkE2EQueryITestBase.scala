@@ -301,6 +301,9 @@ abstract class SparkE2EQueryITestBase
         if (itemCountPos > 0) {
           val startPos = itemCountPos + "itemCount:".length
           val itemCount = msg.substring(startPos, msg.indexOf(",", startPos)).toInt
+          if (itemCount > 3) {
+            this.logInfo(s"Wrong log message: $msg")
+          }
           itemCount should be <= 2
         }
       }

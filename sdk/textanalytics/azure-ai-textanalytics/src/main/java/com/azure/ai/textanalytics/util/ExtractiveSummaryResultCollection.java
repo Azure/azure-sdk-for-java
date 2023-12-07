@@ -36,7 +36,7 @@ public final class ExtractiveSummaryResultCollection extends IterableStream<Extr
     }
 
     /**
-     * Create a {@link ExtractiveSummaryResultCollection} model that maintains a list of
+     * Create a {@code ExtractiveSummaryResultCollection} model that maintains a list of
      * {@link ExtractiveSummaryResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link ExtractiveSummaryResult}.

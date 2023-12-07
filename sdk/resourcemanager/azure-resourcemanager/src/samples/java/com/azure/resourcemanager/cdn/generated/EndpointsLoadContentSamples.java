@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.models.LoadParameters;
 import java.util.Arrays;
 
 /** Samples for Endpoints LoadContent. */
 public final class EndpointsLoadContentSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/Endpoints_LoadContent.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/Endpoints_LoadContent.json
      */
     /**
      * Sample code: Endpoints_LoadContent.
@@ -29,6 +28,6 @@ public final class EndpointsLoadContentSamples {
                 "profile1",
                 "endpoint1",
                 new LoadParameters().withContentPaths(Arrays.asList("/folder1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

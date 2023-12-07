@@ -19,9 +19,7 @@ import com.azure.maps.traffic.models.TrafficFlowTileOptions;
 import com.azure.maps.traffic.models.TrafficFlowTileStyle;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -33,16 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TrafficAsyncClientTest extends TrafficClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @BeforeAll
-    public static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
 
     private TrafficAsyncClient getTrafficAsyncClient(HttpClient httpClient, TrafficServiceVersion serviceVersion) {
         return getTrafficAsyncClientBuilder(httpClient, serviceVersion).buildAsyncClient();
@@ -63,7 +52,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get traffic flow tile");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic flow tile with response
@@ -81,7 +72,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to traffic flow tile with response");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -92,10 +85,12 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficFlowTileOptions trafficFlowTileOptions = new TrafficFlowTileOptions().setZoom(-1000)
             .setFormat(TileFormat.PNG).setTrafficFlowTileStyle(TrafficFlowTileStyle.RELATIVE_DELAY)
             .setTileIndex(new TileIndex().setX(2044).setY(1360));
-        StepVerifier.create(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions)).verifyErrorSatisfies(ex -> {
-            final HttpResponseException httpResponseException = (HttpResponseException) ex;
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-        });
+        StepVerifier.create(client.getTrafficFlowTileWithResponse(trafficFlowTileOptions))
+            .expectErrorSatisfies(ex -> {
+                final HttpResponseException httpResponseException = (HttpResponseException) ex;
+                assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic flow segment
@@ -112,7 +107,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get traffic flow segment");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic flow segment with response
@@ -130,7 +127,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to traffic flow segment with response");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -141,10 +140,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficFlowSegmentOptions trafficFlowSegmentOptions = new TrafficFlowSegmentOptions().setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setOpenLr(false)
             .setZoom(-1000).setCoordinates(new GeoPosition(45, 45)).setThickness(2).setUnit(SpeedUnit.MPH);
         StepVerifier.create(client.getTrafficFlowSegmentWithResponse(trafficFlowSegmentOptions))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic incident detail empty poi
@@ -165,7 +165,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get traffic incident detail");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic incident detail empty poi with response
@@ -186,7 +188,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to traffic incident detail with response");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -200,10 +204,11 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         .setBoundingZoom(-1000).setTrafficmodelId("1335294634919").setExpandCluster(false).setOriginalPosition(false)
         .setIncidentGeometryType(IncidentGeometryType.ORIGINAL).setLanguage("en").setProjectionStandard(ProjectionStandard.EPSG900913);
         StepVerifier.create(client.getTrafficIncidentDetailWithResponse(trafficIncidentDetailOptions))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic incident viewport
@@ -220,7 +225,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("Unable to get traffic incident viewport");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Test async get traffic incident viewport with response
@@ -238,7 +245,9 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
                 } catch (IOException e) {
                     Assertions.fail("unable to traffic incident viewport with response");
                 }
-            }).verifyComplete();
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     // Case 2: 400 invalid input
@@ -249,9 +258,10 @@ public class TrafficAsyncClientTest extends TrafficClientTestBase {
         TrafficIncidentViewportOptions trafficIncidentViewportOptions = new TrafficIncidentViewportOptions().setBoundingBox(new GeoBoundingBox(45, 45, 45, 45)).setOverview(new GeoBoundingBox(45, 45, 45, 45))
             .setBoundingZoom(-1000).setOverviewZoom(2).setCopyright(true);
         StepVerifier.create(client.getTrafficIncidentViewportWithResponse(trafficIncidentViewportOptions))
-            .verifyErrorSatisfies(ex -> {
+            .expectErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
                 assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            });
+            })
+            .verify(DEFAULT_TIMEOUT);
     }
 }

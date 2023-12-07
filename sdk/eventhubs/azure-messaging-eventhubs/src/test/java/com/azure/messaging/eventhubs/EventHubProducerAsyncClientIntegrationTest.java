@@ -58,7 +58,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(producer.send(events, sendOptions))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -75,7 +76,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(producer.send(events))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -97,7 +99,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -123,7 +126,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -146,7 +150,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(onComplete)
-            .verifyComplete();
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     @Test

@@ -46,7 +46,7 @@ public enum TextAnalyticsServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link TextAnalyticsServiceVersion}
+     * @return the latest {@code TextAnalyticsServiceVersion}
      */
     public static TextAnalyticsServiceVersion getLatest() {
         return V2023_04_01;

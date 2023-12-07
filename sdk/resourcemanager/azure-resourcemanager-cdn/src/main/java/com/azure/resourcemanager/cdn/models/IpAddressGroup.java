@@ -29,6 +29,10 @@ public final class IpAddressGroup {
     @JsonProperty(value = "ipv6Addresses")
     private List<CidrIpAddress> ipv6Addresses;
 
+    /** Creates an instance of IpAddressGroup class. */
+    public IpAddressGroup() {
+    }
+
     /**
      * Get the deliveryRegion property: The delivery region of the ip address group.
      *

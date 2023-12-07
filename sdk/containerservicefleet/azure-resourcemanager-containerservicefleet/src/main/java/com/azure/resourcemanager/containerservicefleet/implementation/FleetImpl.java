@@ -11,9 +11,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
 import com.azure.resourcemanager.containerservicefleet.models.Fleet;
 import com.azure.resourcemanager.containerservicefleet.models.FleetCredentialResults;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
 import com.azure.resourcemanager.containerservicefleet.models.FleetPatch;
 import com.azure.resourcemanager.containerservicefleet.models.FleetProvisioningState;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
 import java.util.Collections;
 import java.util.Map;
 
@@ -51,16 +51,16 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
         return this.innerModel().etag();
     }
 
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
     }
 
     public FleetProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public FleetHubProfile hubProfile() {
-        return this.innerModel().hubProfile();
     }
 
     public Region region() {
@@ -140,8 +140,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             serviceManager
                 .serviceClient()
                 .getFleets()
-                .updateWithResponse(resourceGroupName, fleetName, updateProperties, updateIfMatch, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
@@ -150,8 +149,7 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
             serviceManager
                 .serviceClient()
                 .getFleets()
-                .updateWithResponse(resourceGroupName, fleetName, updateProperties, updateIfMatch, context)
-                .getValue();
+                .update(resourceGroupName, fleetName, updateProperties, updateIfMatch, context);
         return this;
     }
 
@@ -212,9 +210,14 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
         }
     }
 
-    public FleetImpl withHubProfile(FleetHubProfile hubProfile) {
-        this.innerModel().withHubProfile(hubProfile);
-        return this;
+    public FleetImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public FleetImpl withIfMatch(String ifMatch) {

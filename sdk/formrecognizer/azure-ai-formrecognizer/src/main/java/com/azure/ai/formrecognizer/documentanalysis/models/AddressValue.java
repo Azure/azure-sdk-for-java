@@ -12,6 +12,12 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class AddressValue {
 
+    /**
+     * Creates a new instance of AddressValue.
+     */
+    public AddressValue() {
+    }
+
     /*
      * Building number.
      */

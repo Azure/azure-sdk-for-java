@@ -7,7 +7,7 @@ package com.azure.resourcemanager.redis.generated;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheOperations.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-08-01/examples/RedisCacheOperations.json
      */
     /**
      * Sample code: RedisCacheOperations.

@@ -242,6 +242,14 @@ public final class QueueDescriptionImpl {
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
     /*
+     * The name of the recipient entity to which all the dead-lettered messages of this subscription are forwarded to.
+     */
+    @JacksonXmlProperty(
+        localName = "ForwardDeadLetteredMessagesTo",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
+    private String forwardDeadLetteredMessagesTo;
+
+    /*
      * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory
      * temporarily before writing it to persistent storage.
      */
@@ -249,14 +257,6 @@ public final class QueueDescriptionImpl {
             localName = "EnableExpress",
             namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean enableExpress;
-
-    /*
-     * The name of the recipient entity to which all the dead-lettered messages of this subscription are forwarded to.
-     */
-    @JacksonXmlProperty(
-            localName = "ForwardDeadLetteredMessagesTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-    private String forwardDeadLetteredMessagesTo;
 
     /*
      * The maximum size in kilobytes of message payload that can be accepted by the queue.

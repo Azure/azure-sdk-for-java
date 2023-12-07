@@ -26,6 +26,10 @@ public final class AfdEndpointUpdateParameters {
     @JsonProperty(value = "properties")
     private AfdEndpointPropertiesUpdateParameters innerProperties;
 
+    /** Creates an instance of AfdEndpointUpdateParameters class. */
+    public AfdEndpointUpdateParameters() {
+    }
+
     /**
      * Get the tags property: Endpoint tags.
      *

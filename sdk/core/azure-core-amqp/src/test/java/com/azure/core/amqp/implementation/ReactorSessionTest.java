@@ -124,7 +124,7 @@ public class ReactorSessionTest {
         when(amqpConnection.getShutdownSignals()).thenReturn(connectionShutdown.flux());
         final AmqpRetryOptions options = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
         this.reactorSession = new ReactorSession(amqpConnection, session, handler, NAME, reactorProvider,
-            reactorHandlerProvider, cbsNodeSupplier, tokenManagerProvider, serializer, options);
+            reactorHandlerProvider, new AmqpLinkProvider(), cbsNodeSupplier, tokenManagerProvider, serializer, options);
     }
 
     @AfterEach

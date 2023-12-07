@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubSharedKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
-    private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
+    private static final String KEY_VALUE = "some-random-key=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
     private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
         .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");

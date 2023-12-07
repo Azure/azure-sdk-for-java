@@ -12,8 +12,7 @@ public final class IntegrationRuntimeAuthKeysImpl implements IntegrationRuntimeA
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    IntegrationRuntimeAuthKeysImpl(
-        IntegrationRuntimeAuthKeysInner innerObject,
+    IntegrationRuntimeAuthKeysImpl(IntegrationRuntimeAuthKeysInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

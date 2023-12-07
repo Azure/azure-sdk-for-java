@@ -32,7 +32,7 @@ public final class FlexibleServersTriggerLtrPreBackupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"properties\":{\"numberOfContainers\":1922609600}}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":50022372}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class FlexibleServersTriggerLtrPreBackupWithResponseMockTests {
             manager
                 .flexibleServers()
                 .triggerLtrPreBackupWithResponse(
-                    "bvleorfmluiqtqzf",
-                    "vyvnqqyb",
-                    new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("ryeu")),
+                    "clj",
+                    "ygvkzqkjj",
+                    new LtrPreBackupRequest().withBackupSettings(new BackupSettings().withBackupName("okbzef")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(1922609600, response.numberOfContainers());
+        Assertions.assertEquals(50022372, response.numberOfContainers());
     }
 }

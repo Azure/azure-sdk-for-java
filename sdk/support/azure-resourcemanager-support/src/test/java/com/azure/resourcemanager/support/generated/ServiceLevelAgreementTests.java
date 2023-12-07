@@ -13,7 +13,7 @@ public final class ServiceLevelAgreementTests {
         ServiceLevelAgreement model =
             BinaryData
                 .fromString(
-                    "{\"startTime\":\"2021-07-27T17:19:12Z\",\"expirationTime\":\"2021-12-03T01:38:31Z\",\"slaMinutes\":1015475658}")
+                    "{\"startTime\":\"2021-09-03T21:00:54Z\",\"expirationTime\":\"2021-09-14T16:50:26Z\",\"slaMinutes\":1974668378}")
                 .toObject(ServiceLevelAgreement.class);
     }
 

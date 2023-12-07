@@ -11,6 +11,10 @@ import java.util.Map;
 /** An azure resource object. */
 @Fluent
 public class WorkbookTemplateResource extends Resource {
+    /** Creates an instance of WorkbookTemplateResource class. */
+    public WorkbookTemplateResource() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public WorkbookTemplateResource withLocation(String location) {

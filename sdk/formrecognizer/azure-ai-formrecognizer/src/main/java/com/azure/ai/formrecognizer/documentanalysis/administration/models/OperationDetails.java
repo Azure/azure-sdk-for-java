@@ -14,6 +14,13 @@ import java.util.Map;
  * The OperationDetails model.
  */
 public class OperationDetails {
+
+    /**
+     * Creates an instance of OperationDetails.
+     */
+    public OperationDetails() {
+    }
+
     private String operationId;
     private OperationStatus status;
     private Integer percentCompleted;

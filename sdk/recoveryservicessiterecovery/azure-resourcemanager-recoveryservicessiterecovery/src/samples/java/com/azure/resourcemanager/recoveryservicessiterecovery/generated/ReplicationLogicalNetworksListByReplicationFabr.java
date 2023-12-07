@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationLogicalNetworks ListByReplicationFabrics. */
 public final class ReplicationLogicalNetworksListByReplicationFabr {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationLogicalNetworks_ListByReplicationFabrics.json
      */
     /**
      * Sample code: Gets the list of logical networks under a fabric.

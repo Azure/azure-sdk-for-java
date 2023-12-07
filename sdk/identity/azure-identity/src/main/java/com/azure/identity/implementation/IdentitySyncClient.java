@@ -12,6 +12,7 @@ import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -28,7 +29,6 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -76,7 +76,7 @@ public class IdentitySyncClient extends IdentityClientBase {
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
                        String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
-                       InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
+                       byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
         super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
             certificate, certificatePassword, isSharedTokenCacheCredential, clientAssertionTimeout, options);
@@ -345,7 +345,6 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @return a Publisher that emits an AccessToken
      */
     public AccessToken authenticateWithAzureCli(TokenRequestContext request) {
-
         StringBuilder azCommand = new StringBuilder("az account get-access-token --output json --resource ");
 
         String scopes = ScopeUtil.scopesToResource(request.getScopes());
@@ -359,8 +358,9 @@ public class IdentitySyncClient extends IdentityClientBase {
         azCommand.append(scopes);
 
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
 
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azCommand.append(" --tenant ").append(tenant);
         }
 
@@ -392,12 +392,23 @@ public class IdentitySyncClient extends IdentityClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing scope in request"));
         }
 
+        scopes.forEach(scope -> {
+            try {
+                ScopeUtil.validateScope(scope);
+            } catch (IllegalArgumentException ex) {
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        });
+
+
         // At least one scope is appended to the azd command.
         // If there are more than one scope, we add `--scope` before each.
         azdCommand.append(String.join(" --scope ", scopes));
 
         String tenant = IdentityUtil.resolveTenantId(tenantId, request, options);
-        if (!CoreUtils.isNullOrEmpty(tenant)) {
+        ValidationUtil.validateTenantIdCharacterRange(tenant, LOGGER);
+
+        if (!CoreUtils.isNullOrEmpty(tenant) && !tenant.equals(IdentityUtil.DEFAULT_TENANT)) {
             azdCommand.append(" --tenant-id ").append(tenant);
         }
 

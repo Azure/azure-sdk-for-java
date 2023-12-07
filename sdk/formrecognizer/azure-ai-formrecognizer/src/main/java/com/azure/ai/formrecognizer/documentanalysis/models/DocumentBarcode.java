@@ -9,6 +9,11 @@ import java.util.List;
 
 /** Model representing a barcode document field. */
 public final class DocumentBarcode {
+    /**
+     * Constructs a DocumentBarcode object.
+     */
+    public DocumentBarcode() {
+    }
     /*
      * Barcode kind.
      */

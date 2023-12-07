@@ -21,6 +21,10 @@ public final class DeliveryRuleCookiesCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private CookiesMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleCookiesCondition class. */
+    public DeliveryRuleCookiesCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

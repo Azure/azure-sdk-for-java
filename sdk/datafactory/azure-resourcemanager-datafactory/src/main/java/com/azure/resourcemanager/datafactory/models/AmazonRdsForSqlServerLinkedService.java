@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Amazon RDS for SQL Server linked service. */
+/**
+ * Amazon RDS for SQL Server linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRdsForSqlServer")
 @Fluent
@@ -22,44 +24,54 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * Amazon RDS for SQL Server linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties =
-        new AmazonRdsForSqlServerLinkedServiceTypeProperties();
+    private AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties
+        = new AmazonRdsForSqlServerLinkedServiceTypeProperties();
 
-    /** Creates an instance of AmazonRdsForSqlServerLinkedService class. */
+    /**
+     * Creates an instance of AmazonRdsForSqlServerLinkedService class.
+     */
     public AmazonRdsForSqlServerLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Amazon RDS for SQL Server linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForSqlServerLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -69,7 +81,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -79,7 +91,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
@@ -94,7 +106,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * Get the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -104,7 +116,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     /**
      * Set the username property: The on-premises Windows authentication user name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
@@ -118,7 +130,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
 
     /**
      * Get the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -127,7 +139,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
 
     /**
      * Set the password property: The on-premises Windows authentication password.
-     *
+     * 
      * @param password the password value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
@@ -140,23 +152,23 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
-    public AmazonRdsForSqlServerLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public AmazonRdsForSqlServerLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonRdsForSqlServerLinkedServiceTypeProperties();
         }
@@ -166,7 +178,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
 
     /**
      * Get the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @return the alwaysEncryptedSettings value.
      */
     public SqlAlwaysEncryptedProperties alwaysEncryptedSettings() {
@@ -175,12 +187,12 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
 
     /**
      * Set the alwaysEncryptedSettings property: Sql always encrypted properties.
-     *
+     * 
      * @param alwaysEncryptedSettings the alwaysEncryptedSettings value to set.
      * @return the AmazonRdsForSqlServerLinkedService object itself.
      */
-    public AmazonRdsForSqlServerLinkedService withAlwaysEncryptedSettings(
-        SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
+    public AmazonRdsForSqlServerLinkedService
+        withAlwaysEncryptedSettings(SqlAlwaysEncryptedProperties alwaysEncryptedSettings) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new AmazonRdsForSqlServerLinkedServiceTypeProperties();
         }
@@ -190,17 +202,15 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AmazonRdsForSqlServerLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AmazonRdsForSqlServerLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

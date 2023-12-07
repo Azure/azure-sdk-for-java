@@ -7,7 +7,7 @@ package com.azure.resourcemanager.support.generated;
 /** Samples for Services Get. */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/GetService.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetService.json
      */
     /**
      * Sample code: Gets details of the Azure service.

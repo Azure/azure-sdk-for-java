@@ -4,239 +4,179 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
-import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner;
-import java.util.Map;
 
-/** An immutable client-side representation of VirtualNetworks. */
+/**
+ * Resource collection API of VirtualNetworks.
+ */
 public interface VirtualNetworks {
     /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
-     */
-    String type();
-
-    /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * Gets the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
-     *
-     * @return the properties value.
-     */
-    VirtualNetworksProperties properties();
-
-    /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the extendedLocation property: The extendedLocation property.
-     *
-     * @return the extendedLocation value.
-     */
-    VirtualNetworksExtendedLocation extendedLocation();
-
-    /**
-     * Gets the region of the resource.
-     *
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     *
-     * @return the name of the resource region.
-     */
-    String regionName();
-
-    /**
-     * Gets the name of the resource group.
-     *
-     * @return the name of the resource group.
-     */
-    String resourceGroupName();
-
-    /**
-     * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.VirtualNetworksInner object.
-     *
-     * @return the inner object.
-     */
-    VirtualNetworksInner innerModel();
-
-    /** The entirety of the VirtualNetworks definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
-    }
-    /** The VirtualNetworks definition stages. */
-    interface DefinitionStages {
-        /** The first stage of the VirtualNetworks definition. */
-        interface Blank extends WithLocation {
-        }
-        /** The stage of the VirtualNetworks definition allowing to specify location. */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             *
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithResourceGroup withRegion(String location);
-        }
-        /** The stage of the VirtualNetworks definition allowing to specify parent resource. */
-        interface WithResourceGroup {
-            /**
-             * Specifies resourceGroupName.
-             *
-             * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @return the next definition stage.
-             */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
-        }
-        /**
-         * The stage of the VirtualNetworks definition which contains all the minimum required properties for the
-         * resource to be created, but also allows for any other optional properties to be specified.
-         */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
-            /**
-             * Executes the create request.
-             *
-             * @return the created resource.
-             */
-            VirtualNetworks create();
-
-            /**
-             * Executes the create request.
-             *
-             * @param context The context to associate with this operation.
-             * @return the created resource.
-             */
-            VirtualNetworks create(Context context);
-        }
-        /** The stage of the VirtualNetworks definition allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags..
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the VirtualNetworks definition allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
-             *
-             * @param properties HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(VirtualNetworksProperties properties);
-        }
-        /** The stage of the VirtualNetworks definition allowing to specify extendedLocation. */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: The extendedLocation property..
-             *
-             * @param extendedLocation The extendedLocation property.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(VirtualNetworksExtendedLocation extendedLocation);
-        }
-    }
-    /**
-     * Begins update for the VirtualNetworks resource.
-     *
-     * @return the stage of resource update.
-     */
-    VirtualNetworks.Update update();
-
-    /** The template for VirtualNetworks update. */
-    interface Update extends UpdateStages.WithTags {
-        /**
-         * Executes the update request.
-         *
-         * @return the updated resource.
-         */
-        VirtualNetworks apply();
-
-        /**
-         * Executes the update request.
-         *
-         * @param context The context to associate with this operation.
-         * @return the updated resource.
-         */
-        VirtualNetworks apply(Context context);
-    }
-    /** The VirtualNetworks update stages. */
-    interface UpdateStages {
-        /** The stage of the VirtualNetworks update allowing to specify tags. */
-        interface WithTags {
-            /**
-             * Specifies the tags property: Resource tags.
-             *
-             * @param tags Resource tags.
-             * @return the next definition stage.
-             */
-            Update withTags(Map<String, String> tags);
-        }
-    }
-    /**
-     * Refreshes the resource to sync with Azure.
-     *
-     * @return the refreshed resource.
-     */
-    VirtualNetworks refresh();
-
-    /**
-     * Refreshes the resource to sync with Azure.
-     *
+     * Gets the virtual network
+     * 
+     * Gets the Hybrid AKS virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName Parameter for the name of the virtual network.
      * @param context The context to associate with this operation.
-     * @return the refreshed resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Hybrid AKS virtual network along with {@link Response}.
      */
-    VirtualNetworks refresh(Context context);
+    Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context);
+
+    /**
+     * Gets the virtual network
+     * 
+     * Gets the Hybrid AKS virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName Parameter for the name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Hybrid AKS virtual network.
+     */
+    VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
+
+    /**
+     * Deletes the virtual network
+     * 
+     * Deletes the Hybrid AKS virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName Parameter for the name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String virtualNetworkName);
+
+    /**
+     * Deletes the virtual network
+     * 
+     * Deletes the Hybrid AKS virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualNetworkName Parameter for the name of the virtual network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String virtualNetworkName, Context context);
+
+    /**
+     * List virtual networks by resource group
+     * 
+     * Lists the Hybrid AKS virtual networks by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * List virtual networks by resource group
+     * 
+     * Lists the Hybrid AKS virtual networks by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * List virtual networks by subscription
+     * 
+     * Lists the Hybrid AKS virtual networks by subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualNetwork> list();
+
+    /**
+     * List virtual networks by subscription
+     * 
+     * Lists the Hybrid AKS virtual networks by subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<VirtualNetwork> list(Context context);
+
+    /**
+     * Gets the virtual network
+     * 
+     * Gets the Hybrid AKS virtual network.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Hybrid AKS virtual network along with {@link Response}.
+     */
+    VirtualNetwork getById(String id);
+
+    /**
+     * Gets the virtual network
+     * 
+     * Gets the Hybrid AKS virtual network.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Hybrid AKS virtual network along with {@link Response}.
+     */
+    Response<VirtualNetwork> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Deletes the virtual network
+     * 
+     * Deletes the Hybrid AKS virtual network.
+     * 
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Deletes the virtual network
+     * 
+     * Deletes the Hybrid AKS virtual network.
+     * 
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new VirtualNetwork resource.
+     * 
+     * @param name resource name.
+     * @return the first stage of the new VirtualNetwork definition.
+     */
+    VirtualNetwork.DefinitionStages.Blank define(String name);
 }

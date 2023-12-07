@@ -29,22 +29,28 @@ import com.azure.resourcemanager.datafactory.models.ExposureControlBatchRequest;
 import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExposureControlsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExposureControlsClient.
+ */
 public final class ExposureControlsClientImpl implements ExposureControlsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExposureControlsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataFactoryManagementClientImpl client;
 
     /**
      * Initializes an instance of ExposureControlsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExposureControlsClientImpl(DataFactoryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ExposureControlsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExposureControlsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,107 +61,80 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
     public interface ExposureControlsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExposureControlResponseInner>> getFeatureValue(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationId") String locationId,
+        Mono<Response<ExposureControlResponseInner>> getFeatureValue(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("locationId") String locationId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ExposureControlRequest exposureControlRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/getFeatureValue")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExposureControlResponseInner>> getFeatureValueByFactory(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExposureControlResponseInner>> getFeatureValueByFactory(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ExposureControlRequest exposureControlRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"
-                + "/factories/{factoryName}/queryFeaturesValue")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExposureControlBatchResponseInner>> queryFeatureValuesByFactory(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("factoryName") String factoryName,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("factoryName") String factoryName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ExposureControlBatchRequest exposureControlBatchRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get exposure control feature for specific location.
-     *
+     * 
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return exposure control feature for specific location along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExposureControlResponseInner>> getFeatureValueWithResponseAsync(
-        String locationId, ExposureControlRequest exposureControlRequest) {
+    private Mono<Response<ExposureControlResponseInner>> getFeatureValueWithResponseAsync(String locationId,
+        ExposureControlRequest exposureControlRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationId is required and cannot be null."));
         }
         if (exposureControlRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
         } else {
             exposureControlRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getFeatureValue(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            locationId,
-                            this.client.getApiVersion(),
-                            exposureControlRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.getFeatureValue(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                locationId, this.client.getApiVersion(), exposureControlRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get exposure control feature for specific location.
-     *
+     * 
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
      * @param context The context to associate with this operation.
@@ -163,49 +142,37 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return exposure control feature for specific location along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExposureControlResponseInner>> getFeatureValueWithResponseAsync(
-        String locationId, ExposureControlRequest exposureControlRequest, Context context) {
+    private Mono<Response<ExposureControlResponseInner>> getFeatureValueWithResponseAsync(String locationId,
+        ExposureControlRequest exposureControlRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (locationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationId is required and cannot be null."));
         }
         if (exposureControlRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
         } else {
             exposureControlRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getFeatureValue(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                locationId,
-                this.client.getApiVersion(),
-                exposureControlRequest,
-                accept,
-                context);
+        return service.getFeatureValue(this.client.getEndpoint(), this.client.getSubscriptionId(), locationId,
+            this.client.getApiVersion(), exposureControlRequest, accept, context);
     }
 
     /**
      * Get exposure control feature for specific location.
-     *
+     * 
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,15 +181,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExposureControlResponseInner> getFeatureValueAsync(
-        String locationId, ExposureControlRequest exposureControlRequest) {
+    private Mono<ExposureControlResponseInner> getFeatureValueAsync(String locationId,
+        ExposureControlRequest exposureControlRequest) {
         return getFeatureValueWithResponseAsync(locationId, exposureControlRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get exposure control feature for specific location.
-     *
+     * 
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
      * @param context The context to associate with this operation.
@@ -232,14 +199,14 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExposureControlResponseInner> getFeatureValueWithResponse(
-        String locationId, ExposureControlRequest exposureControlRequest, Context context) {
+    public Response<ExposureControlResponseInner> getFeatureValueWithResponse(String locationId,
+        ExposureControlRequest exposureControlRequest, Context context) {
         return getFeatureValueWithResponseAsync(locationId, exposureControlRequest, context).block();
     }
 
     /**
      * Get exposure control feature for specific location.
-     *
+     * 
      * @param locationId The location identifier.
      * @param exposureControlRequest The exposure control request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,14 +215,14 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlResponseInner getFeatureValue(
-        String locationId, ExposureControlRequest exposureControlRequest) {
+    public ExposureControlResponseInner getFeatureValue(String locationId,
+        ExposureControlRequest exposureControlRequest) {
         return getFeatureValueWithResponse(locationId, exposureControlRequest, Context.NONE).getValue();
     }
 
     /**
      * Get exposure control feature for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
@@ -263,22 +230,18 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return exposure control feature for specific factory along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExposureControlResponseInner>> getFeatureValueByFactoryWithResponseAsync(
         String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -288,32 +251,22 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (exposureControlRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
         } else {
             exposureControlRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getFeatureValueByFactory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            exposureControlRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.getFeatureValueByFactory(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, factoryName, this.client.getApiVersion(),
+                exposureControlRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get exposure control feature for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
@@ -322,22 +275,18 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return exposure control feature for specific factory along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExposureControlResponseInner>> getFeatureValueByFactoryWithResponseAsync(
         String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -347,29 +296,20 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (exposureControlRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null."));
         } else {
             exposureControlRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getFeatureValueByFactory(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                exposureControlRequest,
-                accept,
-                context);
+        return service.getFeatureValueByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, this.client.getApiVersion(), exposureControlRequest, accept, context);
     }
 
     /**
      * Get exposure control feature for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
@@ -379,15 +319,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific factory on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExposureControlResponseInner> getFeatureValueByFactoryAsync(
-        String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
+    private Mono<ExposureControlResponseInner> getFeatureValueByFactoryAsync(String resourceGroupName,
+        String factoryName, ExposureControlRequest exposureControlRequest) {
         return getFeatureValueByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get exposure control feature for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
@@ -398,16 +338,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExposureControlResponseInner> getFeatureValueByFactoryWithResponse(
-        String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest, Context context) {
-        return getFeatureValueByFactoryWithResponseAsync(
-                resourceGroupName, factoryName, exposureControlRequest, context)
-            .block();
+    public Response<ExposureControlResponseInner> getFeatureValueByFactoryWithResponse(String resourceGroupName,
+        String factoryName, ExposureControlRequest exposureControlRequest, Context context) {
+        return getFeatureValueByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlRequest,
+            context).block();
     }
 
     /**
      * Get exposure control feature for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlRequest The exposure control request.
@@ -417,16 +356,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return exposure control feature for specific factory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlResponseInner getFeatureValueByFactory(
-        String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
-        return getFeatureValueByFactoryWithResponse(
-                resourceGroupName, factoryName, exposureControlRequest, Context.NONE)
-            .getValue();
+    public ExposureControlResponseInner getFeatureValueByFactory(String resourceGroupName, String factoryName,
+        ExposureControlRequest exposureControlRequest) {
+        return getFeatureValueByFactoryWithResponse(resourceGroupName, factoryName, exposureControlRequest,
+            Context.NONE).getValue();
     }
 
     /**
      * Get list of exposure control features for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
@@ -434,22 +372,18 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of exposure control features for specific factory along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExposureControlBatchResponseInner>> queryFeatureValuesByFactoryWithResponseAsync(
         String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -459,33 +393,22 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (exposureControlBatchRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter exposureControlBatchRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlBatchRequest is required and cannot be null."));
         } else {
             exposureControlBatchRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .queryFeatureValuesByFactory(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            factoryName,
-                            this.client.getApiVersion(),
-                            exposureControlBatchRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.queryFeatureValuesByFactory(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, factoryName, this.client.getApiVersion(),
+                exposureControlBatchRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get list of exposure control features for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
@@ -494,25 +417,19 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of exposure control features for specific factory along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExposureControlBatchResponseInner>> queryFeatureValuesByFactoryWithResponseAsync(
-        String resourceGroupName,
-        String factoryName,
-        ExposureControlBatchRequest exposureControlBatchRequest,
+        String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -522,30 +439,20 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
             return Mono.error(new IllegalArgumentException("Parameter factoryName is required and cannot be null."));
         }
         if (exposureControlBatchRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter exposureControlBatchRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter exposureControlBatchRequest is required and cannot be null."));
         } else {
             exposureControlBatchRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .queryFeatureValuesByFactory(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                factoryName,
-                this.client.getApiVersion(),
-                exposureControlBatchRequest,
-                accept,
-                context);
+        return service.queryFeatureValuesByFactory(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, factoryName, this.client.getApiVersion(), exposureControlBatchRequest, accept, context);
     }
 
     /**
      * Get list of exposure control features for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
@@ -555,15 +462,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return list of exposure control features for specific factory on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryAsync(
-        String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
+    private Mono<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryAsync(String resourceGroupName,
+        String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
         return queryFeatureValuesByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlBatchRequest)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get list of exposure control features for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
@@ -574,19 +481,15 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return list of exposure control features for specific factory along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        ExposureControlBatchRequest exposureControlBatchRequest,
-        Context context) {
-        return queryFeatureValuesByFactoryWithResponseAsync(
-                resourceGroupName, factoryName, exposureControlBatchRequest, context)
-            .block();
+    public Response<ExposureControlBatchResponseInner> queryFeatureValuesByFactoryWithResponse(String resourceGroupName,
+        String factoryName, ExposureControlBatchRequest exposureControlBatchRequest, Context context) {
+        return queryFeatureValuesByFactoryWithResponseAsync(resourceGroupName, factoryName, exposureControlBatchRequest,
+            context).block();
     }
 
     /**
      * Get list of exposure control features for specific factory.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param exposureControlBatchRequest The exposure control request for list of features.
@@ -596,10 +499,9 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      * @return list of exposure control features for specific factory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExposureControlBatchResponseInner queryFeatureValuesByFactory(
-        String resourceGroupName, String factoryName, ExposureControlBatchRequest exposureControlBatchRequest) {
-        return queryFeatureValuesByFactoryWithResponse(
-                resourceGroupName, factoryName, exposureControlBatchRequest, Context.NONE)
-            .getValue();
+    public ExposureControlBatchResponseInner queryFeatureValuesByFactory(String resourceGroupName, String factoryName,
+        ExposureControlBatchRequest exposureControlBatchRequest) {
+        return queryFeatureValuesByFactoryWithResponse(resourceGroupName, factoryName, exposureControlBatchRequest,
+            Context.NONE).getValue();
     }
 }

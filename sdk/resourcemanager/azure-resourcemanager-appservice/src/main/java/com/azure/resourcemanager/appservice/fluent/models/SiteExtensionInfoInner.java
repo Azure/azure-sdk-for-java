@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Site Extension Information. */
+/**
+ * Site Extension Information.
+ */
 @Fluent
 public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     /*
@@ -20,20 +22,24 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SiteExtensionInfoProperties innerProperties;
 
-    /** Creates an instance of SiteExtensionInfoInner class. */
+    /**
+     * Creates an instance of SiteExtensionInfoInner class.
+     */
     public SiteExtensionInfoInner() {
     }
 
     /**
      * Get the innerProperties property: SiteExtensionInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteExtensionInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteExtensionInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -42,7 +48,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the extensionId property: Site extension ID.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -51,7 +57,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the extensionId property: Site extension ID.
-     *
+     * 
      * @param extensionId the extensionId value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -65,7 +71,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the title property: The title property.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -74,7 +80,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the title property: The title property.
-     *
+     * 
      * @param title the title value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -88,7 +94,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the extensionType property: Site extension type.
-     *
+     * 
      * @return the extensionType value.
      */
     public SiteExtensionType extensionType() {
@@ -97,7 +103,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the extensionType property: Site extension type.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -111,7 +117,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the summary property: Summary description.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -120,7 +126,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the summary property: Summary description.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -134,7 +140,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Detailed description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -143,7 +149,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the description property: Detailed description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -157,7 +163,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the version property: Version information.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -166,7 +172,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the version property: Version information.
-     *
+     * 
      * @param version the version value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -180,7 +186,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the extensionUrl property: Extension URL.
-     *
+     * 
      * @return the extensionUrl value.
      */
     public String extensionUrl() {
@@ -189,7 +195,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the extensionUrl property: Extension URL.
-     *
+     * 
      * @param extensionUrl the extensionUrl value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -203,7 +209,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the projectUrl property: Project URL.
-     *
+     * 
      * @return the projectUrl value.
      */
     public String projectUrl() {
@@ -212,7 +218,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the projectUrl property: Project URL.
-     *
+     * 
      * @param projectUrl the projectUrl value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -226,7 +232,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the iconUrl property: Icon URL.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -235,7 +241,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the iconUrl property: Icon URL.
-     *
+     * 
      * @param iconUrl the iconUrl value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -249,7 +255,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the licenseUrl property: License URL.
-     *
+     * 
      * @return the licenseUrl value.
      */
     public String licenseUrl() {
@@ -258,7 +264,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the licenseUrl property: License URL.
-     *
+     * 
      * @param licenseUrl the licenseUrl value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -272,7 +278,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the feedUrl property: Feed URL.
-     *
+     * 
      * @return the feedUrl value.
      */
     public String feedUrl() {
@@ -281,7 +287,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the feedUrl property: Feed URL.
-     *
+     * 
      * @param feedUrl the feedUrl value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -295,7 +301,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the authors property: List of authors.
-     *
+     * 
      * @return the authors value.
      */
     public List<String> authors() {
@@ -304,7 +310,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the authors property: List of authors.
-     *
+     * 
      * @param authors the authors value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -318,7 +324,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @return the installerCommandLineParams value.
      */
     public String installerCommandLineParams() {
@@ -327,7 +333,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @param installerCommandLineParams the installerCommandLineParams value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -341,7 +347,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @return the publishedDateTime value.
      */
     public OffsetDateTime publishedDateTime() {
@@ -350,7 +356,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @param publishedDateTime the publishedDateTime value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -364,7 +370,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the downloadCount property: Count of downloads.
-     *
+     * 
      * @return the downloadCount value.
      */
     public Integer downloadCount() {
@@ -373,7 +379,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the downloadCount property: Count of downloads.
-     *
+     * 
      * @param downloadCount the downloadCount value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -388,7 +394,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     /**
      * Get the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the localIsLatestVersion value.
      */
     public Boolean localIsLatestVersion() {
@@ -398,7 +404,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
     /**
      * Set the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param localIsLatestVersion the localIsLatestVersion value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -412,7 +418,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the localPath property: Local path.
-     *
+     * 
      * @return the localPath value.
      */
     public String localPath() {
@@ -421,7 +427,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the localPath property: Local path.
-     *
+     * 
      * @param localPath the localPath value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -435,7 +441,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @return the installedDateTime value.
      */
     public OffsetDateTime installedDateTime() {
@@ -444,7 +450,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @param installedDateTime the installedDateTime value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -458,7 +464,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -467,7 +473,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the provisioningState property: Provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -481,7 +487,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the comment property: Site Extension comment.
-     *
+     * 
      * @return the comment value.
      */
     public String comment() {
@@ -490,7 +496,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the comment property: Site Extension comment.
-     *
+     * 
      * @param comment the comment value to set.
      * @return the SiteExtensionInfoInner object itself.
      */
@@ -504,7 +510,7 @@ public final class SiteExtensionInfoInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

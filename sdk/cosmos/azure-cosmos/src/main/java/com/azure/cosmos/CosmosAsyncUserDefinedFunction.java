@@ -128,7 +128,7 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Read,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings,
@@ -151,7 +151,7 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Replace,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 
     private Mono<CosmosUserDefinedFunctionResponse> deleteInternal(Context context) {
@@ -172,6 +172,6 @@ public class CosmosAsyncUserDefinedFunction {
             null,
             OperationType.Delete,
             ResourceType.UserDefinedFunction,
-            client.getEffectiveDiagnosticsThresholds(null));
+            null);
     }
 }

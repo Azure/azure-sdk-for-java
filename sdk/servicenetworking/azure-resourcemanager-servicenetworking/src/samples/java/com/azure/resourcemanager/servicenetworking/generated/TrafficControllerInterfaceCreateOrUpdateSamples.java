@@ -7,27 +7,27 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for TrafficControllerInterface CreateOrUpdate. */
+/**
+ * Samples for TrafficControllerInterface CreateOrUpdate.
+ */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllerPut.json
+     * x-ms-original-file:
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
-     *
+     * 
      * @param manager Entry point to TrafficControllerManager.
      */
-    public static void putTrafficController(
-        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager
-            .trafficControllerInterfaces()
-            .define("tc1")
-            .withRegion("NorthCentralUS")
-            .withExistingResourceGroup("rg1")
-            .withTags(mapOf("key1", "value1"))
-            .create();
+    public static void
+        putTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.trafficControllerInterfaces().define("tc1").withRegion("NorthCentralUS")
+            .withExistingResourceGroup("rg1").withTags(mapOf("key1", "fakeTokenPlaceholder")).create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

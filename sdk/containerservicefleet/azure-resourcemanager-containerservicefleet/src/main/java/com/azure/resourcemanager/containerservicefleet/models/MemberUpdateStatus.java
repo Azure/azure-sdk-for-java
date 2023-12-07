@@ -34,6 +34,12 @@ public final class MemberUpdateStatus {
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
+    /*
+     * The status message after processing the member update operation.
+     */
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    private String message;
+
     /** Creates an instance of MemberUpdateStatus class. */
     public MemberUpdateStatus() {
     }
@@ -72,6 +78,15 @@ public final class MemberUpdateStatus {
      */
     public String operationId() {
         return this.operationId;
+    }
+
+    /**
+     * Get the message property: The status message after processing the member update operation.
+     *
+     * @return the message value.
+     */
+    public String message() {
+        return this.message;
     }
 
     /**

@@ -12,6 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VolumeGroupUpdate {
     /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
+
+    /*
      * Properties of VolumeGroup.
      */
     @JsonProperty(value = "properties")
@@ -19,6 +25,26 @@ public final class VolumeGroupUpdate {
 
     /** Creates an instance of VolumeGroupUpdate class. */
     public VolumeGroupUpdate() {
+    }
+
+    /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -77,6 +103,29 @@ public final class VolumeGroupUpdate {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionProperties();
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     *
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupUpdate object itself.
+     */
+    public VolumeGroupUpdate withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeGroupUpdateProperties();
+        }
+        this.innerProperties().withEncryptionProperties(encryptionProperties);
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
      *
      * @return the networkAcls value.
@@ -105,6 +154,9 @@ public final class VolumeGroupUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

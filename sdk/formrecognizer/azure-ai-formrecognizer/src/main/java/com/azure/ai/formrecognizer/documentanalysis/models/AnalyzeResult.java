@@ -14,6 +14,12 @@ import java.util.List;
 @Immutable
 public final class AnalyzeResult {
 
+    /**
+     * Creates a new instance of AnalyzeResult.
+     */
+    public AnalyzeResult() {
+    }
+
     /*
      * Model ID used to produce this result.
      */

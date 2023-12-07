@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.webpubsub.models.CustomDomain;
@@ -25,6 +26,10 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {

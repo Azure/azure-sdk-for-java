@@ -33,7 +33,7 @@ public final class ServersListByClusterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"xmyskp\",\"role\":\"Worker\",\"state\":\"btkcxywnytnrsyn\",\"haState\":\"idybyxczf\",\"availabilityZone\":\"haaxdbabphl\",\"postgresqlVersion\":\"qlfktsths\",\"citusVersion\":\"ocmnyyazttbtwwrq\",\"serverEdition\":\"edckzywbiexzfey\",\"storageQuotaInMb\":2061798656,\"vCores\":537783371,\"enableHa\":true,\"enablePublicIpAccess\":true,\"isReadOnly\":true,\"administratorLogin\":\"qwalmuzyoxaepd\"},\"id\":\"jancu\",\"name\":\"rhdwbavxbniw\",\"type\":\"jswztsdbpg\"}]}";
+            "{\"value\":[{\"properties\":{\"fullyQualifiedDomainName\":\"kqujidsuyono\",\"role\":\"Worker\",\"state\":\"ocqxtccmg\",\"haState\":\"dxyt\",\"availabilityZone\":\"oyrxvwfudwpzntxh\",\"postgresqlVersion\":\"hl\",\"citusVersion\":\"jbhckfrlhr\",\"serverEdition\":\"bkyvp\",\"storageQuotaInMb\":1219489836,\"vCores\":427278595,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":false,\"administratorLogin\":\"kuwbcrnwb\"},\"id\":\"hhseyv\",\"name\":\"us\",\"type\":\"tslhspkdeem\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class ServersListByClusterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ClusterServer> response =
-            manager.servers().listByCluster("rcvpnazzmhjrunmp", "ttdbhrbnl", com.azure.core.util.Context.NONE);
+            manager.servers().listByCluster("gxywpmue", "fjz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ServerRole.WORKER, response.iterator().next().role());
-        Assertions.assertEquals("haaxdbabphl", response.iterator().next().availabilityZone());
-        Assertions.assertEquals("qlfktsths", response.iterator().next().postgresqlVersion());
-        Assertions.assertEquals("ocmnyyazttbtwwrq", response.iterator().next().citusVersion());
-        Assertions.assertEquals("edckzywbiexzfey", response.iterator().next().serverEdition());
-        Assertions.assertEquals(2061798656, response.iterator().next().storageQuotaInMb());
-        Assertions.assertEquals(537783371, response.iterator().next().vCores());
+        Assertions.assertEquals("oyrxvwfudwpzntxh", response.iterator().next().availabilityZone());
+        Assertions.assertEquals("hl", response.iterator().next().postgresqlVersion());
+        Assertions.assertEquals("jbhckfrlhr", response.iterator().next().citusVersion());
+        Assertions.assertEquals("bkyvp", response.iterator().next().serverEdition());
+        Assertions.assertEquals(1219489836, response.iterator().next().storageQuotaInMb());
+        Assertions.assertEquals(427278595, response.iterator().next().vCores());
         Assertions.assertEquals(true, response.iterator().next().enableHa());
     }
 }

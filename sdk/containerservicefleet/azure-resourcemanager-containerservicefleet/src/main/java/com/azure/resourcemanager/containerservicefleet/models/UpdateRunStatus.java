@@ -23,6 +23,13 @@ public final class UpdateRunStatus {
     @JsonProperty(value = "stages", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateStageStatus> stages;
 
+    /*
+     * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is
+     * `Consistent`.
+     */
+    @JsonProperty(value = "nodeImageSelection", access = JsonProperty.Access.WRITE_ONLY)
+    private NodeImageSelectionStatus nodeImageSelection;
+
     /** Creates an instance of UpdateRunStatus class. */
     public UpdateRunStatus() {
     }
@@ -46,6 +53,16 @@ public final class UpdateRunStatus {
     }
 
     /**
+     * Get the nodeImageSelection property: The node image upgrade specs for the update run. It is only set in update
+     * run when `NodeImageSelection.type` is `Consistent`.
+     *
+     * @return the nodeImageSelection value.
+     */
+    public NodeImageSelectionStatus nodeImageSelection() {
+        return this.nodeImageSelection;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +73,9 @@ public final class UpdateRunStatus {
         }
         if (stages() != null) {
             stages().forEach(e -> e.validate());
+        }
+        if (nodeImageSelection() != null) {
+            nodeImageSelection().validate();
         }
     }
 }

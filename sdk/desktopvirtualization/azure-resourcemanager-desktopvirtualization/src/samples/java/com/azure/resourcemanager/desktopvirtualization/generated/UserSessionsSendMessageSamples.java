@@ -9,7 +9,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.SendMessage;
 /** Samples for UserSessions SendMessage. */
 public final class UserSessionsSendMessageSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/UserSession_SendMessage_Post.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/UserSession_SendMessage_Post.json
      */
     /**
      * Sample code: UserSession_SendMessage_Post.

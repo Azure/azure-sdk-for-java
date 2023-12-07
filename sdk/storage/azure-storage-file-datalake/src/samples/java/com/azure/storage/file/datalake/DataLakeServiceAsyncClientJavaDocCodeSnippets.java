@@ -133,12 +133,17 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
             .setLogging(new DataLakeAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
+                .setVersion("1.0")
                 .setRetentionPolicy(loggingRetentionPolicy))
             .setHourMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
             .setMinuteMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setProperties(properties).subscribe(
@@ -154,12 +159,17 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
             .setLogging(new DataLakeAnalyticsLogging()
                 .setWrite(true)
                 .setDelete(true)
+                .setVersion("1.0")
                 .setRetentionPolicy(loggingRetentionPolicy))
             .setHourMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy))
             .setMinuteMetrics(new DataLakeMetrics()
                 .setEnabled(true)
+                .setVersion("1.0")
+                .setIncludeApis(true)
                 .setRetentionPolicy(metricsRetentionPolicy));
 
         client.setPropertiesWithResponse(properties).subscribe(response ->

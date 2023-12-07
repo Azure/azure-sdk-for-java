@@ -24,6 +24,13 @@ public final class SqlServerResourceSettings extends ResourceSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SqlServerResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

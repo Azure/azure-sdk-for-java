@@ -33,6 +33,13 @@ import java.util.function.Supplier;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
 
+/**
+ * Tests for {@link ReceiverUnsettledDeliveries}.
+ * <p>
+ * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * for why this test class needs to run in Isolated mode.
+ * </p>
+ */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public class ReceiverUnsettledDeliveriesIsolatedTest {

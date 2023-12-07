@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Concur Service linked service. */
+/**
+ * Concur Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Concur")
 @Fluent
@@ -24,41 +26,51 @@ public final class ConcurLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ConcurLinkedServiceTypeProperties innerTypeProperties = new ConcurLinkedServiceTypeProperties();
 
-    /** Creates an instance of ConcurLinkedService class. */
+    /**
+     * Creates an instance of ConcurLinkedService class.
+     */
     public ConcurLinkedService() {
     }
 
     /**
      * Get the innerTypeProperties property: Concur Service linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ConcurLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConcurLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConcurLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConcurLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConcurLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +80,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Get the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object connectionProperties() {
@@ -78,7 +90,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -92,7 +104,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: Application client_id supplied by Concur App Management.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -101,7 +113,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: Application client_id supplied by Concur App Management.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -115,7 +127,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name that you use to access Concur Service.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -124,7 +136,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name that you use to access Concur Service.
-     *
+     * 
      * @param username the username value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -138,7 +150,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -147,7 +159,7 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @param password the password value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -162,7 +174,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -172,7 +184,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -187,7 +199,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -197,7 +209,7 @@ public final class ConcurLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -210,9 +222,9 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -220,9 +232,9 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ConcurLinkedService object itself.
      */
@@ -235,23 +247,23 @@ public final class ConcurLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ConcurLinkedService object itself.
      */
-    public ConcurLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public ConcurLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new ConcurLinkedServiceTypeProperties();
         }
@@ -261,17 +273,15 @@ public final class ConcurLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ConcurLinkedService"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model ConcurLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

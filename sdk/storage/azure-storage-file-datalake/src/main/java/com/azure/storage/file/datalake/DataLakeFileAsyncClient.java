@@ -870,8 +870,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                         long fileSize = channel.size();
 
                         if (fileSize == 0) {
-                            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Size of the file must be "
-                                + "greater than 0."));
+                            // if file size is 0, create the file but do not upload data.
+                            return createWithResponse(null, null, headers, metadata, validatedRequestConditions);
                         }
 
                         // By default, if the file is larger than 100 MB chunk it and append it in stages.
@@ -1162,6 +1162,11 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         DataLakeFileAppendOptions appendOptions, Context context) {
+
+        if (data == null) {
+            return Mono.error(new NullPointerException("'data' cannot be null."));
+        }
+
         appendOptions = appendOptions == null ? new DataLakeFileAppendOptions() : appendOptions;
         LeaseAccessConditions leaseAccessConditions = new LeaseAccessConditions().setLeaseId(appendOptions.getLeaseId());
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentMd5());

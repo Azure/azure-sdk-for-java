@@ -8,29 +8,41 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlternativeAuthenticationNameSource. */
+/**
+ * Defines values for AlternativeAuthenticationNameSource.
+ */
 public final class AlternativeAuthenticationNameSource
     extends ExpandableStringEnum<AlternativeAuthenticationNameSource> {
-    /** Static value ClientCertificateSubject for AlternativeAuthenticationNameSource. */
-    public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_SUBJECT =
-        fromString("ClientCertificateSubject");
+    /**
+     * Static value ClientCertificateSubject for AlternativeAuthenticationNameSource.
+     */
+    public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_SUBJECT
+        = fromString("ClientCertificateSubject");
 
-    /** Static value ClientCertificateDns for AlternativeAuthenticationNameSource. */
+    /**
+     * Static value ClientCertificateDns for AlternativeAuthenticationNameSource.
+     */
     public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_DNS = fromString("ClientCertificateDns");
 
-    /** Static value ClientCertificateUri for AlternativeAuthenticationNameSource. */
+    /**
+     * Static value ClientCertificateUri for AlternativeAuthenticationNameSource.
+     */
     public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_URI = fromString("ClientCertificateUri");
 
-    /** Static value ClientCertificateIp for AlternativeAuthenticationNameSource. */
+    /**
+     * Static value ClientCertificateIp for AlternativeAuthenticationNameSource.
+     */
     public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_IP = fromString("ClientCertificateIp");
 
-    /** Static value ClientCertificateEmail for AlternativeAuthenticationNameSource. */
-    public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_EMAIL =
-        fromString("ClientCertificateEmail");
+    /**
+     * Static value ClientCertificateEmail for AlternativeAuthenticationNameSource.
+     */
+    public static final AlternativeAuthenticationNameSource CLIENT_CERTIFICATE_EMAIL
+        = fromString("ClientCertificateEmail");
 
     /**
      * Creates a new instance of AlternativeAuthenticationNameSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +51,7 @@ public final class AlternativeAuthenticationNameSource
 
     /**
      * Creates or finds a AlternativeAuthenticationNameSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AlternativeAuthenticationNameSource.
      */
@@ -50,7 +62,7 @@ public final class AlternativeAuthenticationNameSource
 
     /**
      * Gets known AlternativeAuthenticationNameSource values.
-     *
+     * 
      * @return known AlternativeAuthenticationNameSource values.
      */
     public static Collection<AlternativeAuthenticationNameSource> values() {

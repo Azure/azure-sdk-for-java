@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link LinkedEntity} model.
+ * The {@code LinkedEntity} model.
  */
 @Immutable
 public final class LinkedEntity {
@@ -50,7 +50,7 @@ public final class LinkedEntity {
     private String bingEntitySearchApiId;
 
     /**
-     * Creates a {@link LinkedEntity} model that describes linked entity.
+     * Creates a {@code LinkedEntity} model that describes linked entity.
      *
      * @param name The entity Linking formal name.
      * @param matches A list of instances this entity appears in the text.

@@ -8,29 +8,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * The default authentication provider to use when multiple providers are configured. This setting is only needed if
- * multiple providers are configured and the unauthenticated client action is set to "RedirectToLoginPage".
+ * The default authentication provider to use when multiple providers are configured.
+ * This setting is only needed if multiple providers are configured and the unauthenticated client
+ * action is set to "RedirectToLoginPage".
  */
 public enum BuiltInAuthenticationProvider {
-    /** Enum value AzureActiveDirectory. */
+    /**
+     * Enum value AzureActiveDirectory.
+     */
     AZURE_ACTIVE_DIRECTORY("AzureActiveDirectory"),
 
-    /** Enum value Facebook. */
+    /**
+     * Enum value Facebook.
+     */
     FACEBOOK("Facebook"),
 
-    /** Enum value Google. */
+    /**
+     * Enum value Google.
+     */
     GOOGLE("Google"),
 
-    /** Enum value MicrosoftAccount. */
+    /**
+     * Enum value MicrosoftAccount.
+     */
     MICROSOFT_ACCOUNT("MicrosoftAccount"),
 
-    /** Enum value Twitter. */
+    /**
+     * Enum value Twitter.
+     */
     TWITTER("Twitter"),
 
-    /** Enum value Github. */
+    /**
+     * Enum value Github.
+     */
     GITHUB("Github");
 
-    /** The actual serialized value for a BuiltInAuthenticationProvider instance. */
+    /**
+     * The actual serialized value for a BuiltInAuthenticationProvider instance.
+     */
     private final String value;
 
     BuiltInAuthenticationProvider(String value) {
@@ -39,7 +54,7 @@ public enum BuiltInAuthenticationProvider {
 
     /**
      * Parses a serialized value to a BuiltInAuthenticationProvider instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed BuiltInAuthenticationProvider object, or null if unable to parse.
      */
@@ -57,7 +72,9 @@ public enum BuiltInAuthenticationProvider {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

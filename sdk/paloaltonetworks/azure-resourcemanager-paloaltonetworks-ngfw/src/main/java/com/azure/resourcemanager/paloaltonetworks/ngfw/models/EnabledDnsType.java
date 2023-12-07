@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enabled DNS type values. */
+/**
+ * Enabled DNS type values.
+ */
 public final class EnabledDnsType extends ExpandableStringEnum<EnabledDnsType> {
-    /** Static value CUSTOM for EnabledDnsType. */
+    /**
+     * Static value CUSTOM for EnabledDnsType.
+     */
     public static final EnabledDnsType CUSTOM = fromString("CUSTOM");
 
-    /** Static value AZURE for EnabledDnsType. */
+    /**
+     * Static value AZURE for EnabledDnsType.
+     */
     public static final EnabledDnsType AZURE = fromString("AZURE");
 
     /**
      * Creates a new instance of EnabledDnsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EnabledDnsType extends ExpandableStringEnum<EnabledDnsType> {
 
     /**
      * Creates or finds a EnabledDnsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnabledDnsType.
      */
@@ -38,7 +44,7 @@ public final class EnabledDnsType extends ExpandableStringEnum<EnabledDnsType> {
 
     /**
      * Gets known EnabledDnsType values.
-     *
+     * 
      * @return known EnabledDnsType values.
      */
     public static Collection<EnabledDnsType> values() {

@@ -35,16 +35,22 @@ public final class AnswerCallRequestInternal {
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+     * Live Transcription Configuration.
      */
-    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
-    private String azureCognitiveServicesEndpointUrl;
+    @JsonProperty(value = "transcriptionConfiguration")
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
+
+    /*
+     * AI options for the call.
+     */
+    @JsonProperty(value = "callIntelligenceOptions")
+    private CallIntelligenceOptionsInternal callIntelligenceOptions;
 
     /*
      * The identifier of the call automation entity which answers the call
      */
-    @JsonProperty(value = "answeredByIdentifier")
-    private CommunicationUserIdentifierModel answeredByIdentifier;
+    @JsonProperty(value = "answeredBy")
+    private CommunicationUserIdentifierModel answeredBy;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -128,44 +134,64 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the transcriptionConfiguration value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
+        return this.transcriptionConfiguration;
     }
 
     /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Set the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public AnswerCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfigurationInternal transcriptionConfiguration) {
+        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 
     /**
-     * Get the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
+     * Get the callIntelligenceOptions property: AI options for the call.
      *
-     * @return the answeredByIdentifier value.
+     * @return the callIntelligenceOptions value.
      */
-    public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
-        return this.answeredByIdentifier;
+    public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
     }
 
     /**
-     * Set the answeredByIdentifier property: The identifier of the call automation entity which answers the call.
+     * Set the callIntelligenceOptions property: AI options for the call.
      *
-     * @param answeredByIdentifier the answeredByIdentifier value to set.
+     * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setAnsweredByIdentifier(CommunicationUserIdentifierModel answeredByIdentifier) {
-        this.answeredByIdentifier = answeredByIdentifier;
+    public AnswerCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the answeredBy property: The identifier of the call automation entity which answers the call.
+     *
+     * @return the answeredBy value.
+     */
+    public CommunicationUserIdentifierModel getAnsweredBy() {
+        return this.answeredBy;
+    }
+
+    /**
+     * Set the answeredBy property: The identifier of the call automation entity which answers the call.
+     *
+     * @param answeredBy the answeredBy value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
+        this.answeredBy = answeredBy;
         return this;
     }
 }

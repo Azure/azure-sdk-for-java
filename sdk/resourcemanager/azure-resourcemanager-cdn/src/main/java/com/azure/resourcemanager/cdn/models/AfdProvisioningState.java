@@ -26,6 +26,15 @@ public final class AfdProvisioningState extends ExpandableStringEnum<AfdProvisio
     public static final AfdProvisioningState CREATING = fromString("Creating");
 
     /**
+     * Creates a new instance of AfdProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AfdProvisioningState() {
+    }
+
+    /**
      * Creates or finds a AfdProvisioningState from its string representation.
      *
      * @param name a name to look for.

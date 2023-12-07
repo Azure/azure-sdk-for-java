@@ -11,11 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
     /*
-     * The resource id of the private endpoint resource from Microsoft.Network
-     * provider.
+     * The resource id of the private endpoint resource from Microsoft.Network provider.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class. */
+    public PrivateEndpointConnectionPropertiesPrivateEndpoint() {
+    }
 
     /**
      * Get the id property: The resource id of the private endpoint resource from Microsoft.Network provider.

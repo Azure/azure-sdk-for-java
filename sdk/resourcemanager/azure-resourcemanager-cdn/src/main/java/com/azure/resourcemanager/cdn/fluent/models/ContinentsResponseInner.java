@@ -25,6 +25,10 @@ public final class ContinentsResponseInner {
     @JsonProperty(value = "countryOrRegions")
     private List<ContinentsResponseCountryOrRegionsItem> countryOrRegions;
 
+    /** Creates an instance of ContinentsResponseInner class. */
+    public ContinentsResponseInner() {
+    }
+
     /**
      * Get the continents property: The continents property.
      *

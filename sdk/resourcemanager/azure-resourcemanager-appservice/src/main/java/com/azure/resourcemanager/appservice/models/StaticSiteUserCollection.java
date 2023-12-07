@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static site custom users. */
+/**
+ * Collection of static site custom users.
+ */
 @Fluent
 public final class StaticSiteUserCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteUserCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteUserCollection class. */
+    /**
+     * Creates an instance of StaticSiteUserCollection class.
+     */
     public StaticSiteUserCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteUserArmResourceInner> value() {
@@ -40,7 +44,7 @@ public final class StaticSiteUserCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteUserCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class StaticSiteUserCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class StaticSiteUserCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model StaticSiteUserCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model StaticSiteUserCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

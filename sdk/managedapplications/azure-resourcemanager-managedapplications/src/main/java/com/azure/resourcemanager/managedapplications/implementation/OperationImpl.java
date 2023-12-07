@@ -5,8 +5,10 @@
 package com.azure.resourcemanager.managedapplications.implementation;
 
 import com.azure.resourcemanager.managedapplications.fluent.models.OperationInner;
+import com.azure.resourcemanager.managedapplications.models.ActionType;
 import com.azure.resourcemanager.managedapplications.models.Operation;
 import com.azure.resourcemanager.managedapplications.models.OperationDisplay;
+import com.azure.resourcemanager.managedapplications.models.Origin;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -23,8 +25,20 @@ public final class OperationImpl implements Operation {
         return this.innerModel().name();
     }
 
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
+    }
+
     public OperationDisplay display() {
         return this.innerModel().display();
+    }
+
+    public Origin origin() {
+        return this.innerModel().origin();
+    }
+
+    public ActionType actionType() {
+        return this.innerModel().actionType();
     }
 
     public OperationInner innerModel() {

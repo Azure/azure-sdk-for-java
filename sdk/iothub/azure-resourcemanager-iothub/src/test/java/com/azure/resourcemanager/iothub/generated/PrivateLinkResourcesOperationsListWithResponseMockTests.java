@@ -16,6 +16,7 @@ import com.azure.resourcemanager.iothub.models.PrivateLinkResources;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,7 +31,7 @@ public final class PrivateLinkResourcesOperationsListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"bkfezzxscyhwzdgi\",\"name\":\"jbzbomvzzbtdcq\",\"type\":\"niyujv\"},{\"id\":\"l\",\"name\":\"shfssnrbgyef\",\"type\":\"msgaoj\"},{\"id\":\"wncot\",\"name\":\"fhir\",\"type\":\"ymoxoftpipiwyczu\"},{\"id\":\"a\",\"name\":\"qjlihhyuspska\",\"type\":\"vlmfwdgzxulucv\"}]}";
+            "{\"value\":[{\"id\":\"ph\",\"name\":\"qnrnrpxehuwryk\",\"type\":\"aifmvikl\",\"properties\":{\"groupId\":\"dvk\",\"requiredMembers\":[\"jdz\"],\"requiredZoneNames\":[\"vdsrhnjiv\",\"lvtno\"]}},{\"id\":\"fzg\",\"name\":\"jdftuljltd\",\"type\":\"eamtmcz\",\"properties\":{\"groupId\":\"m\",\"requiredMembers\":[\"cwwqiokn\"],\"requiredZoneNames\":[\"mojmsvpkjprvkw\",\"fz\",\"ljyxgtczhe\"]}},{\"id\":\"bsdshmkxmaehvbbx\",\"name\":\"iplt\",\"type\":\"htba\",\"properties\":{\"groupId\":\"gx\",\"requiredMembers\":[\"ckpyklyhplu\"],\"requiredZoneNames\":[\"vruu\",\"lgzi\"]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +62,11 @@ public final class PrivateLinkResourcesOperationsListWithResponseMockTests {
         PrivateLinkResources response =
             manager
                 .privateLinkResourcesOperations()
-                .listWithResponse("gjmfxumvfcl", "yo", com.azure.core.util.Context.NONE)
+                .listWithResponse("jslb", "wkojgcyztsfmzn", com.azure.core.util.Context.NONE)
                 .getValue();
+
+        Assertions.assertEquals("dvk", response.value().get(0).properties().groupId());
+        Assertions.assertEquals("jdz", response.value().get(0).properties().requiredMembers().get(0));
+        Assertions.assertEquals("vdsrhnjiv", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

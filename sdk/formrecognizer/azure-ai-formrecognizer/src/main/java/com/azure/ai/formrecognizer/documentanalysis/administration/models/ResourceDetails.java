@@ -25,6 +25,12 @@ public final class ResourceDetails {
     private QuotaDetails customNeuralDocumentModelQuota;
 
     /**
+     * Creates a ResourceDetails object.
+     */
+    public ResourceDetails() {
+    }
+
+    /**
      * Get the current count of built document analysis models
      *
      * @return the count value.

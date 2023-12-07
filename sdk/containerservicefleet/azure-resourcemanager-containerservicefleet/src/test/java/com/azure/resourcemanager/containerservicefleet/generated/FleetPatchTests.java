@@ -6,6 +6,9 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.models.FleetPatch;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.containerservicefleet.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.containerservicefleet.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,17 +16,37 @@ import org.junit.jupiter.api.Assertions;
 public final class FleetPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetPatch model = BinaryData.fromString("{\"tags\":{\"f\":\"rgqjbpfzfsinzg\"}}").toObject(FleetPatch.class);
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.tags().get("f"));
+        FleetPatch model =
+            BinaryData
+                .fromString(
+                    "{\"tags\":{\"np\":\"xjtfelluwfzit\",\"lxofpdvhpfxxypin\":\"qfpjk\"},\"identity\":{\"principalId\":\"7c7b323d-6cc4-40f6-af72-a4c007ef749c\",\"tenantId\":\"8997fe17-381d-420f-9816-bf994fa2830f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bkpodepooginuv\":{\"principalId\":\"42219f64-5b58-4ce7-9e37-cf944b2955f5\",\"clientId\":\"e80cc306-287c-46f7-b0b8-207a4f05a4a4\"},\"heognarxzxtheo\":{\"principalId\":\"ed898b90-21b1-48ad-8072-be40d6a0298f\",\"clientId\":\"3564b3dc-d9a6-471d-a070-2bda3b6f14cb\"},\"ivyevcciqihnhun\":{\"principalId\":\"bd8b7337-8cd7-492d-8abf-fe0860e34e72\",\"clientId\":\"19ffc4f5-d2ca-4a82-b5b7-0b9781597552\"}}}}")
+                .toObject(FleetPatch.class);
+        Assertions.assertEquals("xjtfelluwfzit", model.tags().get("np"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetPatch model = new FleetPatch().withTags(mapOf("f", "rgqjbpfzfsinzg"));
+        FleetPatch model =
+            new FleetPatch()
+                .withTags(mapOf("np", "xjtfelluwfzit", "lxofpdvhpfxxypin", "qfpjk"))
+                .withIdentity(
+                    new ManagedServiceIdentity()
+                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf(
+                                "bkpodepooginuv",
+                                new UserAssignedIdentity(),
+                                "heognarxzxtheo",
+                                new UserAssignedIdentity(),
+                                "ivyevcciqihnhun",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FleetPatch.class);
-        Assertions.assertEquals("rgqjbpfzfsinzg", model.tags().get("f"));
+        Assertions.assertEquals("xjtfelluwfzit", model.tags().get("np"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

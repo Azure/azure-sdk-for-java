@@ -330,6 +330,33 @@ public final class RedisUpdateParameters {
     }
 
     /**
+     * Get the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @return the updateChannel value.
+     */
+    public UpdateChannel updateChannel() {
+        return this.innerProperties() == null ? null : this.innerProperties().updateChannel();
+    }
+
+    /**
+     * Set the updateChannel property: Optional: Specifies the update channel for the monthly Redis updates your Redis
+     * Cache will receive. Caches using 'Preview' update channel get latest Redis updates at least 4 weeks ahead of
+     * 'Stable' channel caches. Default value is 'Stable'.
+     *
+     * @param updateChannel the updateChannel value to set.
+     * @return the RedisUpdateParameters object itself.
+     */
+    public RedisUpdateParameters withUpdateChannel(UpdateChannel updateChannel) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisUpdateProperties();
+        }
+        this.innerProperties().withUpdateChannel(updateChannel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

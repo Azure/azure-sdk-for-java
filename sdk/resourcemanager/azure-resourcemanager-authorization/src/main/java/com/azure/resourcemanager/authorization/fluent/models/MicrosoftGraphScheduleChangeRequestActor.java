@@ -28,6 +28,15 @@ public final class MicrosoftGraphScheduleChangeRequestActor
         fromString("unknownFutureValue");
 
     /**
+     * Creates a new instance of MicrosoftGraphScheduleChangeRequestActor value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphScheduleChangeRequestActor() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphScheduleChangeRequestActor from its string representation.
      *
      * @param name a name to look for.

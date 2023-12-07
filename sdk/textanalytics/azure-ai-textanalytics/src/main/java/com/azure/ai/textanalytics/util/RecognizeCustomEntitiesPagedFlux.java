@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 public final class RecognizeCustomEntitiesPagedFlux extends ContinuablePagedFluxCore<String,
     RecognizeCustomEntitiesResultCollection, PagedResponse<RecognizeCustomEntitiesResultCollection>> {
     /**
-     * Creates an instance of {@link RecognizeCustomEntitiesPagedFlux}
+     * Creates an instance of {@code RecognizeCustomEntitiesPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */

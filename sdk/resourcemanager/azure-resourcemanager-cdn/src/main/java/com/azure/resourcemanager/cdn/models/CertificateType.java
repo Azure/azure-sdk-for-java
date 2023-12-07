@@ -17,6 +17,15 @@ public final class CertificateType extends ExpandableStringEnum<CertificateType>
     public static final CertificateType DEDICATED = fromString("Dedicated");
 
     /**
+     * Creates a new instance of CertificateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateType() {
+    }
+
+    /**
      * Creates or finds a CertificateType from its string representation.
      *
      * @param name a name to look for.

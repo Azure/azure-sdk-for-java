@@ -14,6 +14,13 @@ import java.util.Map;
  */
 @Immutable
 public final class DocumentModelSummary {
+
+    /**
+     * Creates a DocumentModelSummary object.
+     */
+    public DocumentModelSummary() {
+    }
+
     /*
      * Unique model identifier.
      */

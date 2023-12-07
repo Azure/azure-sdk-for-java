@@ -37,6 +37,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -68,6 +69,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.storage.blob.implementation.util.BuilderHelper.createTracer;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
@@ -115,6 +118,8 @@ public final class EncryptedBlobClientBuilder implements
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
     private static final String BLOB_CLIENT_NAME = USER_AGENT_PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
     private static final String BLOB_CLIENT_VERSION = USER_AGENT_PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+    private static final String USER_AGENT_MODIFICATION_REGEX =
+        "(.*? )?(azsdk-java-azure-storage-blob/12\\.\\d{1,2}\\.\\d{1,2}(?:-beta\\.\\d{1,2})?)( .*?)?";
 
     private String endpoint;
     private String accountName;
@@ -266,6 +271,22 @@ public final class EncryptedBlobClientBuilder implements
             .build();
     }
 
+    private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
+        Pattern pattern = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
+        String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
+            userAgentConfiguration);
+        Matcher matcher = pattern.matcher(userAgent);
+        String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
+        String stringToAppend = "azstorage-clientsideencryption/" + version;
+        if (matcher.matches() && !userAgent.contains(stringToAppend)) {
+            String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
+            String segment2 = matcher.group(2) == null ? "" : matcher.group(2);
+            String segment3 = matcher.group(3) == null ? "" : matcher.group(3);
+            userAgent = segment1 + stringToAppend + " " + segment2 + segment3;
+        }
+        return userAgent;
+    }
+
     private HttpPipeline getHttpPipeline() {
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, LOGGER);
@@ -303,7 +324,11 @@ public final class EncryptedBlobClientBuilder implements
         policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver, requiresEncryption));
         String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
             : logOptions.getApplicationId();
-        policies.add(new UserAgentPolicy(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION, userAgentConfiguration));
+
+        // adding modified user-agent string that will contain "azstorage-clientsideencryption/" + encryption version
+        String modifiedUserAgent = modifyUserAgentString(applicationId, userAgentConfiguration);
+        policies.add(new UserAgentPolicy(modifiedUserAgent));
+
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);

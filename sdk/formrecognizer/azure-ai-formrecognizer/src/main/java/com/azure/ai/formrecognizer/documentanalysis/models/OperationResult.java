@@ -11,6 +11,13 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class OperationResult {
+
+    /**
+     * Creates a OperationResult object.
+     */
+    public OperationResult() {
+    }
+
     /**
      * Identifier which contains the result of the build model/analyze operation.
      */

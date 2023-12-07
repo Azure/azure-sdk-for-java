@@ -15,9 +15,11 @@ import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdatePropert
 import com.azure.resourcemanager.desktopvirtualization.models.HostPool;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
+import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
+import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfo;
 import com.azure.resourcemanager.desktopvirtualization.models.RegistrationInfoPatch;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
@@ -176,8 +178,21 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
         return this.innerModel().cloudPcResource();
     }
 
+    public HostpoolPublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
+    }
+
     public AgentUpdateProperties agentUpdate() {
         return this.innerModel().agentUpdate();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -503,6 +518,16 @@ public final class HostPoolImpl implements HostPool, HostPool.Definition, HostPo
             return this;
         } else {
             this.updateHostPool.withStartVMOnConnect(startVMOnConnect);
+            return this;
+        }
+    }
+
+    public HostPoolImpl withPublicNetworkAccess(HostpoolPublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
+            return this;
+        } else {
+            this.updateHostPool.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
     }

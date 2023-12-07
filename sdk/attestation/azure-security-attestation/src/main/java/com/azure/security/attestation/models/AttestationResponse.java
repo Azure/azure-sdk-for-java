@@ -11,6 +11,8 @@ import com.azure.core.http.rest.ResponseBase;
 
 /**
  * The result of an attestation operation.
+ *
+ * @param <T> The type of the attestation response value.
  */
 @Immutable
 public final class AttestationResponse<T> extends ResponseBase<Void, T> {

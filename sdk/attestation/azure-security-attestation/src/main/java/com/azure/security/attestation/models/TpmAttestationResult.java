@@ -22,7 +22,11 @@ public class TpmAttestationResult {
         this.tpmResult = result;
     }
 
-    /** @return known Tpm Attestation Result. */
+    /**
+     * Returns the known Tpm Attestation result.
+     *
+     * @return the known Tpm Attestation Result.
+     */
     public BinaryData getTpmResult() {
         return tpmResult;
     }

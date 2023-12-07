@@ -6,6 +6,7 @@ package com.azure.resourcemanager.selfhelp.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResourceInner;
+import com.azure.resourcemanager.selfhelp.models.SolutionMetadataProperties;
 import com.azure.resourcemanager.selfhelp.models.SolutionMetadataResource;
 import java.util.Collections;
 import java.util.List;
@@ -37,20 +38,8 @@ public final class SolutionMetadataResourceImpl implements SolutionMetadataResou
         return this.innerModel().systemData();
     }
 
-    public String solutionId() {
-        return this.innerModel().solutionId();
-    }
-
-    public String solutionType() {
-        return this.innerModel().solutionType();
-    }
-
-    public String description() {
-        return this.innerModel().description();
-    }
-
-    public List<List<String>> requiredParameterSets() {
-        List<List<String>> inner = this.innerModel().requiredParameterSets();
+    public List<SolutionMetadataProperties> solutions() {
+        List<SolutionMetadataProperties> inner = this.innerModel().solutions();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

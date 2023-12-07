@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.FunctionAppStackInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Function app Stacks. */
+/**
+ * Collection of Function app Stacks.
+ */
 @Fluent
 public final class FunctionAppStackCollection {
     /*
@@ -25,13 +27,15 @@ public final class FunctionAppStackCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of FunctionAppStackCollection class. */
+    /**
+     * Creates an instance of FunctionAppStackCollection class.
+     */
     public FunctionAppStackCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<FunctionAppStackInner> value() {
@@ -40,7 +44,7 @@ public final class FunctionAppStackCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the FunctionAppStackCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class FunctionAppStackCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class FunctionAppStackCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model FunctionAppStackCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model FunctionAppStackCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

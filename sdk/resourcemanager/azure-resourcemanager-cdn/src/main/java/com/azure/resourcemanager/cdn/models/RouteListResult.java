@@ -27,6 +27,10 @@ public final class RouteListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RouteListResult class. */
+    public RouteListResult() {
+    }
+
     /**
      * Get the value property: List of AzureFrontDoor routes within a profile.
      *

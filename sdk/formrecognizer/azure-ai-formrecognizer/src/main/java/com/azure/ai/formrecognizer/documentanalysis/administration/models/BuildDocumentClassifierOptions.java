@@ -15,6 +15,12 @@ public final class BuildDocumentClassifierOptions {
     private String classifierId;
 
     /**
+     * Create a BuildDocumentClassifierOptions instance.
+     */
+    public BuildDocumentClassifierOptions() {
+    }
+
+    /**
      * Get the model description.
      *
      * @return the model description value.

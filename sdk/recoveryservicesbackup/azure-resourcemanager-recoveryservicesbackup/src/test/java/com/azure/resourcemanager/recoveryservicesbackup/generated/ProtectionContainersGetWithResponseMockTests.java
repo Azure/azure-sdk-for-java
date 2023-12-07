@@ -32,7 +32,7 @@ public final class ProtectionContainersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"kdveksb\",\"backupManagementType\":\"AzureStorage\",\"registrationStatus\":\"uchvlscrd\",\"healthStatus\":\"bfdyjduss\",\"protectableObjectType\":\"szekbh\"},\"eTag\":\"kaaggkreh\",\"location\":\"frnuybffljfi\",\"tags\":{\"dusr\":\"eoagsqta\",\"nl\":\"xxfavsqwudohzilf\",\"bh\":\"kpsimsfeypofqp\",\"mttjxophgerh\":\"qgsdr\"},\"id\":\"mvgohtwz\",\"name\":\"qilrixysfn\",\"type\":\"msqywwwmhkruwae\"}";
+            "{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"a\",\"backupManagementType\":\"AzureSql\",\"registrationStatus\":\"hrdicxdwyjfo\",\"healthStatus\":\"wyov\",\"protectableObjectType\":\"j\"},\"eTag\":\"bi\",\"location\":\"cu\",\"tags\":{\"rdpibfd\":\"eksbuhoduchvls\",\"wlkaaggkrehbfrnu\":\"jdusspyszekb\",\"qtaadusrexxfavsq\":\"bffljfiimreoag\",\"zilfmnlikps\":\"udo\"},\"id\":\"msfeypofqpm\",\"name\":\"hyqgsdrmmttjx\",\"type\":\"phgerhsmvgoh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,17 +63,16 @@ public final class ProtectionContainersGetWithResponseMockTests {
         ProtectionContainerResource response =
             manager
                 .protectionContainers()
-                .getWithResponse(
-                    "dusztekxby", "gmsfepxyi", "pqadagrhrdicxdwy", "fowxwyovcxjsgbi", com.azure.core.util.Context.NONE)
+                .getWithResponse("qovchiqbp", "vf", "dusztekxby", "gmsfepxyi", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("frnuybffljfi", response.location());
-        Assertions.assertEquals("eoagsqta", response.tags().get("dusr"));
-        Assertions.assertEquals("kdveksb", response.properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, response.properties().backupManagementType());
-        Assertions.assertEquals("uchvlscrd", response.properties().registrationStatus());
-        Assertions.assertEquals("bfdyjduss", response.properties().healthStatus());
-        Assertions.assertEquals("szekbh", response.properties().protectableObjectType());
-        Assertions.assertEquals("kaaggkreh", response.etag());
+        Assertions.assertEquals("cu", response.location());
+        Assertions.assertEquals("eksbuhoduchvls", response.tags().get("rdpibfd"));
+        Assertions.assertEquals("a", response.properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_SQL, response.properties().backupManagementType());
+        Assertions.assertEquals("hrdicxdwyjfo", response.properties().registrationStatus());
+        Assertions.assertEquals("wyov", response.properties().healthStatus());
+        Assertions.assertEquals("j", response.properties().protectableObjectType());
+        Assertions.assertEquals("bi", response.etag());
     }
 }

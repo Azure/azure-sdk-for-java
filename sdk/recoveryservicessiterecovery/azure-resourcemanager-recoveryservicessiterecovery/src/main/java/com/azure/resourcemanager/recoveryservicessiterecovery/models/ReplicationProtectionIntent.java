@@ -71,11 +71,13 @@ public interface ReplicationProtectionIntent {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ReplicationProtectionIntent definition stages. */
     interface DefinitionStages {
         /** The first stage of the ReplicationProtectionIntent definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ReplicationProtectionIntent definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -87,6 +89,7 @@ public interface ReplicationProtectionIntent {
              */
             WithCreate withExistingVault(String resourceName, String resourceGroupName);
         }
+
         /**
          * The stage of the ReplicationProtectionIntent definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -107,6 +110,7 @@ public interface ReplicationProtectionIntent {
              */
             ReplicationProtectionIntent create(Context context);
         }
+
         /** The stage of the ReplicationProtectionIntent definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -118,6 +122,7 @@ public interface ReplicationProtectionIntent {
             WithCreate withProperties(CreateProtectionIntentProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

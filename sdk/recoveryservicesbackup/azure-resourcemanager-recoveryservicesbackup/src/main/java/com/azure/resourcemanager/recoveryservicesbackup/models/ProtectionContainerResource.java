@@ -97,11 +97,13 @@ public interface ProtectionContainerResource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ProtectionContainerResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ProtectionContainerResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ProtectionContainerResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -120,6 +122,7 @@ public interface ProtectionContainerResource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ProtectionContainerResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -132,6 +135,7 @@ public interface ProtectionContainerResource {
              */
             WithCreate withExistingBackupFabric(String vaultName, String resourceGroupName, String fabricName);
         }
+
         /**
          * The stage of the ProtectionContainerResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -153,6 +157,7 @@ public interface ProtectionContainerResource {
              */
             ProtectionContainerResource create(Context context);
         }
+
         /** The stage of the ProtectionContainerResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -163,6 +168,7 @@ public interface ProtectionContainerResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionContainerResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -173,6 +179,7 @@ public interface ProtectionContainerResource {
              */
             WithCreate withProperties(ProtectionContainer properties);
         }
+
         /** The stage of the ProtectionContainerResource definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -184,6 +191,7 @@ public interface ProtectionContainerResource {
             WithCreate withEtag(String etag);
         }
     }
+
     /**
      * Begins update for the ProtectionContainerResource resource.
      *
@@ -208,6 +216,7 @@ public interface ProtectionContainerResource {
          */
         ProtectionContainerResource apply(Context context);
     }
+
     /** The ProtectionContainerResource update stages. */
     interface UpdateStages {
         /** The stage of the ProtectionContainerResource update allowing to specify tags. */
@@ -220,6 +229,7 @@ public interface ProtectionContainerResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ProtectionContainerResource update allowing to specify properties. */
         interface WithProperties {
             /**
@@ -230,6 +240,7 @@ public interface ProtectionContainerResource {
              */
             Update withProperties(ProtectionContainer properties);
         }
+
         /** The stage of the ProtectionContainerResource update allowing to specify etag. */
         interface WithEtag {
             /**
@@ -241,6 +252,7 @@ public interface ProtectionContainerResource {
             Update withEtag(String etag);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -19,6 +19,12 @@ public final class FleetPatch {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /*
+     * Managed identity.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
     /** Creates an instance of FleetPatch class. */
     public FleetPatch() {
     }
@@ -44,10 +50,33 @@ public final class FleetPatch {
     }
 
     /**
+     * Get the identity property: Managed identity.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed identity.
+     *
+     * @param identity the identity value to set.
+     * @return the FleetPatch object itself.
+     */
+    public FleetPatch withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

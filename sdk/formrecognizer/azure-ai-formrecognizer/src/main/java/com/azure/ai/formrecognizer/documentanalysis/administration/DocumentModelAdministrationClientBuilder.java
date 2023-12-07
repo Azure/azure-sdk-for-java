@@ -102,6 +102,14 @@ public final class DocumentModelAdministrationClientBuilder implements
     EndpointTrait<DocumentModelAdministrationClientBuilder>,
     HttpTrait<DocumentModelAdministrationClientBuilder>,
     TokenCredentialTrait<DocumentModelAdministrationClientBuilder> {
+
+    /**
+     * Constructs a DocumentModelAdministrationClientBuilder object.
+     */
+    public DocumentModelAdministrationClientBuilder() {
+        httpLogOptions = new HttpLogOptions();
+    }
+
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();

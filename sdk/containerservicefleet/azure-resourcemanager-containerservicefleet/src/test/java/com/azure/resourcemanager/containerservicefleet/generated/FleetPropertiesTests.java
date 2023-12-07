@@ -6,25 +6,17 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetProperties;
-import com.azure.resourcemanager.containerservicefleet.models.FleetHubProfile;
-import org.junit.jupiter.api.Assertions;
 
 public final class FleetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Creating\",\"hubProfile\":{\"dnsPrefix\":\"dpvwryoqpsoaccta\",\"fqdn\":\"kljla\",\"kubernetesVersion\":\"cr\"}}")
-                .toObject(FleetProperties.class);
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.hubProfile().dnsPrefix());
+            BinaryData.fromString("{\"provisioningState\":\"Deleting\"}").toObject(FleetProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetProperties model =
-            new FleetProperties().withHubProfile(new FleetHubProfile().withDnsPrefix("dpvwryoqpsoaccta"));
+        FleetProperties model = new FleetProperties();
         model = BinaryData.fromObject(model).toObject(FleetProperties.class);
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.hubProfile().dnsPrefix());
     }
 }

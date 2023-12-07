@@ -18,6 +18,10 @@ public final class RouteUpdateParameters {
     @JsonProperty(value = "properties")
     private RouteUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of RouteUpdateParameters class. */
+    public RouteUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the domain to create.
      *

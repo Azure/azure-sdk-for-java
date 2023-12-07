@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * smbNonBrowsable
  *
- * <p>Enables non browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+ * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
  */
 public final class SmbNonBrowsable extends ExpandableStringEnum<SmbNonBrowsable> {
     /** Static value Disabled for SmbNonBrowsable. */

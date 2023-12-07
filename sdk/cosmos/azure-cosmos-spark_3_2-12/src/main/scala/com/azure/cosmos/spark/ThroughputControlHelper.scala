@@ -102,7 +102,7 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         }
         if (throughputControlConfig.priorityLevel.isDefined) {
             val priority = throughputControlConfig.priorityLevel.get
-            logInfo(s"Configure throughput control with priority $priority")
+            logDebug(s"Configure throughput control with priority $priority")
             groupConfigBuilder.priorityLevel(parsePriorityLevel(throughputControlConfig.priorityLevel.get))
         }
 
@@ -148,19 +148,19 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         // If there is no SparkExecutorCount being captured, then fall back to use 1 executor count
         // If the spark executor count is somehow 0, then fall back to 1 executor count
         val instanceCount = math.max(userConfig.getOrElse(CosmosConfigNames.SparkExecutorCount, "1").toInt, 1)
-        logInfo(s"Configure throughput control without using dedicated container, instance count $instanceCount")
+        logDebug(s"Configure throughput control without using dedicated container, instance count $instanceCount")
 
         if (throughputControlConfig.targetThroughput.isDefined) {
             val targetThroughputByExecutor =
                 (throughputControlConfig.targetThroughput.get / instanceCount).ceil.toInt
-            logInfo(s"Configure throughput control with throughput $targetThroughputByExecutor")
+            logDebug(s"Configure throughput control with throughput $targetThroughputByExecutor")
             groupConfigBuilder.targetThroughput(targetThroughputByExecutor)
         }
         if (throughputControlConfig.targetThroughputThreshold.isDefined) {
             // Try to limit to 2 decimal digits
             val targetThroughputThresholdByExecutor =
                 (throughputControlConfig.targetThroughputThreshold.get * 10000 / instanceCount).ceil / 10000
-            logInfo(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
+            logDebug(s"Configure throughput control with throughput threshold $targetThroughputThresholdByExecutor")
             groupConfigBuilder.targetThroughputThreshold(targetThroughputThresholdByExecutor)
         }
         if (throughputControlConfig.priorityLevel.isDefined) {
@@ -188,13 +188,18 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
 
     def getThroughputControlClientCacheItem(userConfig: Map[String, String],
                                             calledFrom: String,
-                                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]]): Option[CosmosClientCacheItem] = {
+                                            cosmosClientStateHandles: Option[Broadcast[CosmosClientMetadataCachesSnapshots]],
+                                            sparkEnvironmentInfo: String): Option[CosmosClientCacheItem] = {
         val throughputControlConfigOpt = CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
         val diagnosticConfig = DiagnosticsConfig.parseDiagnosticsConfig(userConfig)
 
         if (throughputControlConfigOpt.isDefined) {
             val throughputControlClientConfig =
-                CosmosClientConfiguration.apply(throughputControlConfigOpt.get.cosmosAccountConfig, diagnosticConfig, false)
+                CosmosClientConfiguration.apply(
+                  throughputControlConfigOpt.get.cosmosAccountConfig,
+                  diagnosticConfig,
+                  false,
+                  sparkEnvironmentInfo)
 
             val throughputControlClientMetadata =
                 cosmosClientStateHandles match {

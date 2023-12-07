@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesActionResult} model.
+ * The {@code AbstractiveSummaryActionResult} model.
  */
 @Immutable
 public final class AbstractiveSummaryActionResult extends TextAnalyticsActionResult {
@@ -17,6 +17,12 @@ public final class AbstractiveSummaryActionResult extends TextAnalyticsActionRes
     static {
         AbstractiveSummaryActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code AbstractiveSummaryActionResult} model.
+     */
+    public AbstractiveSummaryActionResult() {
     }
 
     /**

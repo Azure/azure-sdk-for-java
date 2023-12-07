@@ -67,6 +67,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class TracingIntegrationTests extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     private static final String PARTITION_ID = "0";
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private TestSpanProcessor spanProcessor;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
@@ -82,7 +83,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         GlobalOpenTelemetry.resetForTest();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         spanProcessor = toClose(new TestSpanProcessor(getFullyQualifiedDomainName(), getEventHubName(), testName));
         OpenTelemetrySdk.builder()
@@ -147,7 +147,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             }));
 
-        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
 
@@ -179,7 +181,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             }));
 
-        StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
 
@@ -220,7 +224,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 }
             }));
 
-        StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertTrue(latch.await(10, TimeUnit.SECONDS));
 
@@ -257,9 +263,12 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .parallel(messageCount, 1)
                 .runOn(Schedulers.boundedElastic(), 2))
             .expectNextCount(messageCount)
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
-        StepVerifier.create(producer.send(data, new SendOptions())).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions()))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertTrue(latch.await(20, TimeUnit.SECONDS));
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
@@ -300,7 +309,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         StepVerifier.create(Mono.when(
             bufferedProducer.enqueueEvent(event1, sendOptions), bufferedProducer.enqueueEvent(event2, sendOptions)))
             .expectComplete()
-            .verify();
+            .verify(DEFAULT_TIMEOUT);
 
         StepVerifier.create(consumer
                 .receiveFromPartition(sendOptions.getPartitionId(), EventPosition.fromEnqueuedTime(start))
@@ -339,7 +348,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     return b;
                 })
                 .flatMap(b -> producer.send(b)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2, EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10))
             .stream().collect(toList());
@@ -361,7 +371,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                     return b;
                 })
                 .flatMap(b -> producer.send(b)))
-            .verifyComplete();
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         List<PartitionEvent> receivedMessages = consumerSync.receiveFromPartition(PARTITION_ID, 2,
                 EventPosition.fromEnqueuedTime(testStartTime), Duration.ofSeconds(10), new ReceiveOptions())
@@ -396,7 +407,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || span.getName().equals("EventHubs.send"));
 
-        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
         processor = new EventProcessorClientBuilder()
             .connectionString(getConnectionString())
             .eventHubName(getEventHubName())
@@ -446,7 +459,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         List<EventData> received = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span.getName().equals("EventHubs.process") && !span.getParentSpanContext().isValid());
-        StepVerifier.create(notInstrumentedProducer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
+        StepVerifier.create(notInstrumentedProducer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID)))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         assertNull(message1.getProperties().get("traceparent"));
         assertNull(message2.getProperties().get("traceparent"));
@@ -501,7 +516,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<List<EventData>> received = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get());
-        StepVerifier.create(producer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
+        StepVerifier.create(producer.send(Arrays.asList(message1, message2), new SendOptions().setPartitionId(PARTITION_ID)))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         processor = new EventProcessorClientBuilder()
             .connectionString(getConnectionString())
@@ -551,7 +568,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch latch = new CountDownLatch(2);
         spanProcessor.notifyIfCondition(latch, span -> span == currentInProcess.get() || span.getName().equals("EventHubs.send"));
 
-        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID))).verifyComplete();
+        StepVerifier.create(producer.send(data, new SendOptions().setPartitionId(PARTITION_ID)))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
 
         processor = new EventProcessorClientBuilder()
             .connectionString(getConnectionString())

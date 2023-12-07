@@ -22,56 +22,55 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequestTests {
         AzureWorkloadSapHanaRestoreWithRehydrateRequest model =
             BinaryData
                 .fromString(
-                    "{\"objectType\":\"AzureWorkloadSAPHanaRestoreWithRehydrateRequest\",\"recoveryPointRehydrationInfo\":{\"rehydrationRetentionDuration\":\"okrtalvnb\",\"rehydrationPriority\":\"Standard\"},\"recoveryType\":\"OriginalLocation\",\"sourceResourceId\":\"eluclvdjj\",\"propertyBag\":{\"qnvzoqgyipemch\":\"rdnqodxahhxhqf\",\"lghwzhome\":\"avsczuejdtxp\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"liuhqawmoaiancz\",\"databaseName\":\"odrrslblxyd\",\"targetDirectoryForFileRestore\":\"rxvvbxi\"},\"recoveryMode\":\"Invalid\",\"targetVirtualMachineId\":\"bqlj\"}")
+                    "{\"objectType\":\"AzureWorkloadSAPHanaRestoreWithRehydrateRequest\",\"recoveryPointRehydrationInfo\":{\"rehydrationRetentionDuration\":\"o\",\"rehydrationPriority\":\"High\"},\"recoveryType\":\"Offline\",\"sourceResourceId\":\"utycyarnroohguab\",\"propertyBag\":{\"pyc\":\"hkt\",\"ot\":\"hcoeocnhzq\"},\"targetInfo\":{\"overwriteOption\":\"Invalid\",\"containerId\":\"yjzp\",\"databaseName\":\"rl\",\"targetDirectoryForFileRestore\":\"apqinf\"},\"recoveryMode\":\"Invalid\",\"targetVirtualMachineId\":\"glqdhm\"}")
                 .toObject(AzureWorkloadSapHanaRestoreWithRehydrateRequest.class);
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("eluclvdjj", model.sourceResourceId());
-        Assertions.assertEquals("rdnqodxahhxhqf", model.propertyBag().get("qnvzoqgyipemch"));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("utycyarnroohguab", model.sourceResourceId());
+        Assertions.assertEquals("hkt", model.propertyBag().get("pyc"));
         Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("liuhqawmoaiancz", model.targetInfo().containerId());
-        Assertions.assertEquals("odrrslblxyd", model.targetInfo().databaseName());
-        Assertions.assertEquals("rxvvbxi", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("yjzp", model.targetInfo().containerId());
+        Assertions.assertEquals("rl", model.targetInfo().databaseName());
+        Assertions.assertEquals("apqinf", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.INVALID, model.recoveryMode());
-        Assertions.assertEquals("bqlj", model.targetVirtualMachineId());
-        Assertions.assertEquals("okrtalvnb", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
-        Assertions
-            .assertEquals(RehydrationPriority.STANDARD, model.recoveryPointRehydrationInfo().rehydrationPriority());
+        Assertions.assertEquals("glqdhm", model.targetVirtualMachineId());
+        Assertions.assertEquals("o", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
+        Assertions.assertEquals(RehydrationPriority.HIGH, model.recoveryPointRehydrationInfo().rehydrationPriority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSapHanaRestoreWithRehydrateRequest model =
             new AzureWorkloadSapHanaRestoreWithRehydrateRequest()
-                .withRecoveryType(RecoveryType.ORIGINAL_LOCATION)
-                .withSourceResourceId("eluclvdjj")
-                .withPropertyBag(mapOf("qnvzoqgyipemch", "rdnqodxahhxhqf", "lghwzhome", "avsczuejdtxp"))
+                .withRecoveryType(RecoveryType.OFFLINE)
+                .withSourceResourceId("utycyarnroohguab")
+                .withPropertyBag(mapOf("pyc", "hkt", "ot", "hcoeocnhzq"))
                 .withTargetInfo(
                     new TargetRestoreInfo()
                         .withOverwriteOption(OverwriteOptions.INVALID)
-                        .withContainerId("liuhqawmoaiancz")
-                        .withDatabaseName("odrrslblxyd")
-                        .withTargetDirectoryForFileRestore("rxvvbxi"))
+                        .withContainerId("yjzp")
+                        .withDatabaseName("rl")
+                        .withTargetDirectoryForFileRestore("apqinf"))
                 .withRecoveryMode(RecoveryMode.INVALID)
-                .withTargetVirtualMachineId("bqlj")
+                .withTargetVirtualMachineId("glqdhm")
                 .withRecoveryPointRehydrationInfo(
                     new RecoveryPointRehydrationInfo()
-                        .withRehydrationRetentionDuration("okrtalvnb")
-                        .withRehydrationPriority(RehydrationPriority.STANDARD));
+                        .withRehydrationRetentionDuration("o")
+                        .withRehydrationPriority(RehydrationPriority.HIGH));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSapHanaRestoreWithRehydrateRequest.class);
-        Assertions.assertEquals(RecoveryType.ORIGINAL_LOCATION, model.recoveryType());
-        Assertions.assertEquals("eluclvdjj", model.sourceResourceId());
-        Assertions.assertEquals("rdnqodxahhxhqf", model.propertyBag().get("qnvzoqgyipemch"));
+        Assertions.assertEquals(RecoveryType.OFFLINE, model.recoveryType());
+        Assertions.assertEquals("utycyarnroohguab", model.sourceResourceId());
+        Assertions.assertEquals("hkt", model.propertyBag().get("pyc"));
         Assertions.assertEquals(OverwriteOptions.INVALID, model.targetInfo().overwriteOption());
-        Assertions.assertEquals("liuhqawmoaiancz", model.targetInfo().containerId());
-        Assertions.assertEquals("odrrslblxyd", model.targetInfo().databaseName());
-        Assertions.assertEquals("rxvvbxi", model.targetInfo().targetDirectoryForFileRestore());
+        Assertions.assertEquals("yjzp", model.targetInfo().containerId());
+        Assertions.assertEquals("rl", model.targetInfo().databaseName());
+        Assertions.assertEquals("apqinf", model.targetInfo().targetDirectoryForFileRestore());
         Assertions.assertEquals(RecoveryMode.INVALID, model.recoveryMode());
-        Assertions.assertEquals("bqlj", model.targetVirtualMachineId());
-        Assertions.assertEquals("okrtalvnb", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
-        Assertions
-            .assertEquals(RehydrationPriority.STANDARD, model.recoveryPointRehydrationInfo().rehydrationPriority());
+        Assertions.assertEquals("glqdhm", model.targetVirtualMachineId());
+        Assertions.assertEquals("o", model.recoveryPointRehydrationInfo().rehydrationRetentionDuration());
+        Assertions.assertEquals(RehydrationPriority.HIGH, model.recoveryPointRehydrationInfo().rehydrationPriority());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

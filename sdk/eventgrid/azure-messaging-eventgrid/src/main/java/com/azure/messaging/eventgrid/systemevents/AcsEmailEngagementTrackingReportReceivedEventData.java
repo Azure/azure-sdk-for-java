@@ -21,6 +21,12 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
     private String sender;
 
     /*
+     * The Recipient Email Address
+     */
+    @JsonProperty(value = "recipient")
+    private String recipient;
+
+    /*
      * The Id of the email that has been sent
      */
     @JsonProperty(value = "messageId")
@@ -70,6 +76,26 @@ public final class AcsEmailEngagementTrackingReportReceivedEventData {
      */
     public AcsEmailEngagementTrackingReportReceivedEventData setSender(String sender) {
         this.sender = sender;
+        return this;
+    }
+
+    /**
+     * Get the recipient property: The Recipient Email Address.
+     *
+     * @return the recipient value.
+     */
+    public String getRecipient() {
+        return this.recipient;
+    }
+
+    /**
+     * Set the recipient property: The Recipient Email Address.
+     *
+     * @param recipient the recipient value to set.
+     * @return the AcsEmailEngagementTrackingReportReceivedEventData object itself.
+     */
+    public AcsEmailEngagementTrackingReportReceivedEventData setRecipient(String recipient) {
+        this.recipient = recipient;
         return this;
     }
 

@@ -24,58 +24,59 @@ public final class LabPropertiesTests {
         LabProperties model =
             BinaryData
                 .fromString(
-                    "{\"defaultStorageAccount\":\"ypyqrimzinp\",\"defaultPremiumStorageAccount\":\"wjdk\",\"artifactsStorageAccount\":\"soodqxhcrmnoh\",\"premiumDataDiskStorageAccount\":\"ckwhds\",\"vaultName\":\"fiyipjxsqwpgrj\",\"labStorageType\":\"Premium\",\"mandatoryArtifactsResourceIdsLinux\":[\"cjxvsnbyxqab\",\"mocpc\",\"shurzafbljjgpbto\",\"c\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ljavbqid\"],\"createdDate\":\"2021-05-31T14:07:02Z\",\"premiumDataDisks\":\"Disabled\",\"environmentPermission\":\"Contributor\",\"announcement\":{\"title\":\"kudjkrlkhb\",\"markdown\":\"fepgzgq\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-26T10:43:13Z\",\"expired\":true,\"provisioningState\":\"c\",\"uniqueIdentifier\":\"ierhhbcsglummaj\"},\"support\":{\"enabled\":\"Disabled\",\"markdown\":\"xobnbdxkqpxok\"},\"vmCreationResourceGroup\":\"ionpimexg\",\"publicIpId\":\"xgcp\",\"loadBalancerId\":\"gmaajrm\",\"networkSecurityGroupId\":\"jwzrl\",\"extendedProperties\":{\"qsqsy\":\"clwhijcoejctbz\"},\"provisioningState\":\"kbfkg\",\"uniqueIdentifier\":\"dkexxppofm\"}")
+                    "{\"defaultStorageAccount\":\"i\",\"defaultPremiumStorageAccount\":\"thz\",\"artifactsStorageAccount\":\"qdrabhjybigehoqf\",\"premiumDataDiskStorageAccount\":\"wska\",\"vaultName\":\"ktzlcuiywg\",\"labStorageType\":\"Standard\",\"mandatoryArtifactsResourceIdsLinux\":[\"drvyn\",\"zgpphrcgyncocpe\",\"fvm\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ofsx\"],\"createdDate\":\"2021-10-25T19:09:19Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qabcypm\",\"markdown\":\"kwlzuvccfwnfn\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-24T21:18:31Z\",\"expired\":true,\"provisioningState\":\"ebxetqgtzxdp\",\"uniqueIdentifier\":\"bqqwxrj\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"nwsubisnj\"},\"vmCreationResourceGroup\":\"pmng\",\"publicIpId\":\"scxaq\",\"loadBalancerId\":\"ochcbonqvpkvl\",\"networkSecurityGroupId\":\"njeaseipheofloke\",\"extendedProperties\":{\"jp\":\"enjbdlwtgrhp\",\"e\":\"umasxazjpq\",\"zvdudgwdslfhotwm\":\"ualhbxxhejj\"},\"provisioningState\":\"npwlbjnpg\",\"uniqueIdentifier\":\"ftadehxnltyfs\"}")
                 .toObject(LabProperties.class);
-        Assertions.assertEquals(StorageType.PREMIUM, model.labStorageType());
-        Assertions.assertEquals("cjxvsnbyxqab", model.mandatoryArtifactsResourceIdsLinux().get(0));
-        Assertions.assertEquals("ljavbqid", model.mandatoryArtifactsResourceIdsWindows().get(0));
-        Assertions.assertEquals(PremiumDataDisk.DISABLED, model.premiumDataDisks());
-        Assertions.assertEquals(EnvironmentPermission.CONTRIBUTOR, model.environmentPermission());
-        Assertions.assertEquals("kudjkrlkhb", model.announcement().title());
-        Assertions.assertEquals("fepgzgq", model.announcement().markdown());
+        Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
+        Assertions.assertEquals("drvyn", model.mandatoryArtifactsResourceIdsLinux().get(0));
+        Assertions.assertEquals("ofsx", model.mandatoryArtifactsResourceIdsWindows().get(0));
+        Assertions.assertEquals(PremiumDataDisk.ENABLED, model.premiumDataDisks());
+        Assertions.assertEquals(EnvironmentPermission.READER, model.environmentPermission());
+        Assertions.assertEquals("qabcypm", model.announcement().title());
+        Assertions.assertEquals("kwlzuvccfwnfn", model.announcement().markdown());
         Assertions.assertEquals(EnableStatus.ENABLED, model.announcement().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T10:43:13Z"), model.announcement().expirationDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T21:18:31Z"), model.announcement().expirationDate());
         Assertions.assertEquals(true, model.announcement().expired());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.support().enabled());
-        Assertions.assertEquals("xobnbdxkqpxok", model.support().markdown());
-        Assertions.assertEquals("clwhijcoejctbz", model.extendedProperties().get("qsqsy"));
+        Assertions.assertEquals(EnableStatus.ENABLED, model.support().enabled());
+        Assertions.assertEquals("nwsubisnj", model.support().markdown());
+        Assertions.assertEquals("enjbdlwtgrhp", model.extendedProperties().get("jp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabProperties model =
             new LabProperties()
-                .withLabStorageType(StorageType.PREMIUM)
-                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("cjxvsnbyxqab", "mocpc", "shurzafbljjgpbto", "c"))
-                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("ljavbqid"))
-                .withPremiumDataDisks(PremiumDataDisk.DISABLED)
-                .withEnvironmentPermission(EnvironmentPermission.CONTRIBUTOR)
+                .withLabStorageType(StorageType.STANDARD)
+                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("drvyn", "zgpphrcgyncocpe", "fvm"))
+                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("ofsx"))
+                .withPremiumDataDisks(PremiumDataDisk.ENABLED)
+                .withEnvironmentPermission(EnvironmentPermission.READER)
                 .withAnnouncement(
                     new LabAnnouncementProperties()
-                        .withTitle("kudjkrlkhb")
-                        .withMarkdown("fepgzgq")
+                        .withTitle("qabcypm")
+                        .withMarkdown("kwlzuvccfwnfn")
                         .withEnabled(EnableStatus.ENABLED)
-                        .withExpirationDate(OffsetDateTime.parse("2021-02-26T10:43:13Z"))
+                        .withExpirationDate(OffsetDateTime.parse("2021-02-24T21:18:31Z"))
                         .withExpired(true))
-                .withSupport(
-                    new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("xobnbdxkqpxok"))
-                .withExtendedProperties(mapOf("qsqsy", "clwhijcoejctbz"));
+                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.ENABLED).withMarkdown("nwsubisnj"))
+                .withExtendedProperties(
+                    mapOf("jp", "enjbdlwtgrhp", "e", "umasxazjpq", "zvdudgwdslfhotwm", "ualhbxxhejj"));
         model = BinaryData.fromObject(model).toObject(LabProperties.class);
-        Assertions.assertEquals(StorageType.PREMIUM, model.labStorageType());
-        Assertions.assertEquals("cjxvsnbyxqab", model.mandatoryArtifactsResourceIdsLinux().get(0));
-        Assertions.assertEquals("ljavbqid", model.mandatoryArtifactsResourceIdsWindows().get(0));
-        Assertions.assertEquals(PremiumDataDisk.DISABLED, model.premiumDataDisks());
-        Assertions.assertEquals(EnvironmentPermission.CONTRIBUTOR, model.environmentPermission());
-        Assertions.assertEquals("kudjkrlkhb", model.announcement().title());
-        Assertions.assertEquals("fepgzgq", model.announcement().markdown());
+        Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
+        Assertions.assertEquals("drvyn", model.mandatoryArtifactsResourceIdsLinux().get(0));
+        Assertions.assertEquals("ofsx", model.mandatoryArtifactsResourceIdsWindows().get(0));
+        Assertions.assertEquals(PremiumDataDisk.ENABLED, model.premiumDataDisks());
+        Assertions.assertEquals(EnvironmentPermission.READER, model.environmentPermission());
+        Assertions.assertEquals("qabcypm", model.announcement().title());
+        Assertions.assertEquals("kwlzuvccfwnfn", model.announcement().markdown());
         Assertions.assertEquals(EnableStatus.ENABLED, model.announcement().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-26T10:43:13Z"), model.announcement().expirationDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T21:18:31Z"), model.announcement().expirationDate());
         Assertions.assertEquals(true, model.announcement().expired());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.support().enabled());
-        Assertions.assertEquals("xobnbdxkqpxok", model.support().markdown());
-        Assertions.assertEquals("clwhijcoejctbz", model.extendedProperties().get("qsqsy"));
+        Assertions.assertEquals(EnableStatus.ENABLED, model.support().enabled());
+        Assertions.assertEquals("nwsubisnj", model.support().markdown());
+        Assertions.assertEquals("enjbdlwtgrhp", model.extendedProperties().get("jp"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

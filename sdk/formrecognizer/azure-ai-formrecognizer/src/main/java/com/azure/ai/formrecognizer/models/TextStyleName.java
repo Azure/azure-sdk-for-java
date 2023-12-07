@@ -13,6 +13,15 @@ import java.util.Collection;
  * Defines values for TextStyleName.
  */
 public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
+
+    /**
+     * Constructs a TextStyleName object
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TextStyleName() {
+    }
+
     /** Static value other for TextStyleName. */
     public static final TextStyleName OTHER = fromString("other");
 
@@ -30,7 +39,10 @@ public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
         return fromString(name, TextStyleName.class);
     }
 
-    /** @return known TextStyleName values. */
+    /**
+     * Returns the known TextStyleName values.
+     * @return known TextStyleName values.
+     */
     public static Collection<TextStyleName> values() {
         return values(TextStyleName.class);
     }

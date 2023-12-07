@@ -16,13 +16,13 @@ public final class BackupPolicyInnerTests {
         BackupPolicyInner model =
             BinaryData
                 .fromString(
-                    "{\"etag\":\"qtvcofudflvkgj\",\"properties\":{\"backupPolicyId\":\"gdknnqv\",\"provisioningState\":\"znqntoru\",\"dailyBackupsToKeep\":1292575401,\"weeklyBackupsToKeep\":63235261,\"monthlyBackupsToKeep\":1726398247,\"volumesAssigned\":332873704,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"wjue\",\"backupsCount\":1169859080,\"policyEnabled\":false},{\"volumeName\":\"u\",\"backupsCount\":1850094254,\"policyEnabled\":true},{\"volumeName\":\"mz\",\"backupsCount\":866846651,\"policyEnabled\":false}]},\"location\":\"q\",\"tags\":{\"vtpuqujmqlgk\":\"kif\",\"ongbjcnt\":\"btndo\"},\"id\":\"jitcjedftwwaez\",\"name\":\"ojvdcpzfoqo\",\"type\":\"i\"}")
+                    "{\"etag\":\"vtpuqujmqlgk\",\"properties\":{\"backupPolicyId\":\"tndoaongbjc\",\"provisioningState\":\"ujitcjedftww\",\"dailyBackupsToKeep\":1066178212,\"weeklyBackupsToKeep\":565058049,\"monthlyBackupsToKeep\":229411798,\"volumesAssigned\":242462331,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"ouicybxarzgszu\",\"backupsCount\":37759464,\"policyEnabled\":true},{\"volumeName\":\"opidoamciodh\",\"backupsCount\":1741139859,\"policyEnabled\":true},{\"volumeName\":\"hnzbonl\",\"backupsCount\":1184830478,\"policyEnabled\":true},{\"volumeName\":\"okdwb\",\"backupsCount\":1161774579,\"policyEnabled\":false}]},\"location\":\"cmrvexzt\",\"tags\":{\"lmnguxaw\":\"qgsfraoyzkoow\"},\"id\":\"aldsy\",\"name\":\"uximerqfobw\",\"type\":\"znkbykutwpfhpagm\"}")
                 .toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("q", model.location());
-        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
-        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
-        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("cmrvexzt", model.location());
+        Assertions.assertEquals("qgsfraoyzkoow", model.tags().get("lmnguxaw"));
+        Assertions.assertEquals(1066178212, model.dailyBackupsToKeep());
+        Assertions.assertEquals(565058049, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(229411798, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
@@ -30,21 +30,22 @@ public final class BackupPolicyInnerTests {
     public void testSerialize() throws Exception {
         BackupPolicyInner model =
             new BackupPolicyInner()
-                .withLocation("q")
-                .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
-                .withDailyBackupsToKeep(1292575401)
-                .withWeeklyBackupsToKeep(63235261)
-                .withMonthlyBackupsToKeep(1726398247)
+                .withLocation("cmrvexzt")
+                .withTags(mapOf("lmnguxaw", "qgsfraoyzkoow"))
+                .withDailyBackupsToKeep(1066178212)
+                .withWeeklyBackupsToKeep(565058049)
+                .withMonthlyBackupsToKeep(229411798)
                 .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("q", model.location());
-        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
-        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
-        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("cmrvexzt", model.location());
+        Assertions.assertEquals("qgsfraoyzkoow", model.tags().get("lmnguxaw"));
+        Assertions.assertEquals(1066178212, model.dailyBackupsToKeep());
+        Assertions.assertEquals(565058049, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(229411798, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

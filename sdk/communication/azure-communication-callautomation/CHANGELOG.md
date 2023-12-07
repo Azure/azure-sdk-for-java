@@ -1,16 +1,64 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
-- Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
-- Send DTMF tones to a participant in the call
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-11-23)
+
+### Features Added
+
+- Mid-Call actions support overriding callback uri
+- Cancel adding Participant invitation
+- Support transfer a participant in a group call to another participant
+- Add Custom Context payload to Transfer and AddParticipant API
+
+### Other Changes
+
+- Dependency versions updated.
+
+## 1.1.0-beta.1 (2023-08-17)
+
+### Features Added
+
+- Play and recognize supports TTS and SSML source prompts.
+- Recognize supports choices and freeform speech.
+- Start/Stop continuous DTMF recognition by subscribing/unsubscribing to tones.
+- Send DTMF tones to a participant in the call.
+- Mute participants in the call.
+
+## 1.0.6 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
+
+## 1.0.5 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-communication-common` from `1.2.12` to version `1.2.13`.
+
+## 1.0.4 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
 
 ## 1.0.3 (2023-08-18)
 

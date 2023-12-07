@@ -6,9 +6,12 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.OperationInner;
+import com.azure.resourcemanager.signalr.models.LogSpecification;
+import com.azure.resourcemanager.signalr.models.MetricSpecification;
 import com.azure.resourcemanager.signalr.models.OperationDisplay;
 import com.azure.resourcemanager.signalr.models.OperationList;
 import com.azure.resourcemanager.signalr.models.OperationProperties;
+import com.azure.resourcemanager.signalr.models.ServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,7 +21,7 @@ public final class OperationListTests {
         OperationList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"ownoizhw\",\"properties\":{}},{\"name\":\"bqsoqijg\",\"isDataAction\":true,\"display\":{\"provider\":\"azlobcufpdznrbt\",\"resource\":\"qjnqglhqgnufoooj\",\"operation\":\"ifsqesaagdfmg\",\"description\":\"lhjxr\"},\"origin\":\"kwm\",\"properties\":{}},{\"name\":\"siznto\",\"isDataAction\":false,\"display\":{\"provider\":\"uajpsquc\",\"resource\":\"o\",\"operation\":\"dkfo\",\"description\":\"nygj\"},\"origin\":\"jddeqsrdeupewnw\",\"properties\":{}}],\"nextLink\":\"jzyflu\"}")
+                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"ownoizhw\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{}],\"logSpecifications\":[{},{}]}}},{\"name\":\"qijgkd\",\"isDataAction\":true,\"display\":{\"provider\":\"lobcufpdznrbtcq\",\"resource\":\"nq\",\"operation\":\"hqgnufooojywif\",\"description\":\"esaagdfm\"},\"origin\":\"zlhjxrifkwmrvkt\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}],\"logSpecifications\":[{},{}]}}},{\"name\":\"pa\",\"isDataAction\":false,\"display\":{\"provider\":\"s\",\"resource\":\"cmpoyfdkfogkny\",\"operation\":\"ofjdde\",\"description\":\"rd\"},\"origin\":\"pewnw\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{}],\"logSpecifications\":[{},{},{}]}}}],\"nextLink\":\"lusarh\"}")
                 .toObject(OperationList.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
@@ -27,7 +30,7 @@ public final class OperationListTests {
         Assertions.assertEquals("hdxbmtqio", model.value().get(0).display().operation());
         Assertions.assertEquals("zehtbmu", model.value().get(0).display().description());
         Assertions.assertEquals("ownoizhw", model.value().get(0).origin());
-        Assertions.assertEquals("jzyflu", model.nextLink());
+        Assertions.assertEquals("lusarh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -47,30 +50,54 @@ public final class OperationListTests {
                                         .withOperation("hdxbmtqio")
                                         .withDescription("zehtbmu"))
                                 .withOrigin("ownoizhw")
-                                .withProperties(new OperationProperties()),
+                                .withProperties(
+                                    new OperationProperties()
+                                        .withServiceSpecification(
+                                            new ServiceSpecification()
+                                                .withMetricSpecifications(
+                                                    Arrays.asList(new MetricSpecification(), new MetricSpecification()))
+                                                .withLogSpecifications(
+                                                    Arrays.asList(new LogSpecification(), new LogSpecification())))),
                             new OperationInner()
-                                .withName("bqsoqijg")
+                                .withName("qijgkd")
                                 .withIsDataAction(true)
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("azlobcufpdznrbt")
-                                        .withResource("qjnqglhqgnufoooj")
-                                        .withOperation("ifsqesaagdfmg")
-                                        .withDescription("lhjxr"))
-                                .withOrigin("kwm")
-                                .withProperties(new OperationProperties()),
+                                        .withProvider("lobcufpdznrbtcq")
+                                        .withResource("nq")
+                                        .withOperation("hqgnufooojywif")
+                                        .withDescription("esaagdfm"))
+                                .withOrigin("zlhjxrifkwmrvkt")
+                                .withProperties(
+                                    new OperationProperties()
+                                        .withServiceSpecification(
+                                            new ServiceSpecification()
+                                                .withMetricSpecifications(Arrays.asList(new MetricSpecification()))
+                                                .withLogSpecifications(
+                                                    Arrays.asList(new LogSpecification(), new LogSpecification())))),
                             new OperationInner()
-                                .withName("siznto")
+                                .withName("pa")
                                 .withIsDataAction(false)
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("uajpsquc")
-                                        .withResource("o")
-                                        .withOperation("dkfo")
-                                        .withDescription("nygj"))
-                                .withOrigin("jddeqsrdeupewnw")
-                                .withProperties(new OperationProperties())))
-                .withNextLink("jzyflu");
+                                        .withProvider("s")
+                                        .withResource("cmpoyfdkfogkny")
+                                        .withOperation("ofjdde")
+                                        .withDescription("rd"))
+                                .withOrigin("pewnw")
+                                .withProperties(
+                                    new OperationProperties()
+                                        .withServiceSpecification(
+                                            new ServiceSpecification()
+                                                .withMetricSpecifications(
+                                                    Arrays.asList(new MetricSpecification(), new MetricSpecification()))
+                                                .withLogSpecifications(
+                                                    Arrays
+                                                        .asList(
+                                                            new LogSpecification(),
+                                                            new LogSpecification(),
+                                                            new LogSpecification()))))))
+                .withNextLink("lusarh");
         model = BinaryData.fromObject(model).toObject(OperationList.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
@@ -79,6 +106,6 @@ public final class OperationListTests {
         Assertions.assertEquals("hdxbmtqio", model.value().get(0).display().operation());
         Assertions.assertEquals("zehtbmu", model.value().get(0).display().description());
         Assertions.assertEquals("ownoizhw", model.value().get(0).origin());
-        Assertions.assertEquals("jzyflu", model.nextLink());
+        Assertions.assertEquals("lusarh", model.nextLink());
     }
 }

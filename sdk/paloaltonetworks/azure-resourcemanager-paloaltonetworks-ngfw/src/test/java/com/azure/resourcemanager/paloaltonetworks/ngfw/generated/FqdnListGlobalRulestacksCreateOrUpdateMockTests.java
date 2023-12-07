@@ -32,51 +32,33 @@ public final class FqdnListGlobalRulestacksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"hppr\",\"fqdnList\":[\"snmokayzej\"],\"etag\":\"lbkpb\",\"auditComment\":\"cpilj\",\"provisioningState\":\"Succeeded\"},\"id\":\"vechndbnwiehole\",\"name\":\"jwiuubwefqsfapaq\",\"type\":\"ferr\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"tprwnw\",\"fqdnList\":[\"oevytlyokr\",\"rouuxvnsasbcry\"],\"etag\":\"dizr\",\"auditComment\":\"lobdxna\",\"provisioningState\":\"Succeeded\"},\"id\":\"mlmvevfxzo\",\"name\":\"jhbzxliohrdddtf\",\"type\":\"xqbawpc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FqdnListGlobalRulestackResource response =
-            manager
-                .fqdnListGlobalRulestacks()
-                .createOrUpdate(
-                    "qzinkfkbg",
-                    "z",
-                    new FqdnListGlobalRulestackResourceInner()
-                        .withDescription("wxeqocljmygvkzqk")
-                        .withFqdnList(Arrays.asList("eokbze", "ezrxcczurtleipqx", "kwv", "gnzvdfbzdixzm"))
-                        .withEtag("noda")
-                        .withAuditComment("pqhe"),
-                    com.azure.core.util.Context.NONE);
+        FqdnListGlobalRulestackResource response = manager.fqdnListGlobalRulestacks().createOrUpdate("q", "fuarenlvhht",
+            new FqdnListGlobalRulestackResourceInner().withDescription("nvnaf")
+                .withFqdnList(Arrays.asList("kyfede", "jboslcqxypok", "hminqcymczngnbdx", "ewuninvud")).withEtag("h")
+                .withAuditComment("dtvqe"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hppr", response.description());
-        Assertions.assertEquals("snmokayzej", response.fqdnList().get(0));
-        Assertions.assertEquals("lbkpb", response.etag());
-        Assertions.assertEquals("cpilj", response.auditComment());
+        Assertions.assertEquals("tprwnw", response.description());
+        Assertions.assertEquals("oevytlyokr", response.fqdnList().get(0));
+        Assertions.assertEquals("dizr", response.etag());
+        Assertions.assertEquals("lobdxna", response.auditComment());
     }
 }

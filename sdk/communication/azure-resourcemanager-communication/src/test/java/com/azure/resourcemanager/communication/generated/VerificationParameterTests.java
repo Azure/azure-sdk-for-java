@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VerificationParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VerificationParameter model =
-            BinaryData.fromString("{\"verificationType\":\"SPF\"}").toObject(VerificationParameter.class);
-        Assertions.assertEquals(VerificationType.SPF, model.verificationType());
+        VerificationParameter model
+            = BinaryData.fromString("{\"verificationType\":\"DKIM\"}").toObject(VerificationParameter.class);
+        Assertions.assertEquals(VerificationType.DKIM, model.verificationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VerificationParameter model = new VerificationParameter().withVerificationType(VerificationType.SPF);
+        VerificationParameter model = new VerificationParameter().withVerificationType(VerificationType.DKIM);
         model = BinaryData.fromObject(model).toObject(VerificationParameter.class);
-        Assertions.assertEquals(VerificationType.SPF, model.verificationType());
+        Assertions.assertEquals(VerificationType.DKIM, model.verificationType());
     }
 }

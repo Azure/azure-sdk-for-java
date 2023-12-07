@@ -14,23 +14,23 @@ public final class SharedPrivateLinkResourcePropertiesTests {
         SharedPrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
-                    "{\"groupId\":\"fmisg\",\"privateLinkResourceId\":\"bnbbeldawkz\",\"provisioningState\":\"Running\",\"requestMessage\":\"ourqhakau\",\"status\":\"Approved\"}")
+                    "{\"groupId\":\"zejjoqk\",\"privateLinkResourceId\":\"gfhsxttaugzxn\",\"provisioningState\":\"Failed\",\"requestMessage\":\"pxdtnkdmkq\",\"status\":\"Rejected\"}")
                 .toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("fmisg", model.groupId());
-        Assertions.assertEquals("bnbbeldawkz", model.privateLinkResourceId());
-        Assertions.assertEquals("ourqhakau", model.requestMessage());
+        Assertions.assertEquals("zejjoqk", model.groupId());
+        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
+        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperties model =
             new SharedPrivateLinkResourceProperties()
-                .withGroupId("fmisg")
-                .withPrivateLinkResourceId("bnbbeldawkz")
-                .withRequestMessage("ourqhakau");
+                .withGroupId("zejjoqk")
+                .withPrivateLinkResourceId("gfhsxttaugzxn")
+                .withRequestMessage("pxdtnkdmkq");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
-        Assertions.assertEquals("fmisg", model.groupId());
-        Assertions.assertEquals("bnbbeldawkz", model.privateLinkResourceId());
-        Assertions.assertEquals("ourqhakau", model.requestMessage());
+        Assertions.assertEquals("zejjoqk", model.groupId());
+        Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
+        Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
     }
 }

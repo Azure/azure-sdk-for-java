@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 /** Samples for ReplicationMigrationItems ListByReplicationProtectionContainers. */
 public final class ReplicationMigrationItemsListByReplicationProte {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
+     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_ListByReplicationProtectionContainers.json
      */
     /**
      * Sample code: Gets the list of migration items in the protection container.

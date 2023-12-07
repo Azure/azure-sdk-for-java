@@ -38,6 +38,15 @@ public final class RequestType extends ExpandableStringEnum<RequestType> {
     public static final RequestType SELF_RENEW = fromString("SelfRenew");
 
     /**
+     * Creates a new instance of RequestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RequestType() {
+    }
+
+    /**
      * Creates or finds a RequestType from its string representation.
      *
      * @param name a name to look for.

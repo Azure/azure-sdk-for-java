@@ -27,15 +27,6 @@ public final class ComponentQuotaStatusImpl implements ComponentQuotaStatus {
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationInsightsComponentQuotaStatus get(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentQuotaStatusInner inner = this.serviceClient().get(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplicationInsightsComponentQuotaStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationInsightsComponentQuotaStatus> getWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<ApplicationInsightsComponentQuotaStatusInner> inner =
@@ -46,6 +37,15 @@ public final class ComponentQuotaStatusImpl implements ComponentQuotaStatus {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentQuotaStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentQuotaStatus get(String resourceGroupName, String resourceName) {
+        ApplicationInsightsComponentQuotaStatusInner inner = this.serviceClient().get(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ApplicationInsightsComponentQuotaStatusImpl(inner, this.manager());
         } else {
             return null;
         }
