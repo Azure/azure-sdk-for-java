@@ -181,7 +181,7 @@ public class SyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.communication.phonenumbers.client.beginPurchaseWithContext
         PollResponse<PhoneNumberOperation> purchaseResponse =
-            phoneNumberClient.beginPurchasePhoneNumbers(searchId, Context.NONE).waitForCompletion();
+            phoneNumberClient.beginPurchasePhoneNumbers(searchId, false, Context.NONE).waitForCompletion();
         System.out.println("Purchase phone numbers is complete: " + purchaseResponse.getStatus());
         // END: com.azure.communication.phonenumbers.client.beginPurchaseWithContext
     }

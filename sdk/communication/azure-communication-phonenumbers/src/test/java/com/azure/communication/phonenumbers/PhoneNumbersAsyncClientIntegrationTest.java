@@ -139,7 +139,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
     public void beginPurchaseandReleasePhoneNumbers(HttpClient httpClient) {
         PhoneNumbersAsyncClient client =
-            this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberForCapabilities");
+            this.getClientWithConnectionString(httpClient, "beginPurchaseandReleasePhoneNumbers");
         StepVerifier.create(
             beginSearchAvailablePhoneNumbersHelper(client, true).last()
                 .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
@@ -147,6 +147,37 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .flatMap((PhoneNumberSearchResult searchResult) -> {
                             String phoneNumber = searchResult.getPhoneNumbers().get(0);
                             return beginPurchasePhoneNumbersHelper(client, searchResult.getSearchId()
+                            ).last()
+                                .flatMap((
+                                    AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult) -> {
+                                    assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                                        purchaseResult.getStatus());
+                                    return beginReleasePhoneNumberHelper(client, phoneNumber
+                                    ).last();
+                                });
+                        });
+                }))
+        .assertNext((AsyncPollResponse<PhoneNumberOperation, ReleasePhoneNumberResult> releaseResult) -> {
+            assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, releaseResult.getStatus());
+
+        })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(named = "SKIP_LIVE_TEST", matches = "(?i)(true)")
+    public void beginPurchaseandReleasePhoneNumbersDNR(HttpClient httpClient) {
+        PhoneNumbersAsyncClient client =
+            this.getClientWithConnectionString(httpClient, "beginPurchaseandReleasePhoneNumbersDNR");
+        StepVerifier.create(
+            beginSearchAvailablePhoneNumbersHelperDNR(client, true).last()
+                .flatMap((AsyncPollResponse<PhoneNumberOperation, PhoneNumberSearchResult> result) -> {
+                    return result.getFinalResult()
+                        .flatMap((PhoneNumberSearchResult searchResult) -> {
+                            String phoneNumber = searchResult.getPhoneNumbers().get(0);
+                            Boolean consentToNotResellNumbers = true;
+                            return beginPurchasePhoneNumbersHelperDNR(client, searchResult.getSearchId(), consentToNotResellNumbers
                             ).last()
                                 .flatMap((
                                     AsyncPollResponse<PhoneNumberOperation, PurchasePhoneNumbersResult> purchaseResult) -> {
@@ -504,10 +535,40 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         capabilities));
     }
 
+    private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelperDNR(
+        PhoneNumbersAsyncClient client, boolean withOptions) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+
+        if (withOptions) {
+            return setPollInterval(client
+                    .beginSearchAvailablePhoneNumbers(
+                            "IT",
+                            PhoneNumberType.TOLL_FREE,
+                            PhoneNumberAssignmentType.APPLICATION,
+                            capabilities,
+                            searchOptions));
+        }
+        return setPollInterval(client
+                .beginSearchAvailablePhoneNumbers(
+                        "IT",
+                        PhoneNumberType.TOLL_FREE,
+                        PhoneNumberAssignmentType.APPLICATION,
+                        capabilities));
+    }
+
     private PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelper(
         PhoneNumbersAsyncClient client, String searchId) {
         return setPollInterval(client
                 .beginPurchasePhoneNumbers(searchId));
+    }
+
+    private PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbersHelperDNR(
+        PhoneNumbersAsyncClient client, String searchId, Boolean consentToNotResellNumbers) {
+        return setPollInterval(client
+                .beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers));
     }
 
     private PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumberHelper(
