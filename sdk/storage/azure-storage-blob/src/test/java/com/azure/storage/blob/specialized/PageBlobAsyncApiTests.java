@@ -1483,6 +1483,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
+
+        sleepIfRunningAgainstService(30 * 1000);
+
         Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null).block();
 
         CopyStatusType status = copyResponse.getValue();

@@ -1517,6 +1517,9 @@ public class PageBlobApiTests extends BlobTestBase {
         cc.setAccessPolicy(PublicAccessType.BLOB, null);
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
+
+        sleepIfRunningAgainstService(30 * 1000);
+
         Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null,
             null);
 

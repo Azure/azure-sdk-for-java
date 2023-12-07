@@ -386,6 +386,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         String blockID = getBlockID();
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         assertResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null,
             null, null, null, null), 201);
     }

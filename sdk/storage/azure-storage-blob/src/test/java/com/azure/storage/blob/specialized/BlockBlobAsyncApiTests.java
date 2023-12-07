@@ -430,6 +430,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         String blockID = getBlockID();
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         assertAsyncResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobAsyncClient.getBlobUrl(),
             null, null, null, null), 201);
     }
