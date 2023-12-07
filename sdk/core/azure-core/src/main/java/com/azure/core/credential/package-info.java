@@ -35,9 +35,7 @@
  * {@link com.azure.core.credential.TokenCredential} for various AAD based authentication mechanism including
  * service principal, managed identity, and more.</p>
  *
- * <br/>
- *
- * <hr/>
+ * <hr>
  *
  * <h2>Shared Access Signature (SAS) Authentication</h2>
  *
@@ -57,9 +55,7 @@
  * </pre>
  * <!-- end com.azure.core.credential.azureSasCredential -->
  *
- * <br/>
- *
- * <hr/>
+ * <hr>
  *
  * <h2>Key Based Authentication</h2>
  *
