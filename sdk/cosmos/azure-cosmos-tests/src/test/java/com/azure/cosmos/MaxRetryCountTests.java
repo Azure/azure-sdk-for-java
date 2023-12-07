@@ -796,7 +796,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             // It is expected to fail with a 503/21005
             new Object[] {
                 "410-0_AllRegions_Read",
-                Duration.ofSeconds(60),
+                Duration.ofSeconds(300),
                 OperationType.Read,
                 FaultInjectionOperationType.READ_ITEM,
                 notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,
@@ -888,8 +888,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
             // For write with Idempotent retries being enabled, it is expected to fail with 503/20001
             // For write with idempotent retries being disabled, it is expected to fail with 408
             new Object[] {
-                "410-20001_AllRegions_Read",
-                Duration.ofSeconds(60),
+                "410-20001_AllRegions_Read_MinNetworkTimeout",
+                Duration.ofSeconds(300),
                 minNetworkRequestTimeoutDuration,
                 OperationType.Read,
                 FaultInjectionOperationType.READ_ITEM,
@@ -912,8 +912,8 @@ public class MaxRetryCountTests extends TestSuiteBase {
                     )
             },
             new Object[] {
-                "410-20001_AllRegions_Read",
-                Duration.ofSeconds(60),
+                "410-20001_AllRegions_Read_DefaultNetworkTimeout",
+                Duration.ofSeconds(300),
                 defaultNetworkRequestTimeoutDuration,
                 OperationType.Read,
                 FaultInjectionOperationType.READ_ITEM,
@@ -1013,7 +1013,7 @@ public class MaxRetryCountTests extends TestSuiteBase {
             // For write with idempotent retries being disabled, it is expected to fail with 408
             new Object[] {
                 "408-0_AllRegions_Read",
-                Duration.ofSeconds(60),
+                Duration.ofSeconds(300),
                 OperationType.Read,
                 FaultInjectionOperationType.READ_ITEM,
                 notSpecifiedWhetherIdempotentWriteRetriesAreEnabled,

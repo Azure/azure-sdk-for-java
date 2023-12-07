@@ -30,42 +30,28 @@ public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMock
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"configurationEndpoints\":[\"yqjpkcatt\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Failed\"},\"location\":\"zsqpjhvmdajvny\",\"tags\":{\"hy\":\"nqecanoaeup\",\"cma\":\"ltrpmopj\",\"kthfui\":\"u\"},\"id\":\"aodsfcpkv\",\"name\":\"odpuozmyzydag\",\"type\":\"uaxbezyiuokkt\"}";
+        String responseStr
+            = "{\"properties\":{\"configurationEndpoints\":[\"sxazjpq\",\"e\",\"ualhbxxhejj\",\"zvdudgwdslfhotwm\"],\"frontends\":[{\"id\":\"pwlbjnpg\"},{\"id\":\"cftadeh\"},{\"id\":\"nltyfsoppusuesnz\"}],\"associations\":[{\"id\":\"jbavorxzdm\"}],\"provisioningState\":\"Failed\"},\"location\":\"bqvudwxdndn\",\"tags\":{\"lazjdyggdtjixhbk\":\"gujjugwdkcglh\"},\"id\":\"ofqweykhmenevfye\",\"name\":\"fwhybcibvy\",\"type\":\"dcsi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TrafficController response =
-            manager
-                .trafficControllerInterfaces()
-                .getByResourceGroupWithResponse("hcjrefovgmk", "sle", com.azure.core.util.Context.NONE)
-                .getValue();
+        TrafficController response = manager.trafficControllerInterfaces()
+            .getByResourceGroupWithResponse("enjbdlwtgrhp", "jp", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("zsqpjhvmdajvny", response.location());
-        Assertions.assertEquals("nqecanoaeup", response.tags().get("hy"));
+        Assertions.assertEquals("bqvudwxdndn", response.location());
+        Assertions.assertEquals("gujjugwdkcglh", response.tags().get("lazjdyggdtjixhbk"));
     }
 }

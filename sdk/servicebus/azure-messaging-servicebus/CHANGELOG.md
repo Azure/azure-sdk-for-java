@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Removes extraneous log messages when deserializing topics or subscriptions. ([32325](https://github.com/Azure/azure-sdk-for-java/issues/32325))
+
 ### Other Changes
 
 ## 7.15.0-beta.5 (2023-11-22)
