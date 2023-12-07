@@ -1,16 +1,20 @@
 # Cosmos DB Java SDK - Status Codes
 
-
-
 ## Overview
 
-Below is a summary of the different status code / sub status code combinations that developers can experience in their application or diagnostics when using the Cosmos DB Java SDK. The column "Always transient" indicates whether this error condition is to be expected to always be transient (and auto-mitigated within seconds or at least few minutes). For error conditions that are not always transient the description contains additional context on what to watch out for if this error is seen for longer period of times. For errors that are supposed to be "always transient" it will be necessary to file a support ticket if the error condition exists for an extended period of time. The "Additional Info" column will also point to known issues if available and possible mitigations.
+Below is a list of the different status code / sub status code combinations that admins and/or developers can experience in their application or when looking at diagnostics/metrics when using the Cosmos DB Java SDK.
+Several of these error conditions would never surface to the application, because the SDK has built-in retry-logic to recover. But these status codes could show up in diagnostics and/or micrometer metrics - and there has been the ask to provide some context around them - like:
+- what do these error conditions mean - even when they are automatically handled by the SDK?
+- how long should a certain error condition happen before self-recovery happens?
 
+The column "Expected to be transient" indicates whether this error condition is to be expected to always be seen transiently  (and auto-mitigated within seconds or at least few minutes should happen in the SDK and/or the service). For error conditions that might not go away automatically the description contains additional context on what to watch out for if this error is seen for longer period of times. For errors that are supposed to be "transient" it will be necessary to file a support ticket, if the error condition exists for an extended period of time. The "Additional Info" column will also point to known issues if available and possible mitigations.
 
+## Out of scope
+This document is intentionally not goind into details on how resilient applications should react  to certain error conditions (and whether/how retries are recommended). There is prescriptive guidance for developers around this located here: [Designing resilient applications with Azure Cosmos DB SDKs](https://learn.microsoft.com/azure/cosmos-db/nosql/conceptual-resilient-sdk-applications)
 
 ## Status codes
 
-| Status code | Substatus code | Expecte to be transient | Additional info |
+| Status code | Substatus code | Expected to be transient | Additional info |
 | -----------------:|-----------------------:|:-----------------------:|:----------------------|
 |200|0|No| `OK`|
 |201|0|No| `Created` - returned for createItem or upsertItem when a new document was created|
