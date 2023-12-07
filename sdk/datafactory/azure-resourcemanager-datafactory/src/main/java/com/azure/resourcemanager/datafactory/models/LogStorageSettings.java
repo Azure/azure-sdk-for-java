@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** (Deprecated. Please use LogSettings) Log storage settings. */
+/**
+ * (Deprecated. Please use LogSettings) Log storage settings.
+ */
 @Fluent
 public final class LogStorageSettings {
     /*
@@ -44,15 +46,18 @@ public final class LogStorageSettings {
     /*
      * (Deprecated. Please use LogSettings) Log storage settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of LogStorageSettings class. */
+    /**
+     * Creates an instance of LogStorageSettings class.
+     */
     public LogStorageSettings() {
     }
 
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference linkedServiceName() {
@@ -61,7 +66,7 @@ public final class LogStorageSettings {
 
     /**
      * Set the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -73,7 +78,7 @@ public final class LogStorageSettings {
     /**
      * Get the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -83,7 +88,7 @@ public final class LogStorageSettings {
     /**
      * Set the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -95,7 +100,7 @@ public final class LogStorageSettings {
     /**
      * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the logLevel value.
      */
     public Object logLevel() {
@@ -105,7 +110,7 @@ public final class LogStorageSettings {
     /**
      * Set the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -117,7 +122,7 @@ public final class LogStorageSettings {
     /**
      * Get the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enableReliableLogging value.
      */
     public Object enableReliableLogging() {
@@ -127,7 +132,7 @@ public final class LogStorageSettings {
     /**
      * Set the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enableReliableLogging the enableReliableLogging value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -138,7 +143,7 @@ public final class LogStorageSettings {
 
     /**
      * Get the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -148,7 +153,7 @@ public final class LogStorageSettings {
 
     /**
      * Set the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -167,15 +172,13 @@ public final class LogStorageSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedServiceName in model LogStorageSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property linkedServiceName in model LogStorageSettings"));
         } else {
             linkedServiceName().validate();
         }

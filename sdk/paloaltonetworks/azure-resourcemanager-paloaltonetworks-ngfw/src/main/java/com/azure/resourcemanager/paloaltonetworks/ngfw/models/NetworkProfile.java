@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network settings for Firewall. */
+/**
+ * Network settings for Firewall.
+ */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -48,13 +50,21 @@ public final class NetworkProfile {
     @JsonProperty(value = "egressNatIp")
     private List<IpAddress> egressNatIp;
 
-    /** Creates an instance of NetworkProfile class. */
+    /*
+     * Non-RFC 1918 address
+     */
+    @JsonProperty(value = "trustedRanges")
+    private List<String> trustedRanges;
+
+    /**
+     * Creates an instance of NetworkProfile class.
+     */
     public NetworkProfile() {
     }
 
     /**
      * Get the vnetConfiguration property: Vnet configurations.
-     *
+     * 
      * @return the vnetConfiguration value.
      */
     public VnetConfiguration vnetConfiguration() {
@@ -63,7 +73,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vnetConfiguration property: Vnet configurations.
-     *
+     * 
      * @param vnetConfiguration the vnetConfiguration value to set.
      * @return the NetworkProfile object itself.
      */
@@ -74,7 +84,7 @@ public final class NetworkProfile {
 
     /**
      * Get the vwanConfiguration property: Vwan configurations.
-     *
+     * 
      * @return the vwanConfiguration value.
      */
     public VwanConfiguration vwanConfiguration() {
@@ -83,7 +93,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vwanConfiguration property: Vwan configurations.
-     *
+     * 
      * @param vwanConfiguration the vwanConfiguration value to set.
      * @return the NetworkProfile object itself.
      */
@@ -94,7 +104,7 @@ public final class NetworkProfile {
 
     /**
      * Get the networkType property: vnet or vwan, cannot be updated.
-     *
+     * 
      * @return the networkType value.
      */
     public NetworkType networkType() {
@@ -103,7 +113,7 @@ public final class NetworkProfile {
 
     /**
      * Set the networkType property: vnet or vwan, cannot be updated.
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the NetworkProfile object itself.
      */
@@ -114,7 +124,7 @@ public final class NetworkProfile {
 
     /**
      * Get the publicIps property: List of IPs associated with the Firewall.
-     *
+     * 
      * @return the publicIps value.
      */
     public List<IpAddress> publicIps() {
@@ -123,7 +133,7 @@ public final class NetworkProfile {
 
     /**
      * Set the publicIps property: List of IPs associated with the Firewall.
-     *
+     * 
      * @param publicIps the publicIps value to set.
      * @return the NetworkProfile object itself.
      */
@@ -134,7 +144,7 @@ public final class NetworkProfile {
 
     /**
      * Get the enableEgressNat property: Enable egress NAT, enabled by default.
-     *
+     * 
      * @return the enableEgressNat value.
      */
     public EgressNat enableEgressNat() {
@@ -143,7 +153,7 @@ public final class NetworkProfile {
 
     /**
      * Set the enableEgressNat property: Enable egress NAT, enabled by default.
-     *
+     * 
      * @param enableEgressNat the enableEgressNat value to set.
      * @return the NetworkProfile object itself.
      */
@@ -154,7 +164,7 @@ public final class NetworkProfile {
 
     /**
      * Get the egressNatIp property: Egress nat IP to use.
-     *
+     * 
      * @return the egressNatIp value.
      */
     public List<IpAddress> egressNatIp() {
@@ -163,7 +173,7 @@ public final class NetworkProfile {
 
     /**
      * Set the egressNatIp property: Egress nat IP to use.
-     *
+     * 
      * @param egressNatIp the egressNatIp value to set.
      * @return the NetworkProfile object itself.
      */
@@ -173,8 +183,28 @@ public final class NetworkProfile {
     }
 
     /**
+     * Get the trustedRanges property: Non-RFC 1918 address.
+     * 
+     * @return the trustedRanges value.
+     */
+    public List<String> trustedRanges() {
+        return this.trustedRanges;
+    }
+
+    /**
+     * Set the trustedRanges property: Non-RFC 1918 address.
+     * 
+     * @param trustedRanges the trustedRanges value to set.
+     * @return the NetworkProfile object itself.
+     */
+    public NetworkProfile withTrustedRanges(List<String> trustedRanges) {
+        this.trustedRanges = trustedRanges;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -185,21 +215,18 @@ public final class NetworkProfile {
             vwanConfiguration().validate();
         }
         if (networkType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property networkType in model NetworkProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property networkType in model NetworkProfile"));
         }
         if (publicIps() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publicIps in model NetworkProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property publicIps in model NetworkProfile"));
         } else {
             publicIps().forEach(e -> e.validate());
         }
         if (enableEgressNat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property enableEgressNat in model NetworkProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property enableEgressNat in model NetworkProfile"));
         }
         if (egressNatIp() != null) {
             egressNatIp().forEach(e -> e.validate());

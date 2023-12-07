@@ -13,14 +13,13 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.NginxConfiguration;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -35,64 +34,50 @@ public final class ConfigurationsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[],\"protectedFiles\":[],\"package\":{\"data\":\"wflzlfbxzpuzy\"},\"rootFile\":\"spnqzahmgkb\"},\"location\":\"yydhibnuqqk\",\"tags\":{\"rgvtqag\":\"a\",\"bfs\":\"buynhijggm\"},\"id\":\"arbu\",\"name\":\"rcvpnazzmhjrunmp\",\"type\":\"ttdbhrbnl\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"yriwwroyqb\",\"virtualPath\":\"rmcqiby\"},{\"content\":\"ojvknmefqsgzvaha\",\"virtualPath\":\"y\"},{\"content\":\"pvgqzcjrvxdjzlm\",\"virtualPath\":\"xkvugfhzov\"},{\"content\":\"jvzunluthnnp\",\"virtualPath\":\"xipeilpjzuaejx\"}],\"protectedFiles\":[{\"content\":\"skzbb\",\"virtualPath\":\"zumveekgpwo\"},{\"content\":\"hkfpbs\",\"virtualPath\":\"ofd\"},{\"content\":\"uusdttouwa\",\"virtualPath\":\"ekqvkeln\"}],\"package\":{\"data\":\"bxwyjsflhhcaa\",\"protectedFiles\":[\"ixisxyawjoy\",\"qcslyjpkiid\",\"yexz\",\"eli\"]},\"rootFile\":\"nr\"},\"location\":\"folhbnxknal\",\"id\":\"lp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NginxManager manager =
-            NginxManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NginxConfiguration response =
-            manager
-                .configurations()
-                .define("senhwlrs")
-                .withRegion("fcivfsnkym")
-                .withExistingNginxDeployment("uconuqszfkbey", "ewrmjmwvvjektc")
-                .withTags(mapOf("cxerf", "qhjfbebr", "phxepcyvahf", "wutttxfvjrbi", "gidokgjljyoxgvcl", "ljkyqxjvuuj"))
-                .withProperties(
-                    new NginxConfigurationProperties()
-                        .withFiles(Arrays.asList())
-                        .withProtectedFiles(Arrays.asList())
-                        .withPackageProperty(new NginxConfigurationPackage().withData("q"))
-                        .withRootFile("iqylihkaetck"))
+        NginxConfiguration response
+            = manager
+                .configurations().define("ovbvmeueciv").withExistingNginxDeployment("xcug",
+                    "cjooxdjebwpucwwf")
+                .withRegion("zmh")
+                .withProperties(new NginxConfigurationProperties()
+                    .withFiles(Arrays.asList(
+                        new NginxConfigurationFile().withContent("jgjrwjueiotwm").withVirtualPath("ytdxwit"),
+                        new NginxConfigurationFile().withContent("rjaw").withVirtualPath("wgxhn")))
+                    .withProtectedFiles(
+                        Arrays.asList(new NginxConfigurationFile().withContent("fbkp").withVirtualPath("gklwn"),
+                            new NginxConfigurationFile().withContent("hjdauwhvylwz").withVirtualPath("dhxujznbmpo"),
+                            new NginxConfigurationFile().withContent("wpr").withVirtualPath("lve"),
+                            new NginxConfigurationFile().withContent("lupj").withVirtualPath("hfxobbcswsrtj")))
+                    .withPackageProperty(new NginxConfigurationPackage().withData("lrbpbewtghfgbl")
+                        .withProtectedFiles(Arrays.asList("xzvlvqhjkbegib", "nmxiebwwaloayqc", "wrtz")))
+                    .withRootFile("zg"))
                 .create();
 
-        Assertions.assertEquals("yydhibnuqqk", response.location());
-        Assertions.assertEquals("a", response.tags().get("rgvtqag"));
-        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().packageProperty().data());
-        Assertions.assertEquals("spnqzahmgkb", response.properties().rootFile());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals("yriwwroyqb", response.properties().files().get(0).content());
+        Assertions.assertEquals("rmcqiby", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("skzbb", response.properties().protectedFiles().get(0).content());
+        Assertions.assertEquals("zumveekgpwo", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("bxwyjsflhhcaa", response.properties().packageProperty().data());
+        Assertions.assertEquals("ixisxyawjoy", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("nr", response.properties().rootFile());
+        Assertions.assertEquals("folhbnxknal", response.location());
     }
 }

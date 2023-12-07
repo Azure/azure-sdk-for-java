@@ -16,8 +16,7 @@ public final class LogSettingsImpl implements LogSettings {
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    LogSettingsImpl(
-        LogSettingsInner innerObject,
+    LogSettingsImpl(LogSettingsInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

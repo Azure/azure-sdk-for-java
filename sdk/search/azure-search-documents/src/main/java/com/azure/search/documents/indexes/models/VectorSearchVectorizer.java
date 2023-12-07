@@ -13,7 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains specific details for a vectorization method to be used during query time. */
+/** Specifies the vectorization method to be used during query time. */
 @Immutable
 public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVectorizer> {
     /*

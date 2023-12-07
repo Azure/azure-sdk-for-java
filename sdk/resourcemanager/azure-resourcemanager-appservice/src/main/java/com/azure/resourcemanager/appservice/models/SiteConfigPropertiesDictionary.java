@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Site config properties dictionary. */
+/**
+ * Site config properties dictionary.
+ */
 @Immutable
 public final class SiteConfigPropertiesDictionary {
     /*
@@ -34,14 +36,16 @@ public final class SiteConfigPropertiesDictionary {
     @JsonProperty(value = "powerShellVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String powerShellVersion;
 
-    /** Creates an instance of SiteConfigPropertiesDictionary class. */
+    /**
+     * Creates an instance of SiteConfigPropertiesDictionary class.
+     */
     public SiteConfigPropertiesDictionary() {
     }
 
     /**
      * Get the use32BitWorkerProcess property: &lt;code&gt;true&lt;/code&gt; if use32BitWorkerProcess should be set to
      * true for the stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the use32BitWorkerProcess value.
      */
     public Boolean use32BitWorkerProcess() {
@@ -50,7 +54,7 @@ public final class SiteConfigPropertiesDictionary {
 
     /**
      * Get the linuxFxVersion property: LinuxFxVersion configuration setting.
-     *
+     * 
      * @return the linuxFxVersion value.
      */
     public String linuxFxVersion() {
@@ -59,7 +63,7 @@ public final class SiteConfigPropertiesDictionary {
 
     /**
      * Get the javaVersion property: JavaVersion configuration setting.
-     *
+     * 
      * @return the javaVersion value.
      */
     public String javaVersion() {
@@ -68,7 +72,7 @@ public final class SiteConfigPropertiesDictionary {
 
     /**
      * Get the powerShellVersion property: PowerShellVersion configuration setting.
-     *
+     * 
      * @return the powerShellVersion value.
      */
     public String powerShellVersion() {
@@ -77,7 +81,7 @@ public final class SiteConfigPropertiesDictionary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

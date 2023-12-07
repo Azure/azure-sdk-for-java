@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobEventsTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobEventsTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"BlobEventsTrigger\",\"typeProperties\":{\"blobPathBeginsWith\":\"bzjvzgyzenveiy\",\"blobPathEndsWith\":\"ngtylvdumpm\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobDeleted\"],\"scope\":\"chdy\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"m\",\"name\":\"gdjbl\"},\"parameters\":{\"auetzp\":\"dataeclf\"}}],\"description\":\"cfgrtgnvlrm\",\"runtimeState\":\"Stopped\",\"annotations\":[\"dataxsybnwogvkc\"],\"\":{\"lvinxwtxtetwqk\":\"datavrqkmpqs\",\"rvkneo\":\"datazauumzwlr\",\"zvugqwxslisgfx\":\"dataplng\",\"llgrckoxkpjzyc\":\"datayfeqajtzquhqrj\"}}")
-                .toObject(BlobEventsTrigger.class);
+        BlobEventsTrigger model = BinaryData.fromString(
+            "{\"type\":\"BlobEventsTrigger\",\"typeProperties\":{\"blobPathBeginsWith\":\"bzjvzgyzenveiy\",\"blobPathEndsWith\":\"ngtylvdumpm\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobDeleted\"],\"scope\":\"chdy\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"m\",\"name\":\"gdjbl\"},\"parameters\":{\"auetzp\":\"dataeclf\"}}],\"description\":\"cfgrtgnvlrm\",\"runtimeState\":\"Stopped\",\"annotations\":[\"dataxsybnwogvkc\"],\"\":{\"lvinxwtxtetwqk\":\"datavrqkmpqs\",\"rvkneo\":\"datazauumzwlr\",\"zvugqwxslisgfx\":\"dataplng\",\"llgrckoxkpjzyc\":\"datayfeqajtzquhqrj\"}}")
+            .toObject(BlobEventsTrigger.class);
         Assertions.assertEquals("cfgrtgnvlrm", model.description());
         Assertions.assertEquals("m", model.pipelines().get(0).pipelineReference().referenceName());
         Assertions.assertEquals("gdjbl", model.pipelines().get(0).pipelineReference().name());
@@ -34,24 +32,14 @@ public final class BlobEventsTriggerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobEventsTrigger model =
-            new BlobEventsTrigger()
-                .withDescription("cfgrtgnvlrm")
-                .withAnnotations(Arrays.asList("dataxsybnwogvkc"))
-                .withPipelines(
-                    Arrays
-                        .asList(
-                            new TriggerPipelineReference()
-                                .withPipelineReference(new PipelineReference().withReferenceName("m").withName("gdjbl"))
-                                .withParameters(mapOf("auetzp", "dataeclf"))))
-                .withBlobPathBeginsWith("bzjvzgyzenveiy")
-                .withBlobPathEndsWith("ngtylvdumpm")
-                .withIgnoreEmptyBlobs(true)
-                .withEvents(
-                    Arrays
-                        .asList(
-                            BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED,
-                            BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED))
+        BlobEventsTrigger model
+            = new BlobEventsTrigger().withDescription("cfgrtgnvlrm").withAnnotations(Arrays.asList("dataxsybnwogvkc"))
+                .withPipelines(Arrays.asList(new TriggerPipelineReference()
+                    .withPipelineReference(new PipelineReference().withReferenceName("m").withName("gdjbl"))
+                    .withParameters(mapOf("auetzp", "dataeclf"))))
+                .withBlobPathBeginsWith("bzjvzgyzenveiy").withBlobPathEndsWith("ngtylvdumpm").withIgnoreEmptyBlobs(true)
+                .withEvents(Arrays.asList(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED,
+                    BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED))
                 .withScope("chdy");
         model = BinaryData.fromObject(model).toObject(BlobEventsTrigger.class);
         Assertions.assertEquals("cfgrtgnvlrm", model.description());

@@ -62,9 +62,6 @@ public final class Error implements JsonSerializable<Error> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeJsonField("innererror", this.innerError);
         return jsonWriter.writeEndObject();
     }
 

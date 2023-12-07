@@ -29,6 +29,12 @@ public final class OperationValueInner {
     @JsonProperty(value = "display")
     private OperationValueDisplay display;
 
+    /*
+     * This property indicates if the operation is an action or a data action
+     */
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDataAction;
+
     /** Creates an instance of OperationValueInner class. */
     public OperationValueInner() {
     }
@@ -69,6 +75,15 @@ public final class OperationValueInner {
     public OperationValueInner withDisplay(OperationValueDisplay display) {
         this.display = display;
         return this;
+    }
+
+    /**
+     * Get the isDataAction property: This property indicates if the operation is an action or a data action.
+     *
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
     }
 
     /**

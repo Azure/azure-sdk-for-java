@@ -10,22 +10,16 @@ import com.azure.resourcemanager.datafactory.models.AzureDataLakeStoreSource;
 public final class AzureDataLakeStoreSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataLakeStoreSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDataLakeStoreSource\",\"recursive\":\"dataphgimijzhrbsx\",\"sourceRetryCount\":\"dataublouelf\",\"sourceRetryWait\":\"datafb\",\"maxConcurrentConnections\":\"datablpdwckmnpzub\",\"disableMetricsCollection\":\"datad\",\"\":{\"bsh\":\"datafjrgngc\"}}")
-                .toObject(AzureDataLakeStoreSource.class);
+        AzureDataLakeStoreSource model = BinaryData.fromString(
+            "{\"type\":\"AzureDataLakeStoreSource\",\"recursive\":\"dataxamxi\",\"sourceRetryCount\":\"datar\",\"sourceRetryWait\":\"datakglynbqpeoj\",\"maxConcurrentConnections\":\"databoggw\",\"disableMetricsCollection\":\"datahtnywgtsodnxeir\",\"\":{\"g\":\"datajimcfrht\",\"a\":\"datauvoaxqo\",\"cyramvzu\":\"dataptfpbzyqbgg\",\"uwxslzq\":\"dataxtbrqnyurxl\"}}")
+            .toObject(AzureDataLakeStoreSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreSource model =
-            new AzureDataLakeStoreSource()
-                .withSourceRetryCount("dataublouelf")
-                .withSourceRetryWait("datafb")
-                .withMaxConcurrentConnections("datablpdwckmnpzub")
-                .withDisableMetricsCollection("datad")
-                .withRecursive("dataphgimijzhrbsx");
+        AzureDataLakeStoreSource model = new AzureDataLakeStoreSource().withSourceRetryCount("datar")
+            .withSourceRetryWait("datakglynbqpeoj").withMaxConcurrentConnections("databoggw")
+            .withDisableMetricsCollection("datahtnywgtsodnxeir").withRecursive("dataxamxi");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreSource.class);
     }
 }

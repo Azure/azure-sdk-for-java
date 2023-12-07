@@ -7,37 +7,41 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The agentPool resource provisioning status definition. */
+/**
+ * The agentPool resource provisioning status definition.
+ */
 @Fluent
 public class AgentPoolProvisioningStatus {
     /*
-     * The provisioningState property.
+     * Provisioning state of the resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private AgentPoolProvisioningState provisioningState;
+    private ResourceProvisioningState provisioningState;
 
     /*
-     * HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool
+     * Defines the observed state of the agent pool
      */
     @JsonProperty(value = "status")
     private AgentPoolProvisioningStatusStatus status;
 
-    /** Creates an instance of AgentPoolProvisioningStatus class. */
+    /**
+     * Creates an instance of AgentPoolProvisioningStatus class.
+     */
     public AgentPoolProvisioningStatus() {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
-     *
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
      * @return the provisioningState value.
      */
-    public AgentPoolProvisioningState provisioningState() {
+    public ResourceProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
-     *
+     * Get the status property: Defines the observed state of the agent pool.
+     * 
      * @return the status value.
      */
     public AgentPoolProvisioningStatusStatus status() {
@@ -45,8 +49,8 @@ public class AgentPoolProvisioningStatus {
     }
 
     /**
-     * Set the status property: HybridAKSNodePoolStatus defines the observed state of HybridAKSNodePool.
-     *
+     * Set the status property: Defines the observed state of the agent pool.
+     * 
      * @param status the status value to set.
      * @return the AgentPoolProvisioningStatus object itself.
      */
@@ -57,7 +61,7 @@ public class AgentPoolProvisioningStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

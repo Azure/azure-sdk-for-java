@@ -6,6 +6,7 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCaptureStatus;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -23,6 +24,12 @@ public final class PacketCaptureInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private PacketCapturePropertiesFormat innerProperties = new PacketCapturePropertiesFormat();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /** Creates an instance of PacketCaptureInner class. */
     public PacketCaptureInner() {
     }
@@ -36,6 +43,15 @@ public final class PacketCaptureInner extends ProxyResource {
      */
     private PacketCapturePropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -166,6 +182,15 @@ public final class PacketCaptureInner extends ProxyResource {
         }
         this.innerProperties().withTimeLimitInSeconds(timeLimitInSeconds);
         return this;
+    }
+
+    /**
+     * Get the outputFiles property: The list of output files of a packet capture session.
+     *
+     * @return the outputFiles value.
+     */
+    public List<String> outputFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputFiles();
     }
 
     /**

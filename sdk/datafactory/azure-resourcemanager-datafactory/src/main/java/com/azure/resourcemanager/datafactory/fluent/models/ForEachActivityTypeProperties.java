@@ -11,7 +11,9 @@ import com.azure.resourcemanager.datafactory.models.Expression;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ForEach activity properties. */
+/**
+ * ForEach activity properties.
+ */
 @Fluent
 public final class ForEachActivityTypeProperties {
     /*
@@ -38,13 +40,15 @@ public final class ForEachActivityTypeProperties {
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
 
-    /** Creates an instance of ForEachActivityTypeProperties class. */
+    /**
+     * Creates an instance of ForEachActivityTypeProperties class.
+     */
     public ForEachActivityTypeProperties() {
     }
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @return the isSequential value.
      */
     public Boolean isSequential() {
@@ -53,7 +57,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class ForEachActivityTypeProperties {
     /**
      * Get the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @return the batchCount value.
      */
     public Integer batchCount() {
@@ -75,7 +79,7 @@ public final class ForEachActivityTypeProperties {
     /**
      * Set the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Get the items property: Collection to iterate.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -95,7 +99,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the items property: Collection to iterate.
-     *
+     * 
      * @param items the items value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Get the activities property: List of activities to execute .
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -115,7 +119,7 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Set the activities property: List of activities to execute .
-     *
+     * 
      * @param activities the activities value to set.
      * @return the ForEachActivityTypeProperties object itself.
      */
@@ -126,23 +130,19 @@ public final class ForEachActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (items() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property items in model ForEachActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property items in model ForEachActivityTypeProperties"));
         } else {
             items().validate();
         }
         if (activities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property activities in model ForEachActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property activities in model ForEachActivityTypeProperties"));
         } else {
             activities().forEach(e -> e.validate());
         }

@@ -40,7 +40,7 @@ public final class SessionContainer implements ISessionContainer {
     private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Long, String> collectionResourceIdToCollectionName = new ConcurrentHashMap<>();
     private final String hostName;
-    private final boolean disableSessionCapturing;
+    private boolean disableSessionCapturing;
     private final SessionConsistencyOptions sessionConsistencyOptions;
 
     public SessionContainer(final String hostName, boolean disableSessionCapturing, SessionConsistencyOptions sessionConsistencyOptions) {
@@ -59,6 +59,14 @@ public final class SessionContainer implements ISessionContainer {
 
     public String getHostName() {
         return this.hostName;
+    }
+
+    public void setDisableSessionCapturing(boolean value) {
+        this.disableSessionCapturing = value;
+    }
+
+    public boolean getDisableSessionCapturing() {
+        return this.disableSessionCapturing;
     }
 
     String getSessionToken(String collectionLink) {

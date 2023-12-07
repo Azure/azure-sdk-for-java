@@ -13,27 +13,16 @@ import java.util.Map;
 public final class IntegrationRuntimeStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ogtwrupqsxvnmi\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"kvceoveilovnotyf\",\"state\":\"Limited\",\"\":{\"x\":\"databkc\",\"nv\":\"datahbttkphyw\",\"qnermclfplphoxu\":\"datat\",\"ye\":\"datacrpab\"}}}")
-                .toObject(IntegrationRuntimeStatusResponseInner.class);
+        IntegrationRuntimeStatusResponseInner model = BinaryData.fromString(
+            "{\"name\":\"ogtwrupqsxvnmi\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"kvceoveilovnotyf\",\"state\":\"Limited\",\"\":{\"x\":\"databkc\",\"nv\":\"datahbttkphyw\",\"qnermclfplphoxu\":\"datat\",\"ye\":\"datacrpab\"}}}")
+            .toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStatusResponseInner model =
-            new IntegrationRuntimeStatusResponseInner()
-                .withProperties(
-                    new IntegrationRuntimeStatus()
-                        .withAdditionalProperties(
-                            mapOf(
-                                "dataFactoryName",
-                                "kvceoveilovnotyf",
-                                "state",
-                                "Limited",
-                                "type",
-                                "IntegrationRuntimeStatus")));
+        IntegrationRuntimeStatusResponseInner model = new IntegrationRuntimeStatusResponseInner()
+            .withProperties(new IntegrationRuntimeStatus().withAdditionalProperties(
+                mapOf("dataFactoryName", "kvceoveilovnotyf", "state", "Limited", "type", "IntegrationRuntimeStatus")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatusResponseInner.class);
     }
 

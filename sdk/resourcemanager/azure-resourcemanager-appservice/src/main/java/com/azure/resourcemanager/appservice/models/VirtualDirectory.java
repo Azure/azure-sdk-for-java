@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Directory for virtual application. */
+/**
+ * Directory for virtual application.
+ */
 @Fluent
 public final class VirtualDirectory {
     /*
@@ -22,13 +24,15 @@ public final class VirtualDirectory {
     @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
-    /** Creates an instance of VirtualDirectory class. */
+    /**
+     * Creates an instance of VirtualDirectory class.
+     */
     public VirtualDirectory() {
     }
 
     /**
      * Get the virtualPath property: Path to virtual application.
-     *
+     * 
      * @return the virtualPath value.
      */
     public String virtualPath() {
@@ -37,7 +41,7 @@ public final class VirtualDirectory {
 
     /**
      * Set the virtualPath property: Path to virtual application.
-     *
+     * 
      * @param virtualPath the virtualPath value to set.
      * @return the VirtualDirectory object itself.
      */
@@ -48,7 +52,7 @@ public final class VirtualDirectory {
 
     /**
      * Get the physicalPath property: Physical path.
-     *
+     * 
      * @return the physicalPath value.
      */
     public String physicalPath() {
@@ -57,7 +61,7 @@ public final class VirtualDirectory {
 
     /**
      * Set the physicalPath property: Physical path.
-     *
+     * 
      * @param physicalPath the physicalPath value to set.
      * @return the VirtualDirectory object itself.
      */
@@ -68,7 +72,7 @@ public final class VirtualDirectory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

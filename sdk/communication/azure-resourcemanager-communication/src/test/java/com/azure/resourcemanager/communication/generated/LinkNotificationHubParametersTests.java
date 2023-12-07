@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkNotificationHubParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkNotificationHubParameters model =
-            BinaryData
-                .fromString("{\"resourceId\":\"tfwvukxgaudc\",\"connectionString\":\"snhsjcnyejhkryh\"}")
+        LinkNotificationHubParameters model
+            = BinaryData.fromString("{\"resourceId\":\"tfwvukxgaudc\",\"connectionString\":\"snhsjcnyejhkryh\"}")
                 .toObject(LinkNotificationHubParameters.class);
         Assertions.assertEquals("tfwvukxgaudc", model.resourceId());
         Assertions.assertEquals("snhsjcnyejhkryh", model.connectionString());
@@ -21,8 +20,8 @@ public final class LinkNotificationHubParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkNotificationHubParameters model =
-            new LinkNotificationHubParameters().withResourceId("tfwvukxgaudc").withConnectionString("snhsjcnyejhkryh");
+        LinkNotificationHubParameters model = new LinkNotificationHubParameters().withResourceId("tfwvukxgaudc")
+            .withConnectionString("snhsjcnyejhkryh");
         model = BinaryData.fromObject(model).toObject(LinkNotificationHubParameters.class);
         Assertions.assertEquals("tfwvukxgaudc", model.resourceId());
         Assertions.assertEquals("snhsjcnyejhkryh", model.connectionString());

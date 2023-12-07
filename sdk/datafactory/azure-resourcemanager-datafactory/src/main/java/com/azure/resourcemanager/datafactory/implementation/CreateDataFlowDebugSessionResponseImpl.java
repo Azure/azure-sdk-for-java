@@ -12,8 +12,7 @@ public final class CreateDataFlowDebugSessionResponseImpl implements CreateDataF
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    CreateDataFlowDebugSessionResponseImpl(
-        CreateDataFlowDebugSessionResponseInner innerObject,
+    CreateDataFlowDebugSessionResponseImpl(CreateDataFlowDebugSessionResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

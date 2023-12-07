@@ -774,9 +774,10 @@ public interface AsyncDocumentClient {
      * Gets the feed ranges of a container.
      *
      * @param collectionLink the link to the parent document collection.
+     * @param forceRefresh a flag indicating whether to force a refresh
      * @return a {@link List} of @{link FeedRange} containing the feed ranges of a container.
      */
-    Mono<List<FeedRange>> getFeedRanges(String collectionLink);
+    Mono<List<FeedRange>> getFeedRanges(String collectionLink, boolean forceRefresh);
 
     /**
      * Creates a stored procedure.

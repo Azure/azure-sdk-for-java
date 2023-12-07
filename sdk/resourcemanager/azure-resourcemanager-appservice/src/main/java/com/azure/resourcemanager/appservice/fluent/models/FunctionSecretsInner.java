@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Function secrets. */
+/**
+ * Function secrets.
+ */
 @Fluent
 public final class FunctionSecretsInner {
     /*
@@ -22,13 +24,15 @@ public final class FunctionSecretsInner {
     @JsonProperty(value = "trigger_url")
     private String triggerUrl;
 
-    /** Creates an instance of FunctionSecretsInner class. */
+    /**
+     * Creates an instance of FunctionSecretsInner class.
+     */
     public FunctionSecretsInner() {
     }
 
     /**
      * Get the key property: Secret key.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -37,7 +41,7 @@ public final class FunctionSecretsInner {
 
     /**
      * Set the key property: Secret key.
-     *
+     * 
      * @param key the key value to set.
      * @return the FunctionSecretsInner object itself.
      */
@@ -48,7 +52,7 @@ public final class FunctionSecretsInner {
 
     /**
      * Get the triggerUrl property: Trigger URL.
-     *
+     * 
      * @return the triggerUrl value.
      */
     public String triggerUrl() {
@@ -57,7 +61,7 @@ public final class FunctionSecretsInner {
 
     /**
      * Set the triggerUrl property: Trigger URL.
-     *
+     * 
      * @param triggerUrl the triggerUrl value to set.
      * @return the FunctionSecretsInner object itself.
      */
@@ -68,7 +72,7 @@ public final class FunctionSecretsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

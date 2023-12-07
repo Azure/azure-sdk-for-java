@@ -21,36 +21,31 @@ public final class LinkedServicesImpl implements LinkedServices {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public LinkedServicesImpl(
-        LinkedServicesClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public LinkedServicesImpl(LinkedServicesClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LinkedServiceResource> listByFactory(String resourceGroupName, String factoryName) {
-        PagedIterable<LinkedServiceResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName);
+        PagedIterable<LinkedServiceResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName);
         return Utils.mapPage(inner, inner1 -> new LinkedServiceResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LinkedServiceResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<LinkedServiceResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+    public PagedIterable<LinkedServiceResource> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
+        PagedIterable<LinkedServiceResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
         return Utils.mapPage(inner, inner1 -> new LinkedServiceResourceImpl(inner1, this.manager()));
     }
 
-    public Response<LinkedServiceResource> getWithResponse(
-        String resourceGroupName, String factoryName, String linkedServiceName, String ifNoneMatch, Context context) {
-        Response<LinkedServiceResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, context);
+    public Response<LinkedServiceResource> getWithResponse(String resourceGroupName, String factoryName,
+        String linkedServiceName, String ifNoneMatch, Context context) {
+        Response<LinkedServiceResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            factoryName, linkedServiceName, ifNoneMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LinkedServiceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,8 +61,8 @@ public final class LinkedServicesImpl implements LinkedServices {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String linkedServiceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String linkedServiceName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, linkedServiceName, context);
     }
 
@@ -78,56 +73,39 @@ public final class LinkedServicesImpl implements LinkedServices {
     public LinkedServiceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String linkedServiceName = Utils.getValueFromIdByName(id, "linkedservices");
         if (linkedServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
         }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, Context.NONE)
+        return this.getWithResponse(resourceGroupName, factoryName, linkedServiceName, localIfNoneMatch, Context.NONE)
             .getValue();
     }
 
     public Response<LinkedServiceResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String linkedServiceName = Utils.getValueFromIdByName(id, "linkedservices");
         if (linkedServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, linkedServiceName, ifNoneMatch, context);
     }
@@ -135,26 +113,18 @@ public final class LinkedServicesImpl implements LinkedServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String linkedServiceName = Utils.getValueFromIdByName(id, "linkedservices");
         if (linkedServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, factoryName, linkedServiceName, Context.NONE);
     }
@@ -162,26 +132,18 @@ public final class LinkedServicesImpl implements LinkedServices {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String linkedServiceName = Utils.getValueFromIdByName(id, "linkedservices");
         if (linkedServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'linkedservices'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, factoryName, linkedServiceName, context);
     }

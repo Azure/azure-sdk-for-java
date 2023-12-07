@@ -15,6 +15,7 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
+import com.azure.ai.openai.implementation.models.BatchImageGenerationOperationResponse;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -47,11 +48,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous OpenAIClient type. */
+/**
+ * Initializes a new instance of the asynchronous OpenAIClient type.
+ */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
-    @Generated private final OpenAIClientImpl serviceClient;
+    @Generated
+    private final OpenAIClientImpl serviceClient;
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIAsyncClient.class);
 
@@ -84,7 +88,8 @@ public final class OpenAIAsyncClient {
     /**
      * Return the embeddings for a given prompt.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -96,7 +101,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -116,34 +122,34 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
+     * relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     * scenarios.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
-            String deploymentOrModelName, BinaryData embeddingsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getEmbeddingsWithResponse(String deploymentOrModelName,
+        BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getEmbeddingsWithResponseAsync(
-                        deploymentOrModelName, embeddingsOptions, requestOptions)
-                : serviceClient.getEmbeddingsWithResponseAsync(
-                        deploymentOrModelName, embeddingsOptions, requestOptions);
+            ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions,
+                requestOptions)
+            : serviceClient.getEmbeddingsWithResponseAsync(deploymentOrModelName, embeddingsOptions, requestOptions);
     }
 
     /**
      * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -171,7 +177,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -209,33 +216,33 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * that continues from or "completes" provided prompt data along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCompletionsWithResponse(
-            String deploymentOrModelName, BinaryData completionsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCompletionsWithResponse(String deploymentOrModelName,
+        BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getCompletionsWithResponseAsync(
-                        deploymentOrModelName, completionsOptions, requestOptions)
-                : serviceClient.getCompletionsWithResponseAsync(
-                        deploymentOrModelName, completionsOptions, requestOptions);
+            ? openAIServiceClient.getCompletionsWithResponseAsync(deploymentOrModelName, completionsOptions,
+                requestOptions)
+            : serviceClient.getCompletionsWithResponseAsync(deploymentOrModelName, completionsOptions, requestOptions);
     }
 
     /**
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -263,7 +270,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -292,32 +300,33 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * text that continues from or "completes" provided prompt data along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
-            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getChatCompletionsWithResponse(String deploymentOrModelName,
+        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? openAIServiceClient.getChatCompletionsWithResponseAsync(
-                        deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                : serviceClient.getChatCompletionsWithResponseAsync(
-                        deploymentOrModelName, chatCompletionsOptions, requestOptions);
+            ? openAIServiceClient.getChatCompletionsWithResponseAsync(deploymentOrModelName, chatCompletionsOptions,
+                requestOptions)
+            : serviceClient.getChatCompletionsWithResponseAsync(deploymentOrModelName, chatCompletionsOptions,
+                requestOptions);
     }
 
     /**
      * Return the embeddings for a given prompt.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -329,7 +338,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -349,24 +359,24 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
+     * relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
+     * scenarios.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Embeddings>> getEmbeddingsWithResponse(
-            String deploymentOrModelName, EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
-        return getEmbeddingsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
+    public Mono<Response<Embeddings>> getEmbeddingsWithResponse(String deploymentOrModelName,
+        EmbeddingsOptions embeddingsOptions, RequestOptions requestOptions) {
+        return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
+            requestOptions)
                 .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Embeddings.class)));
     }
 
@@ -374,7 +384,8 @@ public final class OpenAIAsyncClient {
      * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      * that continues from or "completes" provided prompt data.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -402,7 +413,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -440,23 +452,23 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * that continues from or "completes" provided prompt data along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Completions>> getCompletionsWithResponse(
-            String deploymentOrModelName, CompletionsOptions completionsOptions, RequestOptions requestOptions) {
-        return getCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
+    public Mono<Response<Completions>> getCompletionsWithResponse(String deploymentOrModelName,
+        CompletionsOptions completionsOptions, RequestOptions requestOptions) {
+        return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
+            requestOptions)
                 .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Completions.class)));
     }
 
@@ -464,7 +476,8 @@ public final class OpenAIAsyncClient {
      * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      * text that continues from or "completes" provided prompt data.
      *
-     * <p><strong>Request Body Schema</strong>
+     * <p>
+     * <strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -492,7 +505,8 @@ public final class OpenAIAsyncClient {
      * }
      * }</pre>
      *
-     * <p><strong>Response Body Schema</strong>
+     * <p>
+     * <strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
@@ -521,25 +535,23 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * text that continues from or "completes" provided prompt data along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatCompletions>> getChatCompletionsWithResponse(
-            String deploymentOrModelName,
-            ChatCompletionsOptions chatCompletionsOptions,
-            RequestOptions requestOptions) {
-        return getChatCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+    public Mono<Response<ChatCompletions>> getChatCompletionsWithResponse(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
+        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+            requestOptions)
                 .map(response -> new SimpleResponse<>(response, response.getValue().toObject(ChatCompletions.class)));
     }
 
@@ -547,56 +559,57 @@ public final class OpenAIAsyncClient {
      * Return the embeddings for a given prompt.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param embeddingsOptions The configuration information for an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios on
-     *     successful completion of {@link Mono}.
+     * @return representation of the response data from an embeddings request.
+     * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
+     * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Embeddings> getEmbeddings(String deploymentOrModelName, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getEmbeddingsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(embeddingsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return getEmbeddingsWithResponse(deploymentOrModelName, BinaryData.fromObject(embeddingsOptions),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Embeddings.class));
     }
 
     /**
-     * Gets completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     * that continues from or "completes" provided prompt data.
+     * Gets completions for the provided input prompts.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param completionsOptions The configuration information for a completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     * @return completions for the provided input prompts.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Completions> getCompletions(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getCompletionsWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(completionsOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return getCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(completionsOptions),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(Completions.class));
     }
 
@@ -605,7 +618,7 @@ public final class OpenAIAsyncClient {
      * that continues from or "completes" provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param prompt The prompt to generate completion text from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -614,7 +627,7 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     * that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Completions> getCompletions(String deploymentOrModelName, String prompt) {
@@ -626,9 +639,9 @@ public final class OpenAIAsyncClient {
      * generate text that continues from or "completes" provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -636,18 +649,17 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a {@link Flux} of completions for the provided input prompts. Completions support a wide variety of tasks
-     *     and generate text that continues from or "completes" provided prompt data.
+     * and generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<Completions> getCompletionsStream(String deploymentOrModelName, CompletionsOptions completionsOptions) {
         completionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         BinaryData requestBody = BinaryData.fromObject(completionsOptions);
-        Flux<ByteBuffer> responseStream =
-                getCompletionsWithResponse(deploymentOrModelName, requestBody, requestOptions)
-                        .flatMapMany(response -> response.getValue().toFluxByteBuffer());
-        OpenAIServerSentEvents<Completions> completionsStream =
-                new OpenAIServerSentEvents<>(responseStream, Completions.class);
+        Flux<ByteBuffer> responseStream = getCompletionsWithResponse(deploymentOrModelName, requestBody, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents<Completions> completionsStream
+            = new OpenAIServerSentEvents<>(responseStream, Completions.class);
         return completionsStream.getEvents();
     }
 
@@ -656,9 +668,9 @@ public final class OpenAIAsyncClient {
      * text that continues from or "completes" provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -666,19 +678,18 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     * text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatCompletions> getChatCompletions(
-            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
+    public Mono<ChatCompletions> getChatCompletions(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions) {
         RequestOptions requestOptions = new RequestOptions();
         if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
             return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-                    .flatMap(FluxUtil::toMono);
+                .flatMap(FluxUtil::toMono);
         } else {
-            return getChatCompletionsWithAzureExtensionsWithResponse(
-                            deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                    .flatMap(FluxUtil::toMono)
+            return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
+                BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
                     .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
         }
     }
@@ -688,9 +699,9 @@ public final class OpenAIAsyncClient {
      * generate text that continues from or "completes" provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -698,31 +709,25 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
-     *     generate text that continues from or "completes" provided prompt data.
+     * generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<ChatCompletions> getChatCompletionsStream(
-            String deploymentOrModelName, ChatCompletionsOptions chatCompletionsOptions) {
+    public Flux<ChatCompletions> getChatCompletionsStream(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions) {
         chatCompletionsOptions.setStream(true);
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream;
         if (chatCompletionsOptions.getDataSources() == null || chatCompletionsOptions.getDataSources().isEmpty()) {
-            responseStream =
-                    getChatCompletionsWithResponse(
-                                    deploymentOrModelName,
-                                    BinaryData.fromObject(chatCompletionsOptions),
-                                    requestOptions)
-                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+            responseStream
+                = getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+                    requestOptions).flatMapMany(response -> response.getValue().toFluxByteBuffer());
         } else {
-            responseStream =
-                    getChatCompletionsWithAzureExtensionsWithResponse(
-                                    deploymentOrModelName,
-                                    BinaryData.fromObject(chatCompletionsOptions),
-                                    requestOptions)
-                            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+            responseStream = getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
+                BinaryData.fromObject(chatCompletionsOptions), requestOptions)
+                    .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         }
-        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
-                new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return chatCompletionsStream.getEvents();
     }
 
@@ -743,21 +748,17 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
         return openAIServiceClient != null
-                ? openAIServiceClient
-                        .generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
-                        .flatMap(FluxUtil::toMono)
-                        .map(it -> it.toObject(ImageResponse.class))
-                : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                        .last()
-                        .flatMap(it -> it.getFinalResult())
-                        .map(it -> it.toObject(ImageOperationResponse.class).getResult());
+            ? openAIServiceClient.generateImageWithResponseAsync(imageGenerationOptionsBinaryData, requestOptions)
+                .flatMap(FluxUtil::toMono).map(it -> it.toObject(ImageResponse.class))
+            : beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions).last()
+                .flatMap(it -> it.getFinalResult()).map(it -> it.toObject(ImageOperationResponse.class).getResult());
     }
 
     /**
      * Starts the generation of a batch of images from a text caption.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     prompt: String (Required)
@@ -767,9 +768,9 @@ public final class OpenAIAsyncClient {
      *     user: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -777,7 +778,7 @@ public final class OpenAIAsyncClient {
      *     expires: Long (Optional)
      *     result (Optional): {
      *         created: long (Required)
-     *         data: DataModelBase (Required)
+     *         data: BinaryData (Required)
      *     }
      *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
      *     error (Optional): {
@@ -802,24 +803,22 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
-     *     operation.
+     * operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(
-            BinaryData imageGenerationOptions, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'beginAzureBatchImageGeneration' refers Union 'ImageLocation[]
-        // | ImagePayload[]'
+    PollerFlux<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(BinaryData imageGenerationOptions,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginBeginAzureBatchImageGenerationAsync(imageGenerationOptions, requestOptions);
     }
 
     /**
-     * Gets chat completions for the provided chat messages. This is an Azure-specific version of chat completions that
-     * supports integration with configured data sources and other augmentations to the base chat completions
-     * capabilities.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * Gets chat completions for the provided chat messages.
+     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
+     * other augmentations to the base chat completions capabilities.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     messages (Required): [
@@ -845,7 +844,7 @@ public final class OpenAIAsyncClient {
      *             parameters: Object (Optional)
      *         }
      *     ]
-     *     function_call: FunctionCallModelBase (Optional)
+     *     function_call: BinaryData (Optional)
      *     max_tokens: Integer (Optional)
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
@@ -869,9 +868,9 @@ public final class OpenAIAsyncClient {
      *     ]
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -933,34 +932,34 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return chat completions for the provided chat messages. This is an Azure-specific version of chat completions
-     *     that supports integration with configured data sources and other augmentations to the base chat completions
-     *     capabilities along with {@link Response} on successful completion of {@link Mono}.
+     * @return chat completions for the provided chat messages.
+     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
+     * other augmentations to the base chat completions capabilities along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensionsWithResponse(
-            String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'getChatCompletionsWithAzureExtensions' refers Union
-        // 'FunctionCallPreset | FunctionName'
-        return this.serviceClient.getChatCompletionsWithAzureExtensionsWithResponseAsync(
-                deploymentOrModelName, chatCompletionsOptions, requestOptions);
+    Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensionsWithResponse(String deploymentOrModelName,
+        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getChatCompletionsWithAzureExtensionsWithResponseAsync(deploymentOrModelName,
+            chatCompletionsOptions, requestOptions);
     }
 
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     file: byte[] (Required)
@@ -971,9 +970,9 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1000,7 +999,7 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1008,16 +1007,16 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponse(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
-                deploymentOrModelName, audioTranscriptionOptions, requestOptions);
+        return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
+            audioTranscriptionOptions, requestOptions);
     }
 
     /**
@@ -1025,7 +1024,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1035,13 +1034,13 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return {@link AudioTranscription} transcribed text and associated metadata from provided spoken audio data on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranscription> getAudioTranscription(
-            String deploymentOrModelName, String fileName, AudioTranscriptionOptions audioTranscriptionOptions) {
+    public Mono<AudioTranscription> getAudioTranscription(String deploymentOrModelName, String fileName,
+        AudioTranscriptionOptions audioTranscriptionOptions) {
         return getAudioTranscriptionWithResponse(deploymentOrModelName, fileName, audioTranscriptionOptions, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
@@ -1049,7 +1048,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1060,14 +1059,11 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return {@link AudioTranscription} transcribed text and associated metadata from provided spoken audio data on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AudioTranscription>> getAudioTranscriptionWithResponse(
-            String deploymentOrModelName,
-            String fileName,
-            AudioTranscriptionOptions audioTranscriptionOptions,
-            RequestOptions requestOptions) {
+    public Mono<Response<AudioTranscription>> getAudioTranscriptionWithResponse(String deploymentOrModelName,
+        String fileName, AudioTranscriptionOptions audioTranscriptionOptions, RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranscription(audioTranscriptionOptions);
@@ -1082,16 +1078,13 @@ public final class OpenAIAsyncClient {
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions)
-                        : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions);
-        return response.map(
-                responseBinaryData ->
-                        new SimpleResponse<>(
-                                responseBinaryData, responseBinaryData.getValue().toObject(AudioTranscription.class)));
+        Mono<Response<BinaryData>> response = openAIServiceClient != null
+            ? this.openAIServiceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
+                data, requestOptions)
+            : this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
+                requestOptions);
+        return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
+            responseBinaryData.getValue().toObject(AudioTranscription.class)));
     }
 
     /**
@@ -1099,7 +1092,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1109,13 +1102,13 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio data on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranscriptionText(
-            String deploymentOrModelName, String fileName, AudioTranscriptionOptions audioTranscriptionOptions) {
+    public Mono<String> getAudioTranscriptionText(String deploymentOrModelName, String fileName,
+        AudioTranscriptionOptions audioTranscriptionOptions) {
         return getAudioTranscriptionTextWithResponse(deploymentOrModelName, fileName, audioTranscriptionOptions, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
@@ -1123,7 +1116,7 @@ public final class OpenAIAsyncClient {
      * the written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranscriptionOptions}
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1134,14 +1127,11 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio file data along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> getAudioTranscriptionTextWithResponse(
-            String deploymentOrModelName,
-            String fileName,
-            AudioTranscriptionOptions audioTranscriptionOptions,
-            RequestOptions requestOptions) {
+    public Mono<Response<String>> getAudioTranscriptionTextWithResponse(String deploymentOrModelName, String fileName,
+        AudioTranscriptionOptions audioTranscriptionOptions, RequestOptions requestOptions) {
         // checking allowed formats for a plain text response
         try {
             validateAudioResponseFormatForTranscriptionText(audioTranscriptionOptions);
@@ -1156,12 +1146,11 @@ public final class OpenAIAsyncClient {
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions)
-                        : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions);
+        Mono<Response<BinaryData>> response = openAIServiceClient != null
+            ? this.openAIServiceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
+                requestOptions)
+            : this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName, data,
+                requestOptions);
         return response.map(dataResponse -> new SimpleResponse<>(dataResponse, dataResponse.getValue().toString()));
     }
 
@@ -1169,7 +1158,7 @@ public final class OpenAIAsyncClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1179,20 +1168,20 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
-     *     audio file data on successful completion of {@link Mono}.
+     * audio file data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioTranslation> getAudioTranslation(
-            String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+    public Mono<AudioTranslation> getAudioTranslation(String deploymentOrModelName, String fileName,
+        AudioTranslationOptions audioTranslationOptions) {
         return getAudioTranslationWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1203,14 +1192,11 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return {@link AudioTranslation} english language transcribed text and associated metadata from provided spoken
-     *     audio file data along with {@link Response} on successful completion of {@link Mono}.
+     * audio file data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AudioTranslation>> getAudioTranslationWithResponse(
-            String deploymentOrModelName,
-            String fileName,
-            AudioTranslationOptions audioTranslationOptions,
-            RequestOptions requestOptions) {
+    public Mono<Response<AudioTranslation>> getAudioTranslationWithResponse(String deploymentOrModelName,
+        String fileName, AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranslation(audioTranslationOptions);
@@ -1225,23 +1211,20 @@ public final class OpenAIAsyncClient {
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions)
-                        : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions);
-        return response.map(
-                responseBinaryData ->
-                        new SimpleResponse<>(
-                                responseBinaryData, responseBinaryData.getValue().toObject(AudioTranslation.class)));
+        Mono<Response<BinaryData>> response = openAIServiceClient != null
+            ? this.openAIServiceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
+                requestOptions)
+            : this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName, data,
+                requestOptions);
+        return response.map(responseBinaryData -> new SimpleResponse<>(responseBinaryData,
+            responseBinaryData.getValue().toObject(AudioTranslation.class)));
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1251,20 +1234,20 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio file data on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranslationText(
-            String deploymentOrModelName, String fileName, AudioTranslationOptions audioTranslationOptions) {
+    public Mono<String> getAudioTranslationText(String deploymentOrModelName, String fileName,
+        AudioTranslationOptions audioTranslationOptions) {
         return getAudioTranslationTextWithResponse(deploymentOrModelName, fileName, audioTranslationOptions, null)
-                .map(Response::getValue);
+            .map(Response::getValue);
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio file data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param fileName The file name that is represented in the {@code file} field of {@link AudioTranslationOptions}.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1275,14 +1258,11 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio file data on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> getAudioTranslationTextWithResponse(
-            String deploymentOrModelName,
-            String fileName,
-            AudioTranslationOptions audioTranslationOptions,
-            RequestOptions requestOptions) {
+    public Mono<Response<String>> getAudioTranslationTextWithResponse(String deploymentOrModelName, String fileName,
+        AudioTranslationOptions audioTranslationOptions, RequestOptions requestOptions) {
         // checking allowed formats for a JSON response
         try {
             validateAudioResponseFormatForTranslationText(audioTranslationOptions);
@@ -1297,23 +1277,21 @@ public final class OpenAIAsyncClient {
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
-        Mono<Response<BinaryData>> response =
-                openAIServiceClient != null
-                        ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions)
-                        : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(
-                                deploymentOrModelName, data, requestOptions);
+        Mono<Response<BinaryData>> response = openAIServiceClient != null
+            ? this.openAIServiceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName, data,
+                requestOptions)
+            : this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName, data,
+                requestOptions);
         return response.map(
-                responseBinaryData ->
-                        new SimpleResponse<>(responseBinaryData, responseBinaryData.getValue().toString()));
+            responseBinaryData -> new SimpleResponse<>(responseBinaryData, responseBinaryData.getValue().toString()));
     }
 
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     file: byte[] (Required)
@@ -1324,15 +1302,15 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1340,21 +1318,21 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(
-            String deploymentOrModelName, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(
-                deploymentOrModelName, audioTranscriptionOptions, requestOptions);
+    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+        BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
+            audioTranscriptionOptions, requestOptions);
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     file: byte[] (Required)
@@ -1364,9 +1342,9 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -1393,7 +1371,7 @@ public final class OpenAIAsyncClient {
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1401,23 +1379,23 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponse(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
-        return this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(
-                deploymentOrModelName, audioTranslationOptions, requestOptions);
+        return this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
+            audioTranslationOptions, requestOptions);
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     file: byte[] (Required)
@@ -1427,15 +1405,15 @@ public final class OpenAIAsyncClient {
      *     model: String (Optional)
      * }
      * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1443,14 +1421,14 @@ public final class OpenAIAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return english language transcribed text and associated metadata from provided spoken audio data along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(
-            String deploymentOrModelName, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(
-                deploymentOrModelName, audioTranslationOptions, requestOptions);
+    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+        BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
+            audioTranslationOptions, requestOptions);
     }
 
     /**
@@ -1458,7 +1436,7 @@ public final class OpenAIAsyncClient {
      * written language corresponding to the language it was spoken in.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1467,17 +1445,16 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio data on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranscriptionAsPlainText(
-            String deploymentOrModelName, AudioTranscriptionOptions audioTranscriptionOptions) {
+    public Mono<String> getAudioTranscriptionAsPlainText(String deploymentOrModelName,
+        AudioTranscriptionOptions audioTranscriptionOptions) {
         // Generated convenience method for getAudioTranscriptionAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionAsPlainTextWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(audioTranscriptionOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(audioTranscriptionOptions), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
 
@@ -1485,7 +1462,7 @@ public final class OpenAIAsyncClient {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     *     (when using non-Azure OpenAI) to use for this request.
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1494,17 +1471,70 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio data on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAudioTranslationAsPlainText(
-            String deploymentOrModelName, AudioTranslationOptions audioTranslationOptions) {
+    public Mono<String> getAudioTranslationAsPlainText(String deploymentOrModelName,
+        AudioTranslationOptions audioTranslationOptions) {
         // Generated convenience method for getAudioTranslationAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationAsPlainTextWithResponse(
-                        deploymentOrModelName, BinaryData.fromObject(audioTranslationOptions), requestOptions)
-                .flatMap(FluxUtil::toMono)
+        return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(audioTranslationOptions), requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages.
+     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
+     * other augmentations to the base chat completions capabilities.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions for the provided chat messages.
+     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
+     * other augmentations to the base chat completions capabilities on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ChatCompletions> getChatCompletionsWithAzureExtensions(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions) {
+        // Generated convenience method for getChatCompletionsWithAzureExtensionsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
+    }
+
+    /**
+     * Starts the generation of a batch of images from a text caption.
+     *
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a polling status update or final response payload for an image
+     * operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
+        beginBeginAzureBatchImageGeneration(ImageGenerationOptions imageGenerationOptions) {
+        // Generated convenience method for beginBeginAzureBatchImageGenerationWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginBeginAzureBatchImageGenerationWithModelAsync(
+            BinaryData.fromObject(imageGenerationOptions), requestOptions);
     }
 }

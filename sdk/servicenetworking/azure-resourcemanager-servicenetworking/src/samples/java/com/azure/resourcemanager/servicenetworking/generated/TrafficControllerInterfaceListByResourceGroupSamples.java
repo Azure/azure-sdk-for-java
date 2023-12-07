@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-/** Samples for TrafficControllerInterface ListByResourceGroup. */
+/**
+ * Samples for TrafficControllerInterface ListByResourceGroup.
+ */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/cadl/examples/TrafficControllersGet.json
+     * x-ms-original-file:
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * TrafficControllersGet.json
      */
     /**
      * Sample code: Get Traffic Controllers.
-     *
+     * 
      * @param manager Entry point to TrafficControllerManager.
      */
-    public static void getTrafficControllers(
-        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+    public static void
+        getTrafficControllers(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager.trafficControllerInterfaces().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }

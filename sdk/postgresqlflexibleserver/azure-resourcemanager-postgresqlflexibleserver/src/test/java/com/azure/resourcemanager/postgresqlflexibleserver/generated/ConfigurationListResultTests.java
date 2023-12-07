@@ -16,11 +16,11 @@ public final class ConfigurationListResultTests {
         ConfigurationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"hb\",\"description\":\"knalaulppg\",\"defaultValue\":\"tpnapnyiropuhpig\",\"dataType\":\"Enumeration\",\"allowedValues\":\"lgqg\",\"source\":\"xmedjvcsly\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"zhxgktrmgucn\",\"documentationLink\":\"kteo\"},\"id\":\"lwptfdy\",\"name\":\"pfqbuaceopzf\",\"type\":\"rhhuaopppcqeqx\"},{\"properties\":{\"value\":\"dahzxctobg\",\"description\":\"dmoizpostmg\",\"defaultValue\":\"fbunrmfqjhhk\",\"dataType\":\"Enumeration\",\"allowedValues\":\"jy\",\"source\":\"hx\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"vkr\",\"documentationLink\":\"wbxqzvszjfau\"},\"id\":\"fdxxivetvtcqaqtd\",\"name\":\"qmcbxvwvxyslqbhs\",\"type\":\"xoblytkbl\"},{\"properties\":{\"value\":\"wwwfbkr\",\"description\":\"nsvs\",\"defaultValue\":\"johxcrsb\",\"dataType\":\"Integer\",\"allowedValues\":\"srruvwbhsqfsubcg\",\"source\":\"irx\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"jfdtwssotftpvj\",\"documentationLink\":\"exilzznfqqnvwpmq\"},\"id\":\"ruoujmk\",\"name\":\"jhwqytjrybnw\",\"type\":\"ewgdrjervn\"}],\"nextLink\":\"nqpeh\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"zyiuokk\",\"description\":\"hrdxwzywqsmbs\",\"defaultValue\":\"exim\",\"dataType\":\"Boolean\",\"allowedValues\":\"cfsf\",\"source\":\"ymddys\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"yudxorrqnbp\",\"documentationLink\":\"zvyifqrvkdvj\"},\"id\":\"lrmv\",\"name\":\"d\",\"type\":\"watkpnpulexxb\"},{\"properties\":{\"value\":\"truwiqzb\",\"description\":\"vsovmyokac\",\"defaultValue\":\"kwlhzdo\",\"dataType\":\"Numeric\",\"allowedValues\":\"mflbv\",\"source\":\"chrkcciwwzjuqk\",\"isDynamicConfig\":false,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"uo\",\"documentationLink\":\"skghsauuimj\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"},{\"properties\":{\"value\":\"sonpclhocohs\",\"description\":\"ev\",\"defaultValue\":\"ggzfbu\",\"dataType\":\"Enumeration\",\"allowedValues\":\"faxkffeii\",\"source\":\"lvmezyvshxmzsbbz\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"burvjxxjnspy\",\"documentationLink\":\"tko\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"value\":\"iucgygevqzn\",\"description\":\"pmr\",\"defaultValue\":\"izcdrqjsd\",\"dataType\":\"Enumeration\",\"allowedValues\":\"fyhxde\",\"source\":\"jzicwifsjt\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":true,\"unit\":\"cbkhajdeyeamdph\",\"documentationLink\":\"alpbuxwgipwhon\"},\"id\":\"kgshwa\",\"name\":\"kix\",\"type\":\"bin\"}],\"nextLink\":\"pu\"}")
                 .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("hb", model.value().get(0).value());
-        Assertions.assertEquals("xmedjvcsly", model.value().get(0).source());
-        Assertions.assertEquals("nqpeh", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +30,14 @@ public final class ConfigurationListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new ConfigurationInner().withValue("hb").withSource("xmedjvcsly"),
-                            new ConfigurationInner().withValue("dahzxctobg").withSource("hx"),
-                            new ConfigurationInner().withValue("wwwfbkr").withSource("irx")))
-                .withNextLink("nqpeh");
+                            new ConfigurationInner().withValue("zyiuokk").withSource("ymddys"),
+                            new ConfigurationInner().withValue("truwiqzb").withSource("chrkcciwwzjuqk"),
+                            new ConfigurationInner().withValue("sonpclhocohs").withSource("lvmezyvshxmzsbbz"),
+                            new ConfigurationInner().withValue("iucgygevqzn").withSource("jzicwifsjt")))
+                .withNextLink("pu");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals("hb", model.value().get(0).value());
-        Assertions.assertEquals("xmedjvcsly", model.value().get(0).source());
-        Assertions.assertEquals("nqpeh", model.nextLink());
+        Assertions.assertEquals("zyiuokk", model.value().get(0).value());
+        Assertions.assertEquals("ymddys", model.value().get(0).source());
+        Assertions.assertEquals("pu", model.nextLink());
     }
 }

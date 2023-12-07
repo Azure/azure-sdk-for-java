@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FqdnListLoc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a FqdnListLocalRulestackResource list operation. */
+/**
+ * The response of a FqdnListLocalRulestackResource list operation.
+ */
 @Fluent
 public final class FqdnListLocalRulestackResourceListResult {
     /*
@@ -25,13 +27,15 @@ public final class FqdnListLocalRulestackResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FqdnListLocalRulestackResourceListResult class. */
+    /**
+     * Creates an instance of FqdnListLocalRulestackResourceListResult class.
+     */
     public FqdnListLocalRulestackResourceListResult() {
     }
 
     /**
      * Get the value property: The items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<FqdnListLocalRulestackResourceInner> value() {
@@ -40,7 +44,7 @@ public final class FqdnListLocalRulestackResourceListResult {
 
     /**
      * Set the value property: The items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the FqdnListLocalRulestackResourceListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class FqdnListLocalRulestackResourceListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FqdnListLocalRulestackResourceListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FqdnListLocalRulestackResourceListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class FqdnListLocalRulestackResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model FqdnListLocalRulestackResourceListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model FqdnListLocalRulestackResourceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource extends SubResource {
     /*
@@ -35,13 +37,15 @@ public final class PrivateLinkResource extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of PrivateLinkResource class. */
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
     public PrivateLinkResource() {
     }
 
     /**
      * Get the properties property: Core resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public PrivateLinkResourceProperties properties() {
@@ -50,7 +54,7 @@ public final class PrivateLinkResource extends SubResource {
 
     /**
      * Set the properties property: Core resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -61,7 +65,7 @@ public final class PrivateLinkResource extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class PrivateLinkResource extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -79,14 +83,16 @@ public final class PrivateLinkResource extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkResource withId(String id) {
         super.withId(id);
@@ -95,7 +101,7 @@ public final class PrivateLinkResource extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

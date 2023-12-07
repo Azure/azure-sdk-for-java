@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Location model. */
+/**
+ * The Location model.
+ */
 @Immutable
 public final class Location {
 
@@ -88,9 +90,12 @@ public final class Location {
     @JsonProperty(value = "metroCodeId")
     private Integer metroCodeId;
 
-    /** Creates an instance of Location class. */
+    /**
+     * Creates an instance of Location class.
+     */
     @Generated
-    private Location() {}
+    private Location() {
+    }
 
     /**
      * Get the countryCode property: The countryCode property.

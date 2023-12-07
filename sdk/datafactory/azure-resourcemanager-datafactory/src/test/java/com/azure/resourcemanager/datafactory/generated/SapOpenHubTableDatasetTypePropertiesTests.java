@@ -10,20 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapOpenHubTableDatase
 public final class SapOpenHubTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapOpenHubTableDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"openHubDestinationName\":\"datari\",\"excludeLastRequest\":\"datamckik\",\"baseRequestId\":\"datayvurhwishy\"}")
-                .toObject(SapOpenHubTableDatasetTypeProperties.class);
+        SapOpenHubTableDatasetTypeProperties model = BinaryData.fromString(
+            "{\"openHubDestinationName\":\"datari\",\"excludeLastRequest\":\"datamckik\",\"baseRequestId\":\"datayvurhwishy\"}")
+            .toObject(SapOpenHubTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOpenHubTableDatasetTypeProperties model =
-            new SapOpenHubTableDatasetTypeProperties()
-                .withOpenHubDestinationName("datari")
-                .withExcludeLastRequest("datamckik")
-                .withBaseRequestId("datayvurhwishy");
+        SapOpenHubTableDatasetTypeProperties model
+            = new SapOpenHubTableDatasetTypeProperties().withOpenHubDestinationName("datari")
+                .withExcludeLastRequest("datamckik").withBaseRequestId("datayvurhwishy");
         model = BinaryData.fromObject(model).toObject(SapOpenHubTableDatasetTypeProperties.class);
     }
 }

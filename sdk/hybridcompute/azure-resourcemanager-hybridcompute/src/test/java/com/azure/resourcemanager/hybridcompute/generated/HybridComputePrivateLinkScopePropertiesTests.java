@@ -15,7 +15,7 @@ public final class HybridComputePrivateLinkScopePropertiesTests {
         HybridComputePrivateLinkScopeProperties model =
             BinaryData
                 .fromString(
-                    "{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"jvnysounqe\",\"privateLinkScopeId\":\"noae\"}")
+                    "{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"cogjltdtbn\",\"privateLinkScopeId\":\"adoocrkvc\",\"privateEndpointConnections\":[{\"id\":\"vpa\",\"name\":\"gxqquezik\",\"type\":\"ggxkallatmelwuip\",\"properties\":{\"privateEndpoint\":{\"id\":\"zkzivgvvcnay\"},\"privateLinkServiceConnectionState\":{\"status\":\"yrnxxmueedn\",\"description\":\"rdvstkwqqtch\",\"actionsRequired\":\"lmfmtdaay\"},\"provisioningState\":\"v\",\"groupIds\":[\"piohgwxrtfu\",\"xepxgyqagvrvmn\",\"k\",\"kghimdblxgwimfnj\"]}},{\"id\":\"j\",\"name\":\"mszkkfo\",\"type\":\"eyfkzikfja\",\"properties\":{\"privateEndpoint\":{\"id\":\"ivx\"},\"privateLinkServiceConnectionState\":{\"status\":\"zel\",\"description\":\"c\",\"actionsRequired\":\"elsfeaen\"},\"provisioningState\":\"bfatklddxbjhwu\",\"groupIds\":[\"oz\"]}},{\"id\":\"sphyoulpjrvxa\",\"name\":\"rvimjwosytxitcsk\",\"type\":\"k\",\"properties\":{\"privateEndpoint\":{\"id\":\"iekkezz\"},\"privateLinkServiceConnectionState\":{\"status\":\"hlyfjhdgqgg\",\"description\":\"bdunygaeqid\",\"actionsRequired\":\"fatpxllrxcyjmoa\"},\"provisioningState\":\"uvarmywdmjsjq\",\"groupIds\":[\"hyxxrwlycoduhpk\",\"kgymareqnajxqug\"]}}]}")
                 .toObject(HybridComputePrivateLinkScopeProperties.class);
         Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.publicNetworkAccess());
     }

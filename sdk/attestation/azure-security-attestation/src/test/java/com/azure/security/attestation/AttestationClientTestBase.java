@@ -270,8 +270,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      */
     static String getIsolatedSigningCertificateBase64() {
         return TEST_MODE == TestMode.PLAYBACK
-            ? readResource("isolatedSigningCertificate") // Use a pre-canned certificate captured at provisioning time.
-            : Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
+            ? readResource("ISOLATED_SIGNING_CERTIFICATE") // Use a pre-canned certificate captured at provisioning time.
+            : Configuration.getGlobalConfiguration().get("ISOLATED_SIGNING_CERTIFICATE");
     }
 
     protected static X509Certificate getIsolatedSigningCertificate() {
@@ -286,8 +286,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      */
     static String getIsolatedSigningKeyBase64() {
         return TEST_MODE == TestMode.PLAYBACK
-            ? readResource("isolatedSigningKey") // Use a pre-canned certificate captured at provisioning time.
-            : Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+            ? readResource("ISOLATED_SIGNING_KEY") // Use a pre-canned certificate captured at provisioning time.
+            : Configuration.getGlobalConfiguration().get("ISOLATED_SIGNING_KEY");
     }
 
     static PrivateKey privateKeyFromBase64(String base64) {
@@ -331,14 +331,14 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      */
     static String getPolicySigningCertificate0Base64() {
         return TEST_MODE == TestMode.PLAYBACK
-            ? readResource("policySigningCertificate0") // Use a pre-canned certificate captured at provisioning time.
-            : Configuration.getGlobalConfiguration().get("policySigningCertificate0");
+            ? readResource("POLICY_SIGNING_CERTIFICATE0") // Use a pre-canned certificate captured at provisioning time.
+            : Configuration.getGlobalConfiguration().get("POLICY_SIGNING_CERTIFICATE0");
     }
 
     static String getPolicySigningKey0Base64() {
         return TEST_MODE == TestMode.PLAYBACK
-            ? readResource("policySigningKey0") // Use a pre-canned certificate captured at provisioning time.
-            : Configuration.getGlobalConfiguration().get("policySigningKey0");
+            ? readResource("POLICY_SIGNING_KEY0") // Use a pre-canned certificate captured at provisioning time.
+            : Configuration.getGlobalConfiguration().get("POLICY_SIGNING_KEY0");
     }
 
     protected static X509Certificate getPolicySigningCertificate0() {
@@ -392,7 +392,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      * @return returns the location in which the tests are running.
      */
     private static String getLocationShortName() {
-        return TEST_MODE == TestMode.PLAYBACK ? "wus" : Configuration.getGlobalConfiguration().get("locationShortName");
+        return TEST_MODE == TestMode.PLAYBACK ? "wus"
+            : Configuration.getGlobalConfiguration().get("LOCATION_SHORT_NAME");
     }
 
     /**

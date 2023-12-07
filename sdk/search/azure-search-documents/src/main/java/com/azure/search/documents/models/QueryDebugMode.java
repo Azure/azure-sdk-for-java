@@ -14,7 +14,7 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     /** No query debugging information will be returned. */
     public static final QueryDebugMode DISABLED = fromString("disabled");
 
-    /** Allows the user to further explore their Semantic search results. */
+    /** Allows the user to further explore their reranked results. */
     public static final QueryDebugMode SEMANTIC = fromString("semantic");
 
     /**

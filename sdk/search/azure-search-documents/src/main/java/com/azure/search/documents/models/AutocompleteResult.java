@@ -60,8 +60,6 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.results, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeNumberField("@search.coverage", this.coverage);
         return jsonWriter.writeEndObject();
     }
 
