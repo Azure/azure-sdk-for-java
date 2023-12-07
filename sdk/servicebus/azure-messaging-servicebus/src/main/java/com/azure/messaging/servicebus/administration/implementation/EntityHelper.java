@@ -657,7 +657,9 @@ public final class EntityHelper {
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
                 TopicDescriptionFeedImpl entryTopic = TopicDescriptionFeedImpl.fromXml(xmlReader);
-                logger.warning("'{}' is not a queue feed, it is a topic feed.", entryTopic.getTitle());
+                logger.atWarning()
+                    .addKeyValue("entityName", entryTopic.getTitle())
+                    .log("Expected queue feed, but it is a topic feed.");
                 return new SimpleResponse<>(response, null);
             } catch (IllegalStateException ignored) {
                 return new SimpleResponse<>(response, null);
@@ -686,7 +688,9 @@ public final class EntityHelper {
             if (entry == null) {
                 return new SimpleResponse<>(response, null);
             } else if (entry.getContent() == null) {
-                logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+                logger.atInfo()
+                    .addKeyValue("entry", entry)
+                    .log("The entry content is null. The entity may not exist.");
                 return new SimpleResponse<>(response, null);
             }
 
@@ -698,7 +702,9 @@ public final class EntityHelper {
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
                 TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
-                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                logger.atWarning()
+                    .addKeyValue("entityName", entryTopic.getTitle())
+                    .log("Expected queue, but it is a topic.");
                 return new SimpleResponse<>(response, null);
             } catch (IllegalStateException ignored) {
                 return new SimpleResponse<>(response, null);
@@ -728,7 +734,9 @@ public final class EntityHelper {
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
                 QueueDescriptionFeedImpl entryTopic = QueueDescriptionFeedImpl.fromXml(xmlReader);
-                logger.warning("'{}' is not a topic feed, it is a queue feed.", entryTopic.getTitle());
+                logger.atWarning()
+                    .addKeyValue("entityName", entryTopic.getTitle())
+                    .log("Expected topic feed, but it is a queue feed.");
                 return new SimpleResponse<>(response, null);
             } catch (IllegalStateException ignored) {
                 return new SimpleResponse<>(response, null);
@@ -757,7 +765,9 @@ public final class EntityHelper {
             if (entry == null) {
                 return new SimpleResponse<>(response, null);
             } else if (entry.getContent() == null) {
-                logger.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+                logger.atWarning()
+                    .addKeyValue("entry", entry)
+                    .log("The entry content is null. The entity may not exist.");
                 return new SimpleResponse<>(response, null);
             }
 
@@ -769,7 +779,9 @@ public final class EntityHelper {
         } catch (IllegalStateException ex) {
             try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
                 QueueDescriptionEntryImpl entryQueue = QueueDescriptionEntryImpl.fromXml(xmlReader);
-                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                logger.atWarning()
+                    .addKeyValue("entityName", entryQueue.getTitle())
+                    .log("Expected topic, but it is a queue.");
                 return new SimpleResponse<>(response, null);
             } catch (IllegalStateException ignored) {
                 return new SimpleResponse<>(response, null);
