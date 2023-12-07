@@ -7,21 +7,19 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResultInformation model.
- */
+/** The ResultInformation model. */
 @Fluent
 public final class ResultInformation {
     /*
-     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result
-     * was unexpected.
+     * Code of the current result. This can be helpful to Call Automation team
+     * to troubleshoot the issue if this result was unexpected.
      */
     @JsonProperty(value = "code")
     private Integer code;
 
     /*
-     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this
-     * result was unexpected.
+     * Subcode of the current result. This can be helpful to Call Automation
+     * team to troubleshoot the issue if this result was unexpected.
      */
     @JsonProperty(value = "subCode")
     private Integer subCode;
@@ -33,15 +31,9 @@ public final class ResultInformation {
     private String message;
 
     /**
-     * Creates an instance of ResultInformation class.
-     */
-    public ResultInformation() {
-    }
-
-    /**
      * Get the code property: Code of the current result. This can be helpful to Call Automation team to troubleshoot
      * the issue if this result was unexpected.
-     * 
+     *
      * @return the code value.
      */
     public Integer getCode() {
@@ -51,7 +43,7 @@ public final class ResultInformation {
     /**
      * Set the code property: Code of the current result. This can be helpful to Call Automation team to troubleshoot
      * the issue if this result was unexpected.
-     * 
+     *
      * @param code the code value to set.
      * @return the ResultInformation object itself.
      */
@@ -63,7 +55,7 @@ public final class ResultInformation {
     /**
      * Get the subCode property: Subcode of the current result. This can be helpful to Call Automation team to
      * troubleshoot the issue if this result was unexpected.
-     * 
+     *
      * @return the subCode value.
      */
     public Integer getSubCode() {
@@ -73,7 +65,7 @@ public final class ResultInformation {
     /**
      * Set the subCode property: Subcode of the current result. This can be helpful to Call Automation team to
      * troubleshoot the issue if this result was unexpected.
-     * 
+     *
      * @param subCode the subCode value to set.
      * @return the ResultInformation object itself.
      */
@@ -84,7 +76,7 @@ public final class ResultInformation {
 
     /**
      * Get the message property: Detail message that describes the current result.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -93,7 +85,7 @@ public final class ResultInformation {
 
     /**
      * Set the message property: Detail message that describes the current result.
-     * 
+     *
      * @param message the message value to set.
      * @return the ResultInformation object itself.
      */

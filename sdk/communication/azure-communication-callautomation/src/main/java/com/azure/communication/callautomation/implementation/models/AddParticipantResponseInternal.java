@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response payload for adding participants to the call.
- */
+/** The response payload for adding participants to the call. */
 @Fluent
 public final class AddParticipantResponseInternal {
     /*
@@ -31,14 +29,8 @@ public final class AddParticipantResponseInternal {
     private String invitationId;
 
     /**
-     * Creates an instance of AddParticipantResponseInternal class.
-     */
-    public AddParticipantResponseInternal() {
-    }
-
-    /**
      * Get the participant property: List of current participants in the call.
-     * 
+     *
      * @return the participant value.
      */
     public CallParticipantInternal getParticipant() {
@@ -47,7 +39,7 @@ public final class AddParticipantResponseInternal {
 
     /**
      * Set the participant property: List of current participants in the call.
-     * 
+     *
      * @param participant the participant value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
@@ -58,7 +50,7 @@ public final class AddParticipantResponseInternal {
 
     /**
      * Get the operationContext property: The operation context provided by client.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -67,7 +59,7 @@ public final class AddParticipantResponseInternal {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
@@ -78,7 +70,7 @@ public final class AddParticipantResponseInternal {
 
     /**
      * Get the invitationId property: Invitation ID used to add a participant.
-     * 
+     *
      * @return the invitationId value.
      */
     public String getInvitationId() {
@@ -87,7 +79,7 @@ public final class AddParticipantResponseInternal {
 
     /**
      * Set the invitationId property: Invitation ID used to add a participant.
-     * 
+     *
      * @param invitationId the invitationId value to set.
      * @return the AddParticipantResponseInternal object itself.
      */
