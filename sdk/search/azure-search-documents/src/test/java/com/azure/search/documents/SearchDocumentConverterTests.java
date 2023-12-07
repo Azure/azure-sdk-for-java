@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPosition;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -132,8 +133,17 @@ public class SearchDocumentConverterTests {
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}, "
             + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-            Arrays.asList(new GeoPoint(-122.131577, 47.678581), new GeoPoint(-121.0, 49.0))));
+        Map<String, Object> crsProperties = new HashMap<>();
+        crsProperties.put("type", "name");
+        crsProperties.put("properties", Collections.singletonMap("name", "EPSG:4326"));
+
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        geoPoints.add(new GeoPoint(new GeoPosition(-122.131577, 47.678581), null,
+            Collections.singletonMap("crs", crsProperties)));
+        geoPoints.add(new GeoPoint(new GeoPosition(-121.0, 49.0), null,
+            Collections.singletonMap("crs", crsProperties)));
+
+        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", geoPoints));
 
         SearchDocument actualDoc = deserialize(json);
         assertMapEquals(expectedDoc, actualDoc, true, "properties");
