@@ -2436,18 +2436,6 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-    <!--  The returned Disposable can be ignored since Scheduler is closed when Reactor closes. -->
-  <Match>
-    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
-    <Method name="start"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-  </Match>
-    <Match>
-    <Class name="com.azure.core.amqp.implementation.ReactorExecutor"/>
-    <Method name="run"/>
-    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
-  </Match>
-
   <!-- For BinaryData, copying array contents degrades performance. The data returned as byte array from BinaryData is expected to be copied by the call if mutability is desired. -->
   <Match>
     <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
@@ -2723,116 +2711,6 @@
     <Class name="com.azure.ai.openai.implementation.MultipartDataHelper"/>
     <Method name="serializeRequest"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- Field is not initialized in Ctr but necessary safety measures are in place when accessing it -->
-  <Match>
-    <Class name="com.azure.messaging.servicebus.NonSessionProcessor"/>
-    <Field name="rollingMessagePump"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.messaging.servicebus.SessionProcessor"/>
-    <Field name="rollingSessionsMessagePump"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor"/>
-    <Field name="rollingMessagePump"/>
-    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
-  </Match>
-  <!-- False positives -->
-  <Match>
-    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
-    <Or>
-      <Field name="builder"/>
-      <Field name="logger"/>
-      <Field name="disposable"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.messaging.servicebus.SessionProcessor$RollingSessionsMessagePump"/>
-    <Or>
-      <Field name="builder"/>
-      <Field name="logger"/>
-      <Field name="disposable"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <Match>
-    <Class name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
-    <Or>
-      <Field name="nonSessionBuilder"/>
-      <Field name="sessionBuilder"/>
-      <Field name="logger"/>
-      <Field name="disposable"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <!-- The RollingNonSessionMessagePump and RollingSessionsMessagePump doesn't need to be serializable -->
-  <Match>
-    <Class
-      name="com.azure.messaging.servicebus.NonSessionProcessor$RollingNonSessionMessagePump"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <Match>
-    <Class
-      name="com.azure.messaging.servicebus.SessionProcessor$RollingSessionsMessagePump"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <Match>
-    <Class
-      name="com.azure.messaging.servicebus.ServiceBusProcessor$RollingMessagePump"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <!-- False positives -->
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
-    <Or>
-      <Field name="instrumentation"/>
-      <Field name="logger"/>
-      <Field name="messageFlux"/>
-      <Field name="receiversTracker"/>
-      <Field name="tracer"/>
-      <Field name="managementNode"/>
-      <Field name="serializer"/>
-      <Field name="workerScheduler"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
-    <Or>
-      <Field name="newSession"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
-    <Or>
-      <Field name="sessionReceiver"/>
-    </Or>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
-  <!-- The RollingSessionReceiver, NextSessionStream, $SessionReceiverStream doesn't need to be serializable -->
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.SessionsMessagePump$RollingSessionReceiver$NextSessionStream"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
-  </Match>
-  <Match>
-    <Class
-        name="com.azure.messaging.servicebus.ServiceBusSingleSessionManager$SessionReceiverStream"/>
-    <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
   <!-- Comment to force CI to run Spotbugs against all SDKs -->
