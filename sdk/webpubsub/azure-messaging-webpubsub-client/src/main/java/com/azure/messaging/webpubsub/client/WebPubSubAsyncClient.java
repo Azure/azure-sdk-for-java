@@ -1115,6 +1115,6 @@ class WebPubSubAsyncClient implements Closeable {
     }
 
     private static boolean isReliableProtocol(WebPubSubProtocolType webPubSubProtocol) {
-        return webPubSubProtocol == WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL;
+        return webPubSubProtocol == WebPubSubProtocolType.JSON_RELIABLE_PROTOCOL;
     }
 }

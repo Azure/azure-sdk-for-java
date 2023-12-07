@@ -42,7 +42,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     private String clientAccessUrl;
 
     // default protocol be WebPubSubJsonReliableProtocol
-    private WebPubSubProtocolType webPubSubProtocol = WebPubSubProtocolType.WEB_PUBSUB_JSON_RELIABLE_PROTOCOL;
+    private WebPubSubProtocolType webPubSubProtocol = WebPubSubProtocolType.JSON_RELIABLE_PROTOCOL;
 
     private ClientOptions clientOptions;
     private Configuration configuration;

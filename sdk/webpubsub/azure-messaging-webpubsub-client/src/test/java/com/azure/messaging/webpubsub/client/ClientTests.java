@@ -471,7 +471,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .autoReconnect(true)
             .buildClient();
 
@@ -521,7 +521,7 @@ public class ClientTests extends TestBase {
         AtomicReference<String> connectionId = new AtomicReference<>();
 
         WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .autoReconnect(false)
             .buildClient();
 
@@ -575,7 +575,7 @@ public class ClientTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testProtocol() {
         WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .buildClient();
 
         client.start();

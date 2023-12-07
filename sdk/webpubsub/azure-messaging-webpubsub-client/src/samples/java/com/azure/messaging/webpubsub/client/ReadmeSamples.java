@@ -48,7 +48,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-createClientWithProtocol
         WebPubSubClient client = new WebPubSubClientBuilder()
             .clientAccessUrl("<client-access-url>")
-            .protocol(WebPubSubProtocolType.WEB_PUBSUB_JSON_PROTOCOL)
+            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
             .buildClient();
         // END: readme-sample-createClientWithProtocol
     }
