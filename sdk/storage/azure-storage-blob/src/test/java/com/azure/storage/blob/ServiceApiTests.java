@@ -124,7 +124,7 @@ public class ServiceApiTests extends BlobTestBase {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void sasSanitization(boolean unsanitize) {
-        String identifier = "id with spaces" + getRandomNumber();
+        String identifier = "id with spaces";
         String blobName = generateBlobName();
         cc.setAccessPolicy(null, Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
@@ -136,6 +136,8 @@ public class ServiceApiTests extends BlobTestBase {
         if (unsanitize) {
             sas = sas.replace("%20", " ");
         }
+
+        sleepIfRunningAgainstService(30 * 1000);
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;

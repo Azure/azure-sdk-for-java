@@ -138,6 +138,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             sas = sas.replace("%20", " ");
         }
 
+        sleepIfRunningAgainstService(30 * 1000);
+
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
         System.out.println("isbr: " + unsanitize + " - " + finalSas);

@@ -333,12 +333,6 @@ public class BlobTestBase extends TestProxyTestBase {
         return ByteBuffer.wrap(getRandomByteArray(size));
     }
 
-    public int getRandomNumber(){
-        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
-        Random rand = new Random(seed);
-        return rand.nextInt() % 100;
-    }
-
     /*
     We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
      */
