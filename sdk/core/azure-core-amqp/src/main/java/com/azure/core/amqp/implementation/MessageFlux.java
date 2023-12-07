@@ -602,8 +602,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         /**
          *
          * CONTRACT: Never invoke from the outside of serialized drain-loop.
-         * <p></p>
-         * 1. When retry is enabled (i.e., NULL_RETRY_POLICY is not set) then schedule request (retry) for the next mediator if
+         * 
+         * <p>1. When retry is enabled (i.e., NULL_RETRY_POLICY is not set) then schedule request (retry) for the next mediator if
          * <ul>
          *     <li>the operator is not in a termination signaled state,</li>
          *     <li> and
@@ -613,12 +613,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          *         </ul>
          *     </li>
          * </ul>
-         * 2. If retry is enabled (i.e., NULL_RETRY_POLICY is not set) and there is 'non-retriable or retry exhaust'
-         * error, then set an error signal for the drain-loop to terminate the operator.
-         * <br/>
-         * 3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
-         * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.
-         * <p></p>
+         * </p>
+         * <p>2. If retry is enabled (i.e., NULL_RETRY_POLICY is not set) and there is 'non-retriable or retry exhaust'
+         * error, then set an error signal for the drain-loop to terminate the operator.</p>
+         * 
+         * <p>3. If retry is disabled (i.e., NULL_RETRY_POLICY is set), then set an error signal (if first receiver error-ed)
+         * or completion signal (if first receiver completed) for the drain-loop to terminate the operator.</p>
+         * 
          * @param error the error that leads to error-ed termination of the last mediator or {@code null}
          *              if terminated with completion.
          * @param downstream the downstream.
