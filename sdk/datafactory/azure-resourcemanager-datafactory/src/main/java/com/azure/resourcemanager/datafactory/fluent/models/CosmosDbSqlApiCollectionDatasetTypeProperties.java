@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CosmosDB (SQL API) Collection dataset properties. */
+/**
+ * CosmosDB (SQL API) Collection dataset properties.
+ */
 @Fluent
 public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     /*
@@ -17,14 +19,16 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
 
-    /** Creates an instance of CosmosDbSqlApiCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of CosmosDbSqlApiCollectionDatasetTypeProperties class.
+     */
     public CosmosDbSqlApiCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object collectionName() {
@@ -34,7 +38,7 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
     /**
      * Set the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the CosmosDbSqlApiCollectionDatasetTypeProperties object itself.
      */
@@ -45,16 +49,13 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collectionName in model"
-                            + " CosmosDbSqlApiCollectionDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property collectionName in model CosmosDbSqlApiCollectionDatasetTypeProperties"));
         }
     }
 

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Avro dataset properties. */
+/**
+ * Avro dataset properties.
+ */
 @Fluent
 public final class AvroDatasetTypeProperties {
     /*
@@ -30,13 +32,15 @@ public final class AvroDatasetTypeProperties {
     @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
 
-    /** Creates an instance of AvroDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AvroDatasetTypeProperties class.
+     */
     public AvroDatasetTypeProperties() {
     }
 
     /**
      * Get the location property: The location of the avro storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -45,7 +49,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Set the location property: The location of the avro storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -55,9 +59,9 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the avroCompressionCodec value.
      */
     public Object avroCompressionCodec() {
@@ -65,9 +69,9 @@ public final class AvroDatasetTypeProperties {
     }
 
     /**
-     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Get the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @return the avroCompressionLevel value.
      */
     public Integer avroCompressionLevel() {
@@ -87,7 +91,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Set the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @param avroCompressionLevel the avroCompressionLevel value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -98,15 +102,13 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model AvroDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model AvroDatasetTypeProperties"));
         } else {
             location().validate();
         }

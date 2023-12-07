@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PredefinedUrlCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PredefinedUrlCategory model =
-            BinaryData
-                .fromString("{\"action\":\"vvnchrkcc\",\"name\":\"wwzjuqkhrsajiwku\"}")
-                .toObject(PredefinedUrlCategory.class);
-        Assertions.assertEquals("vvnchrkcc", model.action());
-        Assertions.assertEquals("wwzjuqkhrsajiwku", model.name());
+        PredefinedUrlCategory model = BinaryData.fromString("{\"action\":\"qdqgbi\",\"name\":\"ylihkaetckt\"}")
+            .toObject(PredefinedUrlCategory.class);
+        Assertions.assertEquals("qdqgbi", model.action());
+        Assertions.assertEquals("ylihkaetckt", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PredefinedUrlCategory model = new PredefinedUrlCategory().withAction("vvnchrkcc").withName("wwzjuqkhrsajiwku");
+        PredefinedUrlCategory model = new PredefinedUrlCategory().withAction("qdqgbi").withName("ylihkaetckt");
         model = BinaryData.fromObject(model).toObject(PredefinedUrlCategory.class);
-        Assertions.assertEquals("vvnchrkcc", model.action());
-        Assertions.assertEquals("wwzjuqkhrsajiwku", model.name());
+        Assertions.assertEquals("qdqgbi", model.action());
+        Assertions.assertEquals("ylihkaetckt", model.name());
     }
 }

@@ -34,50 +34,32 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"ijyzhmf\":{\"type\":\"Float\",\"value\":\"datavjvwkzaqqkq\"},\"gxunldbku\":{\"type\":\"Bool\",\"value\":\"datasqiqz\"},\"t\":{\"type\":\"Object\",\"value\":\"datanjiwzqnbjk\"},\"wyyyjage\":{\"type\":\"Float\",\"value\":\"datamfnjuzvww\"}},\"name\":\"ghxjwiggcaim\",\"type\":\"xpaytzqgsaegaahw\",\"etag\":\"rdxhgrg\",\"id\":\"mwkykvoskjixb\"}";
+        String responseStr
+            = "{\"properties\":{\"ijyzhmf\":{\"type\":\"Float\",\"value\":\"datavjvwkzaqqkq\"},\"gxunldbku\":{\"type\":\"Bool\",\"value\":\"datasqiqz\"},\"t\":{\"type\":\"Object\",\"value\":\"datanjiwzqnbjk\"},\"wyyyjage\":{\"type\":\"Float\",\"value\":\"datamfnjuzvww\"}},\"name\":\"ghxjwiggcaim\",\"type\":\"xpaytzqgsaegaahw\",\"etag\":\"rdxhgrg\",\"id\":\"mwkykvoskjixb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalParameterResource response =
-            manager
-                .globalParameters()
-                .define("f")
-                .withExistingFactory("spocutpnyz", "tgkdwvtmmvqliq")
-                .withProperties(
-                    mapOf(
-                        "puavxidytjmk",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("datarlji"),
-                        "agfbreyvr",
-                        new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datazgopckm"),
-                        "fryourlywxjvsqz",
-                        new GlobalParameterSpecification()
-                            .withType(GlobalParameterType.ARRAY)
-                            .withValue("datacikwqtl")))
+        GlobalParameterResource response
+            = manager.globalParameters().define("f").withExistingFactory("spocutpnyz", "tgkdwvtmmvqliq")
+                .withProperties(mapOf("puavxidytjmk",
+                    new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("datarlji"),
+                    "agfbreyvr",
+                    new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datazgopckm"),
+                    "fryourlywxjvsqz",
+                    new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datacikwqtl")))
                 .create();
 
         Assertions.assertEquals("mwkykvoskjixb", response.id());

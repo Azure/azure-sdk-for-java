@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Core resource properties. */
+/**
+ * Core resource properties.
+ */
 @Fluent
 public final class MSDeployProperties extends MSDeployCore {
     /*
@@ -19,14 +21,16 @@ public final class MSDeployProperties extends MSDeployCore {
     @JsonProperty(value = "addOnPackages")
     private List<MSDeployCore> addOnPackages;
 
-    /** Creates an instance of MSDeployProperties class. */
+    /**
+     * Creates an instance of MSDeployProperties class.
+     */
     public MSDeployProperties() {
     }
 
     /**
      * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
      * MSDeploy rule.
-     *
+     * 
      * @return the addOnPackages value.
      */
     public List<MSDeployCore> addOnPackages() {
@@ -36,7 +40,7 @@ public final class MSDeployProperties extends MSDeployCore {
     /**
      * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
      * MSDeploy rule.
-     *
+     * 
      * @param addOnPackages the addOnPackages value to set.
      * @return the MSDeployProperties object itself.
      */
@@ -45,49 +49,63 @@ public final class MSDeployProperties extends MSDeployCore {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withPackageUri(String packageUri) {
         super.withPackageUri(packageUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withConnectionString(String connectionString) {
         super.withConnectionString(connectionString);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withDbType(String dbType) {
         super.withDbType(dbType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withSetParametersXmlFileUri(String setParametersXmlFileUri) {
         super.withSetParametersXmlFileUri(setParametersXmlFileUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withSetParameters(Map<String, String> setParameters) {
         super.withSetParameters(setParameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withSkipAppData(Boolean skipAppData) {
         super.withSkipAppData(skipAppData);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployProperties withAppOffline(Boolean appOffline) {
         super.withAppOffline(appOffline);
@@ -96,7 +114,7 @@ public final class MSDeployProperties extends MSDeployCore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

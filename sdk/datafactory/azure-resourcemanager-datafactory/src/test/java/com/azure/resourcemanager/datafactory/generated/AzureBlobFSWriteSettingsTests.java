@@ -10,21 +10,16 @@ import com.azure.resourcemanager.datafactory.models.AzureBlobFSWriteSettings;
 public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBlobFSWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datacbwmvp\",\"maxConcurrentConnections\":\"datajyzicel\",\"disableMetricsCollection\":\"dataazcgwnibnduqgji\",\"copyBehavior\":\"dataxxiao\",\"\":{\"pugnvhtgwadu\":\"datauhumgw\"}}")
-                .toObject(AzureBlobFSWriteSettings.class);
+        AzureBlobFSWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datakcxcmjkro\",\"maxConcurrentConnections\":\"datamtrhwwdfncquty\",\"disableMetricsCollection\":\"datahzlvkmirnvdbza\",\"copyBehavior\":\"dataepbmogtfpksk\",\"\":{\"frlyynkg\":\"datao\",\"zhngw\":\"dataych\",\"ioe\":\"databhjgl\",\"mmf\":\"datadgnuoewfgt\"}}")
+            .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model =
-            new AzureBlobFSWriteSettings()
-                .withMaxConcurrentConnections("datajyzicel")
-                .withDisableMetricsCollection("dataazcgwnibnduqgji")
-                .withCopyBehavior("dataxxiao")
-                .withBlockSizeInMB("datacbwmvp");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings()
+            .withMaxConcurrentConnections("datamtrhwwdfncquty").withDisableMetricsCollection("datahzlvkmirnvdbza")
+            .withCopyBehavior("dataepbmogtfpksk").withBlockSizeInMB("datakcxcmjkro");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

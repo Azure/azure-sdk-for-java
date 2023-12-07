@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of source controls. */
+/**
+ * Collection of source controls.
+ */
 @Fluent
 public final class SourceControlCollection {
     /*
@@ -25,13 +27,15 @@ public final class SourceControlCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SourceControlCollection class. */
+    /**
+     * Creates an instance of SourceControlCollection class.
+     */
     public SourceControlCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SourceControlInner> value() {
@@ -40,7 +44,7 @@ public final class SourceControlCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SourceControlCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class SourceControlCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class SourceControlCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SourceControlCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SourceControlCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

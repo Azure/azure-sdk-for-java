@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the custom Open ID Connect provider. */
+/**
+ * The configuration settings of the custom Open ID Connect provider.
+ */
 @Fluent
 public final class CustomOpenIdConnectProvider {
     /*
@@ -28,14 +30,16 @@ public final class CustomOpenIdConnectProvider {
     @JsonProperty(value = "login")
     private OpenIdConnectLogin login;
 
-    /** Creates an instance of CustomOpenIdConnectProvider class. */
+    /**
+     * Creates an instance of CustomOpenIdConnectProvider class.
+     */
     public CustomOpenIdConnectProvider() {
     }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be
      * enabled; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -45,7 +49,7 @@ public final class CustomOpenIdConnectProvider {
     /**
      * Set the enabled property: &lt;code&gt;false&lt;/code&gt; if the custom Open ID provider provider should not be
      * enabled; otherwise, &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the CustomOpenIdConnectProvider object itself.
      */
@@ -57,7 +61,7 @@ public final class CustomOpenIdConnectProvider {
     /**
      * Get the registration property: The configuration settings of the app registration for the custom Open ID Connect
      * provider.
-     *
+     * 
      * @return the registration value.
      */
     public OpenIdConnectRegistration registration() {
@@ -67,7 +71,7 @@ public final class CustomOpenIdConnectProvider {
     /**
      * Set the registration property: The configuration settings of the app registration for the custom Open ID Connect
      * provider.
-     *
+     * 
      * @param registration the registration value to set.
      * @return the CustomOpenIdConnectProvider object itself.
      */
@@ -78,7 +82,7 @@ public final class CustomOpenIdConnectProvider {
 
     /**
      * Get the login property: The configuration settings of the login flow of the custom Open ID Connect provider.
-     *
+     * 
      * @return the login value.
      */
     public OpenIdConnectLogin login() {
@@ -87,7 +91,7 @@ public final class CustomOpenIdConnectProvider {
 
     /**
      * Set the login property: The configuration settings of the login flow of the custom Open ID Connect provider.
-     *
+     * 
      * @param login the login value to set.
      * @return the CustomOpenIdConnectProvider object itself.
      */
@@ -98,7 +102,7 @@ public final class CustomOpenIdConnectProvider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

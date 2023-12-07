@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperConnectionReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperConnectionReference model =
-            BinaryData
-                .fromString("{\"connectionName\":\"k\",\"type\":\"linkedservicetype\"}")
+        MapperConnectionReference model
+            = BinaryData.fromString("{\"connectionName\":\"k\",\"type\":\"linkedservicetype\"}")
                 .toObject(MapperConnectionReference.class);
         Assertions.assertEquals("k", model.connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());
@@ -22,8 +21,8 @@ public final class MapperConnectionReferenceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperConnectionReference model =
-            new MapperConnectionReference().withConnectionName("k").withType(ConnectionType.LINKEDSERVICETYPE);
+        MapperConnectionReference model
+            = new MapperConnectionReference().withConnectionName("k").withType(ConnectionType.LINKEDSERVICETYPE);
         model = BinaryData.fromObject(model).toObject(MapperConnectionReference.class);
         Assertions.assertEquals("k", model.connectionName());
         Assertions.assertEquals(ConnectionType.LINKEDSERVICETYPE, model.type());

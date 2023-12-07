@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TumblingWindowTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TumblingWindowTrigger model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"TumblingWindowTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"vlnv\",\"name\":\"l\"},\"parameters\":{\"d\":\"dataxpugetwgjlx\",\"tzkdqi\":\"datavfnqazvavspjdxa\",\"yredzhnylir\":\"dataumaijcullkyrss\",\"jrrolwrv\":\"datarxykplvjsqazecdo\"}},\"typeProperties\":{\"frequency\":\"Minute\",\"interval\":243301845,\"startTime\":\"2021-10-01T16:23:36Z\",\"endTime\":\"2021-02-01T07:00:41Z\",\"delay\":\"dataykusfqmgjexiqejv\",\"maxConcurrency\":408948443,\"retryPolicy\":{\"count\":\"datanoexwarqazfsrv\",\"intervalInSeconds\":425533184},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]},\"description\":\"hazwewh\",\"runtimeState\":\"Started\",\"annotations\":[\"datadycspidc\",\"dataxjfgxynuxvya\",\"datakcuozwowwmulq\",\"dataaeq\"],\"\":{\"cxkrzuzepdvx\":\"datatqlbjezcwf\"}}")
-                .toObject(TumblingWindowTrigger.class);
+        TumblingWindowTrigger model = BinaryData.fromString(
+            "{\"type\":\"TumblingWindowTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"vlnv\",\"name\":\"l\"},\"parameters\":{\"d\":\"dataxpugetwgjlx\",\"tzkdqi\":\"datavfnqazvavspjdxa\",\"yredzhnylir\":\"dataumaijcullkyrss\",\"jrrolwrv\":\"datarxykplvjsqazecdo\"}},\"typeProperties\":{\"frequency\":\"Minute\",\"interval\":243301845,\"startTime\":\"2021-10-01T16:23:36Z\",\"endTime\":\"2021-02-01T07:00:41Z\",\"delay\":\"dataykusfqmgjexiqejv\",\"maxConcurrency\":408948443,\"retryPolicy\":{\"count\":\"datanoexwarqazfsrv\",\"intervalInSeconds\":425533184},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]},\"description\":\"hazwewh\",\"runtimeState\":\"Started\",\"annotations\":[\"datadycspidc\",\"dataxjfgxynuxvya\",\"datakcuozwowwmulq\",\"dataaeq\"],\"\":{\"cxkrzuzepdvx\":\"datatqlbjezcwf\"}}")
+            .toObject(TumblingWindowTrigger.class);
         Assertions.assertEquals("hazwewh", model.description());
         Assertions.assertEquals("vlnv", model.pipeline().pipelineReference().referenceName());
         Assertions.assertEquals("l", model.pipeline().pipelineReference().name());
@@ -38,37 +36,19 @@ public final class TumblingWindowTriggerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TumblingWindowTrigger model =
-            new TumblingWindowTrigger()
-                .withDescription("hazwewh")
-                .withAnnotations(Arrays.asList("datadycspidc", "dataxjfgxynuxvya", "datakcuozwowwmulq", "dataaeq"))
-                .withPipeline(
-                    new TriggerPipelineReference()
-                        .withPipelineReference(new PipelineReference().withReferenceName("vlnv").withName("l"))
-                        .withParameters(
-                            mapOf(
-                                "d",
-                                "dataxpugetwgjlx",
-                                "tzkdqi",
-                                "datavfnqazvavspjdxa",
-                                "yredzhnylir",
-                                "dataumaijcullkyrss",
-                                "jrrolwrv",
-                                "datarxykplvjsqazecdo")))
-                .withFrequency(TumblingWindowFrequency.MINUTE)
-                .withInterval(243301845)
-                .withStartTime(OffsetDateTime.parse("2021-10-01T16:23:36Z"))
-                .withEndTime(OffsetDateTime.parse("2021-02-01T07:00:41Z"))
-                .withDelay("dataykusfqmgjexiqejv")
-                .withMaxConcurrency(408948443)
-                .withRetryPolicy(new RetryPolicy().withCount("datanoexwarqazfsrv").withIntervalInSeconds(425533184))
-                .withDependsOn(
-                    Arrays
-                        .asList(
-                            new DependencyReference(),
-                            new DependencyReference(),
-                            new DependencyReference(),
-                            new DependencyReference()));
+        TumblingWindowTrigger model = new TumblingWindowTrigger().withDescription("hazwewh")
+            .withAnnotations(Arrays.asList("datadycspidc", "dataxjfgxynuxvya", "datakcuozwowwmulq", "dataaeq"))
+            .withPipeline(new TriggerPipelineReference()
+                .withPipelineReference(new PipelineReference().withReferenceName("vlnv").withName("l"))
+                .withParameters(mapOf("d", "dataxpugetwgjlx", "tzkdqi", "datavfnqazvavspjdxa", "yredzhnylir",
+                    "dataumaijcullkyrss", "jrrolwrv", "datarxykplvjsqazecdo")))
+            .withFrequency(TumblingWindowFrequency.MINUTE).withInterval(243301845)
+            .withStartTime(OffsetDateTime.parse("2021-10-01T16:23:36Z"))
+            .withEndTime(OffsetDateTime.parse("2021-02-01T07:00:41Z")).withDelay("dataykusfqmgjexiqejv")
+            .withMaxConcurrency(408948443)
+            .withRetryPolicy(new RetryPolicy().withCount("datanoexwarqazfsrv").withIntervalInSeconds(425533184))
+            .withDependsOn(Arrays.asList(new DependencyReference(), new DependencyReference(),
+                new DependencyReference(), new DependencyReference()));
         model = BinaryData.fromObject(model).toObject(TumblingWindowTrigger.class);
         Assertions.assertEquals("hazwewh", model.description());
         Assertions.assertEquals("vlnv", model.pipeline().pipelineReference().referenceName());

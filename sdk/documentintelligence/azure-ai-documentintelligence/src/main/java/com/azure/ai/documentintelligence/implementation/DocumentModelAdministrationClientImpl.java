@@ -6,9 +6,11 @@ package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelCopyToOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -715,7 +717,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+    public PollerFlux<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModelWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.buildDocumentModelWithResponseAsync(buildRequest, requestOptions),
@@ -725,7 +727,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -761,7 +763,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModelWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.buildDocumentModelWithResponse(buildRequest, requestOptions),
@@ -771,7 +773,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentModelBuildOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -956,7 +958,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+    public PollerFlux<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModelWithModelAsync(BinaryData composeRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.composeModelWithResponseAsync(composeRequest, requestOptions),
@@ -966,7 +968,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
-            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -998,7 +1000,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModelWithModel(BinaryData composeRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.composeModelWithResponse(composeRequest, requestOptions),
@@ -1008,7 +1010,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelComposeOperationDetails.class),
-            TypeReference.createInstance(DocumentModelComposeOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -1271,7 +1273,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
+    public PollerFlux<DocumentModelCopyToOperationDetails, DocumentModelDetails>
         beginCopyModelToWithModelAsync(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, requestOptions),
@@ -1281,7 +1283,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
-            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -1310,7 +1312,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails>
         beginCopyModelToWithModel(String modelId, BinaryData copyToRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.copyModelToWithResponse(modelId, copyToRequest, requestOptions),
@@ -1320,7 +1322,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentModelCopyToOperationDetails.class),
-            TypeReference.createInstance(DocumentModelCopyToOperationDetails.class));
+            TypeReference.createInstance(DocumentModelDetails.class));
     }
 
     /**
@@ -2305,7 +2307,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+    public PollerFlux<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifierWithModelAsync(BinaryData buildRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.buildClassifierWithResponseAsync(buildRequest, requestOptions),
@@ -2315,7 +2317,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
+            TypeReference.createInstance(DocumentClassifierDetails.class));
     }
 
     /**
@@ -2352,7 +2354,7 @@ public final class DocumentModelAdministrationClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifierWithModel(BinaryData buildRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.buildClassifierWithResponse(buildRequest, requestOptions),
@@ -2362,7 +2364,7 @@ public final class DocumentModelAdministrationClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class),
-            TypeReference.createInstance(DocumentClassifierBuildOperationDetails.class));
+            TypeReference.createInstance(DocumentClassifierDetails.class));
     }
 
     /**

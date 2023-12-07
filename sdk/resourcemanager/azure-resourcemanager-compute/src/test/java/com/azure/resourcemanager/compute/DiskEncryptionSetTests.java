@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSet;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Collections;
 
 public class DiskEncryptionSetTests extends ComputeManagementTest {
     String rgName = "";
@@ -31,6 +33,21 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     protected void cleanUpResources() {
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
+        }
+    }
+
+    @Override
+    protected void beforeTest() {
+        super.beforeTest();
+
+        if (interceptorManager.isPlaybackMode()) {
+            if (!testContextManager.doNotRecordTest()) {
+                // don't match api-version when matching url
+                interceptorManager.addMatchers(new CustomMatcher()
+                    .setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+                    .setExcludedHeaders(Collections.singletonList("Accept-Language"))
+                    .setIgnoredQueryParameters(Collections.singletonList("api-version")));
+            }
         }
     }
 

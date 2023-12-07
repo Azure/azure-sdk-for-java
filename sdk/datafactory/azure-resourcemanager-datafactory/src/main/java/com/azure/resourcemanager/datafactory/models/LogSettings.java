@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log settings. */
+/**
+ * Log settings.
+ */
 @Fluent
 public final class LogSettings {
     /*
@@ -29,14 +31,16 @@ public final class LogSettings {
     @JsonProperty(value = "logLocationSettings", required = true)
     private LogLocationSettings logLocationSettings;
 
-    /** Creates an instance of LogSettings class. */
+    /**
+     * Creates an instance of LogSettings class.
+     */
     public LogSettings() {
     }
 
     /**
      * Get the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enableCopyActivityLog value.
      */
     public Object enableCopyActivityLog() {
@@ -46,7 +50,7 @@ public final class LogSettings {
     /**
      * Set the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enableCopyActivityLog the enableCopyActivityLog value to set.
      * @return the LogSettings object itself.
      */
@@ -57,7 +61,7 @@ public final class LogSettings {
 
     /**
      * Get the copyActivityLogSettings property: Specifies settings for copy activity log.
-     *
+     * 
      * @return the copyActivityLogSettings value.
      */
     public CopyActivityLogSettings copyActivityLogSettings() {
@@ -66,7 +70,7 @@ public final class LogSettings {
 
     /**
      * Set the copyActivityLogSettings property: Specifies settings for copy activity log.
-     *
+     * 
      * @param copyActivityLogSettings the copyActivityLogSettings value to set.
      * @return the LogSettings object itself.
      */
@@ -77,7 +81,7 @@ public final class LogSettings {
 
     /**
      * Get the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @return the logLocationSettings value.
      */
     public LogLocationSettings logLocationSettings() {
@@ -86,7 +90,7 @@ public final class LogSettings {
 
     /**
      * Set the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @param logLocationSettings the logLocationSettings value to set.
      * @return the LogSettings object itself.
      */
@@ -97,7 +101,7 @@ public final class LogSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,9 +109,8 @@ public final class LogSettings {
             copyActivityLogSettings().validate();
         }
         if (logLocationSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property logLocationSettings in model LogSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property logLocationSettings in model LogSettings"));
         } else {
             logLocationSettings().validate();
         }

@@ -7,9 +7,10 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
-/** ControlPlaneProfile - The control plane properties for the provisioned cluster. */
+/**
+ * ControlPlaneProfile - The control plane properties for the provisioned cluster.
+ */
 @Fluent
 public final class ControlPlaneProfile extends NamedAgentPoolProfile {
     /*
@@ -24,13 +25,15 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
     @JsonProperty(value = "linuxProfile")
     private LinuxProfileProperties linuxProfile;
 
-    /** Creates an instance of ControlPlaneProfile class. */
+    /**
+     * Creates an instance of ControlPlaneProfile class.
+     */
     public ControlPlaneProfile() {
     }
 
     /**
      * Get the controlPlaneEndpoint property: API server endpoint for the control plane.
-     *
+     * 
      * @return the controlPlaneEndpoint value.
      */
     public ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint() {
@@ -39,19 +42,19 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
 
     /**
      * Set the controlPlaneEndpoint property: API server endpoint for the control plane.
-     *
+     * 
      * @param controlPlaneEndpoint the controlPlaneEndpoint value to set.
      * @return the ControlPlaneProfile object itself.
      */
-    public ControlPlaneProfile withControlPlaneEndpoint(
-        ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint) {
+    public ControlPlaneProfile
+        withControlPlaneEndpoint(ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint) {
         this.controlPlaneEndpoint = controlPlaneEndpoint;
         return this;
     }
 
     /**
      * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
-     *
+     * 
      * @return the linuxProfile value.
      */
     public LinuxProfileProperties linuxProfile() {
@@ -60,7 +63,7 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
 
     /**
      * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
-     *
+     * 
      * @param linuxProfile the linuxProfile value to set.
      * @return the ControlPlaneProfile object itself.
      */
@@ -69,100 +72,72 @@ public final class ControlPlaneProfile extends NamedAgentPoolProfile {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withName(String name) {
-        super.withName(name);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlPlaneProfile withCount(Integer count) {
         super.withCount(count);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withAvailabilityZones(List<String> availabilityZones) {
-        super.withAvailabilityZones(availabilityZones);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMaxCount(Integer maxCount) {
-        super.withMaxCount(maxCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMaxPods(Integer maxPods) {
-        super.withMaxPods(maxPods);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMinCount(Integer minCount) {
-        super.withMinCount(minCount);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withMode(Mode mode) {
-        super.withMode(mode);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeLabels(Map<String, String> nodeLabels) {
-        super.withNodeLabels(nodeLabels);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeTaints(List<String> nodeTaints) {
-        super.withNodeTaints(nodeTaints);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withOsType(OsType osType) {
-        super.withOsType(osType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ControlPlaneProfile withNodeImageVersion(String nodeImageVersion) {
-        super.withNodeImageVersion(nodeImageVersion);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControlPlaneProfile withVmSize(String vmSize) {
         super.withVmSize(vmSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ControlPlaneProfile withCloudProviderProfile(CloudProviderProfile cloudProviderProfile) {
-        super.withCloudProviderProfile(cloudProviderProfile);
+    public ControlPlaneProfile withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlPlaneProfile withAvailabilityZones(List<String> availabilityZones) {
+        super.withAvailabilityZones(availabilityZones);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlPlaneProfile withOsType(OsType osType) {
+        super.withOsType(osType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlPlaneProfile withOsSku(Ossku osSku) {
+        super.withOsSku(osSku);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ControlPlaneProfile withNodeImageVersion(String nodeImageVersion) {
+        super.withNodeImageVersion(nodeImageVersion);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

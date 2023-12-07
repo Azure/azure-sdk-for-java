@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Execution policy for an activity. */
+/**
+ * Execution policy for an activity.
+ */
 @Fluent
 public final class ActivityPolicy {
     /*
@@ -50,16 +52,19 @@ public final class ActivityPolicy {
     /*
      * Execution policy for an activity.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ActivityPolicy class. */
+    /**
+     * Creates an instance of ActivityPolicy class.
+     */
     public ActivityPolicy() {
     }
 
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. The default timeout is 7 days. Type:
      * string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the timeout value.
      */
     public Object timeout() {
@@ -69,7 +74,7 @@ public final class ActivityPolicy {
     /**
      * Set the timeout property: Specifies the timeout for the activity to run. The default timeout is 7 days. Type:
      * string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -81,7 +86,7 @@ public final class ActivityPolicy {
     /**
      * Get the retry property: Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @return the retry value.
      */
     public Object retry() {
@@ -91,7 +96,7 @@ public final class ActivityPolicy {
     /**
      * Set the retry property: Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @param retry the retry value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -101,8 +106,9 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
-     *
+     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
+     * sec.
+     * 
      * @return the retryIntervalInSeconds value.
      */
     public Integer retryIntervalInSeconds() {
@@ -110,8 +116,9 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
-     *
+     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
+     * sec.
+     * 
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -123,7 +130,7 @@ public final class ActivityPolicy {
     /**
      * Get the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @return the secureInput value.
      */
     public Boolean secureInput() {
@@ -133,7 +140,7 @@ public final class ActivityPolicy {
     /**
      * Set the secureInput property: When set to true, Input from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @param secureInput the secureInput value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -145,7 +152,7 @@ public final class ActivityPolicy {
     /**
      * Get the secureOutput property: When set to true, Output from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @return the secureOutput value.
      */
     public Boolean secureOutput() {
@@ -155,7 +162,7 @@ public final class ActivityPolicy {
     /**
      * Set the secureOutput property: When set to true, Output from activity is considered as secure and will not be
      * logged to monitoring.
-     *
+     * 
      * @param secureOutput the secureOutput value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -166,7 +173,7 @@ public final class ActivityPolicy {
 
     /**
      * Get the additionalProperties property: Execution policy for an activity.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -176,7 +183,7 @@ public final class ActivityPolicy {
 
     /**
      * Set the additionalProperties property: Execution policy for an activity.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityPolicy object itself.
      */
@@ -195,7 +202,7 @@ public final class ActivityPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The resource quota limit value. */
+/**
+ * The resource quota limit value.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "limitObjectType")
 @JsonTypeName("LimitValue")
 @Fluent
@@ -26,13 +28,15 @@ public final class LimitObject extends LimitJsonObject {
     @JsonProperty(value = "limitType")
     private QuotaLimitTypes limitType;
 
-    /** Creates an instance of LimitObject class. */
+    /**
+     * Creates an instance of LimitObject class.
+     */
     public LimitObject() {
     }
 
     /**
      * Get the value property: The quota/limit value.
-     *
+     * 
      * @return the value value.
      */
     public int value() {
@@ -41,7 +45,7 @@ public final class LimitObject extends LimitJsonObject {
 
     /**
      * Set the value property: The quota/limit value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LimitObject object itself.
      */
@@ -52,7 +56,7 @@ public final class LimitObject extends LimitJsonObject {
 
     /**
      * Get the limitType property: The quota or usages limit types.
-     *
+     * 
      * @return the limitType value.
      */
     public QuotaLimitTypes limitType() {
@@ -61,7 +65,7 @@ public final class LimitObject extends LimitJsonObject {
 
     /**
      * Set the limitType property: The quota or usages limit types.
-     *
+     * 
      * @param limitType the limitType value to set.
      * @return the LimitObject object itself.
      */
@@ -72,7 +76,7 @@ public final class LimitObject extends LimitJsonObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

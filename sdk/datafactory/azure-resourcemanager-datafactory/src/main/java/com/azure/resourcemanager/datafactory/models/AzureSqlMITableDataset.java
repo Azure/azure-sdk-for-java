@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure SQL Managed Instance dataset. */
+/**
+ * The Azure SQL Managed Instance dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSqlMITable")
 @Fluent
@@ -23,62 +25,78 @@ public final class AzureSqlMITableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of AzureSqlMITableDataset class. */
+    /**
+     * Creates an instance of AzureSqlMITableDataset class.
+     */
     public AzureSqlMITableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -98,7 +116,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -113,7 +131,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the schema property: The schema name of the Azure SQL Managed Instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schemaTypePropertiesSchema() {
@@ -123,7 +141,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the schema property: The schema name of the Azure SQL Managed Instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -138,7 +156,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the table property: The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -148,7 +166,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the table property: The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -162,7 +180,7 @@ public final class AzureSqlMITableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

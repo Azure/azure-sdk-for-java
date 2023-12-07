@@ -7,6 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -14,6 +15,7 @@ import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
@@ -717,5 +719,80 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     @Test
     public void getShareName() {
         assertEquals(shareName, primaryShareAsyncClient.getShareName());
+    }
+
+    @Test
+    public void defaultAudience() {
+        primaryShareAsyncClient.create().block();
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder().shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP))
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(aadShareClient.createPermission(permission))
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        primaryShareAsyncClient.create().block();
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience(primaryShareAsyncClient.getAccountName()))
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(aadShareClient.createPermission(permission))
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void audienceError() {
+        primaryShareAsyncClient.create().block();
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(aadShareClient.createPermission(permission))
+            .verifyErrorSatisfies(r -> {
+                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
+                assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+            });
+    }
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", primaryShareAsyncClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        primaryShareAsyncClient.create().block();
+        ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(audience)
+            .buildAsyncClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        StepVerifier.create(aadShareClient.createPermission(permission))
+            .assertNext(r -> assertNotNull(r))
+            .verifyComplete();
     }
 }

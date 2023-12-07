@@ -11,14 +11,19 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.dashboard.fluent.models.EnterpriseDetailsInner;
+import com.azure.resourcemanager.dashboard.fluent.models.GrafanaAvailablePluginListResponseInner;
 import com.azure.resourcemanager.dashboard.fluent.models.ManagedGrafanaInner;
+import com.azure.resourcemanager.dashboard.models.GrafanasUpdateResponse;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in GrafanasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GrafanasClient.
+ */
 public interface GrafanasClient {
     /**
      * List all resources of workspaces for Grafana under the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -28,7 +33,7 @@ public interface GrafanasClient {
 
     /**
      * List all resources of workspaces for Grafana under the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +45,7 @@ public interface GrafanasClient {
 
     /**
      * List all resources of workspaces for Grafana under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +57,7 @@ public interface GrafanasClient {
 
     /**
      * List all resources of workspaces for Grafana under the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +70,22 @@ public interface GrafanasClient {
 
     /**
      * Get the properties of a specific workspace for Grafana resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a specific workspace for Grafana resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ManagedGrafanaInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
+
+    /**
+     * Get the properties of a specific workspace for Grafana resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,24 +97,9 @@ public interface GrafanasClient {
     ManagedGrafanaInner getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
-     * Get the properties of a specific workspace for Grafana resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a specific workspace for Grafana resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedGrafanaInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
-
-    /**
      * Create or update a workspace for Grafana resource. This API is idempotent, so user can either create a new
      * grafana or update an existing grafana.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The grafana resource type.
@@ -104,13 +109,13 @@ public interface GrafanasClient {
      * @return the {@link SyncPoller} for polling of the grafana resource type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginCreate(
-        String resourceGroupName, String workspaceName, ManagedGrafanaInner requestBodyParameters);
+    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginCreate(String resourceGroupName,
+        String workspaceName, ManagedGrafanaInner requestBodyParameters);
 
     /**
      * Create or update a workspace for Grafana resource. This API is idempotent, so user can either create a new
      * grafana or update an existing grafana.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The grafana resource type.
@@ -121,13 +126,13 @@ public interface GrafanasClient {
      * @return the {@link SyncPoller} for polling of the grafana resource type.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginCreate(
-        String resourceGroupName, String workspaceName, ManagedGrafanaInner requestBodyParameters, Context context);
+    SyncPoller<PollResult<ManagedGrafanaInner>, ManagedGrafanaInner> beginCreate(String resourceGroupName,
+        String workspaceName, ManagedGrafanaInner requestBodyParameters, Context context);
 
     /**
      * Create or update a workspace for Grafana resource. This API is idempotent, so user can either create a new
      * grafana or update an existing grafana.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The grafana resource type.
@@ -137,13 +142,13 @@ public interface GrafanasClient {
      * @return the grafana resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedGrafanaInner create(
-        String resourceGroupName, String workspaceName, ManagedGrafanaInner requestBodyParameters);
+    ManagedGrafanaInner create(String resourceGroupName, String workspaceName,
+        ManagedGrafanaInner requestBodyParameters);
 
     /**
      * Create or update a workspace for Grafana resource. This API is idempotent, so user can either create a new
      * grafana or update an existing grafana.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The grafana resource type.
@@ -154,12 +159,28 @@ public interface GrafanasClient {
      * @return the grafana resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedGrafanaInner create(
-        String resourceGroupName, String workspaceName, ManagedGrafanaInner requestBodyParameters, Context context);
+    ManagedGrafanaInner create(String resourceGroupName, String workspaceName,
+        ManagedGrafanaInner requestBodyParameters, Context context);
 
     /**
      * Update a workspace for Grafana resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param requestBodyParameters The parameters for a PATCH request to a grafana resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the grafana resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GrafanasUpdateResponse updateWithResponse(String resourceGroupName, String workspaceName,
+        ManagedGrafanaUpdateParameters requestBodyParameters, Context context);
+
+    /**
+     * Update a workspace for Grafana resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param requestBodyParameters The parameters for a PATCH request to a grafana resource.
@@ -169,31 +190,12 @@ public interface GrafanasClient {
      * @return the grafana resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedGrafanaInner update(
-        String resourceGroupName, String workspaceName, ManagedGrafanaUpdateParameters requestBodyParameters);
-
-    /**
-     * Update a workspace for Grafana resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The workspace name of Azure Managed Grafana.
-     * @param requestBodyParameters The parameters for a PATCH request to a grafana resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the grafana resource type along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedGrafanaInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedGrafanaUpdateParameters requestBodyParameters,
-        Context context);
+    ManagedGrafanaInner update(String resourceGroupName, String workspaceName,
+        ManagedGrafanaUpdateParameters requestBodyParameters);
 
     /**
      * Delete a workspace for Grafana resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public interface GrafanasClient {
 
     /**
      * Delete a workspace for Grafana resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param context The context to associate with this operation.
@@ -220,7 +222,7 @@ public interface GrafanasClient {
 
     /**
      * Delete a workspace for Grafana resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +234,7 @@ public interface GrafanasClient {
 
     /**
      * Delete a workspace for Grafana resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The workspace name of Azure Managed Grafana.
      * @param context The context to associate with this operation.
@@ -242,4 +244,60 @@ public interface GrafanasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Retrieve enterprise add-on details information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return enterprise details of a Grafana instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EnterpriseDetailsInner> checkEnterpriseDetailsWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
+
+    /**
+     * Retrieve enterprise add-on details information.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return enterprise details of a Grafana instance.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnterpriseDetailsInner checkEnterpriseDetails(String resourceGroupName, String workspaceName);
+
+    /**
+     * The fetchAvailablePlugins operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GrafanaAvailablePluginListResponseInner> fetchAvailablePluginsWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
+
+    /**
+     * The fetchAvailablePlugins operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The workspace name of Azure Managed Grafana.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GrafanaAvailablePluginListResponseInner fetchAvailablePlugins(String resourceGroupName, String workspaceName);
 }

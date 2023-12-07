@@ -12,9 +12,9 @@ stages:
           safeName: azureaitextanalytics
       # temporary env vars for custom text features
       EnvVars:
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
-        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
+        AZURE_TENANT_ID: $(TEXTANALYTICS_TENANT_ID)
+        AZURE_CLIENT_SECRET: $(TEXTANALYTICS_CLIENT_SECRET)
+        AZURE_CLIENT_ID: $(TEXTANALYTICS_CLIENT_ID)
         AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY: $(java-textanalytics-test-api-key)
         AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
         AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME: $(java-single-category-classify-project-name)

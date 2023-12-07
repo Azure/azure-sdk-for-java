@@ -8,8 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The IIS handler mappings used to define which handler processes HTTP requests with certain extension. For example, it
- * is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
+ * The IIS handler mappings used to define which handler processes HTTP requests with certain extension.
+ * For example, it is used to configure php-cgi.exe process to handle all HTTP requests with *.php extension.
  */
 @Fluent
 public final class HandlerMapping {
@@ -31,13 +31,16 @@ public final class HandlerMapping {
     @JsonProperty(value = "arguments")
     private String arguments;
 
-    /** Creates an instance of HandlerMapping class. */
+    /**
+     * Creates an instance of HandlerMapping class.
+     */
     public HandlerMapping() {
     }
 
     /**
-     * Get the extension property: Requests with this extension will be handled using the specified FastCGI application.
-     *
+     * Get the extension property: Requests with this extension will be handled using the specified FastCGI
+     * application.
+     * 
      * @return the extension value.
      */
     public String extension() {
@@ -45,8 +48,9 @@ public final class HandlerMapping {
     }
 
     /**
-     * Set the extension property: Requests with this extension will be handled using the specified FastCGI application.
-     *
+     * Set the extension property: Requests with this extension will be handled using the specified FastCGI
+     * application.
+     * 
      * @param extension the extension value to set.
      * @return the HandlerMapping object itself.
      */
@@ -57,7 +61,7 @@ public final class HandlerMapping {
 
     /**
      * Get the scriptProcessor property: The absolute path to the FastCGI application.
-     *
+     * 
      * @return the scriptProcessor value.
      */
     public String scriptProcessor() {
@@ -66,7 +70,7 @@ public final class HandlerMapping {
 
     /**
      * Set the scriptProcessor property: The absolute path to the FastCGI application.
-     *
+     * 
      * @param scriptProcessor the scriptProcessor value to set.
      * @return the HandlerMapping object itself.
      */
@@ -77,7 +81,7 @@ public final class HandlerMapping {
 
     /**
      * Get the arguments property: Command-line arguments to be passed to the script processor.
-     *
+     * 
      * @return the arguments value.
      */
     public String arguments() {
@@ -86,7 +90,7 @@ public final class HandlerMapping {
 
     /**
      * Set the arguments property: Command-line arguments to be passed to the script processor.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HandlerMapping object itself.
      */
@@ -97,7 +101,7 @@ public final class HandlerMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

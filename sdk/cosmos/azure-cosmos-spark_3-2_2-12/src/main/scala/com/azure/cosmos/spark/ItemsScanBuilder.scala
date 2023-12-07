@@ -27,7 +27,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     with SupportsPushDownRequiredColumns {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   val configMap = config.asScala.toMap
   val readConfig = CosmosReadConfig.parseCosmosReadConfig(configMap)
