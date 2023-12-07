@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Used to specify Blob container url to recording storage.
- */
+/** Used to specify Blob container url to recording storage. */
 @Fluent
 public final class BlobStorageInternal {
     /*
@@ -19,14 +17,8 @@ public final class BlobStorageInternal {
     private String containerUri;
 
     /**
-     * Creates an instance of BlobStorageInternal class.
-     */
-    public BlobStorageInternal() {
-    }
-
-    /**
      * Get the containerUri property: Url of a container or a location within a container.
-     * 
+     *
      * @return the containerUri value.
      */
     public String getContainerUri() {
@@ -35,7 +27,7 @@ public final class BlobStorageInternal {
 
     /**
      * Set the containerUri property: Url of a container or a location within a container.
-     * 
+     *
      * @param containerUri the containerUri value to set.
      * @return the BlobStorageInternal object itself.
      */
