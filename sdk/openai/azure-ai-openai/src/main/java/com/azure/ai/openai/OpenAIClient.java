@@ -1092,6 +1092,10 @@ public final class OpenAIClient {
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
         final BinaryData data = result.getData();
@@ -1151,6 +1155,10 @@ public final class OpenAIClient {
         // embedding the `model` in the request for non-Azure case
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
+        }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
         }
         final MultipartDataHelper helper = new MultipartDataHelper();
         final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
