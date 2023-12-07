@@ -19,9 +19,9 @@ import reactor.core.publisher.Sinks;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
@@ -99,7 +99,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
-    private final ReentrantLock createSubscriberLock = new ReentrantLock();
+    private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
     private final ServiceBusTracer tracer;
     /**
@@ -833,47 +833,37 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         if (messageSubscriber != null) {
             messageSubscriber.queueWork(work);
-            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
             return;
         }
 
-        final boolean isFirstWork;
-        createSubscriberLock.lock();
-        try {
-            messageSubscriber = synchronousMessageSubscriber.get();
-            isFirstWork = messageSubscriber == null;
-            if (isFirstWork) {
-                messageSubscriber = new SynchronousMessageSubscriber(asyncClient,
+        messageSubscriber = synchronousMessageSubscriber.updateAndGet(subscriber -> {
+            // Ensuring we create SynchronousMessageSubscriber only once.
+            if (subscriber == null) {
+                return new SynchronousMessageSubscriber(asyncClient,
                     work,
                     isPrefetchDisabled,
                     operationTimeout);
-                synchronousMessageSubscriber.set(messageSubscriber);
+            } else {
+                return subscriber;
             }
-        } finally {
-            createSubscriberLock.unlock();
-        }
+        });
 
         // NOTE: We asynchronously send the credit to the service as soon as receiveMessage() API is called (for first
         // time).
         // This means that there may be messages internally buffered before users start iterating the IterableStream.
         // If users do not iterate through the stream and their lock duration expires, it is possible that the
         // Service Bus message's delivery count will be incremented.
-        if (isFirstWork) {
-            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
-            // The 'subscribeWith' has side effects hence must not be called from the above block synchronized using 'createSubscriberLock'.
-            if (asyncClient.isV2()) {
-                if (asyncClient.isSessionEnabled()) {
-                    asyncClient.sessionSyncReceiveV2().subscribeWith(messageSubscriber);
-                } else {
-                    asyncClient.nonSessionSyncReceiveV2().subscribeWith(messageSubscriber);
-                }
-            } else {
-                asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
-            }
+        if (!syncSubscribed.getAndSet(true)) {
+            // The 'subscribeWith' has side effects hence must not be called from
+            // the above updateFunction of AtomicReference::updateAndGet.
+            asyncClient.receiveMessagesNoBackPressure().subscribeWith(messageSubscriber);
         } else {
             messageSubscriber.queueWork(work);
-            LOGGER.atVerbose().addKeyValue(WORK_ID_KEY, work.getId()).log("Receive request queued up.");
         }
+
+        LOGGER.atVerbose()
+            .addKeyValue(WORK_ID_KEY, work.getId())
+            .log("Receive request queued up.");
     }
 
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
