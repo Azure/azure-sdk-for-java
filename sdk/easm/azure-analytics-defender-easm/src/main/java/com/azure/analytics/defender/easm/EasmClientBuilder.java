@@ -43,7 +43,22 @@ import java.util.Objects;
 /**
  * A builder for creating a new instance of the EasmClient type.
  */
-@ServiceClientBuilder(serviceClients = { EasmClient.class, EasmAsyncClient.class })
+@ServiceClientBuilder(
+    serviceClients = {
+        AssetsClient.class,
+        DataConnectionsClient.class,
+        DiscoveryGroupsClient.class,
+        DiscoveryTemplatesClient.class,
+        ReportsClient.class,
+        SavedFiltersClient.class,
+        TasksClient.class,
+        AssetsAsyncClient.class,
+        DataConnectionsAsyncClient.class,
+        DiscoveryGroupsAsyncClient.class,
+        DiscoveryTemplatesAsyncClient.class,
+        ReportsAsyncClient.class,
+        SavedFiltersAsyncClient.class,
+        TasksAsyncClient.class })
 public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, ConfigurationTrait<EasmClientBuilder>,
     TokenCredentialTrait<EasmClientBuilder>, EndpointTrait<EasmClientBuilder> {
 
@@ -354,25 +369,145 @@ public final class EasmClientBuilder implements HttpTrait<EasmClientBuilder>, Co
         return httpPipeline;
     }
 
-    /**
-     * Builds an instance of EasmAsyncClient class.
-     *
-     * @return an instance of EasmAsyncClient.
-     */
-    @Generated
-    public EasmAsyncClient buildAsyncClient() {
-        return new EasmAsyncClient(buildInnerClient());
-    }
-
-    /**
-     * Builds an instance of EasmClient class.
-     *
-     * @return an instance of EasmClient.
-     */
-    @Generated
-    public EasmClient buildClient() {
-        return new EasmClient(buildInnerClient());
-    }
-
     private static final ClientLogger LOGGER = new ClientLogger(EasmClientBuilder.class);
+
+    /**
+     * Builds an instance of AssetsAsyncClient class.
+     *
+     * @return an instance of AssetsAsyncClient.
+     */
+    @Generated
+    public AssetsAsyncClient buildAssetsAsyncClient() {
+        return new AssetsAsyncClient(buildInnerClient().getAssets());
+    }
+
+    /**
+     * Builds an instance of DataConnectionsAsyncClient class.
+     *
+     * @return an instance of DataConnectionsAsyncClient.
+     */
+    @Generated
+    public DataConnectionsAsyncClient buildDataConnectionsAsyncClient() {
+        return new DataConnectionsAsyncClient(buildInnerClient().getDataConnections());
+    }
+
+    /**
+     * Builds an instance of DiscoveryGroupsAsyncClient class.
+     *
+     * @return an instance of DiscoveryGroupsAsyncClient.
+     */
+    @Generated
+    public DiscoveryGroupsAsyncClient buildDiscoveryGroupsAsyncClient() {
+        return new DiscoveryGroupsAsyncClient(buildInnerClient().getDiscoveryGroups());
+    }
+
+    /**
+     * Builds an instance of DiscoveryTemplatesAsyncClient class.
+     *
+     * @return an instance of DiscoveryTemplatesAsyncClient.
+     */
+    @Generated
+    public DiscoveryTemplatesAsyncClient buildDiscoveryTemplatesAsyncClient() {
+        return new DiscoveryTemplatesAsyncClient(buildInnerClient().getDiscoveryTemplates());
+    }
+
+    /**
+     * Builds an instance of ReportsAsyncClient class.
+     *
+     * @return an instance of ReportsAsyncClient.
+     */
+    @Generated
+    public ReportsAsyncClient buildReportsAsyncClient() {
+        return new ReportsAsyncClient(buildInnerClient().getReports());
+    }
+
+    /**
+     * Builds an instance of SavedFiltersAsyncClient class.
+     *
+     * @return an instance of SavedFiltersAsyncClient.
+     */
+    @Generated
+    public SavedFiltersAsyncClient buildSavedFiltersAsyncClient() {
+        return new SavedFiltersAsyncClient(buildInnerClient().getSavedFilters());
+    }
+
+    /**
+     * Builds an instance of TasksAsyncClient class.
+     *
+     * @return an instance of TasksAsyncClient.
+     */
+    @Generated
+    public TasksAsyncClient buildTasksAsyncClient() {
+        return new TasksAsyncClient(buildInnerClient().getTasks());
+    }
+
+    /**
+     * Builds an instance of AssetsClient class.
+     *
+     * @return an instance of AssetsClient.
+     */
+    @Generated
+    public AssetsClient buildAssetsClient() {
+        return new AssetsClient(buildInnerClient().getAssets());
+    }
+
+    /**
+     * Builds an instance of DataConnectionsClient class.
+     *
+     * @return an instance of DataConnectionsClient.
+     */
+    @Generated
+    public DataConnectionsClient buildDataConnectionsClient() {
+        return new DataConnectionsClient(buildInnerClient().getDataConnections());
+    }
+
+    /**
+     * Builds an instance of DiscoveryGroupsClient class.
+     *
+     * @return an instance of DiscoveryGroupsClient.
+     */
+    @Generated
+    public DiscoveryGroupsClient buildDiscoveryGroupsClient() {
+        return new DiscoveryGroupsClient(buildInnerClient().getDiscoveryGroups());
+    }
+
+    /**
+     * Builds an instance of DiscoveryTemplatesClient class.
+     *
+     * @return an instance of DiscoveryTemplatesClient.
+     */
+    @Generated
+    public DiscoveryTemplatesClient buildDiscoveryTemplatesClient() {
+        return new DiscoveryTemplatesClient(buildInnerClient().getDiscoveryTemplates());
+    }
+
+    /**
+     * Builds an instance of ReportsClient class.
+     *
+     * @return an instance of ReportsClient.
+     */
+    @Generated
+    public ReportsClient buildReportsClient() {
+        return new ReportsClient(buildInnerClient().getReports());
+    }
+
+    /**
+     * Builds an instance of SavedFiltersClient class.
+     *
+     * @return an instance of SavedFiltersClient.
+     */
+    @Generated
+    public SavedFiltersClient buildSavedFiltersClient() {
+        return new SavedFiltersClient(buildInnerClient().getSavedFilters());
+    }
+
+    /**
+     * Builds an instance of TasksClient class.
+     *
+     * @return an instance of TasksClient.
+     */
+    @Generated
+    public TasksClient buildTasksClient() {
+        return new TasksClient(buildInnerClient().getTasks());
+    }
 }
