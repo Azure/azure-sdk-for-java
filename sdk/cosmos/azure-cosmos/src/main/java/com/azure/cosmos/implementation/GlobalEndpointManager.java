@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -43,6 +44,17 @@ public class GlobalEndpointManager implements AutoCloseable {
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
+
+    private AtomicReference<String> latestDatabaseRefreshError = new AtomicReference<>();
+
+    public void setLatestDatabaseRefreshError(String latestDatabaseRefreshError) {
+        this.latestDatabaseRefreshError.set(latestDatabaseRefreshError);
+    }
+    public String getLatestDatabaseRefreshError() {
+        return latestDatabaseRefreshError.get();
+    }
+
+
 
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
@@ -299,6 +311,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             });
                         }).onErrorResume(ex -> {
                     logger.error("startRefreshLocationTimerAsync() - Unable to refresh database account from any location. Exception: {}", ex.toString(), ex);
+                    setLatestDatabaseRefreshError("Unable to refresh database account from any location. Exception: " + ex.toString());
 
                     this.startRefreshLocationTimerAsync();
                     return Mono.empty();
@@ -310,6 +323,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
                     this.latestDatabaseAccount = databaseAccount;
+                    this.setLatestDatabaseRefreshError(null);
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
@@ -323,4 +337,5 @@ public class GlobalEndpointManager implements AutoCloseable {
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
     }
+
 }

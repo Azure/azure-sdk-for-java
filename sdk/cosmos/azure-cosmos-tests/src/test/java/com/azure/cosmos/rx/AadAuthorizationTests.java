@@ -96,7 +96,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
         }
         catch (Exception e) {
             log.info("Expected exception: {}", e.getMessage());
-            assert e.getMessage().contains("Failed to acquire token from tokenCredential");
+            assert e.getMessage().contains("Unable to refresh database account from any location");
         }
 
 

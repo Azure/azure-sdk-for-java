@@ -469,17 +469,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 //                    AadTokenAuthorizationHelper.AAD_AUTH_TOKEN_COSMOS_WINDOWS_SCOPE,
                         serviceEndpoint.getScheme() + "://" + serviceEndpoint.getHost() + "/.default"
                     };
-                    TokenRequestContext context = new TokenRequestContext();
-                    context.addScopes(this.tokenCredentialScopes);
-                    try {
-                        //validate tokenCredential first explicitly by acquiring token and throwing if it fails
-                        this.tokenCredential.getToken(context).block();
-                    } catch (Exception e) {
-                        throw new IllegalArgumentException("Failed to acquire token from tokenCredential:", e);
-                    }
                     this.tokenCredentialCache = new SimpleTokenCache(() -> this.tokenCredential
-                        .getToken(context));
-
+                        .getToken(new TokenRequestContext().addScopes(this.tokenCredentialScopes)));
                     this.authorizationTokenType = AuthorizationTokenType.AadToken;
                 }
             }
@@ -552,8 +543,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (databaseAccount == null) {
             logger.error("Client initialization failed."
                 + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
+            logger.error(" More error details: "+this.globalEndpointManager.getLatestDatabaseRefreshError());
             throw new RuntimeException("Client initialization failed."
-                + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
+                + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java."
+                + " More error details: "+this.globalEndpointManager.getLatestDatabaseRefreshError());
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
