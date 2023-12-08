@@ -44,7 +44,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         this.indexToDelete = indexName;
 
         // TODO: Use getSearchClientBuilder once SearchIndexingBufferedSender has Sync Flow integrated.
-        this.clientBuilder = getSearchClientBuilderWithoutAssertingClient(indexName, false);
+        this.clientBuilder = getSearchClientBuilder(indexName, false);
     }
 
     @Override
@@ -342,6 +342,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void indexManyDocumentsSmallDocumentSetsAsync() {
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
@@ -434,6 +436,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void indexManyDocumentsOneLargeDocumentSetAsync() {
+        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+        
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
