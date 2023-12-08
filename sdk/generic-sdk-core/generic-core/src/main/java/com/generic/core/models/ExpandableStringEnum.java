@@ -10,7 +10,7 @@ import java.util.Collection;
  *
  * @param <T> a specific expandable enum type
  */
-public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
+public interface ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     /**
      * Creates an instance of the specific expandable string enum from a String.
      *
@@ -19,7 +19,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @return The expandable string enum instance.
      * @throws RuntimeException wrapping implementation class constructor exception (if any is thrown).
      */
-    public static <T extends ExpandableStringEnum<T>> T fromString(String name) {
+    static <T extends ExpandableStringEnum<T>> T fromString(String name) {
         throw new UnsupportedOperationException("Subtypes must override this method.");
     }
 
@@ -29,16 +29,16 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param <T> the class of the expandable string enum.
      * @return A collection of all known values for the given {@code clazz}.
      */
-    public static <T extends ExpandableStringEnum<T>> Collection<T> values() {
+    static <T extends ExpandableStringEnum<T>> Collection<T> values() {
         throw new UnsupportedOperationException("Subtypes must override this method.");
     }
 
     @Override
-    public abstract String toString();
+    String toString();
 
     @Override
-    public abstract int hashCode();
+    int hashCode();
 
     @Override
-    public abstract boolean equals(Object obj);
+    boolean equals(Object obj);
 }
