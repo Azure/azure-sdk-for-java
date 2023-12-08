@@ -5207,7 +5207,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Mono<List<FeedRange>> getFeedRanges(String collectionLink) {
+    public Mono<List<FeedRange>> getFeedRanges(String collectionLink, boolean forceRefresh) {
         InvalidPartitionExceptionRetryPolicy invalidPartitionExceptionRetryPolicy = new InvalidPartitionExceptionRetryPolicy(
             this.collectionCache,
             null,
@@ -5224,12 +5224,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         invalidPartitionExceptionRetryPolicy.onBeforeSendRequest(request);
 
         return ObservableHelper.inlineIfPossibleAsObs(
-            () -> getFeedRangesInternal(request, collectionLink),
+            () -> getFeedRangesInternal(request, collectionLink, forceRefresh),
             invalidPartitionExceptionRetryPolicy);
     }
 
-    private Mono<List<FeedRange>> getFeedRangesInternal(RxDocumentServiceRequest request, String collectionLink) {
-        logger.debug("getFeedRange collectionLink=[{}]", collectionLink);
+    private Mono<List<FeedRange>> getFeedRangesInternal(
+        RxDocumentServiceRequest request,
+        String collectionLink,
+        boolean forceRefresh) {
+
+        logger.debug("getFeedRange collectionLink=[{}] - forceRefresh={}", collectionLink, forceRefresh);
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
@@ -5247,7 +5251,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache
                 .tryGetOverlappingRangesAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    collection.getResourceId(), RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES, true, null);
+                    collection.getResourceId(),
+                    RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES,
+                    forceRefresh,
+                    null);
 
             return valueHolderMono.map(partitionKeyRangeList -> toFeedRanges(partitionKeyRangeList, request));
         });

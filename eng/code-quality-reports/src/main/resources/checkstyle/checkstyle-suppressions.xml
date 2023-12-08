@@ -146,6 +146,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="ServiceBusSessionReceiver(Async)?Client.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
+  <!-- Supress the BufferOverflowException thrown from encodedSize method, this exception is caught, mapped and logged at the callsite  -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.azure.messaging.servicebus.ServiceBusMessageBatch.java"/>
 
   <!-- Suppress the long package name in autoconfigure.implementation.redis package  -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.redis.*" />

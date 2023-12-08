@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CancelAddParticipantResponse model. */
+/** Response payload for cancel add participant request. */
 @Fluent
 public final class CancelAddParticipantResponse {
     /*

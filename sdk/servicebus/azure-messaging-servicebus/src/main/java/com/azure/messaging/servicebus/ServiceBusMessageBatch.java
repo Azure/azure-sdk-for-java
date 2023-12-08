@@ -9,6 +9,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
+import org.apache.qpid.proton.codec.DroppingWritableBuffer;
 import org.apache.qpid.proton.message.Message;
 
 import java.nio.BufferOverflowException;
@@ -31,16 +32,18 @@ public final class ServiceBusMessageBatch {
     private final byte[] eventBytes;
     private int sizeInBytes;
     private final ServiceBusTracer tracer;
+    private final boolean isV2;
 
-    ServiceBusMessageBatch(int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
+    ServiceBusMessageBatch(boolean isV2, int maxMessageSize, ErrorContextProvider contextProvider, ServiceBusTracer tracer,
         MessageSerializer serializer) {
         this.maxMessageSize = maxMessageSize;
         this.contextProvider = contextProvider;
         this.serializer = serializer;
         this.serviceBusMessageList = new ArrayList<>();
         this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
-        this.eventBytes = new byte[maxMessageSize];
+        this.eventBytes = isV2 ? new byte[0] : new byte[maxMessageSize];
         this.tracer = tracer;
+        this.isV2 = isV2;
     }
 
     /**
@@ -125,7 +128,7 @@ public final class ServiceBusMessageBatch {
         Objects.requireNonNull(serviceBusMessage, "'serviceBusMessage' cannot be null.");
 
         final Message amqpMessage = serializer.serialize(serviceBusMessage);
-        int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
+        int eventSize = encodedSize(amqpMessage); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
         if (isFirst) {
@@ -134,9 +137,23 @@ public final class ServiceBusMessageBatch {
             amqpMessage.setProperties(null);
             amqpMessage.setDeliveryAnnotations(null);
 
-            eventSize += amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+            eventSize += encodedSize(amqpMessage);
         }
 
         return eventSize;
+    }
+
+    private int encodedSize(Message amqpMessage) {
+        if (isV2) {
+            final int size = amqpMessage.encode(new DroppingWritableBuffer());
+            if (size > maxMessageSize) {
+                final IndexOutOfBoundsException cause = new IndexOutOfBoundsException(
+                    String.format("Requested size (%d) exceeds the maximum allowed size (%d)", size, maxMessageSize));
+                throw (BufferOverflowException) new BufferOverflowException().initCause(cause);
+            }
+            return size;
+        } else {
+            return amqpMessage.encode(this.eventBytes, 0, maxMessageSize);
+        }
     }
 }
