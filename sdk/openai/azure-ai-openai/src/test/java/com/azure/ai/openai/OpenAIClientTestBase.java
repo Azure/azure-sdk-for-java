@@ -362,14 +362,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private FunctionDefinition getFunctionDefinition() {
         FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
         Parameters parameters = new Parameters();
-        functionDefinition.setParameters(parameters);
+        functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
     }
 
     private FunctionDefinition getFutureTemperatureFunctionDefinition() {
         FunctionDefinition functionDefinition = new FunctionDefinition("FutureTemperature");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
-        functionDefinition.setParameters(parameters);
+        functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
     }
 

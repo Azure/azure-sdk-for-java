@@ -113,7 +113,7 @@ public class GetChatCompletionsToolCallSample {
         FunctionDefinition functionDefinition = new FunctionDefinition("FutureTemperature");
         functionDefinition.setDescription("Get the future temperature for a given location and date.");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
-        functionDefinition.setParameters(parameters);
+        functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
     }
 
