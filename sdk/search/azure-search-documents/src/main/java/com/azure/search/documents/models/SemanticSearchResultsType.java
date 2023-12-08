@@ -9,9 +9,13 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Type of partial response that was returned for a semantic ranking request. */
+/**
+ * Type of partial response that was returned for a semantic ranking request.
+ */
 public final class SemanticSearchResultsType extends ExpandableStringEnum<SemanticSearchResultsType> {
-    /** Results without any semantic enrichment or reranking. */
+    /**
+     * Results without any semantic enrichment or reranking.
+     */
     public static final SemanticSearchResultsType BASE_RESULTS = fromString("baseResults");
 
     /**
@@ -22,15 +26,16 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
 
     /**
      * Creates a new instance of SemanticSearchResultsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SemanticSearchResultsType() {}
+    public SemanticSearchResultsType() {
+    }
 
     /**
      * Creates or finds a SemanticSearchResultsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SemanticSearchResultsType.
      */
@@ -40,7 +45,7 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
 
     /**
      * Gets known SemanticSearchResultsType values.
-     *
+     * 
      * @return known SemanticSearchResultsType values.
      */
     public static Collection<SemanticSearchResultsType> values() {

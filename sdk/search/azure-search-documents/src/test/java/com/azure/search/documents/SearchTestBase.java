@@ -90,8 +90,10 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
-    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
-        new RetryPolicy(new FixedDelay(4, Duration.ofSeconds(15)));
+    // This has to be used in all test modes as this is more retry counts than the standard policy.
+    // Change the delay based on the mode.
+    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(new FixedDelay(4,
+            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(15)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
@@ -118,14 +120,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, interceptorManager, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
-
-        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -139,15 +140,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, interceptorManager, isSync));
+            .httpClient(getHttpClient(true, interceptorManager, isSync))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         addPolicies(builder, policies);
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
-
-        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -182,13 +182,12 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync));
+            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
+            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
-
-        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

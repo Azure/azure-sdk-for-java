@@ -23,6 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -49,6 +50,7 @@ public final class SearchIndexingBufferedSender<T> {
     private volatile TimerTask flushTask;
 
     private final AtomicBoolean closed = new AtomicBoolean();
+    private final ReentrantLock closeLock = new ReentrantLock();
 
     SearchIndexingBufferedSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
         Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
@@ -255,22 +257,20 @@ public final class SearchIndexingBufferedSender<T> {
             return;
         }
 
-        synchronized (this) {
-            TimerTask newTask = new TimerTask() {
-                @Override
-                public void run() {
-                    publisher.flush(false, false, null, Context.NONE);
-                }
-            };
-
-            // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
-            TimerTask previousTask = FLUSH_TASK.getAndSet(this, newTask);
-            if (previousTask != null) {
-                previousTask.cancel();
+        TimerTask newTask = new TimerTask() {
+            @Override
+            public void run() {
+                publisher.flush(false, false, null, Context.NONE);
             }
+        };
 
-            this.autoFlushTimer.schedule(newTask, flushWindowMillis);
+        // If the previous flush task exists cancel it. If it has already executed cancel does nothing.
+        TimerTask previousTask = FLUSH_TASK.getAndSet(this, newTask);
+        if (previousTask != null) {
+            previousTask.cancel();
         }
+
+        this.autoFlushTimer.schedule(newTask, flushWindowMillis);
     }
 
     /**
@@ -298,7 +298,8 @@ public final class SearchIndexingBufferedSender<T> {
 
     void closeInternal(Duration timeout, Context context) {
         if (!closed.get()) {
-            synchronized (this) {
+            closeLock.lock();
+            try {
                 if (closed.compareAndSet(false, true)) {
                     if (this.autoFlush) {
                         TimerTask currentTask = FLUSH_TASK.getAndSet(this, null);
@@ -313,6 +314,8 @@ public final class SearchIndexingBufferedSender<T> {
 
                     publisher.flush(true, true, timeout, context);
                 }
+            } finally {
+                closeLock.unlock();
             }
         }
     }

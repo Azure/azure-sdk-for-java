@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -47,6 +48,7 @@ public final class SearchIndexingBufferedAsyncSender<T> {
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
 
     private volatile boolean isClosed = false;
+    private final ReentrantLock closeLock = new ReentrantLock();
 
     SearchIndexingBufferedAsyncSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
         Function<T, String> documentKeyRetriever, boolean autoFlush, Duration autoFlushInterval,
@@ -211,7 +213,8 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     Mono<Void> close(Context context) {
         if (!isClosed) {
-            synchronized (this) {
+            closeLock.lock();
+            try {
                 if (!isClosed) {
                     isClosed = true;
                     if (this.autoFlush) {
@@ -229,13 +232,15 @@ public final class SearchIndexingBufferedAsyncSender<T> {
                 }
 
                 return Mono.empty();
+            } finally {
+                closeLock.unlock();
             }
         }
 
         return Mono.empty();
     }
 
-    private synchronized void ensureOpen() {
+    private void ensureOpen() {
         if (isClosed) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Buffered sender has been closed."));
         }

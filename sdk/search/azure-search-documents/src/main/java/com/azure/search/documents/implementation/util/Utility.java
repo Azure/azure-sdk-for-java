@@ -51,21 +51,17 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = Constants.DEFAULT_LOG_OPTIONS_SUPPLIER.get();
     private static final HttpHeaders HTTP_HEADERS = new HttpHeaders().set("return-client-request-id", "true");
 
-    private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
+    private static final ThreadLocal<DecimalFormat> COORDINATE_FORMATTER = ThreadLocal.withInitial(DecimalFormat::new);
 
     /*
      * Representation of the Multi-Status HTTP response code.
@@ -79,15 +75,11 @@ public final class Utility {
 
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
-    private static final Context STATIC_ENABLE_REST_PROXY_CONTEXT;
-
-    private static final long THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-search-documents.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-        STATIC_ENABLE_REST_PROXY_CONTEXT = Context.NONE.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     public static HttpPipeline buildHttpPipeline(ClientOptions clientOptions,
@@ -139,9 +131,8 @@ public final class Utility {
         httpPipelinePolicies.addAll(perRetryPolicies);
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
-        HttpHeaders headers = new HttpHeaders();
-        buildClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(buildClientOptions);
+        if (headers != null) {
             httpPipelinePolicies.add(new AddHeadersPolicy(headers));
         }
 
@@ -172,14 +163,11 @@ public final class Utility {
     }
 
     public static Response<IndexDocumentsResult> indexDocumentsWithResponse(SearchIndexClientImpl restClient,
-        List<com.azure.search.documents.implementation.models.IndexAction> actions,
-        boolean throwOnAnyError,
-        Context context,
-        ClientLogger logger) {
+        List<com.azure.search.documents.implementation.models.IndexAction> actions, boolean throwOnAnyError,
+        Context context, ClientLogger logger) {
         return executeRestCallWithExceptionHandling(() -> {
-            Response<IndexDocumentsResult> response = restClient
-                .getDocuments()
-                .indexWithResponse(new IndexBatch(actions), null, enableSyncRestProxy(context));
+            Response<IndexDocumentsResult> response = restClient.getDocuments()
+                .indexWithResponse(new IndexBatch(actions), null, context);
             if (response.getStatusCode() == MULTI_STATUS_CODE && throwOnAnyError) {
                 throw logger.logExceptionAsError(new IndexBatchException(response.getValue()));
             }
@@ -194,8 +182,8 @@ public final class Utility {
         return new SearchIndexClientImpl(httpPipeline, endpoint, indexName, serviceVersion.getVersion());
     }
 
-    public static synchronized String formatCoordinate(double coordinate) {
-        return COORDINATE_FORMATTER.format(coordinate);
+    public static String formatCoordinate(double coordinate) {
+        return COORDINATE_FORMATTER.get().format(coordinate);
     }
 
     public static String readSynonymsFromFile(Path filePath) {
@@ -217,14 +205,6 @@ public final class Utility {
                 exception.getResponse()));
         } catch (RuntimeException ex) {
             throw logger.logExceptionAsError(ex);
-        }
-    }
-
-    public static Context enableSyncRestProxy(Context context) {
-        if (context == null || context == Context.NONE) {
-            return STATIC_ENABLE_REST_PROXY_CONTEXT;
-        } else {
-            return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         }
     }
 
@@ -263,30 +243,6 @@ public final class Utility {
             return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
         }
         return new HttpResponseException(exception.getMessage(), exception.getResponse());
-    }
-
-    public static ExecutorService getThreadPoolWithShutdownHook() {
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-        registerShutdownHook(threadPool);
-        return threadPool;
-    }
-
-    static Thread registerShutdownHook(ExecutorService threadPool) {
-        long halfTimeout = TimeUnit.SECONDS.toNanos(THREAD_POOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
-        Thread hook = new Thread(() -> {
-            try {
-                threadPool.shutdown();
-                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
-                    threadPool.shutdownNow();
-                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                threadPool.shutdown();
-            }
-        });
-        Runtime.getRuntime().addShutdownHook(hook);
-        return hook;
     }
 
     private Utility() {

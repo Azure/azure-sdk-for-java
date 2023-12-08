@@ -159,7 +159,7 @@ public class SearchIndexerClient {
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
             .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements,
-                null, Utility.enableSyncRestProxy(context)), LOGGER);
+                null, context), LOGGER);
     }
 
     /**
@@ -256,7 +256,7 @@ public class SearchIndexerClient {
     public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .createWithResponse(dataSourceConnection, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .createWithResponse(dataSourceConnection, null, context), LOGGER);
     }
 
     /**
@@ -309,7 +309,7 @@ public class SearchIndexerClient {
     public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(
         String dataSourceConnectionName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .getWithResponse(dataSourceConnectionName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .getWithResponse(dataSourceConnectionName, null, context), LOGGER);
     }
 
     /**
@@ -373,7 +373,7 @@ public class SearchIndexerClient {
     private Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(String select,
                                                                                         Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -479,7 +479,7 @@ public class SearchIndexerClient {
         boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .deleteWithResponse(dataSourceConnection.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)),
+            .deleteWithResponse(dataSourceConnection.getName(), eTag, null, null, context),
             LOGGER);
     }
 
@@ -534,7 +534,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createWithResponse(indexer, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .createWithResponse(indexer, null, context), LOGGER);
     }
 
     /**
@@ -605,7 +605,7 @@ public class SearchIndexerClient {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
             .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null,
                 disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
-                Utility.enableSyncRestProxy(context)), LOGGER);
+                context), LOGGER);
 
     }
 
@@ -705,7 +705,7 @@ public class SearchIndexerClient {
 
     private Response<ListIndexersResult> listIndexersWithResponse(String select, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -810,7 +810,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-                .getWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+                .getWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -859,7 +859,7 @@ public class SearchIndexerClient {
     public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? indexer.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .deleteWithResponse(indexer.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .deleteWithResponse(indexer.getName(), eTag, null, null, context), LOGGER);
     }
 
     /**
@@ -904,7 +904,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String indexerName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .resetWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .resetWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -949,7 +949,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String indexerName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .runWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .runWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -997,7 +997,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .getStatusWithResponse(indexerName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .getStatusWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -1064,7 +1064,7 @@ public class SearchIndexerClient {
             .setDatasourceDocumentIds(datasourceDocumentIds);
 
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers().resetDocsWithResponse(
-            indexer.getName(), overwrite, documentKeysOrIds, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            indexer.getName(), overwrite, documentKeysOrIds, null, context), LOGGER);
     }
 
     /**
@@ -1152,7 +1152,7 @@ public class SearchIndexerClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'skillset' cannot be null."));
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createWithResponse(skillset, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .createWithResponse(skillset, null, context), LOGGER);
     }
 
     /**
@@ -1203,7 +1203,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .getWithResponse(skillsetName, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .getWithResponse(skillsetName, null, context), LOGGER);
     }
 
     /**
@@ -1265,7 +1265,7 @@ public class SearchIndexerClient {
 
     private Response<ListSkillsetsResult> listSkillsetsWithResponse(String select, Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> this.restClient.getSkillsets()
-            .listWithResponse(select, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -1389,7 +1389,7 @@ public class SearchIndexerClient {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
             .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null,
                 disableCacheReprocessingChangeDetection, ignoreResetRequirements, null,
-                Utility.enableSyncRestProxy(context)), LOGGER);
+                context), LOGGER);
     }
 
     /**
@@ -1476,7 +1476,7 @@ public class SearchIndexerClient {
         Context context) {
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .deleteWithResponse(skillset.getName(), eTag, null, null, Utility.enableSyncRestProxy(context)), LOGGER);
+            .deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
     }
 
     /**
@@ -1522,6 +1522,6 @@ public class SearchIndexerClient {
         Context context) {
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
             .resetSkillsWithResponse(skillset.getName(), new SkillNames().setSkillNames(skillNames), null,
-                Utility.enableSyncRestProxy(context)), LOGGER);
+                context), LOGGER);
     }
 }

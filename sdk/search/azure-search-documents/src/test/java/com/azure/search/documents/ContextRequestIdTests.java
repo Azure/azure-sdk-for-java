@@ -21,6 +21,8 @@ import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests passing {@code x-ms-client-request-id} using {@link Context}.
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class ContextRequestIdTests {
     private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private static final RetryPolicy RETRY_POLICY = new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1)));

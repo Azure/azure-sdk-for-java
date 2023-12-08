@@ -85,7 +85,7 @@ public final class SearchIndexingAsyncPublisher<T> {
 
         this.restClient = restClient;
         this.serializer = serializer;
-        this.documentManager = new IndexingDocumentManager<>();
+        this.documentManager = new IndexingDocumentManager<>(LOGGER);
 
         this.autoFlush = autoFlush;
         this.batchActionCount = initialBatchActionCount;
@@ -130,7 +130,13 @@ public final class SearchIndexingAsyncPublisher<T> {
 
     public Mono<Void> flush(boolean awaitLock, boolean isClose, Context context) {
         if (awaitLock) {
-            processingSemaphore.acquireUninterruptibly();
+            try {
+                processingSemaphore.acquire();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
+
             return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);
         } else if (processingSemaphore.tryAcquire()) {
             return Mono.using(() -> processingSemaphore, ignored -> flushLoop(isClose, context), Semaphore::release);

@@ -23,25 +23,14 @@ import com.azure.search.documents.options.OnActionSucceededOptions;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collection;
-<<<<<<< HEAD
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-=======
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedDeque;
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -76,47 +65,31 @@ public final class SearchIndexingPublisher<T> {
     private final long throttlingDelayNanos;
     private final long maxThrottlingDelayNanos;
 
-    private final Consumer<OnActionAddedOptions<T>> onActionAddedConsumer;
-    private final Consumer<OnActionSentOptions<T>> onActionSentConsumer;
-    private final Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer;
-    private final Consumer<OnActionErrorOptions<T>> onActionErrorConsumer;
+    private final Consumer<OnActionAddedOptions<T>> onActionAdded;
+    private final Consumer<OnActionSentOptions<T>> onActionSent;
+    private final Consumer<OnActionSucceededOptions<T>> onActionSucceeded;
+    private final Consumer<OnActionErrorOptions<T>> onActionError;
 
     private final Function<T, String> documentKeyRetriever;
     private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
-<<<<<<< HEAD
     private final IndexingDocumentManager<T> documentManager;
-=======
 
-    private final Deque<TryTrackingIndexAction<T>> actions = new ConcurrentLinkedDeque<>();
-
-    /*
-     * This queue keeps track of documents that are currently being sent to the service for indexing. This queue is
-     * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
-     * documents from being lost.
-     */
-    private final Deque<TryTrackingIndexAction<T>> inFlightActions = new ConcurrentLinkedDeque<>();
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
-
-    private final Semaphore actionsSemaphore = new Semaphore(1);
     private final Semaphore processingSemaphore = new Semaphore(1, true);
 
     volatile AtomicInteger backoffCount = new AtomicInteger();
     volatile Duration currentRetryDelay = Duration.ZERO;
 
     public SearchIndexingPublisher(SearchIndexClientImpl restClient, JsonSerializer serializer,
-                                       Function<T, String> documentKeyRetriever, boolean autoFlush,
-                                       int initialBatchActionCount, int maxRetriesPerAction, Duration throttlingDelay,
-                                       Duration maxThrottlingDelay,
-                                       Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
-                                       Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
-                                       Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
-                                       Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        Function<T, String> documentKeyRetriever, boolean autoFlush, int initialBatchActionCount,
+        int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
+        Consumer<OnActionAddedOptions<T>> onActionAdded, Consumer<OnActionSucceededOptions<T>> onActionSucceeded,
+        Consumer<OnActionErrorOptions<T>> onActionError, Consumer<OnActionSentOptions<T>> onActionSent) {
         this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
             "'documentKeyRetriever' cannot be null");
 
         this.restClient = restClient;
         this.serializer = serializer;
-        this.documentManager = new IndexingDocumentManager<>();
+        this.documentManager = new IndexingDocumentManager<>(LOGGER);
 
         this.autoFlush = autoFlush;
         this.batchActionCount = initialBatchActionCount;
@@ -126,33 +99,14 @@ public final class SearchIndexingPublisher<T> {
             ? this.throttlingDelayNanos
             : maxThrottlingDelay.toNanos();
 
-        this.onActionAddedConsumer = onActionAddedConsumer;
-        this.onActionSentConsumer = onActionSentConsumer;
-        this.onActionSucceededConsumer = onActionSucceededConsumer;
-        this.onActionErrorConsumer = onActionErrorConsumer;
+        this.onActionAdded = onActionAdded;
+        this.onActionSent = onActionSent;
+        this.onActionSucceeded = onActionSucceeded;
+        this.onActionError = onActionError;
     }
 
     public Collection<IndexAction<T>> getActions() {
-<<<<<<< HEAD
         return documentManager.getActions();
-=======
-        acquireActionsSemaphore();
-        try {
-            List<IndexAction<T>> actions = new ArrayList<>();
-
-            for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
-                actions.add(inFlightAction.getAction());
-            }
-
-            for (TryTrackingIndexAction<T> action : this.actions) {
-                actions.add(action.getAction());
-            }
-
-            return actions;
-        } finally {
-            actionsSemaphore.release();
-        }
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
     }
 
     public int getBatchActionCount() {
@@ -163,33 +117,9 @@ public final class SearchIndexingPublisher<T> {
         return currentRetryDelay;
     }
 
-<<<<<<< HEAD
     public void addActions(Collection<IndexAction<T>> actions, Duration timeout, Context context,
         Runnable rescheduleFlush) {
-        int actionCount = documentManager.add(actions, documentKeyRetriever, onActionAddedConsumer);
-=======
-    public Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
-        Runnable rescheduleFlush) {
-        try {
-            actionsSemaphore.acquire();
-        } catch (InterruptedException ex) {
-            return Mono.error(ex);
-        }
-
-        try {
-            actions
-                .stream()
-                .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
-                .forEach(action -> {
-                    if (onActionAddedConsumer != null) {
-                        onActionAddedConsumer.accept(new OnActionAddedOptions<>(action.getAction()));
-                    }
-                    this.actions.add(action);
-                });
-        } finally {
-            actionsSemaphore.release();
-        }
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
+        int actionCount = documentManager.add(actions, documentKeyRetriever, onActionAdded);
 
         LOGGER.verbose("Actions added, new pending queue size: {}.", actionCount);
 
@@ -202,42 +132,24 @@ public final class SearchIndexingPublisher<T> {
 
     public void flush(boolean awaitLock, boolean isClose, Duration timeout, Context context) {
         if (awaitLock) {
-<<<<<<< HEAD
-            processingSemaphore.acquireUninterruptibly();
-            try {
-                flushLoop(isClose, timeout, context);
-            } finally {
-                processingSemaphore.release();
-            }
-        } else if (processingSemaphore.tryAcquire()) {
-            try {
-                flushLoop(isClose, timeout, context);
-            } finally {
-                processingSemaphore.release();
-            }
-=======
             try {
                 processingSemaphore.acquire();
-            } catch (InterruptedException ex) {
-                return Mono.error(ex);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
 
-            return Mono.using(() -> processingSemaphore, ignored -> {
-                try {
-                    return flushLoop(isClose, context);
-                } catch (RuntimeException ex) {
-                    return Mono.error(ex);
-                }
-            }, Semaphore::release);
+            try {
+                flushLoop(isClose, timeout, context);
+            } finally {
+                processingSemaphore.release();
+            }
         } else if (processingSemaphore.tryAcquire()) {
-            return Mono.using(() -> processingSemaphore, ignored -> {
-                try {
-                    return flushLoop(isClose, context);
-                } catch (RuntimeException ex) {
-                    return Mono.error(ex);
-                }
-            }, Semaphore::release);
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
+            try {
+                flushLoop(isClose, timeout, context);
+            } finally {
+                processingSemaphore.release();
+            }
         } else {
             LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
         }
@@ -306,65 +218,7 @@ public final class SearchIndexingPublisher<T> {
         IndexBatchResponse response = sendBatch(convertedActions, batchActions, context);
         handleResponse(batchActions, response);
 
-<<<<<<< HEAD
         return response;
-=======
-                return response;
-            });
-    }
-
-    private List<TryTrackingIndexAction<T>> createBatch() {
-        final List<TryTrackingIndexAction<T>> batchActions;
-        final Set<String> keysInBatch;
-
-        acquireActionsSemaphore();
-        try {
-            int actionSize = this.actions.size();
-            int inFlightActionSize = this.inFlightActions.size();
-            int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
-            batchActions = new ArrayList<>(size);
-
-            // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
-            // factor of 1 as that would potentially cause collisions.
-            keysInBatch = new HashSet<>(size * 2);
-
-            // First attempt to fill the batch from documents that were lost in-flight.
-            int inFlightDocumentsAdded = fillFromQueue(batchActions, inFlightActions, size, keysInBatch);
-
-            // If the batch is filled using documents lost in-flight add the remaining back to the queue.
-            if (inFlightDocumentsAdded == size) {
-                reinsertFailedActions(inFlightActions, false);
-            } else {
-                // Then attempt to fill the batch from documents in the actions queue.
-                fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
-            }
-
-            return batchActions;
-        } finally {
-            actionsSemaphore.release();
-        }
-    }
-
-    private static <T> int fillFromQueue(List<TryTrackingIndexAction<T>> batch, Deque<TryTrackingIndexAction<T>> queue,
-        int requested, Set<String> duplicateKeyTracker) {
-        int actionsAdded = 0;
-
-        Iterator<TryTrackingIndexAction<T>> iterator = queue.iterator();
-        while (actionsAdded < requested && iterator.hasNext()) {
-            TryTrackingIndexAction<T> potentialDocumentToAdd = iterator.next();
-
-            if (duplicateKeyTracker.contains(potentialDocumentToAdd.getKey())) {
-                continue;
-            }
-
-            duplicateKeyTracker.add(potentialDocumentToAdd.getKey());
-            batch.add(potentialDocumentToAdd);
-            iterator.remove();
-            actionsAdded += 1;
-        }
-
-        return actionsAdded;
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
     }
 
     /*
@@ -375,21 +229,12 @@ public final class SearchIndexingPublisher<T> {
                                          List<TryTrackingIndexAction<T>> batchActions, Context context) {
         LOGGER.verbose("Sending a batch of size {}.", batchActions.size());
 
-        if (onActionSentConsumer != null) {
-            batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
+        if (onActionSent != null) {
+            batchActions.forEach(action -> onActionSent.accept(new OnActionSentOptions<>(action.getAction())));
         }
 
-<<<<<<< HEAD
         if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
             sleep(currentRetryDelay.toMillis());
-=======
-        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponseAsync(restClient, actions, true,
-            context, LOGGER);
-
-        Duration delay = currentRetryDelay;
-        if (!delay.isZero() && !delay.isNegative()) {
-            batchCall = batchCall.delaySubscription(delay);
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
         }
 
         try {
@@ -447,14 +292,14 @@ public final class SearchIndexingPublisher<T> {
          */
         if (batchResponse.getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE && batchResponse.getCount() == 1) {
             IndexAction<T> action = actions.get(0).getAction();
-            if (onActionErrorConsumer != null) {
-                onActionErrorConsumer.accept(new OnActionErrorOptions<>(action)
+            if (onActionError != null) {
+                onActionError.accept(new OnActionErrorOptions<>(action)
                     .setThrowable(createDocumentTooLargeException()));
             }
             return;
         }
 
-        Deque<TryTrackingIndexAction<T>> actionsToRetry = new LinkedList<>();
+        LinkedList<TryTrackingIndexAction<T>> actionsToRetry = new LinkedList<>();
         boolean has503 = batchResponse.getStatusCode() == HttpURLConnection.HTTP_UNAVAILABLE;
         if (batchResponse.getResults() == null) {
             /*
@@ -479,8 +324,8 @@ public final class SearchIndexingPublisher<T> {
                 }
 
                 if (isSuccess(result.getStatusCode())) {
-                    if (onActionSucceededConsumer != null) {
-                        onActionSucceededConsumer.accept(new OnActionSucceededOptions<>(action.getAction()));
+                    if (onActionSucceeded != null) {
+                        onActionSucceeded.accept(new OnActionSucceededOptions<>(action.getAction()));
                     }
                 } else if (isRetryable(result.getStatusCode())) {
                     has503 |= result.getStatusCode() == HttpURLConnection.HTTP_UNAVAILABLE;
@@ -488,15 +333,15 @@ public final class SearchIndexingPublisher<T> {
                         action.incrementTryCount();
                         actionsToRetry.add(action);
                     } else {
-                        if (onActionErrorConsumer != null) {
-                            onActionErrorConsumer.accept(new OnActionErrorOptions<>(action.getAction())
+                        if (onActionError != null) {
+                            onActionError.accept(new OnActionErrorOptions<>(action.getAction())
                                 .setThrowable(createDocumentHitRetryLimitException())
                                 .setIndexingResult(result));
                         }
                     }
                 } else {
-                    if (onActionErrorConsumer != null) {
-                        onActionErrorConsumer.accept(new OnActionErrorOptions<>(action.getAction())
+                    if (onActionError != null) {
+                        onActionError.accept(new OnActionErrorOptions<>(action.getAction())
                             .setIndexingResult(result));
                     }
                 }
@@ -512,7 +357,6 @@ public final class SearchIndexingPublisher<T> {
         }
 
         if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
-<<<<<<< HEAD
             documentManager.reinsertFailedActions(actionsToRetry);
         }
     }
@@ -542,46 +386,6 @@ public final class SearchIndexingPublisher<T> {
             }
         });
         Runtime.getRuntime().addShutdownHook(hook);
-=======
-            reinsertFailedActions(actionsToRetry, true);
-        }
-    }
-
-    private void reinsertFailedActions(Deque<TryTrackingIndexAction<T>> actionsToRetry, boolean acquireSemaphore) {
-        if (acquireSemaphore) {
-            acquireActionsSemaphore();
-            try {
-                // Push all actions that need to be retried back into the queue.
-                actionsToRetry.descendingIterator().forEachRemaining(actions::add);
-            } finally {
-                actionsSemaphore.release();
-            }
-        } else {
-            // Push all actions that need to be retried back into the queue.
-            actionsToRetry.descendingIterator().forEachRemaining(actions::add);
-        }
-    }
-
-    private void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
-        acquireActionsSemaphore();
-        try {
-            // Push all actions that need to be retried back into the queue.
-            for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
-                this.actions.push(actionsToRetry.get(i));
-            }
-        } finally {
-            actionsSemaphore.release();
-        }
-    }
-
-    private void acquireActionsSemaphore() {
-        try {
-            actionsSemaphore.acquire();
-        } catch (InterruptedException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
-        }
-    }
->>>>>>> 8ff149de68e50caa6e7875c7d719b1400fb006e5
 
         return threadPool;
     }

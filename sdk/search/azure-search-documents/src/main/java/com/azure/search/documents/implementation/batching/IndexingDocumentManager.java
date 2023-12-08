@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation.batching;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.options.OnActionAddedOptions;
 
@@ -12,7 +13,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -23,7 +26,15 @@ import java.util.function.Function;
  * @param <T> The type of document that is being indexed.
  */
 final class IndexingDocumentManager<T> {
+    private final ClientLogger logger;
+
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
+    private final Semaphore semaphore = new Semaphore(1);
+
+    IndexingDocumentManager(ClientLogger logger) {
+        this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
+    }
+
     /*
      * This queue keeps track of documents that are currently being sent to the service for indexing. This queue is
      * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
@@ -31,18 +42,23 @@ final class IndexingDocumentManager<T> {
      */
     private final Deque<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
 
-    synchronized Collection<IndexAction<T>> getActions() {
-        List<IndexAction<T>> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
+    Collection<IndexAction<T>> getActions() {
+        acquireSemaphore();
+        try {
+            List<IndexAction<T>> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
 
-        for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
-            actions.add(inFlightAction.getAction());
+            for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
+                actions.add(inFlightAction.getAction());
+            }
+
+            for (TryTrackingIndexAction<T> action : this.actions) {
+                actions.add(action.getAction());
+            }
+
+            return actions;
+        } finally {
+            semaphore.release();
         }
-
-        for (TryTrackingIndexAction<T> action : this.actions) {
-            actions.add(action.getAction());
-        }
-
-        return actions;
     }
 
     /**
@@ -50,50 +66,67 @@ final class IndexingDocumentManager<T> {
      *
      * @param actions The documents to be indexed.
      */
-    synchronized int add(Collection<IndexAction<T>> actions,
-        Function<T, String> documentKeyRetriever,
+    int add(Collection<IndexAction<T>> actions, Function<T, String> documentKeyRetriever,
         Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
-        for (IndexAction<T> action : actions) {
-            this.actions.addLast(new TryTrackingIndexAction<>(action,
-                documentKeyRetriever.apply(action.getDocument())));
+        acquireSemaphore();
 
-            if (onActionAddedConsumer != null) {
-                onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));
+        try {
+            for (IndexAction<T> action : actions) {
+                this.actions.addLast(
+                    new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
+
+                if (onActionAddedConsumer != null) {
+                    onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));
+                }
             }
-        }
 
-        return this.actions.size();
+            return this.actions.size();
+        } finally {
+            semaphore.release();
+        }
     }
 
-    synchronized boolean batchAvailableForProcessing(int batchActionCount) {
-        return (this.actions.size() + this.inFlightActions.size()) >= batchActionCount;
+    boolean batchAvailableForProcessing(int batchActionCount) {
+        acquireSemaphore();
+
+        try {
+            return (this.actions.size() + this.inFlightActions.size()) >= batchActionCount;
+        } finally {
+            semaphore.release();
+        }
     }
 
-    synchronized List<TryTrackingIndexAction<T>> createBatch(int batchActionCount) {
-        int actionSize = this.actions.size();
-        int inFlightActionSize = this.inFlightActions.size();
-        int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
-        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(size);
+    List<TryTrackingIndexAction<T>> createBatch(int batchActionCount) {
+        acquireSemaphore();
 
-        // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
-        // factor of 1 as that would potentially cause collisions.
-        final Set<String> keysInBatch = new HashSet<>(size * 2);
+        try {
+            int actionSize = this.actions.size();
+            int inFlightActionSize = this.inFlightActions.size();
+            int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
+            final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(size);
 
-        // First attempt to fill the batch from documents that were lost in-flight.
-        int inFlightDocumentsAdded = fillFromQueue(batchActions, inFlightActions, size, keysInBatch);
+            // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
+            // factor of 1 as that would potentially cause collisions.
+            final Set<String> keysInBatch = new HashSet<>(size * 2);
 
-        // If the batch is filled using documents lost in-flight add the remaining back to the beginning of the queue.
-        if (inFlightDocumentsAdded == size) {
-            TryTrackingIndexAction<T> inflightAction;
-            while ((inflightAction = inFlightActions.pollLast()) != null) {
-                actions.push(inflightAction);
+            // First attempt to fill the batch from documents that were lost in-flight.
+            int inFlightDocumentsAdded = fillFromQueue(batchActions, inFlightActions, size, keysInBatch);
+
+            // If the batch is filled using documents lost in-flight add the remaining back to the beginning of the queue.
+            if (inFlightDocumentsAdded == size) {
+                TryTrackingIndexAction<T> inflightAction;
+                while ((inflightAction = inFlightActions.pollLast()) != null) {
+                    actions.push(inflightAction);
+                }
+            } else {
+                // Then attempt to fill the batch from documents in the actions queue.
+                fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
             }
-        } else {
-            // Then attempt to fill the batch from documents in the actions queue.
-            fillFromQueue(batchActions, actions, size - inFlightDocumentsAdded, keysInBatch);
-        }
 
-        return batchActions;
+            return batchActions;
+        } finally {
+            semaphore.release();
+        }
     }
 
     private int fillFromQueue(List<TryTrackingIndexAction<T>> batch,
@@ -119,14 +152,34 @@ final class IndexingDocumentManager<T> {
         return actionsAdded;
     }
 
-    synchronized void reinsertCancelledActions(List<TryTrackingIndexAction<T>> actionsInFlight) {
-        inFlightActions.addAll(actionsInFlight);
+    void reinsertCancelledActions(List<TryTrackingIndexAction<T>> actionsInFlight) {
+        acquireSemaphore();
+        try {
+            inFlightActions.addAll(actionsInFlight);
+        } finally {
+            semaphore.release();
+        }
     }
 
-    synchronized void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
-        // Push all actions that need to be retried back into the queue.
-        for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
-            this.actions.push(actionsToRetry.get(i));
+    void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
+        acquireSemaphore();
+
+        try {
+            // Push all actions that need to be retried back into the queue.
+            for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
+                this.actions.push(actionsToRetry.get(i));
+            }
+        } finally {
+            semaphore.release();
+        }
+    }
+
+    private void acquireSemaphore() {
+        try {
+            semaphore.acquire();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
