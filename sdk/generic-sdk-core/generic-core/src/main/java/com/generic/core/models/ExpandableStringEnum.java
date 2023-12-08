@@ -4,7 +4,6 @@
 package com.generic.core.models;
 
 import java.util.Collection;
-import java.util.Objects;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -12,14 +11,6 @@ import java.util.Objects;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private final String name;
-    private final Class<T> clazz;
-
-    protected ExpandableStringEnum(String name, Class<T> clazz) {
-        this.name = name;
-        this.clazz = clazz;
-    }
-
     /**
      * Creates an instance of the specific expandable string enum from a String.
      *
@@ -43,28 +34,11 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     }
 
     @Override
-    public String toString() {
-        return this.name;
-    }
+    public abstract String toString();
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.clazz, this.name);
-    }
+    public abstract int hashCode();
 
-    @SuppressWarnings("unchecked")
     @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        } else if (clazz == null || !clazz.isAssignableFrom(obj.getClass())) {
-            return false;
-        } else if (obj == this) {
-            return true;
-        } else if (this.name == null) {
-            return ((ExpandableStringEnum<T>) obj).name == null;
-        } else {
-            return this.name.equals(((ExpandableStringEnum<T>) obj).name);
-        }
-    }
+    public abstract boolean equals(Object obj);
 }

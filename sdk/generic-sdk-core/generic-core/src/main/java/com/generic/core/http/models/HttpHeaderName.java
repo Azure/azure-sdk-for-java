@@ -7,6 +7,7 @@ import com.generic.core.models.ExpandableStringEnum;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,10 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("unused")
 public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     private static final Map<String, HttpHeaderName> VALUES = new ConcurrentHashMap<>();
-    private String caseInsensitive;
+    private final String caseSensitive;
+    private final String caseInsensitive;
 
     private HttpHeaderName(String name) {
-        super(name, HttpHeaderName.class);
+        this.caseSensitive = name;
+        this.caseInsensitive = name.toLowerCase();
     }
 
     /**
@@ -70,6 +73,11 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     }
 
     @Override
+    public String toString() {
+        return caseSensitive;
+    }
+
+    @Override
     public int hashCode() {
         return caseInsensitive.hashCode();
     }
@@ -85,7 +93,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
         }
 
         HttpHeaderName other = (HttpHeaderName) obj;
-        return caseInsensitive.equals(other.caseInsensitive);
+        return Objects.equals(caseInsensitive, other.caseInsensitive);
     }
 
     /**
