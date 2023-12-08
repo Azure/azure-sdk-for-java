@@ -13,8 +13,8 @@ import java.util.List;
 @Fluent
 public final class SendMessageRequest {
     /*
-     * The sender's phone number in E.164 format that is owned by the
-     * authenticated account.
+     * The sender's identifier (typically phone number in E.164 format) that is
+     * owned by the authenticated account.
      */
     @JsonProperty(value = "from", required = true)
     private String from;
@@ -40,7 +40,8 @@ public final class SendMessageRequest {
     private SmsSendOptions smsSendOptions;
 
     /**
-     * Get the from property: The sender's phone number in E.164 format that is owned by the authenticated account.
+     * Get the from property: The sender's identifier (typically phone number in E.164 format) that is owned by the
+     * authenticated account.
      *
      * @return the from value.
      */
@@ -49,7 +50,8 @@ public final class SendMessageRequest {
     }
 
     /**
-     * Set the from property: The sender's phone number in E.164 format that is owned by the authenticated account.
+     * Set the from property: The sender's identifier (typically phone number in E.164 format) that is owned by the
+     * authenticated account.
      *
      * @param from the from value to set.
      * @return the SendMessageRequest object itself.

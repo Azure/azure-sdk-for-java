@@ -9,14 +9,16 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureCommunicationSMSService type. */
 public final class AzureCommunicationSMSServiceImpl {
-    /** The communication resource, for example https://my-resource.communication.azure.com. */
+    /** The communication resource, for example https://resourcename.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets The communication resource, for example https://my-resource.communication.azure.com.
+     * Gets The communication resource, for example https://resourcename.communication.azure.com.
      *
      * @return the endpoint value.
      */
@@ -48,6 +50,30 @@ public final class AzureCommunicationSMSServiceImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The MmsImpl object to access its operations. */
+    private final MmsImpl mms;
+
+    /**
+     * Gets the MmsImpl object to access its operations.
+     *
+     * @return the MmsImpl object.
+     */
+    public MmsImpl getMms() {
+        return this.mms;
+    }
+
     /** The SmsImpl object to access its operations. */
     private final SmsImpl sms;
 
@@ -66,6 +92,7 @@ public final class AzureCommunicationSMSServiceImpl {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
 
@@ -75,9 +102,21 @@ public final class AzureCommunicationSMSServiceImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     AzureCommunicationSMSServiceImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of AzureCommunicationSMSService client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    AzureCommunicationSMSServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-07";
+        this.apiVersion = "2024-01-14-preview";
+        this.mms = new MmsImpl(this);
         this.sms = new SmsImpl(this);
     }
 }

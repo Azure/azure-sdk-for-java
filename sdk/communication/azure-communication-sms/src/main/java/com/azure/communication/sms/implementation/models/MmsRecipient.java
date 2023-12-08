@@ -7,9 +7,9 @@ package com.azure.communication.sms.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SmsRecipient model. */
+/** The MmsRecipient model. */
 @Fluent
-public final class SmsRecipient {
+public final class MmsRecipient {
     /*
      * The recipient's phone number in E.164 format.
      */
@@ -49,9 +49,9 @@ public final class SmsRecipient {
      * Set the to property: The recipient's phone number in E.164 format.
      *
      * @param to the to value to set.
-     * @return the SmsRecipient object itself.
+     * @return the MmsRecipient object itself.
      */
-    public SmsRecipient setTo(String to) {
+    public MmsRecipient setTo(String to) {
         this.to = to;
         return this;
     }
@@ -77,9 +77,9 @@ public final class SmsRecipient {
      * case-insensitive encoding of a UUID (GUID), identifier for the request.
      *
      * @param repeatabilityRequestId the repeatabilityRequestId value to set.
-     * @return the SmsRecipient object itself.
+     * @return the MmsRecipient object itself.
      */
-    public SmsRecipient setRepeatabilityRequestId(String repeatabilityRequestId) {
+    public MmsRecipient setRepeatabilityRequestId(String repeatabilityRequestId) {
         this.repeatabilityRequestId = repeatabilityRequestId;
         return this;
     }
@@ -101,9 +101,9 @@ public final class SmsRecipient {
      * Mar 2019 16:06:51 GMT.
      *
      * @param repeatabilityFirstSent the repeatabilityFirstSent value to set.
-     * @return the SmsRecipient object itself.
+     * @return the MmsRecipient object itself.
      */
-    public SmsRecipient setRepeatabilityFirstSent(String repeatabilityFirstSent) {
+    public MmsRecipient setRepeatabilityFirstSent(String repeatabilityFirstSent) {
         this.repeatabilityFirstSent = repeatabilityFirstSent;
         return this;
     }

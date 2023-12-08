@@ -10,9 +10,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum SmsServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-03-07}.
+     * Service version {@code 2024-01-14-preview}.
      */
-    V2021_03_07("2021-03-07");
+    V2024_01_14_PREVIEW("2024-01-14-preview");
 
     private final String version;
 
@@ -34,6 +34,6 @@ public enum SmsServiceVersion implements ServiceVersion {
      * @return the latest {@link SmsServiceVersion}
      */
     public static SmsServiceVersion getLatest() {
-        return V2021_03_07;
+        return V2024_01_14_PREVIEW;
     }
 }

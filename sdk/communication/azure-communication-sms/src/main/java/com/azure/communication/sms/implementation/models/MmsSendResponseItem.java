@@ -7,9 +7,9 @@ package com.azure.communication.sms.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SmsSendResponseItem model. */
+/** The MmsSendResponseItem model. */
 @Fluent
-public final class SmsSendResponseItem {
+public final class MmsSendResponseItem {
     /*
      * The recipient's phone number in E.164 format.
      */
@@ -40,7 +40,7 @@ public final class SmsSendResponseItem {
      * values accepted or rejected.
      */
     @JsonProperty(value = "repeatabilityResult")
-    private SmsSendResponseItemRepeatabilityResult repeatabilityResult;
+    private MmsSendResponseItemRepeatabilityResult repeatabilityResult;
 
     /*
      * Indicates if the message is processed successfully or not.
@@ -61,9 +61,9 @@ public final class SmsSendResponseItem {
      * Set the to property: The recipient's phone number in E.164 format.
      *
      * @param to the to value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setTo(String to) {
+    public MmsSendResponseItem setTo(String to) {
         this.to = to;
         return this;
     }
@@ -81,9 +81,9 @@ public final class SmsSendResponseItem {
      * Set the messageId property: The identifier of the outgoing message. Only present if message processed.
      *
      * @param messageId the messageId value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setMessageId(String messageId) {
+    public MmsSendResponseItem setMessageId(String messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -101,9 +101,9 @@ public final class SmsSendResponseItem {
      * Set the httpStatusCode property: HTTP Status code.
      *
      * @param httpStatusCode the httpStatusCode value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setHttpStatusCode(int httpStatusCode) {
+    public MmsSendResponseItem setHttpStatusCode(int httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
         return this;
     }
@@ -121,9 +121,9 @@ public final class SmsSendResponseItem {
      * Set the errorMessage property: Optional error message in case of 4xx/5xx/repeatable errors.
      *
      * @param errorMessage the errorMessage value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setErrorMessage(String errorMessage) {
+    public MmsSendResponseItem setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
         return this;
     }
@@ -134,7 +134,7 @@ public final class SmsSendResponseItem {
      *
      * @return the repeatabilityResult value.
      */
-    public SmsSendResponseItemRepeatabilityResult getRepeatabilityResult() {
+    public MmsSendResponseItemRepeatabilityResult getRepeatabilityResult() {
         return this.repeatabilityResult;
     }
 
@@ -143,9 +143,9 @@ public final class SmsSendResponseItem {
      * accepted or rejected.
      *
      * @param repeatabilityResult the repeatabilityResult value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setRepeatabilityResult(SmsSendResponseItemRepeatabilityResult repeatabilityResult) {
+    public MmsSendResponseItem setRepeatabilityResult(MmsSendResponseItemRepeatabilityResult repeatabilityResult) {
         this.repeatabilityResult = repeatabilityResult;
         return this;
     }
@@ -163,9 +163,9 @@ public final class SmsSendResponseItem {
      * Set the successful property: Indicates if the message is processed successfully or not.
      *
      * @param successful the successful value to set.
-     * @return the SmsSendResponseItem object itself.
+     * @return the MmsSendResponseItem object itself.
      */
-    public SmsSendResponseItem setSuccessful(boolean successful) {
+    public MmsSendResponseItem setSuccessful(boolean successful) {
         this.successful = successful;
         return this;
     }

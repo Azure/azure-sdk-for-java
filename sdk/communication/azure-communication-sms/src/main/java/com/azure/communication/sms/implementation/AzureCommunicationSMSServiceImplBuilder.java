@@ -10,18 +10,20 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the AzureCommunicationSMSService type. */
 @ServiceClientBuilder(serviceClients = {AzureCommunicationSMSServiceImpl.class})
 public final class AzureCommunicationSMSServiceImplBuilder {
     /*
      * The communication resource, for example
-     * https://my-resource.communication.azure.com
+     * https://resourcename.communication.azure.com
      */
     private String endpoint;
 
     /**
-     * Sets The communication resource, for example https://my-resource.communication.azure.com.
+     * Sets The communication resource, for example https://resourcename.communication.azure.com.
      *
      * @param endpoint the endpoint value.
      * @return the AzureCommunicationSMSServiceImplBuilder.
@@ -47,6 +49,22 @@ public final class AzureCommunicationSMSServiceImplBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the AzureCommunicationSMSServiceImplBuilder.
+     */
+    public AzureCommunicationSMSServiceImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
     /**
      * Builds an instance of AzureCommunicationSMSServiceImpl with the provided parameters.
      *
@@ -59,7 +77,11 @@ public final class AzureCommunicationSMSServiceImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        AzureCommunicationSMSServiceImpl client = new AzureCommunicationSMSServiceImpl(pipeline, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        AzureCommunicationSMSServiceImpl client =
+                new AzureCommunicationSMSServiceImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 }
