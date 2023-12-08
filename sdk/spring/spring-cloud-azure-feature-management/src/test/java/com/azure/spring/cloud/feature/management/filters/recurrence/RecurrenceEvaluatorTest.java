@@ -5,539 +5,337 @@ package com.azure.spring.cloud.feature.management.filters.recurrence;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrencePattern;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceRange;
-import com.azure.spring.cloud.feature.management.models.FilterParameters;
 import org.junit.jupiter.api.Test;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecurrenceEvaluatorTest {
-    private final String Pattern = "Recurrence.Pattern";
-    public final String PatternType = "Recurrence.Pattern.Type";
-    public final String Interval = "Recurrence.Pattern.Interval";
-    public final String Index = "Recurrence.Pattern.Index";
-    public final String DaysOfWeek = "Recurrence.Pattern.DaysOfWeek";
-    public final String FirstDayOfWeek = "Recurrence.Pattern.FirstDayOfWeek";
-    public final String Month = "Recurrence.Pattern.Month";
-    public final String DayOfMonth = "Recurrence.Pattern.DayOfMonth";
-    public final String Range = "Recurrence.Range";
-    public final String RangeType = "Recurrence.Range.Type";
-    public final String NumberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
-    public final String RecurrenceTimeZone = "Recurrence.Range.RecurrenceTimeZone";
-    public final String EndDate = "Recurrence.Range.EndDate";
     @Test
-    public void generalRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.now();
-        final ZonedDateTime endTime = startTime.plusHours(2);
+    public void matchDailyRecurrenceTest() {
+        final List<EvaluationTestData> testDataList = new ArrayList<>();
 
-        // no end parameter
+        // interval is 1
+        final ZonedDateTime now1 = ZonedDateTime.parse("2023-09-02T00:00:00+08:00");
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
-        settings1.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings1.setRecurrence(new Recurrence());
-        consumeValidationTestData(settings1, FilterParameters.TIME_WINDOW_FILTER_SETTING_END,
-            RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // no start parameter
-        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
-        settings2.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings2.setRecurrence(new Recurrence());
-        consumeValidationTestData(settings2, FilterParameters.TIME_WINDOW_FILTER_SETTING_START,
-            RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // no pattern in recurrence parameter
-        final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
-        settings3.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings3.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence3 = new Recurrence();
-        recurrence3.setRange(new RecurrenceRange());
-        settings3.setRecurrence(recurrence3);
-        consumeValidationTestData(settings3, Pattern, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // no range in recurrence parameter
-        final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
-        settings4.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings4.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence4 = new Recurrence();
-        recurrence4.setPattern(new RecurrencePattern());
-        settings4.setRecurrence(recurrence4);
-        consumeValidationTestData(settings4, Range, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // no type in recurrence pattern parameter
-        final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
-        settings5.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings5.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence5 = new Recurrence();
-        recurrence5.setPattern(new RecurrencePattern());
-        recurrence5.setRange(new RecurrenceRange());
-        settings5.setRecurrence(recurrence5);
-        consumeValidationTestData(settings5, PatternType, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // no type in recurrence range parameter
-        final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
-        settings6.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings6.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence6 = new Recurrence();
-        final RecurrencePattern pattern6 = new RecurrencePattern();
-        pattern6.setType(RecurrenceConstants.DAILY);
-        recurrence6.setPattern(pattern6);
-        recurrence6.setRange(new RecurrenceRange());
-        settings6.setRecurrence(recurrence6);
-        consumeValidationTestData(settings6, RangeType, RecurrenceEvaluator.REQUIRED_PARAMETER);
-    }
-
-    @Test
-    public void invalidValueTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Daily");
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-
-        // invalid pattern type parameter
+        final RecurrencePattern pattern1 = new RecurrencePattern();
+        final RecurrenceRange range1 = new RecurrenceRange();
         final Recurrence recurrence1 = new Recurrence();
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        pattern1.setType("");
+        pattern1.setType("Daily");
+        recurrence1.setRange(range1);
         recurrence1.setPattern(pattern1);
-        recurrence1.setRange(range);
-        settings.setRecurrence(recurrence1);
-        consumeValidationTestData(settings, PatternType, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
+        settings1.setStart("2023-09-01T00:00:00+08:00");
+        settings1.setEnd("2023-09-01T00:00:01+08:00");
+        settings1.setRecurrence(recurrence1);
+        testDataList.add(new EvaluationTestData(now1, settings1, true));
 
-        // invalid range type parameter
-        final Recurrence recurrence2 = new Recurrence();
+        // inter is 4
+        final ZonedDateTime now2 = ZonedDateTime.parse("2023-09-05T00:00:00+08:00");
+        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern2 = new RecurrencePattern();
         final RecurrenceRange range2 = new RecurrenceRange();
-        range2.setType("");
-        recurrence2.setPattern(pattern);
+        final Recurrence recurrence2 = new Recurrence();
+        pattern2.setType("Daily");
+        pattern2.setInterval(4);
         recurrence2.setRange(range2);
-        settings.setRecurrence(recurrence2);
-        consumeValidationTestData(settings, RangeType, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
+        recurrence2.setPattern(pattern2);
+        settings2.setStart("2023-09-01T00:00:00+08:00");
+        settings2.setEnd("2023-09-03T00:00:00+08:00");
+        settings2.setRecurrence(recurrence2);
+        testDataList.add(new EvaluationTestData(now2, settings2, true));
 
-        // invalid pattern interval
+        // inter is 4
+        final ZonedDateTime now3 = ZonedDateTime.parse("2023-09-06T00:00:00+08:00");
+        final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern3 = new RecurrencePattern();
+        final RecurrenceRange range3 = new RecurrenceRange();
         final Recurrence recurrence3 = new Recurrence();
-        final RecurrencePattern pattern3 = new RecurrencePattern();
         pattern3.setType("Daily");
-        pattern3.setInterval(0);
+        pattern3.setInterval(4);
+        recurrence3.setRange(range3);
         recurrence3.setPattern(pattern3);
-        recurrence3.setRange(range);
-        settings.setRecurrence(recurrence3);
-        consumeValidationTestData(settings, Interval, RecurrenceEvaluator.OUT_OF_RANGE);
+        settings3.setStart("2023-09-01T00:00:00+08:00");
+        settings3.setEnd("2023-09-03T00:00:00+08:00");
+        settings3.setRecurrence(recurrence3);
+        testDataList.add(new EvaluationTestData(now3, settings3, true));
 
-        // invalid firstDayOfWeek parameter
-        final Recurrence recurrence4 = new Recurrence();
+        // now date matched the pattern but not match numberOfOccurrences
+        final ZonedDateTime now4 = ZonedDateTime.parse("2023-09-03T00:00:00+08:00");
+        final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
-        pattern4.setType("Weekly");
-        pattern4.setFirstDayOfWeek("");
-        pattern4.setDaysOfWeek(List.of("Monday"));
+        final RecurrenceRange range4 = new RecurrenceRange();
+        final Recurrence recurrence4 = new Recurrence();
+        pattern4.setType("Daily");
+        range4.setType("Numbered");
+        range4.setNumberOfRecurrences(2);
+        recurrence4.setRange(range4);
         recurrence4.setPattern(pattern4);
-        recurrence4.setRange(range);
-        settings.setRecurrence(recurrence4);
-        consumeValidationTestData(settings, FirstDayOfWeek, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
+        settings4.setStart("2023-09-01T00:00:00+08:00");
+        settings4.setEnd("2023-09-01T00:00:01+08:00");
+        settings4.setRecurrence(recurrence4);
+        testDataList.add(new EvaluationTestData(now4, settings4, false));
 
-        // invalid daysOfWeek parameter
-        final Recurrence recurrence5 = new Recurrence();
+        // now date matched the pattern but not match range end date
+        final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-02T17:00:00+00:00");
+        final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
-        pattern5.setType("Weekly");
-        pattern5.setDaysOfWeek(List.of("day"));
+        final RecurrenceRange range5 = new RecurrenceRange();
+        final Recurrence recurrence5 = new Recurrence();
+        pattern5.setType("Daily");
+        range5.setType("EndDate");
+        range5.setRecurrenceTimeZone("UTC+08:00");
+        range5.setEndDate("2023-09-02T00:00:00+08:00");
+        recurrence5.setRange(range5);
         recurrence5.setPattern(pattern5);
-        recurrence5.setRange(range);
-        settings.setRecurrence(recurrence5);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
+        settings5.setStart("2023-09-01T17:00:00+00:00");
+        settings5.setEnd("2023-09-01T17:30:00+00:00");
+        settings5.setRecurrence(recurrence5);
+        testDataList.add(new EvaluationTestData(now5, settings5, false));
 
-        // invalid pattern index parameter
-        final Recurrence recurrence6 = new Recurrence();
-        final RecurrencePattern pattern6 = new RecurrencePattern();
-        pattern6.setType("RelativeMonthly");
-        pattern6.setIndex("");
-        pattern6.setDaysOfWeek(List.of("Friday"));
-        recurrence6.setPattern(pattern6);
-        recurrence6.setRange(range);
-        settings.setRecurrence(recurrence6);
-        consumeValidationTestData(settings, Index, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
-
-        // invalid pattern dayOfMonth parameter
-        final Recurrence recurrence7 = new Recurrence();
-        final RecurrencePattern pattern7 = new RecurrencePattern();
-        pattern7.setType("AbsoluteMonthly");
-        pattern7.setDayOfMonth(0);
-        recurrence7.setPattern(pattern7);
-        recurrence7.setRange(range);
-        settings.setRecurrence(recurrence7);
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // invalid pattern month parameter
-        final Recurrence recurrence8 = new Recurrence();
-        final RecurrencePattern pattern8 = new RecurrencePattern();
-        pattern8.setType("AbsoluteMonthly");
-        pattern8.setDayOfMonth(1);
-        pattern8.setMonth(0);
-        recurrence8.setPattern(pattern8);
-        recurrence8.setRange(range);
-        settings.setRecurrence(recurrence8);
-        consumeValidationTestData(settings, Month, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // invalid range recurrenceTimeZone parameter
-        final Recurrence recurrence9 = new Recurrence();
-        final RecurrenceRange range9 = new RecurrenceRange();
-        range9.setType("NoEnd");
-        range9.setRecurrenceTimeZone("");
-        recurrence9.setPattern(pattern);
-        recurrence9.setRange(range9);
-        settings.setRecurrence(recurrence9);
-        consumeValidationTestData(settings, RecurrenceTimeZone, RecurrenceEvaluator.UNRECOGNIZED_VALUE);
-
-        // invalid range numberOfOccurrences parameter
-        final Recurrence recurrence10 = new Recurrence();
-        final RecurrenceRange range10 = new RecurrenceRange();
-        range10.setType("Numbered");
-        range10.setNumberOfRecurrences(0);
-        recurrence10.setPattern(pattern);
-        recurrence10.setRange(range10);
-        settings.setRecurrence(recurrence10);
-        consumeValidationTestData(settings, NumberOfOccurrences, RecurrenceEvaluator.OUT_OF_RANGE);
+        consumeEvaluationTestData(testDataList);
     }
 
     @Test
-    public void invalidTimeWindowTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 25, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        final Recurrence recurrence = new Recurrence();
-        final RecurrencePattern pattern = new RecurrencePattern();
-        final RecurrenceRange range = new RecurrenceRange();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
+    public void matchWeeklyRecurrenceTest() {
+        final List<EvaluationTestData> testDataList = new ArrayList<>();
 
-        // time window is zero
-        pattern.setType("Daily");
-        range.setType("NoEnd");
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // time window is bigger than interval when pattern is daily
-        final ZonedDateTime endTime1 = startTime.plusDays(2).plusMinutes(1);
-        settings.setEnd(endTime1.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setInterval(2);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // time window is bigger than interval when pattern is weekly
-        final ZonedDateTime endTime2 = startTime.plusDays(7).plusMinutes(1);
-        settings.setEnd(endTime2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setType("Weekly");
-        pattern.setInterval(1);
-        pattern.setDaysOfWeek(List.of("Monday"));
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // time window is bigger than interval when pattern is weekly
-        final ZonedDateTime endTime3 = startTime.plusDays(2).plusMinutes(1);
-        settings.setEnd(endTime3.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setInterval(1);
-        pattern.setDaysOfWeek(List.of("Monday", "Thursday", "Sunday"));
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // time window is bigger than interval when pattern is absoluteMonthly
-        final ZonedDateTime startTime4 = ZonedDateTime.of(2023, 2, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime4 = ZonedDateTime.of(2023, 3, 31, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
-        settings.setStart(startTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setType("AbsoluteMonthly");
-        pattern.setInterval(2);
-        pattern.setDayOfMonth(1);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // time window is bigger than interval when patter is absoluteYearly
-        final ZonedDateTime startTime5 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime5 = ZonedDateTime.of(2024, 9, 1, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
-        settings.setStart(startTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setType("AbsoluteYearly");
-        pattern.setInterval(1);
-        pattern.setDayOfMonth(1);
-        pattern.setMonth(9);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // endDate is before first start time
-        final ZonedDateTime startTime6 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime6 = ZonedDateTime.of(2023, 9, 1, 0, 1, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endDate = ZonedDateTime.of(2023, 8, 31, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        settings.setStart(startTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setType("Daily");
-        range.setType("EndDate");
-        range.setEndDate(endDate.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        consumeValidationTestData(settings, EndDate, RecurrenceEvaluator.OUT_OF_RANGE);
-
-        // endDate is before first start time when different zone id
-        final ZonedDateTime startTime7 = ZonedDateTime.of(2023, 9, 1, 23, 0, 0, 0, ZoneId.of("UTC"));
-        final ZonedDateTime endTime7 = ZonedDateTime.of(2023, 9, 1, 23, 1, 0, 0, ZoneId.of("UTC"));
-        final ZonedDateTime endDate2 = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        settings.setStart(startTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        range.setEndDate(endDate2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        range.setRecurrenceTimeZone("UTC+08:00");
-        consumeValidationTestData(settings, EndDate, RecurrenceEvaluator.OUT_OF_RANGE);
-
-    }
-
-    @Test
-    public void weeklyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-
-        // daysOfWeek parameter is required
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(null);
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceEvaluator.REQUIRED_PARAMETER);
-    }
-
-    @Test
-    public void weeklyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // start time need to match the first recurrence
+        // match one of the daysOfWeek
+        final ZonedDateTime now1 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the 2nd week
+        final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
+        final RecurrenceRange range1 = new RecurrenceRange();
+        final Recurrence recurrence1 = new Recurrence();
         pattern1.setType("Weekly");
-        pattern1.setDaysOfWeek(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
-        recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceEvaluator.NOT_MATCHED);
+        pattern1.setDaysOfWeek(List.of("Monday", "Friday"));
+        recurrence1.setRange(range1);
+        recurrence1.setPattern(pattern1);
+        settings1.setStart("2023-09-01T00:00:00+08:00");    // Friday
+        settings1.setEnd("2023-09-01T00:00:01+08:00");
+        settings1.setRecurrence(recurrence1);
+        testDataList.add(new EvaluationTestData(now1, settings1, true));
 
-        // start time need to match the first recurrence
+        // match one of the daysOfWeek not match interval
+        final ZonedDateTime now2 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the 2nd week
+        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
+        final RecurrenceRange range2 = new RecurrenceRange();
+        final Recurrence recurrence2 = new Recurrence();
         pattern2.setType("Weekly");
-        pattern2.setDaysOfWeek(List.of("Friday"));
-        range.setRecurrenceTimeZone("UTC+07:00");
-        recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceEvaluator.NOT_MATCHED);
-    }
+        pattern2.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern2.setInterval(2);
+        recurrence2.setRange(range2);
+        recurrence2.setPattern(pattern2);
+        settings2.setStart("2023-09-03T00:00:00+08:00");    // Sunday
+        settings2.setEnd("2023-09-03T00:00:01+08:00");
+        settings2.setRecurrence(recurrence2);
+        testDataList.add(new EvaluationTestData(now2, settings2, false));
 
-    @Test
-    public void absoluteMonthlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // dayOfMonth parameter is required
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("AbsoluteMonthly");
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceEvaluator.REQUIRED_PARAMETER);
-    }
-
-    @Test
-    public void absoluteMonthlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // start time need to match the first recurrence
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("AbsoluteMonthly");
-        pattern.setDayOfMonth(2);
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceEvaluator.NOT_MATCHED);
-    }
-
-    @Test
-    public void relativeMonthlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // daysOfWeek parameter is required
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        pattern1.setType("RelativeMonthly");
-        recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // index parameter is required
-        final RecurrencePattern pattern2 = new RecurrencePattern();
-        pattern2.setType("RelativeMonthly");
-        pattern2.setDaysOfWeek(List.of("Friday"));
-        pattern2.setIndex(null);
-        recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, Index, RecurrenceEvaluator.REQUIRED_PARAMETER);
-    }
-
-    @Test
-    public void relativeMonthlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // start time need to match the first recurrence
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("RelativeMonthly");
-        pattern.setDaysOfWeek(List.of("Friday"));
-        pattern.setIndex("Second");
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceEvaluator.NOT_MATCHED);
-    }
-
-    @Test
-    public void absoluteYearlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // month parameter is required
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        pattern1.setType("AbsoluteYearly");
-        pattern1.setDayOfMonth(1);
-        recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, Month, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // dayOfMonth parameter is required
-        final RecurrencePattern pattern2 = new RecurrencePattern();
-        pattern2.setType("AbsoluteYearly");
-        pattern2.setMonth(9);
-        recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceEvaluator.REQUIRED_PARAMETER);
-    }
-
-    @Test
-    public void absoluteYearlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // start time need to match the first recurrence
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("AbsoluteYearly");
-        pattern.setMonth(8);
-        pattern.setDayOfMonth(1);
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceEvaluator.NOT_MATCHED);
-    }
-
-    @Test
-    public void relativeYearlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.of(2023, 9, 1, 0, 0, 0, 0, ZoneId.of("UTC+08:00"));
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
-
-        // daysOfWeek parameter is required
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        pattern1.setType("RelativeYearly");
-        pattern1.setMonth(9);
-        recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // month parameter is required
-        final RecurrencePattern pattern2 = new RecurrencePattern();
-        pattern2.setType("RelativeYearly");
-        pattern2.setDaysOfWeek(List.of("Friday"));
-        recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, Month, RecurrenceEvaluator.REQUIRED_PARAMETER);
-
-        // index parameter is required
+        // match one of the daysOfWeek & match interval
+        final ZonedDateTime now3 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the 1st week
+        final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
-        pattern3.setType("RelativeYearly");
-        pattern3.setDaysOfWeek(List.of("Friday"));
-        pattern3.setMonth(9);
-        pattern3.setIndex(null);
-        recurrence.setPattern(pattern3);
-        consumeValidationTestData(settings, Index, RecurrenceEvaluator.REQUIRED_PARAMETER);
+        final RecurrenceRange range3 = new RecurrenceRange();
+        final Recurrence recurrence3 = new Recurrence();
+        pattern3.setType("Weekly");
+        pattern3.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern3.setInterval(2);
+        recurrence3.setRange(range3);
+        recurrence3.setPattern(pattern3);
+        settings3.setStart("2023-09-03T00:00:00+08:00");    // Sunday
+        settings3.setEnd("2023-09-03T00:00:01+08:00");
+        settings3.setRecurrence(recurrence3);
+        testDataList.add(new EvaluationTestData(now3, settings3, true));
+
+        // match one of the daysOfWeek & match interval & match numberOfOccurrences
+        final ZonedDateTime now4 = ZonedDateTime.parse("2023-09-17T00:00:00+08:00");    // Sunday in the 3rd week
+        final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern4 = new RecurrencePattern();
+        final RecurrenceRange range4 = new RecurrenceRange();
+        final Recurrence recurrence4 = new Recurrence();
+        pattern4.setType("Weekly");
+        pattern4.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern4.setFirstDayOfWeek("Monday");
+        pattern4.setInterval(2);
+        range4.setType("Numbered");
+        range4.setNumberOfRecurrences(3);
+        recurrence4.setRange(range4);
+        recurrence4.setPattern(pattern4);
+        settings4.setStart("2023-09-03T00:00:00+08:00");    // Sunday
+        settings4.setEnd("2023-09-03T00:00:01+08:00");
+        settings4.setRecurrence(recurrence4);
+        testDataList.add(new EvaluationTestData(now4, settings4, true));
+
+        // time window across days
+        final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
+        final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern5 = new RecurrencePattern();
+        final RecurrenceRange range5 = new RecurrenceRange();
+        final Recurrence recurrence5 = new Recurrence();
+        pattern5.setType("Weekly");
+        pattern5.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern5.setFirstDayOfWeek("Monday");
+        pattern5.setInterval(2);
+        range5.setType("Numbered");
+        range5.setNumberOfRecurrences(3);
+        recurrence5.setRange(range5);
+        recurrence5.setPattern(pattern5);
+        settings5.setStart("2023-09-03T00:00:00+08:00");    // Sunday
+        settings5.setEnd("2023-09-07T00:00:00+08:00");
+        settings5.setRecurrence(recurrence5);
+        testDataList.add(new EvaluationTestData(now5, settings5, true));
+
+        // time window across days & not match numberOfRecurrences
+        final ZonedDateTime now6 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
+        final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern6 = new RecurrencePattern();
+        final RecurrenceRange range6 = new RecurrenceRange();
+        final Recurrence recurrence6 = new Recurrence();
+        pattern6.setType("Weekly");
+        pattern6.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern6.setFirstDayOfWeek("Monday");
+        pattern6.setInterval(2);
+        range6.setType("Numbered");
+        range6.setNumberOfRecurrences(2);
+        recurrence6.setRange(range6);
+        recurrence6.setPattern(pattern6);
+        settings6.setStart("2023-09-03T00:00:00+08:00");    // Sunday
+        settings6.setEnd("2023-09-07T00:00:00+08:00");
+        settings6.setRecurrence(recurrence6);
+        testDataList.add(new EvaluationTestData(now6, settings6, true));
+
+        consumeEvaluationTestData(testDataList);
     }
 
-    private void consumeValidationTestData(TimeWindowFilterSettings settings, String parameterName, String errorMessage) {
-        final ZonedDateTime now = ZonedDateTime.now();
+    @Test
+    public void matchAbsoluteMonthlyRecurrenceTest() {
 
-        try {
-            RecurrenceEvaluator.matchRecurrence(now, settings);
-        } catch (final Exception e) {
-            assertTrue(e instanceof IllegalArgumentException);
-            assertEquals(e.getMessage(), String.format(errorMessage, parameterName));
+        final List<EvaluationTestData> testDataList = new ArrayList<>();
+
+        // 1st every month
+        final ZonedDateTime now1 = ZonedDateTime.parse("2023-10-01T00:00:00+08:00");
+        final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern1 = new RecurrencePattern();
+        final RecurrenceRange range1 = new RecurrenceRange();
+        final Recurrence recurrence1 = new Recurrence();
+        pattern1.setType("AbsoluteMonthly");
+        pattern1.setDayOfMonth(1);
+        recurrence1.setRange(range1);
+        recurrence1.setPattern(pattern1);
+        settings1.setStart("2023-09-01T00:00:00+08:00");
+        settings1.setEnd("2023-09-01T00:00:01+08:00");
+        settings1.setRecurrence(recurrence1);
+        testDataList.add(new EvaluationTestData(now1, settings1, true));
+
+        // 1st every 5 months
+        final ZonedDateTime now2 = ZonedDateTime.parse("2024-02-01T00:00:00+08:00");
+        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern2 = new RecurrencePattern();
+        final RecurrenceRange range2 = new RecurrenceRange();
+        final Recurrence recurrence2 = new Recurrence();
+        pattern2.setType("AbsoluteMonthly");
+        pattern2.setDayOfMonth(1);
+        pattern2.setInterval(5);
+        recurrence2.setRange(range2);
+        recurrence2.setPattern(pattern2);
+        settings2.setStart("2023-09-01T00:00:00+08:00");
+        settings2.setEnd("2023-09-01T00:00:01+08:00");
+        settings2.setRecurrence(recurrence2);
+        testDataList.add(new EvaluationTestData(now2, settings2, true));
+
+        // 1st every 5 months
+        final ZonedDateTime now3 = ZonedDateTime.parse("2024-01-01T00:00:00+08:00");
+        final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern3 = new RecurrencePattern();
+        final RecurrenceRange range3 = new RecurrenceRange();
+        final Recurrence recurrence3 = new Recurrence();
+        pattern3.setType("AbsoluteMonthly");
+        pattern3.setDayOfMonth(1);
+        pattern3.setInterval(5);
+        recurrence3.setRange(range3);
+        recurrence3.setPattern(pattern3);
+        settings3.setStart("2023-09-01T00:00:00+08:00");
+        settings3.setEnd("2023-09-01T00:00:01+08:00");
+        settings3.setRecurrence(recurrence3);
+        testDataList.add(new EvaluationTestData(now3, settings3, false));
+
+        // 1st every 4 months & not match numberOfOccurrences
+        final ZonedDateTime now4 = ZonedDateTime.parse("2024-01-01T00:00:00+08:00");
+        final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern4 = new RecurrencePattern();
+        final RecurrenceRange range4 = new RecurrenceRange();
+        final Recurrence recurrence4 = new Recurrence();
+        pattern4.setType("AbsoluteMonthly");
+        pattern4.setDayOfMonth(1);
+        pattern4.setInterval(4);
+        recurrence4.setPattern(pattern4);
+        range4.setNumberOfRecurrences(3);
+        range4.setType("Numbered");
+        recurrence4.setRange(range4);
+        settings4.setStart("2023-01-01T00:00:00+08:00");
+        settings4.setEnd("2023-01-01T00:00:01+08:00");
+        settings4.setRecurrence(recurrence4);
+        testDataList.add(new EvaluationTestData(now4, settings4, false));
+
+
+        // 29th every 2 months & match endDate
+        final ZonedDateTime now5 = ZonedDateTime.parse("2024-02-29T00:00:00+08:00");
+        final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern5 = new RecurrencePattern();
+        final RecurrenceRange range5 = new RecurrenceRange();
+        final Recurrence recurrence5 = new Recurrence();
+        pattern5.setType("AbsoluteMonthly");
+        pattern5.setDayOfMonth(29);
+        pattern5.setInterval(2);
+        recurrence5.setPattern(pattern5);
+        range5.setEndDate("2024-02-29T00:00:00+08:00");
+        range5.setType("EndDate");
+        recurrence5.setRange(range5);
+        settings5.setStart("2023-04-29T00:00:00+08:00");
+        settings5.setEnd("2023-04-29T00:00:01+08:00");
+        settings5.setRecurrence(recurrence5);
+        testDataList.add(new EvaluationTestData(now5, settings5, true));
+
+        // 29th every month & not match endDate
+        final ZonedDateTime now6 = ZonedDateTime.parse("2023-10-29T00:00:00+08:00");
+        final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern6 = new RecurrencePattern();
+        final RecurrenceRange range6 = new RecurrenceRange();
+        final Recurrence recurrence6 = new Recurrence();
+        pattern6.setType("AbsoluteMonthly");
+        pattern6.setDayOfMonth(29);
+        recurrence6.setPattern(pattern6);
+        range6.setEndDate("2023-10-28T00:00:00+08:00");
+        range6.setType("EndDate");
+        recurrence6.setRange(range6);
+        settings6.setStart("2023-09-29T00:00:00+08:00");
+        settings6.setEnd("2023-09-29T00:00:01+08:00");
+        settings6.setRecurrence(recurrence6);
+        testDataList.add(new EvaluationTestData(now6, settings6, false));
+
+        consumeEvaluationTestData(testDataList);
+    }
+
+
+    private void consumeEvaluationTestData(List<EvaluationTestData> testDataList) {
+        for (EvaluationTestData testData: testDataList) {
+            assertEquals(RecurrenceEvaluator.matchRecurrence(testData.now, testData.settings), testData.isEnabled);
+        }
+    }
+
+    private static class EvaluationTestData {
+        private final ZonedDateTime now;
+        private final TimeWindowFilterSettings settings;
+        private final boolean isEnabled;
+        EvaluationTestData(ZonedDateTime now, TimeWindowFilterSettings settings, boolean isEnabled) {
+            this.settings = settings;
+            this.now = now;
+            this.isEnabled = isEnabled;
         }
     }
 }
