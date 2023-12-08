@@ -12,7 +12,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,12 +39,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
 
-    private void setupIndex() {
+    private void setupIndex(boolean isSync) {
         String indexName = createHotelIndex();
         this.indexToDelete = indexName;
 
         // TODO: Use getSearchClientBuilder once SearchIndexingBufferedSender has Sync Flow integrated.
-        this.clientBuilder = getSearchClientBuilder(indexName, false);
+        this.clientBuilder = getSearchClientBuilder(indexName, isSync);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void flushBatch() {
-        setupIndex();
+        setupIndex(true);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
@@ -85,7 +85,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void flushBatchAsync() {
-        setupIndex();
+        setupIndex(false);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
@@ -111,7 +111,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void autoFlushBatchOnSize() {
-        setupIndex();
+        setupIndex(true);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
@@ -135,7 +135,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void autoFlushBatchOnSizeAsync() {
-        setupIndex();
+        setupIndex(false);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
@@ -159,7 +159,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void autoFlushBatchOnDelay() {
-        setupIndex();
+        setupIndex(true);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
@@ -182,7 +182,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void autoFlushBatchOnDelayAsync() {
-        setupIndex();
+        setupIndex(false);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
@@ -206,7 +206,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void batchFlushesOnClose() {
-        setupIndex();
+        setupIndex(true);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
@@ -227,7 +227,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void batchFlushesOnCloseAsync() {
-        setupIndex();
+        setupIndex(false);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
@@ -250,7 +250,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void batchGetsDocumentsButNeverFlushes() {
-        setupIndex();
+        setupIndex(true);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
@@ -274,7 +274,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
      */
     @Test
     public void batchGetsDocumentsButNeverFlushesAsync() {
-        setupIndex();
+        setupIndex(false);
 
         SearchClient client = clientBuilder.buildClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
@@ -297,7 +297,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void indexManyDocumentsSmallDocumentSets() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
-        setupIndex();
+        setupIndex(true);
 
         AtomicInteger requestCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
@@ -322,7 +322,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         for (int i = 0; i < 100; i++) {
             final int offset = i;
             batchingClient.addUploadActions(documents.stream()
-                .map(HashMap::new)
+                .map(LinkedHashMap::new)
                 .peek(document -> {
                     int originalId = Integer.parseInt(document.get("HotelId").toString());
                     document.put("HotelId", String.valueOf((offset * 10) + originalId));
@@ -344,7 +344,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void indexManyDocumentsSmallDocumentSetsAsync() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
-        setupIndex();
+        setupIndex(false);
 
         AtomicInteger requestCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
@@ -369,7 +369,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         for (int i = 0; i < 100; i++) {
             final int offset = i;
             StepVerifier.create(batchingClient.addUploadActions(documents.stream()
-                .map(HashMap::new)
+                .map(LinkedHashMap::new)
                 .peek(document -> document.put("HotelId",
                     String.valueOf((offset * 10) + Integer.parseInt(document.get("HotelId").toString()))))
                 .collect(Collectors.toList())))
@@ -390,7 +390,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void indexManyDocumentsOneLargeDocumentSet() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
-        setupIndex();
+        setupIndex(true);
 
         AtomicInteger requestCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
@@ -414,7 +414,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         List<Map<String, Object>> documentBatch = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             final int offset = i;
-            documents.stream().map(HashMap::new)
+            documents.stream().map(LinkedHashMap::new)
                 .forEach(document -> {
                     int originalId = Integer.parseInt(document.get("HotelId").toString());
                     document.put("HotelId", String.valueOf((offset * 10) + originalId));
@@ -437,8 +437,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @Test
     public void indexManyDocumentsOneLargeDocumentSetAsync() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
-        
-        setupIndex();
+
+        setupIndex(false);
 
         AtomicInteger requestCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
@@ -463,7 +463,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         List<Map<String, Object>> documentBatch = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             final int offset = i;
-            documents.stream().map(HashMap::new)
+            documents.stream().map(LinkedHashMap::new)
                 .forEach(document -> {
                     int originalId = Integer.parseInt(document.get("HotelId").toString());
                     document.put("HotelId", String.valueOf((offset * 10) + originalId));
