@@ -5,21 +5,23 @@
 ### Features Added
 
 - `-1106` model feature support for `gpt-35-turbo` and `gpt-4-turbo`, including use of `seed`, `system_fingerprint`,
-  parallel function calling via tools, "JSON mode" for guaranteed function outputs, and more
+  parallel function calling via tools, "JSON mode" for guaranteed function outputs, and more.
 - `dall-e-3` image generation capabilities via `getImageGenerations`, featuring higher model quality, automatic prompt
-  revisions by `gpt-4`, and customizable quality/style settings
+  revisions by `gpt-4`, and customizable quality/style settings.
 - Greatly expanded "On Your Data" capabilities in Azure OpenAI, including many new data source options and authentication
-  mechanisms
+  mechanisms.
 - Early support for `gpt-4-vision-preview`, which allows the hybrid use of text and images as input to enable scenarios
-  like "describe this image for me"
-- Support for Azure enhancements to `gpt-4-vision-preview` results that include grounding and OCR features
+  like "describe this image for me".
+- Support for Azure enhancements to `gpt-4-vision-preview` results that include grounding and OCR features.
 
 ### Breaking Changes
 
-- Removed methods `getAudioTranscriptionAsResponseObject` and `getAudioTranscriptionAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
-Use `getAudioTranscription` or `getAudioTranscriptionWithResponse` convenience methods from respective classes.
-- Removed methods `getAudioTranslationAsResponseObject` and `getAudioTranslationAsResponseObjectWithResponse` from `OpenAIClient` and `OpenAIAsyncClient` classes.
-Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience methods from respective classes.
+- Removed methods `getAudioTranscriptionAsResponseObject` and `getAudioTranscriptionAsResponseObjectWithResponse` from
+  `OpenAIClient` and `OpenAIAsyncClient` classes. Use `getAudioTranscription` or `getAudioTranscriptionWithResponse` 
+  convenience methods from respective classes.
+- Removed methods `getAudioTranslationAsResponseObject` and `getAudioTranslationAsResponseObjectWithResponse` from 
+  `OpenAIClient` and `OpenAIAsyncClient` classes. Use `getAudioTranslation` or `getAudioTranslationWithResponse` 
+  convenience methods from respective classes.
 
 **`ChatMessage` changes:**
 
@@ -33,13 +35,16 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 **Dall-e-3:**
 
 - Azure OpenAI now uses `dall-e-3` model deployments for its image generation API and such a valid deployment must
-  be provided into the options for the `getImageGenerations()` method to receive results.
+  be provided into the options for the `getImageGenerations` method to receive results.
 
 ### Bugs Fixed
 
 ### Other Changes
 
-- Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not functionally alter the transcription/translation behavior in any way.
+- Audio transcription and translation (via `getAudioTranscription` and `getAudioTranslation` now allow specification of 
+  an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not 
+  functionally alter the transcription/translation behavior in any way.
+
 
 ## 1.0.0-beta.5 (2023-09-22)
 
