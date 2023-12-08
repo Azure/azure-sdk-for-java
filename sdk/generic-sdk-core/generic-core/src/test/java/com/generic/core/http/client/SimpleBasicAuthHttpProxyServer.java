@@ -11,8 +11,8 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * A simple Http proxy server that enforce basic proxy authentication, once authenticated any request matching
- * {@code serviceEndpoints} will be responded with an empty Http 200.
+ * A simple HTTP proxy server that enforce basic proxy authentication, once authenticated any request matching
+ * {@code serviceEndpoints} will be responded with an empty HTTP 200.
  */
 @Execution(ExecutionMode.SAME_THREAD)
 public final class SimpleBasicAuthHttpProxyServer {
@@ -36,20 +36,24 @@ public final class SimpleBasicAuthHttpProxyServer {
 
     public ProxyEndpoint start() {
         this.proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getRequestURL().toString();
+            String requestUrl = req.getServletPath();
+
             if (!Objects.equals(requestUrl, serviceEndpoint)) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 
             String proxyAuthorization = req.getHeader("Proxy-Authorization");
+
             if (proxyAuthorization == null) {
                 resp.setStatus(407);
                 resp.setHeader("Proxy-Authenticate", "Basic");
+
                 return;
             }
 
             if (!proxyAuthorization.startsWith("Basic")) {
                 resp.setStatus(401);
+
                 return;
             }
 
@@ -57,19 +61,20 @@ public final class SimpleBasicAuthHttpProxyServer {
             encodedCred = encodedCred.trim();
             final Base64.Decoder decoder = Base64.getDecoder();
             final byte[] decodedCred = decoder.decode(encodedCred);
+
             if (!new String(decodedCred).equals(userName + ":" + password)) {
                 resp.setStatus(401);
             }
         });
 
         this.proxyServer.start();
+
         return new ProxyEndpoint("localhost", this.proxyServer.getHttpPort());
     }
 
     public void shutdown() {
         if (this.proxyServer != null) {
             this.proxyServer.stop();
-
         }
     }
 

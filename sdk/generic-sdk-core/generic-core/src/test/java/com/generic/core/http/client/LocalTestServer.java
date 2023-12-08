@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import org.apache.commons.compress.utils.IOUtils;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -25,6 +24,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static com.generic.core.http.client.HttpClientTests.inputStreamToOutputStream;
+
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
  */
@@ -38,6 +39,7 @@ public class LocalTestServer {
      * RequestHandler.
      *
      * @param requestHandler The request handler that will be used to process requests.
+     *
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler) {
@@ -50,6 +52,7 @@ public class LocalTestServer {
      *
      * @param requestHandler The request handler that will be used to process requests.
      * @param maxThreads The maximum number of threads that the server will use to process requests.
+     *
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
@@ -63,30 +66,35 @@ public class LocalTestServer {
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
         sslContextFactory.setTrustAll(true);
-        SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
-            httpConnectionFactory.getProtocol());
+
+        SslConnectionFactory sslConnectionFactory =
+            new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
         HttpConfiguration httpConfiguration = new HttpConfiguration();
         httpConfiguration.addCustomizer(new SecureRequestCustomizer());
 
-        this.httpsConnector = new ServerConnector(server, sslConnectionFactory,
-            new HttpConnectionFactory(httpConfiguration));
+        this.httpsConnector =
+            new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
+
         server.setHandler(servletContextHandler);
 
         ServletHolder servletHolder = new ServletHolder(new HttpServlet() {
             @Override
             protected void service(HttpServletRequest req, HttpServletResponse resp)
                 throws ServletException, IOException {
+
                 byte[] requestBody = fullyReadRequest(req.getInputStream());
+
                 requestHandler.handle((Request) req, (Response) resp, requestBody);
             }
         });
+
         servletContextHandler.addServlet(servletHolder, "/");
     }
 
@@ -156,6 +164,7 @@ public class LocalTestServer {
      */
     public String getHttpsUri() {
         server.getURI();
+
         return "https://localhost:" + getHttpsPort();
     }
 
@@ -169,6 +178,7 @@ public class LocalTestServer {
          * @param req The request.
          * @param resp The response.
          * @param requestBody The request body.
+         *
          * @throws IOException If an IO error occurs.
          * @throws ServletException If a servlet error occurs.
          */
@@ -177,7 +187,9 @@ public class LocalTestServer {
 
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IOUtils.copy(requestBody, outputStream);
+
+        inputStreamToOutputStream(requestBody, outputStream);
+
         return outputStream.toByteArray();
     }
 }

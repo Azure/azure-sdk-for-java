@@ -11,13 +11,13 @@ import com.generic.core.util.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletException;
 import java.net.InetSocketAddress;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -71,36 +71,42 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+
+            assertEquals(200, response.getStatusCode());
         } finally {
             proxyServer.shutdown();
         }
     }
 
-//    @Test
-//    public void buildWithHttpProxyFromEnvConfiguration() {
-//        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-//            PROXY_PASSWORD, SERVICE_ENDPOINT);
-//
-//        try {
-//            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
-//
-//            Configuration configuration = new ConfigurationBuilder((ConfigurationSource) EMPTY_SOURCE, (ConfigurationSource) EMPTY_SOURCE,
-//                    (ConfigurationSource) new TestConfigurationSource()
-//                        .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-//                        .put("java.net.useSystemProxies", "true"))
-//                .build();
-//
-//            HttpClient httpClient = new DefaultHttpClientBuilder()
-//                .configuration(configuration)
-//                .build();
-//
-//            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-//            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl, null), Context.NONE);
-//        } finally {
-//            proxyServer.shutdown();
-//        }
-//    }
+    @Test
+    public void buildWithHttpProxyFromEnvConfiguration() {
+        SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD, SERVICE_ENDPOINT);
+
+        try {
+            SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
+
+            Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                new TestConfigurationSource()
+                    .put(Configuration.PROPERTY_HTTP_PROXY,
+                        "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
+                    .put("java.net.useSystemProxies", "true"))
+                .build();
+
+            HttpClient httpClient = new DefaultHttpClientBuilder()
+                .configuration(configuration)
+                .build();
+
+            final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+
+            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+
+            assertEquals(200, response.getStatusCode());
+        } finally {
+            proxyServer.shutdown();
+        }
+    }
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
@@ -121,7 +127,9 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+
+            assertEquals(200, response.getStatusCode());
         } finally {
             proxyServer.shutdown();
         }
@@ -143,8 +151,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Assertions.assertThrows(RuntimeException.class,
-                () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)));
+            assertThrows(RuntimeException.class, () -> httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)));
         } finally {
             proxyServer.shutdown();
         }
@@ -155,9 +162,10 @@ public class DefaultHttpClientBuilderTests {
         ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.SOCKS5,
             new InetSocketAddress("test.com", 8080));
 
-        assertThrows(IllegalArgumentException.class, () -> new DefaultHttpClientBuilder()
-            .proxy(clientProxyOptions)
-            .build());
+        assertThrows(IllegalArgumentException.class, () ->
+            new DefaultHttpClientBuilder()
+                .proxy(clientProxyOptions)
+                .build());
     }
 
     @Test

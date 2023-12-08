@@ -18,7 +18,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.servlet.ServletException;
-import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -109,7 +109,7 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-        assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
+        assertThrows(UncheckedIOException.class, () -> client.send(request).getBody().toBytes());
     }
 
     @Test

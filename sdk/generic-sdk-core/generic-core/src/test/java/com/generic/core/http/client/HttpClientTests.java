@@ -1842,7 +1842,7 @@ public abstract class HttpClientTests {
         fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
 
-    private static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
+    static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
         byte[] buf = new byte[8192];
         int length;
 
