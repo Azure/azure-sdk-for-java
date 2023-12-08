@@ -4,10 +4,8 @@
 package com.generic.core.models;
 
 import com.generic.core.annotation.Immutable;
-import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.logging.ClientLogger;
 
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
