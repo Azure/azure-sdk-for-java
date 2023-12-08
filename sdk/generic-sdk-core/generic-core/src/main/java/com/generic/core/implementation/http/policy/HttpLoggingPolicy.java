@@ -11,7 +11,6 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.http.policy.HttpLogOptions;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
@@ -54,11 +53,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
 
-    /**
-     * Key for {@link Context} to pass request retry count metadata for logging.
-     */
-    public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
-
     private static final String REQUEST_LOG_MESSAGE = "HTTP request";
     private static final String RESPONSE_LOG_MESSAGE = "HTTP response";
 
@@ -100,17 +94,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return next.process();
         }
 
-        final ClientLogger logger =
-            getOrCreateMethodLogger((String) httpRequest.getContext().getData("caller-method").orElse(""));
+        final ClientLogger logger = httpRequest.getMetadata().getRequestLogger();
         final long startNs = System.nanoTime();
 
-        requestLogger.logRequest(logger, getRequestLoggingOptions(httpRequest));
+        requestLogger.logRequest(logger, httpRequest);
         try {
             HttpResponse response = next.process();
 
             if (response != null) {
-                response = responseLogger.logResponse(
-                    logger, getResponseLoggingOptions(response, startNs, httpRequest));
+                response = responseLogger.logResponse(logger, response, Duration.ofNanos(System.nanoTime() - startNs));
             }
 
             return response;
@@ -120,29 +112,17 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpRequestLoggingContext getRequestLoggingOptions(HttpRequest httpRequest) {
-        return new HttpRequestLoggingContext(httpRequest, httpRequest.getContext(),
-            getRequestRetryCount(httpRequest.getContext()));
-    }
-
-    private HttpResponseLoggingContext getResponseLoggingOptions(HttpResponse httpResponse, long startNs,
-                                                                 HttpRequest httpRequest) {
-        return new HttpResponseLoggingContext(httpResponse, Duration.ofNanos(System.nanoTime() - startNs),
-            httpRequest.getContext(), getRequestRetryCount(httpRequest.getContext()));
-    }
-
     private final class DefaultHttpRequestLogger implements HttpRequestLogger {
         @Override
-        public void logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
-            final LogLevel logLevel = getLogLevel(loggingOptions);
+        public void logRequest(ClientLogger logger, HttpRequest request) {
+            final LogLevel logLevel = getLogLevel(request);
 
             if (logger.canLogAtLevel(logLevel)) {
-                log(logLevel, logger, loggingOptions);
+                log(logLevel, logger, request);
             }
         }
 
-        private void log(LogLevel logLevel, ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
-            final HttpRequest request = loggingOptions.getHttpRequest();
+        private void log(LogLevel logLevel, ClientLogger logger, HttpRequest request) {
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
             // if (httpLogDetailLevel.shouldLogUrl()) {
@@ -211,13 +191,12 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
         }
 
-        private void logUrl(HttpResponseLoggingContext loggingOptions, HttpResponse response,
-                            LoggingEventBuilder logBuilder) {
+        private void logUrl(HttpResponse response, Duration duration, LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogUrl()) {
                 // logBuilder
                 //     .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
                 //     .addKeyValue(LoggingKeys.URL_KEY, getRedactedUrl(response.getRequest().getUrl(), allowedQueryParameterNames))
-                //     .addKeyValue(LoggingKeys.DURATION_MS_KEY, loggingOptions.getResponseDuration().toMillis());
+                //     .addKeyValue(LoggingKeys.DURATION_MS_KEY, duration.toMillis());
             }
         }
 
@@ -230,9 +209,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public HttpResponse logResponse(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
-            final LogLevel logLevel = getLogLevel(loggingOptions);
-            final HttpResponse response = loggingOptions.getHttpResponse();
+        public HttpResponse logResponse(ClientLogger logger, HttpResponse response, Duration duration) {
+            final LogLevel logLevel = getLogLevel(response);
 
             if (!logger.canLogAtLevel(logLevel)) {
                 return response;
@@ -241,7 +219,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             LoggingEventBuilder logBuilder = getLogBuilder(logLevel, logger);
 
             logContentLength(response, logBuilder);
-            logUrl(loggingOptions, response, logBuilder);
+            logUrl(response, duration, logBuilder);
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
@@ -351,23 +329,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     /**
      * Gets the request retry count to include in logging.
-     *
-     * If there is no value set, or it isn't a valid number null will be returned indicating that retry count won't be
-     * logged.
      */
-    private static Integer getRequestRetryCount(Context context) {
-        Object rawRetryCount = context.getData(RETRY_COUNT_CONTEXT).orElse(null);
-
-        if (rawRetryCount == null) {
-            return null;
-        }
-
-        try {
-            return Integer.valueOf(rawRetryCount.toString());
-        } catch (NumberFormatException ex) {
-            // LOGGER.warning("Could not parse the request retry count: '{}'.", rawRetryCount);
-            return null;
-        }
+    private static int getRequestRetryCount(HttpRequest request) {
+        return request.getMetadata().getRetryCount();
     }
 
     /*

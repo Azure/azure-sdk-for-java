@@ -22,8 +22,6 @@ import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.RequestOptions;
@@ -165,15 +163,14 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-        Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
+        Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
 
-        Class<? extends BinaryDataContent> actualContentClazz =
-            BinaryDataHelper.getContent(client.getLastHttpRequest().getBody()).getClass();
+        Class<? extends BinaryData> actualContentClazz = client.getLastHttpRequest().getBody().getClass();
 
         assertEquals(expectedContentClazz, actualContentClazz);
     }
@@ -203,9 +200,8 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
+        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
     }
 
     @Test
@@ -219,9 +215,8 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
-        assertTrue(client.getLastHttpRequest().getContext().getData("ignore-response-body").isPresent());
-        assertTrue((boolean) client.getLastHttpRequest().getContext().getData("ignore-response-body").get());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
+        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
     }
 
     @Test
@@ -235,7 +230,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertFalse(client.getLastHttpRequest().getContext().getData("eagerly-read-response").isPresent());
+        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
@@ -292,7 +287,17 @@ public class RestProxyTests {
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
                                            Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> actualContextValues = new HashMap<>();
+
+        Context merged = RestProxyUtils.mergeRequestOptionsContext(context, options);
+        while (merged != null) {
+            if (merged == Context.NONE) {
+                break;
+            }
+
+            actualContextValues.putIfAbsent(merged.getKey(), merged.getValue());
+            merged = merged.getParent();
+        }
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
 

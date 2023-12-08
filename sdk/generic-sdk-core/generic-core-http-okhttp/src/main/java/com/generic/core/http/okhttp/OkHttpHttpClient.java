@@ -4,21 +4,19 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
-import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
-import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
-import com.generic.core.http.okhttp.implementation.OkHttpResponse;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.FileContent;
-import com.generic.core.implementation.util.InputStreamContent;
+import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
+import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
+import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
+import com.generic.core.http.okhttp.implementation.OkHttpResponse;
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.FileBinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
+import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -39,9 +37,6 @@ class OkHttpHttpClient implements HttpClient {
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
-    private static final String EAGERLY_CONVERT_HEADERS = "eagerly-convert-headers";
-    private static final String EAGERLY_READ_RESPONSE = "eagerly-read-response";
-    private static final String IGNORE_RESPONSE_BODY = "ignore-response-body";
     private static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.generic.core.http.request.progress.reporter";
 
     final OkHttpClient httpClient;
@@ -52,9 +47,9 @@ class OkHttpHttpClient implements HttpClient {
 
     @Override
     public HttpResponse send(HttpRequest request) {
-        boolean eagerlyConvertHeaders = (boolean) request.getContext().getData(EAGERLY_CONVERT_HEADERS).orElse(false);
-        boolean eagerlyReadResponse = (boolean) request.getContext().getData(EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) request.getContext().getData(IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
+        boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
+        boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
 
         Request okHttpRequest = toOkHttpRequest(request);
         try {
@@ -111,25 +106,24 @@ class OkHttpHttpClient implements HttpClient {
 
         String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
-        BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
 
-        if (content instanceof InputStreamContent) {
-            long effectiveContentLength = getRequestContentLength(content, headers);
+        if (bodyContent instanceof InputStreamBinaryData) {
+            long effectiveContentLength = getRequestContentLength(bodyContent, headers);
 
             // The OkHttpInputStreamRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return new OkHttpInputStreamRequestBody(
-                (InputStreamContent) content, effectiveContentLength, mediaType);
-        } else if (content instanceof FileContent) {
-            long effectiveContentLength = getRequestContentLength(content, headers);
+            return new OkHttpInputStreamRequestBody((InputStreamBinaryData) bodyContent, effectiveContentLength,
+                mediaType);
+        } else if (bodyContent instanceof FileBinaryData) {
+            long effectiveContentLength = getRequestContentLength(bodyContent, headers);
 
             // The OkHttpFileRequestBody doesn't read bytes until it's triggered by OkHttp dispatcher.
-            return new OkHttpFileRequestBody((FileContent) content, effectiveContentLength, mediaType);
+            return new OkHttpFileRequestBody((FileBinaryData) bodyContent, effectiveContentLength, mediaType);
         } else {
-            return RequestBody.create(content.toBytes(), mediaType);
+            return RequestBody.create(bodyContent.toBytes(), mediaType);
         }
     }
 
-    private static long getRequestContentLength(BinaryDataContent content, Headers headers) {
+    private static long getRequestContentLength(BinaryData content, Headers headers) {
         Long contentLength = content.getLength();
 
         if (contentLength == null) {

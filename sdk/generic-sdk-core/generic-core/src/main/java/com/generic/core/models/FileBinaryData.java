@@ -1,9 +1,6 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+package com.generic.core.models;
 
-package com.generic.core.implementation.util;
-
-import com.generic.core.models.TypeReference;
+import com.generic.core.implementation.util.SliceInputStream;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -23,21 +20,21 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryDataContent} backed by a file.
+ * A {@link BinaryData} implementation backed by a file.
  */
-public class FileContent extends BinaryDataContent {
-    private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
+public class FileBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(FileBinaryData.class);
     private final Path file;
     private final int chunkSize;
     private final long position;
     private final long length;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<FileContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(FileContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<FileBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(FileBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link FileContent}.
+     * Creates a new instance of {@link FileBinaryData}.
      *
      * @param file The {@link Path} content.
      * @param chunkSize The requested size for each read of the path.
@@ -49,12 +46,12 @@ public class FileContent extends BinaryDataContent {
      * @throws IllegalArgumentException if {@code length} is less than zero.
      * @throws UncheckedIOException if file doesn't exist.
      */
-    public FileContent(Path file, int chunkSize, Long position, Long length) {
+    public FileBinaryData(Path file, int chunkSize, Long position, Long length) {
         this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position),
             validateLength(length, file.toFile().length(), validatePosition(position)));
     }
 
-    FileContent(Path file, int chunkSize, long position, long length) {
+    FileBinaryData(Path file, int chunkSize, long position, long length) {
         this.file = file;
         this.chunkSize = chunkSize;
         this.position = position;
@@ -116,6 +113,10 @@ public class FileContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
+        if (length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
         return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
@@ -139,7 +140,7 @@ public class FileContent extends BinaryDataContent {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        if (length > Integer.MAX_VALUE) {
+        if (length > MAX_ARRAY_SIZE) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
@@ -171,28 +172,14 @@ public class FileContent extends BinaryDataContent {
         return file;
     }
 
-    /**
-     * Gets the requested size for each read of the path.
-     *
-     * @return The requested size for each read of the path.
-     */
-    public int getChunkSize() {
-        return chunkSize;
-    }
-
     @Override
     public boolean isReplayable() {
         return true;
     }
 
     @Override
-    public BinaryDataContent toReplayableContent() {
+    public BinaryData toReplayableBinaryData() {
         return this;
-    }
-
-    @Override
-    public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.BINARY;
     }
 
     private byte[] getBytes() {
@@ -221,4 +208,3 @@ public class FileContent extends BinaryDataContent {
         }
     }
 }
-

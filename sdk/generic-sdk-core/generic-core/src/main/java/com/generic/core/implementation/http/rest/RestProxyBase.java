@@ -78,21 +78,11 @@ public abstract class RestProxyBase {
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
-
-            if (methodParser.isResponseEagerlyRead()) {
-                context = context.addData("eagerly-read-response", true);
-            }
-
-            if (methodParser.isResponseBodyIgnored()) {
-                context = context.addData("ignore-response-body", true);
-            }
-
-            if (methodParser.isHeadersEagerlyConverted()) {
-                context = context.addData("eagerly-convert-headers", true);
-            }
-
-            request.setContext(context);
+            request.getMetadata().setContext(context);
+            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
+            request.getMetadata().setEagerlyConvertHeaders(methodParser.isHeadersEagerlyConverted());
+            request.getMetadata().setEagerlyReadResponse(methodParser.isResponseEagerlyRead());
+            request.getMetadata().setIgnoreResponseBody(methodParser.isResponseBodyIgnored());
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request);
         } catch (IOException e) {

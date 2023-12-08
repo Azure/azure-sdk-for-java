@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.util;
+package com.generic.core.models;
 
-import com.generic.core.models.TypeReference;
+import com.generic.core.implementation.AccessibleByteArrayOutputStream;
+import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
+import com.generic.core.implementation.util.StreamUtil;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -19,10 +20,10 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}.
+ * A {@link BinaryData} implementation backed by an {@link InputStream}.
  */
-public final class InputStreamContent extends BinaryDataContent {
-    private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
+public final class InputStreamBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(InputStreamBinaryData.class);
     private static final int INITIAL_BUFFER_CHUNK_SIZE = 8 * 1024;
     private static final int MAX_BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
     private static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
@@ -31,17 +32,16 @@ public final class InputStreamContent extends BinaryDataContent {
     private final boolean isReplayable;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
-
+    private static final AtomicReferenceFieldUpdater<InputStreamBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(InputStreamBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates an instance of {@link InputStreamContent}.
+     * Creates an instance of {@link InputStreamBinaryData}.
      *
      * @param inputStream The inputStream that is used as the content for this instance.
      * @throws NullPointerException if {@code content} is null.
      */
-    public InputStreamContent(InputStream inputStream, Long length) {
+    public InputStreamBinaryData(InputStream inputStream, Long length) {
         Objects.requireNonNull(inputStream, "'inputStream' cannot be null.");
         this.length = length;
         this.isReplayable = canMarkReset(inputStream, length);
@@ -53,10 +53,39 @@ public final class InputStreamContent extends BinaryDataContent {
         }
     }
 
-    private InputStreamContent(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {
+    private InputStreamBinaryData(Supplier<InputStream> inputStreamSupplier, Long length, boolean isReplayable) {
         this.content = Objects.requireNonNull(inputStreamSupplier, "'inputStreamSupplier' cannot be null.");
         this.length = length;
         this.isReplayable = isReplayable;
+    }
+
+    @Override
+    public byte[] toBytes() {
+        if (length != null && length > MAX_ARRAY_SIZE) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
+        }
+
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
+    }
+
+    @Override
+    public String toString() {
+        return new String(toBytes(), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
+        return serializer.deserializeFromBytes(toBytes(), typeReference);
+    }
+
+    @Override
+    public InputStream toStream() {
+        return content.get();
+    }
+
+    @Override
+    public ByteBuffer toByteBuffer() {
+        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
     }
 
     @Override
@@ -69,47 +98,17 @@ public final class InputStreamContent extends BinaryDataContent {
     }
 
     @Override
-    public String toString() {
-        return new String(toBytes(), StandardCharsets.UTF_8);
-    }
-
-    @Override
-    public byte[] toBytes() {
-        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
-    }
-
-    @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
-    }
-
-    @Override
-    public InputStream toStream() {
-        return this.content.get();
-    }
-
-    @Override
-    public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
-    }
-
-    @Override
     public boolean isReplayable() {
         return isReplayable;
     }
 
     @Override
-    public BinaryDataContent toReplayableContent() {
+    public BinaryData toReplayableBinaryData() {
         if (isReplayable) {
             return this;
         }
 
         return readAndBuffer(this.content.get(), length);
-    }
-
-    @Override
-    public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.BINARY;
     }
 
     private static boolean canMarkReset(InputStream inputStream, Long length) {
@@ -125,13 +124,12 @@ public final class InputStreamContent extends BinaryDataContent {
         }
     }
 
-    private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
+    private static InputStreamBinaryData readAndBuffer(InputStream inputStream, Long length) {
         try {
             List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
                 inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamContent(
-                () -> new IterableOfByteBuffersInputStream(byteBuffers),
+            return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers),
                 length, true);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -140,14 +138,14 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         try {
-            ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
+            AccessibleByteArrayOutputStream dataOutputBuffer = new AccessibleByteArrayOutputStream();
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);
             }
-            return dataOutputBuffer.toByteArray();
+            return dataOutputBuffer.toByteArrayUnsafe();
         } catch (IOException ex) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
         }

@@ -6,31 +6,21 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.exception.UnexpectedLengthException;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.pipeline.HttpPipeline;
-import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.implementation.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.BinaryDataContent;
-import com.generic.core.implementation.util.BinaryDataHelper;
-import com.generic.core.implementation.util.InputStreamContent;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
+import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.util.logging.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Utility methods that aid processing in RestProxy.
  */
 public final class RestProxyUtils {
     public static final ClientLogger LOGGER = new ClientLogger(RestProxyUtils.class);
-    public static final String BODY_TOO_LARGE = "Request body emitted %d bytes, more than the expected %d bytes.";
-    public static final String BODY_TOO_SMALL = "Request body emitted %d bytes, less than the expected %d bytes.";
 
     private RestProxyUtils() {
     }
@@ -50,25 +40,22 @@ public final class RestProxyUtils {
         }
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-        Long length = binaryData.getLength();
-        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
 
-        if (bdc instanceof InputStreamContent) {
-            InputStream inputStream = bdc.toStream();
+        if (binaryData instanceof InputStreamBinaryData) {
+            InputStream inputStream = binaryData.toStream();
             LengthValidatingInputStream lengthValidatingInputStream =
                 new LengthValidatingInputStream(inputStream, expectedLength);
 
             return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
         } else {
-            if (length == null) {
-                byte[] b = (bdc).toBytes();
-                length = ((Integer) b.length).longValue();
+            if (binaryData.getLength() == null) {
+                byte[] b = binaryData.toBytes();
 
-                validateLengthInternal(length, expectedLength);
+                validateLengthInternal(b.length, expectedLength);
 
                 return BinaryData.fromBytes(b);
             } else {
-                validateLengthInternal(length, expectedLength);
+                validateLengthInternal(binaryData.getLength(), expectedLength);
 
                 return binaryData;
             }
@@ -77,14 +64,20 @@ public final class RestProxyUtils {
 
     private static void validateLengthInternal(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(bodyTooLarge(length, expectedLength), length, expectedLength);
         }
 
         if (length < expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(bodyTooSmall(length, expectedLength), length, expectedLength);
         }
+    }
+
+    private static String bodyTooLarge(long length, long expectedLength) {
+        return "Request body emitted " + length + " bytes, more than the expected " + expectedLength + " bytes.";
+    }
+
+    private static String bodyTooSmall(long length, long expectedLength) {
+        return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
     }
 
     /**
@@ -116,20 +109,5 @@ public final class RestProxyUtils {
      */
     public static ObjectSerializer createDefaultSerializer() {
         return new DefaultJsonSerializer();
-    }
-
-    /**
-     * Create the default HttpPipeline.
-     *
-     * @return the default HttpPipeline
-     */
-    public static HttpPipeline createDefaultPipeline() {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new RetryPolicy());
-
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
     }
 }

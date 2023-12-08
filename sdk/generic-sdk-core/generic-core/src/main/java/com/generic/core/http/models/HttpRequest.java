@@ -26,7 +26,8 @@ public class HttpRequest {
     private URL url;
     private Headers headers;
     private BinaryData body;
-    private Context context;
+
+    private HttpRequestMetadata metadata;
 
     /**
      * Create a new HttpRequest instance.
@@ -38,7 +39,7 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new Headers();
-        this.context = Context.NONE;
+        this.metadata = new HttpRequestMetadata();
     }
 
     /**
@@ -55,7 +56,7 @@ public class HttpRequest {
         setUrl(url);
 
         this.headers = new Headers();
-        this.context = Context.NONE;
+        this.metadata = new HttpRequestMetadata();
     }
 
     /**
@@ -221,24 +222,22 @@ public class HttpRequest {
     }
 
     /**
-     * Set the request context.
+     * Get the request metadata.
      *
-     * @return The request context.
+     * @return The request metadata.
      */
-    public Context getContext() {
-        return context;
+    public HttpRequestMetadata getMetadata() {
+        return metadata;
     }
 
     /**
-     * Set the request context.
+     * Set the request metadata.
      *
-     * @param context The request context.
-     *
+     * @param metadata The request metadata.
      * @return This HttpRequest.
      */
-    public HttpRequest setContext(Context context) {
-        this.context = context;
-
+    public HttpRequest setMetadata(HttpRequestMetadata metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -257,6 +256,6 @@ public class HttpRequest {
         return new HttpRequest(httpMethod, url)
             .setHeaders(bufferedHeaders)
             .setBody(body)
-            .setContext(context);
+            .setMetadata(metadata.copy());
     }
 }

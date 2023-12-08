@@ -4,7 +4,6 @@
 package com.generic.core.models;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.util.FileContent;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
@@ -283,7 +282,7 @@ public class BinaryDataTest {
 
         MockFile mockFile = new MockFile("binaryDataFromFile" + UUID.randomUUID() + ".txt", RANDOM_DATA,
             numberOfChunks * chunkSize);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 32768, null, null);
+        FileBinaryData fileContent = new MockFileBinaryData(new MockPath(mockFile), 32768, null, null);
 
         try (InputStream is = fileContent.toStream()) {
             // Read and validate in chunks to optimize validation compared to byte-by-byte checking.
@@ -318,7 +317,8 @@ public class BinaryDataTest {
 
         MockFile mockFile =
             new MockFile("binaryDataFromFileSegment" + UUID.randomUUID() + ".txt", fullFile, fullFile.length);
-        FileContent fileContent = new MockFileContent(new MockPath(mockFile), 8192, (long) leftPadding, (long) size);
+        FileBinaryData fileContent = new MockFileBinaryData(new MockPath(mockFile), 8192, (long) leftPadding,
+            (long) size);
 
         assertEquals(size, fileContent.getLength());
 
@@ -426,8 +426,7 @@ public class BinaryDataTest {
                 Named.named("expected bytes", BinaryData.SERIALIZER.serializeToBytes("\"test string\""))
             ),
             Arguments.of(
-                Named.named("file",
-                    (Supplier<BinaryData>) () -> new BinaryData(new MockFileContent(new MockPath(mockFile)))),
+                Named.named("file", (Supplier<BinaryData>) () -> new MockFileBinaryData(new MockPath(mockFile))),
                 Named.named("expected bytes", bytes)
             ),
             Arguments.of(
@@ -495,12 +494,12 @@ public class BinaryDataTest {
 
         // Delegate to testReplayableContentTypes to assert accessors replayability
         // with unknown length
-        testReplayableContentTypes(
-            () -> new BinaryData(new MockFileContent(new MockPath(mockFile))).toReplayableBinaryData(), bytes);
+        testReplayableContentTypes(() -> new MockFileBinaryData(new MockPath(mockFile)).toReplayableBinaryData(),
+            bytes);
 
         // with known length
-        testReplayableContentTypes(() -> new BinaryData(new MockFileContent(new MockPath(mockFile), 8192, null,
-            (long) bytes.length)).toReplayableBinaryData(), bytes);
+        testReplayableContentTypes(() -> new MockFileBinaryData(new MockPath(mockFile), 8192, null, (long) bytes.length)
+            .toReplayableBinaryData(), bytes);
 
         // When using markable stream
         FileInputStream fileInputStream = new MockFileInputStream(mockFile);

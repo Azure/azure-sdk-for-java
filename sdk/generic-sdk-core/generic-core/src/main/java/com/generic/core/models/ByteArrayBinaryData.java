@@ -1,9 +1,5 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+package com.generic.core.models;
 
-package com.generic.core.implementation.util;
-
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -13,18 +9,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
- * A {@link BinaryDataContent} implementation which is backed by a {@code byte[]}.
+ * A {@link BinaryData} implementation backed by a byte array.
  */
-public final class ByteArrayContent extends BinaryDataContent {
+public final class ByteArrayBinaryData extends BinaryData {
     private final byte[] content;
 
     /**
-     * Creates a new instance of {@link ByteArrayContent}.
+     * Creates a new instance of {@link ByteArrayBinaryData}.
      *
      * @param content The byte array content.
      * @throws NullPointerException if {@code content} is null.
      */
-    public ByteArrayContent(byte[] content) {
+    public ByteArrayBinaryData(byte[] content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null");
     }
 
@@ -64,12 +60,7 @@ public final class ByteArrayContent extends BinaryDataContent {
     }
 
     @Override
-    public BinaryDataContent toReplayableContent() {
+    public BinaryData toReplayableBinaryData() {
         return this;
-    }
-
-    @Override
-    public BinaryDataContentType getContentType() {
-        return BinaryDataContentType.BINARY;
     }
 }

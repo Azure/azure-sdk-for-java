@@ -191,7 +191,8 @@ public class DefaultHttpClientTest {
     }
 
     private static HttpResponse getResponse(HttpClient client, String path, Context context) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path)).setContext(context);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        request.getMetadata().setContext(context);
 
         return client.send(request);
     }

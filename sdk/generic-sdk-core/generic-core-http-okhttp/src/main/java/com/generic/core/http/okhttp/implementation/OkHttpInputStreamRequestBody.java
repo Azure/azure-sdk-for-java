@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.implementation.util.InputStreamContent;
+import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
 import okio.BufferedSink;
@@ -14,15 +14,16 @@ import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * An {@link okhttp3.RequestBody} subtype that sends {@link InputStreamContent} in an unbuffered manner.
+ * An {@link okhttp3.RequestBody} subtype that sends {@link InputStreamBinaryData} in an unbuffered manner.
  */
-public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<InputStreamContent> {
+public class OkHttpInputStreamRequestBody extends OkHttpStreamableRequestBody<InputStreamBinaryData> {
 
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpInputStreamRequestBody.class);
 
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
 
-    public OkHttpInputStreamRequestBody(InputStreamContent content, long effectiveContentLength, MediaType mediaType) {
+    public OkHttpInputStreamRequestBody(InputStreamBinaryData content, long effectiveContentLength,
+        MediaType mediaType) {
         super(content, effectiveContentLength, mediaType);
     }
 
