@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallManife
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayWafDynamicManifest API service call. */
+/**
+ * Response for ApplicationGatewayWafDynamicManifest API service call.
+ */
 @Fluent
 public final class ApplicationGatewayWafDynamicManifestResultInner {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
     @JsonProperty(value = "properties")
     private ApplicationGatewayWafDynamicManifestPropertiesResult innerProperties;
 
-    /** Creates an instance of ApplicationGatewayWafDynamicManifestResultInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayWafDynamicManifestResultInner class.
+     */
     public ApplicationGatewayWafDynamicManifestResultInner() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationGatewayWafDynamicManifestResultInner object itself.
      */
@@ -62,7 +66,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +75,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +84,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the innerProperties property: Properties of the ApplicationGatewayWafDynamicManifest .
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayWafDynamicManifestPropertiesResult innerProperties() {
@@ -89,7 +93,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the availableRuleSets property: The available rulesets.
-     *
+     * 
      * @return the availableRuleSets value.
      */
     public List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets() {
@@ -98,12 +102,12 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Set the availableRuleSets property: The available rulesets.
-     *
+     * 
      * @param availableRuleSets the availableRuleSets value to set.
      * @return the ApplicationGatewayWafDynamicManifestResultInner object itself.
      */
-    public ApplicationGatewayWafDynamicManifestResultInner withAvailableRuleSets(
-        List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets) {
+    public ApplicationGatewayWafDynamicManifestResultInner
+        withAvailableRuleSets(List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayWafDynamicManifestPropertiesResult();
         }
@@ -113,7 +117,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -122,7 +126,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayWafDynamicManifestResultInner object itself.
      */
@@ -136,7 +140,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -145,7 +149,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayWafDynamicManifestResultInner object itself.
      */
@@ -159,7 +163,7 @@ public final class ApplicationGatewayWafDynamicManifestResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

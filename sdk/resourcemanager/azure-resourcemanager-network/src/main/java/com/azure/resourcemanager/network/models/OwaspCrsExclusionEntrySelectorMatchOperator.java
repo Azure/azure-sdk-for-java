@@ -14,24 +14,34 @@ import java.util.Collection;
  */
 public final class OwaspCrsExclusionEntrySelectorMatchOperator
     extends ExpandableStringEnum<OwaspCrsExclusionEntrySelectorMatchOperator> {
-    /** Static value Equals for OwaspCrsExclusionEntrySelectorMatchOperator. */
+    /**
+     * Static value Equals for OwaspCrsExclusionEntrySelectorMatchOperator.
+     */
     public static final OwaspCrsExclusionEntrySelectorMatchOperator EQUALS = fromString("Equals");
 
-    /** Static value Contains for OwaspCrsExclusionEntrySelectorMatchOperator. */
+    /**
+     * Static value Contains for OwaspCrsExclusionEntrySelectorMatchOperator.
+     */
     public static final OwaspCrsExclusionEntrySelectorMatchOperator CONTAINS = fromString("Contains");
 
-    /** Static value StartsWith for OwaspCrsExclusionEntrySelectorMatchOperator. */
+    /**
+     * Static value StartsWith for OwaspCrsExclusionEntrySelectorMatchOperator.
+     */
     public static final OwaspCrsExclusionEntrySelectorMatchOperator STARTS_WITH = fromString("StartsWith");
 
-    /** Static value EndsWith for OwaspCrsExclusionEntrySelectorMatchOperator. */
+    /**
+     * Static value EndsWith for OwaspCrsExclusionEntrySelectorMatchOperator.
+     */
     public static final OwaspCrsExclusionEntrySelectorMatchOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value EqualsAny for OwaspCrsExclusionEntrySelectorMatchOperator. */
+    /**
+     * Static value EqualsAny for OwaspCrsExclusionEntrySelectorMatchOperator.
+     */
     public static final OwaspCrsExclusionEntrySelectorMatchOperator EQUALS_ANY = fromString("EqualsAny");
 
     /**
      * Creates a new instance of OwaspCrsExclusionEntrySelectorMatchOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +50,7 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
 
     /**
      * Creates or finds a OwaspCrsExclusionEntrySelectorMatchOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OwaspCrsExclusionEntrySelectorMatchOperator.
      */
@@ -51,7 +61,7 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
 
     /**
      * Gets known OwaspCrsExclusionEntrySelectorMatchOperator values.
-     *
+     * 
      * @return known OwaspCrsExclusionEntrySelectorMatchOperator values.
      */
     public static Collection<OwaspCrsExclusionEntrySelectorMatchOperator> values() {

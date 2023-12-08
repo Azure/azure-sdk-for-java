@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.BastionConnectProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The session detail for a target. */
+/**
+ * The session detail for a target.
+ */
 @Immutable
 public final class BastionActiveSessionInner {
     /*
@@ -77,13 +79,15 @@ public final class BastionActiveSessionInner {
     @JsonProperty(value = "sessionDurationInMins", access = JsonProperty.Access.WRITE_ONLY)
     private Float sessionDurationInMins;
 
-    /** Creates an instance of BastionActiveSessionInner class. */
+    /**
+     * Creates an instance of BastionActiveSessionInner class.
+     */
     public BastionActiveSessionInner() {
     }
 
     /**
      * Get the sessionId property: A unique id for the session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -92,7 +96,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the startTime property: The time when the session started.
-     *
+     * 
      * @return the startTime value.
      */
     public Object startTime() {
@@ -101,7 +105,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetSubscriptionId property: The subscription id for the target virtual machine.
-     *
+     * 
      * @return the targetSubscriptionId value.
      */
     public String targetSubscriptionId() {
@@ -110,7 +114,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -119,7 +123,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetHostname property: The host name of the target.
-     *
+     * 
      * @return the targetHostname value.
      */
     public String targetHostname() {
@@ -128,7 +132,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetResourceGroup property: The resource group of the target.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -137,7 +141,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the username property: The user name who is active on this session.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -146,7 +150,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetIpAddress property: The IP Address of the target.
-     *
+     * 
      * @return the targetIpAddress value.
      */
     public String targetIpAddress() {
@@ -155,7 +159,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the protocol property: The protocol used to connect to the target.
-     *
+     * 
      * @return the protocol value.
      */
     public BastionConnectProtocol protocol() {
@@ -164,7 +168,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetResourceId property: The resource id of the target.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -173,7 +177,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the sessionDurationInMins property: Duration in mins the session has been active.
-     *
+     * 
      * @return the sessionDurationInMins value.
      */
     public Float sessionDurationInMins() {
@@ -182,7 +186,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

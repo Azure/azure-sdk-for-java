@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.VpnClientConnectionHealthDetail;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of virtual network gateway vpn client connection health. */
+/**
+ * List of virtual network gateway vpn client connection health.
+ */
 @Fluent
 public final class VpnClientConnectionHealthDetailListResultInner {
     /*
@@ -18,13 +20,15 @@ public final class VpnClientConnectionHealthDetailListResultInner {
     @JsonProperty(value = "value")
     private List<VpnClientConnectionHealthDetail> value;
 
-    /** Creates an instance of VpnClientConnectionHealthDetailListResultInner class. */
+    /**
+     * Creates an instance of VpnClientConnectionHealthDetailListResultInner class.
+     */
     public VpnClientConnectionHealthDetailListResultInner() {
     }
 
     /**
      * Get the value property: List of vpn client connection health.
-     *
+     * 
      * @return the value value.
      */
     public List<VpnClientConnectionHealthDetail> value() {
@@ -33,7 +37,7 @@ public final class VpnClientConnectionHealthDetailListResultInner {
 
     /**
      * Set the value property: List of vpn client connection health.
-     *
+     * 
      * @param value the value value to set.
      * @return the VpnClientConnectionHealthDetailListResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class VpnClientConnectionHealthDetailListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

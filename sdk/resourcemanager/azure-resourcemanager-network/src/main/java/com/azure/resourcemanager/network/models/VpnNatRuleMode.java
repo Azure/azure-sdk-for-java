@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Source NAT direction of a VPN NAT. */
+/**
+ * The Source NAT direction of a VPN NAT.
+ */
 public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
-    /** Static value EgressSnat for VpnNatRuleMode. */
+    /**
+     * Static value EgressSnat for VpnNatRuleMode.
+     */
     public static final VpnNatRuleMode EGRESS_SNAT = fromString("EgressSnat");
 
-    /** Static value IngressSnat for VpnNatRuleMode. */
+    /**
+     * Static value IngressSnat for VpnNatRuleMode.
+     */
     public static final VpnNatRuleMode INGRESS_SNAT = fromString("IngressSnat");
 
     /**
      * Creates a new instance of VpnNatRuleMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
 
     /**
      * Creates or finds a VpnNatRuleMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VpnNatRuleMode.
      */
@@ -38,7 +44,7 @@ public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
 
     /**
      * Gets known VpnNatRuleMode values.
-     *
+     * 
      * @return known VpnNatRuleMode values.
      */
     public static Collection<VpnNatRuleMode> values() {

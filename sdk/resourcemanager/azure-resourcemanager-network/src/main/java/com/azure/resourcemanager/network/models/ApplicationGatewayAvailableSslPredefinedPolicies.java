@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPred
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayAvailableSslOptions API service call. */
+/**
+ * Response for ApplicationGatewayAvailableSslOptions API service call.
+ */
 @Fluent
 public final class ApplicationGatewayAvailableSslPredefinedPolicies {
     /*
@@ -24,13 +26,15 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplicationGatewayAvailableSslPredefinedPolicies class. */
+    /**
+     * Creates an instance of ApplicationGatewayAvailableSslPredefinedPolicies class.
+     */
     public ApplicationGatewayAvailableSslPredefinedPolicies() {
     }
 
     /**
      * Get the value property: List of available Ssl predefined policy.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationGatewaySslPredefinedPolicyInner> value() {
@@ -39,19 +43,19 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Set the value property: List of available Ssl predefined policy.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationGatewayAvailableSslPredefinedPolicies object itself.
      */
-    public ApplicationGatewayAvailableSslPredefinedPolicies withValue(
-        List<ApplicationGatewaySslPredefinedPolicyInner> value) {
+    public ApplicationGatewayAvailableSslPredefinedPolicies
+        withValue(List<ApplicationGatewaySslPredefinedPolicyInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplicationGatewayAvailableSslPredefinedPolicies object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

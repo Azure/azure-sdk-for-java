@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Vpn Connection packet capture parameters supplied to stop packet capture on gateway connection. */
+/**
+ * Vpn Connection packet capture parameters supplied to stop packet capture on gateway connection.
+ */
 @Fluent
 public final class VpnConnectionPacketCaptureStopParameters {
     /*
@@ -23,13 +25,15 @@ public final class VpnConnectionPacketCaptureStopParameters {
     @JsonProperty(value = "linkConnectionNames")
     private List<String> linkConnectionNames;
 
-    /** Creates an instance of VpnConnectionPacketCaptureStopParameters class. */
+    /**
+     * Creates an instance of VpnConnectionPacketCaptureStopParameters class.
+     */
     public VpnConnectionPacketCaptureStopParameters() {
     }
 
     /**
      * Get the sasUrl property: SAS url for packet capture on vpn connection.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -38,7 +42,7 @@ public final class VpnConnectionPacketCaptureStopParameters {
 
     /**
      * Set the sasUrl property: SAS url for packet capture on vpn connection.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the VpnConnectionPacketCaptureStopParameters object itself.
      */
@@ -49,7 +53,7 @@ public final class VpnConnectionPacketCaptureStopParameters {
 
     /**
      * Get the linkConnectionNames property: List of site link connection names.
-     *
+     * 
      * @return the linkConnectionNames value.
      */
     public List<String> linkConnectionNames() {
@@ -58,7 +62,7 @@ public final class VpnConnectionPacketCaptureStopParameters {
 
     /**
      * Set the linkConnectionNames property: List of site link connection names.
-     *
+     * 
      * @param linkConnectionNames the linkConnectionNames value to set.
      * @return the VpnConnectionPacketCaptureStopParameters object itself.
      */
@@ -69,7 +73,7 @@ public final class VpnConnectionPacketCaptureStopParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IpGroups associated with azure firewall. */
+/**
+ * IpGroups associated with azure firewall.
+ */
 @Immutable
 public final class AzureFirewallIpGroups {
     /*
@@ -22,13 +24,15 @@ public final class AzureFirewallIpGroups {
     @JsonProperty(value = "changeNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String changeNumber;
 
-    /** Creates an instance of AzureFirewallIpGroups class. */
+    /**
+     * Creates an instance of AzureFirewallIpGroups class.
+     */
     public AzureFirewallIpGroups() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class AzureFirewallIpGroups {
 
     /**
      * Get the changeNumber property: The iteration number.
-     *
+     * 
      * @return the changeNumber value.
      */
     public String changeNumber() {
@@ -46,7 +50,7 @@ public final class AzureFirewallIpGroups {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
