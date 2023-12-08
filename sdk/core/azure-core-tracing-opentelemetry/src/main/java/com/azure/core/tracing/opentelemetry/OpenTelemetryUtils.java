@@ -13,6 +13,7 @@ import io.opentelemetry.api.trace.StatusCode;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.tracing.opentelemetry.ExceptionUtils.unwrapError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 
@@ -23,7 +24,7 @@ class OpenTelemetryUtils {
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
 
-    public static Attributes convert(Map<String, Object> attributeMap, OpenTelemetrySchemaVersion schemaVersion) {
+    public static Attributes convert(Map<String, Object> attributeMap) {
         if (attributeMap == null || attributeMap.isEmpty()) {
             return Attributes.empty();
         }
@@ -34,22 +35,13 @@ class OpenTelemetryUtils {
                 continue;
             }
 
-            addAttribute(builder, mapAttributeName(kvp.getKey(), schemaVersion), kvp.getValue());
+            addAttribute(builder, mapAttributeName(kvp.getKey()), kvp.getValue());
         }
 
         return builder.build();
     }
 
-    private static String mapAttributeName(String name, OpenTelemetrySchemaVersion version) {
-        if (version == OpenTelemetrySchemaVersion.V1_23_1) {
-            return mapAttributeNameV1231(name);
-        }
-
-        LOGGER.verbose("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
-        return mapAttributeNameV1231(name);
-    }
-
-    private static String mapAttributeNameV1231(String name) {
+    private static String mapAttributeName(String name) {
         if (ENTITY_PATH_KEY.equals(name)) {
             return "messaging.destination.name";
         }
@@ -103,12 +95,11 @@ class OpenTelemetryUtils {
      * @param span {@link Span} instance
      * @param key key of the attribute to be added
      * @param value value of the attribute to be added
-     * @param schemaVersion version of OpenTelemetry semantic conventions to map attribute names with.
      */
-    static void addAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
+    static void addAttribute(Span span, String key, Object value) {
         Objects.requireNonNull(key, "OpenTelemetry attribute name cannot be null.");
 
-        key = mapAttributeName(key, schemaVersion);
+        key = mapAttributeName(key);
         if (value instanceof String) {
             span.setAttribute(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Long) {
@@ -135,7 +126,7 @@ class OpenTelemetryUtils {
      *
      * @param span the span to set the status for.
      * @param statusMessage description for this error condition. Any non-null {@code statusMessage} indicates an error.
-     *                      Must be low-cardinality.
+     *                      Must be of a low-cardinality.
      * @param throwable the error occurred during response transmission (optional).
      * @return the corresponding OpenTelemetry {@link Span}.
      */
@@ -145,6 +136,7 @@ class OpenTelemetryUtils {
             statusMessage = null;
         }
 
+        throwable = unwrapError(throwable);
         if (statusMessage == null && throwable == null) {
             return span;
         }

@@ -12,7 +12,6 @@ import io.opentelemetry.api.trace.TracerProvider;
  */
 public class OpenTelemetryTracingOptions extends TracingOptions {
     private TracerProvider provider;
-    private OpenTelemetrySchemaVersion schemaVersion;
 
     /**
      * Creates an instance of {@link OpenTelemetryTracingOptions}.
@@ -67,13 +66,5 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
     public OpenTelemetryTracingOptions setOpenTelemetry(OpenTelemetry openTelemetry) {
         this.provider = openTelemetry.getTracerProvider();
         return this;
-    }
-
-    /**
-     * Gets schema version.
-     * @return schema version.
-     */
-    public OpenTelemetrySchemaVersion getSchemaVersion() {
-        return schemaVersion;
     }
 }

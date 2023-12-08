@@ -37,8 +37,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Exceptions;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -47,6 +50,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
@@ -1183,21 +1187,21 @@ public class OpenTelemetryTracerTest {
         assertEquals("", spanData.getStatus().getDescription());
     }
 
-    @Test
-    public void setStatusThrowable() {
+    @ParameterizedTest
+    @MethodSource("exceptions")
+    public void setStatusThrowable(Throwable error, Throwable originalError) {
         final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
-        Throwable error = new IOException("bar");
         openTelemetryTracer.end(null, error, span);
 
         SpanData spanData = getSpan(span).toSpanData();
         assertEquals(ERROR, spanData.getStatus().getStatusCode());
-        assertEquals("bar", spanData.getStatus().getDescription());
+        assertEquals(originalError.getMessage(), spanData.getStatus().getDescription());
         assertEquals(1, spanData.getEvents().size());
 
         EventData exceptionEvent = spanData.getEvents().get(0);
         assertTrue(exceptionEvent instanceof ExceptionEventData);
-        assertSame(error, ((ExceptionEventData) exceptionEvent).getException());
-        assertEquals(IOException.class.getName(), spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
+        assertSame(originalError, ((ExceptionEventData) exceptionEvent).getException());
+        assertEquals(originalError.getClass().getName(), spanData.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -1293,5 +1297,17 @@ public class OpenTelemetryTracerTest {
         assertEquals(expected.size(), actual.size());
 
         assertTrue(expected.asMap().entrySet().stream().allMatch(e -> e.getValue().equals(actual.get(e.getKey()))));
+    }
+
+    public static Stream<Arguments> exceptions() {
+        IOException rootCause = new IOException("foo");
+        return Stream.of(
+            Arguments.of(rootCause, rootCause),
+            Arguments.of(Exceptions.propagate(rootCause), rootCause),
+            Arguments.of(new ExecutionException(rootCause), rootCause),
+            Arguments.of(new InvocationTargetException(rootCause), rootCause),
+            Arguments.of(new InvocationTargetException(rootCause), rootCause),
+            Arguments.of(new UndeclaredThrowableException(rootCause), rootCause),
+            Arguments.of(new UndeclaredThrowableException(new InvocationTargetException(Exceptions.propagate(rootCause))), rootCause));
     }
 }
