@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ScheduledEventsProfile model. */
+/**
+ * The ScheduledEventsProfile model.
+ */
 @Fluent
 public final class ScheduledEventsProfile {
     /*
@@ -22,13 +24,15 @@ public final class ScheduledEventsProfile {
     @JsonProperty(value = "osImageNotificationProfile")
     private OSImageNotificationProfile osImageNotificationProfile;
 
-    /** Creates an instance of ScheduledEventsProfile class. */
+    /**
+     * Creates an instance of ScheduledEventsProfile class.
+     */
     public ScheduledEventsProfile() {
     }
 
     /**
      * Get the terminateNotificationProfile property: Specifies Terminate Scheduled Event related configurations.
-     *
+     * 
      * @return the terminateNotificationProfile value.
      */
     public TerminateNotificationProfile terminateNotificationProfile() {
@@ -37,19 +41,19 @@ public final class ScheduledEventsProfile {
 
     /**
      * Set the terminateNotificationProfile property: Specifies Terminate Scheduled Event related configurations.
-     *
+     * 
      * @param terminateNotificationProfile the terminateNotificationProfile value to set.
      * @return the ScheduledEventsProfile object itself.
      */
-    public ScheduledEventsProfile withTerminateNotificationProfile(
-        TerminateNotificationProfile terminateNotificationProfile) {
+    public ScheduledEventsProfile
+        withTerminateNotificationProfile(TerminateNotificationProfile terminateNotificationProfile) {
         this.terminateNotificationProfile = terminateNotificationProfile;
         return this;
     }
 
     /**
      * Get the osImageNotificationProfile property: Specifies OS Image Scheduled Event related configurations.
-     *
+     * 
      * @return the osImageNotificationProfile value.
      */
     public OSImageNotificationProfile osImageNotificationProfile() {
@@ -58,19 +62,19 @@ public final class ScheduledEventsProfile {
 
     /**
      * Set the osImageNotificationProfile property: Specifies OS Image Scheduled Event related configurations.
-     *
+     * 
      * @param osImageNotificationProfile the osImageNotificationProfile value to set.
      * @return the ScheduledEventsProfile object itself.
      */
-    public ScheduledEventsProfile withOsImageNotificationProfile(
-        OSImageNotificationProfile osImageNotificationProfile) {
+    public ScheduledEventsProfile
+        withOsImageNotificationProfile(OSImageNotificationProfile osImageNotificationProfile) {
         this.osImageNotificationProfile = osImageNotificationProfile;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

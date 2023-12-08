@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes an available Compute SKU Location Information. */
+/**
+ * Describes an available Compute SKU Location Information.
+ */
 @Immutable
 public final class ResourceSkuLocationInfo {
     /*
@@ -41,13 +43,15 @@ public final class ResourceSkuLocationInfo {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedLocationType type;
 
-    /** Creates an instance of ResourceSkuLocationInfo class. */
+    /**
+     * Creates an instance of ResourceSkuLocationInfo class.
+     */
     public ResourceSkuLocationInfo() {
     }
 
     /**
      * Get the location property: Location of the SKU.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -56,7 +60,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zones property: List of availability zones where the SKU is supported.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -65,7 +69,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zoneDetails property: Details of capabilities available to a SKU in specific zones.
-     *
+     * 
      * @return the zoneDetails value.
      */
     public List<ResourceSkuZoneDetails> zoneDetails() {
@@ -74,7 +78,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the extendedLocations property: The names of extended locations.
-     *
+     * 
      * @return the extendedLocations value.
      */
     public List<String> extendedLocations() {
@@ -83,7 +87,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the type property: The type of the extended location.
-     *
+     * 
      * @return the type value.
      */
     public ExtendedLocationType type() {
@@ -92,7 +96,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
