@@ -1129,7 +1129,8 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
-     *     response_format: String(text/json_object) (Optional)
+     *     response_format (Optional): {
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -1329,7 +1330,8 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
-     *     response_format: String(text/json_object) (Optional)
+     *     response_format (Optional): {
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -1528,7 +1530,8 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
-     *     response_format: String(text/json_object) (Optional)
+     *     response_format (Optional): {
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *         }
@@ -1729,7 +1732,8 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
-     *     response_format: String(text/json_object) (Optional)
+     *     response_format (Optional): {
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *         }

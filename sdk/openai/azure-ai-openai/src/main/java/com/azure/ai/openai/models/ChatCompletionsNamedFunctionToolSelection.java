@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,14 +23,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name = "string";
-
-    /**
-     * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
-     */
-    @Generated
-    public ChatCompletionsNamedFunctionToolSelection() {
-    }
+    private String name;
 
     /**
      * Get the name property: The name of the function that should be called.
@@ -39,5 +33,16 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
+     *
+     * @param name the name value to set.
+     */
+    @Generated
+    @JsonCreator
+    public ChatCompletionsNamedFunctionToolSelection(@JsonProperty(value = "name") String name) {
+        this.name = name;
     }
 }

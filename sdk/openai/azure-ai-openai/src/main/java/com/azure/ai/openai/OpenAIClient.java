@@ -762,7 +762,8 @@ public final class OpenAIClient {
      *         }
      *     }
      *     seed: Long (Optional)
-     *     response_format: String(text/json_object) (Optional)
+     *     response_format (Optional): {
+     *     }
      *     tools (Optional): [
      *          (Optional){
      *         }

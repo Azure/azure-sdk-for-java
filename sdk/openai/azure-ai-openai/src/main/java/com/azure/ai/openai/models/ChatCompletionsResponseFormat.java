@@ -4,58 +4,31 @@
 package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The valid response formats Chat Completions can provide. Used to enable JSON mode.
+ * An abstract representation of a response format configuration usable by Chat Completions. Can be used to enable JSON
+ * mode.
  */
-public final class ChatCompletionsResponseFormat extends ExpandableStringEnum<ChatCompletionsResponseFormat> {
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = ChatCompletionsResponseFormat.class)
+@JsonTypeName("ChatCompletionsResponseFormat")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "text", value = ChatCompletionsTextResponseFormat.class),
+    @JsonSubTypes.Type(name = "json_object", value = ChatCompletionsJsonResponseFormat.class) })
+@Immutable
+public class ChatCompletionsResponseFormat {
 
     /**
-     * Use the default, plain text response format.
+     * Creates an instance of ChatCompletionsResponseFormat class.
      */
     @Generated
-    public static final ChatCompletionsResponseFormat TEXT = fromString("text");
-
-    /**
-     * Use a response format that guarantees emission of a valid JSON object. Only structure is guaranteed and contents
-     * must
-     * still be validated.
-     */
-    @Generated
-    public static final ChatCompletionsResponseFormat JSON_OBJECT = fromString("json_object");
-
-    /**
-     * Creates a new instance of ChatCompletionsResponseFormat value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Generated
-    @Deprecated
     public ChatCompletionsResponseFormat() {
-    }
-
-    /**
-     * Creates or finds a ChatCompletionsResponseFormat from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding ChatCompletionsResponseFormat.
-     */
-    @Generated
-    @JsonCreator
-    public static ChatCompletionsResponseFormat fromString(String name) {
-        return fromString(name, ChatCompletionsResponseFormat.class);
-    }
-
-    /**
-     * Gets known ChatCompletionsResponseFormat values.
-     *
-     * @return known ChatCompletionsResponseFormat values.
-     */
-    @Generated
-    public static Collection<ChatCompletionsResponseFormat> values() {
-        return values(ChatCompletionsResponseFormat.class);
     }
 }
