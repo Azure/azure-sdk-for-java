@@ -5,6 +5,14 @@
 ### Features Added
 
 - Supported `userData` for `VirtualMachine` in create and update.
+- Fixed `actual and formal argument lists differ in length` exception in `VirtualMachineInner` class.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of `ComputeRP` to `2023-09-01`.
+- Updated `api-version` of `GalleryRP` to `2022-08-03`.
 
 ## 2.33.0 (2023-11-24)
 
