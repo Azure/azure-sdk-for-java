@@ -25,7 +25,7 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 
 - The singular `ChatMessage` type has been replaced by `ChatRequestMessage` and `ChatResponseMessage`, the former of
   which is an abstract, polymorphic type with concrete derivations like `ChatRequestSystemMessage` and
-  `ChatRequestUserMessage`. This requires conversion from old `ChatMessages` into the new types. While this is
+  `ChatRequestUserMessage`. This requires conversion from old `ChatMessage` into the new types. While this is
   usually a straightforward string replacement, converting a response message into a request message (e.g. when
   propagating an assistant response to continue the conversation) will require creating a new instance of the
   appropriate request message with the response message's data. See the examples for details.
@@ -33,7 +33,7 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 **Dall-e-3:**
 
 - Azure OpenAI now uses `dall-e-3` model deployments for its image generation API and such a valid deployment must
-  be provided into the options for the `GetImageGenerations` method to receive results.
+  be provided into the options for the `getImageGenerations()` method to receive results.
 
 ### Bugs Fixed
 

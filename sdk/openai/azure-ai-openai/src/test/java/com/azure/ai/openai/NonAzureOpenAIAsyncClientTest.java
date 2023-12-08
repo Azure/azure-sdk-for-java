@@ -31,6 +31,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -343,12 +344,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
-
-            StepVerifier.create(client.getAudioTranscription(deploymentName, fileName, transcriptionOptions))
+            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions))
                     .assertNext(transcription ->
                             assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION))
                     .verifyComplete();
@@ -361,12 +359,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            StepVerifier.create(client.getAudioTranscription(deploymentName, fileName, transcriptionOptions))
+            StepVerifier.create(client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions))
                     .assertNext(transcription ->
                             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE))
                     .verifyComplete();
@@ -379,12 +375,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, fileName, transcriptionOptions))
+            StepVerifier.create(client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions))
                     .assertNext(transcription ->
                             // A plain/text request adds a line break as an artifact. Also observed for translations
                             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription))
@@ -398,12 +392,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
+            StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions))
                     .assertNext(translation -> {
                         // Sequence number
                         assertTrue(translation.contains("1\n"));
@@ -421,12 +413,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
+            StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions))
                     .assertNext(translation -> {
                         // Start value according to spec
                         assertTrue(translation.startsWith("WEBVTT\n"));
@@ -447,13 +437,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VERBOSE_JSON
         );
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranscriptionText(modelId, fileName, transcriptionOptions))
+                StepVerifier.create(client.getAudioTranscriptionText(modelId, transcriptionOptions.getFilename(), transcriptionOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -469,13 +456,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VTT
         );
 
-        getAudioTranscriptionRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunnerForNonAzure((modelId, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
                 transcriptionOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranscription(modelId, fileName, transcriptionOptions))
+                StepVerifier.create(client.getAudioTranscription(modelId, transcriptionOptions.getFilename(), transcriptionOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -487,12 +471,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
-            StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
+            StepVerifier.create(client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions))
                 .assertNext(translation ->
                     assertAudioTranslationSimpleJson(translation, "It's raining today."))
                 .verifyComplete();
@@ -505,12 +487,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VERBOSE_JSON);
 
-            StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
+            StepVerifier.create(client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions))
                 .assertNext(translation ->
                     assertAudioTranslationVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE))
                 .verifyComplete();
@@ -523,12 +503,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
+            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions))
                 .assertNext(translation -> {
                     assertEquals("It's raining today.\n", translation);
                 }).verifyComplete();
@@ -541,12 +519,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.SRT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
+            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions))
                     .assertNext(translation -> {
                         // Sequence number
                         assertTrue(translation.contains("1\n"));
@@ -564,12 +540,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VTT);
 
-            StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
+            StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions))
                 .assertNext(translation -> {
                     // Start value according to spec
                     assertTrue(translation.startsWith("WEBVTT\n"));
@@ -590,13 +564,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VERBOSE_JSON
         );
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranslationText(modelId, fileName, translationOptions))
+                StepVerifier.create(client.getAudioTranslationText(modelId, translationOptions.getFilename(), translationOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });
@@ -612,13 +583,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VTT
         );
 
-        getAudioTranslationRunnerForNonAzure((modelId, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunnerForNonAzure((modelId, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
-                StepVerifier.create(client.getAudioTranslation(modelId, fileName, translationOptions))
+                StepVerifier.create(client.getAudioTranslation(modelId, translationOptions.getFilename(), translationOptions))
                     .verifyErrorSatisfies(error -> assertTrue(error instanceof IllegalArgumentException));
             }
         });

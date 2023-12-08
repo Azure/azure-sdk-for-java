@@ -420,12 +420,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(deploymentName, fileName, transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionSimpleJson(transcription, BATMAN_TRANSCRIPTION);
         });
     }
@@ -436,12 +434,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON);
 
-            AudioTranscription transcription = client.getAudioTranscription(deploymentName, fileName, transcriptionOptions);
+            AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE);
         });
     }
@@ -452,12 +448,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             // A plain/text request adds a line break as an artifact. Also observed for translations
             assertEquals(BATMAN_TRANSCRIPTION + "\n", transcription);
         });
@@ -469,12 +463,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.SRT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             // Contains at least one sequence
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -490,12 +482,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranscriptionVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file);
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.VTT);
 
-            String transcription = client.getAudioTranscriptionText(deploymentName, fileName, transcriptionOptions);
+            String transcription = client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -514,14 +504,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VERBOSE_JSON
         );
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions audioTranscriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
-                audioTranscriptionOptions.setResponseFormat(format);
+                transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () ->
-                        client.getAudioTranscriptionText(deploymentName, fileName, audioTranscriptionOptions));
+                        client.getAudioTranscriptionText(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions));
             }
         });
     }
@@ -536,14 +523,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 AudioTranscriptionFormat.VTT
         );
 
-        getAudioTranscriptionRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranscriptionOptions audioTranscriptionOptions = new AudioTranscriptionOptions(file);
-
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
             for (AudioTranscriptionFormat format: wrongFormats) {
-                audioTranscriptionOptions.setResponseFormat(format);
+                transcriptionOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () ->
-                        client.getAudioTranscription(deploymentName, fileName, audioTranscriptionOptions));
+                        client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions));
             }
         });
     }
@@ -554,12 +538,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(deploymentName, fileName, translationOptions);
+            AudioTranslation translation = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationSimpleJson(translation, "It's raining today.");
         });
     }
@@ -570,12 +552,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationVerboseJson(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VERBOSE_JSON);
 
-            AudioTranslation translation = client.getAudioTranslation(deploymentName, fileName, translationOptions);
+            AudioTranslation translation = client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
             assertAudioTranslationVerboseJson(translation, "It's raining today.", AudioTaskLabel.TRANSLATE);
         });
     }
@@ -586,12 +566,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationTextPlain(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             assertEquals("It's raining today.\n", transcription);
         });
     }
@@ -602,12 +580,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationSrt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.SRT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             // Sequence number
             assertTrue(transcription.contains("1\n"));
             // First sequence starts at timestamp 0
@@ -623,12 +599,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationVtt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.VTT);
 
-            String transcription = client.getAudioTranslationText(deploymentName, fileName, translationOptions);
+            String transcription = client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
             // Start value according to spec
             assertTrue(transcription.startsWith("WEBVTT\n"));
             // First sequence starts at timestamp 0. Note: unlike SRT, the millisecond separator is a "."
@@ -647,14 +621,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VERBOSE_JSON
         );
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranslationText(deploymentName, fileName, translationOptions);
+                    client.getAudioTranslationText(deploymentName, translationOptions.getFilename(), translationOptions);
                 });
             }
         });
@@ -670,14 +641,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             AudioTranslationFormat.VTT
         );
 
-        getAudioTranslationRunner((deploymentName, fileName) -> {
-            byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
-            AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
-
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
             for (AudioTranslationFormat format: wrongFormats) {
                 translationOptions.setResponseFormat(format);
                 assertThrows(IllegalArgumentException.class, () -> {
-                    client.getAudioTranslation(deploymentName, fileName, translationOptions);
+                    client.getAudioTranslation(deploymentName, translationOptions.getFilename(), translationOptions);
                 });
             }
         });

@@ -9,7 +9,9 @@ import com.azure.ai.openai.functions.FutureTemperatureParameters;
 import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -228,20 +230,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-davinci-002", "What is 3 times 4?");
     }
 
-    void getAudioTranscriptionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper", "batman.wav");
+    void getAudioTranscriptionRunner(BiConsumer<String, AudioTranscriptionOptions> testRunner) {
+        testRunner.accept("whisper", getAudioTranscriptionOptions("batman.wav"));
     }
 
-    void getAudioTranslationRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper", "JP_it_is_rainy_today.wav");
+    void getAudioTranslationRunner(BiConsumer<String, AudioTranslationOptions> testRunner) {
+        testRunner.accept("whisper", getAudioTranslationOptions("JP_it_is_rainy_today.wav"));
     }
 
-    void getAudioTranscriptionRunnerForNonAzure(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-1", "batman.wav");
+    void getAudioTranscriptionRunnerForNonAzure(BiConsumer<String, AudioTranscriptionOptions> testRunner) {
+        testRunner.accept("whisper-1", getAudioTranscriptionOptions("batman.wav"));
     }
 
-    void getAudioTranslationRunnerForNonAzure(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-1", "JP_it_is_rainy_today.wav");
+    void getAudioTranslationRunnerForNonAzure(BiConsumer<String, AudioTranslationOptions> testRunner) {
+        testRunner.accept("whisper-1", getAudioTranslationOptions("JP_it_is_rainy_today.wav"));
     }
 
     void getChatWithVisionRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
@@ -255,6 +257,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     // openai-sdk-test-automation-account-sweden-central
     void getChatWithToolCallRunnerForAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         testRunner.accept("gpt-4-1106-preview", getChatCompletionsOptionWithToolCall());
+    }
+
+    private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
+        byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        translationOptions.setFilename(fileName);
+        return translationOptions;
+    }
+
+    private static AudioTranscriptionOptions getAudioTranscriptionOptions(String fileName) {
+        byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+        AudioTranscriptionOptions audioTranscriptionOptions = new AudioTranscriptionOptions(file);
+        audioTranscriptionOptions.setFilename(fileName);
+        return audioTranscriptionOptions;
     }
 
     private List<ChatRequestMessage> getChatRequestMessagesForToolCall() {
