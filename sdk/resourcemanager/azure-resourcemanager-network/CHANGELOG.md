@@ -5,7 +5,7 @@
 ### Features Added
 
 - The class `RoutingConfigurationNfv` renamed to `RoutingConfiguration`.
-- Remove classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource`.
+- The classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource` removed.
 
 ### Other Changes
 
