@@ -15,7 +15,6 @@ param(
     -Theirs @('**') `
     -Ours @('sdk/spring', '.github/CODEOWNERS', 'sdk/boms/spring-cloud-azure-dependencies/pom.xml') `
     -Merge @('eng/versioning/version_*.txt', `
-            'eng/jacoco-test-coverage/pom.xml', `
             'eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml', `
             'eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml', `
             'eng/code-quality-reports/src/main/resources/revapi/revapi.json', `
