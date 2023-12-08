@@ -47,6 +47,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
+import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
+
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
@@ -137,7 +140,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             .then(next.process())
             .flatMap(response -> responseLogger.logResponse(logger,
                 getResponseLoggingOptions(response, startNs, context)))
-            .doOnError(throwable -> logger.warning("<-- HTTP FAILED: ", throwable));
+            .doOnError(throwable -> createBasicLoggingContext(LogLevel.WARNING, context.getHttpRequest()).log("HTTP FAILED", throwable));
     }
 
     @Override
@@ -151,17 +154,40 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         final long startNs = System.nanoTime();
 
         requestLogger.logRequestSync(logger, getRequestLoggingOptions(context));
+        HttpResponse response = null;
         try {
-            HttpResponse response = next.processSync();
+            response = next.processSync();
             if (response != null) {
                 response = responseLogger.logResponseSync(
                     logger, getResponseLoggingOptions(response, startNs, context));
             }
             return response;
         } catch (RuntimeException e) {
-            logger.log(LogLevel.WARNING, () -> "<-- HTTP FAILED: ", e);
+            createBasicLoggingContext(LogLevel.WARNING, context.getHttpRequest())
+                .log("HTTP FAILED", e);
             throw e;
         }
+    }
+
+    private LoggingEventBuilder createBasicLoggingContext(LogLevel level, HttpRequest request) {
+        LoggingEventBuilder log = LOGGER.atLevel(level);
+        if (LOGGER.canLogAtLevel(level) && request != null) {
+            if (allowedHeaderNames.contains(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName())) {
+                String clientRequestId = request.getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
+                if (clientRequestId != null) {
+                    log.addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
+                }
+            }
+
+            if (allowedHeaderNames.contains(TRACEPARENT.getCaseInsensitiveName())) {
+                String traceparent = request.getHeaders().getValue(TRACEPARENT);
+                if (traceparent != null) {
+                    log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
+                }
+            }
+        }
+
+        return log;
     }
 
     private HttpRequestLoggingContext getRequestLoggingOptions(HttpPipelineCallContext callContext) {
