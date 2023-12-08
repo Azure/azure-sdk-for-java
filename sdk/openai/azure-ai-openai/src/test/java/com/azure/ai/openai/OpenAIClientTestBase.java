@@ -52,6 +52,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
@@ -85,6 +86,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
+            addCustomMatchers();
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -110,6 +112,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
+            addCustomMatchers();
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -133,6 +136,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
                 "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
         ));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     protected String getAzureCognitiveSearchKey() {
