@@ -25,8 +25,8 @@ import java.util.function.Supplier;
  *
  * <p>Logging event with context.</p>
  *
- * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
- * <!-- end com.azure.core.util.logging.loggingeventbuilder -->
+ * <!-- src_embed com.generic.core.util.logging.loggingeventbuilder -->
+ * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
  */
 @Fluent
 public final class LoggingEventBuilder {
@@ -71,8 +71,8 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
      * @param key String key.
      * @param value String value.
@@ -95,8 +95,8 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
      *
      * @param key String key.
      * @param value Object value.
@@ -131,8 +131,8 @@ public final class LoggingEventBuilder {
      *
      * <p>Adding an integer value to logging event context.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @param key String key.
      * @param value long value.

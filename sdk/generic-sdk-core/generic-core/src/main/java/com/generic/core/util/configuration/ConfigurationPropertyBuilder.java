@@ -45,8 +45,8 @@ public final class ConfigurationPropertyBuilder<T> {
      * property value does not contain sensitive information, use {@link ConfigurationPropertyBuilder#logValue} to
      * enable logging.
      *
-     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
-     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.generic.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.generic.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -59,8 +59,8 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
      * {@link Integer#valueOf(String)}, proxying {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     * <!-- src_embed com.generic.core.util.ConfigurationPropertyBuilder.ofInteger -->
+     * <!-- end com.generic.core.util.ConfigurationPropertyBuilder.ofInteger -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -73,8 +73,8 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parses value as long number of
      * milliseconds, proxying  {@link NumberFormatException} exception.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     * <!-- src_embed com.generic.core.util.ConfigurationPropertyBuilder.ofDuration -->
+     * <!-- end com.generic.core.util.ConfigurationPropertyBuilder.ofDuration -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -87,8 +87,8 @@ public final class ConfigurationPropertyBuilder<T> {
      * Creates {@link ConfigurationPropertyBuilder} configured to log property value and parse value using
      * {@link Boolean#parseBoolean(String)}.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     * <!-- src_embed com.generic.core.util.ConfigurationPropertyBuilder.ofBoolean -->
+     * <!-- end com.generic.core.util.ConfigurationPropertyBuilder.ofBoolean -->
      *
      * @param name property name.
      * @return instance of {@link ConfigurationPropertyBuilder}.
@@ -100,8 +100,8 @@ public final class ConfigurationPropertyBuilder<T> {
     /**
      * Constructs {@code ConfigurationPropertyBuilder} instance.
      *
-     * <!-- src_embed com.azure.core.util.ConfigurationPropertyBuilder -->
-     * <!-- end com.azure.core.util.ConfigurationPropertyBuilder -->
+     * <!-- src_embed com.generic.core.util.ConfigurationPropertyBuilder -->
+     * <!-- end com.generic.core.util.ConfigurationPropertyBuilder -->
      *
      * @param name name of the property.
      * @param converter Converter used to map the configuration to {@code T}.

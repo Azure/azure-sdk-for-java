@@ -18,8 +18,8 @@ import java.util.function.Function;
 /**
  * Contains configuration information that is used during construction of client libraries.
  *
- * <!-- src_embed com.azure.core.util.Configuration -->
- * <!-- end com.azure.core.util.Configuration -->
+ * <!-- src_embed com.generic.core.util.Configuration -->
+ * <!-- end com.generic.core.util.Configuration -->
  */
 public class Configuration implements Cloneable {
 
@@ -86,8 +86,8 @@ public class Configuration implements Cloneable {
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
      * {@link HttpClient}.
      * <p>
-     * The name must be the full class name, ex {@code com.azure.core.http.netty.NettyAsyncHttpClientProvider} and not
-     * {@code NettyAsyncHttpClientProvider}, to disambiguate multiple providers with the same name but from different
+     * The name must be the full class name, ex {@code com.generic.core.http.okhttp.OkHttpHttpClientProvider} and not
+     * {@code OkHttpHttpClientProvider}, to disambiguate multiple providers with the same name but from different
      * packages.
      * <p>
      * If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} will be
@@ -266,8 +266,8 @@ public class Configuration implements Cloneable {
      * <p>
      * Property value is converted to specified type. If property value is missing and not required, default value is returned.
      *
-     * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
-     * <!-- end com.azure.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- src_embed com.generic.core.util.Configuration.get#ConfigurationProperty -->
+     * <!-- end com.generic.core.util.Configuration.get#ConfigurationProperty -->
      *
      * @param property instance.
      * @param <T> Type that the configuration is converted to if found.

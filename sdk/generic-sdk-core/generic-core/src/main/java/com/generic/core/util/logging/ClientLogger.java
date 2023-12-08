@@ -70,8 +70,8 @@ public class ClientLogger {
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger#globalcontext -->
-     * <!-- end com.azure.core.util.logging.clientlogger#globalcontext -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
+     * <!-- end com.generic.core.util.logging.clientlogger#globalcontext -->
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
@@ -92,8 +92,8 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.log -->
-     * <!-- end com.azure.core.util.logging.clientlogger.log -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.log -->
+     * <!-- end com.generic.core.util.logging.clientlogger.log -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -109,8 +109,8 @@ public class ClientLogger {
      *
      * <p>Logging with a specific log level and exception</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.log#throwable -->
-     * <!-- end com.azure.core.util.logging.clientlogger.log#throwable -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.log#throwable -->
+     * <!-- end com.generic.core.util.logging.clientlogger.log#throwable -->
      *
      * @param logLevel Logging level for the log message.
      * @param message The format-able message to log.
@@ -322,8 +322,8 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
@@ -339,8 +339,8 @@ public class ClientLogger {
      *
      * <p>Logging with context at warning level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atWarning -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atWarning -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atWarning -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
@@ -357,8 +357,8 @@ public class ClientLogger {
      *
      * <p>Logging with context at info level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atInfo -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
@@ -374,8 +374,8 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
@@ -392,8 +392,8 @@ public class ClientLogger {
      *
      * <p>Logging with context at provided level.</p>
      *
-     * <!-- src_embed com.azure.core.util.logging.clientlogger.atLevel -->
-     * <!-- end com.azure.core.util.logging.clientlogger.atLevel -->
+     * <!-- src_embed com.generic.core.util.logging.clientlogger.atLevel -->
+     * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
      * @param level log level.
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.

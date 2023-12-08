@@ -21,13 +21,13 @@ import java.util.List;
  *
  * <p>Create a pipeline without configuration</p>
  *
- * <!-- src_embed com.azure.core.http.HttpPipelineBuilder.noConfiguration -->
- * <!-- end com.azure.core.http.HttpPipelineBuilder.noConfiguration -->
+ * <!-- src_embed com.generic.core.http.HttpPipelineBuilder.noConfiguration -->
+ * <!-- end com.generic.core.http.HttpPipelineBuilder.noConfiguration -->
  *
  * <p>Create a pipeline using the default HTTP client and a retry policy</p>
  *
- * <!-- src_embed com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
- * <!-- end com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
+ * <!-- src_embed com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
+ * <!-- end com.generic.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  *
  * @see HttpPipeline
  */

@@ -16,11 +16,11 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p><strong>Code sample</strong></p>
  *
- * <!-- src_embed com.azure.core.util.serializer.constructor -->
- * <!-- end com.azure.core.util.serializer.constructor -->
+ * <!-- src_embed com.generic.core.util.serializer.constructor -->
+ * <!-- end com.generic.core.util.serializer.constructor -->
  *
- * <!-- src_embed com.azure.core.util.serializer.createInstance#class -->
- * <!-- end com.azure.core.util.serializer.createInstance#class -->
+ * <!-- src_embed com.generic.core.util.serializer.createInstance#class -->
+ * <!-- end com.generic.core.util.serializer.createInstance#class -->
  *
  * @param <T> The type being represented.
  */
