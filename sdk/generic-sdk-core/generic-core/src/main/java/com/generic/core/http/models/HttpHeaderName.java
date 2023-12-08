@@ -5,14 +5,24 @@ package com.generic.core.http.models;
 
 import com.generic.core.models.ExpandableStringEnum;
 
-import java.util.Locale;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Represents HTTP header names for multiple versions of HTTP.
  */
 @SuppressWarnings("unused")
 public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
-    private String caseInsensitive;
+    private static final Map<String, HttpHeaderName> VALUES = new ConcurrentHashMap<>();
+    private final String caseSensitive;
+    private final String caseInsensitive;
+
+    private HttpHeaderName(String name) {
+        this.caseSensitive = name;
+        this.caseInsensitive = name.toLowerCase();
+    }
 
     /**
      * Gets the HTTP header name based on the name passed into {@link #fromString(String)}.
@@ -45,10 +55,26 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
             return null;
         }
 
-        HttpHeaderName headerName = fromString(name, HttpHeaderName.class);
-        headerName.caseInsensitive = name.toLowerCase(Locale.ROOT);
+        HttpHeaderName headerName = VALUES.get(name);
+        if (headerName != null) {
+            return headerName;
+        }
 
-        return headerName;
+        return VALUES.putIfAbsent(name, new HttpHeaderName(name));
+    }
+
+    /**
+     * Gets a collection of all known values to an expandable string enum type.
+     *
+     * @return A collection of all known values for the given {@code clazz}.
+     */
+    public static Collection<HttpHeaderName> values() {
+        return VALUES.values();
+    }
+
+    @Override
+    public String toString() {
+        return caseSensitive;
     }
 
     @Override
@@ -67,7 +93,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
         }
 
         HttpHeaderName other = (HttpHeaderName) obj;
-        return caseInsensitive.equals(other.caseInsensitive);
+        return Objects.equals(caseInsensitive, other.caseInsensitive);
     }
 
     /**
