@@ -93,7 +93,7 @@ You can then configure the connection string in two different ways:
 
 #### Cloud role name
 
-The [Application Map](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
+The [Application Map](https://learn.microsoft.com/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
 
 You can set the cloud role name with the `spring.application.name` or `otel.springboot.resource.attributes.service.name` property.
 
