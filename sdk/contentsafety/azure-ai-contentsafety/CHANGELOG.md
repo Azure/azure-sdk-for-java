@@ -27,8 +27,6 @@ Contract change for AnalyzeText, AnalyzeImage, Blocklist management related meth
 - Renamed `RemoveBlockItemsOptions` to `RemoveTextBlocklistItemsOptions`
 - Renamed `TextBlockItemInfo` to `TextBlocklistItem`
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-core` from `1.43.0` to version `1.45.0`.
