@@ -316,7 +316,7 @@ public abstract class HttpClientTests {
     @Test
     public void eagerlyConvertedHeadersAreHeaders() {
         BinaryData requestBody = BinaryData.fromString("test body");
-        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
+        Context context = Context.NONE.addData("eagerly-convert-headers", true);
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
             .setBody(requestBody)
             .setContext(context);
@@ -1846,7 +1846,7 @@ public abstract class HttpClientTests {
         fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
 
-    private static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
+    static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
         byte[] buf = new byte[8192];
         int length;
 

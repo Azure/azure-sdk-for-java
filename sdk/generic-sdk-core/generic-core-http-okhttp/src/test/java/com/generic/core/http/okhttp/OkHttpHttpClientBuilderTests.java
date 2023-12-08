@@ -29,6 +29,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.servlet.ServletException;
+import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -358,7 +359,7 @@ public class OkHttpHttpClientBuilderTests {
             }
         }, 1000);
 
-        assertThrows(RuntimeException.class, () -> client.send(new HttpRequest(HttpMethod.GET, dispatcherUrl)));
+        assertThrows(UncheckedIOException.class, () -> client.send(new HttpRequest(HttpMethod.GET, dispatcherUrl)));
     }
 
     /**
@@ -378,7 +379,7 @@ public class OkHttpHttpClientBuilderTests {
                                String requestUrl) {
         OkHttpClient validatorClient = okHttpClientWithProxyValidation(shouldHaveProxy, proxyType);
         HttpClient client = new OkHttpHttpClientBuilder(validatorClient)
-            .proxyOptions(proxyOptions)
+            .proxy(proxyOptions)
             .build();
 
         assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),

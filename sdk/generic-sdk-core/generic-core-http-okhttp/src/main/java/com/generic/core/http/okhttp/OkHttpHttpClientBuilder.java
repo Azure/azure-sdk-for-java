@@ -262,7 +262,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @return The updated OkHttpHttpClientBuilder object.
      */
-    public OkHttpHttpClientBuilder proxyOptions(ProxyOptions proxyOptions) {
+    public OkHttpHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
         this.proxyOptions = proxyOptions;
 
