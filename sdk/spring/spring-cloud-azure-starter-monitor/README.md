@@ -78,20 +78,24 @@ dependencyManagement {
 }
 ```
 
-### Authentication
+### Azure Monitor configuration
 
-#### Get the connection string from the portal
+#### Authentication
 
 In order to export telemetry data to Azure Monitor, you will need the connection string to your [Application
  Insights resource][application_insights_resource]. Go to [Azure Portal][azure_portal], 
 search for your resource. On the overview page of your resource, you will find the connection string in the top
 right corner.
 
-#### Configure the connection string
 You can then configure the connection string in two different ways:
 * With the `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable
 * With the `applicationinsights.connection.string` system property. You can use `-Dapplicationinsights.connection.string` or add the property to your `application.properties` file.
 
+#### Cloud role name
+
+The [Application Map](https://learn.microsoft.com/en-us/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
+
+You can set the cloud role name with the `spring.application.name` or `otel.springboot.resource.attributes.service.name` property.
 
 ### Configure the instrumentation
 
