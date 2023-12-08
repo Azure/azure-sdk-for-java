@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"itjz\",\"origin\":\"lusarh\",\"display\":{\"description\":\"cqhsm\",\"provider\":\"rkdtmlxh\",\"resource\":\"uksjtxukcdmp\",\"operation\":\"cryuan\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"xtayr\",\"displayName\":\"m\",\"blobDuration\":\"fp\"},{\"name\":\"qobmtukk\",\"displayName\":\"yrtih\",\"blobDuration\":\"tijbpzvgnwzsymgl\"},{\"name\":\"fcyzkohdbihanufh\",\"displayName\":\"bj\",\"blobDuration\":\"a\"},{\"name\":\"th\",\"displayName\":\"hab\",\"blobDuration\":\"pikxwczbyscnpqxu\"}],\"metricSpecifications\":[{\"name\":\"qniwbybrkxvdumj\",\"displayName\":\"tfwvukxgaudc\",\"displayDescription\":\"nhsjcnyej\",\"unit\":\"ryhtnapczwlokjy\",\"aggregationType\":\"kkvnipjox\",\"enableRegionalMdmAccount\":\"nchgej\",\"sourceMdmAccount\":\"odmailzyd\",\"sourceMdmNamespace\":\"o\",\"availabilities\":[{},{}],\"dimensions\":[{},{},{}]}]}}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"itjz\",\"origin\":\"lusarh\",\"display\":{\"description\":\"cqhsm\",\"provider\":\"rkdtmlxh\",\"resource\":\"uksjtxukcdmp\",\"operation\":\"cryuan\"},\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"xtayr\",\"displayName\":\"m\",\"blobDuration\":\"fp\"},{\"name\":\"qobmtukk\",\"displayName\":\"yrtih\",\"blobDuration\":\"tijbpzvgnwzsymgl\"},{\"name\":\"fcyzkohdbihanufh\",\"displayName\":\"bj\",\"blobDuration\":\"a\"},{\"name\":\"th\",\"displayName\":\"hab\",\"blobDuration\":\"pikxwczbyscnpqxu\"}],\"metricSpecifications\":[{\"name\":\"qniwbybrkxvdumj\",\"displayName\":\"tfwvukxgaudc\",\"displayDescription\":\"nhsjcnyej\",\"unit\":\"ryhtnapczwlokjy\",\"aggregationType\":\"kkvnipjox\",\"enableRegionalMdmAccount\":\"nchgej\",\"sourceMdmAccount\":\"odmailzyd\",\"sourceMdmNamespace\":\"o\",\"availabilities\":[{},{}],\"dimensions\":[{},{},{}]}]}}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("itjz", model.name());
         Assertions.assertEquals("lusarh", model.origin());
         Assertions.assertEquals("cqhsm", model.display().description());
@@ -33,77 +31,42 @@ public final class OperationInnerTests {
         Assertions.assertEquals("m", model.serviceSpecification().logSpecifications().get(0).displayName());
         Assertions.assertEquals("fp", model.serviceSpecification().logSpecifications().get(0).blobDuration());
         Assertions.assertEquals("qniwbybrkxvdumj", model.serviceSpecification().metricSpecifications().get(0).name());
-        Assertions
-            .assertEquals("tfwvukxgaudc", model.serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals("nhsjcnyej", model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("tfwvukxgaudc",
+            model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("nhsjcnyej",
+            model.serviceSpecification().metricSpecifications().get(0).displayDescription());
         Assertions.assertEquals("ryhtnapczwlokjy", model.serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions
-            .assertEquals("kkvnipjox", model.serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions
-            .assertEquals(
-                "nchgej", model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions
-            .assertEquals("odmailzyd", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals("kkvnipjox",
+            model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("nchgej",
+            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertEquals("odmailzyd",
+            model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("o", model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("itjz")
-                .withOrigin("lusarh")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withDescription("cqhsm")
-                        .withProvider("rkdtmlxh")
-                        .withResource("uksjtxukcdmp")
-                        .withOperation("cryuan"))
-                .withServiceSpecification(
-                    new OperationServiceSpecification()
-                        .withLogSpecifications(
-                            Arrays
-                                .asList(
-                                    new OperationLogSpecification()
-                                        .withName("xtayr")
-                                        .withDisplayName("m")
-                                        .withBlobDuration("fp"),
-                                    new OperationLogSpecification()
-                                        .withName("qobmtukk")
-                                        .withDisplayName("yrtih")
-                                        .withBlobDuration("tijbpzvgnwzsymgl"),
-                                    new OperationLogSpecification()
-                                        .withName("fcyzkohdbihanufh")
-                                        .withDisplayName("bj")
-                                        .withBlobDuration("a"),
-                                    new OperationLogSpecification()
-                                        .withName("th")
-                                        .withDisplayName("hab")
-                                        .withBlobDuration("pikxwczbyscnpqxu")))
-                        .withMetricSpecifications(
-                            Arrays
-                                .asList(
-                                    new OperationMetricSpecification()
-                                        .withName("qniwbybrkxvdumj")
-                                        .withDisplayName("tfwvukxgaudc")
-                                        .withDisplayDescription("nhsjcnyej")
-                                        .withUnit("ryhtnapczwlokjy")
-                                        .withAggregationType("kkvnipjox")
-                                        .withEnableRegionalMdmAccount("nchgej")
-                                        .withSourceMdmAccount("odmailzyd")
-                                        .withSourceMdmNamespace("o")
-                                        .withAvailabilities(
-                                            Arrays
-                                                .asList(
-                                                    new OperationMetricAvailability(),
-                                                    new OperationMetricAvailability()))
-                                        .withDimensions(
-                                            Arrays
-                                                .asList(
-                                                    new OperationMetricDimension(),
-                                                    new OperationMetricDimension(),
-                                                    new OperationMetricDimension())))));
+        OperationInner model = new OperationInner().withName("itjz").withOrigin("lusarh")
+            .withDisplay(new OperationDisplay().withDescription("cqhsm").withProvider("rkdtmlxh")
+                .withResource("uksjtxukcdmp").withOperation("cryuan"))
+            .withServiceSpecification(new OperationServiceSpecification()
+                .withLogSpecifications(Arrays.asList(
+                    new OperationLogSpecification().withName("xtayr").withDisplayName("m").withBlobDuration("fp"),
+                    new OperationLogSpecification().withName("qobmtukk").withDisplayName("yrtih")
+                        .withBlobDuration("tijbpzvgnwzsymgl"),
+                    new OperationLogSpecification().withName("fcyzkohdbihanufh").withDisplayName("bj")
+                        .withBlobDuration("a"),
+                    new OperationLogSpecification().withName("th").withDisplayName("hab")
+                        .withBlobDuration("pikxwczbyscnpqxu")))
+                .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification().withName("qniwbybrkxvdumj")
+                    .withDisplayName("tfwvukxgaudc").withDisplayDescription("nhsjcnyej").withUnit("ryhtnapczwlokjy")
+                    .withAggregationType("kkvnipjox").withEnableRegionalMdmAccount("nchgej")
+                    .withSourceMdmAccount("odmailzyd").withSourceMdmNamespace("o")
+                    .withAvailabilities(
+                        Arrays.asList(new OperationMetricAvailability(), new OperationMetricAvailability()))
+                    .withDimensions(Arrays.asList(new OperationMetricDimension(), new OperationMetricDimension(),
+                        new OperationMetricDimension())))));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("itjz", model.name());
         Assertions.assertEquals("lusarh", model.origin());
@@ -115,18 +78,17 @@ public final class OperationInnerTests {
         Assertions.assertEquals("m", model.serviceSpecification().logSpecifications().get(0).displayName());
         Assertions.assertEquals("fp", model.serviceSpecification().logSpecifications().get(0).blobDuration());
         Assertions.assertEquals("qniwbybrkxvdumj", model.serviceSpecification().metricSpecifications().get(0).name());
-        Assertions
-            .assertEquals("tfwvukxgaudc", model.serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals("nhsjcnyej", model.serviceSpecification().metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("tfwvukxgaudc",
+            model.serviceSpecification().metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("nhsjcnyej",
+            model.serviceSpecification().metricSpecifications().get(0).displayDescription());
         Assertions.assertEquals("ryhtnapczwlokjy", model.serviceSpecification().metricSpecifications().get(0).unit());
-        Assertions
-            .assertEquals("kkvnipjox", model.serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions
-            .assertEquals(
-                "nchgej", model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions
-            .assertEquals("odmailzyd", model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
+        Assertions.assertEquals("kkvnipjox",
+            model.serviceSpecification().metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("nchgej",
+            model.serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
+        Assertions.assertEquals("odmailzyd",
+            model.serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("o", model.serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
     }
 }

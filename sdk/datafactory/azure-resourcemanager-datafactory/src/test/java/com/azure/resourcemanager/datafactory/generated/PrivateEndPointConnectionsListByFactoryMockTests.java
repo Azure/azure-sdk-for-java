@@ -31,51 +31,33 @@ public final class PrivateEndPointConnectionsListByFactoryMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"rdfxqhnwh\",\"privateEndpoint\":{\"id\":\"nfdqlz\"},\"privateLinkServiceConnectionState\":{\"status\":\"ocxiiumrdbqujyi\",\"description\":\"ciaznpsvgupqwqs\",\"actionsRequired\":\"ntl\"}},\"name\":\"knxzcsuvjbfryort\",\"type\":\"esxccpbtvgio\",\"etag\":\"ytpvswd\",\"id\":\"womkzussgj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"rdfxqhnwh\",\"privateEndpoint\":{\"id\":\"nfdqlz\"},\"privateLinkServiceConnectionState\":{\"status\":\"ocxiiumrdbqujyi\",\"description\":\"ciaznpsvgupqwqs\",\"actionsRequired\":\"ntl\"}},\"name\":\"knxzcsuvjbfryort\",\"type\":\"esxccpbtvgio\",\"etag\":\"ytpvswd\",\"id\":\"womkzussgj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnectionResource> response =
-            manager
-                .privateEndPointConnections()
-                .listByFactory("gaicgqgafkrtsa", "agvq", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndPointConnections()
+            .listByFactory("gaicgqgafkrtsa", "agvq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("womkzussgj", response.iterator().next().id());
-        Assertions
-            .assertEquals(
-                "ocxiiumrdbqujyi",
-                response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "ciaznpsvgupqwqs",
-                response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "ntl", response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ocxiiumrdbqujyi",
+            response.iterator().next().properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("ciaznpsvgupqwqs",
+            response.iterator().next().properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ntl",
+            response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

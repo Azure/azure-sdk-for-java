@@ -10,23 +10,16 @@ import com.azure.resourcemanager.datafactory.models.DynamicsCrmSource;
 public final class DynamicsCrmSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsCrmSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsCrmSource\",\"query\":\"datakd\",\"additionalColumns\":\"datakdpn\",\"sourceRetryCount\":\"datadwcxjv\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"dataxcmcccotqocnryyp\",\"disableMetricsCollection\":\"dataduldsolbz\",\"\":{\"pvaagrdfwvglqds\":\"dataufkeyl\",\"ucryhuohthzfotfr\":\"datahvo\",\"op\":\"datahrjkahdofshgmqx\",\"aittbmobrxhwpg\":\"datanitrmzvnrfkzn\"}}")
-                .toObject(DynamicsCrmSource.class);
+        DynamicsCrmSource model = BinaryData.fromString(
+            "{\"type\":\"DynamicsCrmSource\",\"query\":\"datapq\",\"additionalColumns\":\"datakrmlb\",\"sourceRetryCount\":\"dataqogzaw\",\"sourceRetryWait\":\"dataqdnxum\",\"maxConcurrentConnections\":\"datavnvs\",\"disableMetricsCollection\":\"datautq\",\"\":{\"lygfvbfejb\":\"datantcwrluqaq\",\"sm\":\"datazklgpifv\",\"auwmsnplqfivx\":\"datak\"}}")
+            .toObject(DynamicsCrmSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsCrmSource model =
-            new DynamicsCrmSource()
-                .withSourceRetryCount("datadwcxjv")
-                .withSourceRetryWait("datal")
-                .withMaxConcurrentConnections("dataxcmcccotqocnryyp")
-                .withDisableMetricsCollection("dataduldsolbz")
-                .withQuery("datakd")
-                .withAdditionalColumns("datakdpn");
+        DynamicsCrmSource model = new DynamicsCrmSource().withSourceRetryCount("dataqogzaw")
+            .withSourceRetryWait("dataqdnxum").withMaxConcurrentConnections("datavnvs")
+            .withDisableMetricsCollection("datautq").withQuery("datapq").withAdditionalColumns("datakrmlb");
         model = BinaryData.fromObject(model).toObject(DynamicsCrmSource.class);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The correlation properties. */
+/**
+ * The correlation properties.
+ */
 @Fluent
 public class RunCorrelation {
     /*
@@ -23,13 +25,15 @@ public class RunCorrelation {
     @JsonProperty(value = "clientKeywords")
     private List<String> clientKeywords;
 
-    /** Creates an instance of RunCorrelation class. */
+    /**
+     * Creates an instance of RunCorrelation class.
+     */
     public RunCorrelation() {
     }
 
     /**
      * Get the clientTrackingId property: The client tracking identifier.
-     *
+     * 
      * @return the clientTrackingId value.
      */
     public String clientTrackingId() {
@@ -38,7 +42,7 @@ public class RunCorrelation {
 
     /**
      * Set the clientTrackingId property: The client tracking identifier.
-     *
+     * 
      * @param clientTrackingId the clientTrackingId value to set.
      * @return the RunCorrelation object itself.
      */
@@ -49,7 +53,7 @@ public class RunCorrelation {
 
     /**
      * Get the clientKeywords property: The client keywords.
-     *
+     * 
      * @return the clientKeywords value.
      */
     public List<String> clientKeywords() {
@@ -58,7 +62,7 @@ public class RunCorrelation {
 
     /**
      * Set the clientKeywords property: The client keywords.
-     *
+     * 
      * @param clientKeywords the clientKeywords value to set.
      * @return the RunCorrelation object itself.
      */
@@ -69,7 +73,7 @@ public class RunCorrelation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AppendVariableActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppendVariableActivityTypeProperties model =
-            BinaryData
-                .fromString("{\"variableName\":\"voprgcsjycor\",\"value\":\"databwsfxkudicw\"}")
+        AppendVariableActivityTypeProperties model
+            = BinaryData.fromString("{\"variableName\":\"voprgcsjycor\",\"value\":\"databwsfxkudicw\"}")
                 .toObject(AppendVariableActivityTypeProperties.class);
         Assertions.assertEquals("voprgcsjycor", model.variableName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppendVariableActivityTypeProperties model =
-            new AppendVariableActivityTypeProperties().withVariableName("voprgcsjycor").withValue("databwsfxkudicw");
+        AppendVariableActivityTypeProperties model
+            = new AppendVariableActivityTypeProperties().withVariableName("voprgcsjycor").withValue("databwsfxkudicw");
         model = BinaryData.fromObject(model).toObject(AppendVariableActivityTypeProperties.class);
         Assertions.assertEquals("voprgcsjycor", model.variableName());
     }

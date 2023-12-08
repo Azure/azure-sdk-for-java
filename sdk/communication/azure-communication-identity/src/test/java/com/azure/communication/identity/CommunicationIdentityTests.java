@@ -14,17 +14,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
 
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
-import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
-    private static final String TEST_SUFFIX = "Sync";
-    private static final List<CommunicationTokenScope> SCOPES = Collections.singletonList(CHAT);
+
     private CommunicationIdentityClient client;
     private CommunicationIdentityClientBuilder builder;
 
@@ -83,7 +80,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWith" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWith" + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
@@ -117,7 +114,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void createUserAndTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(SCOPES, tokenExpiresIn);
@@ -130,7 +127,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
@@ -145,7 +142,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {
@@ -162,7 +159,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {
@@ -178,7 +175,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void createUserAndTokenWithOverFlownExpiration() {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration " + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithOverFlownExpiration " + SYNC_TEST_SUFFIX);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
@@ -195,7 +192,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void createUserAndTokenWithResponseWithOverFlownExpiration() {
         // Arrange
-        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration " + TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithOverFlownExpiration " + SYNC_TEST_SUFFIX);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
 
         // Action & Assert
@@ -301,7 +298,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
     public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
-        client = setupClient(builder, "getTokenWith" + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWith" + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
@@ -347,7 +344,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void getTokenWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "getTokenWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
@@ -361,7 +358,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void getTokenWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "getTokenWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
@@ -380,7 +377,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void getTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
@@ -395,7 +392,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void getTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
 
@@ -413,7 +410,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void getTokenWithOverflownExpiration() {
         // Arrange
-        client = setupClient(builder, "getTokenWithOverflownExpiration " + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithOverflownExpiration " + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
@@ -432,7 +429,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void getTokenWithResponseWithOverflownExpiration() {
         // Arrange
-        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration " + TEST_SUFFIX);
+        client = setupClient(builder, "getTokenWithResponseWithOverflownExpiration " + SYNC_TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
         Duration tokenExpiresIn = Duration.ofDays(Integer.MAX_VALUE);
@@ -533,7 +530,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             return;
         }
         // Arrange
-        client = setupClient(builder, testName + TEST_SUFFIX);
+        client = setupClient(builder, testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {
@@ -553,7 +550,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             return;
         }
         // Arrange
-        client = setupClient(builder, testName + TEST_SUFFIX);
+        client = setupClient(builder, testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {
@@ -573,7 +570,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             return;
         }
         // Arrange
-        client = setupClient(builder, testName + TEST_SUFFIX);
+        client = setupClient(builder, testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {

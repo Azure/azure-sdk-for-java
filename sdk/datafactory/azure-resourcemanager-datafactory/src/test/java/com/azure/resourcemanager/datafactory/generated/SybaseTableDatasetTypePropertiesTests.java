@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.SybaseTableDatasetTyp
 public final class SybaseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SybaseTableDatasetTypeProperties model =
-            BinaryData.fromString("{\"tableName\":\"datamzaof\"}").toObject(SybaseTableDatasetTypeProperties.class);
+        SybaseTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"datamzaof\"}").toObject(SybaseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

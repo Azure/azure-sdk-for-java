@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureBlobFSSource;
 public final class AzureBlobFSSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBlobFSSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"datazlcfe\",\"skipHeaderLineCount\":\"dataryxnklfswzsyigx\",\"recursive\":\"dataxhygc\",\"sourceRetryCount\":\"databapeuqyz\",\"sourceRetryWait\":\"datasuopcdiaossp\",\"maxConcurrentConnections\":\"datatgkmrsqaqgllnhgi\",\"disableMetricsCollection\":\"datawzzk\",\"\":{\"wdkpadktsyywa\":\"datarnglgituae\",\"dajqpdvvzbejx\":\"datajrfqtfkkiup\"}}")
-                .toObject(AzureBlobFSSource.class);
+        AzureBlobFSSource model = BinaryData.fromString(
+            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"datax\",\"skipHeaderLineCount\":\"datanrurtnwbjj\",\"recursive\":\"dataupckhfbmdemohlsh\",\"sourceRetryCount\":\"dataaoofltb\",\"sourceRetryWait\":\"datayvmwaejxzkqcm\",\"maxConcurrentConnections\":\"datacf\",\"disableMetricsCollection\":\"dataxyrtqegabsfjrj\",\"\":{\"dibepgfrbijoehh\":\"datascgorv\"}}")
+            .toObject(AzureBlobFSSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSSource model =
-            new AzureBlobFSSource()
-                .withSourceRetryCount("databapeuqyz")
-                .withSourceRetryWait("datasuopcdiaossp")
-                .withMaxConcurrentConnections("datatgkmrsqaqgllnhgi")
-                .withDisableMetricsCollection("datawzzk")
-                .withTreatEmptyAsNull("datazlcfe")
-                .withSkipHeaderLineCount("dataryxnklfswzsyigx")
-                .withRecursive("dataxhygc");
+        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("dataaoofltb")
+            .withSourceRetryWait("datayvmwaejxzkqcm").withMaxConcurrentConnections("datacf")
+            .withDisableMetricsCollection("dataxyrtqegabsfjrj").withTreatEmptyAsNull("datax")
+            .withSkipHeaderLineCount("datanrurtnwbjj").withRecursive("dataupckhfbmdemohlsh");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSSource.class);
     }
 }

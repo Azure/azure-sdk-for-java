@@ -30,22 +30,28 @@ import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
 import com.azure.resourcemanager.quota.models.QuotaRequestDetailsList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in QuotaRequestStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotaRequestStatusClient.
+ */
 public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final QuotaRequestStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureQuotaExtensionApiImpl client;
 
     /**
      * Initializes an instance of QuotaRequestStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     QuotaRequestStatusClientImpl(AzureQuotaExtensionApiImpl client) {
-        this.service =
-            RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(QuotaRequestStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,65 +62,51 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     @Host("{$host}")
     @ServiceInterface(name = "AzureQuotaExtensionA")
     public interface QuotaRequestStatusService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Quota/quotaRequests/{id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("id") String id,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsInner>> get(@HostParam("$host") String endpoint, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Quota/quotaRequests")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QuotaRequestDetailsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<QuotaRequestDetailsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
+     * 
      * @param id Quota request ID.
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location along with {@link Response} on successful completion of {@link Mono}.
+     * specific location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
@@ -123,36 +115,32 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.get(this.client.getEndpoint(), id, this.client.getApiVersion(), scope, accept, context))
+        return FluxUtil.withContext(
+            context -> service.get(this.client.getEndpoint(), id, this.client.getApiVersion(), scope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
+     * 
      * @param id Quota request ID.
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location along with {@link Response} on successful completion of {@link Mono}.
+     * specific location along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QuotaRequestDetailsInner>> getWithResponseAsync(String id, String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (id == null) {
             return Mono.error(new IllegalArgumentException("Parameter id is required and cannot be null."));
@@ -168,17 +156,17 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
+     * 
      * @param id Quota request ID.
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location on successful completion of {@link Mono}.
+     * specific location on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QuotaRequestDetailsInner> getAsync(String id, String scope) {
@@ -188,18 +176,18 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
+     * 
      * @param id Quota request ID.
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location along with {@link Response}.
+     * specific location along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QuotaRequestDetailsInner> getWithResponse(String id, String scope, Context context) {
@@ -209,17 +197,17 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * Get the quota request details and status by quota request ID for the resources of the resource provider at a
      * specific location. The quota request ID **id** is returned in the response of the PUT operation.
-     *
+     * 
      * @param id Quota request ID.
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the quota request details and status by quota request ID for the resources of the resource provider at a
-     *     specific location.
+     * specific location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QuotaRequestDetailsInner get(String id, String scope) {
@@ -229,76 +217,63 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param filter | Field | Supported operators |---------------------|------------------------
-     *     <p>|requestSubmitTime | ge, le, eq, gt, lt |provisioningState eq {QuotaRequestState} |resourceName eq
-     *     {resourceName}.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param filter | Field | Supported operators
+     * |---------------------|------------------------
+     * 
+     * |requestSubmitTime | ge, le, eq, gt, lt
+     * |provisioningState eq {QuotaRequestState}
+     * |resourceName eq {resourceName}.
      * @param top Number of records to return.
      * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     *     previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
+     * starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String scope, String filter, Integer top, String skiptoken) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String scope, String filter, Integer top,
+        String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            scope,
-                            filter,
-                            top,
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), scope, filter,
+                top, skiptoken, accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param filter | Field | Supported operators |---------------------|------------------------
-     *     <p>|requestSubmitTime | ge, le, eq, gt, lt |provisioningState eq {QuotaRequestState} |resourceName eq
-     *     {resourceName}.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param filter | Field | Supported operators
+     * |---------------------|------------------------
+     * 
+     * |requestSubmitTime | ge, le, eq, gt, lt
+     * |provisioningState eq {QuotaRequestState}
+     * |resourceName eq {resourceName}.
      * @param top Number of records to return.
      * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     *     previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,13 +281,11 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(
-        String scope, String filter, Integer top, String skiptoken, Context context) {
+    private Mono<PagedResponse<QuotaRequestDetailsInner>> listSinglePageAsync(String scope, String filter, Integer top,
+        String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -320,34 +293,30 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(), this.client.getApiVersion(), scope, filter, top, skiptoken, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), scope, filter, top, skiptoken, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param filter | Field | Supported operators |---------------------|------------------------
-     *     <p>|requestSubmitTime | ge, le, eq, gt, lt |provisioningState eq {QuotaRequestState} |resourceName eq
-     *     {resourceName}.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param filter | Field | Supported operators
+     * |---------------------|------------------------
+     * 
+     * |requestSubmitTime | ge, le, eq, gt, lt
+     * |provisioningState eq {QuotaRequestState}
+     * |resourceName eq {resourceName}.
      * @param top Number of records to return.
      * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     *     previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
+     * starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -355,18 +324,18 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<QuotaRequestDetailsInner> listAsync(String scope, String filter, Integer top, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, filter, top, skiptoken), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, top, skiptoken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -377,25 +346,28 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
         final String filter = null;
         final Integer top = null;
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, filter, top, skiptoken), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, top, skiptoken),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param filter | Field | Supported operators |---------------------|------------------------
-     *     <p>|requestSubmitTime | ge, le, eq, gt, lt |provisioningState eq {QuotaRequestState} |resourceName eq
-     *     {resourceName}.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param filter | Field | Supported operators
+     * |---------------------|------------------------
+     * 
+     * |requestSubmitTime | ge, le, eq, gt, lt
+     * |provisioningState eq {QuotaRequestState}
+     * |resourceName eq {resourceName}.
      * @param top Number of records to return.
      * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     *     previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -403,21 +375,20 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QuotaRequestDetailsInner> listAsync(
-        String scope, String filter, Integer top, String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, filter, top, skiptoken, context),
+    private PagedFlux<QuotaRequestDetailsInner> listAsync(String scope, String filter, Integer top, String skiptoken,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, filter, top, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,18 +405,21 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
     /**
      * For the specified scope, get the current quota requests for a one year period ending at the time is made. Use the
      * **oData** filter to select quota requests.
-     *
+     * 
      * @param scope The target Azure resource URI. For example,
-     *     `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
-     *     This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after
-     *     `/quotas`, then it's the target Azure resource URI in the GET operation for the specific resource.
-     * @param filter | Field | Supported operators |---------------------|------------------------
-     *     <p>|requestSubmitTime | ge, le, eq, gt, lt |provisioningState eq {QuotaRequestState} |resourceName eq
-     *     {resourceName}.
+     * `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/qms-test/providers/Microsoft.Batch/batchAccounts/testAccount/`.
+     * This is the target Azure resource URI for the List GET operation. If a `{resourceName}` is added after `/quotas`,
+     * then it's the target Azure resource URI in the GET operation for the specific resource.
+     * @param filter | Field | Supported operators
+     * |---------------------|------------------------
+     * 
+     * |requestSubmitTime | ge, le, eq, gt, lt
+     * |provisioningState eq {QuotaRequestState}
+     * |resourceName eq {resourceName}.
      * @param top Number of records to return.
      * @param skiptoken The **Skiptoken** parameter is used only if a previous operation returned a partial result. If a
-     *     previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * previous response contains a **nextLink** element, its value includes a **skiptoken** parameter that specifies a
+     * starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -453,16 +427,17 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
      * @return quota request information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QuotaRequestDetailsInner> list(
-        String scope, String filter, Integer top, String skiptoken, Context context) {
+    public PagedIterable<QuotaRequestDetailsInner> list(String scope, String filter, Integer top, String skiptoken,
+        Context context) {
         return new PagedIterable<>(listAsync(scope, filter, top, skiptoken, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,31 +449,22 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<QuotaRequestDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<QuotaRequestDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -511,23 +477,13 @@ public final class QuotaRequestStatusClientImpl implements QuotaRequestStatusCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

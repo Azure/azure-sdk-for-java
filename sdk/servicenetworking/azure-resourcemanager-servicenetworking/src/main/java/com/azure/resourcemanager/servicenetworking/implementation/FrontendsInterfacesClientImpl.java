@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FrontendsInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FrontendsInterfacesClient.
+ */
 public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FrontendsInterfacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficControllerManagementClientImpl client;
 
     /**
      * Initializes an instance of FrontendsInterfacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FrontendsInterfacesClientImpl(TrafficControllerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FrontendsInterfacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FrontendsInterfacesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,118 +72,88 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
     @Host("{$host}")
     @ServiceInterface(name = "TrafficControllerMan")
     public interface FrontendsInterfacesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FrontendListResult>> listByTrafficController(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FrontendListResult>> listByTrafficController(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("trafficControllerName") String trafficControllerName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("trafficControllerName") String trafficControllerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FrontendInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FrontendInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("frontendName") String frontendName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("frontendName") String frontendName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("frontendName") String frontendName,
-            @BodyParam("application/json") FrontendInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("frontendName") String frontendName, @BodyParam("application/json") FrontendInner resource,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FrontendInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FrontendInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("frontendName") String frontendName,
-            @BodyParam("application/json") FrontendUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("frontendName") String frontendName, @BodyParam("application/json") FrontendUpdate properties,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/frontends/{frontendName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("trafficControllerName") String trafficControllerName,
-            @PathParam("frontendName") String frontendName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("frontendName") String frontendName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendListResult>> listByTrafficControllerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(
-        String resourceGroupName, String trafficControllerName) {
+    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(String resourceGroupName,
+        String trafficControllerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,31 +166,16 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByTrafficController(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            accept,
-                            context))
-            .<PagedResponse<FrontendInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByTrafficController(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context))
+            .<PagedResponse<FrontendInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -222,22 +183,18 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerSinglePageAsync(String resourceGroupName,
+        String trafficControllerName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,28 +207,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTrafficController(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTrafficController(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -280,16 +224,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the response of a Frontend list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FrontendInner> listByTrafficControllerAsync(
-        String resourceGroupName, String trafficControllerName) {
-        return new PagedFlux<>(
-            () -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName),
+    private PagedFlux<FrontendInner> listByTrafficControllerAsync(String resourceGroupName,
+        String trafficControllerName) {
+        return new PagedFlux<>(() -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName),
             nextLink -> listByTrafficControllerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -299,8 +242,8 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the response of a Frontend list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FrontendInner> listByTrafficControllerAsync(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    private PagedFlux<FrontendInner> listByTrafficControllerAsync(String resourceGroupName,
+        String trafficControllerName, Context context) {
         return new PagedFlux<>(
             () -> listByTrafficControllerSinglePageAsync(resourceGroupName, trafficControllerName, context),
             nextLink -> listByTrafficControllerNextSinglePageAsync(nextLink, context));
@@ -308,7 +251,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,14 +260,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FrontendInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName) {
+    public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName,
+        String trafficControllerName) {
         return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName));
     }
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -334,14 +277,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FrontendInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context) {
+    public PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context) {
         return new PagedIterable<>(listByTrafficControllerAsync(resourceGroupName, trafficControllerName, context));
     }
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -351,19 +294,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return a Frontend along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendInner>> getWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName) {
+    private Mono<Response<FrontendInner>> getWithResponseAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -377,25 +316,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             return Mono.error(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            frontendName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -406,19 +334,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return a Frontend along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendInner>> getWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
+    private Mono<Response<FrontendInner>> getWithResponseAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -433,21 +357,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                frontendName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, frontendName, accept, context);
     }
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -464,7 +380,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -475,14 +391,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return a Frontend along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FrontendInner> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
+    public Response<FrontendInner> getWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context) {
         return getWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, context).block();
     }
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -498,7 +414,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -506,23 +422,19 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -542,25 +454,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            frontendName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, resource,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -569,27 +471,19 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -609,22 +503,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                frontendName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, resource, accept,
+            context);
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -635,23 +521,17 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link PollerFlux} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, resource);
-        return this
-            .client
-            .<FrontendInner, FrontendInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FrontendInner.class,
-                FrontendInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, resource);
+        return this.client.<FrontendInner, FrontendInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FrontendInner.class, FrontendInner.class, this.client.getContext());
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -663,24 +543,18 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link PollerFlux} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context) {
+    private PollerFlux<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, resource, context);
-        return this
-            .client
-            .<FrontendInner, FrontendInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FrontendInner.class, FrontendInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            trafficControllerName, frontendName, resource, context);
+        return this.client.<FrontendInner, FrontendInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FrontendInner.class, FrontendInner.class, context);
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -691,16 +565,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
+    public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
             .getSyncPoller();
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -712,20 +585,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
+    public SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
             .getSyncPoller();
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -736,16 +604,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FrontendInner> createOrUpdateAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource)
-            .last()
+    private Mono<FrontendInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -757,20 +624,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FrontendInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context) {
+    private Mono<FrontendInner> createOrUpdateAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendInner resource, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -781,14 +643,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FrontendInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource) {
+    public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendInner resource) {
         return createOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource).block();
     }
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -800,18 +662,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FrontendInner createOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context) {
+    public FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, trafficControllerName, frontendName, resource, context).block();
     }
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -819,23 +677,19 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendInner>> updateWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendUpdate properties) {
+    private Mono<Response<FrontendInner>> updateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,25 +709,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            frontendName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, properties,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -882,27 +726,19 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return frontend Subresource of Traffic Controller along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendUpdate properties,
-        Context context) {
+    private Mono<Response<FrontendInner>> updateWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,22 +758,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                frontendName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, frontendName, properties, accept, context);
     }
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -948,15 +775,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FrontendInner> updateAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendUpdate properties) {
+    private Mono<FrontendInner> updateAsync(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -968,19 +795,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FrontendInner> updateWithResponse(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendUpdate properties,
-        Context context) {
+    public Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendUpdate properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, properties, context)
             .block();
     }
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -991,15 +814,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FrontendInner update(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendUpdate properties) {
+    public FrontendInner update(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendUpdate properties) {
         return updateWithResponse(resourceGroupName, trafficControllerName, frontendName, properties, Context.NONE)
             .getValue();
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1009,19 +832,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1035,25 +854,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             return Mono.error(new IllegalArgumentException("Parameter frontendName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            trafficControllerName,
-                            frontendName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, trafficControllerName, frontendName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1064,19 +872,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String trafficControllerName, String frontendName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1091,21 +895,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                trafficControllerName,
-                frontendName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, trafficControllerName, frontendName, accept, context);
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1115,19 +911,17 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, trafficControllerName, frontendName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, trafficControllerName, frontendName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1138,19 +932,18 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, trafficControllerName, frontendName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1160,14 +953,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String frontendName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String frontendName) {
         return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName).getSyncPoller();
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1178,14 +971,14 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context).getSyncPoller();
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1196,14 +989,13 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String trafficControllerName, String frontendName) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1214,16 +1006,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String trafficControllerName, String frontendName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, trafficControllerName, frontendName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1238,7 +1029,7 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -1254,14 +1045,15 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendInner>> listByTrafficControllerNextSinglePageAsync(String nextLink) {
@@ -1269,63 +1061,45 @@ public final class FrontendsInterfacesClientImpl implements FrontendsInterfacesC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FrontendInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FrontendInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FrontendInner>> listByTrafficControllerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTrafficControllerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

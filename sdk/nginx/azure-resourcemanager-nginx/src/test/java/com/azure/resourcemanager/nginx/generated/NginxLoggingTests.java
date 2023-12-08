@@ -8,27 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
 import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxLoggingTests {
-    @Test
-    public void testDeserialize() {
-        NginxLogging model =
-            BinaryData
-                .fromString("{\"storageAccount\":{\"accountName\":\"khbzhfepgzg\",\"containerName\":\"xzlocxscp\"}}")
-                .toObject(NginxLogging.class);
-        Assertions.assertEquals("khbzhfepgzg", model.storageAccount().accountName());
-        Assertions.assertEquals("xzlocxscp", model.storageAccount().containerName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxLogging model = BinaryData
+            .fromString("{\"storageAccount\":{\"accountName\":\"hfuiuaodsfc\",\"containerName\":\"vxodpu\"}}")
+            .toObject(NginxLogging.class);
+        Assertions.assertEquals("hfuiuaodsfc", model.storageAccount().accountName());
+        Assertions.assertEquals("vxodpu", model.storageAccount().containerName());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxLogging model =
-            new NginxLogging()
-                .withStorageAccount(
-                    new NginxStorageAccount().withAccountName("khbzhfepgzg").withContainerName("xzlocxscp"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxLogging model = new NginxLogging()
+            .withStorageAccount(new NginxStorageAccount().withAccountName("hfuiuaodsfc").withContainerName("vxodpu"));
         model = BinaryData.fromObject(model).toObject(NginxLogging.class);
-        Assertions.assertEquals("khbzhfepgzg", model.storageAccount().accountName());
-        Assertions.assertEquals("xzlocxscp", model.storageAccount().containerName());
+        Assertions.assertEquals("hfuiuaodsfc", model.storageAccount().accountName());
+        Assertions.assertEquals("vxodpu", model.storageAccount().containerName());
     }
 }

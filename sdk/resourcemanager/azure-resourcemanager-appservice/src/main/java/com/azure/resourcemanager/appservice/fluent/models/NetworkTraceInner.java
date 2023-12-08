@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network trace. */
+/**
+ * Network trace.
+ */
 @Fluent
 public final class NetworkTraceInner {
     /*
@@ -28,13 +30,15 @@ public final class NetworkTraceInner {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of NetworkTraceInner class. */
+    /**
+     * Creates an instance of NetworkTraceInner class.
+     */
     public NetworkTraceInner() {
     }
 
     /**
      * Get the path property: Local file path for the captured network trace file.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -43,7 +47,7 @@ public final class NetworkTraceInner {
 
     /**
      * Set the path property: Local file path for the captured network trace file.
-     *
+     * 
      * @param path the path value to set.
      * @return the NetworkTraceInner object itself.
      */
@@ -55,7 +59,7 @@ public final class NetworkTraceInner {
     /**
      * Get the status property: Current status of the network trace operation, same as Operation.Status
      * (InProgress/Succeeded/Failed).
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -65,7 +69,7 @@ public final class NetworkTraceInner {
     /**
      * Set the status property: Current status of the network trace operation, same as Operation.Status
      * (InProgress/Succeeded/Failed).
-     *
+     * 
      * @param status the status value to set.
      * @return the NetworkTraceInner object itself.
      */
@@ -76,7 +80,7 @@ public final class NetworkTraceInner {
 
     /**
      * Get the message property: Detailed message of a network trace operation, e.g. error message in case of failure.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -85,7 +89,7 @@ public final class NetworkTraceInner {
 
     /**
      * Set the message property: Detailed message of a network trace operation, e.g. error message in case of failure.
-     *
+     * 
      * @param message the message value to set.
      * @return the NetworkTraceInner object itself.
      */
@@ -96,7 +100,7 @@ public final class NetworkTraceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

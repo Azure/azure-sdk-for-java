@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MongoDbSource;
 public final class MongoDbSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MongoDbSource\",\"query\":\"datav\",\"additionalColumns\":\"dataak\",\"sourceRetryCount\":\"datapaexllt\",\"sourceRetryWait\":\"datakkaei\",\"maxConcurrentConnections\":\"datahr\",\"disableMetricsCollection\":\"datasgvsrtqlta\",\"\":{\"ubx\":\"dataraleglpynsblnwiw\",\"lhbrwaltvkyl\":\"datayr\",\"baeghakssc\":\"datajopqtegkrjo\",\"lxt\":\"datasmrnneklfibnysf\"}}")
-                .toObject(MongoDbSource.class);
+        MongoDbSource model = BinaryData.fromString(
+            "{\"type\":\"MongoDbSource\",\"query\":\"dataatjbldgi\",\"additionalColumns\":\"datak\",\"sourceRetryCount\":\"datagejakuzezwnqhc\",\"sourceRetryWait\":\"datajgsyszdtgwmqcutk\",\"maxConcurrentConnections\":\"datarourtmccdejtoypl\",\"disableMetricsCollection\":\"datavjutckfhmdcvlb\",\"\":{\"mzcxlgmuhxw\":\"datazvujp\",\"hhvvmvsbgyqdhaz\":\"datakbnhmdtjczpfoisp\",\"sovo\":\"datacugg\"}}")
+            .toObject(MongoDbSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbSource model =
-            new MongoDbSource()
-                .withSourceRetryCount("datapaexllt")
-                .withSourceRetryWait("datakkaei")
-                .withMaxConcurrentConnections("datahr")
-                .withDisableMetricsCollection("datasgvsrtqlta")
-                .withQuery("datav")
-                .withAdditionalColumns("dataak");
+        MongoDbSource model
+            = new MongoDbSource().withSourceRetryCount("datagejakuzezwnqhc").withSourceRetryWait("datajgsyszdtgwmqcutk")
+                .withMaxConcurrentConnections("datarourtmccdejtoypl").withDisableMetricsCollection("datavjutckfhmdcvlb")
+                .withQuery("dataatjbldgi").withAdditionalColumns("datak");
         model = BinaryData.fromObject(model).toObject(MongoDbSource.class);
     }
 }

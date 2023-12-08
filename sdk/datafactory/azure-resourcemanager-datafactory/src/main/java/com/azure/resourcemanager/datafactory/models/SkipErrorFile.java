@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Skip error file. */
+/**
+ * Skip error file.
+ */
 @Fluent
 public final class SkipErrorFile {
     /*
@@ -24,14 +26,16 @@ public final class SkipErrorFile {
     @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;
 
-    /** Creates an instance of SkipErrorFile class. */
+    /**
+     * Creates an instance of SkipErrorFile class.
+     */
     public SkipErrorFile() {
     }
 
     /**
-     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
-     * (or Expression with resultType boolean).
-     *
+     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
      * @return the fileMissing value.
      */
     public Object fileMissing() {
@@ -39,9 +43,9 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
-     * (or Expression with resultType boolean).
-     *
+     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
+     * boolean (or Expression with resultType boolean).
+     * 
      * @param fileMissing the fileMissing value to set.
      * @return the SkipErrorFile object itself.
      */
@@ -51,9 +55,9 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
-     * Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
+     * false. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the dataInconsistency value.
      */
     public Object dataInconsistency() {
@@ -61,9 +65,9 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
-     * Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
+     * false. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param dataInconsistency the dataInconsistency value to set.
      * @return the SkipErrorFile object itself.
      */
@@ -74,7 +78,7 @@ public final class SkipErrorFile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

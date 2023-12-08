@@ -7,18 +7,20 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.ExposureControlBatchResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ExposureControlBatchResponse. */
+/**
+ * An immutable client-side representation of ExposureControlBatchResponse.
+ */
 public interface ExposureControlBatchResponse {
     /**
      * Gets the exposureControlResponses property: List of exposure control feature values.
-     *
+     * 
      * @return the exposureControlResponses value.
      */
     List<ExposureControlResponse> exposureControlResponses();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.ExposureControlBatchResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExposureControlBatchResponseInner innerModel();

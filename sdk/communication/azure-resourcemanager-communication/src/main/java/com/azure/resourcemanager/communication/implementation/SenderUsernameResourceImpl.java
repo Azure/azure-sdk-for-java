@@ -68,8 +68,8 @@ public final class SenderUsernameResourceImpl
 
     private String senderUsername;
 
-    public SenderUsernameResourceImpl withExistingDomain(
-        String resourceGroupName, String emailServiceName, String domainName) {
+    public SenderUsernameResourceImpl withExistingDomain(String resourceGroupName, String emailServiceName,
+        String domainName) {
         this.resourceGroupName = resourceGroupName;
         this.emailServiceName = emailServiceName;
         this.domainName = domainName;
@@ -77,29 +77,21 @@ public final class SenderUsernameResourceImpl
     }
 
     public SenderUsernameResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, emailServiceName, domainName, senderUsername, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getSenderUsernames().createOrUpdateWithResponse(resourceGroupName,
+                emailServiceName, domainName, senderUsername, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public SenderUsernameResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, emailServiceName, domainName, senderUsername, this.innerModel(), context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getSenderUsernames().createOrUpdateWithResponse(resourceGroupName,
+                emailServiceName, domainName, senderUsername, this.innerModel(), context).getValue();
         return this;
     }
 
-    SenderUsernameResourceImpl(
-        String name, com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
+    SenderUsernameResourceImpl(String name,
+        com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = new SenderUsernameResourceInner();
         this.serviceManager = serviceManager;
         this.senderUsername = name;
@@ -110,29 +102,20 @@ public final class SenderUsernameResourceImpl
     }
 
     public SenderUsernameResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, emailServiceName, domainName, senderUsername, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getSenderUsernames().createOrUpdateWithResponse(resourceGroupName,
+                emailServiceName, domainName, senderUsername, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public SenderUsernameResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, emailServiceName, domainName, senderUsername, this.innerModel(), context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getSenderUsernames().createOrUpdateWithResponse(resourceGroupName,
+                emailServiceName, domainName, senderUsername, this.innerModel(), context).getValue();
         return this;
     }
 
-    SenderUsernameResourceImpl(
-        SenderUsernameResourceInner innerObject,
+    SenderUsernameResourceImpl(SenderUsernameResourceInner innerObject,
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -143,22 +126,14 @@ public final class SenderUsernameResourceImpl
     }
 
     public SenderUsernameResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSenderUsernames()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, Context.NONE).getValue();
         return this;
     }
 
     public SenderUsernameResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSenderUsernames()
-                .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSenderUsernames()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, senderUsername, context).getValue();
         return this;
     }
 

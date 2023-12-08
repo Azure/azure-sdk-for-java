@@ -10,21 +10,16 @@ import com.azure.resourcemanager.datafactory.models.AmazonRdsForOraclePartitionS
 public final class AmazonRdsForOraclePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmazonRdsForOraclePartitionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"partitionNames\":\"datacyhfubzixqxxgra\",\"partitionColumnName\":\"dataftzn\",\"partitionUpperBound\":\"datarfhj\",\"partitionLowerBound\":\"dataiutbrnr\"}")
-                .toObject(AmazonRdsForOraclePartitionSettings.class);
+        AmazonRdsForOraclePartitionSettings model = BinaryData.fromString(
+            "{\"partitionNames\":\"dataegeso\",\"partitionColumnName\":\"datapudaluggdh\",\"partitionUpperBound\":\"datatgekecu\",\"partitionLowerBound\":\"datav\"}")
+            .toObject(AmazonRdsForOraclePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForOraclePartitionSettings model =
-            new AmazonRdsForOraclePartitionSettings()
-                .withPartitionNames("datacyhfubzixqxxgra")
-                .withPartitionColumnName("dataftzn")
-                .withPartitionUpperBound("datarfhj")
-                .withPartitionLowerBound("dataiutbrnr");
+        AmazonRdsForOraclePartitionSettings model = new AmazonRdsForOraclePartitionSettings()
+            .withPartitionNames("dataegeso").withPartitionColumnName("datapudaluggdh")
+            .withPartitionUpperBound("datatgekecu").withPartitionLowerBound("datav");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForOraclePartitionSettings.class);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class representing data source used by the detectors. */
+/**
+ * Class representing data source used by the detectors.
+ */
 @Fluent
 public final class DataSource {
     /*
@@ -23,13 +25,15 @@ public final class DataSource {
     @JsonProperty(value = "dataSourceUri")
     private List<NameValuePair> dataSourceUri;
 
-    /** Creates an instance of DataSource class. */
+    /**
+     * Creates an instance of DataSource class.
+     */
     public DataSource() {
     }
 
     /**
      * Get the instructions property: Instructions if any for the data source.
-     *
+     * 
      * @return the instructions value.
      */
     public List<String> instructions() {
@@ -38,7 +42,7 @@ public final class DataSource {
 
     /**
      * Set the instructions property: Instructions if any for the data source.
-     *
+     * 
      * @param instructions the instructions value to set.
      * @return the DataSource object itself.
      */
@@ -49,7 +53,7 @@ public final class DataSource {
 
     /**
      * Get the dataSourceUri property: Datasource Uri Links.
-     *
+     * 
      * @return the dataSourceUri value.
      */
     public List<NameValuePair> dataSourceUri() {
@@ -58,7 +62,7 @@ public final class DataSource {
 
     /**
      * Set the dataSourceUri property: Datasource Uri Links.
-     *
+     * 
      * @param dataSourceUri the dataSourceUri value to set.
      * @return the DataSource object itself.
      */
@@ -69,7 +73,7 @@ public final class DataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,20 +12,15 @@ import java.util.Map;
 public final class DatasetLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetLocation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DatasetLocation\",\"folderPath\":\"datasx\",\"fileName\":\"dataofuworimmovzwde\",\"\":{\"elgwewi\":\"datamvhzfovanyrvaprt\",\"j\":\"datafyaqandmymnqo\"}}")
-                .toObject(DatasetLocation.class);
+        DatasetLocation model = BinaryData.fromString(
+            "{\"type\":\"DatasetLocation\",\"folderPath\":\"datasx\",\"fileName\":\"dataofuworimmovzwde\",\"\":{\"elgwewi\":\"datamvhzfovanyrvaprt\",\"j\":\"datafyaqandmymnqo\"}}")
+            .toObject(DatasetLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetLocation model =
-            new DatasetLocation()
-                .withFolderPath("datasx")
-                .withFileName("dataofuworimmovzwde")
-                .withAdditionalProperties(mapOf("type", "DatasetLocation"));
+        DatasetLocation model = new DatasetLocation().withFolderPath("datasx").withFileName("dataofuworimmovzwde")
+            .withAdditionalProperties(mapOf("type", "DatasetLocation"));
         model = BinaryData.fromObject(model).toObject(DatasetLocation.class);
     }
 
