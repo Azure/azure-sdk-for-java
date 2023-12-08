@@ -29,8 +29,8 @@ import java.util.function.Supplier;
  * Either the credential through {@link #credential(WebPubSubClientCredential)},
  * or the client access URL through {@link #clientAccessUrl(String)}.
  */
-@ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
-public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
+@ServiceClientBuilder(serviceClients = {WebPubSubClient.class})
+public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubClientBuilder.class);
 

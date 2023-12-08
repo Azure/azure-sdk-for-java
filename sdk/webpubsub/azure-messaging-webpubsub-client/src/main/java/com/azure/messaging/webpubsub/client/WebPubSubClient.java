@@ -57,7 +57,7 @@ import java.util.function.Consumer;
  * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient -->
  */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
-public class WebPubSubClient implements Closeable {
+public final class WebPubSubClient implements Closeable {
 
     private final WebPubSubAsyncClient asyncClient;
 

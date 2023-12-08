@@ -3,7 +3,6 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
@@ -66,8 +65,7 @@ import java.util.stream.Collectors;
 /**
  * The WebPubSubAsync client.
  */
-@ServiceClient(builder = WebPubSubClientBuilder.class)
-class WebPubSubAsyncClient implements Closeable {
+final class WebPubSubAsyncClient implements Closeable {
 
     // logging
     private ClientLogger logger;
