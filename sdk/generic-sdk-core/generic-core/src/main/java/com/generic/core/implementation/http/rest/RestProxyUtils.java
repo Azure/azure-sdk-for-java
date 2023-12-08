@@ -72,11 +72,11 @@ public final class RestProxyUtils {
         }
     }
 
-    private static String bodyTooLarge(long length, long expectedLength) {
+    static String bodyTooLarge(long length, long expectedLength) {
         return "Request body emitted " + length + " bytes, more than the expected " + expectedLength + " bytes.";
     }
 
-    private static String bodyTooSmall(long length, long expectedLength) {
+    static String bodyTooSmall(long length, long expectedLength) {
         return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
     }
 

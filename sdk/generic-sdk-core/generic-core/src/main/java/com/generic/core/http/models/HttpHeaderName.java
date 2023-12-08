@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Represents HTTP header names for multiple versions of HTTP.
  */
 @SuppressWarnings("unused")
-public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
+public final class HttpHeaderName implements ExpandableStringEnum<HttpHeaderName> {
     private static final Map<String, HttpHeaderName> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
     private final String caseInsensitive;
@@ -60,7 +60,7 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
             return headerName;
         }
 
-        return VALUES.putIfAbsent(name, new HttpHeaderName(name));
+        return VALUES.computeIfAbsent(name, HttpHeaderName::new);
     }
 
     /**
