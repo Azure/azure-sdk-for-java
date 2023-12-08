@@ -7,6 +7,12 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.53.1 (2023-12-06)
+
+#### Bugs Fixed
 * Fixed high number of PKRangeFeed calls when using BulkExecution without SparkConnector - See [PR 37920](https://github.com/Azure/azure-sdk-for-java/pull/37920) 
 
 #### Other Changes
