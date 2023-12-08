@@ -6,8 +6,10 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
@@ -49,21 +51,21 @@ public class FunctionCallSample {
                 .setParameters(getFunctionDefinition())
         );
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What should I wear in Boston depending on the weather?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestUserMessage("What should I wear in Boston depending on the weather?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages)
             .setFunctionCall(FunctionCallConfig.AUTO)
             .setFunctions(functions);
 
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        List<ChatMessage> chatMessages2 = handleFunctionCallResponse(chatCompletions.getChoices(), chatMessages);
+        List<ChatRequestMessage> chatMessages2 = handleFunctionCallResponse(chatCompletions.getChoices(), chatMessages);
 
         // Take your function_call result as the input prompt to make another request to service.
         ChatCompletionsOptions chatCompletionOptions2 = new ChatCompletionsOptions(chatMessages2);
         ChatCompletions chatCompletions2 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions2);
         List<ChatChoice> choices = chatCompletions2.getChoices();
-        ChatMessage message = choices.get(0).getMessage();
+        ChatResponseMessage message = choices.get(0).getMessage();
         System.out.printf("Message: %s.%n", message.getContent());
     }
 
@@ -85,9 +87,9 @@ public class FunctionCallSample {
         return functionDefinition;
     }
 
-    private static List<ChatMessage> handleFunctionCallResponse(List<ChatChoice> choices, List<ChatMessage> chatMessages) {
+    private static List<ChatRequestMessage> handleFunctionCallResponse(List<ChatChoice> choices, List<ChatRequestMessage> chatMessages) {
         for (ChatChoice choice : choices) {
-            ChatMessage choiceMessage = choice.getMessage();
+            ChatResponseMessage choiceMessage = choice.getMessage();
             FunctionCall functionCall = choiceMessage.getFunctionCall();
             // We are looking for finish_reason = "function call".
             if (CompletionsFinishReason.FUNCTION_CALL.equals(choice.getFinishReason())) {
@@ -98,10 +100,12 @@ public class FunctionCallSample {
                 WeatherLocation weatherLocation = BinaryData.fromString(functionCall.getArguments()).toObject(WeatherLocation.class);
 
                 int currentWeather = getCurrentWeather(weatherLocation);
-                chatMessages.add(new ChatMessage(ChatRole.USER, String.format("The weather in %s is %d degrees %s.",
+                chatMessages.add(new ChatRequestUserMessage(String.format("The weather in %s is %d degrees %s.",
                     weatherLocation.getLocation(), currentWeather, weatherLocation.getUnit())));
             } else {
-                chatMessages.add(choiceMessage);
+                ChatRequestAssistantMessage messageHistory = new ChatRequestAssistantMessage(choiceMessage.getContent());
+                messageHistory.setFunctionCall(choiceMessage.getFunctionCall());
+                chatMessages.add(messageHistory);
             }
         }
         return chatMessages;

@@ -30,7 +30,7 @@ public final class FunctionDefinition {
     private String description;
 
     /*
-     * The parameters the functions accepts, described as a JSON Schema object.
+     * The parameters the function accepts, described as a JSON Schema object.
      */
     @Generated
     @JsonProperty(value = "parameters")
@@ -84,7 +84,7 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the parameters property: The parameters the functions accepts, described as a JSON Schema object.
+     * Get the parameters property: The parameters the function accepts, described as a JSON Schema object.
      *
      * @return the parameters value.
      */
@@ -94,7 +94,7 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Set the parameters property: The parameters the functions accepts, described as a JSON Schema object.
+     * Set the parameters property: The parameters the function accepts, described as a JSON Schema object.
      *
      * @param parameters the parameters value to set.
      * @return the FunctionDefinition object itself.
