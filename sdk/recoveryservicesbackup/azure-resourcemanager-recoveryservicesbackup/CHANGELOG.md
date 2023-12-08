@@ -1,14 +1,149 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.3.0 (2023-12-08)
 
-### Features Added
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ValidateOperations` was modified
 
-### Other Changes
+* `trigger(java.lang.String,java.lang.String,models.ValidateOperationRequest)` was removed
+* `trigger(java.lang.String,java.lang.String,models.ValidateOperationRequest,com.azure.core.util.Context)` was removed
+
+#### `models.OperationOperations` was modified
+
+* `validateWithResponse(java.lang.String,java.lang.String,models.ValidateOperationRequest,com.azure.core.util.Context)` was removed
+* `validate(java.lang.String,java.lang.String,models.ValidateOperationRequest)` was removed
+
+### Features Added
+
+* `models.TieringCostOperationStatus` was added
+
+* `models.FetchTieringCostInfoForRehydrationRequest` was added
+
+* `models.UserAssignedIdentityProperties` was added
+
+* `models.TieringCostInfo` was added
+
+* `models.GetTieringCostOperationResults` was added
+
+* `models.FetchTieringCostSavingsInfoForVaultRequest` was added
+
+* `models.UserAssignedManagedIdentityDetails` was added
+
+* `models.VaultRetentionPolicy` was added
+
+* `models.FetchTieringCosts` was added
+
+* `models.TieringCostRehydrationInfo` was added
+
+* `models.ValidateOperationRequestResource` was added
+
+* `models.FetchTieringCostInfoRequest` was added
+
+* `models.SnapshotRestoreParameters` was added
+
+* `models.SnapshotBackupAdditionalDetails` was added
+
+* `models.FetchTieringCostSavingsInfoForProtectedItemRequest` was added
+
+* `models.TieringCostSavingInfo` was added
+
+* `models.FetchTieringCostSavingsInfoForPolicyRequest` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest` was modified
+
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+
+#### `models.AzureWorkloadSqlRestoreWithRehydrateRequest` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRestoreRequest` was modified
+
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRestoreRequest` was modified
+
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.SubProtectionPolicy` was modified
+
+* `withSnapshotBackupAdditionalDetails(models.SnapshotBackupAdditionalDetails)` was added
+* `snapshotBackupAdditionalDetails()` was added
+
+#### `models.AzureWorkloadSapHanaRestoreWithRehydrateRequest` was modified
+
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+
+#### `models.ProtectedItem` was modified
+
+* `vaultId()` was added
+
+#### `models.AzureWorkloadRestoreRequest` was modified
+
+* `targetResourceGroupName()` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `userAssignedManagedIdentityDetails()` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+* `snapshotRestoreParameters()` was added
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+
+#### `models.ValidateOperations` was modified
+
+* `trigger(java.lang.String,java.lang.String,models.ValidateOperationRequestResource,com.azure.core.util.Context)` was added
+* `trigger(java.lang.String,java.lang.String,models.ValidateOperationRequestResource)` was added
+
+#### `RecoveryServicesBackupManager` was modified
+
+* `tieringCostOperationStatus()` was added
+* `getTieringCostOperationResults()` was added
+* `fetchTieringCosts()` was added
+
+#### `models.AzureFileShareProtectionPolicy` was modified
+
+* `withVaultRetentionPolicy(models.VaultRetentionPolicy)` was added
+* `vaultRetentionPolicy()` was added
+
+#### `models.AzureWorkloadSapHanaRestoreRequest` was modified
+
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest` was modified
+
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+
+#### `models.AzureWorkloadPointInTimeRestoreRequest` was modified
+
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+
+#### `models.AzureWorkloadSqlRestoreRequest` was modified
+
+* `withUserAssignedManagedIdentityDetails(models.UserAssignedManagedIdentityDetails)` was added
+* `withTargetResourceGroupName(java.lang.String)` was added
+* `withSnapshotRestoreParameters(models.SnapshotRestoreParameters)` was added
+
+#### `models.OperationOperations` was modified
+
+* `validateWithResponse(java.lang.String,java.lang.String,models.ValidateOperationRequestResource,com.azure.core.util.Context)` was added
+* `validate(java.lang.String,java.lang.String,models.ValidateOperationRequestResource)` was added
 
 ## 1.2.0 (2023-10-12)
 

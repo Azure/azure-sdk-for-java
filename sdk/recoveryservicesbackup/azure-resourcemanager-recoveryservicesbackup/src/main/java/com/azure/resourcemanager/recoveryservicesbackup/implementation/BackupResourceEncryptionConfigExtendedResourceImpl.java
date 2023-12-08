@@ -16,8 +16,7 @@ public final class BackupResourceEncryptionConfigExtendedResourceImpl
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupResourceEncryptionConfigExtendedResourceImpl(
-        BackupResourceEncryptionConfigExtendedResourceInner innerObject,
+    BackupResourceEncryptionConfigExtendedResourceImpl(BackupResourceEncryptionConfigExtendedResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

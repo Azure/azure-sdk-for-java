@@ -80,8 +80,8 @@ public final class ProtectionContainerResourceImpl
 
     private String containerName;
 
-    public ProtectionContainerResourceImpl withExistingBackupFabric(
-        String vaultName, String resourceGroupName, String fabricName) {
+    public ProtectionContainerResourceImpl withExistingBackupFabric(String vaultName, String resourceGroupName,
+        String fabricName) {
         this.vaultName = vaultName;
         this.resourceGroupName = resourceGroupName;
         this.fabricName = fabricName;
@@ -89,25 +89,19 @@ public final class ProtectionContainerResourceImpl
     }
 
     public ProtectionContainerResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers().register(vaultName,
+            resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProtectionContainerResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers().register(vaultName,
+            resourceGroupName, fabricName, containerName, this.innerModel(), context);
         return this;
     }
 
-    ProtectionContainerResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    ProtectionContainerResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new ProtectionContainerResourceInner();
         this.serviceManager = serviceManager;
         this.containerName = name;
@@ -118,25 +112,18 @@ public final class ProtectionContainerResourceImpl
     }
 
     public ProtectionContainerResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers().register(vaultName,
+            resourceGroupName, fabricName, containerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProtectionContainerResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .register(vaultName, resourceGroupName, fabricName, containerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers().register(vaultName,
+            resourceGroupName, fabricName, containerName, this.innerModel(), context);
         return this;
     }
 
-    ProtectionContainerResourceImpl(
-        ProtectionContainerResourceInner innerObject,
+    ProtectionContainerResourceImpl(ProtectionContainerResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -147,29 +134,20 @@ public final class ProtectionContainerResourceImpl
     }
 
     public ProtectionContainerResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, Context.NONE).getValue();
         return this;
     }
 
     public ProtectionContainerResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionContainers()
-                .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionContainers()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, context).getValue();
         return this;
     }
 
     public Response<Void> inquireWithResponse(String filter, Context context) {
-        return serviceManager
-            .protectionContainers()
-            .inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, context);
+        return serviceManager.protectionContainers().inquireWithResponse(vaultName, resourceGroupName, fabricName,
+            containerName, filter, context);
     }
 
     public void inquire() {

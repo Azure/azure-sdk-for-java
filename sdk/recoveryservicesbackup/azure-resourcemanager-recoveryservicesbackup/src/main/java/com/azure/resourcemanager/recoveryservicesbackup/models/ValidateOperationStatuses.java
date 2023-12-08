@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ValidateOperationStatuses. */
+/**
+ * Resource collection API of ValidateOperationStatuses.
+ */
 public interface ValidateOperationStatuses {
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
@@ -23,14 +25,14 @@ public interface ValidateOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String operationId,
+        Context context);
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.

@@ -19,24 +19,23 @@ public final class ProtectableContainersImpl implements ProtectableContainers {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectableContainersImpl(
-        ProtectableContainersClient innerClient,
+    public ProtectableContainersImpl(ProtectableContainersClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ProtectableContainerResource> list(
-        String vaultName, String resourceGroupName, String fabricName) {
-        PagedIterable<ProtectableContainerResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, fabricName);
+    public PagedIterable<ProtectableContainerResource> list(String vaultName, String resourceGroupName,
+        String fabricName) {
+        PagedIterable<ProtectableContainerResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, fabricName);
         return Utils.mapPage(inner, inner1 -> new ProtectableContainerResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectableContainerResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String filter, Context context) {
-        PagedIterable<ProtectableContainerResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, fabricName, filter, context);
+    public PagedIterable<ProtectableContainerResource> list(String vaultName, String resourceGroupName,
+        String fabricName, String filter, Context context) {
+        PagedIterable<ProtectableContainerResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, fabricName, filter, context);
         return Utils.mapPage(inner, inner1 -> new ProtectableContainerResourceImpl(inner1, this.manager()));
     }
 

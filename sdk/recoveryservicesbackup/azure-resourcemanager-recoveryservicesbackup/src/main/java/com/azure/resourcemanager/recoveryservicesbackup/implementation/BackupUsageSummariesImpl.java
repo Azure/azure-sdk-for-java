@@ -19,8 +19,7 @@ public final class BackupUsageSummariesImpl implements BackupUsageSummaries {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupUsageSummariesImpl(
-        BackupUsageSummariesClient innerClient,
+    public BackupUsageSummariesImpl(BackupUsageSummariesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,10 @@ public final class BackupUsageSummariesImpl implements BackupUsageSummaries {
         return Utils.mapPage(inner, inner1 -> new BackupManagementUsageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BackupManagementUsage> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
-        PagedIterable<BackupManagementUsageInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
+    public PagedIterable<BackupManagementUsage> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context) {
+        PagedIterable<BackupManagementUsageInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new BackupManagementUsageImpl(inner1, this.manager()));
     }
 

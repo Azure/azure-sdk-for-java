@@ -19,8 +19,7 @@ public final class DeletedProtectionContainersImpl implements DeletedProtectionC
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public DeletedProtectionContainersImpl(
-        DeletedProtectionContainersClient innerClient,
+    public DeletedProtectionContainersImpl(DeletedProtectionContainersClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,10 @@ public final class DeletedProtectionContainersImpl implements DeletedProtectionC
         return Utils.mapPage(inner, inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectionContainerResource> list(
-        String resourceGroupName, String vaultName, String filter, Context context) {
-        PagedIterable<ProtectionContainerResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, filter, context);
+    public PagedIterable<ProtectionContainerResource> list(String resourceGroupName, String vaultName, String filter,
+        Context context) {
+        PagedIterable<ProtectionContainerResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, filter, context);
         return Utils.mapPage(inner, inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
     }
 

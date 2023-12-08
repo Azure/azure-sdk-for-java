@@ -19,8 +19,7 @@ public final class BackupProtectedItemsImpl implements BackupProtectedItems {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupProtectedItemsImpl(
-        BackupProtectedItemsClient innerClient,
+    public BackupProtectedItemsImpl(BackupProtectedItemsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,10 @@ public final class BackupProtectedItemsImpl implements BackupProtectedItems {
         return Utils.mapPage(inner, inner1 -> new ProtectedItemResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectedItemResource> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
-        PagedIterable<ProtectedItemResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
+    public PagedIterable<ProtectedItemResource> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context) {
+        PagedIterable<ProtectedItemResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new ProtectedItemResourceImpl(inner1, this.manager()));
     }
 

@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreFileSpecsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreFileSpecs model =
-            BinaryData
-                .fromString(
-                    "{\"path\":\"dgzxulucvpamrsr\",\"fileSpecType\":\"zvxurisjnhny\",\"targetFolderPath\":\"ifqjz\"}")
-                .toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("dgzxulucvpamrsr", model.path());
-        Assertions.assertEquals("zvxurisjnhny", model.fileSpecType());
-        Assertions.assertEquals("ifqjz", model.targetFolderPath());
+        RestoreFileSpecs model = BinaryData
+            .fromString(
+                "{\"path\":\"opqgikyzirtxdyux\",\"fileSpecType\":\"jntpsewgioilqu\",\"targetFolderPath\":\"ydxtqm\"}")
+            .toObject(RestoreFileSpecs.class);
+        Assertions.assertEquals("opqgikyzirtxdyux", model.path());
+        Assertions.assertEquals("jntpsewgioilqu", model.fileSpecType());
+        Assertions.assertEquals("ydxtqm", model.targetFolderPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreFileSpecs model =
-            new RestoreFileSpecs()
-                .withPath("dgzxulucvpamrsr")
-                .withFileSpecType("zvxurisjnhny")
-                .withTargetFolderPath("ifqjz");
+        RestoreFileSpecs model = new RestoreFileSpecs().withPath("opqgikyzirtxdyux").withFileSpecType("jntpsewgioilqu")
+            .withTargetFolderPath("ydxtqm");
         model = BinaryData.fromObject(model).toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("dgzxulucvpamrsr", model.path());
-        Assertions.assertEquals("zvxurisjnhny", model.fileSpecType());
-        Assertions.assertEquals("ifqjz", model.targetFolderPath());
+        Assertions.assertEquals("opqgikyzirtxdyux", model.path());
+        Assertions.assertEquals("jntpsewgioilqu", model.fileSpecType());
+        Assertions.assertEquals("ydxtqm", model.targetFolderPath());
     }
 }

@@ -19,8 +19,7 @@ public final class BackupProtectionIntentsImpl implements BackupProtectionIntent
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupProtectionIntentsImpl(
-        BackupProtectionIntentsClient innerClient,
+    public BackupProtectionIntentsImpl(BackupProtectionIntentsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,10 @@ public final class BackupProtectionIntentsImpl implements BackupProtectionIntent
         return Utils.mapPage(inner, inner1 -> new ProtectionIntentResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectionIntentResource> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
-        PagedIterable<ProtectionIntentResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
+    public PagedIterable<ProtectionIntentResource> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context) {
+        PagedIterable<ProtectionIntentResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new ProtectionIntentResourceImpl(inner1, this.manager()));
     }
 
