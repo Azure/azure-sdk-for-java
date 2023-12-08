@@ -48,7 +48,7 @@ public class FunctionCallSample {
         List<FunctionDefinition> functions = Arrays.asList(
             new FunctionDefinition("getCurrentWeather")
                 .setDescription("Get the current weather")
-                .setParameters(getFunctionDefinition())
+                .setParameters(BinaryData.fromObject(getFunctionDefinition()))
         );
 
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
