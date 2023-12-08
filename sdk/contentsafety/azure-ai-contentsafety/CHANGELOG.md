@@ -9,23 +9,23 @@
 Contract change for AnalyzeText, AnalyzeImage, Blocklist management related methods
 #### AnalyzeText
 - AnalyzeTextOptions
-  - Renamed breakByBlocklists to haltOnBlocklistHit
-  - Added AnalyzeTextOutputType
+  - Renamed `breakByBlocklists` to `haltOnBlocklistHit`
+  - Added `AnalyzeTextOutputType`
 - AnalyzeTextResult
-  - Renamed blocklistsMatchResults to blocklistsMatch
-  - Replaced TextAnalyzeSeverityResult by TextCategoriesAnalysis
+  - Renamed `blocklistsMatchResults` to `blocklistsMatch`
+  - Replaced `TextAnalyzeSeverityResult` by `TextCategoriesAnalysis`
 #### AnalyzeImage
 - AnalyzeImageOptions
-    - Replaced ImageData by ContentSafetyImageData
-    - Added AnalyzeImageOutputType
+    - Replaced `ImageData` by `ContentSafetyImageData`
+    - Added `AnalyzeImageOutputType`
 - AnalyzeImageResult
-    - Replaced ImageAnalyzeSeverityResult by ImageCategoriesAnalysis
+    - Replaced `ImageAnalyzeSeverityResult` by `ImageCategoriesAnalysis`
 #### Blocklist management
-- Added BlocklistAsyncClient
-- Renamed AddBlockItemsOptions to AddOrUpdateTextBlocklistItemsOptions
-- Renamed AddBlockItemsResult to AddOrUpdateTextBlocklistItemsResult
-- Renamed RemoveBlockItemsOptions to RemoveTextBlocklistItemsOptions
-- Renamed TextBlockItemInfo to TextBlocklistItem
+- Added `BlocklistAsyncClient`
+- Renamed `AddBlockItemsOptions` to `AddOrUpdateTextBlocklistItemsOptions`
+- Renamed `AddBlockItemsResult` to `AddOrUpdateTextBlocklistItemsResult`
+- Renamed `RemoveBlockItemsOptions` to `RemoveTextBlocklistItemsOptions`
+- Renamed `TextBlockItemInfo` to `TextBlocklistItem`
 
 ### Bugs Fixed
 
