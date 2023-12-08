@@ -1,16 +1,14 @@
 ## Release History
 
-### 3.41.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 3.41.0 (2023-12-11)
 
 #### Bugs Fixed
 * Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
 * Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.53.1`.
+* Updated `Spring Data Commons` to version `2.7.18`.
 
 ### 5.7.0 (2023-11-07)
 
