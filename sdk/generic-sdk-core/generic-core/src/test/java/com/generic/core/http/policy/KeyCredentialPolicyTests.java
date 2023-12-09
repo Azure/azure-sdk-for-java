@@ -19,13 +19,16 @@ public class KeyCredentialPolicyTests {
     @MethodSource("setCredentialSupplier")
     public void setCredential(KeyCredentialPolicy policy, String expectedHeader) {
         Headers headers = new Headers();
+
         policy.setCredential(headers);
+
         assertEquals(expectedHeader, headers.getValue(HttpHeaderName.AUTHORIZATION));
     }
 
     private static Stream<Arguments> setCredentialSupplier() {
         String fakeKey = "fakeKeyPlaceholder";
         KeyCredential credential = new KeyCredential(fakeKey);
+
         return Stream.of(
             Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null), fakeKey),
             Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "Bearer"),

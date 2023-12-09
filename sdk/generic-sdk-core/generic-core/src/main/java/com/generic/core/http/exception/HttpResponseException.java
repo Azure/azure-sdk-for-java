@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.exception;
+package com.generic.core.http.exception;
 
 import com.generic.core.http.models.HttpResponse;
 
 /**
- * The exception thrown when an unsuccessful response is received with http status code (e.g. 3XX, 4XX, 5XX) from the
- * service request.
+ * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},
+ * {@code 5XX}) from the service request.
  */
-public class HttpResponseException extends RuntimeException {
-
+public final class HttpResponseException extends RuntimeException {
     /**
      * The HTTP response value.
      */
@@ -22,6 +21,11 @@ public class HttpResponseException extends RuntimeException {
     private final HttpResponse response;
 
     /**
+     * The type of the exception.
+     */
+    private final HttpExceptionType type;
+
+    /**
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
@@ -30,8 +34,10 @@ public class HttpResponseException extends RuntimeException {
      */
     public HttpResponseException(final String message, final HttpResponse response, final Object value) {
         super(message);
+
         this.value = value;
         this.response = response;
+        this.type = null;
     }
 
     /**
@@ -43,8 +49,10 @@ public class HttpResponseException extends RuntimeException {
      */
     public HttpResponseException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, cause);
+
         this.value = null;
         this.response = response;
+        this.type = null;
     }
 
     /**
@@ -52,15 +60,53 @@ public class HttpResponseException extends RuntimeException {
      *
      * @param message The exception message.
      * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param value The deserialized response value.
+     * @param type The type of the exception.
+     */
+    public HttpResponseException(final String message, final HttpResponse response, final Object value,
+                                 final HttpExceptionType type) {
+        super(message);
+
+        this.value = value;
+        this.response = response;
+        this.type = type;
+    }
+
+    /**
+     * Initializes a new instance of the HttpResponseException class.
+     *
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param type The {@link HttpExceptionType type} of the exception.
+     * @param cause The {@link Throwable} which caused the creation of this exception.
+     */
+    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+                                 final Throwable cause) {
+        super(message, cause);
+
+        this.value = null;
+        this.response = response;
+        this.type = type;
+    }
+
+    /**
+     * Initializes a new instance of the HttpResponseException class.
+     *
+     * @param message The exception message.
+     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param type The {@link HttpExceptionType type} of the exception.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final Throwable cause,
-        final boolean enableSuppression, final boolean writableStackTrace) {
+    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+                                 final Throwable cause, final boolean enableSuppression,
+                                 final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
+
         this.value = null;
         this.response = response;
+        this.type = type;
     }
 
     /**
@@ -80,6 +126,13 @@ public class HttpResponseException extends RuntimeException {
     public Object getValue() {
         return value;
     }
+
+    /**
+     * Gets the {@link HttpExceptionType type} of the exception.
+     *
+     * @return The {@link HttpExceptionType type} of the exception.
+     */
+    public HttpExceptionType getType() {
+        return type;
+    }
 }
-
-

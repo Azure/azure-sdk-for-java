@@ -3,10 +3,11 @@
 
 package com.generic.core.implementation.serializer;
 
-import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.MockHttpResponseDecodeData;
 import com.generic.core.http.Response;
+import com.generic.core.http.exception.HttpExceptionType;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -87,8 +88,8 @@ public class HttpResponseBodyDecoderTests {
     }
 
     private static Stream<Arguments> errorResponseSupplier() {
-        UnexpectedExceptionInformation exceptionInformation = new MockUnexpectedExceptionInformation(
-            HttpResponseException.class, String.class);
+        UnexpectedExceptionInformation exceptionInformation =
+            new MockUnexpectedExceptionInformation(null, String.class);
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(exceptionInformation);
         HttpResponseDecodeData expectedStatusCodes = new MockHttpResponseDecodeData(202, exceptionInformation);
@@ -116,7 +117,7 @@ public class HttpResponseBodyDecoderTests {
         };
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(
-            new UnexpectedExceptionInformation(HttpResponseException.class));
+            new UnexpectedExceptionInformation(null, null));
 
         HttpResponse response = new MockHttpResponse(GET_REQUEST, 300);
 
@@ -261,7 +262,7 @@ public class HttpResponseBodyDecoderTests {
         HttpResponse getResponse = new MockHttpResponse(GET_REQUEST, 200);
 
         HttpResponseDecodeData badResponseData = new MockHttpResponseDecodeData(-1,
-            new UnexpectedExceptionInformation(HttpResponseException.class));
+            new UnexpectedExceptionInformation(null, null));
 
         HttpResponseDecodeData nonDecodable = new MockHttpResponseDecodeData(200, void.class, false);
 
@@ -307,20 +308,19 @@ public class HttpResponseBodyDecoderTests {
          *
          * @param exceptionType Exception type to be thrown.
          */
-        MockUnexpectedExceptionInformation(Class<? extends HttpResponseException> exceptionType,
-                                           Class<?> exceptionBodyType) {
-            super(exceptionType);
+        MockUnexpectedExceptionInformation(HttpExceptionType exceptionType, Class<?> exceptionBodyType) {
+            super(exceptionType, null);
 
             this.exceptionBodyType = exceptionBodyType;
         }
 
         @Override
-        public Class<? extends HttpResponseException> getExceptionType() {
+        public HttpExceptionType getExceptionType() {
             return super.getExceptionType();
         }
 
         @Override
-        public Class<?> getExceptionBodyType() {
+        public Class<?> getExceptionBodyClass() {
             return exceptionBodyType;
         }
     }

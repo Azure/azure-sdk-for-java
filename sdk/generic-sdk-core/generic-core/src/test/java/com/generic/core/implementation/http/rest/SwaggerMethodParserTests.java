@@ -4,9 +4,7 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.exception.HttpResponseException;
-import com.generic.core.exception.ResourceModifiedException;
-import com.generic.core.exception.ResourceNotFoundException;
+import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
@@ -25,7 +23,7 @@ import com.generic.core.http.annotation.Post;
 import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.ReturnValueWireType;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
@@ -648,18 +646,18 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
         void notFoundStatusCode();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class)
+        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
+        @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_MODIFIED")
         void customDefault();
     }
 
     @ParameterizedTest
     @MethodSource("unexpectedStatusCodeSupplier")
-    public void unexpectedStatusCode(Method method, int statusCode, Class<?> expectedExceptionType) {
+    public void unexpectedStatusCode(Method method, int statusCode, HttpExceptionType expectedExceptionType) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(expectedExceptionType, swaggerMethodParser.getUnexpectedException(statusCode).getExceptionType());
@@ -672,28 +670,28 @@ public class SwaggerMethodParserTests {
         Method customDefault = clazz.getDeclaredMethod("customDefault");
 
         return Stream.of(
-            Arguments.of(noUnexpectedStatusCodes, 500, HttpResponseException.class),
-            Arguments.of(noUnexpectedStatusCodes, 400, HttpResponseException.class),
-            Arguments.of(noUnexpectedStatusCodes, 404, HttpResponseException.class),
-            Arguments.of(notFoundStatusCode, 500, HttpResponseException.class),
-            Arguments.of(notFoundStatusCode, 400, ResourceNotFoundException.class),
-            Arguments.of(notFoundStatusCode, 404, ResourceNotFoundException.class),
-            Arguments.of(customDefault, 500, ResourceModifiedException.class),
-            Arguments.of(customDefault, 400, ResourceNotFoundException.class),
-            Arguments.of(customDefault, 404, ResourceNotFoundException.class)
+            Arguments.of(noUnexpectedStatusCodes, 500, null),
+            Arguments.of(noUnexpectedStatusCodes, 400, null),
+            Arguments.of(noUnexpectedStatusCodes, 404, null),
+            Arguments.of(notFoundStatusCode, 500, null),
+            Arguments.of(notFoundStatusCode, 400, HttpExceptionType.RESOURCE_NOT_FOUND),
+            Arguments.of(notFoundStatusCode, 404, HttpExceptionType.RESOURCE_NOT_FOUND),
+            Arguments.of(customDefault, 500, HttpExceptionType.RESOURCE_MODIFIED),
+            Arguments.of(customDefault, 400, HttpExceptionType.RESOURCE_NOT_FOUND),
+            Arguments.of(customDefault, 404, HttpExceptionType.RESOURCE_NOT_FOUND)
         );
     }
 
     @ParameterizedTest
-    @MethodSource("isReturnTypeDecodeableSupplier")
+    @MethodSource("isReturnTypeDecodableSupplier")
     public void isReturnTypeDecodable(Type returnType, boolean expected) {
         Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
 
-        assertEquals(expected, SwaggerMethodParser.isReturnTypeDecodeable(unwrappedReturnType));
+        assertEquals(expected, SwaggerMethodParser.isReturnTypeDecodable(unwrappedReturnType));
     }
 
-    private static Stream<Arguments> isReturnTypeDecodeableSupplier() {
-        return returnTypeSupplierForDecodeableAndEagerReading(true, false, false);
+    private static Stream<Arguments> isReturnTypeDecodableSupplier() {
+        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
     }
 
     @ParameterizedTest
@@ -705,7 +703,7 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isResponseEagerlyReadSupplier() {
-        return returnTypeSupplierForDecodeableAndEagerReading(true, false, false);
+        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
     }
 
     @ParameterizedTest
@@ -717,26 +715,26 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isResponseBodyIgnoredSupplier() {
-        return returnTypeSupplierForDecodeableAndEagerReading(false, false, true);
+        return returnTypeSupplierForDecodableAndEagerReading(false, false, true);
     }
 
-    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(boolean nonBinaryTypeStatus,
+    private static Stream<Arguments> returnTypeSupplierForDecodableAndEagerReading(boolean nonBinaryTypeStatus,
                                                                                     boolean binaryTypeStatus,
                                                                                     boolean voidTypeStatus) {
         return Stream.of(
-            // Unknown response type can't be determined to be decode-able.
+            // Unknown response type can't be determined to be decodable.
             Arguments.of(null, false),
 
-            // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decode-able.
+            // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decodable.
             Arguments.of(BinaryData.class, binaryTypeStatus),
 
             Arguments.of(byte[].class, binaryTypeStatus),
 
-            // Both ByteBuffer and subtypes shouldn't be decode-able.
+            // Both ByteBuffer and subtypes shouldn't be decodable.
             Arguments.of(ByteBuffer.class, binaryTypeStatus),
             Arguments.of(MappedByteBuffer.class, binaryTypeStatus),
 
-            // Both InputSteam and subtypes shouldn't be decode-able.
+            // Both InputSteam and subtypes shouldn't be decodable.
             Arguments.of(InputStream.class, binaryTypeStatus),
             Arguments.of(FileInputStream.class, binaryTypeStatus),
 
@@ -744,7 +742,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(Void.class, voidTypeStatus),
             Arguments.of(Void.TYPE, voidTypeStatus),
 
-            // Other POJO types are decode-able.
+            // Other POJO types are decodable.
             Arguments.of(SimpleClass.class, nonBinaryTypeStatus),
 
             // In addition to the direct types, reactive and Response generic types should be handled.

@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.exception.HttpResponseException;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
 
@@ -62,20 +62,21 @@ public interface HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link UnexpectedExceptionInformation} that will be used to generate a RestException if the HTTP response
-     * status code is not one of the expected status codes.
+     * Get the {@link UnexpectedExceptionInformation} that will be used to generate an {@link HttpResponseException} if
+     * the HTTP response status code is not one of the expected status codes.
      *
      * @param code Exception HTTP status code return from a REST API.
-     * @return the UnexpectedExceptionInformation to generate an exception to throw or return.
+     *
+     * @return The {@link UnexpectedExceptionInformation} to generate an exception to throw or return.
      */
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
-        return new UnexpectedExceptionInformation(HttpResponseException.class);
+        return new UnexpectedExceptionInformation(null, null);
     }
 
     /**
-     * Whether the {@link #getReturnType() returnType} is a decode-able type.
+     * Whether the {@link #getReturnType() returnType} is a decodable type.
      * <p>
-     * Types that aren't decode-able are the following (including sub-types):
+     * Types that aren't decodable are the following (including sub-types):
      * <ul>
      * <li>BinaryData</li>
      * <li>byte[]</li>
@@ -87,10 +88,10 @@ public interface HttpResponseDecodeData {
      *
      * cracked open and their generic types are inspected for being one of the types above.
      *
-     * @return Whether the return type is decode-able.
+     * @return Whether the return type is decodable.
      */
-    default boolean isReturnTypeDecodeable() {
-        return SwaggerMethodParser.isReturnTypeDecodeable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+    default boolean isReturnTypeDecodable() {
+        return SwaggerMethodParser.isReturnTypeDecodable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
     }
 
     /**

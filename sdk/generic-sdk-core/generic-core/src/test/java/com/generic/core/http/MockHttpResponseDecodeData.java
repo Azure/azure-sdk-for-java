@@ -16,7 +16,7 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
     private final UnexpectedExceptionInformation unexpectedExceptionInformation;
     private final Type returnType;
     private final Type returnValueWireType;
-    private final boolean isReturnTypeDecodeable;
+    private final boolean isReturnTypeDecodable;
 
     public MockHttpResponseDecodeData(UnexpectedExceptionInformation unexpectedExceptionInformation) {
         this(null, null, null, false, unexpectedExceptionInformation);
@@ -31,22 +31,22 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
         this(expectedResponseStatusCode, null, null, false, unexpectedExceptionInformation);
     }
 
-    public MockHttpResponseDecodeData(int expectedResponseStatusCode, Type returnType, boolean isReturnTypeDecodeable) {
-        this(expectedResponseStatusCode, returnType, null, isReturnTypeDecodeable, null);
+    public MockHttpResponseDecodeData(int expectedResponseStatusCode, Type returnType, boolean isReturnTypeDecodable) {
+        this(expectedResponseStatusCode, returnType, null, isReturnTypeDecodable, null);
     }
 
     public MockHttpResponseDecodeData(int expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-                                      boolean isReturnTypeDecodeable) {
-        this(expectedResponseStatusCode, returnType, returnValueWireType, isReturnTypeDecodeable, null);
+                                      boolean isReturnTypeDecodable) {
+        this(expectedResponseStatusCode, returnType, returnValueWireType, isReturnTypeDecodable, null);
     }
 
     private MockHttpResponseDecodeData(Integer expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-                                       boolean isReturnTypeDecodeable,
+                                       boolean isReturnTypeDecodable,
                                        UnexpectedExceptionInformation unexpectedExceptionInformation) {
         this.expectedResponseStatusCode = expectedResponseStatusCode;
         this.returnType = returnType;
         this.returnValueWireType = returnValueWireType;
-        this.isReturnTypeDecodeable = isReturnTypeDecodeable;
+        this.isReturnTypeDecodable = isReturnTypeDecodable;
         this.unexpectedExceptionInformation = unexpectedExceptionInformation;
     }
 
@@ -76,8 +76,8 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
     }
 
     @Override
-    public boolean isReturnTypeDecodeable() {
-        return isReturnTypeDecodeable;
+    public boolean isReturnTypeDecodable() {
+        return isReturnTypeDecodable;
     }
 
     @Override

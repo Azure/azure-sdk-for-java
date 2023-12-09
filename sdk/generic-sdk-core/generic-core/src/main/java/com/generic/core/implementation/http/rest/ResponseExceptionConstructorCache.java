@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.HttpResponseException;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.util.logging.ClientLogger;

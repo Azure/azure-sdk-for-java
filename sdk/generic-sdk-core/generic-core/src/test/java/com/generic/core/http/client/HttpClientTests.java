@@ -4,7 +4,6 @@
 package com.generic.core.http.client;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.exception.HttpResponseException;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.Delete;
@@ -19,7 +18,8 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.Post;
 import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.UnexpectedResponseExceptionType;
+import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
@@ -37,7 +37,6 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import com.generic.core.models.HttpBinJSON;
-import com.generic.core.models.MyRestException;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.logging.ClientLogger;
@@ -284,7 +283,6 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
-     *
      */
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() {
@@ -755,7 +753,7 @@ public abstract class HttpClientTests {
 
         @Put("put")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MyRestException.class)
+        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength);
@@ -767,27 +765,26 @@ public abstract class HttpClientTests {
 
         @Put("put")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MyRestException.class)
+        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
                                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {200}, value = MyRestException.class)
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionInformation(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
                                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = HttpResponseException.class)
-        @UnexpectedResponseExceptionType(MyRestException.class)
+        @UnexpectedResponseExceptionInformation(statusCode = {400})
+        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
                                                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @Put("put")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(code = {400}, value = MyRestException.class)
+        @UnexpectedResponseExceptionInformation(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
                                                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
@@ -1688,7 +1685,7 @@ public abstract class HttpClientTests {
 
         @Put("put")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(MyRestException.class)
+        @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength,

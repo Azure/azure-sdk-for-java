@@ -3,13 +3,9 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.ClientAuthenticationException;
-import com.generic.core.exception.HttpResponseException;
-import com.generic.core.exception.ResourceExistsException;
-import com.generic.core.exception.ResourceModifiedException;
-import com.generic.core.exception.ResourceNotFoundException;
-import com.generic.core.exception.TooManyRedirectsException;
 import com.generic.core.http.Response;
+import com.generic.core.http.exception.HttpExceptionType;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -56,9 +52,9 @@ public abstract class RestProxyBase {
     /**
      * Create a RestProxy.
      *
-     * @param httpPipeline the HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer the serializer that will be used to convert response bodies to POJOs.
-     * @param interfaceParser the parser that contains information about the interface describing REST API methods that
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer The serializer that will be used to convert response bodies to POJOs.
+     * @param interfaceParser The parser that contains information about the interface describing REST API methods that
      * this RestProxy "implements".
      */
     public RestProxyBase(HttpPipeline httpPipeline, ObjectSerializer serializer,
@@ -116,26 +112,25 @@ public abstract class RestProxyBase {
             return cls.cast(new SimpleResponse<>(request, statusCode, headers, bodyAsObject));
         }
 
-        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
-        // subtype.
+        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
         //
-        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
-        // be given a way to register their constructor as a callback method that consumes HttpDecodedResponse
-        // and the body as an Object.
+        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
+        // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the body
+        // as an Object.
         ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
 
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
     /**
-     * Create a HttpRequest for the provided Swagger method using the provided arguments.
+     * Create an HttpRequest for the provided Swagger method using the provided arguments.
      *
-     * @param methodParser the Swagger method parser to use
-     * @param args the arguments to use to populate the method's annotation values
+     * @param methodParser The Swagger method parser to use.
+     * @param args The arguments to use to populate the method's annotation values.
      *
-     * @return a HttpRequest
+     * @return An HttpRequest.
      *
-     * @throws IOException thrown if the body contents cannot be serialized
+     * @throws IOException If the body contents cannot be serialized.
      */
     HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer ObjectSerializer, Object[] args)
         throws IOException {
@@ -154,8 +149,7 @@ public abstract class RestProxyBase {
 
             methodParser.setSchemeAndHost(args, urlBuilder, serializer);
 
-            // Set the path after host, concatenating the path
-            // segment in the host.
+            // Set the path after host, concatenating the path segment in the host.
             if (path != null && !path.isEmpty() && !"/".equals(path)) {
                 String hostPath = urlBuilder.getPath();
 
@@ -174,8 +168,8 @@ public abstract class RestProxyBase {
         methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
-        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
-            methodParser, ObjectSerializer, args);
+        final HttpRequest request =
+            configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, ObjectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         Headers httpHeaders = request.getHeaders();
 
@@ -212,6 +206,7 @@ public abstract class RestProxyBase {
                 if (binaryData.getLength() != null) {
                     request.setHeader(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
+
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
                 // sending the request to the service. There is no memory copy that happens here. Sources like
@@ -242,22 +237,23 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Creates the Unexpected Exception using the details provided in http response and its content.
+     * Creates an HttpResponseException exception using the details provided in http response and its content.
      *
-     * @param exception the exception holding UnexpectedException's details.
-     * @param httpResponse the http response to parse when constructing exception
-     * @param responseContent the response body to use when constructing exception
-     * @param responseDecodedContent the decoded response content to use when constructing exception
+     * @param unexpectedExceptionInformation The exception holding UnexpectedException's details.
+     * @param httpResponse The http response to parse when constructing exception
+     * @param responseContent The response body to use when constructing exception
+     * @param responseDecodedContent The decoded response content to use when constructing exception
      *
-     * @return the Unexpected Exception
+     * @return The {@link HttpResponseException} created from the provided details.
      */
-    public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation exception,
+    public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
                                                                        HttpResponse httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
+
         final String contentType = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
@@ -281,42 +277,10 @@ public abstract class RestProxyBase {
                 (Throwable) responseDecodedContent);
         }
 
-        // For HttpResponseException types that exist in azure-core, call the constructor directly.
-        Class<? extends HttpResponseException> exceptionType = exception.getExceptionType();
+        HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        if (exceptionType == HttpResponseException.class) {
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ClientAuthenticationException.class) {
-            return new ClientAuthenticationException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceExistsException.class) {
-            return new ResourceExistsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceModifiedException.class) {
-            return new ResourceModifiedException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == ResourceNotFoundException.class) {
-            return new ResourceNotFoundException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else if (exceptionType == TooManyRedirectsException.class) {
-            return new TooManyRedirectsException(exceptionMessage.toString(), httpResponse, responseDecodedContent);
-        } else {
-            // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
-            // new instance of it.
-            try {
-                ReflectiveInvoker reflectiveInvoker = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
-                    exception.getExceptionBodyType());
-                return ResponseExceptionConstructorCache.invoke(reflectiveInvoker, exceptionMessage.toString(),
-                    httpResponse,
-                    responseDecodedContent);
-            } catch (RuntimeException e) {
-                // And if reflection fails, return an HttpResponseException.
-                exceptionMessage.append(". An instance of ")
-                    .append(exceptionType.getCanonicalName())
-                    .append(" couldn't be created.");
-                HttpResponseException exception1 = new HttpResponseException(exceptionMessage.toString(), httpResponse,
-                    responseDecodedContent);
-                exception1.addSuppressed(e);
-
-                return exception1;
-            }
-        }
+        return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent,
+            exceptionType);
     }
 
     /**

@@ -13,13 +13,13 @@ import java.io.Closeable;
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
  */
 public final class HttpResponseDecoder {
-    // The adapter for deserialization
+    // The adapter for deserialization.
     private final ObjectSerializer serializer;
 
     /**
      * Creates HttpResponseDecoder.
      *
-     * @param serializer the serializer
+     * @param serializer The serializer.
      */
     public HttpResponseDecoder(ObjectSerializer serializer) {
         this.serializer = serializer;
@@ -28,9 +28,10 @@ public final class HttpResponseDecoder {
     /**
      * Synchronously decodes a {@link HttpResponse}.
      *
-     * @param response the response to be decoded
-     * @param decodeData the necessary data required to decode the response
-     * @return the decoded HttpResponse
+     * @param response The response to be decoded.
+     * @param decodeData The necessary data required to decode the response.
+     *
+     * @return The decoded HttpResponse.
      */
     public HttpDecodedResponse decode(HttpResponse response, HttpResponseDecodeData decodeData) {
         return new HttpDecodedResponse(response, this.serializer, decodeData);
@@ -38,9 +39,9 @@ public final class HttpResponseDecoder {
 
     /**
      * A decorated HTTP response which has subscribable body and headers that supports lazy decoding.
-     * <p>
-     * Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing to
-     * header kickoff header decoding and emission of decoded object.
+     *
+     * <p>Subscribing to body kickoff http content reading, it's decoding then emission of decoded object. Subscribing
+     * to header kickoff header decoding and emission of decoded object.
      */
     public static class HttpDecodedResponse implements Closeable {
         private final HttpResponse response;
@@ -74,12 +75,14 @@ public final class HttpResponseDecoder {
          * Decodes either the retrieved {@code body} or the bytes returned by the {@link HttpResponse}.
          *
          * @param body The retrieve body.
+         *
          * @return The decoded body.
          */
         public Object getDecodedBody(byte[] body) {
             if (this.bodyCached == null) {
                 this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body, response, serializer, decodeData);
             }
+
             return this.bodyCached;
         }
 
@@ -94,6 +97,7 @@ public final class HttpResponseDecoder {
             if (headersCached == null) {
                 headersCached = HttpResponseHeaderDecoder.decode(response, serializer, decodeData.getHeadersType());
             }
+
             return this.headersCached;
         }
 

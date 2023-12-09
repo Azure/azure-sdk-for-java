@@ -4,7 +4,7 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.annotation.ReturnValueWireType;
-import com.generic.core.exception.HttpResponseException;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
@@ -60,7 +60,7 @@ public final class HttpResponseBodyDecoder {
         } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
                 return deserializeBody(body, decodeData.getUnexpectedException(
-                    httpResponse.getStatusCode()).getExceptionBodyType(), null, serializer);
+                    httpResponse.getStatusCode()).getExceptionBodyClass(), null, serializer);
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
@@ -82,7 +82,7 @@ public final class HttpResponseBodyDecoder {
                 }
             }
         } else {
-            if (!decodeData.isReturnTypeDecodeable()) {
+            if (!decodeData.isReturnTypeDecodable()) {
                 return null;
             }
 
@@ -109,11 +109,11 @@ public final class HttpResponseBodyDecoder {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
         } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
-            // For error cases we always try to decode the non-empty response body
-            // either to a strongly typed exception model or to Object
-            return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType();
+            // For error cases we always try to decode the non-empty response body either to a strongly typed exception
+            // model or to Object.
+            return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyClass();
         } else {
-            return decodeData.isReturnTypeDecodeable() ? extractEntityTypeFromReturnType(decodeData) : null;
+            return decodeData.isReturnTypeDecodable() ? extractEntityTypeFromReturnType(decodeData) : null;
         }
     }
 

@@ -21,16 +21,19 @@ public final class TypeUtil {
     /**
      * Find all super classes including provided class.
      *
-     * @param clazz the raw class to find super types for
+     * @param clazz The raw class to find super types for.
      *
-     * @return The list of super classes
+     * @return The list of super classes.
      */
     public static List<Class<?>> getAllClasses(Class<?> clazz) {
         List<Class<?>> types = new ArrayList<>();
+
         while (clazz != null) {
             types.add(clazz);
+
             clazz = clazz.getSuperclass();
         }
+
         return types;
     }
 
@@ -172,6 +175,7 @@ public final class TypeUtil {
         while (subType != null && getRawClass(subType) != rawSuperType) {
             subType = getSuperType(subType);
         }
+
         return subType;
     }
 
