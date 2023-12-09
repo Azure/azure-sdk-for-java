@@ -16,23 +16,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A collection of headers on a request or response.
+ * A collection of {@link Headers} on a request or response.
  */
 public class Headers implements Iterable<Header> {
-    // This map is a case-insensitive key (i.e. lower-cased), but the returned Header key will be as-provided to us
+    /**
+     * This map is a case-insensitive key (i.e. lower-cased), but the returned {@link Header} key will be as-provided to
+     * us.
+     */
     private final Map<String, Header> headers;
 
     /**
-     * Create an empty Headers instance.
+     * Create an empty {@link Headers} instance.
      */
     public Headers() {
         headers = new HashMap<>();
     }
 
     /**
-     * Create a Headers instance with the provided initial headers.
+     * Create a {@link Headers} instance with the provided initial {@link Headers}.
      *
-     * @param headers the map of initial headers
+     * @param headers The map of initial {@link Headers}.
      */
     public Headers(Map<String, String> headers) {
         this.headers = new HashMap<>(headers.size());
@@ -40,9 +43,9 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Create a Headers instance with the provided initial headers.
+     * Create a {@link Headers} instance with the provided initial {@link Headers}.
      *
-     * @param headers the collection of initial headers
+     * @param headers The collection of initial {@link Headers}.
      */
     public Headers(Iterable<Header> headers) {
         this.headers = new HashMap<>();
@@ -53,35 +56,37 @@ public class Headers implements Iterable<Header> {
 
     Headers(Headers headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
+
         headers.headers.forEach((key, value) ->
             this.headers.put(key, new Header(value.getName(), value.getValuesList())));
     }
 
     /**
-     * Create a Headers instance with an initial {@code size} empty headers
+     * Create a {@link Headers} instance with an initial {@code size} empty headers.
      *
-     * @param initialCapacity the initial capacity of headers map.
+     * @param initialCapacity The initial capacity of {@link Headers} map.
      */
     public Headers(int initialCapacity) {
         this.headers = new HashMap<>(initialCapacity);
     }
 
     /**
-     * Gets the number of headers in the collection.
+     * Gets the number of {@link Headers} in the collection.
      *
-     * @return the number of headers in this collection.
+     * @return The number of {@link Headers} in this collection.
      */
     public int getSize() {
         return headers.size();
     }
 
     /**
-     * Adds a {@link Header header} with the given name and value if a header with that name doesn't already exist,
+     * Adds a {@link Header} with the given name and value if a {@link Header} with that name doesn't already exist,
      * otherwise adds the {@code value} to the existing header.
      *
-     * @param name The name of the header.
-     * @param value The value of the header.
-     * @return The updated Headers object.
+     * @param name The name of the {@link Header}.
+     * @param value The value of the {@link Header}.
+     *
+     * @return The updated {@link Headers} object.
      */
     public Headers add(HttpHeaderName name, String value) {
         return addInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
@@ -105,13 +110,14 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Sets a {@link Header header} with the given name and value. If a header with same name already exists then
-     * the value will be overwritten. If the given value is null, the header with the given name will be removed.
+     * Sets a {@link Header} with the given name and value. If a {@link Header} with same name already exists then the
+     * value will be overwritten. If the given value is {@code null}, the header with the given name will be removed.
      *
-     * @param name the name to set in the header. If it is null, this method will return with no changes to the
-     * headers.
-     * @param value the value
-     * @return The updated Headers object
+     * @param name The name to set in the {@link Header}. If it is {@code null}, this method will return with no changes
+     * made to the {@link Headers}.
+     * @param value The value of the {@link Header}.
+     *
+     * @return The updated {@link Headers} object.
      */
     public Headers set(HttpHeaderName name, String value) {
         return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), value);
@@ -127,17 +133,19 @@ public class Headers implements Iterable<Header> {
         } else {
             headers.put(formattedName, new Header(name, value));
         }
+
         return this;
     }
 
     /**
-     * Sets a {@link Header header} with the given name and the list of values provided, such that the given values
-     * will be comma-separated when necessary. If a header with same name already exists then the values will be
-     * overwritten. If the given values list is null, the header with the given name will be removed.
+     * Sets a {@link Header} with the given name and the list of values provided, such that the given values will be
+     * comma-separated when necessary. If a {@link Header} with same name already exists then the values will be
+     * overwritten. If the given values list is {@code null}, the {@link Header} with the given name will be removed.
      *
-     * @param name the name
-     * @param values the values that will be comma-separated as appropriate
-     * @return The updated Headers object
+     * @param name The {@link Header} name.
+     * @param values The values that will be comma-separated as appropriate.
+     *
+     * @return The updated {@link Headers} object.
      */
     public Headers set(HttpHeaderName name, List<String> values) {
         return setInternal(name.getCaseInsensitiveName(), name.getCaseSensitiveName(), values);
@@ -153,38 +161,46 @@ public class Headers implements Iterable<Header> {
         } else {
             headers.put(formattedName, new Header(name, values));
         }
+
         return this;
     }
 
     /**
-     * Sets all provided header key/values pairs into this Headers instance. This is equivalent to calling {@code
-     * headers.forEach(this::set)}, and therefore the behavior is as specified in {@link #set(HttpHeaderName, List)}. In
-     * other words, this will create a header for each key in the provided map, replacing or removing an existing one,
-     * depending on the value. If the given values list is null, the header with the given name will be removed. If the
-     * given name is already a header, it will be removed and replaced with the headers provided.
-     * <p>
-     * Use {@link #setAllHeaders(Headers)} if you already have an instance of {@link Headers} as it provides better
-     * performance.
+     * Sets all provided {@link Header} key/values pairs into this {@link Headers} instance. This is equivalent to
+     * calling {@code headers.forEach(this::set)}, and therefore the behavior is as specified in
+     * {@link #set(HttpHeaderName, List)}. In other words, this will create a {@link Header} for each key in the
+     * provided map, replacing or removing an existing one, depending on the value. If the given values list is
+     * {@code null}, the header with the given name will be removed. If the given name is already a {@link Header}, it
+     * will be removed and replaced with the provided {@link Headers}.
      *
-     * @param headers a map containing keys representing header names, and keys representing the associated values.
-     * @return The updated Headers object
-     * @throws NullPointerException If {@code headers} is null.
+     * <p>Use {@link #setAllHeaders(Headers)} if you already have an instance of {@link Headers} as it provides better
+     * performance.</p>
+     *
+     * @param headers A map containing keys representing {@link Header} names, and keys representing the associated
+     * values.
+     *
+     * @return The updated {@link Headers} object.
+     *
+     * @throws NullPointerException If {@code headers} is {@code null}.
      */
     public Headers setAll(Map<String, List<String>> headers) {
         headers.forEach((name, value) -> setInternal(formatKey(name), name, value));
+
         return this;
     }
 
     /**
-     * Sets all headers from the passed {@code headers} into this {@link Headers}.
-     * <p>
-     * This is the equivalent to calling {@code headers.forEach(header -> set(header.getName(), header.getValuesList())}
-     * and therefore the behavior is as specified in {@link #set(HttpHeaderName, List)}.
-     * <p>
-     * If {@code headers} is null this is a no-op.
+     * Sets all the provided {@link Headers} into this {@link Headers} instance.
+     *
+     * <p>This is the equivalent to calling
+     * {@code headers.forEach(header -> set(header.getName(), header.getValuesList())} and therefore the behavior is as
+     * specified in {@link #set(HttpHeaderName, List)}.</p>
+     *
+     * <p>If {@code headers} is {@code null} this is a no-op.</p>
      *
      * @param headers The headers to add into this {@link Headers}.
-     * @return The updated Headers object.
+     *
+     * @return The updated {@link Headers} object.
      */
     public Headers setAllHeaders(Headers headers) {
         if (headers != null) {
@@ -196,11 +212,11 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Gets the {@link Header header} for the provided header name. null is returned if the header isn't
-     * found.
+     * Gets the {@link Header} for the provided header name. {@code null} is returned if the {@link Header} isn't found.
      *
-     * @param name the name of the header to find.
-     * @return the header if found, null otherwise.
+     * @param name The name of the {@link Header} to find.
+     *
+     * @return The {@link Header} if found, {@code null} otherwise.
      */
     public Header get(HttpHeaderName name) {
         return getInternal(name.getCaseInsensitiveName());
@@ -211,11 +227,12 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Removes the {@link Header header} with the provided header name. null is returned if the header isn't
+     * Removes the {@link Header} with the provided header name. {@code null} is returned if the {@link Header} isn't
      * found.
      *
-     * @param name the name of the header to remove.
-     * @return the header if removed, null otherwise.
+     * @param name The name of the {@link Header} to remove.
+     *
+     * @return The {@link Header} if removed, {@code null} otherwise.
      */
     public Header remove(HttpHeaderName name) {
         return removeInternal(name.getCaseInsensitiveName());
@@ -226,10 +243,12 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Get the value for the provided header name. null is returned if the header name isn't found.
+     * Get the value for the provided {@link Header} name. {@code null} is returned if the {@link Header} name isn't
+     * found.
      *
-     * @param name the name of the header whose value is being retrieved.
-     * @return the value of the header, or null if the header isn't found
+     * @param name The name of the {@link Header} whose value is being retrieved.
+     *
+     * @return The value of the {@link Header}, or {@code null} if the {@link Header} isn't found.
      */
     public String getValue(HttpHeaderName name) {
         return getValueInternal(name.getCaseInsensitiveName());
@@ -237,16 +256,19 @@ public class Headers implements Iterable<Header> {
 
     private String getValueInternal(String formattedName) {
         final Header header = getInternal(formattedName);
+
         return header == null ? null : header.getValue();
     }
 
     /**
-     * Get the values for the provided header name. null is returned if the header name isn't found.
+     * Get the values for the provided {@link Header} name. {@code null} is returned if the {@link Header} name isn't
+     * found.
      *
      * <p>This returns {@link #getValue(HttpHeaderName) getValue} split by {@code comma}.</p>
      *
-     * @param name the name of the header whose value is being retrieved.
-     * @return the values of the header, or null if the header isn't found
+     * @param name The name of the {@link Header} whose value is being retrieved.
+     *
+     * @return The values of the {@link Header}, or {@code null} if the {@link Header} isn't found.
      */
     public String[] getValues(HttpHeaderName name) {
         return getValuesInternal(name.getCaseInsensitiveName());
@@ -254,46 +276,53 @@ public class Headers implements Iterable<Header> {
 
     private String[] getValuesInternal(String formattedName) {
         final Header header = getInternal(formattedName);
+
         return header == null ? null : header.getValues();
     }
 
     /**
-     * Returns a copy of the headers as an unmodifiable {@link Map} representation of the state of the headers at
-     * the time of the toMap call. This map will not change as the underlying headers change, and nor will
-     * modifying the key or values contained in the map have any effect on the state of the headers.
+     * Returns a copy of the {@link Headers} as an unmodifiable {@link Map} representation of the state of the
+     * {@link Headers} at the time of the {@code toMap} call. This map will not change as the underlying {@link Headers}
+     * change, and nor will modifying the key or values contained in the map have any effect on the state of the
+     * {@link Headers}.
      *
-     * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
-     * recommended that users prefer to use alternate APIs present on the Headers class, over using APIs present on
-     * the returned Map class. For example, use the {@link #get(HttpHeaderName)} API, rather than {@code headers.toMap().get
-     * (name)}.</p>
+     * <p>Note that there may be performance implications of using {@link Map} APIs on the returned {@link Map}. It is
+     * highly recommended that users prefer to use alternate APIs present on the {@link Headers} class, over using APIs
+     * present on the returned {@link Map} class. For example, use the {@link #get(HttpHeaderName)} API, rather than
+     * {@code headers.toMap().get(name)}.</p>
      *
-     * @return the headers in a copied and unmodifiable form.
+     * @return The {@link Headers} in a copied and unmodifiable form.
      */
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();
+
         for (final Header header : headers.values()) {
             result.put(header.getName(), header.getValue());
         }
+
         return Collections.unmodifiableMap(result);
     }
 
     /**
-     * Returns a copy of the headers as an unmodifiable {@link Map} representation of the state of the headers at
-     * the time of the toMultiMap call. This map will not change as the underlying headers change, and nor will
-     * modifying the key or values contained in the map have any effect on the state of the headers.
+     * Returns a copy of the {@link Headers} as an unmodifiable {@link Map} representation of the state of the
+     * {@link Headers} at the time of the {@code toMultiMap} call. This {@link Map} will not change as the underlying
+     * {@link Headers} change, and nor will modifying the key or values contained in the {@link Map} have any effect on
+     * the state of the {@link Headers}.
      *
-     * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
-     * recommended that users prefer to use alternate APIs present on the Headers class, over using APIs present on
-     * the returned Map class. For example, use the {@link #get(HttpHeaderName)} API, rather than {@code headers.toMap()
-     * .get(name)}.</p>
+     * <p>Note that there may be performance implications of using {@link Map} APIs on the returned {@link Map}. It is
+     * highly recommended that users prefer to use alternate APIs present on the {@link Headers} class, over using APIs
+     * present on the returned {@link Map} class. For example, use the {@link #get(HttpHeaderName)} API, rather than
+     * {@code headers.toMap().get(name)}.</p>
      *
-     * @return the headers in a copied and unmodifiable form.
+     * @return The {@link Headers} in a copied and unmodifiable form.
      */
     Map<String, String[]> toMultiMap() {
         final Map<String, String[]> result = new HashMap<>();
+
         for (final Header header : headers.values()) {
             result.put(header.getName(), header.getValues());
         }
+
         return Collections.unmodifiableMap(result);
     }
 
@@ -306,9 +335,9 @@ public class Headers implements Iterable<Header> {
     }
 
     /**
-     * Get a {@link Stream} representation of the Header values in this instance.
+     * Get a {@link Stream} representation of the {@link Header} values in this instance.
      *
-     * @return A {@link Stream} of all header values in this instance.
+     * @return A {@link Stream} of all {@link Header} values in this instance.
      */
     public Stream<Header> stream() {
         return headers.values().stream();
