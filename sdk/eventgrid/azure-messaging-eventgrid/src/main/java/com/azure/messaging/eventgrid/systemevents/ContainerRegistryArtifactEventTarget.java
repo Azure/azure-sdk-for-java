@@ -5,53 +5,51 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The target of the event.
  */
 @Fluent
-public final class ContainerRegistryArtifactEventTarget {
+public final class ContainerRegistryArtifactEventTarget
+    implements JsonSerializable<ContainerRegistryArtifactEventTarget> {
     /*
      * The MIME type of the artifact.
      */
-    @JsonProperty(value = "mediaType")
     private String mediaType;
 
     /*
      * The size in bytes of the artifact.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * The digest of the artifact.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /*
      * The repository name of the artifact.
      */
-    @JsonProperty(value = "repository")
     private String repository;
 
     /*
      * The tag of the artifact.
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /*
      * The name of the artifact.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The version of the artifact.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -198,5 +196,57 @@ public final class ContainerRegistryArtifactEventTarget {
     public ContainerRegistryArtifactEventTarget setVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mediaType", this.mediaType);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("digest", this.digest);
+        jsonWriter.writeStringField("repository", this.repository);
+        jsonWriter.writeStringField("tag", this.tag);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryArtifactEventTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryArtifactEventTarget if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryArtifactEventTarget.
+     */
+    public static ContainerRegistryArtifactEventTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryArtifactEventTarget deserializedContainerRegistryArtifactEventTarget
+                = new ContainerRegistryArtifactEventTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mediaType".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.mediaType = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.size = reader.getNullable(JsonReader::getLong);
+                } else if ("digest".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.digest = reader.getString();
+                } else if ("repository".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.repository = reader.getString();
+                } else if ("tag".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.tag = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedContainerRegistryArtifactEventTarget.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryArtifactEventTarget;
+        });
     }
 }

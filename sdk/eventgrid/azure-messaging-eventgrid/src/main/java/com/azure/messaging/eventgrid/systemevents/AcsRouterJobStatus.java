@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -87,7 +86,6 @@ public final class AcsRouterJobStatus extends ExpandableStringEnum<AcsRouterJobS
      * @param name a name to look for.
      * @return the corresponding AcsRouterJobStatus.
      */
-    @JsonCreator
     public static AcsRouterJobStatus fromString(String name) {
         return fromString(name, AcsRouterJobStatus.class);
     }

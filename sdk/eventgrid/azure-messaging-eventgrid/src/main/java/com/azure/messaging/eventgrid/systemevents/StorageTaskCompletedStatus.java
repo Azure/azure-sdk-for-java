@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class StorageTaskCompletedStatus extends ExpandableStringEnum<Stora
      * @param name a name to look for.
      * @return the corresponding StorageTaskCompletedStatus.
      */
-    @JsonCreator
     public static StorageTaskCompletedStatus fromString(String name) {
         return fromString(name, StorageTaskCompletedStatus.class);
     }

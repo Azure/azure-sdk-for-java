@@ -5,42 +5,41 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Router Communication Error.
  */
 @Fluent
-public final class AcsRouterCommunicationError {
+public final class AcsRouterCommunicationError implements JsonSerializable<AcsRouterCommunicationError> {
     /*
      * Router Communication Error Code
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Router Communication Error Message
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Router Communication Error Target
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Router Communication Inner Error
      */
-    @JsonProperty(value = "innererror")
     private AcsRouterCommunicationError innererror;
 
     /*
      * List of Router Communication Errors
      */
-    @JsonProperty(value = "details")
     private List<AcsRouterCommunicationError> details;
 
     /**
@@ -147,5 +146,52 @@ public final class AcsRouterCommunicationError {
     public AcsRouterCommunicationError setDetails(List<AcsRouterCommunicationError> details) {
         this.details = details;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeJsonField("innererror", this.innererror);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterCommunicationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterCommunicationError if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterCommunicationError.
+     */
+    public static AcsRouterCommunicationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterCommunicationError deserializedAcsRouterCommunicationError = new AcsRouterCommunicationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAcsRouterCommunicationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAcsRouterCommunicationError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedAcsRouterCommunicationError.target = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedAcsRouterCommunicationError.innererror = AcsRouterCommunicationError.fromJson(reader);
+                } else if ("details".equals(fieldName)) {
+                    List<AcsRouterCommunicationError> details
+                        = reader.readArray(reader1 -> AcsRouterCommunicationError.fromJson(reader1));
+                    deserializedAcsRouterCommunicationError.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterCommunicationError;
+        });
     }
 }

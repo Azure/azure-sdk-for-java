@@ -5,8 +5,12 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of common properties of all chat thread events.
@@ -16,13 +20,11 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     /*
      * The original creation time of the thread
      */
-    @JsonProperty(value = "createTime")
     private OffsetDateTime createTime;
 
     /*
      * The version of the thread
      */
-    @JsonProperty(value = "version")
     private Long version;
 
     /**
@@ -97,5 +99,54 @@ public class AcsChatThreadEventBaseProperties extends AcsChatEventBaseProperties
     public AcsChatThreadEventBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recipientCommunicationIdentifier", getRecipientCommunicationIdentifier());
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            this.createTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createTime));
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadEventBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadEventBaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadEventBaseProperties.
+     */
+    public static AcsChatThreadEventBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadEventBaseProperties deserializedAcsChatThreadEventBaseProperties
+                = new AcsChatThreadEventBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recipientCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadEventBaseProperties
+                        .setRecipientCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadEventBaseProperties.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadEventBaseProperties.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadEventBaseProperties.createTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadEventBaseProperties.version = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadEventBaseProperties;
+        });
     }
 }

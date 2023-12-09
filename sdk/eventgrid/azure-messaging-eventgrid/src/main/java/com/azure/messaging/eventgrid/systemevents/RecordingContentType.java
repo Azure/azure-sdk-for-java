@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RecordingContentType extends ExpandableStringEnum<RecordingCo
      * @param name a name to look for.
      * @return the corresponding RecordingContentType.
      */
-    @JsonCreator
     public static RecordingContentType fromString(String name) {
         return fromString(name, RecordingContentType.class);
     }

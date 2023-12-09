@@ -5,72 +5,66 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the device twin, which is the cloud representation of application device metadata.
  */
 @Fluent
-public final class DeviceTwinInfo {
+public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     /*
      * Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      */
-    @JsonProperty(value = "authenticationType")
     private String authenticationType;
 
     /*
      * Count of cloud to device messages sent to this device.
      */
-    @JsonProperty(value = "cloudToDeviceMessageCount")
     private Float cloudToDeviceMessageCount;
 
     /*
      * Whether the device is connected or disconnected.
      */
-    @JsonProperty(value = "connectionState")
     private String connectionState;
 
     /*
      * The unique identifier of the device twin.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per
      * device twin.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The ISO8601 timestamp of the last activity.
      */
-    @JsonProperty(value = "lastActivityTime")
     private String lastActivityTime;
 
     /*
      * Properties JSON element.
      */
-    @JsonProperty(value = "properties")
     private DeviceTwinInfoProperties properties;
 
     /*
      * Whether the device twin is enabled or disabled.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The ISO8601 timestamp of the last device twin status update.
      */
-    @JsonProperty(value = "statusUpdateTime")
     private String statusUpdateTime;
 
     /*
      * An integer that is incremented by one each time the device twin is updated.
      */
-    @JsonProperty(value = "version")
     private Float version;
 
     /*
@@ -78,7 +72,6 @@ public final class DeviceTwinInfo {
      * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically
      * exist in the certificate.
      */
-    @JsonProperty(value = "x509Thumbprint")
     private DeviceTwinInfoX509Thumbprint x509Thumbprint;
 
     /**
@@ -313,5 +306,68 @@ public final class DeviceTwinInfo {
     public DeviceTwinInfo setX509Thumbprint(DeviceTwinInfoX509Thumbprint x509Thumbprint) {
         this.x509Thumbprint = x509Thumbprint;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType", this.authenticationType);
+        jsonWriter.writeNumberField("cloudToDeviceMessageCount", this.cloudToDeviceMessageCount);
+        jsonWriter.writeStringField("connectionState", this.connectionState);
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("lastActivityTime", this.lastActivityTime);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusUpdateTime", this.statusUpdateTime);
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeJsonField("x509Thumbprint", this.x509Thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTwinInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTwinInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTwinInfo.
+     */
+    public static DeviceTwinInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTwinInfo deserializedDeviceTwinInfo = new DeviceTwinInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationType".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.authenticationType = reader.getString();
+                } else if ("cloudToDeviceMessageCount".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.cloudToDeviceMessageCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.connectionState = reader.getString();
+                } else if ("deviceId".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.deviceId = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.etag = reader.getString();
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.lastActivityTime = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.properties = DeviceTwinInfoProperties.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.status = reader.getString();
+                } else if ("statusUpdateTime".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.statusUpdateTime = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.version = reader.getNullable(JsonReader::getFloat);
+                } else if ("x509Thumbprint".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.x509Thumbprint = DeviceTwinInfoX509Thumbprint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTwinInfo;
+        });
     }
 }

@@ -5,30 +5,32 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The details of the authorization for the resource.
  */
 @Fluent
-public final class ResourceAuthorization {
+public final class ResourceAuthorization implements JsonSerializable<ResourceAuthorization> {
     /*
      * The scope of the authorization.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The action being requested.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * The evidence for the authorization.
      */
-    @JsonProperty(value = "evidence")
     private Map<String, String> evidence;
 
     /**
@@ -39,7 +41,7 @@ public final class ResourceAuthorization {
 
     /**
      * Get the scope property: The scope of the authorization.
-     * 
+     *
      * @return the scope value.
      */
     public String getScope() {
@@ -48,7 +50,7 @@ public final class ResourceAuthorization {
 
     /**
      * Set the scope property: The scope of the authorization.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -59,7 +61,7 @@ public final class ResourceAuthorization {
 
     /**
      * Get the action property: The action being requested.
-     * 
+     *
      * @return the action value.
      */
     public String getAction() {
@@ -68,7 +70,7 @@ public final class ResourceAuthorization {
 
     /**
      * Set the action property: The action being requested.
-     * 
+     *
      * @param action the action value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -79,7 +81,7 @@ public final class ResourceAuthorization {
 
     /**
      * Get the evidence property: The evidence for the authorization.
-     * 
+     *
      * @return the evidence value.
      */
     public Map<String, String> getEvidence() {
@@ -88,12 +90,52 @@ public final class ResourceAuthorization {
 
     /**
      * Set the evidence property: The evidence for the authorization.
-     * 
+     *
      * @param evidence the evidence value to set.
      * @return the ResourceAuthorization object itself.
      */
     public ResourceAuthorization setEvidence(Map<String, String> evidence) {
         this.evidence = evidence;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeMapField("evidence", this.evidence, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceAuthorization from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceAuthorization if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceAuthorization.
+     */
+    public static ResourceAuthorization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceAuthorization deserializedResourceAuthorization = new ResourceAuthorization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedResourceAuthorization.scope = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedResourceAuthorization.action = reader.getString();
+                } else if ("evidence".equals(fieldName)) {
+                    Map<String, String> evidence = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceAuthorization.evidence = evidence;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceAuthorization;
+        });
     }
 }

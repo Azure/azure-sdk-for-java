@@ -5,7 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +20,6 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
     /*
      * Gets the Job outputs.
      */
-    @JsonProperty(value = "outputs")
     private List<MediaJobOutput> outputs;
 
     /**
@@ -53,5 +55,49 @@ public final class MediaJobFinishedEventData extends MediaJobStateChangeEventDat
     public MediaJobFinishedEventData setCorrelationData(Map<String, String> correlationData) {
         super.setCorrelationData(correlationData);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("correlationData", getCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobFinishedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobFinishedEventData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobFinishedEventData.
+     */
+    public static MediaJobFinishedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobFinishedEventData deserializedMediaJobFinishedEventData = new MediaJobFinishedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobFinishedEventData
+                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaJobFinishedEventData.setState(MediaJobState.fromString(reader.getString()));
+                } else if ("correlationData".equals(fieldName)) {
+                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobFinishedEventData.setCorrelationData(correlationData);
+                } else if ("outputs".equals(fieldName)) {
+                    List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
+                    deserializedMediaJobFinishedEventData.outputs = outputs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobFinishedEventData;
+        });
     }
 }

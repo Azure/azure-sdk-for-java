@@ -5,8 +5,12 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -17,31 +21,26 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
     /*
      * Status of Delivery
      */
-    @JsonProperty(value = "deliveryStatus")
     private String deliveryStatus;
 
     /*
      * Details about Delivery Status
      */
-    @JsonProperty(value = "deliveryStatusDetails")
     private String deliveryStatusDetails;
 
     /*
      * List of details of delivery attempts made
      */
-    @JsonProperty(value = "deliveryAttempts")
     private List<AcsSmsDeliveryAttemptProperties> deliveryAttempts;
 
     /*
      * The time at which the SMS delivery report was received
      */
-    @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
 
     /*
      * Customer Content
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
     /**
@@ -176,5 +175,65 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
     public AcsSmsDeliveryReportReceivedEventData setTo(String to) {
         super.setTo(to);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeStringField("from", getFrom());
+        jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeStringField("deliveryStatus", this.deliveryStatus);
+        jsonWriter.writeStringField("deliveryStatusDetails", this.deliveryStatusDetails);
+        jsonWriter.writeArrayField("deliveryAttempts", this.deliveryAttempts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("tag", this.tag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsSmsDeliveryReportReceivedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsSmsDeliveryReportReceivedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsSmsDeliveryReportReceivedEventData.
+     */
+    public static AcsSmsDeliveryReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsSmsDeliveryReportReceivedEventData deserializedAcsSmsDeliveryReportReceivedEventData
+                = new AcsSmsDeliveryReportReceivedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setMessageId(reader.getString());
+                } else if ("from".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setFrom(reader.getString());
+                } else if ("to".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setTo(reader.getString());
+                } else if ("deliveryStatus".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryStatus = reader.getString();
+                } else if ("deliveryStatusDetails".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryStatusDetails = reader.getString();
+                } else if ("deliveryAttempts".equals(fieldName)) {
+                    List<AcsSmsDeliveryAttemptProperties> deliveryAttempts
+                        = reader.readArray(reader1 -> AcsSmsDeliveryAttemptProperties.fromJson(reader1));
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryAttempts = deliveryAttempts;
+                } else if ("receivedTimestamp".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.receivedTimestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("tag".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.tag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsSmsDeliveryReportReceivedEventData;
+        });
     }
 }

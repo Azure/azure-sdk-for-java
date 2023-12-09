@@ -5,8 +5,12 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSReceived event.
@@ -16,13 +20,11 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     /*
      * The SMS content
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The time at which the SMS was received
      */
-    @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
 
     /**
@@ -96,5 +98,52 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
     public AcsSmsReceivedEventData setTo(String to) {
         super.setTo(to);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeStringField("from", getFrom());
+        jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsSmsReceivedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsSmsReceivedEventData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsSmsReceivedEventData.
+     */
+    public static AcsSmsReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsSmsReceivedEventData deserializedAcsSmsReceivedEventData = new AcsSmsReceivedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.setMessageId(reader.getString());
+                } else if ("from".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.setFrom(reader.getString());
+                } else if ("to".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.setTo(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.message = reader.getString();
+                } else if ("receivedTimestamp".equals(fieldName)) {
+                    deserializedAcsSmsReceivedEventData.receivedTimestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsSmsReceivedEventData;
+        });
     }
 }

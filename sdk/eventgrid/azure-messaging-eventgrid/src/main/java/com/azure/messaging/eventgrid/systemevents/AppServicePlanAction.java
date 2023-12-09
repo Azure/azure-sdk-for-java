@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
      * @param name a name to look for.
      * @return the corresponding AppServicePlanAction.
      */
-    @JsonCreator
     public static AppServicePlanAction fromString(String name) {
         return fromString(name, AppServicePlanAction.class);
     }

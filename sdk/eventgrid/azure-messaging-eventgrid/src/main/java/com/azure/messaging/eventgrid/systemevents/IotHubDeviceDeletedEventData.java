@@ -5,6 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Event data for Microsoft.Devices.DeviceDeleted event.
@@ -42,5 +46,44 @@ public final class IotHubDeviceDeletedEventData extends DeviceLifeCycleEventProp
     public IotHubDeviceDeletedEventData setTwin(DeviceTwinInfo twin) {
         super.setTwin(twin);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", getDeviceId());
+        jsonWriter.writeStringField("hubName", getHubName());
+        jsonWriter.writeJsonField("twin", getTwin());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubDeviceDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubDeviceDeletedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotHubDeviceDeletedEventData.
+     */
+    public static IotHubDeviceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubDeviceDeletedEventData deserializedIotHubDeviceDeletedEventData = new IotHubDeviceDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedIotHubDeviceDeletedEventData.setDeviceId(reader.getString());
+                } else if ("hubName".equals(fieldName)) {
+                    deserializedIotHubDeviceDeletedEventData.setHubName(reader.getString());
+                } else if ("twin".equals(fieldName)) {
+                    deserializedIotHubDeviceDeletedEventData.setTwin(DeviceTwinInfo.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubDeviceDeletedEventData;
+        });
     }
 }

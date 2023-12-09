@@ -5,30 +5,31 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Media.JobStateChange event.
  */
 @Fluent
-public class MediaJobStateChangeEventData {
+public class MediaJobStateChangeEventData implements JsonSerializable<MediaJobStateChangeEventData> {
     /*
      * The previous state of the Job.
      */
-    @JsonProperty(value = "previousState", access = JsonProperty.Access.WRITE_ONLY)
     private MediaJobState previousState;
 
     /*
      * The new state of the Job.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MediaJobState state;
 
     /*
      * Gets the Job correlation data.
      */
-    @JsonProperty(value = "correlationData")
     private Map<String, String> correlationData;
 
     /**
@@ -47,12 +48,34 @@ public class MediaJobStateChangeEventData {
     }
 
     /**
+     * Set the previousState property: The previous state of the Job.
+     * 
+     * @param previousState the previousState value to set.
+     * @return the MediaJobStateChangeEventData object itself.
+     */
+    MediaJobStateChangeEventData setPreviousState(MediaJobState previousState) {
+        this.previousState = previousState;
+        return this;
+    }
+
+    /**
      * Get the state property: The new state of the Job.
      * 
      * @return the state value.
      */
     public MediaJobState getState() {
         return this.state;
+    }
+
+    /**
+     * Set the state property: The new state of the Job.
+     * 
+     * @param state the state value to set.
+     * @return the MediaJobStateChangeEventData object itself.
+     */
+    MediaJobStateChangeEventData setState(MediaJobState state) {
+        this.state = state;
+        return this;
     }
 
     /**
@@ -73,5 +96,45 @@ public class MediaJobStateChangeEventData {
     public MediaJobStateChangeEventData setCorrelationData(Map<String, String> correlationData) {
         this.correlationData = correlationData;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("correlationData", this.correlationData,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobStateChangeEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobStateChangeEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobStateChangeEventData.
+     */
+    public static MediaJobStateChangeEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobStateChangeEventData deserializedMediaJobStateChangeEventData = new MediaJobStateChangeEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobStateChangeEventData.previousState
+                        = MediaJobState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaJobStateChangeEventData.state = MediaJobState.fromString(reader.getString());
+                } else if ("correlationData".equals(fieldName)) {
+                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobStateChangeEventData.correlationData = correlationData;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobStateChangeEventData;
+        });
     }
 }

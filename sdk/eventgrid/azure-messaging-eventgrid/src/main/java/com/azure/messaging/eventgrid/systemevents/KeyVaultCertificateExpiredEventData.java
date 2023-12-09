@@ -5,53 +5,51 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateExpired event.
  */
 @Fluent
-public final class KeyVaultCertificateExpiredEventData {
+public final class KeyVaultCertificateExpiredEventData
+    implements JsonSerializable<KeyVaultCertificateExpiredEventData> {
     /*
      * The id of the object that triggered this event.
      */
-    @JsonProperty(value = "Id")
     private String id;
 
     /*
      * Key vault name of the object that triggered this event.
      */
-    @JsonProperty(value = "VaultName")
     private String vaultName;
 
     /*
      * The type of the object that triggered this event
      */
-    @JsonProperty(value = "ObjectType")
     private String objectType;
 
     /*
      * The name of the object that triggered this event
      */
-    @JsonProperty(value = "ObjectName")
     private String objectName;
 
     /*
      * The version of the object that triggered this event
      */
-    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * Not before date of the object that triggered this event
      */
-    @JsonProperty(value = "NBF")
     private Float nbf;
 
     /*
      * The expiration date of the object that triggered this event
      */
-    @JsonProperty(value = "EXP")
     private Float exp;
 
     /**
@@ -198,5 +196,57 @@ public final class KeyVaultCertificateExpiredEventData {
     public KeyVaultCertificateExpiredEventData setExp(Float exp) {
         this.exp = exp;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Id", this.id);
+        jsonWriter.writeStringField("VaultName", this.vaultName);
+        jsonWriter.writeStringField("ObjectType", this.objectType);
+        jsonWriter.writeStringField("ObjectName", this.objectName);
+        jsonWriter.writeStringField("Version", this.version);
+        jsonWriter.writeNumberField("NBF", this.nbf);
+        jsonWriter.writeNumberField("EXP", this.exp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultCertificateExpiredEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultCertificateExpiredEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultCertificateExpiredEventData.
+     */
+    public static KeyVaultCertificateExpiredEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultCertificateExpiredEventData deserializedKeyVaultCertificateExpiredEventData
+                = new KeyVaultCertificateExpiredEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Id".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.id = reader.getString();
+                } else if ("VaultName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.vaultName = reader.getString();
+                } else if ("ObjectType".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.objectType = reader.getString();
+                } else if ("ObjectName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.objectName = reader.getString();
+                } else if ("Version".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.version = reader.getString();
+                } else if ("NBF".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.nbf = reader.getNullable(JsonReader::getFloat);
+                } else if ("EXP".equals(fieldName)) {
+                    deserializedKeyVaultCertificateExpiredEventData.exp = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultCertificateExpiredEventData;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Detail of action on the app.
  */
 @Fluent
-public final class AppEventTypeDetail {
+public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDetail> {
     /*
      * Type of action of the operation.
      */
-    @JsonProperty(value = "action")
     private AppAction action;
 
     /**
@@ -42,5 +45,38 @@ public final class AppEventTypeDetail {
     public AppEventTypeDetail setAction(AppAction action) {
         this.action = action;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppEventTypeDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppEventTypeDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppEventTypeDetail.
+     */
+    public static AppEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppEventTypeDetail deserializedAppEventTypeDetail = new AppEventTypeDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedAppEventTypeDetail.action = AppAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppEventTypeDetail;
+        });
     }
 }

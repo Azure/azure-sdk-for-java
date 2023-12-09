@@ -5,19 +5,22 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the device connection state event.
  */
 @Fluent
-public final class DeviceConnectionStateEventInfo {
+public final class DeviceConnectionStateEventInfo implements JsonSerializable<DeviceConnectionStateEventInfo> {
     /*
      * Sequence number is string representation of a hexadecimal number. string compare can be used to identify the
      * larger number because both in ASCII and HEX numbers come after alphabets. If you are converting the string to
      * hex, then the number is a 256 bit number.
      */
-    @JsonProperty(value = "sequenceNumber")
     private String sequenceNumber;
 
     /**
@@ -48,5 +51,39 @@ public final class DeviceConnectionStateEventInfo {
     public DeviceConnectionStateEventInfo setSequenceNumber(String sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sequenceNumber", this.sequenceNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceConnectionStateEventInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceConnectionStateEventInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceConnectionStateEventInfo.
+     */
+    public static DeviceConnectionStateEventInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceConnectionStateEventInfo deserializedDeviceConnectionStateEventInfo
+                = new DeviceConnectionStateEventInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sequenceNumber".equals(fieldName)) {
+                    deserializedDeviceConnectionStateEventInfo.sequenceNumber = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceConnectionStateEventInfo;
+        });
     }
 }

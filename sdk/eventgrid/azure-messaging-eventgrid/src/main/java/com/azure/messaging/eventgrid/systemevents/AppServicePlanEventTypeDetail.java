@@ -5,29 +5,30 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Detail of action on the app service plan.
  */
 @Fluent
-public final class AppServicePlanEventTypeDetail {
+public final class AppServicePlanEventTypeDetail implements JsonSerializable<AppServicePlanEventTypeDetail> {
     /*
      * Kind of environment where app service plan is.
      */
-    @JsonProperty(value = "stampKind")
     private StampKind stampKind;
 
     /*
      * Type of action on the app service plan.
      */
-    @JsonProperty(value = "action")
     private AppServicePlanAction action;
 
     /*
      * Asynchronous operation status of the operation on the app service plan.
      */
-    @JsonProperty(value = "status")
     private AsyncStatus status;
 
     /**
@@ -94,5 +95,46 @@ public final class AppServicePlanEventTypeDetail {
     public AppServicePlanEventTypeDetail setStatus(AsyncStatus status) {
         this.status = status;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("stampKind", this.stampKind == null ? null : this.stampKind.toString());
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServicePlanEventTypeDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServicePlanEventTypeDetail if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppServicePlanEventTypeDetail.
+     */
+    public static AppServicePlanEventTypeDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServicePlanEventTypeDetail deserializedAppServicePlanEventTypeDetail
+                = new AppServicePlanEventTypeDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stampKind".equals(fieldName)) {
+                    deserializedAppServicePlanEventTypeDetail.stampKind = StampKind.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedAppServicePlanEventTypeDetail.action
+                        = AppServicePlanAction.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedAppServicePlanEventTypeDetail.status = AsyncStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServicePlanEventTypeDetail;
+        });
     }
 }

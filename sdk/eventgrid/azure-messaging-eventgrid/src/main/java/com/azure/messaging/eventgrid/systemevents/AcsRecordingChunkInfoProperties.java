@@ -5,47 +5,45 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema for all properties of Recording Chunk Information.
  */
 @Fluent
-public final class AcsRecordingChunkInfoProperties {
+public final class AcsRecordingChunkInfoProperties implements JsonSerializable<AcsRecordingChunkInfoProperties> {
     /*
      * The documentId of the recording chunk
      */
-    @JsonProperty(value = "documentId")
     private String documentId;
 
     /*
      * The index of the recording chunk
      */
-    @JsonProperty(value = "index")
     private Long index;
 
     /*
      * The reason for ending the recording chunk
      */
-    @JsonProperty(value = "endReason")
     private String endReason;
 
     /*
      * The location of the metadata for this chunk
      */
-    @JsonProperty(value = "metadataLocation")
     private String metadataLocation;
 
     /*
      * The location of the content for this chunk
      */
-    @JsonProperty(value = "contentLocation")
     private String contentLocation;
 
     /*
      * The location to delete all chunk storage
      */
-    @JsonProperty(value = "deleteLocation")
     private String deleteLocation;
 
     /**
@@ -172,5 +170,54 @@ public final class AcsRecordingChunkInfoProperties {
     public AcsRecordingChunkInfoProperties setDeleteLocation(String deleteLocation) {
         this.deleteLocation = deleteLocation;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("documentId", this.documentId);
+        jsonWriter.writeNumberField("index", this.index);
+        jsonWriter.writeStringField("endReason", this.endReason);
+        jsonWriter.writeStringField("metadataLocation", this.metadataLocation);
+        jsonWriter.writeStringField("contentLocation", this.contentLocation);
+        jsonWriter.writeStringField("deleteLocation", this.deleteLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRecordingChunkInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRecordingChunkInfoProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRecordingChunkInfoProperties.
+     */
+    public static AcsRecordingChunkInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRecordingChunkInfoProperties deserializedAcsRecordingChunkInfoProperties
+                = new AcsRecordingChunkInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("documentId".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.documentId = reader.getString();
+                } else if ("index".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.index = reader.getNullable(JsonReader::getLong);
+                } else if ("endReason".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.endReason = reader.getString();
+                } else if ("metadataLocation".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.metadataLocation = reader.getString();
+                } else if ("contentLocation".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.contentLocation = reader.getString();
+                } else if ("deleteLocation".equals(fieldName)) {
+                    deserializedAcsRecordingChunkInfoProperties.deleteLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRecordingChunkInfoProperties;
+        });
     }
 }

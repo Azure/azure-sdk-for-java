@@ -5,8 +5,12 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
@@ -17,25 +21,21 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     /*
      * The communication identifier of the user who updated the thread properties
      */
-    @JsonProperty(value = "editedByCommunicationIdentifier")
     private CommunicationIdentifierModel editedByCommunicationIdentifier;
 
     /*
      * The time at which the properties of the thread were updated
      */
-    @JsonProperty(value = "editTime")
     private OffsetDateTime editTime;
 
     /*
      * The updated thread properties
      */
-    @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
     /*
      * The thread metadata
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -161,5 +161,68 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     public AcsChatThreadPropertiesUpdatedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
+        jsonWriter.writeStringField("editTime",
+            this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadPropertiesUpdatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadPropertiesUpdatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadPropertiesUpdatedEventData.
+     */
+    public static AcsChatThreadPropertiesUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadPropertiesUpdatedEventData deserializedAcsChatThreadPropertiesUpdatedEventData
+                = new AcsChatThreadPropertiesUpdatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setCreateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData
+                        .setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("editedByCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editedByCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("editTime".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.properties = properties;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadPropertiesUpdatedEventData;
+        });
     }
 }

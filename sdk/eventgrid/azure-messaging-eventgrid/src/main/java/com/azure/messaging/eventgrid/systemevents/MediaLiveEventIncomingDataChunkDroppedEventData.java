@@ -5,48 +5,47 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Ingest fragment dropped event data. Schema of the data property of an EventGridEvent for a
  * Microsoft.Media.LiveEventIncomingDataChunkDropped event.
  */
 @Immutable
-public final class MediaLiveEventIncomingDataChunkDroppedEventData {
+public final class MediaLiveEventIncomingDataChunkDroppedEventData
+    implements JsonSerializable<MediaLiveEventIncomingDataChunkDroppedEventData> {
     /*
      * Gets the timestamp of the data chunk dropped.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String timestamp;
 
     /*
      * Gets the type of the track (Audio / Video).
      */
-    @JsonProperty(value = "trackType", access = JsonProperty.Access.WRITE_ONLY)
     private String trackType;
 
     /*
      * Gets the bitrate of the track.
      */
-    @JsonProperty(value = "bitrate", access = JsonProperty.Access.WRITE_ONLY)
     private Long bitrate;
 
     /*
      * Gets the timescale of the Timestamp.
      */
-    @JsonProperty(value = "timescale", access = JsonProperty.Access.WRITE_ONLY)
     private String timescale;
 
     /*
      * Gets the result code for fragment drop operation.
      */
-    @JsonProperty(value = "resultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String resultCode;
 
     /*
      * Gets the name of the track for which fragment is dropped.
      */
-    @JsonProperty(value = "trackName", access = JsonProperty.Access.WRITE_ONLY)
     private String trackName;
 
     /**
@@ -107,5 +106,49 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData {
      */
     public String getTrackName() {
         return this.trackName;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaLiveEventIncomingDataChunkDroppedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventIncomingDataChunkDroppedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaLiveEventIncomingDataChunkDroppedEventData.
+     */
+    public static MediaLiveEventIncomingDataChunkDroppedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventIncomingDataChunkDroppedEventData deserializedMediaLiveEventIncomingDataChunkDroppedEventData
+                = new MediaLiveEventIncomingDataChunkDroppedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.timestamp = reader.getString();
+                } else if ("trackType".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.trackType = reader.getString();
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.bitrate
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("timescale".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.timescale = reader.getString();
+                } else if ("resultCode".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.resultCode = reader.getString();
+                } else if ("trackName".equals(fieldName)) {
+                    deserializedMediaLiveEventIncomingDataChunkDroppedEventData.trackName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaLiveEventIncomingDataChunkDroppedEventData;
+        });
     }
 }

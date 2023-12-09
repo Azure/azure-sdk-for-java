@@ -5,7 +5,11 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -13,23 +17,20 @@ import java.util.Map;
  * Microsoft.Media.JobOutputProgress event.
  */
 @Fluent
-public final class MediaJobOutputProgressEventData {
+public final class MediaJobOutputProgressEventData implements JsonSerializable<MediaJobOutputProgressEventData> {
     /*
      * Gets the Job output label.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Gets the Job output progress.
      */
-    @JsonProperty(value = "progress")
     private Long progress;
 
     /*
      * Gets the Job correlation data.
      */
-    @JsonProperty(value = "jobCorrelationData")
     private Map<String, String> jobCorrelationData;
 
     /**
@@ -96,5 +97,47 @@ public final class MediaJobOutputProgressEventData {
     public MediaJobOutputProgressEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
         this.jobCorrelationData = jobCorrelationData;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeNumberField("progress", this.progress);
+        jsonWriter.writeMapField("jobCorrelationData", this.jobCorrelationData,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobOutputProgressEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobOutputProgressEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobOutputProgressEventData.
+     */
+    public static MediaJobOutputProgressEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobOutputProgressEventData deserializedMediaJobOutputProgressEventData
+                = new MediaJobOutputProgressEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedMediaJobOutputProgressEventData.label = reader.getString();
+                } else if ("progress".equals(fieldName)) {
+                    deserializedMediaJobOutputProgressEventData.progress = reader.getNullable(JsonReader::getLong);
+                } else if ("jobCorrelationData".equals(fieldName)) {
+                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobOutputProgressEventData.jobCorrelationData = jobCorrelationData;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobOutputProgressEventData;
+        });
     }
 }

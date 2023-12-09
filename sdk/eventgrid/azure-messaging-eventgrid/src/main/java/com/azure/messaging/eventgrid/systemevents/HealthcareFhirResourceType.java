@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -846,7 +845,6 @@ public final class HealthcareFhirResourceType extends ExpandableStringEnum<Healt
      * @param name a name to look for.
      * @return the corresponding HealthcareFhirResourceType.
      */
-    @JsonCreator
     public static HealthcareFhirResourceType fromString(String name) {
         return fromString(name, HealthcareFhirResourceType.class);
     }

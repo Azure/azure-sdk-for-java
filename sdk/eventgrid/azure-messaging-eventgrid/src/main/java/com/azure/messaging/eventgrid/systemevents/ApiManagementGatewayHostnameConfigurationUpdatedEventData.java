@@ -5,21 +5,25 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated
  * event.
  */
 @Fluent
-public final class ApiManagementGatewayHostnameConfigurationUpdatedEventData {
+public final class ApiManagementGatewayHostnameConfigurationUpdatedEventData
+    implements JsonSerializable<ApiManagementGatewayHostnameConfigurationUpdatedEventData> {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
      * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/
      * gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /**
@@ -50,5 +54,42 @@ public final class ApiManagementGatewayHostnameConfigurationUpdatedEventData {
     public ApiManagementGatewayHostnameConfigurationUpdatedEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementGatewayHostnameConfigurationUpdatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementGatewayHostnameConfigurationUpdatedEventData if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApiManagementGatewayHostnameConfigurationUpdatedEventData.
+     */
+    public static ApiManagementGatewayHostnameConfigurationUpdatedEventData fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementGatewayHostnameConfigurationUpdatedEventData deserializedApiManagementGatewayHostnameConfigurationUpdatedEventData
+                = new ApiManagementGatewayHostnameConfigurationUpdatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedApiManagementGatewayHostnameConfigurationUpdatedEventData.resourceUri
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementGatewayHostnameConfigurationUpdatedEventData;
+        });
     }
 }

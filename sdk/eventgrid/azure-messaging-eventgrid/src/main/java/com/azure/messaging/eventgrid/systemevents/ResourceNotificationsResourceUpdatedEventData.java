@@ -5,29 +5,31 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the schema of the common properties across all ARN system topic events.
  */
 @Fluent
-public class ResourceNotificationsResourceUpdatedEventData {
+public class ResourceNotificationsResourceUpdatedEventData
+    implements JsonSerializable<ResourceNotificationsResourceUpdatedEventData> {
     /*
      * resourceInfo details for update event
      */
-    @JsonProperty(value = "resourceInfo")
     private ResourceNotificationsResourceUpdatedDetails resourceDetails;
 
     /*
      * details about operational info
      */
-    @JsonProperty(value = "operationalInfo")
     private ResourceNotificationsOperationalDetails operationalDetails;
 
     /*
      * api version of the resource properties bag
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /**
@@ -96,5 +98,47 @@ public class ResourceNotificationsResourceUpdatedEventData {
     public ResourceNotificationsResourceUpdatedEventData setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
+        jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceNotificationsResourceUpdatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceNotificationsResourceUpdatedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedEventData.
+     */
+    public static ResourceNotificationsResourceUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceNotificationsResourceUpdatedEventData deserializedResourceNotificationsResourceUpdatedEventData
+                = new ResourceNotificationsResourceUpdatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceInfo".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedEventData.resourceDetails
+                        = ResourceNotificationsResourceUpdatedDetails.fromJson(reader);
+                } else if ("operationalInfo".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedEventData.operationalDetails
+                        = ResourceNotificationsOperationalDetails.fromJson(reader);
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceUpdatedEventData.apiVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceNotificationsResourceUpdatedEventData;
+        });
     }
 }

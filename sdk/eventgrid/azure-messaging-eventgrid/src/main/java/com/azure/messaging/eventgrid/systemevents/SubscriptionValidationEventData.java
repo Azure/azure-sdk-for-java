@@ -5,19 +5,22 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionValidationEvent event.
  */
 @Immutable
-public final class SubscriptionValidationEventData {
+public final class SubscriptionValidationEventData implements JsonSerializable<SubscriptionValidationEventData> {
     /*
      * The validation code sent by Azure Event Grid to validate an event subscription. To complete the validation
      * handshake, the subscriber must either respond with this validation code as part of the validation response, or
      * perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
-    @JsonProperty(value = "validationCode", access = JsonProperty.Access.WRITE_ONLY)
     private String validationCode;
 
     /*
@@ -25,7 +28,6 @@ public final class SubscriptionValidationEventData {
      * validation handshake, the subscriber must either respond with the validationCode as part of the validation
      * response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
      */
-    @JsonProperty(value = "validationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String validationUrl;
 
     /**
@@ -56,5 +58,40 @@ public final class SubscriptionValidationEventData {
      */
     public String getValidationUrl() {
         return this.validationUrl;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionValidationEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionValidationEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionValidationEventData.
+     */
+    public static SubscriptionValidationEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionValidationEventData deserializedSubscriptionValidationEventData
+                = new SubscriptionValidationEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationCode".equals(fieldName)) {
+                    deserializedSubscriptionValidationEventData.validationCode = reader.getString();
+                } else if ("validationUrl".equals(fieldName)) {
+                    deserializedSubscriptionValidationEventData.validationUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionValidationEventData;
+        });
     }
 }

@@ -5,30 +5,31 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Schema of the chat thread participant.
  */
 @Fluent
-public final class AcsChatThreadParticipantProperties {
+public final class AcsChatThreadParticipantProperties implements JsonSerializable<AcsChatThreadParticipantProperties> {
     /*
      * The name of the user
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The communication identifier of the user
      */
-    @JsonProperty(value = "participantCommunicationIdentifier")
     private CommunicationIdentifierModel participantCommunicationIdentifier;
 
     /*
      * The metadata of the user
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -96,5 +97,47 @@ public final class AcsChatThreadParticipantProperties {
     public AcsChatThreadParticipantProperties setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("participantCommunicationIdentifier", this.participantCommunicationIdentifier);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadParticipantProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadParticipantProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadParticipantProperties.
+     */
+    public static AcsChatThreadParticipantProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadParticipantProperties deserializedAcsChatThreadParticipantProperties
+                = new AcsChatThreadParticipantProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedAcsChatThreadParticipantProperties.displayName = reader.getString();
+                } else if ("participantCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadParticipantProperties.participantCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatThreadParticipantProperties.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadParticipantProperties;
+        });
     }
 }

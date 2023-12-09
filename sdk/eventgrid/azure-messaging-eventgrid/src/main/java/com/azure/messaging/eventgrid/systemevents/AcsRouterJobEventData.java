@@ -5,7 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,19 +19,16 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     /*
      * Router Job events Queue Id
      */
-    @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Router Job events Labels
      */
-    @JsonProperty(value = "labels")
     private Map<String, String> labels;
 
     /*
      * Router Jobs events Tags
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
@@ -122,5 +122,55 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
     public AcsRouterJobEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobEventData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobEventData.
+     */
+    public static AcsRouterJobEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.queueId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobEventData.labels = labels;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobEventData.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobEventData;
+        });
     }
 }

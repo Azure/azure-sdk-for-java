@@ -4,9 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The previous state of the Job.
  */
@@ -62,7 +59,6 @@ public enum MediaJobState {
      * @param value the serialized value to parse.
      * @return the parsed MediaJobState object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobState fromString(String value) {
         if (value == null) {
             return null;
@@ -79,7 +75,6 @@ public enum MediaJobState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

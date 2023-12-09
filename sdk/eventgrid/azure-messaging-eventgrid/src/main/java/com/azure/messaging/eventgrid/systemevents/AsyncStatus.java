@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
      * @param name a name to look for.
      * @return the corresponding AsyncStatus.
      */
-    @JsonCreator
     public static AsyncStatus fromString(String name) {
         return fromString(name, AsyncStatus.class);
     }

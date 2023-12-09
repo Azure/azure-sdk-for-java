@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
      * @param name a name to look for.
      * @return the corresponding StampKind.
      */
-    @JsonCreator
     public static StampKind fromString(String name) {
         return fromString(name, StampKind.class);
     }

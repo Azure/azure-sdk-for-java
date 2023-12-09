@@ -5,60 +5,63 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 
 /**
  * Properties of an event published to an Event Grid topic using the EventGrid Schema.
  */
 @Fluent
-public final class EventGridEvent {
+public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
     /*
      * An unique identifier for the event.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The resource path of the event source.
      */
-    @JsonProperty(value = "topic")
     private String topic;
 
     /*
      * A resource path relative to the topic path.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
     /*
      * Event data specific to the event type.
      */
-    @JsonProperty(value = "data", required = true)
     private Object data;
 
     /*
      * The type of the event that occurred.
      */
-    @JsonProperty(value = "eventType", required = true)
     private String eventType;
 
     /*
      * The time (in UTC) the event was generated.
      */
-    @JsonProperty(value = "eventTime", required = true)
     private OffsetDateTime eventTime;
 
     /*
      * The schema version of the event metadata.
      */
-    @JsonProperty(value = "metadataVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String metadataVersion;
 
     /*
      * The schema version of the data object.
      */
-    @JsonProperty(value = "dataVersion", required = true)
     private String dataVersion;
 
     /**
@@ -69,7 +72,7 @@ public final class EventGridEvent {
 
     /**
      * Get the id property: An unique identifier for the event.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -78,7 +81,7 @@ public final class EventGridEvent {
 
     /**
      * Set the id property: An unique identifier for the event.
-     * 
+     *
      * @param id the id value to set.
      * @return the EventGridEvent object itself.
      */
@@ -89,7 +92,7 @@ public final class EventGridEvent {
 
     /**
      * Get the topic property: The resource path of the event source.
-     * 
+     *
      * @return the topic value.
      */
     public String getTopic() {
@@ -98,7 +101,7 @@ public final class EventGridEvent {
 
     /**
      * Set the topic property: The resource path of the event source.
-     * 
+     *
      * @param topic the topic value to set.
      * @return the EventGridEvent object itself.
      */
@@ -109,7 +112,7 @@ public final class EventGridEvent {
 
     /**
      * Get the subject property: A resource path relative to the topic path.
-     * 
+     *
      * @return the subject value.
      */
     public String getSubject() {
@@ -118,7 +121,7 @@ public final class EventGridEvent {
 
     /**
      * Set the subject property: A resource path relative to the topic path.
-     * 
+     *
      * @param subject the subject value to set.
      * @return the EventGridEvent object itself.
      */
@@ -129,7 +132,7 @@ public final class EventGridEvent {
 
     /**
      * Get the data property: Event data specific to the event type.
-     * 
+     *
      * @return the data value.
      */
     public Object getData() {
@@ -138,7 +141,7 @@ public final class EventGridEvent {
 
     /**
      * Set the data property: Event data specific to the event type.
-     * 
+     *
      * @param data the data value to set.
      * @return the EventGridEvent object itself.
      */
@@ -149,7 +152,7 @@ public final class EventGridEvent {
 
     /**
      * Get the eventType property: The type of the event that occurred.
-     * 
+     *
      * @return the eventType value.
      */
     public String getEventType() {
@@ -158,7 +161,7 @@ public final class EventGridEvent {
 
     /**
      * Set the eventType property: The type of the event that occurred.
-     * 
+     *
      * @param eventType the eventType value to set.
      * @return the EventGridEvent object itself.
      */
@@ -169,7 +172,7 @@ public final class EventGridEvent {
 
     /**
      * Get the eventTime property: The time (in UTC) the event was generated.
-     * 
+     *
      * @return the eventTime value.
      */
     public OffsetDateTime getEventTime() {
@@ -178,7 +181,7 @@ public final class EventGridEvent {
 
     /**
      * Set the eventTime property: The time (in UTC) the event was generated.
-     * 
+     *
      * @param eventTime the eventTime value to set.
      * @return the EventGridEvent object itself.
      */
@@ -189,7 +192,7 @@ public final class EventGridEvent {
 
     /**
      * Get the metadataVersion property: The schema version of the event metadata.
-     * 
+     *
      * @return the metadataVersion value.
      */
     public String getMetadataVersion() {
@@ -198,7 +201,7 @@ public final class EventGridEvent {
 
     /**
      * Get the dataVersion property: The schema version of the data object.
-     * 
+     *
      * @return the dataVersion value.
      */
     public String getDataVersion() {
@@ -207,12 +210,87 @@ public final class EventGridEvent {
 
     /**
      * Set the dataVersion property: The schema version of the data object.
-     * 
+     *
      * @param dataVersion the dataVersion value to set.
      * @return the EventGridEvent object itself.
      */
     public EventGridEvent setDataVersion(String dataVersion) {
         this.dataVersion = dataVersion;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeUntypedField("data", this.data);
+        jsonWriter.writeStringField("eventType", this.eventType);
+        jsonWriter.writeStringField("eventTime",
+            this.eventTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.eventTime));
+        jsonWriter.writeStringField("dataVersion", this.dataVersion);
+        jsonWriter.writeStringField("topic", this.topic);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventGridEvent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGridEvent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventGridEvent.
+     */
+    public static EventGridEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGridEvent deserializedEventGridEvent = new EventGridEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventGridEvent.id = reader.getString();
+                } else if ("subject".equals(fieldName)) {
+                    deserializedEventGridEvent.subject = reader.getString();
+                } else if ("data".equals(fieldName)) {
+                    deserializedEventGridEvent.data = reader.readUntyped();
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedEventGridEvent.eventType = reader.getString();
+                } else if ("eventTime".equals(fieldName)) {
+                    deserializedEventGridEvent.eventTime
+                        = reader.getNullable(nonNullReader -> parseOffsetDateTimeBest(nonNullReader.getString()));
+                } else if ("dataVersion".equals(fieldName)) {
+                    deserializedEventGridEvent.dataVersion = reader.getString();
+                } else if ("topic".equals(fieldName)) {
+                    deserializedEventGridEvent.topic = reader.getString();
+                } else if ("metadataVersion".equals(fieldName)) {
+                    deserializedEventGridEvent.metadataVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventGridEvent;
+        });
+    }
+
+    /**
+     * Attempts to parse an ISO datetime string as best possible. The initial attempt will use
+     * {@link OffsetDateTime#from(TemporalAccessor)} and will fall back to
+     * {@link java.time.LocalDateTime#from(TemporalAccessor)} and apply {@link ZoneOffset#UTC} as the
+     * timezone.
+     *
+     * @param datetimeString The datetime string to parse.
+     * @return The {@link OffsetDateTime} representing the string.
+     * @throws DateTimeParseException If the datetime is neither an ISO offset datetime or ISO local datetime.
+     */
+    public static OffsetDateTime parseOffsetDateTimeBest(String datetimeString) {
+        TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
+                .parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
+
+        return  (temporal.query(TemporalQueries.offset()) == null)
+                ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
+                : OffsetDateTime.from(temporal);
     }
 }

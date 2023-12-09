@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      * @param name a name to look for.
      * @return the corresponding AcsEmailDeliveryReportStatus.
      */
-    @JsonCreator
     public static AcsEmailDeliveryReportStatus fromString(String name) {
         return fromString(name, AcsEmailDeliveryReportStatus.class);
     }

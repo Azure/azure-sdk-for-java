@@ -5,23 +5,25 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A portion of the properties that can be written only by the application back-end, and read by the device.
  */
 @Fluent
-public final class DeviceTwinProperties {
+public final class DeviceTwinProperties implements JsonSerializable<DeviceTwinProperties> {
     /*
      * Metadata information for the properties JSON document.
      */
-    @JsonProperty(value = "metadata")
     private DeviceTwinMetadata metadata;
 
     /*
      * Version of device twin properties.
      */
-    @JsonProperty(value = "version")
     private Float version;
 
     /**
@@ -68,5 +70,41 @@ public final class DeviceTwinProperties {
     public DeviceTwinProperties setVersion(Float version) {
         this.version = version;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTwinProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTwinProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTwinProperties.
+     */
+    public static DeviceTwinProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTwinProperties deserializedDeviceTwinProperties = new DeviceTwinProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedDeviceTwinProperties.metadata = DeviceTwinMetadata.fromJson(reader);
+                } else if ("version".equals(fieldName)) {
+                    deserializedDeviceTwinProperties.version = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTwinProperties;
+        });
     }
 }

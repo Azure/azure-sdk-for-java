@@ -5,35 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted event.
  */
 @Fluent
-public final class HealthcareFhirResourceDeletedEventData {
+public final class HealthcareFhirResourceDeletedEventData
+    implements JsonSerializable<HealthcareFhirResourceDeletedEventData> {
     /*
      * Type of HL7 FHIR resource.
      */
-    @JsonProperty(value = "resourceType")
     private HealthcareFhirResourceType fhirResourceType;
 
     /*
      * Domain name of FHIR account for this resource.
      */
-    @JsonProperty(value = "resourceFhirAccount")
     private String fhirServiceHostName;
 
     /*
      * Id of HL7 FHIR resource.
      */
-    @JsonProperty(value = "resourceFhirId")
     private String fhirResourceId;
 
     /*
      * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
      */
-    @JsonProperty(value = "resourceVersionId")
     private Long fhirResourceVersionId;
 
     /**
@@ -122,5 +123,51 @@ public final class HealthcareFhirResourceDeletedEventData {
     public HealthcareFhirResourceDeletedEventData setFhirResourceVersionId(Long fhirResourceVersionId) {
         this.fhirResourceVersionId = fhirResourceVersionId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType",
+            this.fhirResourceType == null ? null : this.fhirResourceType.toString());
+        jsonWriter.writeStringField("resourceFhirAccount", this.fhirServiceHostName);
+        jsonWriter.writeStringField("resourceFhirId", this.fhirResourceId);
+        jsonWriter.writeNumberField("resourceVersionId", this.fhirResourceVersionId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthcareFhirResourceDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthcareFhirResourceDeletedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthcareFhirResourceDeletedEventData.
+     */
+    public static HealthcareFhirResourceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthcareFhirResourceDeletedEventData deserializedHealthcareFhirResourceDeletedEventData
+                = new HealthcareFhirResourceDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedHealthcareFhirResourceDeletedEventData.fhirResourceType
+                        = HealthcareFhirResourceType.fromString(reader.getString());
+                } else if ("resourceFhirAccount".equals(fieldName)) {
+                    deserializedHealthcareFhirResourceDeletedEventData.fhirServiceHostName = reader.getString();
+                } else if ("resourceFhirId".equals(fieldName)) {
+                    deserializedHealthcareFhirResourceDeletedEventData.fhirResourceId = reader.getString();
+                } else if ("resourceVersionId".equals(fieldName)) {
+                    deserializedHealthcareFhirResourceDeletedEventData.fhirResourceVersionId
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthcareFhirResourceDeletedEventData;
+        });
     }
 }

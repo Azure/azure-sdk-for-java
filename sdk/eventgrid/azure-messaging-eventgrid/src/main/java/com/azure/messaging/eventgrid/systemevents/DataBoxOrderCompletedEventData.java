@@ -5,31 +5,33 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.DataBox.OrderCompleted event.
  */
 @Fluent
-public final class DataBoxOrderCompletedEventData {
+public final class DataBoxOrderCompletedEventData implements JsonSerializable<DataBoxOrderCompletedEventData> {
     /*
      * Serial Number of the device associated with the event. The list is comma separated if more than one serial
      * number is associated.
      */
-    @JsonProperty(value = "serialNumber")
     private String serialNumber;
 
     /*
      * Name of the current Stage
      */
-    @JsonProperty(value = "stageName")
     private DataBoxStageName stageName;
 
     /*
      * The time at which the stage happened.
      */
-    @JsonProperty(value = "stageTime")
     private OffsetDateTime stageTime;
 
     /**
@@ -98,5 +100,48 @@ public final class DataBoxOrderCompletedEventData {
     public DataBoxOrderCompletedEventData setStageTime(OffsetDateTime stageTime) {
         this.stageTime = stageTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("stageName", this.stageName == null ? null : this.stageName.toString());
+        jsonWriter.writeStringField("stageTime",
+            this.stageTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.stageTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxOrderCompletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxOrderCompletedEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxOrderCompletedEventData.
+     */
+    public static DataBoxOrderCompletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxOrderCompletedEventData deserializedDataBoxOrderCompletedEventData
+                = new DataBoxOrderCompletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serialNumber".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.serialNumber = reader.getString();
+                } else if ("stageName".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.stageName
+                        = DataBoxStageName.fromString(reader.getString());
+                } else if ("stageTime".equals(fieldName)) {
+                    deserializedDataBoxOrderCompletedEventData.stageTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxOrderCompletedEventData;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event.
  */
 @Fluent
-public final class AcsUserDisconnectedEventData {
+public final class AcsUserDisconnectedEventData implements JsonSerializable<AcsUserDisconnectedEventData> {
     /*
      * The communication identifier of the user who was disconnected
      */
-    @JsonProperty(value = "userCommunicationIdentifier")
     private CommunicationIdentifierModel userCommunicationIdentifier;
 
     /**
@@ -43,5 +46,39 @@ public final class AcsUserDisconnectedEventData {
         setUserCommunicationIdentifier(CommunicationIdentifierModel userCommunicationIdentifier) {
         this.userCommunicationIdentifier = userCommunicationIdentifier;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("userCommunicationIdentifier", this.userCommunicationIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsUserDisconnectedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsUserDisconnectedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsUserDisconnectedEventData.
+     */
+    public static AcsUserDisconnectedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsUserDisconnectedEventData deserializedAcsUserDisconnectedEventData = new AcsUserDisconnectedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsUserDisconnectedEventData.userCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsUserDisconnectedEventData;
+        });
     }
 }

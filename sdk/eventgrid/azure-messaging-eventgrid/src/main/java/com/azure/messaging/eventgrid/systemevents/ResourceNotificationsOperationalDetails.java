@@ -5,18 +5,23 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * details of operational info.
  */
 @Fluent
-public final class ResourceNotificationsOperationalDetails {
+public final class ResourceNotificationsOperationalDetails
+    implements JsonSerializable<ResourceNotificationsOperationalDetails> {
     /*
      * Date and Time when resource was updated
      */
-    @JsonProperty(value = "resourceEventTime")
     private OffsetDateTime resourceEventTime;
 
     /**
@@ -43,5 +48,41 @@ public final class ResourceNotificationsOperationalDetails {
     public ResourceNotificationsOperationalDetails setResourceEventTime(OffsetDateTime resourceEventTime) {
         this.resourceEventTime = resourceEventTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceEventTime", this.resourceEventTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceNotificationsOperationalDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceNotificationsOperationalDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceNotificationsOperationalDetails.
+     */
+    public static ResourceNotificationsOperationalDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceNotificationsOperationalDetails deserializedResourceNotificationsOperationalDetails
+                = new ResourceNotificationsOperationalDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceEventTime".equals(fieldName)) {
+                    deserializedResourceNotificationsOperationalDetails.resourceEventTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceNotificationsOperationalDetails;
+        });
     }
 }

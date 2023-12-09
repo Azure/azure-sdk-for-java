@@ -4,9 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure
  * Portal.
@@ -38,7 +35,6 @@ public enum MediaJobRetry {
      * @param value the serialized value to parse.
      * @return the parsed MediaJobRetry object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobRetry fromString(String value) {
         if (value == null) {
             return null;
@@ -55,7 +51,6 @@ public enum MediaJobRetry {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

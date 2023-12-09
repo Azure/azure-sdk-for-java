@@ -4,9 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Helps with categorization of errors.
  */
@@ -56,7 +53,6 @@ public enum MediaJobErrorCategory {
      * @param value the serialized value to parse.
      * @return the parsed MediaJobErrorCategory object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobErrorCategory fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum MediaJobErrorCategory {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

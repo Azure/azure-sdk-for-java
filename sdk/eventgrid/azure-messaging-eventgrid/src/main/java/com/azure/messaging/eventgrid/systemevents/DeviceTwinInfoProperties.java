@@ -5,23 +5,25 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties JSON element.
  */
 @Fluent
-public final class DeviceTwinInfoProperties {
+public final class DeviceTwinInfoProperties implements JsonSerializable<DeviceTwinInfoProperties> {
     /*
      * A portion of the properties that can be written only by the application back-end, and read by the device.
      */
-    @JsonProperty(value = "desired")
     private DeviceTwinProperties desired;
 
     /*
      * A portion of the properties that can be written only by the device, and read by the application back-end.
      */
-    @JsonProperty(value = "reported")
     private DeviceTwinProperties reported;
 
     /**
@@ -72,5 +74,41 @@ public final class DeviceTwinInfoProperties {
     public DeviceTwinInfoProperties setReported(DeviceTwinProperties reported) {
         this.reported = reported;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("desired", this.desired);
+        jsonWriter.writeJsonField("reported", this.reported);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTwinInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTwinInfoProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTwinInfoProperties.
+     */
+    public static DeviceTwinInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTwinInfoProperties deserializedDeviceTwinInfoProperties = new DeviceTwinInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("desired".equals(fieldName)) {
+                    deserializedDeviceTwinInfoProperties.desired = DeviceTwinProperties.fromJson(reader);
+                } else if ("reported".equals(fieldName)) {
+                    deserializedDeviceTwinInfoProperties.reported = DeviceTwinProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTwinInfoProperties;
+        });
     }
 }

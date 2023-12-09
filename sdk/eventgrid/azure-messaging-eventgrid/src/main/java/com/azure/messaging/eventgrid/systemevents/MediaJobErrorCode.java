@@ -4,9 +4,6 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Error code describing the error.
  */
@@ -84,7 +81,6 @@ public enum MediaJobErrorCode {
      * @param value the serialized value to parse.
      * @return the parsed MediaJobErrorCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobErrorCode fromString(String value) {
         if (value == null) {
             return null;
@@ -101,7 +97,6 @@ public enum MediaJobErrorCode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

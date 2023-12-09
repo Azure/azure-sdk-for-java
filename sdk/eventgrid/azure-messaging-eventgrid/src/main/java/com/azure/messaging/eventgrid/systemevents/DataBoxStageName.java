@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DataBoxStageName extends ExpandableStringEnum<DataBoxStageNam
      * @param name a name to look for.
      * @return the corresponding DataBoxStageName.
      */
-    @JsonCreator
     public static DataBoxStageName fromString(String name) {
         return fromString(name, DataBoxStageName.class);
     }

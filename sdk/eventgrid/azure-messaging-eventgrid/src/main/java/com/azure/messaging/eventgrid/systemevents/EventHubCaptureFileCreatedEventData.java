@@ -5,66 +5,63 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.EventHub.CaptureFileCreated event.
  */
 @Fluent
-public final class EventHubCaptureFileCreatedEventData {
+public final class EventHubCaptureFileCreatedEventData
+    implements JsonSerializable<EventHubCaptureFileCreatedEventData> {
     /*
      * The path to the capture file.
      */
-    @JsonProperty(value = "fileUrl")
     private String fileurl;
 
     /*
      * The file type of the capture file.
      */
-    @JsonProperty(value = "fileType")
     private String fileType;
 
     /*
      * The shard ID.
      */
-    @JsonProperty(value = "partitionId")
     private String partitionId;
 
     /*
      * The file size.
      */
-    @JsonProperty(value = "sizeInBytes")
     private Integer sizeInBytes;
 
     /*
      * The number of events in the file.
      */
-    @JsonProperty(value = "eventCount")
     private Integer eventCount;
 
     /*
      * The smallest sequence number from the queue.
      */
-    @JsonProperty(value = "firstSequenceNumber")
     private Integer firstSequenceNumber;
 
     /*
      * The last sequence number from the queue.
      */
-    @JsonProperty(value = "lastSequenceNumber")
     private Integer lastSequenceNumber;
 
     /*
      * The first time from the queue.
      */
-    @JsonProperty(value = "firstEnqueueTime")
     private OffsetDateTime firstEnqueueTime;
 
     /*
      * The last time from the queue.
      */
-    @JsonProperty(value = "lastEnqueueTime")
     private OffsetDateTime lastEnqueueTime;
 
     /**
@@ -251,5 +248,70 @@ public final class EventHubCaptureFileCreatedEventData {
     public EventHubCaptureFileCreatedEventData setLastEnqueueTime(OffsetDateTime lastEnqueueTime) {
         this.lastEnqueueTime = lastEnqueueTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fileUrl", this.fileurl);
+        jsonWriter.writeStringField("fileType", this.fileType);
+        jsonWriter.writeStringField("partitionId", this.partitionId);
+        jsonWriter.writeNumberField("sizeInBytes", this.sizeInBytes);
+        jsonWriter.writeNumberField("eventCount", this.eventCount);
+        jsonWriter.writeNumberField("firstSequenceNumber", this.firstSequenceNumber);
+        jsonWriter.writeNumberField("lastSequenceNumber", this.lastSequenceNumber);
+        jsonWriter.writeStringField("firstEnqueueTime", this.firstEnqueueTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
+        jsonWriter.writeStringField("lastEnqueueTime",
+            this.lastEnqueueTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastEnqueueTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubCaptureFileCreatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubCaptureFileCreatedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubCaptureFileCreatedEventData.
+     */
+    public static EventHubCaptureFileCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubCaptureFileCreatedEventData deserializedEventHubCaptureFileCreatedEventData
+                = new EventHubCaptureFileCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fileUrl".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.fileurl = reader.getString();
+                } else if ("fileType".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.fileType = reader.getString();
+                } else if ("partitionId".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.partitionId = reader.getString();
+                } else if ("sizeInBytes".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.sizeInBytes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("eventCount".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.eventCount = reader.getNullable(JsonReader::getInt);
+                } else if ("firstSequenceNumber".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.firstSequenceNumber
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("lastSequenceNumber".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.lastSequenceNumber
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("firstEnqueueTime".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.firstEnqueueTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("lastEnqueueTime".equals(fieldName)) {
+                    deserializedEventHubCaptureFileCreatedEventData.lastEnqueueTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubCaptureFileCreatedEventData;
+        });
     }
 }

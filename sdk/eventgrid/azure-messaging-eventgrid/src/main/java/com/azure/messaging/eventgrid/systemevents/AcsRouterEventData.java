@@ -5,29 +5,30 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of common properties of all Router events.
  */
 @Fluent
-public class AcsRouterEventData {
+public class AcsRouterEventData implements JsonSerializable<AcsRouterEventData> {
     /*
      * Router Event Job ID
      */
-    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * Router Event Channel Reference
      */
-    @JsonProperty(value = "channelReference")
     private String channelReference;
 
     /*
      * Router Event Channel ID
      */
-    @JsonProperty(value = "channelId")
     private String channelId;
 
     /**
@@ -94,5 +95,44 @@ public class AcsRouterEventData {
     public AcsRouterEventData setChannelId(String channelId) {
         this.channelId = channelId;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", this.jobId);
+        jsonWriter.writeStringField("channelReference", this.channelReference);
+        jsonWriter.writeStringField("channelId", this.channelId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterEventData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterEventData.
+     */
+    public static AcsRouterEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterEventData deserializedAcsRouterEventData = new AcsRouterEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterEventData.jobId = reader.getString();
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterEventData.channelReference = reader.getString();
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterEventData.channelId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterEventData;
+        });
     }
 }

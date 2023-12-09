@@ -5,35 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.KeyValueModified event.
  */
 @Fluent
-public final class AppConfigurationKeyValueModifiedEventData {
+public final class AppConfigurationKeyValueModifiedEventData
+    implements JsonSerializable<AppConfigurationKeyValueModifiedEventData> {
     /*
      * The key used to identify the key-value that was modified.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * The label, if any, used to identify the key-value that was modified.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * The etag representing the new state of the key-value.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The sync token representing the server state after the event.
      */
-    @JsonProperty(value = "syncToken")
     private String syncToken;
 
     /**
@@ -120,5 +121,48 @@ public final class AppConfigurationKeyValueModifiedEventData {
     public AppConfigurationKeyValueModifiedEventData setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("syncToken", this.syncToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppConfigurationKeyValueModifiedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppConfigurationKeyValueModifiedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AppConfigurationKeyValueModifiedEventData.
+     */
+    public static AppConfigurationKeyValueModifiedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppConfigurationKeyValueModifiedEventData deserializedAppConfigurationKeyValueModifiedEventData
+                = new AppConfigurationKeyValueModifiedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedAppConfigurationKeyValueModifiedEventData.key = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedAppConfigurationKeyValueModifiedEventData.label = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAppConfigurationKeyValueModifiedEventData.etag = reader.getString();
+                } else if ("syncToken".equals(fieldName)) {
+                    deserializedAppConfigurationKeyValueModifiedEventData.syncToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppConfigurationKeyValueModifiedEventData;
+        });
     }
 }
