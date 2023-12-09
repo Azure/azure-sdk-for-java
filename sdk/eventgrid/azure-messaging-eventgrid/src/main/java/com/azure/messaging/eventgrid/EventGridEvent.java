@@ -12,6 +12,10 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
@@ -94,7 +98,7 @@ import java.util.UUID;
  * @see EventGridPublisherClient to send EventGridEvents sychronously.
  **/
 @Fluent
-public final class EventGridEvent {
+public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
 
     private final com.azure.messaging.eventgrid.implementation.models.EventGridEvent event;
 
@@ -183,6 +187,14 @@ public final class EventGridEvent {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
                 e));
         }
+    }
+
+    /**
+     * Private constructor for serialization.
+     */
+    private EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent event, BinaryData data) {
+        this.event = event;
+        this.binaryData = data;
     }
 
     /**
@@ -364,6 +376,32 @@ public final class EventGridEvent {
 
     com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl() {
         return this.event;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("event", this.event);
+        jsonWriter.writeBinaryField("binaryData", this.binaryData.toBytes());
+        return jsonWriter.writeEndObject();
+    }
+
+    public static EventGridEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = null;
+            BinaryData data = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                if (fieldName.equals("event")) {
+                    internalEvent = com.azure.messaging.eventgrid.implementation.models.EventGridEvent.fromJson(reader);
+                } else if (fieldName.equals("binaryData")) {
+                    data = BinaryData.fromBytes(reader.getBinary());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new EventGridEvent(internalEvent, data);
+        });
     }
 
     private static class JacksonSerializer implements JsonSerializer {
