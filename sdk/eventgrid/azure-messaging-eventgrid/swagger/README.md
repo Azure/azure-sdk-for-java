@@ -22,7 +22,7 @@ its `eventType` string is added as a constant and a mapping to the event data mo
 `SystemEventMappings` file.
 
 ```yaml
-use: '@autorest/java@4.1.24'
+use: '@autorest/java@4.1.25'
 java: true
 title: EventGridPublisherClient
 description: EventGrid Publisher Client
@@ -36,6 +36,8 @@ customization-class: src/main/java/EventGridCustomization.java
 service-interface-as-public: true
 url-as-string: true
 enable-sync-stack: true
+stream-style-serialization: true
+require-x-ms-flattened-to-flatten: true
 directive:
     - rename-model:
         from: ResourceActionCancelData
