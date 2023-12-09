@@ -54,7 +54,7 @@ public class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
     private final String userAgent;
-
+    private final Set<String> regionWithSuccessResponse;
     private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
@@ -75,6 +75,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
+        this.regionWithSuccessResponse = Collections.synchronizedSet(new HashSet<>());
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -97,6 +98,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
+        this.regionWithSuccessResponse = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionWithSuccessResponse));
     }
 
     @JsonIgnore
@@ -176,6 +178,12 @@ public class ClientSideRequestStatistics {
                     globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
+
+                int statusCode = storeResultDiagnostics.getStatusCode();
+
+                if (HttpConstants.StatusCodes.OK <= statusCode && statusCode <= HttpConstants.StatusCodes.NOT_MODIFIED) {
+                    this.regionWithSuccessResponse.add(storeResponseStatistics.regionName);
+                }
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -501,6 +509,10 @@ public class ClientSideRequestStatistics {
 
     public void setLocationEndpointsContacted(Set<URI> locationEndpointsContacted) {
         this.locationEndpointsContacted = locationEndpointsContacted;
+    }
+
+    public Set<String> getRegionWithSuccessResponse() {
+        return regionWithSuccessResponse;
     }
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){

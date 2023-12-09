@@ -322,6 +322,10 @@ public final class CosmosDiagnostics {
         return this;
     }
 
+    Set<String> getRegionWithSuccessResponse() {
+        return this.clientSideRequestStatistics.getRegionWithSuccessResponse();
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -463,6 +467,11 @@ public final class CosmosDiagnostics {
                     }
 
                     cosmosDiagnostics.setDiagnosticsContext(ctx);
+                }
+
+                @Override
+                public Set<String> getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.getRegionWithSuccessResponse();
                 }
             });
     }
