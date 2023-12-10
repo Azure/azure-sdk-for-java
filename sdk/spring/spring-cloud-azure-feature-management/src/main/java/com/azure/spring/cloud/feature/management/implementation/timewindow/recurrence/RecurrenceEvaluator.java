@@ -21,20 +21,25 @@ import static com.azure.spring.cloud.feature.management.models.FilterParameters.
 public class RecurrenceEvaluator {
     private String paramName;
     private String reason;
+    private final TimeWindowFilterSettings settings;
+    private final ZonedDateTime now;
+
+    public RecurrenceEvaluator(TimeWindowFilterSettings settings, ZonedDateTime now) {
+        this.settings = settings;
+        this.now = now;
+    }
 
     /**
      * Checks if a provided timestamp is within any recurring time window specified by the Recurrence section in the time window filter settings.
      * If the time window filter has an invalid recurrence setting, an exception will be thrown.
-     * @param now time stamp of current time.
-     * @param settings the parameters of time window filter
      * @return True if the time stamp is within any recurring time window, false otherwise.
      * */
-    public boolean matchRecurrence(ZonedDateTime now, TimeWindowFilterSettings settings) {
-        if (!tryValidateSettings(settings)) {
+    public boolean matchRecurrence() {
+        if (!tryValidateSettings()) {
             throw new IllegalArgumentException(String.format(reason, paramName));
         }
 
-        final ZonedDateTime previousOccurrence = tryGetPreviousOccurrence(now, settings);
+        final ZonedDateTime previousOccurrence = tryGetPreviousOccurrence();
         if (previousOccurrence == null) {
             return false;
         }
@@ -43,17 +48,17 @@ public class RecurrenceEvaluator {
         return now.isBefore(occurrenceEndDate);
     }
 
-    private boolean tryValidateSettings(TimeWindowFilterSettings settings) {
-        if (!tryValidateGeneralRequiredParameter(settings)) {
+    private boolean tryValidateSettings() {
+        if (!tryValidateGeneralRequiredParameter()) {
             return false;
         }
-        if (!tryValidateRecurrencePattern(settings)) {
+        if (!tryValidateRecurrencePattern()) {
             return false;
         }
-        return tryValidateRecurrenceRange(settings);
+        return tryValidateRecurrenceRange();
     }
 
-    private ZonedDateTime tryGetPreviousOccurrence(ZonedDateTime now, TimeWindowFilterSettings settings) {
+    private ZonedDateTime tryGetPreviousOccurrence() {
         ZonedDateTime start = settings.getStart();
         if (now.isBefore(start)) {
             return null;
@@ -62,23 +67,23 @@ public class RecurrenceEvaluator {
         final String patternType = settings.getRecurrence().getPattern().getType();
         OccurrenceInfo occurrenceInfo;
         if (RecurrenceConstants.DAILY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getDailyPreviousOccurrence(now, settings);
+            occurrenceInfo = getDailyPreviousOccurrence();
         } else if (RecurrenceConstants.WEEKLY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getWeeklyPreviousOccurrence(now, settings);
+            occurrenceInfo = getWeeklyPreviousOccurrence();
         } else if (RecurrenceConstants.ABSOLUTE_MONTHLY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getAbsoluteMonthlyPreviousOccurrence(now, settings);
+            occurrenceInfo = getAbsoluteMonthlyPreviousOccurrence();
         } else if (RecurrenceConstants.RELATIVE_MONTHLY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getRelativeMonthlyPreviousOccurrence(now, settings);
+            occurrenceInfo = getRelativeMonthlyPreviousOccurrence();
         } else if (RecurrenceConstants.ABSOLUTE_YEARLY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getAbsoluteYearlyPreviousOccurrence(now, settings);
+            occurrenceInfo = getAbsoluteYearlyPreviousOccurrence();
         } else if (RecurrenceConstants.RELATIVE_YEARLY.equalsIgnoreCase(patternType)) {
-            occurrenceInfo = getRelativeYearlyPreviousOccurrence(now, settings);
+            occurrenceInfo = getRelativeYearlyPreviousOccurrence();
         } else {
             throw new IllegalArgumentException(String.format(RecurrenceConstants.UNRECOGNIZED_VALUE, RecurrenceConstants.RECURRENCE_PATTERN));
         }
 
         final RecurrenceRange range = settings.getRecurrence().getRange();
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         if (RecurrenceConstants.END_DATE.equalsIgnoreCase(range.getType())) {
             final ZonedDateTime alignedPreviousOccurrence = occurrenceInfo.previousOccurrence.withZoneSameInstant(zoneId);
             if (alignedPreviousOccurrence.isAfter(range.getEndDate())) {
@@ -96,31 +101,27 @@ public class RecurrenceEvaluator {
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "Daily" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      * */
-    private OccurrenceInfo getDailyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
+    private OccurrenceInfo getDailyPreviousOccurrence() {
         final ZonedDateTime start = settings.getStart();
         final int interval = settings.getRecurrence().getPattern().getInterval();
-        final int numberOfOccurrences = (int) (Duration.between(start, time).getSeconds() / Duration.ofDays(interval).getSeconds());
+        final int numberOfOccurrences = (int) (Duration.between(start, now).getSeconds() / Duration.ofDays(interval).getSeconds());
         return new OccurrenceInfo(start.plusDays((long) numberOfOccurrences * interval), numberOfOccurrences);
     }
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "Weekly" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of recurring days of week which have occurred between the time and the recurrence start.
      * */
-    private OccurrenceInfo getWeeklyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
+    private OccurrenceInfo getWeeklyPreviousOccurrence() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(zoneId);
 
         // calculate teh duration of first interval
@@ -132,7 +133,7 @@ public class RecurrenceEvaluator {
 
         ZonedDateTime previousOccurrence;
         int numberOfOccurrences = 0;
-        final Duration timeGap = Duration.between(alignedStart, time);
+        final Duration timeGap = Duration.between(alignedStart, now);
         if (totalDurationOfFirstInterval.compareTo(timeGap) <= 0) {
             int numberOfInterval = timeGap.minus(totalDurationOfFirstInterval).toSecondsPart() /
                 Duration.ofDays(interval * RecurrenceConstants.WEEK_DAY_NUMBER).toSecondsPart();
@@ -155,7 +156,7 @@ public class RecurrenceEvaluator {
         }
 
         ZonedDateTime loopedDateTime = previousOccurrence;
-        final ZonedDateTime alignedTime = time.withZoneSameInstant(zoneId);
+        final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
         while (loopedDateTime.isBefore(alignedTime)) {
             if (loopedDateTime.getDayOfWeek().getValue() == firstDayOfWeek) {   // Come to the next week
                 break;
@@ -176,20 +177,18 @@ public class RecurrenceEvaluator {
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "AbsoluteMonthly" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      *  */
-    private OccurrenceInfo getAbsoluteMonthlyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
+    private OccurrenceInfo getAbsoluteMonthlyPreviousOccurrence() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final ZonedDateTime start = settings.getStart();
         final int interval = pattern.getInterval();
 
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         final ZonedDateTime alignedStart = start.withZoneSameInstant(zoneId);
-        final ZonedDateTime alignedTime = time.withZoneSameInstant(zoneId);
+        final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
         final Duration startDuration = Duration.between(alignedStart.withHour(0).withSecond(0).withNano(0), alignedStart).plus(
@@ -206,16 +205,14 @@ public class RecurrenceEvaluator {
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "RelativeMonthly" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      *  previousOccurrence: The closest previous occurrence.
      *  numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      *  */
-    private OccurrenceInfo getRelativeMonthlyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+    private OccurrenceInfo getRelativeMonthlyPreviousOccurrence() {
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(zoneId);
-        final ZonedDateTime alignedTime = time.withZoneSameInstant(zoneId);
+        final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
@@ -247,16 +244,14 @@ public class RecurrenceEvaluator {
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "AbsoluteYearly" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      *  */
-    private OccurrenceInfo getAbsoluteYearlyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+    private OccurrenceInfo getAbsoluteYearlyPreviousOccurrence() {
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(zoneId);
-        final ZonedDateTime alignedTime = time.withZoneSameInstant(zoneId);
+        final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int yearGap = alignedTime.getYear() - alignedStart.getYear();
         final Duration startDuration = Duration.between(alignedStart.withHour(0).withSecond(0).withNano(0), alignedStart).plus(
@@ -274,18 +269,16 @@ public class RecurrenceEvaluator {
 
     /**
      * Find the closest previous recurrence occurrence before the provided time stamp according to the "RelativeYearly" recurrence pattern.
-     * @param time A time stamp.
-     * @param settings The settings of time window filter.
      * @return The return result contains two property, one is previousOccurrence, the other is numberOfOccurrences.
      * previousOccurrence: The closest previous occurrence.
      * numberOfOccurrences: The number of complete recurrence intervals which have occurred between the time and the recurrence start.
      *  */
-    private OccurrenceInfo getRelativeYearlyPreviousOccurrence(ZonedDateTime time, TimeWindowFilterSettings settings) {
+    private OccurrenceInfo getRelativeYearlyPreviousOccurrence() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
-        final ZoneId zoneId = getRecurrenceTimeZoneId(settings);
+        final ZoneId zoneId = getRecurrenceTimeZoneId();
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(zoneId);
-        final ZonedDateTime alignedTime = time.withZoneSameInstant(zoneId);
+        final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int yearGap = alignedTime.getYear() - alignedStart.getYear();
         final Duration startDuration = Duration.between(alignedStart.withHour(0).withMinute(0).withSecond(0).withNano(0), alignedStart);
@@ -319,7 +312,7 @@ public class RecurrenceEvaluator {
         return new OccurrenceInfo(alignedPreviousOccurrence, numberOfInterval);
     }
 
-    private boolean tryValidateGeneralRequiredParameter(TimeWindowFilterSettings settings) {
+    private boolean tryValidateGeneralRequiredParameter() {
         final Recurrence recurrence = settings.getRecurrence();
         if (settings.getStart() == null) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
@@ -361,24 +354,24 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateRecurrencePattern(TimeWindowFilterSettings settings) {
-        if (!tryValidateInterval(settings)) {
+    private boolean tryValidateRecurrencePattern() {
+        if (!tryValidateInterval()) {
             return false;
         }
 
         final String patternType = settings.getRecurrence().getPattern().getType();
         if (RecurrenceConstants.DAILY.equalsIgnoreCase(patternType)) {
-            return tryValidateDailyRecurrencePattern(settings);
+            return tryValidateDailyRecurrencePattern();
         } else if (RecurrenceConstants.WEEKLY.equalsIgnoreCase(patternType)) {
-            return tryValidateWeeklyRecurrencePattern(settings);
+            return tryValidateWeeklyRecurrencePattern();
         } else if (RecurrenceConstants.ABSOLUTE_MONTHLY.equalsIgnoreCase(patternType)) {
-            return tryValidateAbsoluteMonthlyRecurrencePattern(settings);
+            return tryValidateAbsoluteMonthlyRecurrencePattern();
         } else if (RecurrenceConstants.RELATIVE_MONTHLY.equalsIgnoreCase(patternType)) {
-            return tryValidateRelativeMonthlyRecurrencePattern(settings);
+            return tryValidateRelativeMonthlyRecurrencePattern();
         } else if (RecurrenceConstants.ABSOLUTE_YEARLY.equalsIgnoreCase(patternType)) {
-            return tryValidateAbsoluteYearlyRecurrencePattern(settings);
+            return tryValidateAbsoluteYearlyRecurrencePattern();
         } else if (RecurrenceConstants.RELATIVE_YEARLY.equalsIgnoreCase(patternType)) {
-            return tryValidateRelativeYearlyRecurrencePattern(settings);
+            return tryValidateRelativeYearlyRecurrencePattern();
         } else {
             paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
                 RecurrenceConstants.RECURRENCE_PATTERN_TYPE);
@@ -387,8 +380,8 @@ public class RecurrenceEvaluator {
         }
     }
 
-    private boolean tryValidateRecurrenceRange(TimeWindowFilterSettings settings) {
-        if (!tryValidateRecurrenceTimeZone(settings)) {
+    private boolean tryValidateRecurrenceRange() {
+        if (!tryValidateRecurrenceTimeZone()) {
             return false;
         }
 
@@ -397,9 +390,9 @@ public class RecurrenceEvaluator {
             // No parameter is required
             return true;
         } else if (RecurrenceConstants.END_DATE.equalsIgnoreCase(rangeType)) {
-            return tryValidateEndDate(settings);
+            return tryValidateEndDate();
         } else if (RecurrenceConstants.NUMBERED.equalsIgnoreCase(rangeType)) {
-            return tryValidateNumberOfOccurrences(settings);
+            return tryValidateNumberOfOccurrences();
         }
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_TYPE);
@@ -407,7 +400,7 @@ public class RecurrenceEvaluator {
         return false;
     }
 
-    private boolean tryValidateRecurrenceTimeZone(TimeWindowFilterSettings settings) {
+    private boolean tryValidateRecurrenceTimeZone() {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_RECURRENCE_TIME_ZONE);
         if (settings.getRecurrence().getRange().getRecurrenceTimeZone() != null &&
@@ -418,7 +411,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateEndDate(TimeWindowFilterSettings settings) {
+    private boolean tryValidateEndDate() {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_EDN_DATE);
         if (settings.getRecurrence().getRange().getEndDate() == null) {
@@ -427,7 +420,7 @@ public class RecurrenceEvaluator {
         }
 
         final ZonedDateTime start = settings.getStart();
-        final ZonedDateTime alignedStart = start.withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = start.withZoneSameInstant(getRecurrenceTimeZoneId());
         if (settings.getRecurrence().getRange().getEndDate().isBefore(alignedStart)) {
             reason = RecurrenceConstants.OUT_OF_RANGE;
             return false;
@@ -435,7 +428,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateNumberOfOccurrences(TimeWindowFilterSettings settings) {
+    private boolean tryValidateNumberOfOccurrences() {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
             RecurrenceConstants.RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES);
         if (settings.getRecurrence().getRange().getNumberOfRecurrences() == null) {
@@ -449,7 +442,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateInterval(TimeWindowFilterSettings settings) {
+    private boolean tryValidateInterval() {
         if (settings.getRecurrence().getPattern().getInterval() <= 0) {
             paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
                 RecurrenceConstants.RECURRENCE_PATTERN_INTERVAL);
@@ -459,14 +452,14 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateDailyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateDailyRecurrencePattern() {
         // No required parameter for "Daily" pattern and "Start" is always a valid first occurrence for "Daily" pattern.
         // Only need to check if time window validated
         final Duration intervalDuration = Duration.ofDays(settings.getRecurrence().getPattern().getInterval());
         return tryValidateTimeWindowDuration(settings, intervalDuration);
     }
 
-    private boolean tryValidateWeeklyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateWeeklyRecurrencePattern() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
@@ -485,7 +478,7 @@ public class RecurrenceEvaluator {
         }
 
         // Check whether "Start" is a valid first occurrence
-        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
             alignedStart.getDayOfWeek().getValue() == convertToWeekDayNumber(dayOfWeekStr))) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
@@ -555,7 +548,7 @@ public class RecurrenceEvaluator {
         }
     }
 
-    private boolean tryValidateAbsoluteMonthlyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateAbsoluteMonthlyRecurrencePattern() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
@@ -570,7 +563,7 @@ public class RecurrenceEvaluator {
         }
 
         // Check whether "Start" is a valid first occurrence
-        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (alignedStart.getDayOfMonth() != pattern.getDayOfMonth()) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
@@ -593,7 +586,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateRelativeMonthlyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateRelativeMonthlyRecurrencePattern() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
@@ -611,7 +604,7 @@ public class RecurrenceEvaluator {
         }
 
         // Check whether "Start" is a valid first occurrence
-        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
             alignedStart.getDayOfWeek().getValue() == convertToWeekDayNumber(dayOfWeekStr))) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
@@ -640,7 +633,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateAbsoluteYearlyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateAbsoluteYearlyRecurrencePattern() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
@@ -658,7 +651,7 @@ public class RecurrenceEvaluator {
         }
 
         // Check whether "Start" is a valid first occurrence
-        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (alignedStart.getDayOfMonth() != pattern.getDayOfMonth() || alignedStart.getMonthValue() != pattern.getMonth()) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
@@ -682,7 +675,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private boolean tryValidateRelativeYearlyRecurrencePattern(TimeWindowFilterSettings settings) {
+    private boolean tryValidateRelativeYearlyRecurrencePattern() {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         // Time window duration must be shorter than how frequently it occurs
@@ -703,7 +696,7 @@ public class RecurrenceEvaluator {
         }
 
         // Check whether "Start" is a valid first occurrence
-        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId(settings));
+        final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (alignedStart.getMonthValue() != pattern.getMonth() ||
             pattern.getDaysOfWeek().stream().noneMatch(day ->
                 dayOfNthWeekInTheMonth(alignedStart, pattern.getIndex(), day) == alignedStart)) {
@@ -791,7 +784,7 @@ public class RecurrenceEvaluator {
         return true;
     }
 
-    private ZoneId getRecurrenceTimeZoneId(TimeWindowFilterSettings settings) {
+    private ZoneId getRecurrenceTimeZoneId() {
         ZoneId timeZoneId = settings.getStart().getZone();
         final ZoneId rangeZoneId = tryParseTimeZone(settings.getRecurrence().getRange().getRecurrenceTimeZone());
         if (rangeZoneId != null) {

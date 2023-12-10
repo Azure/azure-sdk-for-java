@@ -534,8 +534,8 @@ public class RequiredParameterTest {
         final ZonedDateTime now = ZonedDateTime.now();
 
         try {
-            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator();
-            evaluator.matchRecurrence(now, settings);
+            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
+            evaluator.matchRecurrence();
         } catch (final Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals(e.getMessage(), String.format(errorMessage, parameterName));

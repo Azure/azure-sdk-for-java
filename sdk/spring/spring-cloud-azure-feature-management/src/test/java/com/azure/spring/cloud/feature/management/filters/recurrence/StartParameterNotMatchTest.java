@@ -157,8 +157,8 @@ public class StartParameterNotMatchTest {
         final String errorMessage = String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START);
 
         try {
-            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator();
-            evaluator.matchRecurrence(now, settings);
+            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
+            evaluator.matchRecurrence();
         } catch (final Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals(e.getMessage(), errorMessage);
