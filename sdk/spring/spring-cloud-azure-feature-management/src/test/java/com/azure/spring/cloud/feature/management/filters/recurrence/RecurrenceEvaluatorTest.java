@@ -95,7 +95,7 @@ public class RecurrenceEvaluatorTest {
         pattern5.setType("Daily");
         range5.setType("EndDate");
         range5.setRecurrenceTimeZone("UTC+08:00");
-        range5.setEndDate("2023-09-02T00:00:00+08:00");
+        range5.setEndDate("2023-09-02");
         recurrence5.setRange(range5);
         recurrence5.setPattern(pattern5);
         settings5.setStart("2023-09-01T17:00:00+00:00");
@@ -286,7 +286,7 @@ public class RecurrenceEvaluatorTest {
         pattern5.setDayOfMonth(29);
         pattern5.setInterval(2);
         recurrence5.setPattern(pattern5);
-        range5.setEndDate("2024-02-29T00:00:00+08:00");
+        range5.setEndDate("2024-02-29");
         range5.setType("EndDate");
         recurrence5.setRange(range5);
         settings5.setStart("2023-04-29T00:00:00+08:00");
@@ -305,7 +305,7 @@ public class RecurrenceEvaluatorTest {
         pattern6.setType("AbsoluteMonthly");
         pattern6.setDayOfMonth(29);
         recurrence6.setPattern(pattern6);
-        range6.setEndDate("2023-10-28T00:00:00+08:00");
+        range6.setEndDate("2023-10-28");
         range6.setType("EndDate");
         recurrence6.setRange(range6);
         settings6.setStart("2023-09-29T00:00:00+08:00");
@@ -564,8 +564,8 @@ public class RecurrenceEvaluatorTest {
         range4.setNumberOfRecurrences(2);
         recurrence4.setRange(range4);
         recurrence4.setPattern(pattern4);
-        settings4.setStart("2023-09-08T00:00:00+08:00");
-        settings4.setEnd("2023-09-08T00:00:01+08:00");
+        settings4.setStart("2023-09-01T00:00:00+08:00");
+        settings4.setEnd("2023-09-01T00:00:01+08:00");
         settings4.setRecurrence(recurrence4);
         consumeEvaluationTestData(settings4, now4, false);
     }

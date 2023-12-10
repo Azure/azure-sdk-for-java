@@ -310,7 +310,6 @@ public class RequiredParameterTest {
 
     @Test
     public void invalidTimeWindowTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-25T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final Recurrence recurrence = new Recurrence();
         final RecurrencePattern pattern = new RecurrencePattern();
@@ -322,46 +321,39 @@ public class RequiredParameterTest {
         // time window is zero
         pattern.setType("Daily");
         range.setType("NoEnd");
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-25T00:00:00+08:00");
+        settings.setEnd("2023-09-25T00:00:00+08:00");
         consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
 
         // time window is bigger than interval when pattern is daily
-        final ZonedDateTime endTime1 = startTime.plusDays(2).plusMinutes(1);
-        settings.setEnd(endTime1.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd("2023-09-27T00:00:01+08:00");
         pattern.setInterval(2);
         consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
 
         // time window is bigger than interval when pattern is weekly
-        final ZonedDateTime endTime2 = startTime.plusDays(7).plusMinutes(1);
-        settings.setEnd(endTime2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd("2023-10-02T00:00:01+08:00");
         pattern.setType("Weekly");
         pattern.setInterval(1);
         pattern.setDaysOfWeek(List.of("Monday"));
         consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
 
         // time window is bigger than interval when pattern is weekly
-        final ZonedDateTime endTime3 = startTime.plusDays(2).plusMinutes(1);
-        settings.setEnd(endTime3.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setEnd("2023-09-27T00:00:01+08:00");
         pattern.setInterval(1);
         pattern.setDaysOfWeek(List.of("Monday", "Thursday", "Sunday"));
         consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
 
         // time window is bigger than interval when pattern is absoluteMonthly
-        final ZonedDateTime startTime4 = ZonedDateTime.parse("2023-02-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime4 = ZonedDateTime.parse("2023-03-31T00:00:01+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        settings.setStart(startTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime4.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-02-01T00:00:00+08:00");
+        settings.setEnd("2023-03-31T00:00:01+08:00");
         pattern.setType("AbsoluteMonthly");
         pattern.setInterval(2);
         pattern.setDayOfMonth(1);
         consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
 
         // time window is bigger than interval when patter is absoluteYearly
-        final ZonedDateTime startTime5 = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime5 = ZonedDateTime.parse("2023-09-01T00:00:01+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        settings.setStart(startTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime5.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T00:00:01+08:00");
         pattern.setType("AbsoluteYearly");
         pattern.setInterval(1);
         pattern.setDayOfMonth(1);
@@ -371,21 +363,17 @@ public class RequiredParameterTest {
         // endDate is before first start time
         final ZonedDateTime startTime6 = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         final ZonedDateTime endTime6 = ZonedDateTime.parse("2023-09-01T00:00:01+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endDate = ZonedDateTime.parse("2023-08-31T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         settings.setStart(startTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         settings.setEnd(endTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         pattern.setType("Daily");
         range.setType("EndDate");
-        range.setEndDate(endDate.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        range.setEndDate("2023-08-31");
         consumeValidationTestData(settings, EndDate, RecurrenceConstants.OUT_OF_RANGE);
 
         // endDate is before first start time when different zone id
-        final ZonedDateTime startTime7 = ZonedDateTime.parse("2023-09-01T23:00:00+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime7 = ZonedDateTime.parse("2023-09-01T23:00:01+00:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endDate2 = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        settings.setStart(startTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime7.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        range.setEndDate(endDate2.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T23:00:00+00:00");
+        settings.setEnd("2023-09-01T23:00:01+00:00");
+        range.setEndDate("2023-09-01");
         range.setRecurrenceTimeZone("UTC+08:00");
         consumeValidationTestData(settings, EndDate, RecurrenceConstants.OUT_OF_RANGE);
 
@@ -393,12 +381,9 @@ public class RequiredParameterTest {
 
     @Test
     public void weeklyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -415,12 +400,9 @@ public class RequiredParameterTest {
 
     @Test
     public void absoluteMonthlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -436,12 +418,9 @@ public class RequiredParameterTest {
 
     @Test
     public void relativeMonthlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -465,12 +444,9 @@ public class RequiredParameterTest {
 
     @Test
     public void absoluteYearlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -494,12 +470,9 @@ public class RequiredParameterTest {
 
     @Test
     public void relativeYearlyPatternRequiredParameterTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();

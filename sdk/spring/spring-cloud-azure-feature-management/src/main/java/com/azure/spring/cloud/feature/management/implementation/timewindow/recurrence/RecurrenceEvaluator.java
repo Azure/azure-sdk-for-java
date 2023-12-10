@@ -6,11 +6,10 @@ import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeW
 
 import java.time.DateTimeException;
 import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,7 +85,8 @@ public class RecurrenceEvaluator {
         final ZoneId zoneId = getRecurrenceTimeZoneId();
         if (RecurrenceConstants.END_DATE.equalsIgnoreCase(range.getType())) {
             final ZonedDateTime alignedPreviousOccurrence = occurrenceInfo.previousOccurrence.withZoneSameInstant(zoneId);
-            if (alignedPreviousOccurrence.isAfter(range.getEndDate())) {
+            final LocalDate alignedPreviousDate = alignedPreviousOccurrence.toLocalDate();
+            if (alignedPreviousDate.isAfter(range.getEndDate())) {
                 return null;
             }
         }
@@ -127,26 +127,27 @@ public class RecurrenceEvaluator {
         // calculate teh duration of first interval
         final int firstDayOfWeek = convertToWeekDayNumber(pattern.getFirstDayOfWeek());
         final int totalDaysOfFirstInterval = RecurrenceConstants.WEEK_DAY_NUMBER * (interval - 1) +
-            remainingDaysOfWeek(alignedStart.getDayOfWeek().getValue(), firstDayOfWeek);
-        final Instant endDateOfFirstInterval = alignedStart.plusDays(totalDaysOfFirstInterval).toInstant().truncatedTo(ChronoUnit.DAYS);
-        final Duration totalDurationOfFirstInterval = Duration.between(alignedStart, endDateOfFirstInterval);
+            remainingDaysOfWeek(getDayOfWeek(alignedStart), firstDayOfWeek);
+
+        final LocalDate endDateOfFirstInterval = alignedStart.plusDays(totalDaysOfFirstInterval).toLocalDate();
+        final Duration totalDurationOfFirstInterval = Duration.between(alignedStart, endDateOfFirstInterval.atStartOfDay(alignedStart.getZone()));
 
         ZonedDateTime previousOccurrence;
         int numberOfOccurrences = 0;
         final Duration timeGap = Duration.between(alignedStart, now);
         if (totalDurationOfFirstInterval.compareTo(timeGap) <= 0) {
-            int numberOfInterval = timeGap.minus(totalDurationOfFirstInterval).toSecondsPart() /
-                Duration.ofDays(interval * RecurrenceConstants.WEEK_DAY_NUMBER).toSecondsPart();
+            long numberOfInterval = timeGap.minus(totalDurationOfFirstInterval).toSeconds() /
+                Duration.ofDays(interval * RecurrenceConstants.WEEK_DAY_NUMBER).toSeconds();
             previousOccurrence = alignedStart.plusDays(totalDaysOfFirstInterval +
                 numberOfInterval * interval * RecurrenceConstants.WEEK_DAY_NUMBER);
             numberOfOccurrences += numberOfInterval * pattern.getDaysOfWeek().size();
 
             // count the number of occurrence in the first week
             ZonedDateTime dateTime = alignedStart;
-            while (dateTime.getDayOfWeek().getValue() != firstDayOfWeek) {
+            while (getDayOfWeek(dateTime) != firstDayOfWeek) {
                 final ZonedDateTime tempDateTime = dateTime;
                 if (pattern.getDaysOfWeek().stream().anyMatch(day ->
-                    convertToWeekDayNumber(day) == tempDateTime.getDayOfWeek().getValue())) {
+                    convertToWeekDayNumber(day) == getDayOfWeek(tempDateTime))) {
                     numberOfOccurrences += 1;
                 }
                 dateTime = dateTime.plusDays(1);
@@ -158,15 +159,13 @@ public class RecurrenceEvaluator {
         ZonedDateTime loopedDateTime = previousOccurrence;
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
         while (loopedDateTime.isBefore(alignedTime)) {
-            if (loopedDateTime.getDayOfWeek().getValue() == firstDayOfWeek) {   // Come to the next week
+            if (getDayOfWeek(loopedDateTime) == firstDayOfWeek) {   // Come to the next week
                 break;
             }
 
             final ZonedDateTime tempDateTime = loopedDateTime;
             if (pattern.getDaysOfWeek().stream().anyMatch(day ->
-                convertToWeekDayNumber(day) == tempDateTime.getDayOfWeek().getValue())) {
-                // todo why we need to create with timeZoneOffset
-//                previousOccurrence = new ZonedDateTime(loopedDateTime, timeZoneOffset);
+                convertToWeekDayNumber(day) == getDayOfWeek(tempDateTime))) {
                 previousOccurrence = loopedDateTime;
                 numberOfOccurrences += 1;
             }
@@ -191,9 +190,9 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
-        final Duration startDuration = Duration.between(alignedStart.withHour(0).withSecond(0).withNano(0), alignedStart).plus(
+        final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart).plus(
             Duration.ofDays(alignedStart.getDayOfMonth()));
-        final Duration timeDuration = Duration.between(alignedTime.withHour(0).withSecond(0).withNano(0), alignedTime).plus(
+        final Duration timeDuration = Duration.between(alignedTime.toLocalDate().atStartOfDay(alignedTime.getZone()), alignedTime).plus(
             Duration.ofDays(alignedTime.getDayOfMonth()));
         if (timeDuration.compareTo(startDuration) < 0) {
             monthGap -= 1;
@@ -218,7 +217,7 @@ public class RecurrenceEvaluator {
         final int interval = pattern.getInterval();
 
         int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
-        final Duration startDuration = Duration.between(alignedStart.withHour(0).withMinute(0).withSecond(0).withNano(0), alignedStart);
+        final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart);
         if (!pattern.getDaysOfWeek().stream().anyMatch(day ->
             alignedTime.isAfter(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
             // E.g. start: 2023.9.1 (the first Friday in 2023.9) and time: 2023.10.2 (the first Friday in 2023.10 is 2023.10.6)
@@ -254,9 +253,9 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int yearGap = alignedTime.getYear() - alignedStart.getYear();
-        final Duration startDuration = Duration.between(alignedStart.withHour(0).withSecond(0).withNano(0), alignedStart).plus(
+        final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart).plus(
             Duration.ofDays(alignedStart.getDayOfYear()));
-        final Duration timeDuration = Duration.between(alignedTime.withHour(0).withSecond(0).withNano(0), alignedTime).plus(
+        final Duration timeDuration = Duration.between(alignedTime.toLocalDate().atStartOfDay(alignedTime.getZone()), alignedTime).plus(
             Duration.ofDays(alignedTime.getDayOfYear()));
         if (timeDuration.compareTo(startDuration) < 0) {
             yearGap -= 1;
@@ -281,7 +280,7 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
 
         int yearGap = alignedTime.getYear() - alignedStart.getYear();
-        final Duration startDuration = Duration.between(alignedStart.withHour(0).withMinute(0).withSecond(0).withNano(0), alignedStart);
+        final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart);
         if (alignedTime.getMonthValue() < alignedStart.getMonthValue()) {
             // E.g. start: 2023.9 and time: 2024.8
             // Not a complete yearly interval
@@ -421,7 +420,8 @@ public class RecurrenceEvaluator {
 
         final ZonedDateTime start = settings.getStart();
         final ZonedDateTime alignedStart = start.withZoneSameInstant(getRecurrenceTimeZoneId());
-        if (settings.getRecurrence().getRange().getEndDate().isBefore(alignedStart)) {
+        final LocalDate alignedStartDate = alignedStart.toLocalDate();
+        if (settings.getRecurrence().getRange().getEndDate().isBefore(alignedStartDate)) {
             reason = RecurrenceConstants.OUT_OF_RANGE;
             return false;
         }
@@ -480,7 +480,7 @@ public class RecurrenceEvaluator {
         // Check whether "Start" is a valid first occurrence
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
-            alignedStart.getDayOfWeek().getValue() == convertToWeekDayNumber(dayOfWeekStr))) {
+            getDayOfWeek(alignedStart) == convertToWeekDayNumber(dayOfWeekStr))) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
             return false;
@@ -509,7 +509,7 @@ public class RecurrenceEvaluator {
 
         // Get the date of first day of the week
         final ZonedDateTime today = ZonedDateTime.now();
-        final int offset = remainingDaysOfWeek(today.getDayOfWeek().getValue(), convertToWeekDayNumber(firstDayOfWeek));
+        final int offset = remainingDaysOfWeek(getDayOfWeek(today), convertToWeekDayNumber(firstDayOfWeek));
         final ZonedDateTime firstDateOfWeek = today.plusDays(offset);
 
         // Loop the whole week to get the min gap between the two consecutive recurrences
@@ -520,7 +520,7 @@ public class RecurrenceEvaluator {
         for (int i = 0; i < 6; i++) {
             date = date.plusDays(1);
             final ZonedDateTime finalDate = date;
-            if (daysOfWeek.stream().anyMatch(dayOfWeek -> convertToWeekDayNumber(dayOfWeek) == finalDate.getDayOfWeek().getValue())) {
+            if (daysOfWeek.stream().anyMatch(dayOfWeek -> convertToWeekDayNumber(dayOfWeek) == getDayOfWeek(finalDate))) {
                 final Duration currentGap = Duration.between(prevOccurrence, date);
                 if (currentGap.compareTo(minGap) < 0) {
                     minGap = currentGap;
@@ -540,7 +540,7 @@ public class RecurrenceEvaluator {
     }
 
     private int remainingDaysOfWeek(int today, int firstDayOfWeek) {
-        int remainingDays = today - firstDayOfWeek;
+        int remainingDays = (today - firstDayOfWeek);
         if (remainingDays < 0) {
             return -remainingDays;
         } else {
@@ -606,7 +606,7 @@ public class RecurrenceEvaluator {
         // Check whether "Start" is a valid first occurrence
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
-            alignedStart.getDayOfWeek().getValue() == convertToWeekDayNumber(dayOfWeekStr))) {
+            getDayOfWeek(alignedStart) == convertToWeekDayNumber(dayOfWeekStr))) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
             return false;
@@ -699,7 +699,7 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedStart = settings.getStart().withZoneSameInstant(getRecurrenceTimeZoneId());
         if (alignedStart.getMonthValue() != pattern.getMonth() ||
             pattern.getDaysOfWeek().stream().noneMatch(day ->
-                dayOfNthWeekInTheMonth(alignedStart, pattern.getIndex(), day) == alignedStart)) {
+                alignedStart.isEqual(dayOfNthWeekInTheMonth(alignedStart, pattern.getIndex(), day)))) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
             return false;
@@ -719,7 +719,7 @@ public class RecurrenceEvaluator {
             startDateTime.getHour(), startDateTime.getMinute(), startDateTime.getSecond(), startDateTime.getNano(), startDateTime.getZone());
 
         // Find the first day of week in the month
-        while (dateTime.getDayOfWeek().getValue() != convertToWeekDayNumber(dayOfWeek)) {
+        while (getDayOfWeek(dateTime) != convertToWeekDayNumber(dayOfWeek)) {
             dateTime = dateTime.plusDays(1);
         }
 
@@ -829,7 +829,7 @@ public class RecurrenceEvaluator {
         }
     }
 
-    public int convertIndexToNumber(String str) {
+    private int convertIndexToNumber(String str) {
         final String strLowerCase = str.toLowerCase();
         switch (strLowerCase) {
             case RecurrenceConstants.FIRST:
@@ -845,6 +845,10 @@ public class RecurrenceEvaluator {
             default:
                 throw new IllegalArgumentException("Parameter Index not support " + str);
         }
+    }
+
+    private int getDayOfWeek(ZonedDateTime dateTime) {
+        return dateTime.getDayOfWeek().getValue() % 7;
     }
 
     private class OccurrenceInfo {

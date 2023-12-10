@@ -4,6 +4,7 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -20,7 +21,7 @@ public class RecurrenceRange {
     /**
      * The date to stop applying the recurrence pattern
      * */
-    private ZonedDateTime endDate;
+    private LocalDate endDate;
 
     /**
      * The number of times to repeat the time window
@@ -49,7 +50,7 @@ public class RecurrenceRange {
     /**
      * @return the date to stop applying the recurrence pattern
      * */
-    public ZonedDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
@@ -57,15 +58,9 @@ public class RecurrenceRange {
      * @param endDate the end date to be set
      * */
     public void setEndDate(String endDate) {
-        try {
-            this.endDate = StringUtils.hasText(endDate)
-                ? ZonedDateTime.parse(endDate, DateTimeFormatter.ISO_DATE_TIME)
-                : null;
-        } catch (DateTimeParseException e) {
-            this.endDate = StringUtils.hasText(endDate)
-                ? ZonedDateTime.parse(endDate, DateTimeFormatter.RFC_1123_DATE_TIME)
-                : null;
-        }
+        this.endDate = StringUtils.hasText(endDate)
+            ? LocalDate.parse(endDate)
+            : null;
     }
 
     /**

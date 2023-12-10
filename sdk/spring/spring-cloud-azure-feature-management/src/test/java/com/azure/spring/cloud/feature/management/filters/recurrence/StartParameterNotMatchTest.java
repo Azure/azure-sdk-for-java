@@ -15,7 +15,6 @@ import com.azure.spring.cloud.feature.management.models.FilterParameters;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,12 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class StartParameterNotMatchTest {
     @Test
     public void weeklyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -54,12 +50,9 @@ public class StartParameterNotMatchTest {
 
     @Test
     public void absoluteMonthlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -76,12 +69,9 @@ public class StartParameterNotMatchTest {
 
     @Test
     public void relativeMonthlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -99,12 +89,9 @@ public class StartParameterNotMatchTest {
 
     @Test
     public void absoluteYearlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
@@ -122,12 +109,9 @@ public class StartParameterNotMatchTest {
 
     @Test
     public void relativeYearlyPatternNotMatchTest() {
-        final ZonedDateTime startTime = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime = startTime.plusHours(2);
-
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
         final RecurrenceRange range = new RecurrenceRange();
         range.setType("NoEnd");
         final Recurrence recurrence = new Recurrence();
