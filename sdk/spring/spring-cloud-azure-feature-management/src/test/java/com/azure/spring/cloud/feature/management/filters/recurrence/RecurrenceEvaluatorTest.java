@@ -655,7 +655,8 @@ public class RecurrenceEvaluatorTest {
 
     private void consumeEvaluationTestData(List<EvaluationTestData> testDataList) {
         for (EvaluationTestData testData: testDataList) {
-            assertEquals(RecurrenceEvaluator.matchRecurrence(testData.now, testData.settings), testData.isEnabled);
+            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator();
+            assertEquals(evaluator.matchRecurrence(testData.now, testData.settings), testData.isEnabled);
         }
     }
 

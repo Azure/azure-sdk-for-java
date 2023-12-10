@@ -7,6 +7,7 @@ package com.azure.spring.cloud.feature.management.filters.recurrence;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrencePattern;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceRange;
@@ -153,10 +154,11 @@ public class StartParameterNotMatchTest {
 
     private void consumeValidationTestData(TimeWindowFilterSettings settings) {
         final ZonedDateTime now = ZonedDateTime.now();
-        final String errorMessage = String.format(RecurrenceEvaluator.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START);
+        final String errorMessage = String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START);
 
         try {
-            RecurrenceEvaluator.matchRecurrence(now, settings);
+            final RecurrenceEvaluator evaluator = new RecurrenceEvaluator();
+            evaluator.matchRecurrence(now, settings);
         } catch (final Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
             assertEquals(e.getMessage(), errorMessage);
