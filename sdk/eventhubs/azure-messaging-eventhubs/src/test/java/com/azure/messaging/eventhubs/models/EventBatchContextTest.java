@@ -27,7 +27,7 @@ class EventBatchContextTest {
     private final PartitionContext partitionContext = new PartitionContext("TEST_NAMESPACE",
         "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
     private final LastEnqueuedEventProperties lastEnqueuedEventProperties = new LastEnqueuedEventProperties(1035L,
-        100L, Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L));
+        100L, Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L), null);
     private final List<EventData> events = new ArrayList<>();
 
     @Mock

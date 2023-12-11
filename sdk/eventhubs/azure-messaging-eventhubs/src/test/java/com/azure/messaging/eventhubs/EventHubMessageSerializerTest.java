@@ -134,6 +134,8 @@ public class EventHubMessageSerializerTest {
         final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
+        final Long beginningReplicationSegment = null;
+        final Long lastEnqueuedReplicationSegment = 10L;
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -143,6 +145,9 @@ public class EventHubMessageSerializerTest {
         values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, lastEnqueuedOffset);
         values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, lastEnqueuedTimeAsDate);
         values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, isEmpty);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, beginningReplicationSegment);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH,
+            lastEnqueuedReplicationSegment);
 
         final AmqpValue amqpValue = new AmqpValue(values);
 
@@ -161,6 +166,8 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(lastEnqueuedOffset, partitionProperties.getLastEnqueuedOffset());
         Assertions.assertEquals(lastEnqueuedTime, partitionProperties.getLastEnqueuedTime());
         Assertions.assertEquals(isEmpty, partitionProperties.isEmpty());
+        Assertions.assertEquals(beginningReplicationSegment, partitionProperties.getBeginningReplicationSegment());
+        Assertions.assertEquals(lastEnqueuedReplicationSegment, partitionProperties.getLastEnqueuedReplicationSegment());
     }
 
     /**
