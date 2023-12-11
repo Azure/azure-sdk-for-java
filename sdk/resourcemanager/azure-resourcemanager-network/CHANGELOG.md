@@ -2,10 +2,10 @@
 
 ## 2.34.0-beta.1 (Unreleased)
 
-### Features Added
+### Breaking Changes
 
 - The class `RoutingConfigurationNfv` renamed to `RoutingConfiguration`.
-- The classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource` removed.
+- The classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource` were removed.
 
 ### Other Changes
 
