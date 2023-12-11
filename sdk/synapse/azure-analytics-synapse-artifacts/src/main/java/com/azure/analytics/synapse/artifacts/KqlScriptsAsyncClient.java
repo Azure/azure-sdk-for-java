@@ -13,14 +13,17 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class KqlScriptsAsyncClient {
-    @Generated private final KqlScriptsImpl serviceClient;
+    @Generated
+    private final KqlScriptsImpl serviceClient;
 
     /**
      * Initializes an instance of KqlScriptsAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -30,7 +33,7 @@ public final class KqlScriptsAsyncClient {
 
     /**
      * Get all KQL scripts.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all KQL scripts as paginated response with {@link PagedFlux}.

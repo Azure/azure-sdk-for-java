@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Copy activity. */
+/**
+ * Copy activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Copy")
 @JsonFlatten
@@ -122,12 +124,15 @@ public class CopyActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.skipErrorFile")
     private SkipErrorFile skipErrorFile;
 
-    /** Creates an instance of CopyActivity class. */
-    public CopyActivity() {}
+    /**
+     * Creates an instance of CopyActivity class.
+     */
+    public CopyActivity() {
+    }
 
     /**
      * Get the inputs property: List of inputs for the activity.
-     *
+     * 
      * @return the inputs value.
      */
     public List<DatasetReference> getInputs() {
@@ -136,7 +141,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the inputs property: List of inputs for the activity.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the CopyActivity object itself.
      */
@@ -147,7 +152,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the outputs property: List of outputs for the activity.
-     *
+     * 
      * @return the outputs value.
      */
     public List<DatasetReference> getOutputs() {
@@ -156,7 +161,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the outputs property: List of outputs for the activity.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the CopyActivity object itself.
      */
@@ -167,7 +172,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the source property: Copy activity source.
-     *
+     * 
      * @return the source value.
      */
     public CopySource getSource() {
@@ -176,7 +181,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the source property: Copy activity source.
-     *
+     * 
      * @param source the source value to set.
      * @return the CopyActivity object itself.
      */
@@ -187,7 +192,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the sink property: Copy activity sink.
-     *
+     * 
      * @return the sink value.
      */
     public CopySink getSink() {
@@ -196,7 +201,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the sink property: Copy activity sink.
-     *
+     * 
      * @param sink the sink value to set.
      * @return the CopyActivity object itself.
      */
@@ -207,7 +212,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the translator property: Copy activity translator. If not specified, tabular translator is used.
-     *
+     * 
      * @return the translator value.
      */
     public Object getTranslator() {
@@ -216,7 +221,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the translator property: Copy activity translator. If not specified, tabular translator is used.
-     *
+     * 
      * @param translator the translator value to set.
      * @return the CopyActivity object itself.
      */
@@ -228,7 +233,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the enableStaging property: Specifies whether to copy data via an interim staging. Default value is false.
      * Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableStaging value.
      */
     public Object getEnableStaging() {
@@ -238,7 +243,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the enableStaging property: Specifies whether to copy data via an interim staging. Default value is false.
      * Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableStaging the enableStaging value to set.
      * @return the CopyActivity object itself.
      */
@@ -249,7 +254,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the stagingSettings property: Specifies interim staging settings when EnableStaging is true.
-     *
+     * 
      * @return the stagingSettings value.
      */
     public StagingSettings getStagingSettings() {
@@ -258,7 +263,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the stagingSettings property: Specifies interim staging settings when EnableStaging is true.
-     *
+     * 
      * @param stagingSettings the stagingSettings value to set.
      * @return the CopyActivity object itself.
      */
@@ -270,7 +275,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the parallelCopies property: Maximum number of concurrent sessions opened on the source or sink to avoid
      * overloading the data store. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @return the parallelCopies value.
      */
     public Object getParallelCopies() {
@@ -280,7 +285,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the parallelCopies property: Maximum number of concurrent sessions opened on the source or sink to avoid
      * overloading the data store. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @param parallelCopies the parallelCopies value to set.
      * @return the CopyActivity object itself.
      */
@@ -292,7 +297,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the dataIntegrationUnits property: Maximum number of data integration units that can be used to perform this
      * data movement. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @return the dataIntegrationUnits value.
      */
     public Object getDataIntegrationUnits() {
@@ -302,7 +307,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the dataIntegrationUnits property: Maximum number of data integration units that can be used to perform this
      * data movement. Type: integer (or Expression with resultType integer), minimum: 0.
-     *
+     * 
      * @param dataIntegrationUnits the dataIntegrationUnits value to set.
      * @return the CopyActivity object itself.
      */
@@ -314,7 +319,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the enableSkipIncompatibleRow property: Whether to skip incompatible row. Default value is false. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableSkipIncompatibleRow value.
      */
     public Object getEnableSkipIncompatibleRow() {
@@ -324,7 +329,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the enableSkipIncompatibleRow property: Whether to skip incompatible row. Default value is false. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableSkipIncompatibleRow the enableSkipIncompatibleRow value to set.
      * @return the CopyActivity object itself.
      */
@@ -336,7 +341,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the redirectIncompatibleRowSettings property: Redirect incompatible row settings when
      * EnableSkipIncompatibleRow is true.
-     *
+     * 
      * @return the redirectIncompatibleRowSettings value.
      */
     public RedirectIncompatibleRowSettings getRedirectIncompatibleRowSettings() {
@@ -346,12 +351,12 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the redirectIncompatibleRowSettings property: Redirect incompatible row settings when
      * EnableSkipIncompatibleRow is true.
-     *
+     * 
      * @param redirectIncompatibleRowSettings the redirectIncompatibleRowSettings value to set.
      * @return the CopyActivity object itself.
      */
-    public CopyActivity setRedirectIncompatibleRowSettings(
-            RedirectIncompatibleRowSettings redirectIncompatibleRowSettings) {
+    public CopyActivity
+        setRedirectIncompatibleRowSettings(RedirectIncompatibleRowSettings redirectIncompatibleRowSettings) {
         this.redirectIncompatibleRowSettings = redirectIncompatibleRowSettings;
         return this;
     }
@@ -359,7 +364,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the logStorageSettings property: (Deprecated. Please use LogSettings) Log storage settings customer need to
      * provide when enabling session log.
-     *
+     * 
      * @return the logStorageSettings value.
      */
     public LogStorageSettings getLogStorageSettings() {
@@ -369,7 +374,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the logStorageSettings property: (Deprecated. Please use LogSettings) Log storage settings customer need to
      * provide when enabling session log.
-     *
+     * 
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the CopyActivity object itself.
      */
@@ -380,7 +385,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the logSettings property: Log settings customer needs provide when enabling log.
-     *
+     * 
      * @return the logSettings value.
      */
     public LogSettings getLogSettings() {
@@ -389,7 +394,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the logSettings property: Log settings customer needs provide when enabling log.
-     *
+     * 
      * @param logSettings the logSettings value to set.
      * @return the CopyActivity object itself.
      */
@@ -400,7 +405,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the preserveRules property: Preserve Rules.
-     *
+     * 
      * @return the preserveRules value.
      */
     public List<Object> getPreserveRules() {
@@ -409,7 +414,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the preserveRules property: Preserve Rules.
-     *
+     * 
      * @param preserveRules the preserveRules value to set.
      * @return the CopyActivity object itself.
      */
@@ -420,7 +425,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the preserve property: Preserve rules.
-     *
+     * 
      * @return the preserve value.
      */
     public List<Object> getPreserve() {
@@ -429,7 +434,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the preserve property: Preserve rules.
-     *
+     * 
      * @param preserve the preserve value to set.
      * @return the CopyActivity object itself.
      */
@@ -441,7 +446,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Get the validateDataConsistency property: Whether to enable Data Consistency validation. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the validateDataConsistency value.
      */
     public Object getValidateDataConsistency() {
@@ -451,7 +456,7 @@ public class CopyActivity extends ExecutionActivity {
     /**
      * Set the validateDataConsistency property: Whether to enable Data Consistency validation. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param validateDataConsistency the validateDataConsistency value to set.
      * @return the CopyActivity object itself.
      */
@@ -462,7 +467,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Get the skipErrorFile property: Specify the fault tolerance for data consistency.
-     *
+     * 
      * @return the skipErrorFile value.
      */
     public SkipErrorFile getSkipErrorFile() {
@@ -471,7 +476,7 @@ public class CopyActivity extends ExecutionActivity {
 
     /**
      * Set the skipErrorFile property: Specify the fault tolerance for data consistency.
-     *
+     * 
      * @param skipErrorFile the skipErrorFile value to set.
      * @return the CopyActivity object itself.
      */
@@ -480,56 +485,72 @@ public class CopyActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
