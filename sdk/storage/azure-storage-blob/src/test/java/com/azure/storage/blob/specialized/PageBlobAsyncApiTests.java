@@ -1480,11 +1480,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                        String noneMatch, String tags) {
-        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.BLOB, null);
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null).block();
 
@@ -1529,9 +1527,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                            String noneMatch, String tags) {
-        ccAsync.setAccessPolicy(PublicAccessType.BLOB, null).block();
-
-        sleepIfRunningAgainstService(30 * 1000);
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.BLOB, null);
 
         PageBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
         String snapshot = bc.createSnapshot().block().getSnapshotId();

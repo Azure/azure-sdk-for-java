@@ -356,7 +356,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void stageBlockFromUrl() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         String blockID = getBlockID();
 
@@ -382,11 +382,9 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void stageBlockFromUrlMin() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
         String blockID = getBlockID();
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         assertResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null,
             null, null, null, null), 201);
@@ -407,7 +405,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void stageBlockFromURLRange() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         BlockBlobClient destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
         destURL.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl(), new BlobRange(2L, 3L));
@@ -419,7 +417,7 @@ public class BlockBlobApiTests extends BlobTestBase {
 
     @Test
     public void stageBlockFromURLMD5() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         BlockBlobClient destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
 
         assertDoesNotThrow(() -> destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl(),

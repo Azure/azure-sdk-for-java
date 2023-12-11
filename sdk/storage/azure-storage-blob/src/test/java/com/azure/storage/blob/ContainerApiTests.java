@@ -405,7 +405,7 @@ public class ContainerApiTests extends BlobTestBase {
 
     @Test
     public void setAccessPolicyMinAccess() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         assertEquals(cc.getProperties().getBlobPublicAccess(), PublicAccessType.CONTAINER);
     }
 
@@ -421,7 +421,7 @@ public class ContainerApiTests extends BlobTestBase {
 
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
 
-        cc.setAccessPolicy(null, ids);
+        setAccessPolicySleep(cc, null, ids);
 
         assertEquals(cc.getAccessPolicy().getIdentifiers().get(0).getId(), "0000");
     }
@@ -535,7 +535,7 @@ public class ContainerApiTests extends BlobTestBase {
                 .setExpiresOn(testResourceNamer.now().plusDays(1))
                 .setPermissions("r"));
         List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-        cc.setAccessPolicy(PublicAccessType.BLOB, ids);
+        setAccessPolicySleep(cc, PublicAccessType.BLOB, ids);
         Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null);
 
         assertResponseStatusCode(response, 200);

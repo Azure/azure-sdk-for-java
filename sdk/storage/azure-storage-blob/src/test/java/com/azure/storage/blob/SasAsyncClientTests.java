@@ -169,9 +169,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             .setId("0000")
             .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
                 .setExpiresOn(testResourceNamer.now().plusDays(1)));
-        ccAsync.setAccessPolicy(null, Arrays.asList(identifier)).block();
-
-        sleepIfRunningAgainstService(30 * 1000);
+        setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier));
 
         // Check containerSASPermissions
         BlobContainerSasPermission permissions = new BlobContainerSasPermission()

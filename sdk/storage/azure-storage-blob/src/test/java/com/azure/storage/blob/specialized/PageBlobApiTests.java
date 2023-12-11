@@ -1514,11 +1514,11 @@ public class PageBlobApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACSupplier")
     public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String tags) {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
+        setAccessPolicySleep(cc, PublicAccessType.BLOB, null);
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();
 
-        sleepIfRunningAgainstService(30 * 1000);
+        sleepIfRunningAgainstService(10 * 1000);
 
         Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl(), snapshot, null, null,
             null);
@@ -1564,9 +1564,7 @@ public class PageBlobApiTests extends BlobTestBase {
     @MethodSource("startIncrementalCopyACFailSupplier")
     public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String tags) {
-        cc.setAccessPolicy(PublicAccessType.BLOB, null);
-
-        sleepIfRunningAgainstService(30 * 1000);
+        setAccessPolicySleep(cc, PublicAccessType.BLOB, null);
 
         PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         String snapshot = bc.createSnapshot().getSnapshotId();

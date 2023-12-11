@@ -29,12 +29,16 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -71,6 +75,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
@@ -84,6 +89,7 @@ import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -1193,5 +1199,60 @@ public class BlobTestBase extends TestProxyTestBase {
         }
 
         return outputStream.toByteArray();
+    }
+
+    /*https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy#creating-or-modifying-a-stored-access-policy
+    Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
+    */
+    protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
+                                        List<BlobSignedIdentifier> identifiers){
+        cc.setAccessPolicy(access, identifiers);
+        BlobContainerAccessPolicies status = cc.getAccessPolicy();
+        while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
+            status = cc.getAccessPolicy();
+            sleepIfRunningAgainstService(2000);
+        }
+    }
+
+    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
+                                        List<BlobSignedIdentifier> identifiers){
+        cc.setAccessPolicy(access, identifiers).block();
+        BlobContainerAccessPolicies status = cc.getAccessPolicy().block();
+        while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
+            status = cc.getAccessPolicy().block();
+            sleepIfRunningAgainstService(2000);
+        }
+    }
+
+    protected boolean areIdentifiersEqual(List<BlobSignedIdentifier> l1, List<BlobSignedIdentifier> l2){
+        if(l1 == null && l2 == null){
+            return true;
+        }
+        if(l1 == null || l2 == null){
+            return false;
+        }
+        for(int x = 0; x < l1.size(); x++){
+            BlobSignedIdentifier I1 = l1.get(x);
+            BlobSignedIdentifier I2 = l2.get(x);
+            if(!Objects.equals(I1.getId(), I2.getId())){
+                return false;
+            }
+            if(I1.getAccessPolicy().getExpiresOn() != null && !I1.getAccessPolicy().getExpiresOn().equals(I2.getAccessPolicy().getExpiresOn())){
+                return false;
+            }
+            if (I1.getAccessPolicy().getExpiresOn() == null && I2.getAccessPolicy().getExpiresOn() != null) {
+                return false;
+            }
+            if(I1.getAccessPolicy().getStartsOn() != null && !I1.getAccessPolicy().getStartsOn().equals(I2.getAccessPolicy().getStartsOn())){
+                return false;
+            }
+            if (I1.getAccessPolicy().getStartsOn() == null && I2.getAccessPolicy().getStartsOn() != null) {
+                return false;
+            }
+            if(!Objects.equals(I1.getAccessPolicy().getPermissions(), I2.getAccessPolicy().getPermissions())){
+                return false;
+            }
+        }
+        return true;
     }
 }

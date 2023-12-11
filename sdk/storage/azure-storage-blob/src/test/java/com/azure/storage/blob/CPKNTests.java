@@ -274,7 +274,7 @@ public class CPKNTests extends BlobTestBase {
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
     @Test
     public void syncCopyEncryptionScope() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         BlobClient blobSource = cc.getBlobClient(generateBlobName());
         blobSource.upload(DATA.getDefaultBinaryData());
 

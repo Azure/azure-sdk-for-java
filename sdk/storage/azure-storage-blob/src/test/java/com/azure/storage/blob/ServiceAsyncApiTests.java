@@ -127,18 +127,16 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        ccAsync.setAccessPolicy(null, Collections.singletonList(new BlobSignedIdentifier()
+        setAccessPolicySleepAsync(ccAsync, null,Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1))))).block();
+                .setExpiresOn(testResourceNamer.now().plusDays(1)))));
         ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromBytes("test".getBytes())).block();
         String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(identifier));
         if (unsanitize) {
             sas = sas.replace("%20", " ");
         }
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
@@ -669,8 +667,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 })
                 .verifyComplete();
 
-            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-            sleepIfRunningAgainstService(30 * 1000);
+            sleepIfRunningAgainstService(30 * 1000);// Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+
 
             StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
                 .assertNext(r -> validatePropsSet(sentProperties, r))

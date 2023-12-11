@@ -126,7 +126,7 @@ public class ServiceApiTests extends BlobTestBase {
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        cc.setAccessPolicy(null, Collections.singletonList(new BlobSignedIdentifier()
+        setAccessPolicySleep(cc, null,Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
@@ -136,8 +136,6 @@ public class ServiceApiTests extends BlobTestBase {
         if (unsanitize) {
             sas = sas.replace("%20", " ");
         }
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         // when: "Endpoint with SAS built in, works as expected"
         String finalSas = sas;
@@ -603,8 +601,8 @@ public class ServiceApiTests extends BlobTestBase {
             HttpHeaders headers =
                 primaryBlobServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders();
 
-            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-            sleepIfRunningAgainstService(30 * 1000);
+            sleepIfRunningAgainstService(30 * 1000);// Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+
 
             BlobServiceProperties receivedProperties = primaryBlobServiceClient.getProperties();
 

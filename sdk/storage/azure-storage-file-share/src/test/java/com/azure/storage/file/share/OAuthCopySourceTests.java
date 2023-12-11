@@ -71,8 +71,7 @@ public class OAuthCopySourceTests extends FileShareTestBase {
                 assertArrayEquals(os.toByteArray(), DATA.getDefaultBytes());
                 break;
             } catch (Exception ex) {
-                // Retry delay
-                sleepIfRunningAgainstService(30 * 1000);
+                sleepIfRunningAgainstService(30 * 1000); // Retry delay
             } finally {
                 retry++;
             }

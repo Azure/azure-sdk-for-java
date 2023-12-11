@@ -612,7 +612,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t).block();
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
         AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
@@ -624,8 +624,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
@@ -642,7 +640,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                                     String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE,
                                                     String tags) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
@@ -655,8 +653,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
@@ -673,10 +669,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("appendBlockFromURLSupplier")
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
                                            String sourceIfMatch, String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
-        sleepIfRunningAgainstService(30 * 1000);
-
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
@@ -708,10 +701,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
                                                OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
                                                String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
-        sleepIfRunningAgainstService(30 * 1000);
-
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,

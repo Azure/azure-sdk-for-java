@@ -426,11 +426,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
     @Test
     public void stageBlockFromUrlMin() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
+        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         String blockID = getBlockID();
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         assertAsyncResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobAsyncClient.getBlobUrl(),
             null, null, null, null), 201);

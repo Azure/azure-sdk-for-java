@@ -513,7 +513,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLMin() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);
 
@@ -531,7 +531,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLRange() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         byte[] data = getRandomByteArray(4 * 1024);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);
 
@@ -547,7 +547,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLMD5() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);
 
@@ -561,7 +561,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLMD5Fail() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(new ByteArrayInputStream(data), data.length);
 
@@ -580,7 +580,7 @@ public class AppendBlobApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t);
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
         AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
@@ -592,8 +592,6 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
@@ -609,7 +607,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
         String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
@@ -622,8 +620,6 @@ public class AppendBlobApiTests extends BlobTestBase {
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
             .setTagsConditions(tags);
-
-        sleepIfRunningAgainstService(30 * 1000);
 
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
@@ -639,10 +635,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     @MethodSource("appendBlockFromURLSupplier")
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
-
-        sleepIfRunningAgainstService(30 * 1000);
-
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
@@ -673,10 +666,7 @@ public class AppendBlobApiTests extends BlobTestBase {
     @MethodSource("appendBlockFromURLFailSupplier")
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
-
-        sleepIfRunningAgainstService(30 * 1000);
-
+        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
         AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         sourceURL.create();
         sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
