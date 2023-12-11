@@ -14,7 +14,10 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.FunctionParameters;
+import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,7 +31,7 @@ import java.util.Map;
 /**
  * Sample demonstrates how to get chat completions using function call.
  */
-public class FunctionCallSample {
+public class ChatCompletionsFunctionCall {
     /**
      * Runs the sample algorithm and demonstrates how to get chat completions using function call.
      *
@@ -46,58 +49,61 @@ public class FunctionCallSample {
             .buildClient();
 
         List<FunctionDefinition> functions = Arrays.asList(
-            new FunctionDefinition("getCurrentWeather")
-                .setDescription("Get the current weather")
-                .setParameters(BinaryData.fromObject(getFunctionDefinition()))
+                new FunctionDefinition("getCurrentWeather")
+                        .setDescription("Get the current weather")
+                        .setParameters(BinaryData.fromObject(getCurrentWeatherFunctionParameters()))
         );
+        List<ChatRequestMessage> chatRequestMessages = new ArrayList<>();
+        chatRequestMessages.add(new ChatRequestUserMessage("What should I wear in Boston depending on the weather?"));
 
-        List<ChatRequestMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatRequestUserMessage("What should I wear in Boston depending on the weather?"));
-
-        ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages)
-            .setFunctionCall(FunctionCallConfig.AUTO)
-            .setFunctions(functions);
-
-        ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions);
-        List<ChatRequestMessage> chatMessages2 = handleFunctionCallResponse(chatCompletions.getChoices(), chatMessages);
+        ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId,
+                new ChatCompletionsOptions(chatRequestMessages)
+                        .setFunctionCall(FunctionCallConfig.AUTO)
+                        .setFunctions(functions));
 
         // Take your function_call result as the input prompt to make another request to service.
-        ChatCompletionsOptions chatCompletionOptions2 = new ChatCompletionsOptions(chatMessages2);
-        ChatCompletions chatCompletions2 = client.getChatCompletions(deploymentOrModelId, chatCompletionOptions2);
-        List<ChatChoice> choices = chatCompletions2.getChoices();
-        ChatResponseMessage message = choices.get(0).getMessage();
-        System.out.printf("Message: %s.%n", message.getContent());
+        chatRequestMessages = handleFunctionCallResponse(chatCompletions.getChoices(),
+                chatRequestMessages);
+        ChatCompletions chatCompletionsAnswer = client.getChatCompletions(deploymentOrModelId,
+                new ChatCompletionsOptions(chatRequestMessages));
+
+        System.out.printf("Message: %s.%n", chatCompletionsAnswer.getChoices().get(0).getMessage().getContent());
     }
 
-    private static Map<String, Object> getFunctionDefinition() {
-        // Construct JSON in Map, or you can use create your own customized model.
-        Map<String, Object> location = new HashMap<>();
-        location.put("type", "string");
-        location.put("description", "The city and state, e.g. San Francisco, CA");
-        Map<String, Object> unit = new HashMap<>();
-        unit.put("type", "string");
-        unit.put("enum", Arrays.asList("celsius", "fahrenheit"));
-        Map<String, Object> prop1 = new HashMap<>();
-        prop1.put("location", location);
-        prop1.put("unit", unit);
-        Map<String, Object> functionDefinition = new HashMap<>();
-        functionDefinition.put("type", "object");
-        functionDefinition.put("required", Arrays.asList("location", "unit"));
-        functionDefinition.put("properties", prop1);
-        return functionDefinition;
+    private static FunctionParameters getCurrentWeatherFunctionParameters() {
+        FunctionProperties location = new FunctionProperties()
+                .setType("string")
+                .setDescription("The city and state, e.g. San Francisco, CA");
+
+        FunctionProperties unit = new FunctionProperties()
+                .setType("string")
+                .setEnumString(Arrays.asList("celsius", "fahrenheit"))
+                .setDescription("The temperature unit to use. Infer this from the user's location.");
+
+        Map<String, FunctionProperties> props = new HashMap<>();
+        props.put("location", location);
+        props.put("unit", unit);
+
+        return new FunctionParameters()
+                .setType("object")
+                .setRequiredPropertyNames(Arrays.asList("location", "unit"))
+                .setProperties(props);
     }
 
-    private static List<ChatRequestMessage> handleFunctionCallResponse(List<ChatChoice> choices, List<ChatRequestMessage> chatMessages) {
+    private static List<ChatRequestMessage> handleFunctionCallResponse(List<ChatChoice> choices,
+                                                                       List<ChatRequestMessage> chatMessages) {
         for (ChatChoice choice : choices) {
             ChatResponseMessage choiceMessage = choice.getMessage();
             FunctionCall functionCall = choiceMessage.getFunctionCall();
             // We are looking for finish_reason = "function call".
             if (CompletionsFinishReason.FUNCTION_CALL.equals(choice.getFinishReason())) {
                 // We call getCurrentWeather() and pass the result to the service.
-                System.out.printf("Function name: %s, arguments: %s.%n", functionCall.getName(), functionCall.getArguments());
+                System.out.printf("Function name: %s, arguments: %s.%n", functionCall.getName(),
+                        functionCall.getArguments());
                 // WeatherLocation is our class that represents the parameters to use in our function call.
                 // We deserialize and pass it to our function.
-                WeatherLocation weatherLocation = BinaryData.fromString(functionCall.getArguments()).toObject(WeatherLocation.class);
+                WeatherLocation weatherLocation = BinaryData.fromString(functionCall.getArguments())
+                        .toObject(WeatherLocation.class);
 
                 int currentWeather = getCurrentWeather(weatherLocation);
                 chatMessages.add(new ChatRequestUserMessage(String.format("The weather in %s is %d degrees %s.",
@@ -122,7 +128,8 @@ public class FunctionCallSample {
         @JsonProperty(value = "unit") String unit;
         @JsonProperty(value = "location") String location;
         @JsonCreator
-        WeatherLocation(@JsonProperty(value = "unit") String unit, @JsonProperty(value = "location") String location) {
+        WeatherLocation(@JsonProperty(value = "unit") String unit,
+                        @JsonProperty(value = "location") String location) {
             this.unit = unit;
             this.location = location;
         }
