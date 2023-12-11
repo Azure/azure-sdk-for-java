@@ -550,10 +550,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 throw new RuntimeException("Client initialization failed. Check if the endpoint is reachable and if your auth token "
                     + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java. More details: "+ databaseRefreshErrorSnapshot.getMessage(),
-                    this.globalEndpointManager.getLatestDatabaseRefreshError());
+                    databaseRefreshErrorSnapshot);
             } else {
                 logger.error("Client initialization failed."
                     + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
+
+                throw new RuntimeException("Client initialization failed. Check if the endpoint is reachable and if your auth token "
+                    + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java.");
             }
         }
 
