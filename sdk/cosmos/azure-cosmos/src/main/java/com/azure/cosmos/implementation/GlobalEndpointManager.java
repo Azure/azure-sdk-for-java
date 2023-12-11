@@ -309,7 +309,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             });
                         }).onErrorResume(ex -> {
                     logger.error("startRefreshLocationTimerAsync() - Unable to refresh database account from any location. Exception: {}", ex.toString(), ex);
-                    setLatestDatabaseRefreshError(ex);
+                    this.setLatestDatabaseRefreshError(ex);
 
                     this.startRefreshLocationTimerAsync();
                     return Mono.empty();
@@ -321,7 +321,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
                     this.latestDatabaseAccount = databaseAccount;
-                    this.setLatestDatabaseRefreshError (null);
+                    this.setLatestDatabaseRefreshError(null);
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
