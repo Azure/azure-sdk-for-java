@@ -125,9 +125,9 @@ class EventHubPartitionAsyncConsumerTest {
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
         final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, 15L,
-            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004));
+            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004), 3L);
         final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, 154L,
-            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200));
+            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200), 10L);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message1), eq(LastEnqueuedEventProperties.class))).thenReturn(last1);
@@ -182,11 +182,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, 25L, 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage1, secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage2, secondOffset, 21L, 10L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage1, lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage3, lastOffset, 53L, null), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -248,11 +248,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, 25L, 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage2, secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage2, secondOffset, 21L, 2L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage3, lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage3, lastOffset, 53L, null), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -331,7 +331,7 @@ class EventHubPartitionAsyncConsumerTest {
     }
 
     private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
-        long sequenceNumber) {
+        long sequenceNumber, Long replicationSegment) {
 
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
@@ -339,7 +339,9 @@ class EventHubPartitionAsyncConsumerTest {
             .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
 
-        return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
+        return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null, null);
     }
 }

@@ -461,7 +461,7 @@ class EventHubProducerAsyncClientTest {
 
         EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
         PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, null, null);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));

@@ -21,6 +21,7 @@ import java.util.Map;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +39,7 @@ public class SystemPropertiesTest {
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
     private final long offset = 102L;
     private final long sequenceNumber = 12345L;
+    private final Long replicationSegment = 110L;
 
     private AmqpAnnotatedMessage message;
 
@@ -79,6 +81,7 @@ public class SystemPropertiesTest {
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
         messageAnnotations.put("foo", "bar");
         messageAnnotations.put("baz", 1L);
     }
@@ -114,7 +117,7 @@ public class SystemPropertiesTest {
     public void cannotModifyProperties() {
         // Act
         final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
-            partitionKey);
+            partitionKey, replicationSegment);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);
@@ -124,6 +127,7 @@ public class SystemPropertiesTest {
         assertEquals(sequenceNumber, properties.getSequenceNumber());
         assertEquals(offset, properties.getOffset());
         assertEquals(partitionKey, properties.getPartitionKey());
+        assertEquals(replicationSegment, properties.getReplicationSegment());
 
         assertThrows(UnsupportedOperationException.class, () -> properties.put("foo", "bar"));
         assertThrows(UnsupportedOperationException.class, () -> properties.putAll(testMap));
@@ -138,6 +142,12 @@ public class SystemPropertiesTest {
             () -> properties.replaceAll((key, value) -> "replaced " + value));
         assertThrows(UnsupportedOperationException.class,
             () -> properties.replace(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber, "baz"));
+        assertThrows(UnsupportedOperationException.class,
+            () -> properties.replace(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment, 13L));
+
+        // Shouldn't allow us to remove keys.
+        assertThrows(UnsupportedOperationException.class,
+            () -> properties.replace(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment, null));
 
         assertThrows(UnsupportedOperationException.class,
             () -> properties.computeIfAbsent("test", (key) -> "new value"));
@@ -157,7 +167,7 @@ public class SystemPropertiesTest {
     public void queryProperties() {
         // Act
         final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
-            partitionKey);
+            partitionKey, null);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
