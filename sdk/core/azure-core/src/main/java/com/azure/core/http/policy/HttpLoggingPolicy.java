@@ -503,8 +503,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             return Integer.valueOf(rawRetryCount.toString());
         } catch (NumberFormatException ex) {
-            LOGGER.log(LogLevel.INFORMATIONAL,
-                () -> "Could not parse the request retry count: '" + rawRetryCount + "'.");
+            LOGGER.atInfo()
+                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, rawRetryCount)
+                .log("Could not parse the request retry count.");
             return null;
         }
     }

@@ -22,13 +22,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
-import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
-import static com.azure.core.http.policy.HttpLoggingPolicy.RETRY_COUNT_CONTEXT;
+import static com.azure.core.implementation.logging.LoggingKeys.CANCELLED_ERROR_TYPE;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
 /**
@@ -41,13 +39,21 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String HTTP_STATUS_CODE = "http.status_code";
     private static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
-    private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
     private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
     private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
-    private static final String CANCELLED_ERROR_TYPE = "cancelled";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;
+    private static boolean foundLegacyOTelPolicy;
+
+    static {
+        try {
+            Class.forName(LEGACY_OTEL_POLICY_NAME, true, HttpPipelinePolicy.class.getClassLoader());
+            foundLegacyOTelPolicy = true;
+        } catch (ClassNotFoundException e) {
+            foundLegacyOTelPolicy = false;
+        }
+    }
 
     static {
         try {
@@ -156,7 +162,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
-        return tracer != null && tracer.isEnabled()
+        return tracer != null && tracer.isEnabled() && !foundLegacyOTelPolicy
             && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 
@@ -165,7 +171,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final Context span;
         private Throwable exception;
         private String errorType;
-        public TraceableResponse(HttpResponse response, Context span) {
+        TraceableResponse(HttpResponse response, Context span) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
