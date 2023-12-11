@@ -26,6 +26,78 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
 
 /**
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
+ * Please be aware that client built from this builder can support synchronously and asynchronously call of sending
+ * request. Use {@link com.azure.core.http.HttpClient#sendSync(HttpRequest, Context)} to send the provided request
+ * synchronously with contextual information.
+ *
+ * <p><strong>Building a new HttpClient instance</strong></p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
+ *
+ * <p>Configuring the OkHttp client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server. Proxies are commonly used for security, monitoring, and other purposes.</p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
+ * <pre>
+ * final String proxyHost = &quot;&lt;proxy-host&gt;&quot;; &#47;&#47; e.g. localhost
+ * final int proxyPort = 9999; &#47;&#47; Proxy port
+ * ProxyOptions proxyOptions = new ProxyOptions&#40;ProxyOptions.Type.HTTP,
+ *         new InetSocketAddress&#40;proxyHost, proxyPort&#41;&#41;;
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .proxy&#40;proxyOptions&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
+ *
+ * <p><strong>Building a new HttpClient instance with connection timeout.</strong></p>
+ *
+ * <p>Setting a reasonable connection timeout is particularly important in scenarios where network conditions might
+ * be unpredictable or where the server may not be responsive.</p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
+ * <pre>
+ * final Duration connectionTimeout = Duration.ofSeconds&#40;250&#41;; &#47;&#47; connection timeout of 250 seconds
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .connectionTimeout&#40;connectionTimeout&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder#connectionTimeout -->
+ *
+ * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
+ *
+ * <p>Configuring the OkHttp client with HTTP/2 support is relevant when you want to take advantage of the benefits
+ * provided by the HTTP/2 protocol. HTTP/2 is the next version of the HTTP network protocol, designed to improve the
+ * performance of web applications by allowing multiple requests and responses to be multiplexed over a
+ * single connection.</p>
+ *
+ * <!-- src_embed com.azure.core.http.okhttp.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;
+ *         .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.okhttp.instantiation-simple -->
+ *
+ * <p>It is also possible to create a OkHttp HttpClient that only supports HTTP/2.</p>
+ *
+ * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
+ * <pre>
+ * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;new OkHttpClient.Builder&#40;&#41;
+ *     .protocols&#40;Collections.singletonList&#40;Protocol.H2_PRIOR_KNOWLEDGE&#41;&#41;
+ *     .build&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient  -->
+ *
+ * @see HttpClient
+ * @see OkHttpAsyncHttpClient
  */
 public class OkHttpAsyncHttpClientBuilder {
 
