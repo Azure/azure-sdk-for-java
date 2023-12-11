@@ -11,6 +11,8 @@ public class App {
             DownloadToFile.class,
             DownloadStream.class,
             DownloadContent.class,
+            OpenInputStream.class,
+            OpenSeekableByteChannelRead.class
         }, args);
     }
 }

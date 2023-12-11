@@ -30,8 +30,7 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected boolean runInternal(Context span) {
         try {
-            return Boolean.TRUE.equals(ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent().toFluxByteBuffer(),
-                span).block());
+            return ORIGINAL_CONTENT.checkMatch(syncClient.downloadContent(), span).block().booleanValue();
         } catch (Exception e) {
             LOGGER.error("Failed to download blob", e);
             return false;
@@ -40,8 +39,7 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Boolean> runInternalAsync(Context span) {
-        return asyncClient.downloadContent().flatMap(response ->
-            ORIGINAL_CONTENT.checkMatch(response.toFluxByteBuffer(), span));
+        return asyncClient.downloadContent().flatMap(response -> ORIGINAL_CONTENT.checkMatch(response, span));
     }
 
     @Override

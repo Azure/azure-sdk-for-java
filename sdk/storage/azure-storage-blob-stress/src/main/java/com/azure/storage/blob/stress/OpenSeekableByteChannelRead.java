@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -14,7 +15,10 @@ import com.azure.storage.blob.stress.utils.TelemetryHelper;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.nio.channels.Channels;
 import java.nio.channels.SeekableByteChannel;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenSeekableByteChannelRead.class);
@@ -35,8 +39,7 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
             BlobSeekableByteChannelReadResult result = syncClient.openSeekableByteChannelRead(
                 new BlobSeekableByteChannelReadOptions(), null);
             SeekableByteChannel channel = result.getChannel();
-            return Boolean.TRUE.equals(ORIGINAL_CONTENT.checkMatch(
-                ORIGINAL_CONTENT.copySeekableByteChannelToFluxByteBuffer(channel), span).block());
+            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromStream(Channels.newInputStream(channel)), span).block().booleanValue();
         } catch (Exception e) {
             LOGGER.error("Failed to download blob with open seekable byte channel", e);
             return false;
@@ -45,8 +48,7 @@ public class OpenSeekableByteChannelRead extends BlobScenarioBase<StorageStressO
 
     @Override
     protected Mono<Boolean> runInternalAsync(Context span) {
-        // openSeekableByteChannelRead() does not exist on the async client
-        return null;
+        return monoError(LOGGER, new RuntimeException("openSeekableByteChannelRead() does not exist on the async client"));
     }
 
     @Override

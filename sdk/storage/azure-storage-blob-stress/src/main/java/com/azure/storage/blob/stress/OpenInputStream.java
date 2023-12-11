@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -13,6 +14,8 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(OpenInputStream.class);
@@ -31,7 +34,7 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected boolean runInternal(Context span) {
         try (InputStream stream = syncClient.openInputStream()) {
-            return Boolean.TRUE.equals(ORIGINAL_CONTENT.checkMatch(ORIGINAL_CONTENT.convertInputStreamToFluxByteBuffer(stream), span).block());
+            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromStream(stream), span).block().booleanValue();
         } catch (Exception e) {
             LOGGER.error("Failed to open input stream", e);
             return false;
@@ -40,8 +43,7 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Boolean> runInternalAsync(Context context) {
-        // openInputStream() does not exist on the async client
-        return null;
+        return monoError(LOGGER, new RuntimeException("openInputStream() does not exist on the async client"));
     }
 
     @Override
