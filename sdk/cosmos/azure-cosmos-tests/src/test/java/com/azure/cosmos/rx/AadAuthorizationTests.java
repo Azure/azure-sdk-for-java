@@ -96,7 +96,9 @@ public class AadAuthorizationTests extends TestSuiteBase {
         }
         catch (Exception e) {
             log.info("Expected exception: {}", e.getMessage());
+            log.info("Expected cause: {}", e.getCause().toString());
             assert e.getMessage().contains("Invalid client secret provided");
+            assert e.getCause().toString().contains("Invalid client secret provided");
         }
 
 
