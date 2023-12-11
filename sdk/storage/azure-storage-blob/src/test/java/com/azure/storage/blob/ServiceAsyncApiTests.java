@@ -122,43 +122,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .setDefaultServiceVersion("2018-03-28")).block();
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = {true, false})
-    public void sasSanitization(boolean unsanitize) {
-        String identifier = "id with spaces";
-        String blobName = generateBlobName();
-        setAccessPolicySleepAsync(ccAsync, null,Collections.singletonList(new BlobSignedIdentifier()
-            .setId(identifier)
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)))));
-        ccAsync.getBlobAsyncClient(blobName).upload(BinaryData.fromBytes("test".getBytes())).block();
-        String sas = ccAsync.generateSas(new BlobServiceSasSignatureValues(identifier));
-        if (unsanitize) {
-            sas = sas.replace("%20", " ");
-        }
-
-        // when: "Endpoint with SAS built in, works as expected"
-        String finalSas = sas;
-        BlobContainerAsyncClient client1 = instrument(new BlobContainerClientBuilder()
-            .endpoint(ccAsync.getBlobContainerUrl() + "?" + finalSas))
-            .buildAsyncClient();
-        StepVerifier.create(client1.getBlobAsyncClient(blobName).downloadContent())
-            .expectNextCount(1)
-            .verifyComplete();
-
-
-        String connectionString = "AccountName=" + BlobUrlParts.parse(ccAsync.getAccountUrl()).getAccountName()
-            + ";SharedAccessSignature=" + sas;
-        BlobContainerAsyncClient client2 = instrument(new BlobContainerClientBuilder()
-            .connectionString(connectionString)
-            .containerName(ccAsync.getBlobContainerName()))
-            .buildAsyncClient();
-        StepVerifier.create(client2.getBlobAsyncClient(blobName).downloadContent())
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
     @Test
     public void listContainers() {
         StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(

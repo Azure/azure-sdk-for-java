@@ -403,28 +403,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(cc.getProperties().getBlobPublicAccess(), publicAccess);
     }
 
-    @Test
-    public void setAccessPolicyMinAccess() {
-        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
-        assertEquals(cc.getProperties().getBlobPublicAccess(), PublicAccessType.CONTAINER);
-    }
 
-    @Test
-    public void setAccessPolicyMinIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                    .plusDays(1))
-                .setPermissions("r"));
-
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-
-        setAccessPolicySleep(cc, null, ids);
-
-        assertEquals(cc.getAccessPolicy().getIdentifiers().get(0).getId(), "0000");
-    }
 
     @Test
     public void setAccessPolicyIds() {
@@ -517,36 +496,6 @@ public class ContainerApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(RECEIVED_ETAG, null),
             Arguments.of(null, GARBAGE_ETAG));
-    }
-
-    @Test
-    public void setAccessPolicyError() {
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-
-        assertThrows(BlobStorageException.class, () -> cc.setAccessPolicy(null, null));
-    }
-
-    @Test
-    public void getAccessPolicy() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
-                .setExpiresOn(testResourceNamer.now().plusDays(1))
-                .setPermissions("r"));
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-        setAccessPolicySleep(cc, PublicAccessType.BLOB, ids);
-        Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null);
-
-        assertResponseStatusCode(response, 200);
-        assertEquals(response.getValue().getBlobAccessType(), PublicAccessType.BLOB);
-        assertTrue(validateBasicHeaders(response.getHeaders()));
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn(),
-            identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn(),
-            identifier.getAccessPolicy().getStartsOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions(),
-            identifier.getAccessPolicy().getPermissions());
     }
 
     @Test

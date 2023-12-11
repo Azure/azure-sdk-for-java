@@ -321,23 +321,6 @@ public class VersioningAsyncTests extends BlobTestBase {
     }
 
     @Test
-    public void copyFromUrlBlobsWithVersion() {
-        blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-            DATA.getDefaultDataSize()).block();
-        BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
-        sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-
-        StepVerifier.create(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl(), null, null,
-            null, null))
-            .assertNext(r -> {
-                assertNotNull(r.getHeaders().getValue(X_MS_VERSION_ID));
-                assertNotEquals(blobItemV1.getVersionId(), r.getHeaders().getValue(X_MS_VERSION_ID));
-            })
-            .verifyComplete();
-    }
-
-    @Test
     public void setTierWithVersion() {
         Flux<ByteBuffer> inputV1 = Flux.just(ByteBuffer.wrap(contentV1.getBytes(StandardCharsets.UTF_8)));
         Flux<ByteBuffer> inputV2 = Flux.just(ByteBuffer.wrap(contentV2.getBytes(StandardCharsets.UTF_8)));

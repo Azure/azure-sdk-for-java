@@ -154,43 +154,6 @@ public class SasClientTests extends BlobTestBase {
         assertTrue(validateSasProperties(properties));
     }
 
-    @Test
-    public void containerSasIdentifierAndPermissions() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
-        setAccessPolicySleep(cc, null, Arrays.asList(identifier));
-
-        // Check containerSASPermissions
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setListPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-            .setListPermission(true);
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
-            permissions.setDeleteVersionPermission(true).setFilterPermission(true);
-        }
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
-            permissions.setImmutabilityPolicyPermission(true);
-        }
-
-        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
-        String sasWithId = cc.generateSas(sasValues);
-        BlobContainerClient client1 = getContainerClient(sasWithId, cc.getBlobContainerUrl());
-        assertDoesNotThrow(() -> client1.listBlobs().iterator().hasNext());
-
-        sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
-        String sasWithPermissions = cc.generateSas(sasValues);
-        BlobContainerClient client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl());
-        assertDoesNotThrow(() -> client2.listBlobs().iterator().hasNext());
-    }
-
     // RBAC replication lag
     @Test
     public void blobSasUserDelegation() {

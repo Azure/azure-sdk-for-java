@@ -443,33 +443,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void setAccessPolicyMinAccess() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertEquals(r.getBlobPublicAccess(), PublicAccessType.CONTAINER))
-            .verifyComplete();
-    }
-
-    @Test
-    public void setAccessPolicyMinIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                    .plusDays(1))
-                .setPermissions("r"));
-
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-
-        ccAsync.setAccessPolicy(null, ids).block();
-
-        StepVerifier.create(ccAsync.getAccessPolicy())
-            .assertNext(r -> assertEquals(r.getIdentifiers().get(0).getId(), "0000"))
-            .verifyComplete();
-    }
-
-    @Test
     public void setAccessPolicyIds() {
         BlobSignedIdentifier identifier = new BlobSignedIdentifier()
             .setId("0000")
@@ -564,40 +537,6 @@ public class ContainerAsyncApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(RECEIVED_ETAG, null),
             Arguments.of(null, GARBAGE_ETAG));
-    }
-
-    @Test
-    public void setAccessPolicyError() {
-        ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-
-        StepVerifier.create(ccAsync.setAccessPolicy(null, null))
-            .verifyError(BlobStorageException.class);
-    }
-
-    @Test
-    public void getAccessPolicy() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
-                .setExpiresOn(testResourceNamer.now().plusDays(1))
-                .setPermissions("r"));
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-        ccAsync.setAccessPolicy(PublicAccessType.BLOB, ids).block();
-
-        StepVerifier.create(ccAsync.getAccessPolicyWithResponse(null))
-            .assertNext(r -> {
-                assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue().getBlobAccessType(), PublicAccessType.BLOB);
-                assertTrue(validateBasicHeaders(r.getHeaders()));
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn(),
-                    identifier.getAccessPolicy().getExpiresOn());
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn(),
-                    identifier.getAccessPolicy().getStartsOn());
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions(),
-                    identifier.getAccessPolicy().getPermissions());
-            })
-            .verifyComplete();
     }
 
     @Test

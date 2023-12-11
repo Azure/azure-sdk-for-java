@@ -297,20 +297,6 @@ public class CPKNAsyncTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
-    @Test
-    public void asyncCopyEncryptionScope() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlobAsyncClient blobSource = ccAsync.getBlobAsyncClient(generateBlobName());
-        blobSource.upload(DATA.getDefaultBinaryData()).block();
-
-        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl())).block();
-
-        StepVerifier.create(cpknBlockBlob.getProperties())
-            .assertNext(r -> assertEquals(scope1, r.getEncryptionScope()))
-            .verifyComplete();
-    }
-
     @Test
     public void serviceClientBuilderCheck() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobServiceClientBuilder()

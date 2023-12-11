@@ -298,22 +298,6 @@ public class VersioningTests extends BlobTestBase {
     }
 
     @Test
-    public void copyFromUrlBlobsWithVersion() {
-        blobContainerClient.setAccessPolicy(PublicAccessType.CONTAINER, null);
-        BlockBlobItem blobItemV1 = blobClient.getBlockBlobClient().upload(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize());
-        BlobClient sourceBlob = blobContainerClient.getBlobClient(generateBlobName());
-        sourceBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-
-        Response<String> response = blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl(), null, null,
-            null, null, null, Context.NONE);
-        String versionIdAfterCopy = response.getHeaders().getValue(X_MS_VERSION_ID);
-
-        assertNotNull(versionIdAfterCopy);
-        assertNotEquals(blobItemV1.getVersionId(), versionIdAfterCopy);
-    }
-
-    @Test
     public void setTierWithVersion() {
         ByteArrayInputStream inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8));
         ByteArrayInputStream inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8));

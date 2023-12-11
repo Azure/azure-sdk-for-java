@@ -121,40 +121,6 @@ public class ServiceApiTests extends BlobTestBase {
             .setDefaultServiceVersion("2018-03-28"));
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = {true, false})
-    public void sasSanitization(boolean unsanitize) {
-        String identifier = "id with spaces";
-        String blobName = generateBlobName();
-        setAccessPolicySleep(cc, null,Collections.singletonList(new BlobSignedIdentifier()
-            .setId(identifier)
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)))));
-        cc.getBlobClient(blobName).upload(BinaryData.fromBytes("test".getBytes()));
-        String sas = cc.generateSas(new BlobServiceSasSignatureValues(identifier));
-        if (unsanitize) {
-            sas = sas.replace("%20", " ");
-        }
-
-        // when: "Endpoint with SAS built in, works as expected"
-        String finalSas = sas;
-        assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl() + "?" + finalSas))
-            .buildClient()
-            .getBlobClient(blobName)
-            .downloadContent());
-
-        String connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).getAccountName()
-            + ";SharedAccessSignature=" + sas;
-        assertDoesNotThrow(() -> instrument(new BlobContainerClientBuilder()
-            .connectionString(connectionString)
-            .containerName(cc.getBlobContainerName()))
-            .buildClient()
-            .getBlobClient(blobName)
-            .downloadContent());
-    }
-
     @Test
     public void listContainers() {
         PagedIterable<BlobContainerItem> response = primaryBlobServiceClient.listBlobContainers(

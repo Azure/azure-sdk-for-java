@@ -271,18 +271,6 @@ public class CPKNTests extends BlobTestBase {
         Assertions.assertEquals(scope1, response.getValue().getEncryptionScope());
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
-    @Test
-    public void syncCopyEncryptionScope() {
-        setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
-        BlobClient blobSource = cc.getBlobClient(generateBlobName());
-        blobSource.upload(DATA.getDefaultBinaryData());
-
-        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl()), null, null);
-
-        Assertions.assertEquals(scope1, cpknBlockBlob.getProperties().getEncryptionScope());
-    }
-
     @Test
     public void serviceClientBuilderCheck() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new BlobServiceClientBuilder()

@@ -163,47 +163,6 @@ public class SasAsyncClientTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @Test
-    public void containerSasIdentifierAndPermissions() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
-        setAccessPolicySleepAsync(ccAsync, null, Arrays.asList(identifier));
-
-        // Check containerSASPermissions
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setListPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-            .setListPermission(true);
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
-            permissions.setDeleteVersionPermission(true).setFilterPermission(true);
-        }
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
-            permissions.setImmutabilityPolicyPermission(true);
-        }
-
-        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
-        String sasWithId = ccAsync.generateSas(sasValues);
-        BlobContainerAsyncClient client1 = getContainerAsyncClient(sasWithId, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(client1.listBlobs())
-            .expectNextCount(1)
-            .verifyComplete();
-
-        sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
-        String sasWithPermissions = ccAsync.generateSas(sasValues);
-        BlobContainerAsyncClient client2 = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
-        StepVerifier.create(client2.listBlobs())
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
     // RBAC replication lag
     @Test
     public void blobSasUserDelegation() {

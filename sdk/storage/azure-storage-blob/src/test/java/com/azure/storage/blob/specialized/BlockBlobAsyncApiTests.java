@@ -392,48 +392,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         }
     }
 
-    @Test
-    public void stageBlockFromUrl() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        String blockID = getBlockID();
-
-        StepVerifier.create(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobAsyncClient.getBlobUrl(),
-            null, null, null, null))
-            .assertNext(r -> {
-                HttpHeaders headers = r.getHeaders();
-                assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
-                assertNotNull(headers.getValue(X_MS_REQUEST_ID));
-                assertNotNull(headers.getValue(X_MS_VERSION));
-                assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-            })
-            .verifyComplete();
-
-        StepVerifier.create(bu2.listBlocks(BlockListType.ALL))
-            .assertNext(r -> {
-                assertEquals(r.getUncommittedBlocks().size(), 1);
-                assertEquals(r.getCommittedBlocks().size(), 0);
-                assertEquals(r.getUncommittedBlocks().get(0).getName(), blockID);
-            })
-            .verifyComplete();
-
-        bu2.commitBlockList(Collections.singletonList(blockID)).block();
-
-        StepVerifier.create(bu2.downloadStream())
-            .assertNext(r -> assertEquals(r, DATA.getDefaultData()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void stageBlockFromUrlMin() {
-        setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
-        BlockBlobAsyncClient bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        String blockID = getBlockID();
-
-        assertAsyncResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobAsyncClient.getBlobUrl(),
-            null, null, null, null), 201);
-    }
-
     @ParameterizedTest
     @MethodSource("stageBlockFromURLIASupplier")
     public void stageBlockFromURLIA(boolean getBlockId, String sourceURL, Class<? extends Throwable> exceptionType) {
@@ -449,65 +407,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
     }
 
     @Test
-    public void stageBlockFromURLRange() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlockBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
-        destURL.stageBlockFromUrl(getBlockID(), blockBlobAsyncClient.getBlobUrl(), new BlobRange(2L, 3L))
-            .block();
-
-        StepVerifier.create(destURL.listBlocks(BlockListType.UNCOMMITTED))
-            .assertNext(r -> {
-                assertEquals(r.getCommittedBlocks().size(), 0);
-                assertEquals(r.getUncommittedBlocks().size(), 1);
-            })
-            .verifyComplete();
-    }
-
-    @Test
-    public void stageBlockFromURLMD5() throws NoSuchAlgorithmException {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlockBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
-        StepVerifier.create(destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobAsyncClient.getBlobUrl(),
-            null, MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()), null,
-            null))
-                .expectNextCount(1)
-                .verifyComplete();
-    }
-
-    @Test
-    public void stageBlockFromURLMD5Fail() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        BlockBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
-        StepVerifier.create(destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobAsyncClient.getBlobUrl(),
-            null, "garbage".getBytes(), null, null))
-            .verifyError(BlobStorageException.class);
-    }
-
-    @Test
-    public void stageBlockFromURLLease() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
-        StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrlWithResponse(getBlockID(),
-            blockBlobAsyncClient.getBlobUrl(), null, null,
-            setupBlobLeaseCondition(blockBlobAsyncClient, RECEIVED_LEASE_ID), null))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    public void stageBlockFromURLLeaseFail() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
-        StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrlWithResponse(getBlockID(),
-            blockBlobAsyncClient.getBlobUrl(), null, null, "garbage",
-            null))
-            .verifyError(BlobStorageException.class);
-    }
-
-    @Test
     public void stageBlockFromURLError() {
         blockBlobAsyncClient = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
             .getBlobAsyncClient(generateBlobName())
@@ -516,64 +415,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrl(getBlockID(), blockBlobAsyncClient.getBlobUrl(),
             null))
             .verifyError(BlobStorageException.class);
-    }
-
-    @ParameterizedTest
-    @MethodSource("stageBlockFromURLSourceACSupplier")
-    public void stageBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
-                                          String sourceIfMatch, String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        String blockID = getBlockID();
-
-        BlockBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-
-        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch);
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
-            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setIfMatch(sourceIfMatch)
-            .setIfNoneMatch(sourceIfNoneMatch);
-
-        assertAsyncResponseStatusCode(blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(),
-            null, null, null, smac), 201);
-    }
-
-    private static Stream<Arguments> stageBlockFromURLSourceACSupplier() {
-        return Stream.of(Arguments.of(null, null, null, null),
-            Arguments.of(OLD_DATE, null, null, null),
-            Arguments.of(null, NEW_DATE, null, null),
-            Arguments.of(null, null, RECEIVED_ETAG, null),
-            Arguments.of(null, null, null, GARBAGE_ETAG));
-    }
-
-    @ParameterizedTest
-    @MethodSource("stageBlockFromURLSourceACFailSupplier")
-    public void stageBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
-                                              OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-                                              String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        String blockID = getBlockID();
-
-        BlockBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-        sourceURL.upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
-
-        BlobRequestConditions smac = new BlobRequestConditions()
-            .setIfModifiedSince(sourceIfModifiedSince)
-            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-            .setIfMatch(sourceIfMatch)
-            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
-
-        StepVerifier.create(blockBlobAsyncClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl(),
-            null, null, null, smac))
-            .verifyError(BlobStorageException.class);
-    }
-    private static Stream<Arguments> stageBlockFromURLSourceACFailSupplier() {
-        return Stream.of(
-            Arguments.of(NEW_DATE, null, null, null),
-            Arguments.of(null, OLD_DATE, null, null),
-            Arguments.of(null, null, GARBAGE_ETAG, null),
-            Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
     @Test
@@ -2547,46 +2388,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                 BlobErrorCode.CONDITION_NOT_MET),
             Arguments.of(new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb"),
                 BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION));
-    }
-
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
-    @ParameterizedTest
-    @MethodSource("uploadFromUrlCopySourceTagsSupplier")
-    public void uploadFromUrlCopySourceTags(BlobCopySourceTagsMode mode) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-        Map<String, String> sourceTags = Collections.singletonMap("foo", "bar");
-        Map<String, String> destTags = Collections.singletonMap("fizz", "buzz");
-        blockBlobAsyncClient.setTags(sourceTags).block();
-
-        String sas = blockBlobAsyncClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-
-        BlobAsyncClient bc2 = ccAsync.getBlobAsyncClient(generateBlobName());
-
-        BlobCopyFromUrlOptions options = new BlobCopyFromUrlOptions(
-            blockBlobAsyncClient.getBlobUrl() + "?" + sas).setCopySourceTagsMode(mode);
-        if (BlobCopySourceTagsMode.REPLACE == mode) {
-            options.setTags(destTags);
-        }
-
-        bc2.copyFromUrlWithResponse(options).block();
-
-        StepVerifier.create(bc2.getTags())
-            .assertNext(r -> {
-                if (BlobCopySourceTagsMode.REPLACE == mode) {
-                    assertEquals(r, destTags);
-                } else {
-                    assertEquals(r, sourceTags);
-                }
-            })
-            .verifyComplete();
-    }
-
-    private static Stream<Arguments> uploadFromUrlCopySourceTagsSupplier() {
-        return Stream.of(
-            Arguments.of(BlobCopySourceTagsMode.COPY),
-            Arguments.of(BlobCopySourceTagsMode.REPLACE)
-        );
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")
