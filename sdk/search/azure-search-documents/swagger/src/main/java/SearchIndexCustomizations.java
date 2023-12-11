@@ -8,6 +8,7 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
@@ -54,6 +55,20 @@ public class SearchIndexCustomizations extends Customization {
                 clazz.getMethodsByName("autocompleteGetWithResponse").forEach(MethodDeclaration::remove);
                 clazz.getMethodsByName("autocompleteGetAsync").forEach(MethodDeclaration::remove);
                 clazz.getMethodsByName("autocompleteGet").forEach(MethodDeclaration::remove);
+
+                clazz.getMembers().stream()
+                    .filter(BodyDeclaration::isClassOrInterfaceDeclaration)
+                    .filter(member -> "DocumentsService".equals(member.asClassOrInterfaceDeclaration().getNameAsString()))
+                    .map(BodyDeclaration::asClassOrInterfaceDeclaration)
+                    .findFirst()
+                    .ifPresent(interfaceClazz -> {
+                        interfaceClazz.getMethodsByName("searchGet").forEach(MethodDeclaration::remove);
+                        interfaceClazz.getMethodsByName("searchGetSync").forEach(MethodDeclaration::remove);
+                        interfaceClazz.getMethodsByName("suggestGet").forEach(MethodDeclaration::remove);
+                        interfaceClazz.getMethodsByName("suggestGetSync").forEach(MethodDeclaration::remove);
+                        interfaceClazz.getMethodsByName("autocompleteGet").forEach(MethodDeclaration::remove);
+                        interfaceClazz.getMethodsByName("autocompleteGetSync").forEach(MethodDeclaration::remove);
+                    });
             });
     }
 

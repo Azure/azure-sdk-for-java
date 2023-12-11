@@ -30,16 +30,8 @@ import com.azure.search.documents.implementation.models.SearchErrorException;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
 import com.azure.search.documents.implementation.models.SuggestRequest;
-import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteResult;
 import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryDebugMode;
-import com.azure.search.documents.models.QueryLanguage;
-import com.azure.search.documents.models.QuerySpellerType;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.ScoringStatistics;
-import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SemanticErrorMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -95,60 +87,6 @@ public final class DocumentsImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Get("/docs")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchDocumentsResult>> searchGet(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @QueryParam("search") String searchText,
-            @QueryParam("$count") Boolean includeTotalCount,
-            @QueryParam(value = "facet", multipleQueryParams = true) List<String> facets,
-            @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields,
-            @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy,
-            @QueryParam("queryType") QueryType queryType,
-            @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
-            @QueryParam("scoringProfile") String scoringProfile, @QueryParam("semanticQuery") String semanticQuery,
-            @QueryParam("semanticConfiguration") String semanticConfiguration,
-            @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
-            @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
-            @QueryParam("debug") QueryDebugMode debug, @QueryParam("searchFields") String searchFields,
-            @QueryParam("queryLanguage") QueryLanguage queryLanguage, @QueryParam("speller") QuerySpellerType speller,
-            @QueryParam("answers") String answers, @QueryParam("searchMode") SearchMode searchMode,
-            @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
-            @QueryParam("sessionId") String sessionId, @QueryParam("$select") String select,
-            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @QueryParam("captions") String captions,
-            @QueryParam("semanticFields") String semanticFields, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Get("/docs")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchDocumentsResult> searchGetSync(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @QueryParam("search") String searchText,
-            @QueryParam("$count") Boolean includeTotalCount,
-            @QueryParam(value = "facet", multipleQueryParams = true) List<String> facets,
-            @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields,
-            @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy,
-            @QueryParam("queryType") QueryType queryType,
-            @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
-            @QueryParam("scoringProfile") String scoringProfile, @QueryParam("semanticQuery") String semanticQuery,
-            @QueryParam("semanticConfiguration") String semanticConfiguration,
-            @QueryParam("semanticErrorHandling") SemanticErrorMode semanticErrorHandling,
-            @QueryParam("semanticMaxWaitInMilliseconds") Integer semanticMaxWaitInMilliseconds,
-            @QueryParam("debug") QueryDebugMode debug, @QueryParam("searchFields") String searchFields,
-            @QueryParam("queryLanguage") QueryLanguage queryLanguage, @QueryParam("speller") QuerySpellerType speller,
-            @QueryParam("answers") String answers, @QueryParam("searchMode") SearchMode searchMode,
-            @QueryParam("scoringStatistics") ScoringStatistics scoringStatistics,
-            @QueryParam("sessionId") String sessionId, @QueryParam("$select") String select,
-            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @QueryParam("captions") String captions,
-            @QueryParam("semanticFields") String semanticFields, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
-
         @Post("/docs/search.post.search")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -183,34 +121,6 @@ public final class DocumentsImpl {
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Get("/docs/search.suggest")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SuggestDocumentsResult>> suggestGet(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @QueryParam("search") String searchText,
-            @QueryParam("suggesterName") String suggesterName, @QueryParam("$filter") String filter,
-            @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy,
-            @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Get("/docs/search.suggest")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SuggestDocumentsResult> suggestGetSync(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @QueryParam("search") String searchText,
-            @QueryParam("suggesterName") String suggesterName, @QueryParam("$filter") String filter,
-            @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy,
-            @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
-            Context context);
-
         @Post("/docs/search.post.suggest")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -242,32 +152,6 @@ public final class DocumentsImpl {
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") IndexBatch batch, Context context);
-
-        @Get("/docs/search.autocomplete")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<AutocompleteResult>> autocompleteGet(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
-            @QueryParam("suggesterName") String suggesterName,
-            @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode, @QueryParam("$filter") String filter,
-            @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("searchFields") String searchFields,
-            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/docs/search.autocomplete")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<AutocompleteResult> autocompleteGetSync(@HostParam("endpoint") String endpoint,
-            @HostParam("indexName") String indexName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-            @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText,
-            @QueryParam("suggesterName") String suggesterName,
-            @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode, @QueryParam("$filter") String filter,
-            @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag,
-            @QueryParam("highlightPreTag") String highlightPreTag,
-            @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("searchFields") String searchFields,
-            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.autocomplete")
         @ExpectedResponses({ 200 })

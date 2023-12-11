@@ -43,7 +43,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         String indexName = createHotelIndex();
         this.indexToDelete = indexName;
 
-        // TODO: Use getSearchClientBuilder once SearchIndexingBufferedSender has Sync Flow integrated.
         this.clientBuilder = getSearchClientBuilder(indexName, isSync);
     }
 
@@ -87,7 +86,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void flushBatchAsync() {
         setupIndex(false);
 
-        SearchClient client = clientBuilder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -100,7 +99,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         waitForIndexing();
 
-        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(10, count))
+            .verifyComplete();
 
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
@@ -137,7 +138,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void autoFlushBatchOnSizeAsync() {
         setupIndex(false);
 
-        SearchClient client = clientBuilder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -150,7 +151,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         waitForIndexing();
 
-        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(10, count))
+            .verifyComplete();
+
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
@@ -184,7 +188,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void autoFlushBatchOnDelayAsync() {
         setupIndex(false);
 
-        SearchClient client = clientBuilder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -197,7 +201,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         waitForIndexing();
 
-        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(10, count))
+            .verifyComplete();
+
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
@@ -229,7 +236,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void batchFlushesOnCloseAsync() {
         setupIndex(false);
 
-        SearchClient client = clientBuilder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -241,7 +248,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         waitForIndexing();
 
-        assertEquals(10, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(10, count))
+            .verifyComplete();
     }
 
     /**
@@ -276,7 +285,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void batchGetsDocumentsButNeverFlushesAsync() {
         setupIndex(false);
 
-        SearchClient client = clientBuilder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -289,7 +298,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         waitForIndexing();
 
-        assertEquals(0, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(0, count))
+            .verifyComplete();
+
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
@@ -309,7 +321,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         });
 
         SearchClient client = builder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = clientBuilder
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = builder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
@@ -355,8 +367,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             return next.process();
         });
 
-        SearchClient client = builder.buildClient();
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = clientBuilder
+        SearchAsyncClient client = builder.buildAsyncClient();
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = builder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
@@ -383,7 +395,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
-        assertEquals(1000, client.getDocumentCount());
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(1000, count))
+            .verifyComplete();
     }
 
     @Test
@@ -449,7 +463,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             return next.process();
         });
 
-        SearchClient client = builder.buildClient();
+        SearchAsyncClient client = clientBuilder.buildAsyncClient();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = builder
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
@@ -480,6 +494,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
-        assertEquals(1000, client.getDocumentCount());
+
+        StepVerifier.create(client.getDocumentCount())
+            .assertNext(count -> assertEquals(1000, count))
+            .verifyComplete();
     }
 }
