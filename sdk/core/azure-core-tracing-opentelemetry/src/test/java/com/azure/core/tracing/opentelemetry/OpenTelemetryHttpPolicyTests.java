@@ -64,6 +64,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
+import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -84,8 +86,6 @@ public class OpenTelemetryHttpPolicyTests {
     private Tracer tracer;
     private com.azure.core.util.tracing.Tracer azTracer;
     private static final String SPAN_NAME = "foo";
-    private static final HttpHeaderName TRACE_PARENT = HttpHeaderName.fromString("traceparent");
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     @BeforeEach
     public void setUp(TestInfo testInfo) {
@@ -121,7 +121,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         SpanData httpSpan = exportedSpans.get(0);
 
-        assertEquals(request.getHeaders().getValue(TRACE_PARENT), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
+        assertEquals(request.getHeaders().getValue(TRACEPARENT), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
         assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
         assertEquals("HTTP POST", httpSpan.getName());
 
@@ -224,11 +224,11 @@ public class OpenTelemetryHttpPolicyTests {
 
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
-                    traceparentTry503.set(request.getHeaders().getValue(TRACE_PARENT));
+                    traceparentTry503.set(request.getHeaders().getValue(TRACEPARENT));
                     headers.set(X_MS_REQUEST_ID, X_MS_REQUEST_ID_1);
                     return Mono.just(new MockHttpResponse(request, 503, headers));
                 } else if (count == 1) {
-                    traceparentTry200.set(request.getHeaders().getValue(TRACE_PARENT));
+                    traceparentTry200.set(request.getHeaders().getValue(TRACEPARENT));
                     headers.set(X_MS_REQUEST_ID, X_MS_REQUEST_ID_2);
                     return Mono.just(new MockHttpResponse(request, 200, headers));
                 } else {
@@ -499,7 +499,7 @@ public class OpenTelemetryHttpPolicyTests {
             // parent span
             SpanContext currentContext = Span.current().getSpanContext();
             assertTrue(currentContext.isValid());
-            assertEquals(currentContext.getTraceId(), request.getHeaders().getValue(TRACE_PARENT).substring(3, 35));
+            assertEquals(currentContext.getTraceId(), request.getHeaders().getValue(TRACEPARENT).substring(3, 35));
 
             return Mono.just(new MockHttpResponse(request, RESPONSE_STATUS_CODE, headers));
         }

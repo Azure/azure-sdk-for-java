@@ -61,6 +61,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.createUrl;
+import static com.azure.core.http.HttpHeaderName.X_MS_REQUEST_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -75,7 +76,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ResourceLock(Resources.SYSTEM_OUT)
 public class HttpLoggingPolicyTests {
     private static final String REDACTED = "REDACTED";
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
 
     private static String initialLogLevel;
     private static PrintStream originalSystemOut;
