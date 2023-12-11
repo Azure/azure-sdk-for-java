@@ -81,7 +81,8 @@ public class SampleCheckpointStore implements CheckpointStore {
 
         return Flux.fromIterable(requestedPartitionOwnerships)
             .filter(ownershipRequest -> {
-                final PartitionOwnership existing = partitionOwnershipMap.get(ownershipRequest.getPartitionId());
+                final PartitionOwnership existing = partitionOwnershipMap.get(prefix + SEPARATOR +
+                    ownershipRequest.getPartitionId());
 
                 // There are no existing ownership records. Safe to claim.
                 if (existing == null) {
