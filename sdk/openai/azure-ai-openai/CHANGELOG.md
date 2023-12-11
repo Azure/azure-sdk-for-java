@@ -35,8 +35,6 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 - Azure OpenAI now uses `dall-e-3` model deployments for its image generation API and such a valid deployment must
   be provided into the options for the `getImageGenerations()` method to receive results.
 
-### Bugs Fixed
-
 ### Other Changes
 
 - Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not functionally alter the transcription/translation behavior in any way.

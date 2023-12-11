@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Sample demonstrates how to get chat completions using function calling.
+ * Sample demonstrates how to get chat completions using function call.
  */
 public class ChatCompletionsFunctionCall {
     /**
-     * Runs the sample algorithm and demonstrates how to get chat completions using function calling.
+     * Runs the sample algorithm and demonstrates how to get chat completions using function call.
      *
      * @param args Unused. Arguments to the program.
      */
