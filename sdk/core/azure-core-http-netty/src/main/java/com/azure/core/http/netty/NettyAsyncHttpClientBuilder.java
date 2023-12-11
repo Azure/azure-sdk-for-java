@@ -75,20 +75,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
- * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
- *
- * <p>Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
- * services through a proxy server. Proxies are commonly used for security, monitoring, and other purposes.</p>
- *
- * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
- * <pre>
- * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
- *     .port&#40;8080&#41;
- *     .wiretap&#40;true&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.core.http.netty.instantiation-simple -->
- *
  * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
  *
  * <p>Configuring the Netty client with HTTP/2 support is relevant when you want to take advantage of the benefits
