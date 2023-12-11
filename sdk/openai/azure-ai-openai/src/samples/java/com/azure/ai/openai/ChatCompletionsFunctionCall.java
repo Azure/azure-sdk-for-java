@@ -78,7 +78,7 @@ public class ChatCompletionsFunctionCall {
         FunctionProperties unit = new FunctionProperties()
                 .setType("string")
                 .setEnumString(Arrays.asList("celsius", "fahrenheit"))
-                .setDescription("The temperature unit to use. Infer this from the users location.");
+                .setDescription("The temperature unit to use. Infer this from the user's location.");
 
         Map<String, FunctionProperties> props = new HashMap<>();
         props.put("location", location);
