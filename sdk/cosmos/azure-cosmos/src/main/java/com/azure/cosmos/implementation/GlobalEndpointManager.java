@@ -45,13 +45,13 @@ public class GlobalEndpointManager implements AutoCloseable {
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
 
-    private AtomicReference<String> latestDatabaseRefreshError = new AtomicReference<>();
+    private Throwable latestDatabaseRefreshError;
 
-    public void setLatestDatabaseRefreshError(String latestDatabaseRefreshError) {
-        this.latestDatabaseRefreshError.set(latestDatabaseRefreshError);
+    public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
+        this.latestDatabaseRefreshError = latestDatabaseRefreshError;
     }
-    public String getLatestDatabaseRefreshError() {
-        return latestDatabaseRefreshError.get();
+    public Throwable getLatestDatabaseRefreshError() {
+        return latestDatabaseRefreshError;
     }
 
 
@@ -311,7 +311,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             });
                         }).onErrorResume(ex -> {
                     logger.error("startRefreshLocationTimerAsync() - Unable to refresh database account from any location. Exception: {}", ex.toString(), ex);
-                    setLatestDatabaseRefreshError("Unable to refresh database account from any location. Exception: " + ex.toString());
+                    setLatestDatabaseRefreshError(ex);
 
                     this.startRefreshLocationTimerAsync();
                     return Mono.empty();
@@ -323,7 +323,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
                     this.latestDatabaseAccount = databaseAccount;
-                    this.setLatestDatabaseRefreshError(null);
+                    this.setLatestDatabaseRefreshError (null);
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);
