@@ -4,8 +4,8 @@
 
 ### Breaking Changes
 
-- The class `RoutingConfigurationNfv` renamed to `RoutingConfiguration`.
-- The classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource` were removed.
+- Renamed class `RoutingConfigurationNfv` to `RoutingConfiguration`.
+- Removed classes `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource`.
 
 ### Other Changes
 
