@@ -119,7 +119,7 @@ public class TimeWindowFilterTest {
 
         parameters.put(TIME_WINDOW_FILTER_SETTING_RECURRENCE, recurrenceParameters);
         context.setParameters(parameters);
-        assertFalse(filter.evaluate(context));
+        assertTrue(filter.evaluate(context));
     }
 
 }
