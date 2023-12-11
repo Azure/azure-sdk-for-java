@@ -91,7 +91,7 @@ public class RecurrenceEvaluator {
             }
         }
         if (RecurrenceConstants.NUMBERED.equalsIgnoreCase(range.getType())) {
-            if (occurrenceInfo.numberOfOccurrences >= range.getNumberOfRecurrences()) {
+            if (occurrenceInfo.numberOfOccurrences > range.getNumberOfRecurrences()) {
                 return null;
             }
         }
@@ -109,7 +109,7 @@ public class RecurrenceEvaluator {
         final ZonedDateTime start = settings.getStart();
         final int interval = settings.getRecurrence().getPattern().getInterval();
         final int numberOfOccurrences = (int) (Duration.between(start, now).getSeconds() / Duration.ofDays(interval).getSeconds());
-        return new OccurrenceInfo(start.plusDays((long) numberOfOccurrences * interval), numberOfOccurrences);
+        return new OccurrenceInfo(start.plusDays((long) numberOfOccurrences * interval), numberOfOccurrences + 1);
     }
 
     /**
@@ -158,8 +158,8 @@ public class RecurrenceEvaluator {
 
         ZonedDateTime loopedDateTime = previousOccurrence;
         final ZonedDateTime alignedTime = now.withZoneSameInstant(zoneId);
-        while (loopedDateTime.isBefore(alignedTime)) {
-            if (getDayOfWeek(loopedDateTime) == firstDayOfWeek) {   // Come to the next week
+        while (!loopedDateTime.isAfter(alignedTime)) {
+            if (!previousOccurrence.isEqual(loopedDateTime) && getDayOfWeek(loopedDateTime) == firstDayOfWeek) {   // Come to the next week
                 break;
             }
 
@@ -199,7 +199,7 @@ public class RecurrenceEvaluator {
         }
 
         final int numberOfInterval = monthGap / interval;
-        return new OccurrenceInfo(alignedStart.plusMonths(numberOfInterval * interval), numberOfInterval);
+        return new OccurrenceInfo(alignedStart.plusMonths(numberOfInterval * interval), numberOfInterval + 1);
     }
 
     /**
@@ -219,7 +219,7 @@ public class RecurrenceEvaluator {
         int monthGap = (alignedTime.getYear() - alignedStart.getYear()) * 12 + alignedTime.getMonthValue() - alignedStart.getMonthValue();
         final Duration startDuration = Duration.between(alignedStart.toLocalDate().atStartOfDay(alignedStart.getZone()), alignedStart);
         if (!pattern.getDaysOfWeek().stream().anyMatch(day ->
-            alignedTime.isAfter(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
+            !alignedTime.isBefore(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
             // E.g. start: 2023.9.1 (the first Friday in 2023.9) and time: 2023.10.2 (the first Friday in 2023.10 is 2023.10.6)
             // Not a complete monthly interval
             alignedTime.plus(startDuration);
@@ -238,7 +238,7 @@ public class RecurrenceEvaluator {
             }
         }
 
-        return new OccurrenceInfo(alignedPreviousOccurrence, numberOfInterval);
+        return new OccurrenceInfo(alignedPreviousOccurrence, numberOfInterval + 1);
     }
 
     /**
@@ -263,7 +263,7 @@ public class RecurrenceEvaluator {
 
         final int interval = settings.getRecurrence().getPattern().getInterval();
         final int numberOfInterval = yearGap / interval;
-        return new OccurrenceInfo(alignedStart.plusYears(numberOfInterval * interval), numberOfInterval);
+        return new OccurrenceInfo(alignedStart.plusYears(numberOfInterval * interval), numberOfInterval + 1);
     }
 
     /**
@@ -287,7 +287,7 @@ public class RecurrenceEvaluator {
             yearGap -= 1;
         } else if (alignedTime.getMonthValue() == alignedStart.getMonthValue() &&
             !pattern.getDaysOfWeek().stream().anyMatch(day ->
-            alignedTime.isAfter(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
+            !alignedTime.isBefore(dayOfNthWeekInTheMonth(alignedTime, pattern.getIndex(), day).plus(startDuration)))) {
             // E.g. start: 2023.9.1 (the first Friday in 2023.9) and time: 2024.9.2 (the first Friday in 2023.9 is 2024.9.6)
             // Not a complete yearly interval
             yearGap -= 1;
@@ -298,7 +298,7 @@ public class RecurrenceEvaluator {
         final ZonedDateTime alignedPreviousOccurrenceMonth = alignedStart.plusYears(numberOfInterval * interval);
         ZonedDateTime alignedPreviousOccurrence = null;
 
-        // Find the first occurence date matched the pattern
+        // Find the first occurrence date matched the pattern
         // Only one day of week in the month will be matched
         for (String day: pattern.getDaysOfWeek()) {
             final ZonedDateTime occurrenceDate = dayOfNthWeekInTheMonth(alignedPreviousOccurrenceMonth,
@@ -308,7 +308,7 @@ public class RecurrenceEvaluator {
             }
         }
 
-        return new OccurrenceInfo(alignedPreviousOccurrence, numberOfInterval);
+        return new OccurrenceInfo(alignedPreviousOccurrence, numberOfInterval + 1);
     }
 
     private boolean tryValidateGeneralRequiredParameter() {
@@ -708,10 +708,10 @@ public class RecurrenceEvaluator {
     }
 
     /**
-     * Find the nth day of week in the month of the date time.
-     * @param startDateTime start date time
+     * Find the nth day of week in the month.
+     * @param startDateTime start date time, specifies the month number
      * @param index Specifies on which instance of the allowed days specified in daysOfsWeek the event occurs, counted from the first instance in the month
-     * @param dayOfWeek Specifies on which day(s) of the week the event can occur
+     * @param dayOfWeek Specifies on which day of the week the event can occur
      * @return The data time of the day in nth week the month.
      * */
     private ZonedDateTime dayOfNthWeekInTheMonth(ZonedDateTime startDateTime, String index, String dayOfWeek) {

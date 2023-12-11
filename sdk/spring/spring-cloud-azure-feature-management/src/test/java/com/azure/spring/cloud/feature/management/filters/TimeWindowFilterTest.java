@@ -8,9 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -94,19 +96,22 @@ public class TimeWindowFilterTest {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
         Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        ZonedDateTime starTime = ZonedDateTime.now().minusDays(7);
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
-            ZonedDateTime.now().plusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+            starTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        parameters.put(TIME_WINDOW_FILTER_SETTING_END,
+            starTime.plusMinutes(2).format(DateTimeFormatter.RFC_1123_DATE_TIME));
 
+        // occurs weekly
         Map<String, Object> patternParameters = new LinkedHashMap<>();
         List<String> daysOfWeek = new ArrayList<>();
-        daysOfWeek.add("Monday");
+        daysOfWeek.add(starTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US));
         patternParameters.put("type", "weekly");
         patternParameters.put("interval", 1);
         patternParameters.put("daysOfWeek", daysOfWeek);
 
         Map<String, Object> rangeParameters = new LinkedHashMap<>();
-        rangeParameters.put("type", "endDate");
-        rangeParameters.put("endDate", ZonedDateTime.now().plusMonths(2).format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        rangeParameters.put("type", "NoEnd");
 
         Map<String, Object> recurrenceParameters = new LinkedHashMap<String, Object>();
         recurrenceParameters.put("pattern", patternParameters);
