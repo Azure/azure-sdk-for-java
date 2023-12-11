@@ -45,7 +45,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
 
-    private Throwable latestDatabaseRefreshError;
+    private volatile Throwable latestDatabaseRefreshError;
 
     public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
         this.latestDatabaseRefreshError = latestDatabaseRefreshError;
