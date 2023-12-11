@@ -74,7 +74,9 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
 
 ### Support for non-Azure OpenAI
 
-The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the setup of the `OpenAIClient` is slightly different. First, get Non-Azure OpenAI API key from [Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `OpenAIClient` as follows: 
+The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the
+setup of the `OpenAIClient` is slightly different. First, get Non-Azure OpenAI API key from
+[Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `OpenAIClient` as follows: 
 
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
@@ -215,7 +217,9 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-For `function call` sample, see [function call][sample_chat_completion_function_call]. However, they are considered a legacy feature. Using tools is the preferred way. For more details see the [tool call sample][sample_tool_calls]
+For `function calling` sample, see [function calling][sample_chat_completion_function_calling]. However, they are considered 
+a legacy feature. Using tools is the preferred way. For more details see sample
+[tool calls - function][sample_chat_completion_tools_call_function].
 
 For `Bring Your Own Data` sample, see [Bring Your Own Data][sample_chat_completion_function_call].
 
@@ -327,7 +331,8 @@ Please refer to the service documentation for a conceptual discussion of [Whispe
 ### Text completions with images
 
 Currently, only available in OpenAI. For more details please visit the [OpenAI vision documentation page](https://platform.openai.com/docs/guides/vision). 
-By providing image URLs, it is possible to use images along with prompts. For more details see the usage samples for [chat completions with images][sample_chat_with_images].
+By providing image URLs, it is possible to use images along with prompts. For more details see the usage samples for
+[chat completions with images][sample_chat_with_images].
 
 ```java readme-sample-chatWithImages
 List<ChatRequestMessage> chatMessages = new ArrayList<>();
@@ -448,7 +453,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
 [samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
-[sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[sample_chat_completion_function_calling]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallingSample.java
+[sample_chat_completion_tools_call_function]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionToolCallingSample.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
@@ -459,7 +465,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_audio_transcription]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranscriptionSample.java
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
-[sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
