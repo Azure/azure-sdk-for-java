@@ -381,9 +381,22 @@ public class PartitionPumpManagerTest {
 
         // Mock events to add.
         final Instant retrievalTime = Instant.now();
-        final PartitionEvent partitionEvent1 = createEvent(retrievalTime, 1);
-        final PartitionEvent partitionEvent2 = createEvent(retrievalTime, 2);
-        final PartitionEvent partitionEvent3 = createEvent(retrievalTime, 3);
+
+        final Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
+        final LastEnqueuedEventProperties lastEnqueuedProperties1 =
+            new LastEnqueuedEventProperties(10L, 15L, retrievalTime, lastEnqueuedTime.plusSeconds(1), 5L);
+        final EventData eventData1 = new EventData("1");
+        final PartitionEvent partitionEvent1 = new PartitionEvent(PARTITION_CONTEXT, eventData1, lastEnqueuedProperties1);
+
+        final LastEnqueuedEventProperties lastEnqueuedProperties2 =
+            new LastEnqueuedEventProperties(20L, 25L, retrievalTime, lastEnqueuedTime.plusSeconds(2), 1L);
+        final EventData eventData2 = new EventData("2");
+        final PartitionEvent partitionEvent2 = new PartitionEvent(PARTITION_CONTEXT, eventData2, lastEnqueuedProperties2);
+
+        final LastEnqueuedEventProperties lastEnqueuedProperties3 =
+            new LastEnqueuedEventProperties(30L, 35L, retrievalTime, lastEnqueuedTime.plusSeconds(3), null);
+        final EventData eventData3 = new EventData("3");
+        final PartitionEvent partitionEvent3 = new PartitionEvent(PARTITION_CONTEXT, eventData3, lastEnqueuedProperties3);
 
         final AtomicInteger eventCounter = new AtomicInteger();
 

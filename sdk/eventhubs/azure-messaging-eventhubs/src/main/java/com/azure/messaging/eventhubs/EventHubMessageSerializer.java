@@ -40,6 +40,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTA
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
+import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC;
 
@@ -192,13 +193,14 @@ class EventHubMessageSerializer implements MessageSerializer {
         }
 
         final Map<Symbol, Object> deliveryAnnotations = annotations.getValue();
-        final Long lastSequenceNumber = getValue(deliveryAnnotations, LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
-        final String lastEnqueuedOffset = getValue(deliveryAnnotations, LAST_ENQUEUED_OFFSET, String.class);
-        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
-        final Instant retrievalTime = getValue(deliveryAnnotations, RETRIEVAL_TIME_UTC, Date.class).toInstant();
+        final Long lastSequenceNumber = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER, Long.class);
+        final String lastEnqueuedOffset = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class);
+        final Instant lastEnqueuedTime = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, Date.class).toInstant();
+        final Instant retrievalTime = getValue(deliveryAnnotations, MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC, Date.class).toInstant();
+        final Long lastEnqueuedReplicationSegment = getValue(deliveryAnnotations, MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false);
 
         return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
-            retrievalTime);
+            retrievalTime, lastEnqueuedReplicationSegment);
     }
 
     private EventData deserializeEventData(Message message) {
@@ -254,8 +256,8 @@ class EventHubMessageSerializer implements MessageSerializer {
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, String.class),
             getDate(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC),
             getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, Boolean.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Long.class),
-            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class));
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, Long.class, false),
+            getValue(amqpBody, ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Long.class, false));
     }
 
     /**
@@ -290,30 +292,40 @@ class EventHubMessageSerializer implements MessageSerializer {
         return value;
     }
 
-    private <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
-        if (!amqpBody.containsKey(key)) {
-            throw LOGGER.logExceptionAsError(
-                new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
-        }
-
-        return getValue(amqpBody.get(key), key, clazz);
+    private static <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz) {
+        return getValue(amqpBody, key, clazz, true);
     }
 
-    private <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz) {
+    private static <T> T getValue(Map<?, ?> amqpBody, String key, Class<T> clazz, boolean isRequired) {
+        if (isRequired && !amqpBody.containsKey(key)) {
+            throw LOGGER.logExceptionAsError(new AzureException(
+                String.format("AMQP body did not contain expected field '%s'.", key)));
+        }
+
+        return getValue(amqpBody.get(key), key, clazz, isRequired);
+    }
+
+    private static <T> T getValue(Map<Symbol, Object> amqpBody, Symbol key, Class<T> clazz, boolean isRequired) {
         if (!amqpBody.containsKey(key)) {
             throw LOGGER.logExceptionAsError(
                 new AzureException(String.format("AMQP body did not contain expected field '%s'.", key)));
         }
 
-        return getValue(amqpBody.get(key), key, clazz);
+        return getValue(amqpBody.get(key), key, clazz, isRequired);
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T getValue(Object value, Object key, Class<T> clazz) {
+    private static <T> T getValue(Object value, Object key, Class<T> clazz, boolean isRequired) {
         if (value == null) {
-            throw LOGGER.logExceptionAsError(
-                new AzureException(String.format("AMQP body did not contain a value for key '%s'.", key)));
-        } else if (value.getClass() != clazz) {
+            if (isRequired) {
+                throw LOGGER.logExceptionAsError(new AzureException(
+                    String.format("AMQP body did not contain a value for key '%s'.", key)));
+            } else {
+                return null;
+            }
+        }
+
+        if (value.getClass() != clazz) {
             throw LOGGER.logExceptionAsError(new AzureException(String.format(
                 "AMQP body did not contain correct value for key '%s'. Expected class: '%s'. Actual: '%s'", key, clazz,
                 value.getClass())));
@@ -322,7 +334,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         return (T) value;
     }
 
-    private Instant getDate(Map<?, ?> amqpBody, String key) {
+    private static Instant getDate(Map<?, ?> amqpBody, String key) {
         final Date value = getValue(amqpBody, key, Date.class);
         return value.toInstant();
     }
