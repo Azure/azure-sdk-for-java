@@ -47,7 +47,8 @@ Cookbook:
 - [Chat bot][cookbook_chat_bot]
 - [Chat bot With Key][cookbook_chat_bot_with_key]
 - [Chat with Bring Your Own Data][cookbook_chat_with_bring_your_own_data]
-- [Function Call][cookbook_function_call]
+- [Function Calling][cookbook_function_calling]
+- [Function Tool Calling][cookbook_function_tool_calling]
 - [OpenAIProxy][cookbook_openai_proxy]
 - [Streaming Chat][cookbook_streaming_chat]
 - [Summarize Text][cookbook_summarize_text]
@@ -92,7 +93,8 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [cookbook_chat_bot]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotSample.java
 [cookbook_chat_bot_with_key]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatbotWithKeySample.java
 [cookbook_chat_with_bring_your_own_data]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
-[cookbook_function_call]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallSample.java
+[cookbook_function_calling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionCallingSample.java
+[cookbook_function_tool_calling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FunctionToolCallingSample.java
 [cookbook_openai_proxy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/OpenAIProxySample.java
 [cookbook_streaming_chat]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingChatSample.java
 [cookbook_summarize_text]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/SummarizeTextSample.java
