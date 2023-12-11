@@ -13,8 +13,6 @@ import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageRange;
-import com.azure.storage.blob.models.PublicAccessType;
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobClient;
@@ -25,7 +23,6 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 
 import java.io.ByteArrayInputStream;
 import java.util.Collections;

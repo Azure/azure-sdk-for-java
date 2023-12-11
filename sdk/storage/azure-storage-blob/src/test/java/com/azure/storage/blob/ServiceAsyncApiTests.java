@@ -8,11 +8,9 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobContainerItem;
@@ -22,7 +20,6 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
-import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
@@ -33,7 +30,6 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
@@ -50,7 +46,6 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -630,7 +625,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 })
                 .verifyComplete();
 
-            sleepIfRunningAgainstService(30 * 1000);// Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+            sleepIfRunningAgainstService(30 * 1000);
 
 
             StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())

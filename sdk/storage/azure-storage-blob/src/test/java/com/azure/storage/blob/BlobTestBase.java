@@ -35,7 +35,6 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -89,7 +88,6 @@ import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 /**
  * Base class for Azure Storage Blob tests.
@@ -1205,7 +1203,7 @@ public class BlobTestBase extends TestProxyTestBase {
     Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
     */
     protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers){
+                                        List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers);
         BlobContainerAccessPolicies status = cc.getAccessPolicy();
         while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
@@ -1215,7 +1213,7 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
-                                        List<BlobSignedIdentifier> identifiers){
+                                        List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers).block();
         BlobContainerAccessPolicies status = cc.getAccessPolicy().block();
         while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
@@ -1224,32 +1222,32 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
-    protected boolean areIdentifiersEqual(List<BlobSignedIdentifier> l1, List<BlobSignedIdentifier> l2){
-        if(l1 == null && l2 == null){
+    protected boolean areIdentifiersEqual(List<BlobSignedIdentifier> l1, List<BlobSignedIdentifier> l2) {
+        if (l1 == null && l2 == null) {
             return true;
         }
-        if(l1 == null || l2 == null){
+        if (l1 == null || l2 == null) {
             return false;
         }
-        for(int x = 0; x < l1.size(); x++){
+        for (int x = 0; x < l1.size(); x++) {
             BlobSignedIdentifier I1 = l1.get(x);
             BlobSignedIdentifier I2 = l2.get(x);
-            if(!Objects.equals(I1.getId(), I2.getId())){
+            if (!Objects.equals(I1.getId(), I2.getId())) {
                 return false;
             }
-            if(I1.getAccessPolicy().getExpiresOn() != null && !I1.getAccessPolicy().getExpiresOn().equals(I2.getAccessPolicy().getExpiresOn())){
+            if (I1.getAccessPolicy().getExpiresOn() != null && !I1.getAccessPolicy().getExpiresOn().equals(I2.getAccessPolicy().getExpiresOn())) {
                 return false;
             }
             if (I1.getAccessPolicy().getExpiresOn() == null && I2.getAccessPolicy().getExpiresOn() != null) {
                 return false;
             }
-            if(I1.getAccessPolicy().getStartsOn() != null && !I1.getAccessPolicy().getStartsOn().equals(I2.getAccessPolicy().getStartsOn())){
+            if (I1.getAccessPolicy().getStartsOn() != null && !I1.getAccessPolicy().getStartsOn().equals(I2.getAccessPolicy().getStartsOn())) {
                 return false;
             }
             if (I1.getAccessPolicy().getStartsOn() == null && I2.getAccessPolicy().getStartsOn() != null) {
                 return false;
             }
-            if(!Objects.equals(I1.getAccessPolicy().getPermissions(), I2.getAccessPolicy().getPermissions())){
+            if (!Objects.equals(I1.getAccessPolicy().getPermissions(), I2.getAccessPolicy().getPermissions())) {
                 return false;
             }
         }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaders;
@@ -958,16 +961,16 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         BlobContainerAsyncClient client2 = getContainerAsyncClient(sasWithPermissions, ccAsync.getBlobContainerUrl());
         StepVerifier.create(client2.listBlobs())
             .thenConsumeWhile(r -> true)
-            .verifyComplete();;
+            .verifyComplete();
     }
 
-    //servive async
+    //service async
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        setAccessPolicySleepAsync(ccAsync, null,Collections.singletonList(new BlobSignedIdentifier()
+        setAccessPolicySleepAsync(ccAsync, null, Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")

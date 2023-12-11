@@ -147,7 +147,8 @@ public class ServiceApiTests extends DataLakeTestBase {
                 HttpHeaders headers =
                     primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders();
 
-                sleepIfRunningAgainstService(30 * 1000);// Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+                // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+                sleepIfRunningAgainstService(30 * 1000);
 
 
                 DataLakeServiceProperties receivedProperties = primaryDataLakeServiceClient.getProperties();

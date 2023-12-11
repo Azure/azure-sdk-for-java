@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
@@ -1190,7 +1193,7 @@ public class AccessPolicyTests extends BlobTestBase {
     public void sasSanitization(boolean unsanitize) {
         String identifier = "id with spaces";
         String blobName = generateBlobName();
-        setAccessPolicySleep(cc, null,Collections.singletonList(new BlobSignedIdentifier()
+        setAccessPolicySleep(cc, null, Collections.singletonList(new BlobSignedIdentifier()
             .setId(identifier)
             .setAccessPolicy(new BlobAccessPolicy()
                 .setPermissions("racwdl")
