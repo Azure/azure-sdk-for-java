@@ -92,9 +92,9 @@ public final class HttpResponseBodyDecoder {
                 return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),
                     decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
-                throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
+                throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, null, e);
             } catch (UncheckedIOException e) {
-                throw new HttpResponseException("Deserialization failed.", httpResponse, e);
+                throw new HttpResponseException("Deserialization failed.", httpResponse, null, e);
             }
         }
     }

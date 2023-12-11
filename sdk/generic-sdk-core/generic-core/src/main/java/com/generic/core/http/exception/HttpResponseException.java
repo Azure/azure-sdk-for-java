@@ -30,41 +30,11 @@ public final class HttpResponseException extends RuntimeException {
      *
      * @param message The exception message.
      * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param type The {@link HttpExceptionType type} of the exception.
      * @param value The deserialized response value.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final Object value) {
-        super(message);
-
-        this.value = value;
-        this.response = response;
-        this.type = null;
-    }
-
-    /**
-     * Initializes a new instance of the HttpResponseException class.
-     *
-     * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
-     * @param cause The {@link Throwable} which caused the creation of this exception.
-     */
-    public HttpResponseException(final String message, final HttpResponse response, final Throwable cause) {
-        super(message, cause);
-
-        this.value = null;
-        this.response = response;
-        this.type = null;
-    }
-
-    /**
-     * Initializes a new instance of the HttpResponseException class.
-     *
-     * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
-     * @param value The deserialized response value.
-     * @param type The type of the exception.
-     */
-    public HttpResponseException(final String message, final HttpResponse response, final Object value,
-                                 final HttpExceptionType type) {
+    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+                                 final Object value) {
         super(message);
 
         this.value = value;
@@ -95,16 +65,17 @@ public final class HttpResponseException extends RuntimeException {
      * @param message The exception message.
      * @param response The {@link HttpResponse} received that is associated to the exception.
      * @param type The {@link HttpExceptionType type} of the exception.
+     * @param value The deserialized response value.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
     public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
-                                 final Throwable cause, final boolean enableSuppression,
+                                 final Object value, final Throwable cause, final boolean enableSuppression,
                                  final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
 
-        this.value = null;
+        this.value = value;
         this.response = response;
         this.type = type;
     }

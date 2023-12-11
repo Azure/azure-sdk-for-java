@@ -33,8 +33,8 @@ public class HttpResponseHeaderDecoder {
 
         try {
             return serializer.deserialize(response.getHeaders(), decodedHeadersType);
-        } catch (IOException ex) {
-            throw new HttpResponseException(MALFORMED_HEADERS_MESSAGE, response, ex);
+        } catch (IOException e) {
+            throw new HttpResponseException(MALFORMED_HEADERS_MESSAGE, response, null, e);
         }
     }
 }

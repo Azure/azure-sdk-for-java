@@ -273,14 +273,14 @@ public abstract class RestProxyBase {
             || responseDecodedContent instanceof MalformedValueException
             || responseDecodedContent instanceof IllegalStateException) {
 
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse,
+            return new HttpResponseException(exceptionMessage.toString(), httpResponse, null,
                 (Throwable) responseDecodedContent);
         }
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), httpResponse, responseDecodedContent,
-            exceptionType);
+        return new HttpResponseException(exceptionMessage.toString(), httpResponse, exceptionType,
+            responseDecodedContent);
     }
 
     /**

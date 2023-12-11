@@ -22,7 +22,6 @@ module com.generic.core {
     exports com.generic.core.util.configuration;
     exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
-    exports com.generic.core.implementation.http.annotation;
 
     uses com.generic.core.http.client.HttpClientProvider;
 }
