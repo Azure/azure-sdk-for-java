@@ -17,6 +17,7 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -30,7 +31,7 @@ import java.util.Map;
 /**
  * Sample demonstrates how to get chat completions using function calling.
  */
-public class FunctionCallingSample {
+public class ChatCompletionsFunctionCall {
     /**
      * Runs the sample algorithm and demonstrates how to get chat completions using function calling.
      *
@@ -74,18 +75,18 @@ public class FunctionCallingSample {
                 .setType("string")
                 .setDescription("The city and state, e.g. San Francisco, CA");
 
-        FunctionProperties format = new FunctionProperties()
+        FunctionProperties unit = new FunctionProperties()
                 .setType("string")
                 .setEnumString(Arrays.asList("celsius", "fahrenheit"))
                 .setDescription("The temperature unit to use. Infer this from the users location.");
 
         Map<String, FunctionProperties> props = new HashMap<>();
         props.put("location", location);
-        props.put("format", format);
+        props.put("unit", unit);
 
         return new FunctionParameters()
                 .setType("object")
-                .setRequiredPropertyNames(Arrays.asList("location", "format"))
+                .setRequiredPropertyNames(Arrays.asList("location", "unit"))
                 .setProperties(props);
     }
 
@@ -106,7 +107,7 @@ public class FunctionCallingSample {
 
                 int currentWeather = getCurrentWeather(weatherLocation);
                 chatMessages.add(new ChatRequestUserMessage(String.format("The weather in %s is %d degrees %s.",
-                    weatherLocation.getLocation(), currentWeather, weatherLocation.getFormat())));
+                    weatherLocation.getLocation(), currentWeather, weatherLocation.getUnit())));
             } else {
                 ChatRequestAssistantMessage messageHistory = new ChatRequestAssistantMessage(choiceMessage.getContent());
                 messageHistory.setFunctionCall(choiceMessage.getFunctionCall());
@@ -124,17 +125,17 @@ public class FunctionCallingSample {
 
     // WeatherLocation is used for this sample. This describes the parameter of the function you want to use.
     private static class WeatherLocation {
-        @JsonProperty(value = "format") String format;
+        @JsonProperty(value = "unit") String unit;
         @JsonProperty(value = "location") String location;
         @JsonCreator
-        WeatherLocation(@JsonProperty(value = "format") String format,
+        WeatherLocation(@JsonProperty(value = "unit") String unit,
                         @JsonProperty(value = "location") String location) {
-            this.format = format;
+            this.unit = unit;
             this.location = location;
         }
 
-        public String getFormat() {
-            return format;
+        public String getUnit() {
+            return unit;
         }
 
         public String getLocation() {

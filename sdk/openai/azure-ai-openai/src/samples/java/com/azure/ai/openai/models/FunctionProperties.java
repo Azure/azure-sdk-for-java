@@ -81,9 +81,4 @@ public class FunctionProperties {
         this.enumString = enumString;
         return this;
     }
-
-    @Override
-    public String toString() {
-        return "FunctionEntry [type=" + type + ", description=" + description + "]";
-    }
 }

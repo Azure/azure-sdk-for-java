@@ -84,10 +84,4 @@ public class FunctionParameters {
         this.requiredPropertyNames = requiredPropertyNames;
         return this;
     }
-
-    @Override
-    public String toString() {
-        return "FunctionsParameters [type=" + type + ", properties=" + properties
-                + ", requiredPropertyNames=" + requiredPropertyNames + "]";
-    }
 }
