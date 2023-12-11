@@ -542,19 +542,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // hence asserting it
         if (databaseAccount == null) {
             Throwable databaseRefreshErrorSnapshot = this.globalEndpointManager.getLatestDatabaseRefreshError();
-            if (databaseRefreshErrorSnapshot != null) {
-                logger.error("Client initialization failed. Check if the endpoint is reachable and if your auth token "
-                                 + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java",
-                             databaseRefreshErrorSnapshot
-                );
-                
-                throw new RuntimeException("Client initialization failed. Check if the endpoint is reachable and if your auth token "
-                                               + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java.",
-                                           this.globalEndpointManager.getLatestDatabaseRefreshError());
-            } else {
-                logger.error("Client initialization failed."
-                    + " Check if the endpoint is reachable and if your auth token is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java");
-            }
+            logger.error("Client initialization failed. Check if the endpoint is reachable and if your auth token "
+                             + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java",
+                         databaseRefreshErrorSnapshot
+            );
+            
+            throw new RuntimeException("Client initialization failed. Check if the endpoint is reachable and if your auth token "
+                                           + "is valid. More info: https://aka.ms/cosmosdb-tsg-service-unavailable-java.",
+                                       databaseRefreshErrorSnapshot);
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
