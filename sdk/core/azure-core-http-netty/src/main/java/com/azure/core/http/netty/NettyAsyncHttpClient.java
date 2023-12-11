@@ -62,8 +62,24 @@ import java.util.function.BiFunction;
  * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
  * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
- * @see HttpClient
+ * <p><strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a Netty HttpClient that uses port 80 and has no proxy.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p>For more ways to instantiate NettyAsyncHttpClient, refer to {@link NettyAsyncHttpClientBuilder}.</p>
+ *
+ * @see com.azure.core.http.netty
  * @see NettyAsyncHttpClientBuilder
+ * @see HttpClient
  */
 class NettyAsyncHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);

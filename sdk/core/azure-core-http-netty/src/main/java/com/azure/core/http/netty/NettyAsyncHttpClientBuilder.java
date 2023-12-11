@@ -61,7 +61,63 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
+ * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
+ *
+ * <p>Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server. Proxies are commonly used for security, monitoring, and other purposes.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p><strong>Building a new HttpClient instance using http proxy.</strong></p>
+ *
+ * <p>Configuring the Netty client with a proxy is relevant when your application needs to communicate with Azure
+ * services through a proxy server. Proxies are commonly used for security, monitoring, and other purposes.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p><strong>Building a new HttpClient instance with HTTP/2 Support.</strong></p>
+ *
+ * <p>Configuring the Netty client with HTTP/2 support is relevant when you want to take advantage of the benefits
+ * provided by the HTTP/2 protocol. HTTP/2 is the next version of the HTTP network protocol, designed to improve the
+ * performance of web applications by allowing multiple requests and responses to be multiplexed over a
+ * single connection.</p>
+ *
+ * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
+ * <pre>
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;&#41;
+ *     .port&#40;8080&#41;
+ *     .wiretap&#40;true&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.netty.instantiation-simple -->
+ *
+ * <p>It is also possible to create a Netty HttpClient that only supports HTTP/2.</p>
+ *
+ * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredNettyClient -->
+ * <pre>
+ * &#47;&#47; Constructs an HttpClient that only supports HTTP&#47;2.
+ * HttpClient client = new NettyAsyncHttpClientBuilder&#40;reactor.netty.http.client.HttpClient.create&#40;&#41;
+ *     .protocol&#40;HttpProtocol.H2&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredNettyClient  -->
+ *
  * @see HttpClient
+ * @see NettyAsyncHttpClient
  */
 public class NettyAsyncHttpClientBuilder {
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
