@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExposureControlBatchRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExposureControlBatchRequest model =
-            BinaryData
-                .fromString(
-                    "{\"exposureControlRequests\":[{\"featureName\":\"fbuhfmvfaxkffe\",\"featureType\":\"th\"}]}")
-                .toObject(ExposureControlBatchRequest.class);
+        ExposureControlBatchRequest model = BinaryData
+            .fromString("{\"exposureControlRequests\":[{\"featureName\":\"fbuhfmvfaxkffe\",\"featureType\":\"th\"}]}")
+            .toObject(ExposureControlBatchRequest.class);
         Assertions.assertEquals("fbuhfmvfaxkffe", model.exposureControlRequests().get(0).featureName());
         Assertions.assertEquals("th", model.exposureControlRequests().get(0).featureType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExposureControlBatchRequest model =
-            new ExposureControlBatchRequest()
-                .withExposureControlRequests(
-                    Arrays
-                        .asList(new ExposureControlRequest().withFeatureName("fbuhfmvfaxkffe").withFeatureType("th")));
+        ExposureControlBatchRequest model = new ExposureControlBatchRequest().withExposureControlRequests(
+            Arrays.asList(new ExposureControlRequest().withFeatureName("fbuhfmvfaxkffe").withFeatureType("th")));
         model = BinaryData.fromObject(model).toObject(ExposureControlBatchRequest.class);
         Assertions.assertEquals("fbuhfmvfaxkffe", model.exposureControlRequests().get(0).featureName());
         Assertions.assertEquals("th", model.exposureControlRequests().get(0).featureType());

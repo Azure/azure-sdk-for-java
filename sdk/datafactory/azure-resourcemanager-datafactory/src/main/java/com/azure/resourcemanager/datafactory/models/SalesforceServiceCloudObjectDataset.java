@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Salesforce Service Cloud object dataset. */
+/**
+ * The Salesforce Service Cloud object dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceServiceCloudObject")
 @Fluent
@@ -23,62 +25,78 @@ public final class SalesforceServiceCloudObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SalesforceServiceCloudObjectDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of SalesforceServiceCloudObjectDataset class. */
+    /**
+     * Creates an instance of SalesforceServiceCloudObjectDataset class.
+     */
     public SalesforceServiceCloudObjectDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Salesforce Service Cloud object dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SalesforceServiceCloudObjectDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceServiceCloudObjectDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class SalesforceServiceCloudObjectDataset extends Dataset {
     /**
      * Get the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the objectApiName value.
      */
     public Object objectApiName() {
@@ -98,7 +116,7 @@ public final class SalesforceServiceCloudObjectDataset extends Dataset {
     /**
      * Set the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceServiceCloudObjectDataset object itself.
      */
@@ -112,7 +130,7 @@ public final class SalesforceServiceCloudObjectDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

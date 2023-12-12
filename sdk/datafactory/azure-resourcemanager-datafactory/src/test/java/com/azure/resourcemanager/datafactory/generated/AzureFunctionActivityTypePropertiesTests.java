@@ -12,22 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFunctionActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFunctionActivityTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"method\":\"DELETE\",\"functionName\":\"datag\",\"headers\":\"dataccccccojnljz\",\"body\":\"dataevmzpoilh\"}")
-                .toObject(AzureFunctionActivityTypeProperties.class);
+        AzureFunctionActivityTypeProperties model = BinaryData.fromString(
+            "{\"method\":\"DELETE\",\"functionName\":\"datag\",\"headers\":\"dataccccccojnljz\",\"body\":\"dataevmzpoilh\"}")
+            .toObject(AzureFunctionActivityTypeProperties.class);
         Assertions.assertEquals(AzureFunctionActivityMethod.DELETE, model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFunctionActivityTypeProperties model =
-            new AzureFunctionActivityTypeProperties()
-                .withMethod(AzureFunctionActivityMethod.DELETE)
-                .withFunctionName("datag")
-                .withHeaders("dataccccccojnljz")
-                .withBody("dataevmzpoilh");
+        AzureFunctionActivityTypeProperties model
+            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.DELETE)
+                .withFunctionName("datag").withHeaders("dataccccccojnljz").withBody("dataevmzpoilh");
         model = BinaryData.fromObject(model).toObject(AzureFunctionActivityTypeProperties.class);
         Assertions.assertEquals(AzureFunctionActivityMethod.DELETE, model.method());
     }

@@ -167,8 +167,7 @@ class SpringMonitorTest {
         TelemetryItem firstLogTelemetry = logs.get(0);
         MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
         MessageData logData = (MessageData) logBaseData;
-        assertThat(logData.getMessage())
-            .isEqualTo("Initializing Spring DispatcherServlet 'dispatcherServlet'");
+        assertThat(logData.getMessage()).startsWith("Starting SpringMonitorTest using");
         assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
         // SQL telemetry

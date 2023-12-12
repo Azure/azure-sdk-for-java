@@ -10,18 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.SqlServerStoredProced
 public final class SqlServerStoredProcedureActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerStoredProcedureActivityTypeProperties model =
-            BinaryData
-                .fromString("{\"storedProcedureName\":\"datai\",\"storedProcedureParameters\":\"datanobxcdx\"}")
+        SqlServerStoredProcedureActivityTypeProperties model
+            = BinaryData.fromString("{\"storedProcedureName\":\"datai\",\"storedProcedureParameters\":\"datanobxcdx\"}")
                 .toObject(SqlServerStoredProcedureActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerStoredProcedureActivityTypeProperties model =
-            new SqlServerStoredProcedureActivityTypeProperties()
-                .withStoredProcedureName("datai")
-                .withStoredProcedureParameters("datanobxcdx");
+        SqlServerStoredProcedureActivityTypeProperties model = new SqlServerStoredProcedureActivityTypeProperties()
+            .withStoredProcedureName("datai").withStoredProcedureParameters("datanobxcdx");
         model = BinaryData.fromObject(model).toObject(SqlServerStoredProcedureActivityTypeProperties.class);
     }
 }

@@ -15,14 +15,17 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Initializes a new instance of the synchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the synchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class WorkspaceGitRepoManagementClient {
-    @Generated private final WorkspaceGitRepoManagementsImpl serviceClient;
+    @Generated
+    private final WorkspaceGitRepoManagementsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkspaceGitRepoManagementClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,7 +35,7 @@ public final class WorkspaceGitRepoManagementClient {
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @param context The context to associate with this operation.
@@ -44,13 +47,13 @@ public final class WorkspaceGitRepoManagementClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
+        GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
         return this.serviceClient.getGitHubAccessTokenWithResponse(gitHubAccessTokenRequest, clientRequestId, context);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,14 +63,14 @@ public final class WorkspaceGitRepoManagementClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GitHubAccessTokenResponse getGitHubAccessToken(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
+    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String clientRequestId) {
         return this.serviceClient.getGitHubAccessToken(gitHubAccessTokenRequest, clientRequestId);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

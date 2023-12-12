@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CmkIdentityDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CmkIdentityDefinition model =
-            BinaryData.fromString("{\"userAssignedIdentity\":\"lexxbczwtru\"}").toObject(CmkIdentityDefinition.class);
+        CmkIdentityDefinition model
+            = BinaryData.fromString("{\"userAssignedIdentity\":\"lexxbczwtru\"}").toObject(CmkIdentityDefinition.class);
         Assertions.assertEquals("lexxbczwtru", model.userAssignedIdentity());
     }
 

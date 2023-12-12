@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptActivityParameter model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"datahl\",\"type\":\"Guid\",\"value\":\"datagbcroltddifyw\",\"direction\":\"Output\",\"size\":1798739332}")
-                .toObject(ScriptActivityParameter.class);
+        ScriptActivityParameter model = BinaryData.fromString(
+            "{\"name\":\"datahl\",\"type\":\"Guid\",\"value\":\"datagbcroltddifyw\",\"direction\":\"Output\",\"size\":1798739332}")
+            .toObject(ScriptActivityParameter.class);
         Assertions.assertEquals(ScriptActivityParameterType.GUID, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
         Assertions.assertEquals(1798739332, model.size());
@@ -25,13 +23,9 @@ public final class ScriptActivityParameterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model =
-            new ScriptActivityParameter()
-                .withName("datahl")
-                .withType(ScriptActivityParameterType.GUID)
-                .withValue("datagbcroltddifyw")
-                .withDirection(ScriptActivityParameterDirection.OUTPUT)
-                .withSize(1798739332);
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datahl")
+            .withType(ScriptActivityParameterType.GUID).withValue("datagbcroltddifyw")
+            .withDirection(ScriptActivityParameterDirection.OUTPUT).withSize(1798739332);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
         Assertions.assertEquals(ScriptActivityParameterType.GUID, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());

@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"iwbybrkxvdumjg\"}")
-                .toObject(CheckNameAvailabilityResponseInner.class);
+        CheckNameAvailabilityResponseInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"iwbybrkxvdumjg\"}")
+            .toObject(CheckNameAvailabilityResponseInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
         Assertions.assertEquals("iwbybrkxvdumjg", model.message());
@@ -23,11 +22,8 @@ public final class CheckNameAvailabilityResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityResponseInner model =
-            new CheckNameAvailabilityResponseInner()
-                .withNameAvailable(false)
-                .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
-                .withMessage("iwbybrkxvdumjg");
+        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(false)
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS).withMessage("iwbybrkxvdumjg");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
         Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());

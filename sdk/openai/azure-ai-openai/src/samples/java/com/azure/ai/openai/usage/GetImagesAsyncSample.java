@@ -5,8 +5,8 @@ package com.azure.ai.openai.usage;
 
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageLocation;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
@@ -24,6 +24,7 @@ public class GetImagesAsyncSample {
     public static void main(String[] args) throws InterruptedException {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
+        String deploymentOrModelName = "{image-generation-deployment-or-model-name}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -32,12 +33,12 @@ public class GetImagesAsyncSample {
 
         ImageGenerationOptions imageGenerationOptions = new ImageGenerationOptions(
             "A drawing of the Seattle skyline in the style of Van Gogh");
-        client.getImages(imageGenerationOptions).subscribe(
+        client.getImageGenerations(deploymentOrModelName, imageGenerationOptions).subscribe(
             images -> {
-                for (ImageLocation imageLocation : images.getData()) {
+                for (ImageGenerationData imageGenerationData : images.getData()) {
                     System.out.printf(
                         "Image location URL that provides temporary access to download the generated image is %s.%n",
-                        imageLocation.getUrl());
+                        imageGenerationData.getUrl());
                 }
             },
             error -> System.err.println("There was an error getting images." + error),

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Ssis environment reference. */
+/**
+ * Ssis environment reference.
+ */
 @Fluent
 public final class SsisEnvironmentReference {
     /*
@@ -34,13 +36,15 @@ public final class SsisEnvironmentReference {
     @JsonProperty(value = "referenceType")
     private String referenceType;
 
-    /** Creates an instance of SsisEnvironmentReference class. */
+    /**
+     * Creates an instance of SsisEnvironmentReference class.
+     */
     public SsisEnvironmentReference() {
     }
 
     /**
      * Get the id property: Environment reference id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -49,7 +53,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the id property: Environment reference id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -60,7 +64,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the environmentFolderName property: Environment folder name.
-     *
+     * 
      * @return the environmentFolderName value.
      */
     public String environmentFolderName() {
@@ -69,7 +73,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the environmentFolderName property: Environment folder name.
-     *
+     * 
      * @param environmentFolderName the environmentFolderName value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -80,7 +84,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the environmentName property: Environment name.
-     *
+     * 
      * @return the environmentName value.
      */
     public String environmentName() {
@@ -89,7 +93,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the environmentName property: Environment name.
-     *
+     * 
      * @param environmentName the environmentName value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -100,7 +104,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Get the referenceType property: Reference type.
-     *
+     * 
      * @return the referenceType value.
      */
     public String referenceType() {
@@ -109,7 +113,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Set the referenceType property: Reference type.
-     *
+     * 
      * @param referenceType the referenceType value to set.
      * @return the SsisEnvironmentReference object itself.
      */
@@ -120,7 +124,7 @@ public final class SsisEnvironmentReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

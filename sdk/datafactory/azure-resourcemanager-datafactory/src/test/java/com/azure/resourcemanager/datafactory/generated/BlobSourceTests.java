@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.BlobSource;
 public final class BlobSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"BlobSource\",\"treatEmptyAsNull\":\"datakh\",\"skipHeaderLineCount\":\"datatecsmocqwey\",\"recursive\":\"dataakettmfcxviwf\",\"sourceRetryCount\":\"datajxxbsafqiwldu\",\"sourceRetryWait\":\"datasyjzdasgkfz\",\"maxConcurrentConnections\":\"datahqomuzohnpkofklb\",\"disableMetricsCollection\":\"dataln\",\"\":{\"mmvazvwzienij\":\"datafyvowl\",\"jxdnkgztfgcu\":\"datanmgdpxeivr\",\"tqggzahngn\":\"datavbreh\",\"z\":\"dataseiidfpwbybmxf\"}}")
-                .toObject(BlobSource.class);
+        BlobSource model = BinaryData.fromString(
+            "{\"type\":\"BlobSource\",\"treatEmptyAsNull\":\"datauflu\",\"skipHeaderLineCount\":\"datavwlfzjrjglacpzgz\",\"recursive\":\"datagslwujkeytpmlrj\",\"sourceRetryCount\":\"databmodsytqtva\",\"sourceRetryWait\":\"datajphq\",\"maxConcurrentConnections\":\"dataxvvogwghxo\",\"disableMetricsCollection\":\"datapiqkkmp\",\"\":{\"mzwmtsmeaciyp\":\"datad\"}}")
+            .toObject(BlobSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobSource model =
-            new BlobSource()
-                .withSourceRetryCount("datajxxbsafqiwldu")
-                .withSourceRetryWait("datasyjzdasgkfz")
-                .withMaxConcurrentConnections("datahqomuzohnpkofklb")
-                .withDisableMetricsCollection("dataln")
-                .withTreatEmptyAsNull("datakh")
-                .withSkipHeaderLineCount("datatecsmocqwey")
-                .withRecursive("dataakettmfcxviwf");
+        BlobSource model = new BlobSource().withSourceRetryCount("databmodsytqtva").withSourceRetryWait("datajphq")
+            .withMaxConcurrentConnections("dataxvvogwghxo").withDisableMetricsCollection("datapiqkkmp")
+            .withTreatEmptyAsNull("datauflu").withSkipHeaderLineCount("datavwlfzjrjglacpzgz")
+            .withRecursive("datagslwujkeytpmlrj");
         model = BinaryData.fromObject(model).toObject(BlobSource.class);
     }
 }

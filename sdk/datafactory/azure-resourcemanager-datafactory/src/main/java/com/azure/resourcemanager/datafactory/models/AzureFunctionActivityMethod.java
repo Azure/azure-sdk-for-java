@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The list of HTTP methods supported by a AzureFunctionActivity. */
+/**
+ * The list of HTTP methods supported by a AzureFunctionActivity.
+ */
 public final class AzureFunctionActivityMethod extends ExpandableStringEnum<AzureFunctionActivityMethod> {
-    /** Static value GET for AzureFunctionActivityMethod. */
+    /**
+     * Static value GET for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod GET = fromString("GET");
 
-    /** Static value POST for AzureFunctionActivityMethod. */
+    /**
+     * Static value POST for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod POST = fromString("POST");
 
-    /** Static value PUT for AzureFunctionActivityMethod. */
+    /**
+     * Static value PUT for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod PUT = fromString("PUT");
 
-    /** Static value DELETE for AzureFunctionActivityMethod. */
+    /**
+     * Static value DELETE for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod DELETE = fromString("DELETE");
 
-    /** Static value OPTIONS for AzureFunctionActivityMethod. */
+    /**
+     * Static value OPTIONS for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod OPTIONS = fromString("OPTIONS");
 
-    /** Static value HEAD for AzureFunctionActivityMethod. */
+    /**
+     * Static value HEAD for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod HEAD = fromString("HEAD");
 
-    /** Static value TRACE for AzureFunctionActivityMethod. */
+    /**
+     * Static value TRACE for AzureFunctionActivityMethod.
+     */
     public static final AzureFunctionActivityMethod TRACE = fromString("TRACE");
 
     /**
      * Creates a new instance of AzureFunctionActivityMethod value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
 
     /**
      * Creates or finds a AzureFunctionActivityMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFunctionActivityMethod.
      */
@@ -53,7 +69,7 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
 
     /**
      * Gets known AzureFunctionActivityMethod values.
-     *
+     * 
      * @return known AzureFunctionActivityMethod values.
      */
     public static Collection<AzureFunctionActivityMethod> values() {

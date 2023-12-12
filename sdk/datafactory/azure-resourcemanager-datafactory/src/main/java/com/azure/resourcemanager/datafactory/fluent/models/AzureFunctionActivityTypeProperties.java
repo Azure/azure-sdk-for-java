@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Function activity type properties. */
+/**
+ * Azure Function activity type properties.
+ */
 @Fluent
 public final class AzureFunctionActivityTypeProperties {
     /*
@@ -40,13 +42,15 @@ public final class AzureFunctionActivityTypeProperties {
     @JsonProperty(value = "body")
     private Object body;
 
-    /** Creates an instance of AzureFunctionActivityTypeProperties class. */
+    /**
+     * Creates an instance of AzureFunctionActivityTypeProperties class.
+     */
     public AzureFunctionActivityTypeProperties() {
     }
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     *
+     * 
      * @return the method value.
      */
     public AzureFunctionActivityMethod method() {
@@ -55,7 +59,7 @@ public final class AzureFunctionActivityTypeProperties {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     *
+     * 
      * @param method the method value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -67,7 +71,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Get the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the functionName value.
      */
     public Object functionName() {
@@ -77,7 +81,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Set the functionName property: Name of the Function that the Azure Function Activity will call. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param functionName the functionName value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class AzureFunctionActivityTypeProperties {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -101,7 +105,7 @@ public final class AzureFunctionActivityTypeProperties {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param headers the headers value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the body value.
      */
     public Object body() {
@@ -123,7 +127,7 @@ public final class AzureFunctionActivityTypeProperties {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @param body the body value to set.
      * @return the AzureFunctionActivityTypeProperties object itself.
      */
@@ -134,21 +138,17 @@ public final class AzureFunctionActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property method in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property method in model AzureFunctionActivityTypeProperties"));
         }
         if (functionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
         }
     }
 

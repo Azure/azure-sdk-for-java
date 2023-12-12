@@ -9,8 +9,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
-import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
 import java.util.Collections;
 import java.util.Map;
 
@@ -44,16 +44,12 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
         }
     }
 
+    public FrontendProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String fqdn() {
-        return this.innerModel().fqdn();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public Region region() {
@@ -91,21 +87,14 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .createOrUpdate(
-                    resourceGroupName, trafficControllerName, frontendName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces().createOrUpdate(resourceGroupName,
+            trafficControllerName, frontendName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Frontend create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .createOrUpdate(resourceGroupName, trafficControllerName, frontendName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces().createOrUpdate(resourceGroupName,
+            trafficControllerName, frontendName, this.innerModel(), context);
         return this;
     }
 
@@ -121,28 +110,20 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .updateWithResponse(
-                    resourceGroupName, trafficControllerName, frontendName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, frontendName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Frontend apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .updateWithResponse(resourceGroupName, trafficControllerName, frontendName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, frontendName, updateProperties, context)
+            .getValue();
         return this;
     }
 
-    FrontendImpl(
-        FrontendInner innerObject,
+    FrontendImpl(FrontendInner innerObject,
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -152,22 +133,14 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
     }
 
     public Frontend refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .getWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, frontendName, Context.NONE).getValue();
         return this;
     }
 
     public Frontend refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFrontendsInterfaces()
-                .getWithResponse(resourceGroupName, trafficControllerName, frontendName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFrontendsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, frontendName, context).getValue();
         return this;
     }
 
@@ -189,6 +162,11 @@ public final class FrontendImpl implements Frontend, Frontend.Definition, Fronte
             this.updateProperties.withTags(tags);
             return this;
         }
+    }
+
+    public FrontendImpl withProperties(FrontendProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

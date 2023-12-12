@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The custom setup of running cmdkey commands. */
+/**
+ * The custom setup of running cmdkey commands.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CmdkeySetup")
 @Fluent
@@ -22,13 +24,15 @@ public final class CmdkeySetup extends CustomSetupBase {
     @JsonProperty(value = "typeProperties", required = true)
     private CmdkeySetupTypeProperties innerTypeProperties = new CmdkeySetupTypeProperties();
 
-    /** Creates an instance of CmdkeySetup class. */
+    /**
+     * Creates an instance of CmdkeySetup class.
+     */
     public CmdkeySetup() {
     }
 
     /**
      * Get the innerTypeProperties property: Cmdkey command custom setup type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private CmdkeySetupTypeProperties innerTypeProperties() {
@@ -37,7 +41,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the targetName property: The server name of data source access.
-     *
+     * 
      * @return the targetName value.
      */
     public Object targetName() {
@@ -46,7 +50,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the targetName property: The server name of data source access.
-     *
+     * 
      * @param targetName the targetName value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -60,7 +64,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the username property: The user name of data source access.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -69,7 +73,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the username property: The user name of data source access.
-     *
+     * 
      * @param username the username value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -83,7 +87,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the password property: The password of data source access.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -92,7 +96,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the password property: The password of data source access.
-     *
+     * 
      * @param password the password value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -106,16 +110,15 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
         } else {
             innerTypeProperties().validate();
         }

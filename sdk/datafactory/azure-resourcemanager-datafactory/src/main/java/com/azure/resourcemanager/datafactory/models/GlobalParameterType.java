@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Global Parameter type. */
+/**
+ * Global Parameter type.
+ */
 public final class GlobalParameterType extends ExpandableStringEnum<GlobalParameterType> {
-    /** Static value Object for GlobalParameterType. */
+    /**
+     * Static value Object for GlobalParameterType.
+     */
     public static final GlobalParameterType OBJECT = fromString("Object");
 
-    /** Static value String for GlobalParameterType. */
+    /**
+     * Static value String for GlobalParameterType.
+     */
     public static final GlobalParameterType STRING = fromString("String");
 
-    /** Static value Int for GlobalParameterType. */
+    /**
+     * Static value Int for GlobalParameterType.
+     */
     public static final GlobalParameterType INT = fromString("Int");
 
-    /** Static value Float for GlobalParameterType. */
+    /**
+     * Static value Float for GlobalParameterType.
+     */
     public static final GlobalParameterType FLOAT = fromString("Float");
 
-    /** Static value Bool for GlobalParameterType. */
+    /**
+     * Static value Bool for GlobalParameterType.
+     */
     public static final GlobalParameterType BOOL = fromString("Bool");
 
-    /** Static value Array for GlobalParameterType. */
+    /**
+     * Static value Array for GlobalParameterType.
+     */
     public static final GlobalParameterType ARRAY = fromString("Array");
 
     /**
      * Creates a new instance of GlobalParameterType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class GlobalParameterType extends ExpandableStringEnum<GlobalParame
 
     /**
      * Creates or finds a GlobalParameterType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GlobalParameterType.
      */
@@ -50,7 +64,7 @@ public final class GlobalParameterType extends ExpandableStringEnum<GlobalParame
 
     /**
      * Gets known GlobalParameterType values.
-     *
+     * 
      * @return known GlobalParameterType values.
      */
     public static Collection<GlobalParameterType> values() {

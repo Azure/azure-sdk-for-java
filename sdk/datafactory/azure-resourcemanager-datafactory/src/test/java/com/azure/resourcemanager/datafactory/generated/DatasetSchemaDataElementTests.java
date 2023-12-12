@@ -12,20 +12,15 @@ import java.util.Map;
 public final class DatasetSchemaDataElementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasetSchemaDataElement model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"datadivznl\",\"type\":\"dataslkskhjqjpvbai\",\"\":{\"ywbqgroigbsfsgs\":\"datatgzgta\",\"fmhl\":\"dataenwl\",\"tryldsxebuhsxr\":\"dataqlxspmrj\"}}")
-                .toObject(DatasetSchemaDataElement.class);
+        DatasetSchemaDataElement model = BinaryData.fromString(
+            "{\"name\":\"datamgsdaluyckhefrbh\",\"type\":\"datauerbgpxebjl\",\"\":{\"tnsewou\":\"dataaytujraxdtpryjm\",\"s\":\"dataly\",\"lmpctwj\":\"datavyljurkeposehqq\",\"erxxxoteehkhowgo\":\"datadsdlzmk\"}}")
+            .toObject(DatasetSchemaDataElement.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasetSchemaDataElement model =
-            new DatasetSchemaDataElement()
-                .withName("datadivznl")
-                .withType("dataslkskhjqjpvbai")
-                .withAdditionalProperties(mapOf());
+        DatasetSchemaDataElement model = new DatasetSchemaDataElement().withName("datamgsdaluyckhefrbh")
+            .withType("datauerbgpxebjl").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DatasetSchemaDataElement.class);
     }
 

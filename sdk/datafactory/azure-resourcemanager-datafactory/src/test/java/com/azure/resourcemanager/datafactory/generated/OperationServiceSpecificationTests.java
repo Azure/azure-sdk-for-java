@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationServiceSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"logSpecifications\":[{\"name\":\"ujysvle\",\"displayName\":\"vfqawrlyxwjkcpr\",\"blobDuration\":\"wbxgjvt\"},{\"name\":\"p\",\"displayName\":\"szdnr\",\"blobDuration\":\"qguhmuo\"}],\"metricSpecifications\":[{\"name\":\"rwzwbng\",\"displayName\":\"tnwu\",\"displayDescription\":\"gazxuf\",\"unit\":\"uckyf\",\"aggregationType\":\"rfidfvzwdz\",\"enableRegionalMdmAccount\":\"tymw\",\"sourceMdmAccount\":\"dkfthwxmnt\",\"sourceMdmNamespace\":\"waopvkmijcmmxd\",\"availabilities\":[{\"timeGrain\":\"fsrpymzidnse\",\"blobDuration\":\"xtbzsgfyccsne\"},{\"timeGrain\":\"dwzjeiach\",\"blobDuration\":\"osfln\"},{\"timeGrain\":\"sfqpteehz\",\"blobDuration\":\"ypyqrimzinp\"}],\"dimensions\":[{\"name\":\"dkirsoodqxhcr\",\"displayName\":\"ohjtckw\",\"toBeExportedForShoebox\":true}]}]}")
-                .toObject(OperationServiceSpecification.class);
+        OperationServiceSpecification model = BinaryData.fromString(
+            "{\"logSpecifications\":[{\"name\":\"ujysvle\",\"displayName\":\"vfqawrlyxwjkcpr\",\"blobDuration\":\"wbxgjvt\"},{\"name\":\"p\",\"displayName\":\"szdnr\",\"blobDuration\":\"qguhmuo\"}],\"metricSpecifications\":[{\"name\":\"rwzwbng\",\"displayName\":\"tnwu\",\"displayDescription\":\"gazxuf\",\"unit\":\"uckyf\",\"aggregationType\":\"rfidfvzwdz\",\"enableRegionalMdmAccount\":\"tymw\",\"sourceMdmAccount\":\"dkfthwxmnt\",\"sourceMdmNamespace\":\"waopvkmijcmmxd\",\"availabilities\":[{\"timeGrain\":\"fsrpymzidnse\",\"blobDuration\":\"xtbzsgfyccsne\"},{\"timeGrain\":\"dwzjeiach\",\"blobDuration\":\"osfln\"},{\"timeGrain\":\"sfqpteehz\",\"blobDuration\":\"ypyqrimzinp\"}],\"dimensions\":[{\"name\":\"dkirsoodqxhcr\",\"displayName\":\"ohjtckw\",\"toBeExportedForShoebox\":true}]}]}")
+            .toObject(OperationServiceSpecification.class);
         Assertions.assertEquals("ujysvle", model.logSpecifications().get(0).name());
         Assertions.assertEquals("vfqawrlyxwjkcpr", model.logSpecifications().get(0).displayName());
         Assertions.assertEquals("wbxgjvt", model.logSpecifications().get(0).blobDuration());
@@ -32,10 +30,10 @@ public final class OperationServiceSpecificationTests {
         Assertions.assertEquals("tymw", model.metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("dkfthwxmnt", model.metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("waopvkmijcmmxd", model.metricSpecifications().get(0).sourceMdmNamespace());
-        Assertions
-            .assertEquals("fsrpymzidnse", model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
-        Assertions
-            .assertEquals("xtbzsgfyccsne", model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
+        Assertions.assertEquals("fsrpymzidnse",
+            model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
+        Assertions.assertEquals("xtbzsgfyccsne",
+            model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
         Assertions.assertEquals("dkirsoodqxhcr", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("ohjtckw", model.metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals(true, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());
@@ -43,50 +41,21 @@ public final class OperationServiceSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationServiceSpecification model =
-            new OperationServiceSpecification()
-                .withLogSpecifications(
-                    Arrays
-                        .asList(
-                            new OperationLogSpecification()
-                                .withName("ujysvle")
-                                .withDisplayName("vfqawrlyxwjkcpr")
-                                .withBlobDuration("wbxgjvt"),
-                            new OperationLogSpecification()
-                                .withName("p")
-                                .withDisplayName("szdnr")
-                                .withBlobDuration("qguhmuo")))
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new OperationMetricSpecification()
-                                .withName("rwzwbng")
-                                .withDisplayName("tnwu")
-                                .withDisplayDescription("gazxuf")
-                                .withUnit("uckyf")
-                                .withAggregationType("rfidfvzwdz")
-                                .withEnableRegionalMdmAccount("tymw")
-                                .withSourceMdmAccount("dkfthwxmnt")
-                                .withSourceMdmNamespace("waopvkmijcmmxd")
-                                .withAvailabilities(
-                                    Arrays
-                                        .asList(
-                                            new OperationMetricAvailability()
-                                                .withTimeGrain("fsrpymzidnse")
-                                                .withBlobDuration("xtbzsgfyccsne"),
-                                            new OperationMetricAvailability()
-                                                .withTimeGrain("dwzjeiach")
-                                                .withBlobDuration("osfln"),
-                                            new OperationMetricAvailability()
-                                                .withTimeGrain("sfqpteehz")
-                                                .withBlobDuration("ypyqrimzinp")))
-                                .withDimensions(
-                                    Arrays
-                                        .asList(
-                                            new OperationMetricDimension()
-                                                .withName("dkirsoodqxhcr")
-                                                .withDisplayName("ohjtckw")
-                                                .withToBeExportedForShoebox(true)))));
+        OperationServiceSpecification model = new OperationServiceSpecification()
+            .withLogSpecifications(Arrays.asList(
+                new OperationLogSpecification().withName("ujysvle").withDisplayName("vfqawrlyxwjkcpr").withBlobDuration(
+                    "wbxgjvt"),
+                new OperationLogSpecification().withName("p").withDisplayName("szdnr").withBlobDuration("qguhmuo")))
+            .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification().withName("rwzwbng")
+                .withDisplayName("tnwu").withDisplayDescription("gazxuf").withUnit("uckyf")
+                .withAggregationType("rfidfvzwdz").withEnableRegionalMdmAccount("tymw")
+                .withSourceMdmAccount("dkfthwxmnt").withSourceMdmNamespace("waopvkmijcmmxd")
+                .withAvailabilities(Arrays.asList(
+                    new OperationMetricAvailability().withTimeGrain("fsrpymzidnse").withBlobDuration("xtbzsgfyccsne"),
+                    new OperationMetricAvailability().withTimeGrain("dwzjeiach").withBlobDuration("osfln"),
+                    new OperationMetricAvailability().withTimeGrain("sfqpteehz").withBlobDuration("ypyqrimzinp")))
+                .withDimensions(Arrays.asList(new OperationMetricDimension().withName("dkirsoodqxhcr")
+                    .withDisplayName("ohjtckw").withToBeExportedForShoebox(true)))));
         model = BinaryData.fromObject(model).toObject(OperationServiceSpecification.class);
         Assertions.assertEquals("ujysvle", model.logSpecifications().get(0).name());
         Assertions.assertEquals("vfqawrlyxwjkcpr", model.logSpecifications().get(0).displayName());
@@ -99,10 +68,10 @@ public final class OperationServiceSpecificationTests {
         Assertions.assertEquals("tymw", model.metricSpecifications().get(0).enableRegionalMdmAccount());
         Assertions.assertEquals("dkfthwxmnt", model.metricSpecifications().get(0).sourceMdmAccount());
         Assertions.assertEquals("waopvkmijcmmxd", model.metricSpecifications().get(0).sourceMdmNamespace());
-        Assertions
-            .assertEquals("fsrpymzidnse", model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
-        Assertions
-            .assertEquals("xtbzsgfyccsne", model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
+        Assertions.assertEquals("fsrpymzidnse",
+            model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
+        Assertions.assertEquals("xtbzsgfyccsne",
+            model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
         Assertions.assertEquals("dkirsoodqxhcr", model.metricSpecifications().get(0).dimensions().get(0).name());
         Assertions.assertEquals("ohjtckw", model.metricSpecifications().get(0).dimensions().get(0).displayName());
         Assertions.assertEquals(true, model.metricSpecifications().get(0).dimensions().get(0).toBeExportedForShoebox());

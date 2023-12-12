@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity AmazonRdsForOracle source. */
+/**
+ * A copy activity AmazonRdsForOracle source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AmazonRdsForOracleSource")
 @Fluent
@@ -47,14 +49,16 @@ public final class AmazonRdsForOracleSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of AmazonRdsForOracleSource class. */
+    /**
+     * Creates an instance of AmazonRdsForOracleSource class.
+     */
     public AmazonRdsForOracleSource() {
     }
 
     /**
      * Get the oracleReaderQuery property: AmazonRdsForOracle reader query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the oracleReaderQuery value.
      */
     public Object oracleReaderQuery() {
@@ -64,7 +68,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the oracleReaderQuery property: AmazonRdsForOracle reader query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param oracleReaderQuery the oracleReaderQuery value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -76,7 +80,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object queryTimeout() {
@@ -86,7 +90,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -98,7 +102,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the partitionOption property: The partition mechanism that will be used for AmazonRdsForOracle read in
      * parallel. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object partitionOption() {
@@ -108,7 +112,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the partitionOption property: The partition mechanism that will be used for AmazonRdsForOracle read in
      * parallel. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -120,7 +124,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the partitionSettings property: The settings that will be leveraged for AmazonRdsForOracle source
      * partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public AmazonRdsForOraclePartitionSettings partitionSettings() {
@@ -130,7 +134,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the partitionSettings property: The settings that will be leveraged for AmazonRdsForOracle source
      * partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -142,7 +146,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object additionalColumns() {
@@ -152,7 +156,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the AmazonRdsForOracleSource object itself.
      */
@@ -161,28 +165,36 @@ public final class AmazonRdsForOracleSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRdsForOracleSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -191,7 +203,7 @@ public final class AmazonRdsForOracleSource extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

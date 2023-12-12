@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Connection information for encrypting the on-premises data source credentials. */
+/**
+ * Connection information for encrypting the on-premises data source credentials.
+ */
 @Fluent
 public final class IntegrationRuntimeConnectionInfoInner {
     /*
@@ -54,16 +56,19 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /*
      * Connection information for encrypting the on-premises data source credentials.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of IntegrationRuntimeConnectionInfoInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeConnectionInfoInner class.
+     */
     public IntegrationRuntimeConnectionInfoInner() {
     }
 
     /**
      * Get the serviceToken property: The token generated in service. Callers use this token to authenticate to
      * integration runtime.
-     *
+     * 
      * @return the serviceToken value.
      */
     public String serviceToken() {
@@ -73,7 +78,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the identityCertThumbprint property: The integration runtime SSL certificate thumbprint. Click-Once
      * application uses it to do server validation.
-     *
+     * 
      * @return the identityCertThumbprint value.
      */
     public String identityCertThumbprint() {
@@ -82,7 +87,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the hostServiceUri property: The on-premises integration runtime host URL.
-     *
+     * 
      * @return the hostServiceUri value.
      */
     public String hostServiceUri() {
@@ -91,7 +96,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the version property: The integration runtime version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -101,7 +106,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the publicKey property: The public key for encrypting a credential when transferring the credential to the
      * integration runtime.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -110,7 +115,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Get the isIdentityCertExprired property: Whether the identity certificate is expired.
-     *
+     * 
      * @return the isIdentityCertExprired value.
      */
     public Boolean isIdentityCertExprired() {
@@ -120,7 +125,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Get the additionalProperties property: Connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -131,7 +136,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
     /**
      * Set the additionalProperties property: Connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeConnectionInfoInner object itself.
      */
@@ -150,7 +155,7 @@ public final class IntegrationRuntimeConnectionInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Association Subnet. */
+/**
+ * Association Subnet.
+ */
 @Fluent
 public final class AssociationSubnet {
     /*
@@ -17,13 +19,15 @@ public final class AssociationSubnet {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of AssociationSubnet class. */
+    /**
+     * Creates an instance of AssociationSubnet class.
+     */
     public AssociationSubnet() {
     }
 
     /**
      * Get the id property: Association ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class AssociationSubnet {
 
     /**
      * Set the id property: Association ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AssociationSubnet object itself.
      */
@@ -43,14 +47,13 @@ public final class AssociationSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model AssociationSubnet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model AssociationSubnet"));
         }
     }
 

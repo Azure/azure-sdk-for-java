@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SecureInputOutputPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureInputOutputPolicy model =
-            BinaryData
-                .fromString("{\"secureInput\":true,\"secureOutput\":false}")
-                .toObject(SecureInputOutputPolicy.class);
+        SecureInputOutputPolicy model = BinaryData.fromString("{\"secureInput\":true,\"secureOutput\":false}")
+            .toObject(SecureInputOutputPolicy.class);
         Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(false, model.secureOutput());
     }

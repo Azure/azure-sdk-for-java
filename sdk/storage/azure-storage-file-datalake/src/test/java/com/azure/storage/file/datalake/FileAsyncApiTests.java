@@ -2844,6 +2844,24 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
+    @Test
+    public void uploadFromFileEmptyFile() {
+        File file = getRandomFile(0);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        StepVerifier.create(fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null))
+            .assertNext(r -> {
+                // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty
+                // file, it will return 201 since only createWithResponse gets called
+                assertEquals(201, r.getStatusCode());
+                assertNotNull(r.getValue().getETag());
+            }).then(() -> StepVerifier.create(fc.getProperties())
+                .assertNext(r -> assertEquals(0, r.getFileSize()))
+                .verifyComplete())
+            .verifyComplete();
+    }
+
     @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @Test
     public void asyncBufferedUploadEmpty() {

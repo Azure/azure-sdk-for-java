@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for a MongoDB database. */
+/**
+ * A copy activity source for a MongoDB database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbV2Source")
 @Fluent
@@ -49,7 +51,9 @@ public final class MongoDbV2Source extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of MongoDbV2Source class. */
+    /**
+     * Creates an instance of MongoDbV2Source class.
+     */
     public MongoDbV2Source() {
     }
 
@@ -57,7 +61,7 @@ public final class MongoDbV2Source extends CopySource {
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the filter value.
      */
     public Object filter() {
@@ -68,7 +72,7 @@ public final class MongoDbV2Source extends CopySource {
      * Set the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param filter the filter value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -79,7 +83,7 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Get the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @return the cursorMethods value.
      */
     public MongoDbCursorMethodsProperties cursorMethods() {
@@ -88,7 +92,7 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Set the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @param cursorMethods the cursorMethods value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -102,7 +106,7 @@ public final class MongoDbV2Source extends CopySource {
      * MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This
      * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @return the batchSize value.
      */
     public Object batchSize() {
@@ -114,7 +118,7 @@ public final class MongoDbV2Source extends CopySource {
      * MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This
      * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -126,7 +130,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object queryTimeout() {
@@ -136,7 +140,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -148,7 +152,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object additionalColumns() {
@@ -158,7 +162,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -167,28 +171,36 @@ public final class MongoDbV2Source extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -197,7 +209,7 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

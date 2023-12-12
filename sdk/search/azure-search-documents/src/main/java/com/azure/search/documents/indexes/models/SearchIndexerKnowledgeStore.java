@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Definition of additional projections to azure blob, table, or files, of enriched data. */
+/**
+ * Definition of additional projections to azure blob, table, or files, of enriched data.
+ */
 @Fluent
 public final class SearchIndexerKnowledgeStore implements JsonSerializable<SearchIndexerKnowledgeStore> {
     /*
@@ -44,20 +46,20 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.
-     *
+     * 
      * @param storageConnectionString the storageConnectionString value to set.
      * @param projections the projections value to set.
      */
-    public SearchIndexerKnowledgeStore(
-            String storageConnectionString, List<SearchIndexerKnowledgeStoreProjection> projections) {
+    public SearchIndexerKnowledgeStore(String storageConnectionString,
+        List<SearchIndexerKnowledgeStoreProjection> projections) {
         this.storageConnectionString = storageConnectionString;
         this.projections = projections;
     }
 
     /**
-     * Get the storageConnectionString property: The connection string to the storage account projections will be stored
-     * in.
-     *
+     * Get the storageConnectionString property: The connection string to the storage account projections will be
+     * stored in.
+     * 
      * @return the storageConnectionString value.
      */
     public String getStorageConnectionString() {
@@ -66,7 +68,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
 
     /**
      * Get the projections property: A list of additional projections to perform during indexing.
-     *
+     * 
      * @return the projections value.
      */
     public List<SearchIndexerKnowledgeStoreProjection> getProjections() {
@@ -78,7 +80,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * knowledge store projections. If the connection string indicates an identity (ResourceId) and it's not specified,
      * the system-assigned managed identity is used. On updates to the indexer, if the identity is unspecified, the
      * value remains unchanged. If set to "none", the value of this property is cleared.
-     *
+     * 
      * @return the identity value.
      */
     public SearchIndexerDataIdentity getIdentity() {
@@ -90,7 +92,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * knowledge store projections. If the connection string indicates an identity (ResourceId) and it's not specified,
      * the system-assigned managed identity is used. On updates to the indexer, if the identity is unspecified, the
      * value remains unchanged. If set to "none", the value of this property is cleared.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SearchIndexerKnowledgeStore object itself.
      */
@@ -102,7 +104,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     /**
      * Get the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
      * name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @return the parameters value.
      */
     public SearchIndexerKnowledgeStoreParameters getParameters() {
@@ -112,7 +114,7 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     /**
      * Set the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
      * name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SearchIndexerKnowledgeStore object itself.
      */
@@ -133,60 +135,57 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
 
     /**
      * Reads an instance of SearchIndexerKnowledgeStore from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerKnowledgeStore if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStore.
      */
     public static SearchIndexerKnowledgeStore fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean storageConnectionStringFound = false;
-                    String storageConnectionString = null;
-                    boolean projectionsFound = false;
-                    List<SearchIndexerKnowledgeStoreProjection> projections = null;
-                    SearchIndexerDataIdentity identity = null;
-                    SearchIndexerKnowledgeStoreParameters parameters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean storageConnectionStringFound = false;
+            String storageConnectionString = null;
+            boolean projectionsFound = false;
+            List<SearchIndexerKnowledgeStoreProjection> projections = null;
+            SearchIndexerDataIdentity identity = null;
+            SearchIndexerKnowledgeStoreParameters parameters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("storageConnectionString".equals(fieldName)) {
-                            storageConnectionString = reader.getString();
-                            storageConnectionStringFound = true;
-                        } else if ("projections".equals(fieldName)) {
-                            projections =
-                                    reader.readArray(
-                                            reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
-                            projectionsFound = true;
-                        } else if ("identity".equals(fieldName)) {
-                            identity = SearchIndexerDataIdentity.fromJson(reader);
-                        } else if ("parameters".equals(fieldName)) {
-                            parameters = SearchIndexerKnowledgeStoreParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (storageConnectionStringFound && projectionsFound) {
-                        SearchIndexerKnowledgeStore deserializedSearchIndexerKnowledgeStore =
-                                new SearchIndexerKnowledgeStore(storageConnectionString, projections);
-                        deserializedSearchIndexerKnowledgeStore.identity = identity;
-                        deserializedSearchIndexerKnowledgeStore.parameters = parameters;
+                if ("storageConnectionString".equals(fieldName)) {
+                    storageConnectionString = reader.getString();
+                    storageConnectionStringFound = true;
+                } else if ("projections".equals(fieldName)) {
+                    projections = reader.readArray(reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
+                    projectionsFound = true;
+                } else if ("identity".equals(fieldName)) {
+                    identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = SearchIndexerKnowledgeStoreParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (storageConnectionStringFound && projectionsFound) {
+                SearchIndexerKnowledgeStore deserializedSearchIndexerKnowledgeStore
+                    = new SearchIndexerKnowledgeStore(storageConnectionString, projections);
+                deserializedSearchIndexerKnowledgeStore.identity = identity;
+                deserializedSearchIndexerKnowledgeStore.parameters = parameters;
 
-                        return deserializedSearchIndexerKnowledgeStore;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!storageConnectionStringFound) {
-                        missingProperties.add("storageConnectionString");
-                    }
-                    if (!projectionsFound) {
-                        missingProperties.add("projections");
-                    }
+                return deserializedSearchIndexerKnowledgeStore;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!storageConnectionStringFound) {
+                missingProperties.add("storageConnectionString");
+            }
+            if (!projectionsFound) {
+                missingProperties.add("projections");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

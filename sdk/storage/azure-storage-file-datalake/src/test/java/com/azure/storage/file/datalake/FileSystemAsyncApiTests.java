@@ -2026,6 +2026,18 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
+    public void listPathsCreationTimeParse() {
+        // this test is ensuring that we're handling the date format that the service returns for the creation time
+        // it can be returned in two formats: RFC 1123 date string or Windows file time
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
+        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
+
+        // assert that NumberFormatException is not thrown
+        assertDoesNotThrow(() -> dataLakeFileSystemAsyncClient.listPaths(options).blockLast());
+    }
+
+    @Test
     public void listPathsReturnUpn() {
         dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
         dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
