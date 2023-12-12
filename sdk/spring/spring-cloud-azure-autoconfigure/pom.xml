@@ -300,6 +300,13 @@
       <optional>true</optional>
     </dependency>
 
+    <!--Remove after dependent jackson > 2.14, refer to https://github.com/spring-projects/spring-boot/issues/38634 -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+    </dependency>
+
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
