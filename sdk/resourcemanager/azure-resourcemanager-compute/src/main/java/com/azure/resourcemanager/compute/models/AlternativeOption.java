@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the alternative option specified by the Publisher for this image when this image is deprecated. */
+/**
+ * Describes the alternative option specified by the Publisher for this image when this image is deprecated.
+ */
 @Fluent
 public final class AlternativeOption {
     /*
@@ -23,13 +25,15 @@ public final class AlternativeOption {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of AlternativeOption class. */
+    /**
+     * Creates an instance of AlternativeOption class.
+     */
     public AlternativeOption() {
     }
 
     /**
      * Get the type property: Describes the type of the alternative option.
-     *
+     * 
      * @return the type value.
      */
     public AlternativeType type() {
@@ -38,7 +42,7 @@ public final class AlternativeOption {
 
     /**
      * Set the type property: Describes the type of the alternative option.
-     *
+     * 
      * @param type the type value to set.
      * @return the AlternativeOption object itself.
      */
@@ -48,9 +52,9 @@ public final class AlternativeOption {
     }
 
     /**
-     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
-     * when the type is Offer or the Plan name when the type is Plan.
-     *
+     * Get the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
+     * name when the type is Offer or the Plan name when the type is Plan.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,9 +62,9 @@ public final class AlternativeOption {
     }
 
     /**
-     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer name
-     * when the type is Offer or the Plan name when the type is Plan.
-     *
+     * Set the value property: Indicates the alternative option value specified by the Publisher. This is the Offer
+     * name when the type is Offer or the Plan name when the type is Plan.
+     * 
      * @param value the value value to set.
      * @return the AlternativeOption object itself.
      */
@@ -71,7 +75,7 @@ public final class AlternativeOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,12 +13,14 @@ import java.util.Collection;
  * Configurations.
  */
 public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVersion> {
-    /** Static value 2020-11-01 for NetworkApiVersion. */
+    /**
+     * Static value 2020-11-01 for NetworkApiVersion.
+     */
     public static final NetworkApiVersion TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE = fromString("2020-11-01");
 
     /**
      * Creates a new instance of NetworkApiVersion value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +29,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
 
     /**
      * Creates or finds a NetworkApiVersion from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkApiVersion.
      */
@@ -38,7 +40,7 @@ public final class NetworkApiVersion extends ExpandableStringEnum<NetworkApiVers
 
     /**
      * Gets known NetworkApiVersion values.
-     *
+     * 
      * @return known NetworkApiVersion values.
      */
     public static Collection<NetworkApiVersion> values() {

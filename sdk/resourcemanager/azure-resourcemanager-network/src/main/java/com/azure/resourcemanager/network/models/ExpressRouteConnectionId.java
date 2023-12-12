@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ID of the ExpressRouteConnection. */
+/**
+ * The ID of the ExpressRouteConnection.
+ */
 @Immutable
 public final class ExpressRouteConnectionId {
     /*
@@ -16,13 +18,15 @@ public final class ExpressRouteConnectionId {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of ExpressRouteConnectionId class. */
+    /**
+     * Creates an instance of ExpressRouteConnectionId class.
+     */
     public ExpressRouteConnectionId() {
     }
 
     /**
      * Get the id property: The ID of the ExpressRouteConnection.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ExpressRouteConnectionId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

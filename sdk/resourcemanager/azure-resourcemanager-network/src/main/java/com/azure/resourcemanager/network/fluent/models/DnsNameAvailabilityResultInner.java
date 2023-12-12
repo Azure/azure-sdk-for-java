@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for the CheckDnsNameAvailability API service call. */
+/**
+ * Response for the CheckDnsNameAvailability API service call.
+ */
 @Fluent
 public final class DnsNameAvailabilityResultInner {
     /*
@@ -16,13 +18,15 @@ public final class DnsNameAvailabilityResultInner {
     @JsonProperty(value = "available")
     private Boolean available;
 
-    /** Creates an instance of DnsNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of DnsNameAvailabilityResultInner class.
+     */
     public DnsNameAvailabilityResultInner() {
     }
 
     /**
      * Get the available property: Domain availability (True/False).
-     *
+     * 
      * @return the available value.
      */
     public Boolean available() {
@@ -31,7 +35,7 @@ public final class DnsNameAvailabilityResultInner {
 
     /**
      * Set the available property: Domain availability (True/False).
-     *
+     * 
      * @param available the available value to set.
      * @return the DnsNameAvailabilityResultInner object itself.
      */
@@ -42,7 +46,7 @@ public final class DnsNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

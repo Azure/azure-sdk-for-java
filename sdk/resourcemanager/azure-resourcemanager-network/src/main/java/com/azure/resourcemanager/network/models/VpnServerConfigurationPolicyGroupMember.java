@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VpnServerConfiguration PolicyGroup member. */
+/**
+ * VpnServerConfiguration PolicyGroup member.
+ */
 @Fluent
 public final class VpnServerConfigurationPolicyGroupMember {
     /*
@@ -28,13 +30,15 @@ public final class VpnServerConfigurationPolicyGroupMember {
     @JsonProperty(value = "attributeValue")
     private String attributeValue;
 
-    /** Creates an instance of VpnServerConfigurationPolicyGroupMember class. */
+    /**
+     * Creates an instance of VpnServerConfigurationPolicyGroupMember class.
+     */
     public VpnServerConfigurationPolicyGroupMember() {
     }
 
     /**
      * Get the name property: Name of the VpnServerConfigurationPolicyGroupMember.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Set the name property: Name of the VpnServerConfigurationPolicyGroupMember.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigurationPolicyGroupMember object itself.
      */
@@ -54,7 +58,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Get the attributeType property: The Vpn Policy member attribute type.
-     *
+     * 
      * @return the attributeType value.
      */
     public VpnPolicyMemberAttributeType attributeType() {
@@ -63,7 +67,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Set the attributeType property: The Vpn Policy member attribute type.
-     *
+     * 
      * @param attributeType the attributeType value to set.
      * @return the VpnServerConfigurationPolicyGroupMember object itself.
      */
@@ -74,7 +78,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Get the attributeValue property: The value of Attribute used for this VpnServerConfigurationPolicyGroupMember.
-     *
+     * 
      * @return the attributeValue value.
      */
     public String attributeValue() {
@@ -83,7 +87,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Set the attributeValue property: The value of Attribute used for this VpnServerConfigurationPolicyGroupMember.
-     *
+     * 
      * @param attributeValue the attributeValue value to set.
      * @return the VpnServerConfigurationPolicyGroupMember object itself.
      */
@@ -94,7 +98,7 @@ public final class VpnServerConfigurationPolicyGroupMember {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

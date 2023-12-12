@@ -28,13 +28,15 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner class. */
+    /**
+     * Creates an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner class.
+     */
     public NetworkManagerEffectiveConnectivityConfigurationListResultInner() {
     }
 
     /**
      * Get the value property: Gets a page of NetworkManagerEffectiveConnectivityConfiguration.
-     *
+     * 
      * @return the value value.
      */
     public List<EffectiveConnectivityConfiguration> value() {
@@ -43,12 +45,12 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
 
     /**
      * Set the value property: Gets a page of NetworkManagerEffectiveConnectivityConfiguration.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkManagerEffectiveConnectivityConfigurationListResultInner object itself.
      */
-    public NetworkManagerEffectiveConnectivityConfigurationListResultInner withValue(
-        List<EffectiveConnectivityConfiguration> value) {
+    public NetworkManagerEffectiveConnectivityConfigurationListResultInner
+        withValue(List<EffectiveConnectivityConfiguration> value) {
         this.value = value;
         return this;
     }
@@ -56,7 +58,7 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -66,7 +68,7 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the NetworkManagerEffectiveConnectivityConfigurationListResultInner object itself.
      */
@@ -77,7 +79,7 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

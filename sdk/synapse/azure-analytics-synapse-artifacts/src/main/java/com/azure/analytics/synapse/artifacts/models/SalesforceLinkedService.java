@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Salesforce. */
+/**
+ * Linked service for Salesforce.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Salesforce")
 @JsonFlatten
@@ -58,14 +60,17 @@ public class SalesforceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SalesforceLinkedService class. */
-    public SalesforceLinkedService() {}
+    /**
+     * Creates an instance of SalesforceLinkedService class.
+     */
+    public SalesforceLinkedService() {
+    }
 
     /**
      * Get the environmentUrl property: The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To
      * copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for
      * example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the environmentUrl value.
      */
     public Object getEnvironmentUrl() {
@@ -76,7 +81,7 @@ public class SalesforceLinkedService extends LinkedService {
      * Set the environmentUrl property: The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To
      * copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for
      * example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param environmentUrl the environmentUrl value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -88,7 +93,7 @@ public class SalesforceLinkedService extends LinkedService {
     /**
      * Get the username property: The username for Basic authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -98,7 +103,7 @@ public class SalesforceLinkedService extends LinkedService {
     /**
      * Set the username property: The username for Basic authentication of the Salesforce instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -109,7 +114,7 @@ public class SalesforceLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password for Basic authentication of the Salesforce instance.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -118,7 +123,7 @@ public class SalesforceLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password for Basic authentication of the Salesforce instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -129,7 +134,7 @@ public class SalesforceLinkedService extends LinkedService {
 
     /**
      * Get the securityToken property: The security token is optional to remotely access Salesforce instance.
-     *
+     * 
      * @return the securityToken value.
      */
     public SecretBase getSecurityToken() {
@@ -138,7 +143,7 @@ public class SalesforceLinkedService extends LinkedService {
 
     /**
      * Set the securityToken property: The security token is optional to remotely access Salesforce instance.
-     *
+     * 
      * @param securityToken the securityToken value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -150,7 +155,7 @@ public class SalesforceLinkedService extends LinkedService {
     /**
      * Get the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the apiVersion value.
      */
     public Object getApiVersion() {
@@ -160,7 +165,7 @@ public class SalesforceLinkedService extends LinkedService {
     /**
      * Set the apiVersion property: The Salesforce API version used in ADF. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -170,9 +175,9 @@ public class SalesforceLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -180,9 +185,9 @@ public class SalesforceLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceLinkedService object itself.
      */
@@ -191,28 +196,36 @@ public class SalesforceLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The path of the SAP Cloud for Customer OData entity. */
+/**
+ * The path of the SAP Cloud for Customer OData entity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomerResource")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;
 
-    /** Creates an instance of SapCloudForCustomerResourceDataset class. */
-    public SapCloudForCustomerResourceDataset() {}
+    /**
+     * Creates an instance of SapCloudForCustomerResourceDataset class.
+     */
+    public SapCloudForCustomerResourceDataset() {
+    }
 
     /**
      * Get the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -40,7 +45,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * Set the path property: The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the SapCloudForCustomerResourceDataset object itself.
      */
@@ -49,49 +54,63 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

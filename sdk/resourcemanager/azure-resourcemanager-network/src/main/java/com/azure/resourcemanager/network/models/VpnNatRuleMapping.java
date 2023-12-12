@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vpn NatRule mapping. */
+/**
+ * Vpn NatRule mapping.
+ */
 @Fluent
 public final class VpnNatRuleMapping {
     /*
@@ -22,13 +24,15 @@ public final class VpnNatRuleMapping {
     @JsonProperty(value = "portRange")
     private String portRange;
 
-    /** Creates an instance of VpnNatRuleMapping class. */
+    /**
+     * Creates an instance of VpnNatRuleMapping class.
+     */
     public VpnNatRuleMapping() {
     }
 
     /**
      * Get the addressSpace property: Address space for Vpn NatRule mapping.
-     *
+     * 
      * @return the addressSpace value.
      */
     public String addressSpace() {
@@ -37,7 +41,7 @@ public final class VpnNatRuleMapping {
 
     /**
      * Set the addressSpace property: Address space for Vpn NatRule mapping.
-     *
+     * 
      * @param addressSpace the addressSpace value to set.
      * @return the VpnNatRuleMapping object itself.
      */
@@ -48,7 +52,7 @@ public final class VpnNatRuleMapping {
 
     /**
      * Get the portRange property: Port range for Vpn NatRule mapping.
-     *
+     * 
      * @return the portRange value.
      */
     public String portRange() {
@@ -57,7 +61,7 @@ public final class VpnNatRuleMapping {
 
     /**
      * Set the portRange property: Port range for Vpn NatRule mapping.
-     *
+     * 
      * @param portRange the portRange value to set.
      * @return the VpnNatRuleMapping object itself.
      */
@@ -68,7 +72,7 @@ public final class VpnNatRuleMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hub Item. */
+/**
+ * Hub Item.
+ */
 @Fluent
 public final class Hub {
     /*
@@ -22,13 +24,15 @@ public final class Hub {
     @JsonProperty(value = "resourceType")
     private String resourceType;
 
-    /** Creates an instance of Hub class. */
+    /**
+     * Creates an instance of Hub class.
+     */
     public Hub() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +41,7 @@ public final class Hub {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the Hub object itself.
      */
@@ -48,7 +52,7 @@ public final class Hub {
 
     /**
      * Get the resourceType property: Resource Type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -57,7 +61,7 @@ public final class Hub {
 
     /**
      * Set the resourceType property: Resource Type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the Hub object itself.
      */
@@ -68,7 +72,7 @@ public final class Hub {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

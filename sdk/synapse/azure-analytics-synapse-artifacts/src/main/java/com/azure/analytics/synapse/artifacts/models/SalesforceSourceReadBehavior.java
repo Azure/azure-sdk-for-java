@@ -8,25 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Salesforce read behavior for the operation. */
+/**
+ * The Salesforce read behavior for the operation.
+ */
 public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<SalesforceSourceReadBehavior> {
-    /** Static value Query for SalesforceSourceReadBehavior. */
+    /**
+     * Static value Query for SalesforceSourceReadBehavior.
+     */
     public static final SalesforceSourceReadBehavior QUERY = fromString("Query");
 
-    /** Static value QueryAll for SalesforceSourceReadBehavior. */
+    /**
+     * Static value QueryAll for SalesforceSourceReadBehavior.
+     */
     public static final SalesforceSourceReadBehavior QUERY_ALL = fromString("QueryAll");
 
     /**
      * Creates a new instance of SalesforceSourceReadBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SalesforceSourceReadBehavior() {}
+    public SalesforceSourceReadBehavior() {
+    }
 
     /**
      * Creates or finds a SalesforceSourceReadBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SalesforceSourceReadBehavior.
      */
@@ -37,7 +44,7 @@ public final class SalesforceSourceReadBehavior extends ExpandableStringEnum<Sal
 
     /**
      * Gets known SalesforceSourceReadBehavior values.
-     *
+     * 
      * @return known SalesforceSourceReadBehavior values.
      */
     public static Collection<SalesforceSourceReadBehavior> values() {

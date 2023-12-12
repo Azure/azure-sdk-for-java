@@ -39,7 +39,7 @@
       --add-opens com.azure.ai.documentintelligence/com.azure.ai.documentintelligence=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <jacoco.min.branchcoverage>0.29</jacoco.min.branchcoverage>
-    <parallelizeLiveTests>false</parallelizeLiveTests>
+    <parallelizeLiveTests>same_thread</parallelizeLiveTests>
     <graalvm.disable>false</graalvm.disable>
   </properties>
 

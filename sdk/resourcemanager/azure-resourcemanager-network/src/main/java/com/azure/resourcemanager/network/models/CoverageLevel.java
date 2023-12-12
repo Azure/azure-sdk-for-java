@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Test coverage for the endpoint. */
+/**
+ * Test coverage for the endpoint.
+ */
 public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
-    /** Static value Default for CoverageLevel. */
+    /**
+     * Static value Default for CoverageLevel.
+     */
     public static final CoverageLevel DEFAULT = fromString("Default");
 
-    /** Static value Low for CoverageLevel. */
+    /**
+     * Static value Low for CoverageLevel.
+     */
     public static final CoverageLevel LOW = fromString("Low");
 
-    /** Static value BelowAverage for CoverageLevel. */
+    /**
+     * Static value BelowAverage for CoverageLevel.
+     */
     public static final CoverageLevel BELOW_AVERAGE = fromString("BelowAverage");
 
-    /** Static value Average for CoverageLevel. */
+    /**
+     * Static value Average for CoverageLevel.
+     */
     public static final CoverageLevel AVERAGE = fromString("Average");
 
-    /** Static value AboveAverage for CoverageLevel. */
+    /**
+     * Static value AboveAverage for CoverageLevel.
+     */
     public static final CoverageLevel ABOVE_AVERAGE = fromString("AboveAverage");
 
-    /** Static value Full for CoverageLevel. */
+    /**
+     * Static value Full for CoverageLevel.
+     */
     public static final CoverageLevel FULL = fromString("Full");
 
     /**
      * Creates a new instance of CoverageLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
 
     /**
      * Creates or finds a CoverageLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CoverageLevel.
      */
@@ -50,7 +64,7 @@ public final class CoverageLevel extends ExpandableStringEnum<CoverageLevel> {
 
     /**
      * Gets known CoverageLevel values.
-     *
+     * 
      * @return known CoverageLevel values.
      */
     public static Collection<CoverageLevel> values() {

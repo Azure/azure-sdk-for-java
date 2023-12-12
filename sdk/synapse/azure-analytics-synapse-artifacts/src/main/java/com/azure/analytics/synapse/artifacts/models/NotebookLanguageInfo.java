@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Language info. */
+/**
+ * Language info.
+ */
 @Fluent
 public final class NotebookLanguageInfo {
     /*
@@ -30,14 +32,18 @@ public final class NotebookLanguageInfo {
     /*
      * Language info.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of NotebookLanguageInfo class. */
-    public NotebookLanguageInfo() {}
+    /**
+     * Creates an instance of NotebookLanguageInfo class.
+     */
+    public NotebookLanguageInfo() {
+    }
 
     /**
      * Get the name property: The programming language which this kernel runs.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -46,7 +52,7 @@ public final class NotebookLanguageInfo {
 
     /**
      * Set the name property: The programming language which this kernel runs.
-     *
+     * 
      * @param name the name value to set.
      * @return the NotebookLanguageInfo object itself.
      */
@@ -57,7 +63,7 @@ public final class NotebookLanguageInfo {
 
     /**
      * Get the codemirrorMode property: The codemirror mode to use for code in this language.
-     *
+     * 
      * @return the codemirrorMode value.
      */
     public String getCodemirrorMode() {
@@ -66,7 +72,7 @@ public final class NotebookLanguageInfo {
 
     /**
      * Set the codemirrorMode property: The codemirror mode to use for code in this language.
-     *
+     * 
      * @param codemirrorMode the codemirrorMode value to set.
      * @return the NotebookLanguageInfo object itself.
      */
@@ -77,7 +83,7 @@ public final class NotebookLanguageInfo {
 
     /**
      * Get the additionalProperties property: Language info.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -87,7 +93,7 @@ public final class NotebookLanguageInfo {
 
     /**
      * Set the additionalProperties property: Language info.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookLanguageInfo object itself.
      */

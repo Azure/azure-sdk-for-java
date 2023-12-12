@@ -8,23 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the action to take on rule match. */
+/**
+ * Defines the action to take on rule match.
+ */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
-    /** Static value AnomalyScoring for ActionType. */
+    /**
+     * Static value AnomalyScoring for ActionType.
+     */
     public static final ActionType ANOMALY_SCORING = fromString("AnomalyScoring");
 
-    /** Static value Allow for ActionType. */
+    /**
+     * Static value Allow for ActionType.
+     */
     public static final ActionType ALLOW = fromString("Allow");
 
-    /** Static value Block for ActionType. */
+    /**
+     * Static value Block for ActionType.
+     */
     public static final ActionType BLOCK = fromString("Block");
 
-    /** Static value Log for ActionType. */
+    /**
+     * Static value Log for ActionType.
+     */
     public static final ActionType LOG = fromString("Log");
 
     /**
+     * Static value JSChallenge for ActionType.
+     */
+    public static final ActionType JSCHALLENGE = fromString("JSChallenge");
+
+    /**
      * Creates a new instance of ActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +48,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
 
     /**
      * Creates or finds a ActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
@@ -44,7 +59,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
 
     /**
      * Gets known ActionType values.
-     *
+     * 
      * @return known ActionType values.
      */
     public static Collection<ActionType> values() {

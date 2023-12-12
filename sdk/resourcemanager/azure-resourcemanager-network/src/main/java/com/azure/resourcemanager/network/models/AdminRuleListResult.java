@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BaseAdminRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** security configuration admin rule list result. */
+/**
+ * security configuration admin rule list result.
+ */
 @Fluent
 public final class AdminRuleListResult {
     /*
@@ -24,13 +26,15 @@ public final class AdminRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdminRuleListResult class. */
+    /**
+     * Creates an instance of AdminRuleListResult class.
+     */
     public AdminRuleListResult() {
     }
 
     /**
      * Get the value property: A list of admin rules.
-     *
+     * 
      * @return the value value.
      */
     public List<BaseAdminRuleInner> value() {
@@ -39,7 +43,7 @@ public final class AdminRuleListResult {
 
     /**
      * Set the value property: A list of admin rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdminRuleListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AdminRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdminRuleListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdminRuleListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class AdminRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

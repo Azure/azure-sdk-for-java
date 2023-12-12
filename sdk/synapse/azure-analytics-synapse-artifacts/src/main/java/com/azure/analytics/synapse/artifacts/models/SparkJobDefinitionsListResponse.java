@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of spark job definitions resources. */
+/**
+ * A list of spark job definitions resources.
+ */
 @Fluent
 public final class SparkJobDefinitionsListResponse {
     /*
@@ -23,12 +25,15 @@ public final class SparkJobDefinitionsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SparkJobDefinitionsListResponse class. */
-    public SparkJobDefinitionsListResponse() {}
+    /**
+     * Creates an instance of SparkJobDefinitionsListResponse class.
+     */
+    public SparkJobDefinitionsListResponse() {
+    }
 
     /**
      * Get the value property: List of spark job definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<SparkJobDefinitionResource> getValue() {
@@ -37,7 +42,7 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Set the value property: List of spark job definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class SparkJobDefinitionsListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SparkJobDefinitionsListResponse object itself.
      */
