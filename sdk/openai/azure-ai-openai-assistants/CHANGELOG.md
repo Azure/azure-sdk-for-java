@@ -2,7 +2,8 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-- Azure Assistants client library for Java. This package contains Microsoft Azure Assistants client library.
+- Azure OpenAI Assistants client library for Java.
+  This package contains Microsoft Azure OpenAI Assistants client library.
 
 ### Features Added
 
