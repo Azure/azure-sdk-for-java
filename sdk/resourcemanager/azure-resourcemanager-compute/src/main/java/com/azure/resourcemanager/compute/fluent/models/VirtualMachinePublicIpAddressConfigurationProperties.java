@@ -14,7 +14,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressDns
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machines IP Configuration's PublicIPAddress configuration. */
+/**
+ * Describes a virtual machines IP Configuration's PublicIPAddress configuration.
+ */
 @Fluent
 public final class VirtualMachinePublicIpAddressConfigurationProperties {
     /*
@@ -60,13 +62,15 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     @JsonProperty(value = "publicIPAllocationMethod")
     private PublicIpAllocationMethod publicIpAllocationMethod;
 
-    /** Creates an instance of VirtualMachinePublicIpAddressConfigurationProperties class. */
+    /**
+     * Creates an instance of VirtualMachinePublicIpAddressConfigurationProperties class.
+     */
     public VirtualMachinePublicIpAddressConfigurationProperties() {
     }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -75,7 +79,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Get the deleteOption property: Specify what happens to the public IP address when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -95,7 +99,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the deleteOption property: Specify what happens to the public IP address when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Get the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @return the dnsSettings value.
      */
     public VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings() {
@@ -115,19 +119,19 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachinePublicIpAddressConfigurationProperties withDnsSettings(
-        VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings) {
+    public VirtualMachinePublicIpAddressConfigurationProperties
+        withDnsSettings(VirtualMachinePublicIpAddressDnsSettingsConfiguration dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
 
     /**
      * Get the ipTags property: The list of IP tags associated with the public IP address.
-     *
+     * 
      * @return the ipTags value.
      */
     public List<VirtualMachineIpTag> ipTags() {
@@ -136,7 +140,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the ipTags property: The list of IP tags associated with the public IP address.
-     *
+     * 
      * @param ipTags the ipTags value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -156,7 +160,7 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @param publicIpPrefix the publicIpPrefix value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
@@ -166,9 +170,9 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     }
 
     /**
-     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
+     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * 
      * @return the publicIpAddressVersion value.
      */
     public IpVersions publicIpAddressVersion() {
@@ -176,21 +180,21 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     }
 
     /**
-     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether
+     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachinePublicIpAddressConfigurationProperties withPublicIpAddressVersion(
-        IpVersions publicIpAddressVersion) {
+    public VirtualMachinePublicIpAddressConfigurationProperties
+        withPublicIpAddressVersion(IpVersions publicIpAddressVersion) {
         this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
 
     /**
      * Get the publicIpAllocationMethod property: Specify the public IP allocation type.
-     *
+     * 
      * @return the publicIpAllocationMethod value.
      */
     public PublicIpAllocationMethod publicIpAllocationMethod() {
@@ -199,19 +203,19 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
 
     /**
      * Set the publicIpAllocationMethod property: Specify the public IP allocation type.
-     *
+     * 
      * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
      * @return the VirtualMachinePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachinePublicIpAddressConfigurationProperties withPublicIpAllocationMethod(
-        PublicIpAllocationMethod publicIpAllocationMethod) {
+    public VirtualMachinePublicIpAddressConfigurationProperties
+        withPublicIpAllocationMethod(PublicIpAllocationMethod publicIpAllocationMethod) {
         this.publicIpAllocationMethod = publicIpAllocationMethod;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

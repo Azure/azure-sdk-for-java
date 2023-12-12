@@ -9,9 +9,13 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Represents the mode the indexer is executing in. */
+/**
+ * Represents the mode the indexer is executing in.
+ */
 public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
-    /** The indexer is indexing all documents in the datasource. */
+    /**
+     * The indexer is indexing all documents in the datasource.
+     */
     public static final IndexingMode INDEXING_ALL_DOCS = fromString("indexingAllDocs");
 
     /**
@@ -22,15 +26,16 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
 
     /**
      * Creates a new instance of IndexingMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IndexingMode() {}
+    public IndexingMode() {
+    }
 
     /**
      * Creates or finds a IndexingMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IndexingMode.
      */
@@ -40,7 +45,7 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
 
     /**
      * Gets known IndexingMode values.
-     *
+     * 
      * @return known IndexingMode values.
      */
     public static Collection<IndexingMode> values() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthP
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayBackendHealth API service call. */
+/**
+ * Response for ApplicationGatewayBackendHealth API service call.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthInner {
     /*
@@ -18,13 +20,15 @@ public final class ApplicationGatewayBackendHealthInner {
     @JsonProperty(value = "backendAddressPools")
     private List<ApplicationGatewayBackendHealthPool> backendAddressPools;
 
-    /** Creates an instance of ApplicationGatewayBackendHealthInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHealthInner class.
+     */
     public ApplicationGatewayBackendHealthInner() {
     }
 
     /**
      * Get the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
-     *
+     * 
      * @return the backendAddressPools value.
      */
     public List<ApplicationGatewayBackendHealthPool> backendAddressPools() {
@@ -33,19 +37,19 @@ public final class ApplicationGatewayBackendHealthInner {
 
     /**
      * Set the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
-     *
+     * 
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the ApplicationGatewayBackendHealthInner object itself.
      */
-    public ApplicationGatewayBackendHealthInner withBackendAddressPools(
-        List<ApplicationGatewayBackendHealthPool> backendAddressPools) {
+    public ApplicationGatewayBackendHealthInner
+        withBackendAddressPools(List<ApplicationGatewayBackendHealthPool> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

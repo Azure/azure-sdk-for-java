@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersion
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the gallery Application Version that you want to update. */
+/**
+ * Specifies information about the gallery Application Version that you want to update.
+ */
 @Fluent
 public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
     /*
@@ -18,20 +20,24 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
 
-    /** Creates an instance of GalleryApplicationVersionUpdate class. */
+    /**
+     * Creates an instance of GalleryApplicationVersionUpdate class.
+     */
     public GalleryApplicationVersionUpdate() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a gallery image version.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryApplicationVersionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,7 +46,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Get the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * 
      * @return the publishingProfile value.
      */
     public GalleryApplicationVersionPublishingProfile publishingProfile() {
@@ -49,12 +55,12 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Set the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * 
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryApplicationVersionUpdate object itself.
      */
-    public GalleryApplicationVersionUpdate withPublishingProfile(
-        GalleryApplicationVersionPublishingProfile publishingProfile) {
+    public GalleryApplicationVersionUpdate
+        withPublishingProfile(GalleryApplicationVersionPublishingProfile publishingProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GalleryApplicationVersionProperties();
         }
@@ -64,7 +70,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Get the safetyProfile property: The safety profile of the Gallery Application Version.
-     *
+     * 
      * @return the safetyProfile value.
      */
     public GalleryApplicationVersionSafetyProfile safetyProfile() {
@@ -73,7 +79,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Set the safetyProfile property: The safety profile of the Gallery Application Version.
-     *
+     * 
      * @param safetyProfile the safetyProfile value to set.
      * @return the GalleryApplicationVersionUpdate object itself.
      */
@@ -87,9 +93,9 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * 
+     * The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -98,7 +104,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Get the replicationStatus property: This is the replication status of the gallery image version.
-     *
+     * 
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
@@ -107,7 +113,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

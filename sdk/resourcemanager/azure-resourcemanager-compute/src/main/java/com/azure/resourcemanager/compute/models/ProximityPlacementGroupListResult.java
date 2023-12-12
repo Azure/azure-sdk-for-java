@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Proximity Placement Group operation response. */
+/**
+ * The List Proximity Placement Group operation response.
+ */
 @Fluent
 public final class ProximityPlacementGroupListResult {
     /*
@@ -25,13 +27,15 @@ public final class ProximityPlacementGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProximityPlacementGroupListResult class. */
+    /**
+     * Creates an instance of ProximityPlacementGroupListResult class.
+     */
     public ProximityPlacementGroupListResult() {
     }
 
     /**
      * Get the value property: The list of proximity placement groups.
-     *
+     * 
      * @return the value value.
      */
     public List<ProximityPlacementGroupInner> value() {
@@ -40,7 +44,7 @@ public final class ProximityPlacementGroupListResult {
 
     /**
      * Set the value property: The list of proximity placement groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProximityPlacementGroupListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class ProximityPlacementGroupListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of proximity placement groups.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ProximityPlacementGroupListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of proximity placement groups.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProximityPlacementGroupListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class ProximityPlacementGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ProximityPlacementGroupListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ProximityPlacementGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -4,7 +4,7 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public final class WebPubSubClientJavaDocCodeSnippets {
         // it can be any class instance that can be serialized to JSON
         Map<String, String> jsonObject = new HashMap<>();
         jsonObject.put("name", "john");
-        client.sendToGroup("message-group", BinaryData.fromObject(jsonObject), WebPubSubDataType.BINARY);
+        client.sendToGroup("message-group", BinaryData.fromObject(jsonObject), WebPubSubDataFormat.BINARY);
         // END: com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json
     }
 

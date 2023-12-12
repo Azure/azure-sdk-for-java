@@ -27,13 +27,15 @@ public final class ListVpnServerConfigurationsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVpnServerConfigurationsResult class. */
+    /**
+     * Creates an instance of ListVpnServerConfigurationsResult class.
+     */
     public ListVpnServerConfigurationsResult() {
     }
 
     /**
      * Get the value property: List of VpnServerConfigurations.
-     *
+     * 
      * @return the value value.
      */
     public List<VpnServerConfigurationInner> value() {
@@ -42,7 +44,7 @@ public final class ListVpnServerConfigurationsResult {
 
     /**
      * Set the value property: List of VpnServerConfigurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVpnServerConfigurationsResult object itself.
      */
@@ -53,7 +55,7 @@ public final class ListVpnServerConfigurationsResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class ListVpnServerConfigurationsResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVpnServerConfigurationsResult object itself.
      */
@@ -73,7 +75,7 @@ public final class ListVpnServerConfigurationsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

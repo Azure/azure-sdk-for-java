@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * ExpressRoute Port List Result
- *
- * <p>Response for ListExpressRoutePorts API service call.
+ * 
+ * Response for ListExpressRoutePorts API service call.
  */
 @Fluent
 public final class ExpressRoutePortListResult {
@@ -28,13 +28,15 @@ public final class ExpressRoutePortListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRoutePortListResult class. */
+    /**
+     * Creates an instance of ExpressRoutePortListResult class.
+     */
     public ExpressRoutePortListResult() {
     }
 
     /**
      * Get the value property: A list of ExpressRoutePort resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRoutePortInner> value() {
@@ -43,7 +45,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Set the value property: A list of ExpressRoutePort resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRoutePortListResult object itself.
      */
@@ -54,7 +56,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRoutePortListResult object itself.
      */
@@ -74,7 +76,7 @@ public final class ExpressRoutePortListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

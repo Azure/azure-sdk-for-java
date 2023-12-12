@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Supported next step behaviors after a rule is applied to a matched route. */
+/**
+ * Supported next step behaviors after a rule is applied to a matched route.
+ */
 public final class NextStep extends ExpandableStringEnum<NextStep> {
-    /** Static value Unknown for NextStep. */
+    /**
+     * Static value Unknown for NextStep.
+     */
     public static final NextStep UNKNOWN = fromString("Unknown");
 
-    /** Static value Continue for NextStep. */
+    /**
+     * Static value Continue for NextStep.
+     */
     public static final NextStep CONTINUE = fromString("Continue");
 
-    /** Static value Terminate for NextStep. */
+    /**
+     * Static value Terminate for NextStep.
+     */
     public static final NextStep TERMINATE = fromString("Terminate");
 
     /**
      * Creates a new instance of NextStep value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class NextStep extends ExpandableStringEnum<NextStep> {
 
     /**
      * Creates or finds a NextStep from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NextStep.
      */
@@ -41,7 +49,7 @@ public final class NextStep extends ExpandableStringEnum<NextStep> {
 
     /**
      * Gets known NextStep values.
-     *
+     * 
      * @return known NextStep values.
      */
     public static Collection<NextStep> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Web Category Resource. */
+/**
+ * Azure Web Category Resource.
+ */
 @Fluent
 public final class AzureWebCategoryInner {
     /*
@@ -40,13 +42,15 @@ public final class AzureWebCategoryInner {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of AzureWebCategoryInner class. */
+    /**
+     * Creates an instance of AzureWebCategoryInner class.
+     */
     public AzureWebCategoryInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Azure Web Category.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureWebCategoryPropertiesFormat innerProperties() {
@@ -55,7 +59,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AzureWebCategoryInner object itself.
      */
@@ -75,7 +79,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +88,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -93,7 +97,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -102,7 +106,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Get the group property: The name of the group that the category belongs to.
-     *
+     * 
      * @return the group value.
      */
     public String group() {
@@ -111,7 +115,7 @@ public final class AzureWebCategoryInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

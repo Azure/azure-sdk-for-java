@@ -181,4 +181,35 @@ public final class AudioTranslationOptions {
         this.responseFormat = responseFormat;
         return this;
     }
+
+    /*
+     * The optional filename or descriptive identifier to associate with with the audio data.
+     */
+    @Generated
+    @JsonProperty(value = "filename")
+    private String filename;
+
+    /**
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
+    }
+
+    /**
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @param filename the filename value to set.
+     * @return the AudioTranslationOptions object itself.
+     */
+    @Generated
+    public AudioTranslationOptions setFilename(String filename) {
+        this.filename = filename;
+        return this;
+    }
 }

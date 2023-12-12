@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a managed rule to use for exclusion. */
+/**
+ * Defines a managed rule to use for exclusion.
+ */
 @Fluent
 public final class ExclusionManagedRule {
     /*
@@ -17,13 +19,15 @@ public final class ExclusionManagedRule {
     @JsonProperty(value = "ruleId", required = true)
     private String ruleId;
 
-    /** Creates an instance of ExclusionManagedRule class. */
+    /**
+     * Creates an instance of ExclusionManagedRule class.
+     */
     public ExclusionManagedRule() {
     }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -32,7 +36,7 @@ public final class ExclusionManagedRule {
 
     /**
      * Set the ruleId property: Identifier for the managed rule.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ExclusionManagedRule object itself.
      */
@@ -43,14 +47,13 @@ public final class ExclusionManagedRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleId in model ExclusionManagedRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleId in model ExclusionManagedRule"));
         }
     }
 

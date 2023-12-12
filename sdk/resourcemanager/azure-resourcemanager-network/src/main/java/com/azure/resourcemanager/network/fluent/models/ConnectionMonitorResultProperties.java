@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the properties of a connection monitor. */
+/**
+ * Describes the properties of a connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorResultProperties extends ConnectionMonitorParameters {
     /*
@@ -44,13 +46,15 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     @JsonProperty(value = "connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectionMonitorType connectionMonitorType;
 
-    /** Creates an instance of ConnectionMonitorResultProperties class. */
+    /**
+     * Creates an instance of ConnectionMonitorResultProperties class.
+     */
     public ConnectionMonitorResultProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the connection monitor.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +63,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the startTime property: The date and time when the connection monitor was started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -68,7 +72,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the monitoringStatus property: The monitoring status of the connection monitor.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public String monitoringStatus() {
@@ -77,71 +81,89 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Get the connectionMonitorType property: Type of connection monitor.
-     *
+     * 
      * @return the connectionMonitorType value.
      */
     public ConnectionMonitorType connectionMonitorType() {
         return this.connectionMonitorType;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withSource(ConnectionMonitorSource source) {
         super.withSource(source);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withDestination(ConnectionMonitorDestination destination) {
         super.withDestination(destination);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withAutoStart(Boolean autoStart) {
         super.withAutoStart(autoStart);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
         super.withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
         super.withEndpoints(endpoints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ConnectionMonitorResultProperties withTestConfigurations(
-        List<ConnectionMonitorTestConfiguration> testConfigurations) {
+    public ConnectionMonitorResultProperties
+        withTestConfigurations(List<ConnectionMonitorTestConfiguration> testConfigurations) {
         super.withTestConfigurations(testConfigurations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
         super.withTestGroups(testGroups);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withOutputs(List<ConnectionMonitorOutput> outputs) {
         super.withOutputs(outputs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withNotes(String notes) {
         super.withNotes(notes);
@@ -150,7 +172,7 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

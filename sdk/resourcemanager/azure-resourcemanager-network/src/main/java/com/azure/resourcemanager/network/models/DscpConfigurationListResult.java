@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.DscpConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the DscpConfigurationList API service call. */
+/**
+ * Response for the DscpConfigurationList API service call.
+ */
 @Fluent
 public final class DscpConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class DscpConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DscpConfigurationListResult class. */
+    /**
+     * Creates an instance of DscpConfigurationListResult class.
+     */
     public DscpConfigurationListResult() {
     }
 
     /**
      * Get the value property: A list of dscp configurations in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<DscpConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class DscpConfigurationListResult {
 
     /**
      * Set the value property: A list of dscp configurations in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the DscpConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class DscpConfigurationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DscpConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** RerunTrigger resource type. */
+/**
+ * RerunTrigger resource type.
+ */
 @Fluent
 public final class RerunTriggerResource extends SubResource {
     /*
@@ -16,12 +18,15 @@ public final class RerunTriggerResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private RerunTumblingWindowTrigger properties;
 
-    /** Creates an instance of RerunTriggerResource class. */
-    public RerunTriggerResource() {}
+    /**
+     * Creates an instance of RerunTriggerResource class.
+     */
+    public RerunTriggerResource() {
+    }
 
     /**
      * Get the properties property: Properties of the rerun trigger.
-     *
+     * 
      * @return the properties value.
      */
     public RerunTumblingWindowTrigger getProperties() {
@@ -30,7 +35,7 @@ public final class RerunTriggerResource extends SubResource {
 
     /**
      * Set the properties property: Properties of the rerun trigger.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RerunTriggerResource object itself.
      */
