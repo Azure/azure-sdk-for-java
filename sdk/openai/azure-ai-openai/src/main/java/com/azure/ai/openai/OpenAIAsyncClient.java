@@ -898,7 +898,7 @@ public final class OpenAIAsyncClient {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)

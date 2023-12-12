@@ -882,7 +882,7 @@ public final class OpenAIClient {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
