@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedPrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedPrivateEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"connectionState\":{\"actionsRequired\":\"idmhmwf\",\"description\":\"lfmu\",\"status\":\"pckc\"},\"fqdns\":[\"vwe\"],\"groupId\":\"xoy\",\"isReserved\":false,\"privateLinkResourceId\":\"haim\",\"provisioningState\":\"iroqbosh\",\"\":{\"pavbo\":\"datagapyyrmfsv\"}}")
-                .toObject(ManagedPrivateEndpoint.class);
+        ManagedPrivateEndpoint model = BinaryData.fromString(
+            "{\"connectionState\":{\"actionsRequired\":\"idmhmwf\",\"description\":\"lfmu\",\"status\":\"pckc\"},\"fqdns\":[\"vwe\"],\"groupId\":\"xoy\",\"isReserved\":false,\"privateLinkResourceId\":\"haim\",\"provisioningState\":\"iroqbosh\",\"\":{\"pavbo\":\"datagapyyrmfsv\"}}")
+            .toObject(ManagedPrivateEndpoint.class);
         Assertions.assertEquals("vwe", model.fqdns().get(0));
         Assertions.assertEquals("xoy", model.groupId());
         Assertions.assertEquals("haim", model.privateLinkResourceId());
@@ -27,13 +25,9 @@ public final class ManagedPrivateEndpointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpoint model =
-            new ManagedPrivateEndpoint()
-                .withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("vwe"))
-                .withGroupId("xoy")
-                .withPrivateLinkResourceId("haim")
-                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "iroqbosh"));
+        ManagedPrivateEndpoint model = new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
+            .withFqdns(Arrays.asList("vwe")).withGroupId("xoy").withPrivateLinkResourceId("haim")
+            .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "iroqbosh"));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpoint.class);
         Assertions.assertEquals("vwe", model.fqdns().get(0));
         Assertions.assertEquals("xoy", model.groupId());

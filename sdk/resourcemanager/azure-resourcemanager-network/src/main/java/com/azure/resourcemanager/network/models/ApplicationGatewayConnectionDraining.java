@@ -25,13 +25,15 @@ public final class ApplicationGatewayConnectionDraining {
     @JsonProperty(value = "drainTimeoutInSec", required = true)
     private int drainTimeoutInSec;
 
-    /** Creates an instance of ApplicationGatewayConnectionDraining class. */
+    /**
+     * Creates an instance of ApplicationGatewayConnectionDraining class.
+     */
     public ApplicationGatewayConnectionDraining() {
     }
 
     /**
      * Get the enabled property: Whether connection draining is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -40,7 +42,7 @@ public final class ApplicationGatewayConnectionDraining {
 
     /**
      * Set the enabled property: Whether connection draining is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ApplicationGatewayConnectionDraining object itself.
      */
@@ -52,7 +54,7 @@ public final class ApplicationGatewayConnectionDraining {
     /**
      * Get the drainTimeoutInSec property: The number of seconds connection draining is active. Acceptable values are
      * from 1 second to 3600 seconds.
-     *
+     * 
      * @return the drainTimeoutInSec value.
      */
     public int drainTimeoutInSec() {
@@ -62,7 +64,7 @@ public final class ApplicationGatewayConnectionDraining {
     /**
      * Set the drainTimeoutInSec property: The number of seconds connection draining is active. Acceptable values are
      * from 1 second to 3600 seconds.
-     *
+     * 
      * @param drainTimeoutInSec the drainTimeoutInSec value to set.
      * @return the ApplicationGatewayConnectionDraining object itself.
      */
@@ -73,7 +75,7 @@ public final class ApplicationGatewayConnectionDraining {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

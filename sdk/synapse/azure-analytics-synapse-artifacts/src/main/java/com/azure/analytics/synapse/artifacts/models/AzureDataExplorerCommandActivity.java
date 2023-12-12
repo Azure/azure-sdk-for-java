@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure Data Explorer command activity. */
+/**
+ * Azure Data Explorer command activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerCommand")
 @JsonFlatten
@@ -31,13 +33,16 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.commandTimeout")
     private Object commandTimeout;
 
-    /** Creates an instance of AzureDataExplorerCommandActivity class. */
-    public AzureDataExplorerCommandActivity() {}
+    /**
+     * Creates an instance of AzureDataExplorerCommandActivity class.
+     */
+    public AzureDataExplorerCommandActivity() {
+    }
 
     /**
      * Get the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the command value.
      */
     public Object getCommand() {
@@ -47,7 +52,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * Set the command property: A control command, according to the Azure Data Explorer command syntax. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param command the command value to set.
      * @return the AzureDataExplorerCommandActivity object itself.
      */
@@ -59,7 +64,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * Get the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
+     * 
      * @return the commandTimeout value.
      */
     public Object getCommandTimeout() {
@@ -69,7 +74,7 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
     /**
      * Set the commandTimeout property: Control command timeout. Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9]))..).
-     *
+     * 
      * @param commandTimeout the commandTimeout value to set.
      * @return the AzureDataExplorerCommandActivity object itself.
      */
@@ -78,56 +83,72 @@ public class AzureDataExplorerCommandActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerCommandActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

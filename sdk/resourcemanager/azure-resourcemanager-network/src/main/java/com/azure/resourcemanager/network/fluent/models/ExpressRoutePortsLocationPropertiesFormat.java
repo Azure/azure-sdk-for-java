@@ -12,8 +12,8 @@ import java.util.List;
 
 /**
  * ExpressRoutePorts Location Properties
- *
- * <p>Properties specific to ExpressRoutePorts peering location resources.
+ * 
+ * Properties specific to ExpressRoutePorts peering location resources.
  */
 @Fluent
 public final class ExpressRoutePortsLocationPropertiesFormat {
@@ -41,13 +41,15 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ExpressRoutePortsLocationPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRoutePortsLocationPropertiesFormat class.
+     */
     public ExpressRoutePortsLocationPropertiesFormat() {
     }
 
     /**
      * Get the address property: Address of peering location.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -56,7 +58,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
 
     /**
      * Get the contact property: Contact details of peering locations.
-     *
+     * 
      * @return the contact value.
      */
     public String contact() {
@@ -65,7 +67,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
 
     /**
      * Get the availableBandwidths property: The inventory of available ExpressRoutePort bandwidths.
-     *
+     * 
      * @return the availableBandwidths value.
      */
     public List<ExpressRoutePortsLocationBandwidths> availableBandwidths() {
@@ -74,19 +76,19 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
 
     /**
      * Set the availableBandwidths property: The inventory of available ExpressRoutePort bandwidths.
-     *
+     * 
      * @param availableBandwidths the availableBandwidths value to set.
      * @return the ExpressRoutePortsLocationPropertiesFormat object itself.
      */
-    public ExpressRoutePortsLocationPropertiesFormat withAvailableBandwidths(
-        List<ExpressRoutePortsLocationBandwidths> availableBandwidths) {
+    public ExpressRoutePortsLocationPropertiesFormat
+        withAvailableBandwidths(List<ExpressRoutePortsLocationBandwidths> availableBandwidths) {
         this.availableBandwidths = availableBandwidths;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route port location resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -95,7 +97,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of SSL profile of an application gateway. */
+/**
+ * Properties of SSL profile of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewaySslProfilePropertiesFormat {
     /*
@@ -39,14 +41,16 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewaySslProfilePropertiesFormat class.
+     */
     public ApplicationGatewaySslProfilePropertiesFormat() {
     }
 
     /**
      * Get the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @return the trustedClientCertificates value.
      */
     public List<SubResource> trustedClientCertificates() {
@@ -56,19 +60,19 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Set the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
-     *
+     * 
      * @param trustedClientCertificates the trustedClientCertificates value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
-    public ApplicationGatewaySslProfilePropertiesFormat withTrustedClientCertificates(
-        List<SubResource> trustedClientCertificates) {
+    public ApplicationGatewaySslProfilePropertiesFormat
+        withTrustedClientCertificates(List<SubResource> trustedClientCertificates) {
         this.trustedClientCertificates = trustedClientCertificates;
         return this;
     }
 
     /**
      * Get the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
@@ -77,7 +81,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
 
     /**
      * Set the sslPolicy property: SSL policy of the application gateway resource.
-     *
+     * 
      * @param sslPolicy the sslPolicy value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
@@ -89,7 +93,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Get the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @return the clientAuthConfiguration value.
      */
     public ApplicationGatewayClientAuthConfiguration clientAuthConfiguration() {
@@ -99,19 +103,19 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
     /**
      * Set the clientAuthConfiguration property: Client authentication configuration of the application gateway
      * resource.
-     *
+     * 
      * @param clientAuthConfiguration the clientAuthConfiguration value to set.
      * @return the ApplicationGatewaySslProfilePropertiesFormat object itself.
      */
-    public ApplicationGatewaySslProfilePropertiesFormat withClientAuthConfiguration(
-        ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
+    public ApplicationGatewaySslProfilePropertiesFormat
+        withClientAuthConfiguration(ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
         this.clientAuthConfiguration = clientAuthConfiguration;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the HTTP listener resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +124,7 @@ public final class ApplicationGatewaySslProfilePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

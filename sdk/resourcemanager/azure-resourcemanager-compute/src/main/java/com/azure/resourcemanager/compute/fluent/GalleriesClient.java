@@ -24,100 +24,102 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GalleriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GalleriesClient.
+ */
 public interface GalleriesClient
     extends InnerSupportsGet<GalleryInner>, InnerSupportsListing<GalleryInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return specifies information about the Shared Image Gallery that you want to create or update along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String galleryName, GalleryInner gallery);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String galleryName,
+        GalleryInner gallery);
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String galleryName, GalleryInner gallery);
+    PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String galleryName, GalleryInner gallery);
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
-        String resourceGroupName, String galleryName, GalleryInner gallery);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName, String galleryName,
+        GalleryInner gallery);
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
-        String resourceGroupName, String galleryName, GalleryInner gallery, Context context);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(String resourceGroupName, String galleryName,
+        GalleryInner gallery, Context context);
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GalleryInner> createOrUpdateAsync(String resourceGroupName, String galleryName, GalleryInner gallery);
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -129,10 +131,10 @@ public interface GalleriesClient
 
     /**
      * Create or update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the create or update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,95 +147,95 @@ public interface GalleriesClient
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return specifies information about the Shared Image Gallery that you want to create or update along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String galleryName, GalleryUpdate gallery);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
+        GalleryUpdate gallery);
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
-        String resourceGroupName, String galleryName, GalleryUpdate gallery);
+    PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(String resourceGroupName, String galleryName,
+        GalleryUpdate gallery);
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
-        String resourceGroupName, String galleryName, GalleryUpdate gallery);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(String resourceGroupName, String galleryName,
+        GalleryUpdate gallery);
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
-     *     to create or update.
+     * to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
-        String resourceGroupName, String galleryName, GalleryUpdate gallery, Context context);
+    SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(String resourceGroupName, String galleryName,
+        GalleryUpdate gallery, Context context);
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GalleryInner> updateAsync(String resourceGroupName, String galleryName, GalleryUpdate gallery);
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -245,10 +247,10 @@ public interface GalleriesClient
 
     /**
      * Update a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery. The allowed characters are alphabets and numbers with
-     *     dots and periods allowed in the middle. The maximum length is 80 characters.
+     * dots and periods allowed in the middle. The maximum length is 80 characters.
      * @param gallery Parameters supplied to the update Shared Image Gallery operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +263,7 @@ public interface GalleriesClient
 
     /**
      * Retrieves information about a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param select The select expression to apply on the operation.
@@ -269,30 +271,30 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return specifies information about the Shared Image Gallery that you want to create or update along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String galleryName, SelectPermissions select, GalleryExpandParams expand);
+    Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String galleryName,
+        SelectPermissions select, GalleryExpandParams expand);
 
     /**
      * Retrieves information about a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GalleryInner> getByResourceGroupAsync(String resourceGroupName, String galleryName);
 
     /**
      * Retrieves information about a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param select The select expression to apply on the operation.
@@ -301,20 +303,16 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response}.
+     * @return specifies information about the Shared Image Gallery that you want to create or update along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GalleryInner> getByResourceGroupWithResponse(
-        String resourceGroupName,
-        String galleryName,
-        SelectPermissions select,
-        GalleryExpandParams expand,
-        Context context);
+    Response<GalleryInner> getByResourceGroupWithResponse(String resourceGroupName, String galleryName,
+        SelectPermissions select, GalleryExpandParams expand, Context context);
 
     /**
      * Retrieves information about a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,7 +325,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,7 +338,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +351,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,7 +364,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @param context The context to associate with this operation.
@@ -380,7 +378,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +391,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,7 +403,7 @@ public interface GalleriesClient
 
     /**
      * Delete a Shared Image Gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery to be deleted.
      * @param context The context to associate with this operation.
@@ -418,7 +416,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -430,7 +428,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -442,7 +440,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,7 +453,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Galleries operation response as paginated response with {@link PagedFlux}.
@@ -465,7 +463,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
@@ -475,7 +473,7 @@ public interface GalleriesClient
 
     /**
      * List galleries under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

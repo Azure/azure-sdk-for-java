@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for a MongoDB database. */
+/**
+ * A copy activity source for a MongoDB database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbSource")
 @Fluent
@@ -27,13 +29,16 @@ public final class MongoDbSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of MongoDbSource class. */
-    public MongoDbSource() {}
+    /**
+     * Creates an instance of MongoDbSource class.
+     */
+    public MongoDbSource() {
+    }
 
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -43,7 +48,7 @@ public final class MongoDbSource extends CopySource {
     /**
      * Set the query property: Database query. Should be a SQL-92 query expression. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the MongoDbSource object itself.
      */
@@ -55,7 +60,7 @@ public final class MongoDbSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -65,7 +70,7 @@ public final class MongoDbSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbSource object itself.
      */
@@ -74,21 +79,27 @@ public final class MongoDbSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

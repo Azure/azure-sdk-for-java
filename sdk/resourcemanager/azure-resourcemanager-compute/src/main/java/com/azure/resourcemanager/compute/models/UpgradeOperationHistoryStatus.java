@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Information about the current running state of the overall upgrade. */
+/**
+ * Information about the current running state of the overall upgrade.
+ */
 @Immutable
 public final class UpgradeOperationHistoryStatus {
     /*
@@ -29,13 +31,15 @@ public final class UpgradeOperationHistoryStatus {
     @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
-    /** Creates an instance of UpgradeOperationHistoryStatus class. */
+    /**
+     * Creates an instance of UpgradeOperationHistoryStatus class.
+     */
     public UpgradeOperationHistoryStatus() {
     }
 
     /**
      * Get the code property: Code indicating the current status of the upgrade.
-     *
+     * 
      * @return the code value.
      */
     public UpgradeState code() {
@@ -44,7 +48,7 @@ public final class UpgradeOperationHistoryStatus {
 
     /**
      * Get the startTime property: Start time of the upgrade.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -53,7 +57,7 @@ public final class UpgradeOperationHistoryStatus {
 
     /**
      * Get the endTime property: End time of the upgrade.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -62,7 +66,7 @@ public final class UpgradeOperationHistoryStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of Frontend port of an application gateway. */
+/**
+ * Properties of Frontend port of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayFrontendPortPropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayFrontendPortPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayFrontendPortPropertiesFormat class.
+     */
     public ApplicationGatewayFrontendPortPropertiesFormat() {
     }
 
     /**
      * Get the port property: Frontend port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -38,7 +42,7 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Set the port property: Frontend port.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayFrontendPortPropertiesFormat object itself.
      */
@@ -49,7 +53,7 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the frontend port resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

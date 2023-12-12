@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
+
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -21,19 +23,30 @@ public final class CreateCallOptions {
     private final String callbackUrl;
 
     /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+     * AI options for the call.
      */
-    private String azureCognitiveServicesUrl;
+    private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
      * A customer set value used to track the answering of a call.
      */
     private String operationContext;
 
-    /**
+   /**
      * Media Streaming Configuration.
      */
     private MediaStreamingOptions mediaStreamingOptions;
+
+
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /**
+     * Custom Context
+     */
+    private final CustomCallingContext customContext;
 
     /**
      * Constructor
@@ -43,28 +56,7 @@ public final class CreateCallOptions {
     public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUrl;
-    }
-
-    /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @return the azureCognitiveServicesEndpointUrl value.
-     */
-    public String getAzureCognitiveServicesUrl() {
-        return azureCognitiveServicesUrl;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public CreateCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
-        return this;
+        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -77,12 +69,12 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
+     * Get the Transcription configuration.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the transcriptionConfiguration.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
     }
 
 
@@ -98,13 +90,13 @@ public final class CreateCallOptions {
     }
 
     /**
-     * Set the media streaming configuration.
+     * Set the transcription configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param transcriptionOptions The transcription configuration.
      * @return the CreateCallOptions object itself.
      */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
+    public CreateCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 
@@ -123,5 +115,53 @@ public final class CreateCallOptions {
      */
     public String getCallbackUrl() {
         return callbackUrl;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingConfiguration.
+     */
+    public MediaStreamingOptions getMediaStreamingConfiguration() {
+        return mediaStreamingOptions;
+    }
+
+    /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingOptions The media streaming configuration.
+     * @return the CreateCallOptions object itself.
+     */
+    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     *  get custom context
+     * @return custom context
+     */
+    public CustomCallingContext getCustomContext() {
+        return customContext;
     }
 }

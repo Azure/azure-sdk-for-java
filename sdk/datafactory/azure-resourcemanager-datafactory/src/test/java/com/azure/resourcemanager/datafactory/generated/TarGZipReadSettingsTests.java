@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.models.TarGZipReadSettings;
 public final class TarGZipReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TarGZipReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"TarGZipReadSettings\",\"preserveCompressionFileNameAsFolder\":\"dataljcauegymc\",\"\":{\"wodayipg\":\"datamnjitxughlbi\",\"byoxpvbv\":\"datahkioec\"}}")
-                .toObject(TarGZipReadSettings.class);
+        TarGZipReadSettings model = BinaryData.fromString(
+            "{\"type\":\"TarGZipReadSettings\",\"preserveCompressionFileNameAsFolder\":\"datafksqfcxdleo\",\"\":{\"iyuq\":\"datadgkbaxygwvtkr\",\"p\":\"datasjjqzt\",\"k\":\"datameipfotaaqy\",\"q\":\"dataoabcoxqaavjkre\"}}")
+            .toObject(TarGZipReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TarGZipReadSettings model = new TarGZipReadSettings().withPreserveCompressionFileNameAsFolder("dataljcauegymc");
+        TarGZipReadSettings model
+            = new TarGZipReadSettings().withPreserveCompressionFileNameAsFolder("datafksqfcxdleo");
         model = BinaryData.fromObject(model).toObject(TarGZipReadSettings.class);
     }
 }

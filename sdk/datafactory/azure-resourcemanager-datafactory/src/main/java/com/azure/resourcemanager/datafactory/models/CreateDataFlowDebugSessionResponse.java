@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.resourcemanager.datafactory.fluent.models.CreateDataFlowDebugSessionResponseInner;
 
-/** An immutable client-side representation of CreateDataFlowDebugSessionResponse. */
+/**
+ * An immutable client-side representation of CreateDataFlowDebugSessionResponse.
+ */
 public interface CreateDataFlowDebugSessionResponse {
     /**
      * Gets the status property: The state of the debug session.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     String sessionId();
@@ -25,7 +27,7 @@ public interface CreateDataFlowDebugSessionResponse {
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.CreateDataFlowDebugSessionResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     CreateDataFlowDebugSessionResponseInner innerModel();

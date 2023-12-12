@@ -13,15 +13,19 @@ import java.util.Collection;
  * Default is 'calico'.
  */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
-    /** Static value calico for NetworkPolicy. */
+    /**
+     * Static value calico for NetworkPolicy.
+     */
     public static final NetworkPolicy CALICO = fromString("calico");
 
-    /** Static value flannel for NetworkPolicy. */
+    /**
+     * Static value flannel for NetworkPolicy.
+     */
     public static final NetworkPolicy FLANNEL = fromString("flannel");
 
     /**
      * Creates a new instance of NetworkPolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Creates or finds a NetworkPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkPolicy.
      */
@@ -41,7 +45,7 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
 
     /**
      * Gets known NetworkPolicy values.
-     *
+     * 
      * @return known NetworkPolicy values.
      */
     public static Collection<NetworkPolicy> values() {

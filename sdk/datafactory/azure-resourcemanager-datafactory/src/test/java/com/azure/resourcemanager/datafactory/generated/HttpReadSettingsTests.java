@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.HttpReadSettings;
 public final class HttpReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpReadSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HttpReadSettings\",\"requestMethod\":\"dataa\",\"requestBody\":\"dataveqowqodispa\",\"additionalHeaders\":\"datawiicfsbjhhadndo\",\"requestTimeout\":\"datax\",\"additionalColumns\":\"datawsaxpbieehpvq\",\"maxConcurrentConnections\":\"datafrrjp\",\"disableMetricsCollection\":\"datagjgyovcpgqiism\",\"\":{\"kkcxc\":\"dataktcoykr\"}}")
-                .toObject(HttpReadSettings.class);
+        HttpReadSettings model = BinaryData.fromString(
+            "{\"type\":\"HttpReadSettings\",\"requestMethod\":\"databbhukx\",\"requestBody\":\"datahyr\",\"additionalHeaders\":\"dataqpgadesnesg\",\"requestTimeout\":\"datadvgxte\",\"additionalColumns\":\"datasictoq\",\"maxConcurrentConnections\":\"datazmznoe\",\"disableMetricsCollection\":\"dataduyqb\",\"\":{\"dpbnbpzxnopryu\":\"dataza\",\"nighcx\":\"dataxa\",\"pfudzntbzg\":\"datakhiihggzqheittym\"}}")
+            .toObject(HttpReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpReadSettings model =
-            new HttpReadSettings()
-                .withMaxConcurrentConnections("datafrrjp")
-                .withDisableMetricsCollection("datagjgyovcpgqiism")
-                .withRequestMethod("dataa")
-                .withRequestBody("dataveqowqodispa")
-                .withAdditionalHeaders("datawiicfsbjhhadndo")
-                .withRequestTimeout("datax")
-                .withAdditionalColumns("datawsaxpbieehpvq");
+        HttpReadSettings model = new HttpReadSettings().withMaxConcurrentConnections("datazmznoe")
+            .withDisableMetricsCollection("dataduyqb").withRequestMethod("databbhukx").withRequestBody("datahyr")
+            .withAdditionalHeaders("dataqpgadesnesg").withRequestTimeout("datadvgxte")
+            .withAdditionalColumns("datasictoq");
         model = BinaryData.fromObject(model).toObject(HttpReadSettings.class);
     }
 }

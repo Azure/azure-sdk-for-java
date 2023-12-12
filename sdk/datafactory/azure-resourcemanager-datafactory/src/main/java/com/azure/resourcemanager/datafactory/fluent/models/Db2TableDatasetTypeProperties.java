@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Db2 table dataset properties. */
+/**
+ * Db2 table dataset properties.
+ */
 @Fluent
 public final class Db2TableDatasetTypeProperties {
     /*
@@ -28,14 +30,16 @@ public final class Db2TableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of Db2TableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of Db2TableDatasetTypeProperties class.
+     */
     public Db2TableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +49,7 @@ public final class Db2TableDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the Db2TableDatasetTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class Db2TableDatasetTypeProperties {
 
     /**
      * Get the schema property: The Db2 schema name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -65,7 +69,7 @@ public final class Db2TableDatasetTypeProperties {
 
     /**
      * Set the schema property: The Db2 schema name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the Db2TableDatasetTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class Db2TableDatasetTypeProperties {
 
     /**
      * Get the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -85,7 +89,7 @@ public final class Db2TableDatasetTypeProperties {
 
     /**
      * Set the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the Db2TableDatasetTypeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class Db2TableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

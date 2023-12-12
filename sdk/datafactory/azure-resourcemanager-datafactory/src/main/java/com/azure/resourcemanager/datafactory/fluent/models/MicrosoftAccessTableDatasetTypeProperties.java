@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Microsoft Access table dataset properties. */
+/**
+ * Microsoft Access table dataset properties.
+ */
 @Fluent
 public final class MicrosoftAccessTableDatasetTypeProperties {
     /*
@@ -16,13 +18,16 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
-    /** Creates an instance of MicrosoftAccessTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of MicrosoftAccessTableDatasetTypeProperties class.
+     */
     public MicrosoftAccessTableDatasetTypeProperties() {
     }
 
     /**
-     * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
-     *
+     * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -30,8 +35,9 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
     }
 
     /**
-     * Set the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
-     *
+     * Set the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param tableName the tableName value to set.
      * @return the MicrosoftAccessTableDatasetTypeProperties object itself.
      */
@@ -42,7 +48,7 @@ public final class MicrosoftAccessTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

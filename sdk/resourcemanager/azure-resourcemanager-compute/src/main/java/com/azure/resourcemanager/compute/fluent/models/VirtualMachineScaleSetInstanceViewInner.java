@@ -12,7 +12,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of a virtual machine scale set. */
+/**
+ * The instance view of a virtual machine scale set.
+ */
 @Fluent
 public final class VirtualMachineScaleSetInstanceViewInner {
     /*
@@ -39,13 +41,15 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     @JsonProperty(value = "orchestrationServices", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrchestrationServiceSummary> orchestrationServices;
 
-    /** Creates an instance of VirtualMachineScaleSetInstanceViewInner class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetInstanceViewInner class.
+     */
     public VirtualMachineScaleSetInstanceViewInner() {
     }
 
     /**
      * Get the virtualMachine property: The instance view status summary for the virtual machine scale set.
-     *
+     * 
      * @return the virtualMachine value.
      */
     public VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine() {
@@ -54,7 +58,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the extensions property: The extensions information.
-     *
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineScaleSetVMExtensionsSummary> extensions() {
@@ -63,7 +67,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -72,7 +76,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineScaleSetInstanceViewInner object itself.
      */
@@ -83,7 +87,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the orchestrationServices property: The orchestration services information.
-     *
+     * 
      * @return the orchestrationServices value.
      */
     public List<OrchestrationServiceSummary> orchestrationServices() {
@@ -92,7 +96,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

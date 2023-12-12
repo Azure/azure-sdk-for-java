@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hop link properties. */
+/**
+ * Hop link properties.
+ */
 @Immutable
 public final class HopLinkProperties {
     /*
@@ -28,13 +30,15 @@ public final class HopLinkProperties {
     @JsonProperty(value = "roundTripTimeMax", access = JsonProperty.Access.WRITE_ONLY)
     private Long roundTripTimeMax;
 
-    /** Creates an instance of HopLinkProperties class. */
+    /**
+     * Creates an instance of HopLinkProperties class.
+     */
     public HopLinkProperties() {
     }
 
     /**
      * Get the roundTripTimeMin property: Minimum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMin value.
      */
     public Long roundTripTimeMin() {
@@ -43,7 +47,7 @@ public final class HopLinkProperties {
 
     /**
      * Get the roundTripTimeAvg property: Average roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeAvg value.
      */
     public Long roundTripTimeAvg() {
@@ -52,7 +56,7 @@ public final class HopLinkProperties {
 
     /**
      * Get the roundTripTimeMax property: Maximum roundtrip time in milliseconds.
-     *
+     * 
      * @return the roundTripTimeMax value.
      */
     public Long roundTripTimeMax() {
@@ -61,7 +65,7 @@ public final class HopLinkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

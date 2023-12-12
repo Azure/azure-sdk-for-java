@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Db2 table dataset. */
+/**
+ * The Db2 table dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Db2Table")
 @JsonFlatten
@@ -36,13 +38,16 @@ public class Db2TableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of Db2TableDataset class. */
-    public Db2TableDataset() {}
+    /**
+     * Creates an instance of Db2TableDataset class.
+     */
+    public Db2TableDataset() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +57,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the Db2TableDataset object itself.
      */
@@ -64,7 +69,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * Get the schemaTypePropertiesSchema property: The Db2 schema name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -74,7 +79,7 @@ public class Db2TableDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The Db2 schema name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the Db2TableDataset object itself.
      */
@@ -85,7 +90,7 @@ public class Db2TableDataset extends Dataset {
 
     /**
      * Get the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -94,7 +99,7 @@ public class Db2TableDataset extends Dataset {
 
     /**
      * Set the table property: The Db2 table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the Db2TableDataset object itself.
      */
@@ -103,49 +108,63 @@ public class Db2TableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2TableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

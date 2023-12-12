@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TrafficControllerInterfaces. */
+/**
+ * Resource collection API of TrafficControllerInterfaces.
+ */
 public interface TrafficControllerInterfaces {
     /**
      * List TrafficController resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TrafficController list operation as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * List TrafficController resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * List TrafficController resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * List TrafficController resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -64,12 +66,12 @@ public interface TrafficControllerInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a TrafficController along with {@link Response}.
      */
-    Response<TrafficController> getByResourceGroupWithResponse(
-        String resourceGroupName, String trafficControllerName, Context context);
+    Response<TrafficController> getByResourceGroupWithResponse(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +83,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -104,7 +106,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Get a TrafficController.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +139,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Delete a TrafficController.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface TrafficControllerInterfaces {
 
     /**
      * Begins definition for a new TrafficController resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new TrafficController definition.
      */

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of IP configuration. */
+/**
+ * Properties of IP configuration.
+ */
 @Fluent
 public final class HubIpConfigurationPropertiesFormatInner {
     /*
@@ -42,13 +44,15 @@ public final class HubIpConfigurationPropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of HubIpConfigurationPropertiesFormatInner class. */
+    /**
+     * Creates an instance of HubIpConfigurationPropertiesFormatInner class.
+     */
     public HubIpConfigurationPropertiesFormatInner() {
     }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -57,7 +61,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
@@ -68,7 +72,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -77,19 +81,19 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
-    public HubIpConfigurationPropertiesFormatInner withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public HubIpConfigurationPropertiesFormatInner
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -98,7 +102,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
@@ -109,7 +113,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -118,7 +122,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Set the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the HubIpConfigurationPropertiesFormatInner object itself.
      */
@@ -129,7 +133,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +142,7 @@ public final class HubIpConfigurationPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -24,12 +24,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CloudServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServicesClient.
+ */
 public interface CloudServicesClient
     extends InnerSupportsGet<CloudServiceInner>, InnerSupportsListing<CloudServiceInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -39,12 +41,12 @@ public interface CloudServicesClient
      * @return describes the cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        CloudServiceInner parameters);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -54,12 +56,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceInner parameters);
+    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String cloudServiceName, CloudServiceInner parameters);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,12 +70,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String cloudServiceName);
+    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,12 +84,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String cloudServiceName);
+    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -98,12 +100,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String cloudServiceName, CloudServiceInner parameters, Context context);
+    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String cloudServiceName, CloudServiceInner parameters, Context context);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -113,12 +115,12 @@ public interface CloudServicesClient
      * @return describes the cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloudServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceInner parameters);
+    Mono<CloudServiceInner> createOrUpdateAsync(String resourceGroupName, String cloudServiceName,
+        CloudServiceInner parameters);
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +133,7 @@ public interface CloudServicesClient
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +146,7 @@ public interface CloudServicesClient
 
     /**
      * Create or update a cloud service. Please note some properties can be set only during cloud service creation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -155,12 +157,12 @@ public interface CloudServicesClient
      * @return describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServiceInner createOrUpdate(
-        String resourceGroupName, String cloudServiceName, CloudServiceInner parameters, Context context);
+    CloudServiceInner createOrUpdate(String resourceGroupName, String cloudServiceName, CloudServiceInner parameters,
+        Context context);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -170,12 +172,12 @@ public interface CloudServicesClient
      * @return describes the cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        CloudServiceUpdate parameters);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -185,12 +187,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters);
+    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(String resourceGroupName,
+        String cloudServiceName, CloudServiceUpdate parameters);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,12 +201,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(
-        String resourceGroupName, String cloudServiceName);
+    PollerFlux<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdateAsync(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,12 +215,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
-        String resourceGroupName, String cloudServiceName);
+    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -229,12 +231,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(
-        String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters, Context context);
+    SyncPoller<PollResult<CloudServiceInner>, CloudServiceInner> beginUpdate(String resourceGroupName,
+        String cloudServiceName, CloudServiceUpdate parameters, Context context);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -244,12 +246,12 @@ public interface CloudServicesClient
      * @return describes the cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CloudServiceInner> updateAsync(
-        String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters);
+    Mono<CloudServiceInner> updateAsync(String resourceGroupName, String cloudServiceName,
+        CloudServiceUpdate parameters);
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +264,7 @@ public interface CloudServicesClient
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,7 +277,7 @@ public interface CloudServicesClient
 
     /**
      * Update a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters The cloud service object.
@@ -286,12 +288,12 @@ public interface CloudServicesClient
      * @return describes the cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CloudServiceInner update(
-        String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters, Context context);
+    CloudServiceInner update(String resourceGroupName, String cloudServiceName, CloudServiceUpdate parameters,
+        Context context);
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +306,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +319,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +332,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -344,7 +346,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,7 +359,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -369,7 +371,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -382,7 +384,7 @@ public interface CloudServicesClient
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,12 +393,12 @@ public interface CloudServicesClient
      * @return describes the cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CloudServiceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String cloudServiceName);
+    Mono<Response<CloudServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -409,7 +411,7 @@ public interface CloudServicesClient
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -419,12 +421,12 @@ public interface CloudServicesClient
      * @return describes the cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CloudServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServiceName, Context context);
+    Response<CloudServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String cloudServiceName,
+        Context context);
 
     /**
      * Display information about a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -437,7 +439,7 @@ public interface CloudServicesClient
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,12 +448,12 @@ public interface CloudServicesClient
      * @return the status of a cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CloudServiceInstanceViewInner>> getInstanceViewWithResponseAsync(
-        String resourceGroupName, String cloudServiceName);
+    Mono<Response<CloudServiceInstanceViewInner>> getInstanceViewWithResponseAsync(String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +466,7 @@ public interface CloudServicesClient
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -474,12 +476,12 @@ public interface CloudServicesClient
      * @return the status of a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CloudServiceInstanceViewInner> getInstanceViewWithResponse(
-        String resourceGroupName, String cloudServiceName, Context context);
+    Response<CloudServiceInstanceViewInner> getInstanceViewWithResponse(String resourceGroupName,
+        String cloudServiceName, Context context);
 
     /**
      * Gets the status of a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,11 +496,11 @@ public interface CloudServicesClient
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CloudServiceInner> listAsync();
@@ -507,11 +509,11 @@ public interface CloudServicesClient
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServiceInner> list();
@@ -520,13 +522,13 @@ public interface CloudServicesClient
      * Gets a list of all cloud services in the subscription, regardless of the associated resource group. Use nextLink
      * property in the response to get the next page of Cloud Services. Do this till nextLink is null to fetch all the
      * Cloud Services.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all cloud services in the subscription, regardless of the associated resource group as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServiceInner> list(Context context);
@@ -534,7 +536,7 @@ public interface CloudServicesClient
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -547,7 +549,7 @@ public interface CloudServicesClient
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -560,7 +562,7 @@ public interface CloudServicesClient
     /**
      * Gets a list of all cloud services under a resource group. Use nextLink property in the response to get the next
      * page of Cloud Services. Do this till nextLink is null to fetch all the Cloud Services.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -573,7 +575,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -586,7 +588,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -599,7 +601,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -612,7 +614,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -626,7 +628,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -639,7 +641,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,7 +653,7 @@ public interface CloudServicesClient
 
     /**
      * Starts the cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -665,7 +667,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -679,7 +681,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -693,7 +695,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -707,7 +709,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -717,13 +719,13 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(
-        String resourceGroupName, String cloudServiceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String cloudServiceName,
+        Context context);
 
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -737,7 +739,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -750,7 +752,7 @@ public interface CloudServicesClient
     /**
      * Power off the cloud service. Note that resources are still attached and you are getting charged for the
      * resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.
@@ -763,7 +765,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -773,12 +775,12 @@ public interface CloudServicesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -788,12 +790,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,7 +808,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,7 +821,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -830,12 +832,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters, Context context);
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -849,7 +851,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,7 +864,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -874,7 +876,7 @@ public interface CloudServicesClient
 
     /**
      * Restarts one or more role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -888,7 +890,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -898,12 +900,12 @@ public interface CloudServicesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -913,12 +915,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -931,7 +933,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -944,7 +946,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -955,12 +957,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters, Context context);
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -974,7 +976,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -987,7 +989,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -999,7 +1001,7 @@ public interface CloudServicesClient
 
     /**
      * Reimage asynchronous operation reinstalls the operating system on instances of web roles or worker roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1015,7 +1017,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1025,14 +1027,14 @@ public interface CloudServicesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    Mono<Response<Flux<ByteBuffer>>> rebuildWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1042,14 +1044,14 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRebuildAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    PollerFlux<PollResult<Void>, Void> beginRebuildAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1064,7 +1066,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,7 +1081,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1090,14 +1092,14 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRebuild(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRebuild(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters, Context context);
 
     /**
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1113,7 +1115,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1128,7 +1130,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1142,7 +1144,7 @@ public interface CloudServicesClient
      * Rebuild Role Instances reinstalls the operating system on instances of web roles or worker roles and initializes
      * the storage resources that are used by them. If you do not want to initialize storage resources, you can use
      * Reimage Role Instances.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1156,7 +1158,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1166,12 +1168,12 @@ public interface CloudServicesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteInstancesWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    Mono<Response<Flux<ByteBuffer>>> deleteInstancesWithResponseAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1181,12 +1183,12 @@ public interface CloudServicesClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters);
+    PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters);
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,7 +1201,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1212,7 +1214,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1223,12 +1225,12 @@ public interface CloudServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
-        String resourceGroupName, String cloudServiceName, RoleInstances parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteInstances(String resourceGroupName, String cloudServiceName,
+        RoleInstances parameters, Context context);
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.
@@ -1242,7 +1244,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1255,7 +1257,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1267,7 +1269,7 @@ public interface CloudServicesClient
 
     /**
      * Deletes role instances in a cloud service.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param parameters List of cloud service role instance names.

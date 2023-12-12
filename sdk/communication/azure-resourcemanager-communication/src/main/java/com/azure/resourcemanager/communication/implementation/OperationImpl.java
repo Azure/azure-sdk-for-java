@@ -15,8 +15,8 @@ public final class OperationImpl implements Operation {
 
     private final com.azure.resourcemanager.communication.CommunicationManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

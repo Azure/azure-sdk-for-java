@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.communication.callautomation.models.ToneInfo;
+import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,10 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationEventBase {
 
     /*
-     * Information about Tone.
+     * The sequence id which can be used to determine if the same tone was played multiple times or if any tones were missed.
      */
-    @JsonProperty(value = "toneInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private ToneInfo toneInfo;
+    @JsonProperty(value = "sequenceId", required = true)
+    private final Integer sequenceId;
+
+    /*
+     * The tone property.
+     */
+    @JsonProperty(value = "tone", required = true)
+    private final DtmfTone tone;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
@@ -27,16 +33,28 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
     public ContinuousDtmfRecognitionToneReceived() {
-        toneInfo = null;
         resultInformation = null;
+        sequenceId = 0;
+        tone = null;
     }
 
     /**
-     * getter for toneInfo property
-     * @return return toneInfo value
+     * Get sequenceId: The sequence id which can be used to determine if the same tone was played multiple
+     * times or if any tones were missed.
+     *
+     * @return the sequenceId value.
      */
-    public ToneInfo getToneInfo() {
-        return toneInfo;
+    public int getSequenceId() {
+        return this.sequenceId;
+    }
+
+    /**
+     * Get the tone property:
+     *
+     * @return the tone value.
+     */
+    public DtmfTone getTone() {
+        return this.tone;
     }
 
     /**

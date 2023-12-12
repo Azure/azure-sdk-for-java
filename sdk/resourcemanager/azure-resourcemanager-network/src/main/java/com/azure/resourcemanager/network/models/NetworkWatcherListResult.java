@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkWatchers API service call. */
+/**
+ * Response for ListNetworkWatchers API service call.
+ */
 @Fluent
 public final class NetworkWatcherListResult {
     /*
@@ -18,13 +20,15 @@ public final class NetworkWatcherListResult {
     @JsonProperty(value = "value")
     private List<NetworkWatcherInner> value;
 
-    /** Creates an instance of NetworkWatcherListResult class. */
+    /**
+     * Creates an instance of NetworkWatcherListResult class.
+     */
     public NetworkWatcherListResult() {
     }
 
     /**
      * Get the value property: List of network watcher resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkWatcherInner> value() {
@@ -33,7 +37,7 @@ public final class NetworkWatcherListResult {
 
     /**
      * Set the value property: List of network watcher resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkWatcherListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class NetworkWatcherListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

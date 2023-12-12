@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.FirewallPacketCapturePara
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure Firewall Packet Capture Parameters resource. */
+/**
+ * Azure Firewall Packet Capture Parameters resource.
+ */
 @Fluent
 public final class FirewallPacketCaptureParameters extends SubResource {
     /*
@@ -19,20 +21,24 @@ public final class FirewallPacketCaptureParameters extends SubResource {
     @JsonProperty(value = "properties")
     private FirewallPacketCaptureParametersFormat innerProperties;
 
-    /** Creates an instance of FirewallPacketCaptureParameters class. */
+    /**
+     * Creates an instance of FirewallPacketCaptureParameters class.
+     */
     public FirewallPacketCaptureParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FirewallPacketCaptureParametersFormat innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FirewallPacketCaptureParameters withId(String id) {
         super.withId(id);
@@ -41,7 +47,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the durationInSeconds property: Duration of packet capture in seconds.
-     *
+     * 
      * @return the durationInSeconds value.
      */
     public Integer durationInSeconds() {
@@ -50,7 +56,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the durationInSeconds property: Duration of packet capture in seconds.
-     *
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -64,7 +70,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the numberOfPacketsToCapture property: Number of packets to be captured.
-     *
+     * 
      * @return the numberOfPacketsToCapture value.
      */
     public Integer numberOfPacketsToCapture() {
@@ -73,7 +79,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the numberOfPacketsToCapture property: Number of packets to be captured.
-     *
+     * 
      * @param numberOfPacketsToCapture the numberOfPacketsToCapture value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -87,7 +93,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the sasUrl property: Upload capture location.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -96,7 +102,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the sasUrl property: Upload capture location.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -110,7 +116,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the fileName property: Name of file to be uploaded to sasURL.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -119,7 +125,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the fileName property: Name of file to be uploaded to sasURL.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -133,7 +139,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the protocol property: The protocol of packets to capture.
-     *
+     * 
      * @return the protocol value.
      */
     public AzureFirewallNetworkRuleProtocol protocol() {
@@ -142,7 +148,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the protocol property: The protocol of packets to capture.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -156,7 +162,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the flags property: The tcp-flag type to be captured. Used with protocol TCP.
-     *
+     * 
      * @return the flags value.
      */
     public List<AzureFirewallPacketCaptureFlags> flags() {
@@ -165,7 +171,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the flags property: The tcp-flag type to be captured. Used with protocol TCP.
-     *
+     * 
      * @param flags the flags value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -179,7 +185,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Get the filters property: Rules to filter packet captures.
-     *
+     * 
      * @return the filters value.
      */
     public List<AzureFirewallPacketCaptureRule> filters() {
@@ -188,7 +194,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Set the filters property: Rules to filter packet captures.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the FirewallPacketCaptureParameters object itself.
      */
@@ -202,7 +208,7 @@ public final class FirewallPacketCaptureParameters extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

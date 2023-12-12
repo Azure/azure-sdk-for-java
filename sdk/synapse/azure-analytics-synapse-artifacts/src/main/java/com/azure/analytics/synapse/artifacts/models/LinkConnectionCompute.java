@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkConnectionCompute model. */
+/**
+ * The LinkConnectionCompute model.
+ */
 @Fluent
 public final class LinkConnectionCompute {
     /*
@@ -28,12 +30,15 @@ public final class LinkConnectionCompute {
     @JsonProperty(value = "dataProcessIntervalMinutes")
     private Integer dataProcessIntervalMinutes;
 
-    /** Creates an instance of LinkConnectionCompute class. */
-    public LinkConnectionCompute() {}
+    /**
+     * Creates an instance of LinkConnectionCompute class.
+     */
+    public LinkConnectionCompute() {
+    }
 
     /**
      * Get the coreCount property: Compute core count used by the link connection.
-     *
+     * 
      * @return the coreCount value.
      */
     public Integer getCoreCount() {
@@ -42,7 +47,7 @@ public final class LinkConnectionCompute {
 
     /**
      * Set the coreCount property: Compute core count used by the link connection.
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the LinkConnectionCompute object itself.
      */
@@ -53,7 +58,7 @@ public final class LinkConnectionCompute {
 
     /**
      * Get the computeType property: Link connection's compute type.
-     *
+     * 
      * @return the computeType value.
      */
     public String getComputeType() {
@@ -62,7 +67,7 @@ public final class LinkConnectionCompute {
 
     /**
      * Set the computeType property: Link connection's compute type.
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the LinkConnectionCompute object itself.
      */
@@ -73,7 +78,7 @@ public final class LinkConnectionCompute {
 
     /**
      * Get the dataProcessIntervalMinutes property: Link connection's data process interval in minutes.
-     *
+     * 
      * @return the dataProcessIntervalMinutes value.
      */
     public Integer getDataProcessIntervalMinutes() {
@@ -82,7 +87,7 @@ public final class LinkConnectionCompute {
 
     /**
      * Set the dataProcessIntervalMinutes property: Link connection's data process interval in minutes.
-     *
+     * 
      * @param dataProcessIntervalMinutes the dataProcessIntervalMinutes value to set.
      * @return the LinkConnectionCompute object itself.
      */

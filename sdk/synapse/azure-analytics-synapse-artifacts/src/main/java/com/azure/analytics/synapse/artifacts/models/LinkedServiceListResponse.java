@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of linked service resources. */
+/**
+ * A list of linked service resources.
+ */
 @Fluent
 public final class LinkedServiceListResponse {
     /*
@@ -23,12 +25,15 @@ public final class LinkedServiceListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LinkedServiceListResponse class. */
-    public LinkedServiceListResponse() {}
+    /**
+     * Creates an instance of LinkedServiceListResponse class.
+     */
+    public LinkedServiceListResponse() {
+    }
 
     /**
      * Get the value property: List of linked services.
-     *
+     * 
      * @return the value value.
      */
     public List<LinkedServiceResource> getValue() {
@@ -37,7 +42,7 @@ public final class LinkedServiceListResponse {
 
     /**
      * Set the value property: List of linked services.
-     *
+     * 
      * @param value the value value to set.
      * @return the LinkedServiceListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class LinkedServiceListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class LinkedServiceListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LinkedServiceListResponse object itself.
      */

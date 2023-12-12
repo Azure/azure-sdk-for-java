@@ -23,31 +23,28 @@ public final class PipelineRunsImpl implements PipelineRuns {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public PipelineRunsImpl(
-        PipelineRunsClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public PipelineRunsImpl(PipelineRunsClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PipelineRunsQueryResponse> queryByFactoryWithResponse(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context) {
-        Response<PipelineRunsQueryResponseInner> inner =
-            this.serviceClient().queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, context);
+    public Response<PipelineRunsQueryResponse> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters, Context context) {
+        Response<PipelineRunsQueryResponseInner> inner = this.serviceClient()
+            .queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PipelineRunsQueryResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PipelineRunsQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        PipelineRunsQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
+    public PipelineRunsQueryResponse queryByFactory(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters) {
+        PipelineRunsQueryResponseInner inner
+            = this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
         if (inner != null) {
             return new PipelineRunsQueryResponseImpl(inner, this.manager());
         } else {
@@ -55,15 +52,12 @@ public final class PipelineRunsImpl implements PipelineRuns {
         }
     }
 
-    public Response<PipelineRun> getWithResponse(
-        String resourceGroupName, String factoryName, String runId, Context context) {
-        Response<PipelineRunInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, factoryName, runId, context);
+    public Response<PipelineRun> getWithResponse(String resourceGroupName, String factoryName, String runId,
+        Context context) {
+        Response<PipelineRunInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, factoryName, runId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PipelineRunImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,8 +73,8 @@ public final class PipelineRunsImpl implements PipelineRuns {
         }
     }
 
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context) {
+    public Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String runId,
+        Boolean isRecursive, Context context) {
         return this.serviceClient().cancelWithResponse(resourceGroupName, factoryName, runId, isRecursive, context);
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input parameter for verification APIs. */
+/**
+ * Input parameter for verification APIs.
+ */
 @Fluent
 public final class VerificationParameter {
     /*
@@ -17,13 +19,15 @@ public final class VerificationParameter {
     @JsonProperty(value = "verificationType", required = true)
     private VerificationType verificationType;
 
-    /** Creates an instance of VerificationParameter class. */
+    /**
+     * Creates an instance of VerificationParameter class.
+     */
     public VerificationParameter() {
     }
 
     /**
      * Get the verificationType property: Type of verification.
-     *
+     * 
      * @return the verificationType value.
      */
     public VerificationType verificationType() {
@@ -32,7 +36,7 @@ public final class VerificationParameter {
 
     /**
      * Set the verificationType property: Type of verification.
-     *
+     * 
      * @param verificationType the verificationType value to set.
      * @return the VerificationParameter object itself.
      */
@@ -43,15 +47,13 @@ public final class VerificationParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (verificationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property verificationType in model VerificationParameter"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property verificationType in model VerificationParameter"));
         }
     }
 

@@ -3,16 +3,16 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.AzureChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureChatExtensionType;
 import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
-import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
+import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.BinaryData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,8 +39,8 @@ public class ChatCompletionsWithYourData {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER, "How many of our customers are using the latest version of our SDK?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestUserMessage("How many of our customers are using the latest version of our SDK?"));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 
@@ -54,24 +54,22 @@ public class ChatCompletionsWithYourData {
         String azureSearchAdminKey = "{azure-cognitive-search-key}";
         String azureSearchIndexName = "{azure-cognitive-search-index-name}";
 
-        AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-            new AzureCognitiveSearchChatExtensionConfiguration(
+        AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
                 azureSearchEndpoint,
-                azureSearchAdminKey,
                 azureSearchIndexName
-            );
+        );
+        searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(azureSearchAdminKey));
+        AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureCognitiveSearchChatExtensionConfiguration(
+                        searchParameters
+                );
 
-        AzureChatExtensionConfiguration extensionConfiguration =
-            new AzureChatExtensionConfiguration(
-                AzureChatExtensionType.AZURE_COGNITIVE_SEARCH,
-                BinaryData.fromObject(cognitiveSearchConfiguration));
-
-        chatCompletionsOptions.setDataSources(Arrays.asList(extensionConfiguration));
+        chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
 
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionsOptions);
 
         for (ChatChoice choice : chatCompletions.getChoices()) {
-            ChatMessage message = choice.getMessage();
+            ChatResponseMessage message = choice.getMessage();
             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
             System.out.println("Message:");
             System.out.println(message.getContent());

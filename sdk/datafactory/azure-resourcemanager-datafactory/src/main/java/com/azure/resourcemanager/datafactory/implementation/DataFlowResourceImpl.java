@@ -64,24 +64,14 @@ public final class DataFlowResourceImpl
     }
 
     public DataFlowResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, dataFlowName, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, dataFlowName, this.innerModel(), createIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public DataFlowResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, dataFlowName, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, dataFlowName, this.innerModel(), createIfMatch, context).getValue();
         return this;
     }
 
@@ -98,29 +88,19 @@ public final class DataFlowResourceImpl
     }
 
     public DataFlowResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, dataFlowName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, dataFlowName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public DataFlowResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, factoryName, dataFlowName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows().createOrUpdateWithResponse(resourceGroupName,
+            factoryName, dataFlowName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    DataFlowResourceImpl(
-        DataFlowResourceInner innerObject, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    DataFlowResourceImpl(DataFlowResourceInner innerObject,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -130,23 +110,15 @@ public final class DataFlowResourceImpl
 
     public DataFlowResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows()
+            .getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, Context.NONE).getValue();
         return this;
     }
 
     public DataFlowResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDataFlows()
-                .getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDataFlows()
+            .getWithResponse(resourceGroupName, factoryName, dataFlowName, localIfNoneMatch, context).getValue();
         return this;
     }
 

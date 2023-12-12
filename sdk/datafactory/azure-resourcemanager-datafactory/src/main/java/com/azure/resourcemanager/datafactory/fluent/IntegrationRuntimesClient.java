@@ -22,11 +22,13 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerate
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequest;
 import com.azure.resourcemanager.datafactory.models.UpdateIntegrationRuntimeRequest;
 
-/** An instance of this class provides access to all the operations defined in IntegrationRuntimesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationRuntimesClient.
+ */
 public interface IntegrationRuntimesClient {
     /**
      * Lists integration runtimes.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,7 +41,7 @@ public interface IntegrationRuntimesClient {
 
     /**
      * Lists integration runtimes.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -49,18 +51,18 @@ public interface IntegrationRuntimesClient {
      * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationRuntimeResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<IntegrationRuntimeResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Creates or updates an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param integrationRuntime Integration runtime resource definition.
      * @param ifMatch ETag of the integration runtime entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,17 +70,13 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime,
-        String ifMatch,
+    Response<IntegrationRuntimeResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, IntegrationRuntimeResourceInner integrationRuntime, String ifMatch,
         Context context);
 
     /**
      * Creates or updates an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -89,20 +87,17 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime);
+    IntegrationRuntimeResourceInner createOrUpdate(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, IntegrationRuntimeResourceInner integrationRuntime);
 
     /**
      * Gets an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,16 +105,12 @@ public interface IntegrationRuntimesClient {
      * @return an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeResourceInner> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        String ifNoneMatch,
-        Context context);
+    Response<IntegrationRuntimeResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, String ifNoneMatch, Context context);
 
     /**
      * Gets an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -133,7 +124,7 @@ public interface IntegrationRuntimesClient {
 
     /**
      * Updates an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -145,16 +136,13 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest,
+    Response<IntegrationRuntimeResourceInner> updateWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest,
         Context context);
 
     /**
      * Updates an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -165,15 +153,12 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeResourceInner update(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
+    IntegrationRuntimeResourceInner update(String resourceGroupName, String factoryName, String integrationRuntimeName,
         UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest);
 
     /**
      * Deletes an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -184,12 +169,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Deletes an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -202,7 +187,7 @@ public interface IntegrationRuntimesClient {
 
     /**
      * Gets detailed status information for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -213,12 +198,12 @@ public interface IntegrationRuntimesClient {
      * @return detailed status information for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Gets detailed status information for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -228,12 +213,12 @@ public interface IntegrationRuntimesClient {
      * @return detailed status information for an integration runtime.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner getStatus(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponseInner getStatus(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -241,17 +226,17 @@ public interface IntegrationRuntimesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
-     *     Response}.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
-        listOutboundNetworkDependenciesEndpointsWithResponse(
-            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String factoryName,
+            String integrationRuntimeName, Context context);
 
     /**
      * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -267,7 +252,7 @@ public interface IntegrationRuntimesClient {
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -276,16 +261,16 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials along with {@link Response}.
+     * credentials along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeConnectionInfoInner> getConnectionInfoWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeConnectionInfoInner> getConnectionInfoWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, Context context);
 
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source
      * credentials.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -293,15 +278,15 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the on-premises integration runtime connection information for encrypting the on-premises data source
-     *     credentials.
+     * credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeConnectionInfoInner getConnectionInfo(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    IntegrationRuntimeConnectionInfoInner getConnectionInfo(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Regenerates the authentication key for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -313,16 +298,13 @@ public interface IntegrationRuntimesClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> regenerateAuthKeyWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
-        Context context);
+    Response<IntegrationRuntimeAuthKeysInner> regenerateAuthKeyWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters, Context context);
 
     /**
      * Regenerates the authentication key for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -333,15 +315,12 @@ public interface IntegrationRuntimesClient {
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner regenerateAuthKey(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
+    IntegrationRuntimeAuthKeysInner regenerateAuthKey(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * Retrieves the authentication keys for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -352,12 +331,12 @@ public interface IntegrationRuntimesClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> listAuthKeysWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeAuthKeysInner> listAuthKeysWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Retrieves the authentication keys for an integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -367,12 +346,12 @@ public interface IntegrationRuntimesClient {
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner listAuthKeys(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    IntegrationRuntimeAuthKeysInner listAuthKeys(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -382,12 +361,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
+        beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -398,12 +377,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
+        beginStart(String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -413,12 +392,12 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner start(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponseInner start(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Starts a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -429,12 +408,12 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner start(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    IntegrationRuntimeStatusResponseInner start(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -444,12 +423,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -460,12 +439,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -478,7 +457,7 @@ public interface IntegrationRuntimesClient {
 
     /**
      * Stops a ManagedReserved type integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -495,7 +474,7 @@ public interface IntegrationRuntimesClient {
      * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
      * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
      * node than using this API directly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -506,15 +485,15 @@ public interface IntegrationRuntimesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> syncCredentialsWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<Void> syncCredentialsWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
      * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
      * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
      * node than using this API directly.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -528,7 +507,7 @@ public interface IntegrationRuntimesClient {
     /**
      * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
      * integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -537,16 +516,16 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime along with {@link Response}.
+     * integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeMonitoringDataInner> getMonitoringDataWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeMonitoringDataInner> getMonitoringDataWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName, Context context);
 
     /**
      * Get the integration runtime monitoring data, which includes the monitor data for all the nodes under this
      * integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -554,15 +533,15 @@ public interface IntegrationRuntimesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime monitoring data, which includes the monitor data for all the nodes under this
-     *     integration runtime.
+     * integration runtime.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeMonitoringDataInner getMonitoringData(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    IntegrationRuntimeMonitoringDataInner getMonitoringData(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Upgrade self-hosted integration runtime to latest version if availability.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -573,12 +552,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> upgradeWithResponse(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    Response<Void> upgradeWithResponse(String resourceGroupName, String factoryName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Upgrade self-hosted integration runtime to latest version if availability.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -591,7 +570,7 @@ public interface IntegrationRuntimesClient {
 
     /**
      * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -603,16 +582,12 @@ public interface IntegrationRuntimesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeLinksWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest,
-        Context context);
+    Response<Void> removeLinksWithResponse(String resourceGroupName, String factoryName, String integrationRuntimeName,
+        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest, Context context);
 
     /**
      * Remove all linked integration runtimes under specific data factory in a self-hosted integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -622,15 +597,12 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeLinks(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
+    void removeLinks(String resourceGroupName, String factoryName, String integrationRuntimeName,
         LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest);
 
     /**
      * Create a linked integration runtime entry in a shared integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -642,16 +614,13 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStatusResponseInner> createLinkedIntegrationRuntimeWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest,
-        Context context);
+    Response<IntegrationRuntimeStatusResponseInner> createLinkedIntegrationRuntimeWithResponse(String resourceGroupName,
+        String factoryName, String integrationRuntimeName,
+        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest, Context context);
 
     /**
      * Create a linked integration runtime entry in a shared integration runtime.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -662,9 +631,6 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner createLinkedIntegrationRuntime(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
+    IntegrationRuntimeStatusResponseInner createLinkedIntegrationRuntime(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
 }

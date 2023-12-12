@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of Radius Server root certificate of VpnServerConfiguration. */
+/**
+ * Properties of Radius Server root certificate of VpnServerConfiguration.
+ */
 @Fluent
 public final class VpnServerConfigRadiusServerRootCertificate {
     /*
@@ -22,13 +24,15 @@ public final class VpnServerConfigRadiusServerRootCertificate {
     @JsonProperty(value = "publicCertData")
     private String publicCertData;
 
-    /** Creates an instance of VpnServerConfigRadiusServerRootCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigRadiusServerRootCertificate class.
+     */
     public VpnServerConfigRadiusServerRootCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class VpnServerConfigRadiusServerRootCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigRadiusServerRootCertificate object itself.
      */
@@ -48,7 +52,7 @@ public final class VpnServerConfigRadiusServerRootCertificate {
 
     /**
      * Get the publicCertData property: The certificate public data.
-     *
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -57,7 +61,7 @@ public final class VpnServerConfigRadiusServerRootCertificate {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     *
+     * 
      * @param publicCertData the publicCertData value to set.
      * @return the VpnServerConfigRadiusServerRootCertificate object itself.
      */
@@ -68,7 +72,7 @@ public final class VpnServerConfigRadiusServerRootCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

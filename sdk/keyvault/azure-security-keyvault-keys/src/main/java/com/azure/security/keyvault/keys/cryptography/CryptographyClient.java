@@ -11,7 +11,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils;
+import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -23,6 +25,8 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
+import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -30,10 +34,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.checkKeyPermissions;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.initializeCryptoClient;
-import static com.azure.security.keyvault.keys.cryptography.CryptographyClientImpl.unpackAndValidateId;
-
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.checkKeyPermissions;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeCryptoClient;
 
 /**
  * The {@link CryptographyClient} provides synchronous methods to perform cryptographic operations using asymmetric and
@@ -77,9 +79,9 @@ import static com.azure.security.keyvault.keys.cryptography.CryptographyClientIm
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Encrypt Data</h2>
  * The {@link CryptographyClient} can be used to encrypt data.
@@ -103,9 +105,9 @@ import static com.azure.security.keyvault.keys.cryptography.CryptographyClientIm
  *
  * <p><strong>Note:</strong> For the asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
  *
- * <br/>
+ * <br>
  *
- * <hr/>
+ * <hr>
  *
  * <h2>Decrypt Data</h2>
  * The {@link CryptographyClient} can be used to decrypt data.
@@ -130,11 +132,10 @@ import static com.azure.security.keyvault.keys.cryptography.CryptographyClientIm
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder
  */
-@ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = CryptographyService.class)
+@ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = {KeyClientImpl.KeyClientService.class,
+    SecretMinClientImpl.SecretMinClientService.class})
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
-
-    private final String keyCollection;
 
     private volatile boolean localOperationNotSupported = false;
     private LocalKeyCryptographyClient localKeyCryptographyClient;
@@ -152,9 +153,9 @@ public class CryptographyClient {
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
      */
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        this.keyCollection = unpackAndValidateId(keyId);
-        this.keyId = keyId;
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
+
+        this.keyId = keyId;
         this.key = null;
     }
 
@@ -179,11 +180,10 @@ public class CryptographyClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
-        this.keyCollection = null;
         this.key = jsonWebKey;
         this.keyId = jsonWebKey.getId();
         this.implClient = null;
-        this.localKeyCryptographyClient = initializeCryptoClient(key, null);
+        this.localKeyCryptographyClient = initializeCryptoClient(key, null, LOGGER);
     }
 
     /**
@@ -247,7 +247,7 @@ public class CryptographyClient {
 
     JsonWebKey getSecretKey() {
         try {
-            return implClient.getSecretKey(Context.NONE).getValue();
+            return implClient.getSecretKey();
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -265,7 +265,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -317,7 +317,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -359,13 +359,12 @@ public class CryptographyClient {
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         if (!isValidKeyLocallyAvailable()) {
             return implClient.encrypt(algorithm, plaintext, context);
+
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Encrypt operation is missing permission/not supported for key with id: %s",
-                        key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.encrypt(algorithm, plaintext, key, context);
@@ -383,7 +382,7 @@ public class CryptographyClient {
      * the specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -431,10 +430,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Encrypt operation is missing permission/not supported for key with id: %s",
-                        key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.encrypt(encryptParameters, key, context);
@@ -451,7 +448,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -505,7 +502,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -553,9 +550,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Decrypt operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Decrypt operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.decrypt(algorithm, ciphertext, key, context);
@@ -572,7 +568,7 @@ public class CryptographyClient {
      * the specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
      * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
      * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
@@ -623,9 +619,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Decrypt operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Decrypt operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.decrypt(decryptParameters, key, context);
@@ -725,9 +720,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Sign operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Sign operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.sign(algorithm, digest, key, context);
@@ -835,9 +829,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Verify operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Verify operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.verify(algorithm, digest, signature, key, context);
@@ -852,7 +845,7 @@ public class CryptographyClient {
      * key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
      * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
@@ -895,7 +888,7 @@ public class CryptographyClient {
      * key content. Possible values include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
      * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
      *
@@ -935,9 +928,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Wrap key operation is not allowed for key with id: %s", this.key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Wrap key operation is not allowed for key with id: " + this.key.getId()));
         }
 
         return localKeyCryptographyClient.wrapKey(algorithm, key, this.key, context);
@@ -953,7 +945,7 @@ public class CryptographyClient {
      * specified encrypted key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
      * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
      *
@@ -1000,7 +992,7 @@ public class CryptographyClient {
      * specified encrypted key content. Possible values for asymmetric keys include:
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
+     * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
      * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
      *
@@ -1043,9 +1035,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Unwrap key operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Unwrap key operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, key, context);
@@ -1139,9 +1130,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Sign operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Sign operation is not allowed for key with id: %s" + key.getId()));
         }
 
         return localKeyCryptographyClient.signData(algorithm, data, key, context);
@@ -1246,9 +1236,8 @@ public class CryptographyClient {
         }
 
         if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException(
-                    String.format("Verify operation is not allowed for key with id: %s", key.getId())));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
+                "Verify operation is not allowed for key with id: " + key.getId()));
         }
 
         return localKeyCryptographyClient.verifyData(algorithm, data, signature, key, context);
@@ -1259,40 +1248,30 @@ public class CryptographyClient {
             return false;
         }
 
-        boolean keyNotAvailable = (key == null && keyCollection != null);
-
-        if (keyNotAvailable) {
-            if (Objects.equals(keyCollection, CryptographyClientImpl.SECRETS_COLLECTION)) {
-                key = getSecretKey();
-            } else {
-                key = getKey().getKey();
-            }
+        if (key == null && implClient.getKeyCollection() != null) {
+            key = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? getSecretKey() : getKey().getKey();
         }
 
-        if (key == null) {
+        if (key == null || !key.isValid()) {
             return false;
         }
 
-        if (key.isValid()) {
-            if (localKeyCryptographyClient == null) {
-                try {
-                    localKeyCryptographyClient = initializeCryptoClient(key, implClient);
-                } catch (RuntimeException e) {
-                    localOperationNotSupported = true;
+        if (localKeyCryptographyClient == null) {
+            try {
+                localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
+            } catch (RuntimeException e) {
+                localOperationNotSupported = true;
+                LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
 
-                    LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
-
-                    return false;
-                }
+                return false;
             }
-
-            return true;
-        } else {
-            return false;
         }
+
+        return true;
     }
 
-    CryptographyClientImpl getImplClient() {
-        return implClient;
+    String getVaultUrl() {
+        return implClient.getVaultUrl();
     }
 }

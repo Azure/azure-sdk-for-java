@@ -8,15 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Spark configuration reference type. */
+/**
+ * Spark configuration reference type.
+ */
 public final class SparkConfigurationReferenceType extends ExpandableStringEnum<SparkConfigurationReferenceType> {
-    /** Static value SparkConfigurationReference for SparkConfigurationReferenceType. */
-    public static final SparkConfigurationReferenceType SPARK_CONFIGURATION_REFERENCE =
-        fromString("SparkConfigurationReference");
+    /**
+     * Static value SparkConfigurationReference for SparkConfigurationReferenceType.
+     */
+    public static final SparkConfigurationReferenceType SPARK_CONFIGURATION_REFERENCE
+        = fromString("SparkConfigurationReference");
 
     /**
      * Creates a new instance of SparkConfigurationReferenceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -25,7 +29,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
 
     /**
      * Creates or finds a SparkConfigurationReferenceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SparkConfigurationReferenceType.
      */
@@ -36,7 +40,7 @@ public final class SparkConfigurationReferenceType extends ExpandableStringEnum<
 
     /**
      * Gets known SparkConfigurationReferenceType values.
-     *
+     * 
      * @return known SparkConfigurationReferenceType values.
      */
     public static Collection<SparkConfigurationReferenceType> values() {

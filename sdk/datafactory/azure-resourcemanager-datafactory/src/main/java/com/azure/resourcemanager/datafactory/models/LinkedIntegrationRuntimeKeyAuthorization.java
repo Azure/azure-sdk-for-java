@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The key authorization type integration runtime. */
+/**
+ * The key authorization type integration runtime.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
 @JsonTypeName("Key")
 @Fluent
@@ -21,13 +23,15 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     @JsonProperty(value = "key", required = true)
     private SecureString key;
 
-    /** Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class.
+     */
     public LinkedIntegrationRuntimeKeyAuthorization() {
     }
 
     /**
      * Get the key property: The key used for authorization.
-     *
+     * 
      * @return the key value.
      */
     public SecureString key() {
@@ -36,7 +40,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
 
     /**
      * Set the key property: The key used for authorization.
-     *
+     * 
      * @param key the key value to set.
      * @return the LinkedIntegrationRuntimeKeyAuthorization object itself.
      */
@@ -47,17 +51,15 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
         } else {
             key().validate();
         }

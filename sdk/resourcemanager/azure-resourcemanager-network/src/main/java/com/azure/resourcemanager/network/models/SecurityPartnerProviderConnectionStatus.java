@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of the connection with Security Partner Provider. */
+/**
+ * The current state of the connection with Security Partner Provider.
+ */
 public final class SecurityPartnerProviderConnectionStatus
     extends ExpandableStringEnum<SecurityPartnerProviderConnectionStatus> {
-    /** Static value Unknown for SecurityPartnerProviderConnectionStatus. */
+    /**
+     * Static value Unknown for SecurityPartnerProviderConnectionStatus.
+     */
     public static final SecurityPartnerProviderConnectionStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value PartiallyConnected for SecurityPartnerProviderConnectionStatus. */
+    /**
+     * Static value PartiallyConnected for SecurityPartnerProviderConnectionStatus.
+     */
     public static final SecurityPartnerProviderConnectionStatus PARTIALLY_CONNECTED = fromString("PartiallyConnected");
 
-    /** Static value Connected for SecurityPartnerProviderConnectionStatus. */
+    /**
+     * Static value Connected for SecurityPartnerProviderConnectionStatus.
+     */
     public static final SecurityPartnerProviderConnectionStatus CONNECTED = fromString("Connected");
 
-    /** Static value NotConnected for SecurityPartnerProviderConnectionStatus. */
+    /**
+     * Static value NotConnected for SecurityPartnerProviderConnectionStatus.
+     */
     public static final SecurityPartnerProviderConnectionStatus NOT_CONNECTED = fromString("NotConnected");
 
     /**
      * Creates a new instance of SecurityPartnerProviderConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class SecurityPartnerProviderConnectionStatus
 
     /**
      * Creates or finds a SecurityPartnerProviderConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityPartnerProviderConnectionStatus.
      */
@@ -45,7 +55,7 @@ public final class SecurityPartnerProviderConnectionStatus
 
     /**
      * Gets known SecurityPartnerProviderConnectionStatus values.
-     *
+     * 
      * @return known SecurityPartnerProviderConnectionStatus values.
      */
     public static Collection<SecurityPartnerProviderConnectionStatus> values() {
