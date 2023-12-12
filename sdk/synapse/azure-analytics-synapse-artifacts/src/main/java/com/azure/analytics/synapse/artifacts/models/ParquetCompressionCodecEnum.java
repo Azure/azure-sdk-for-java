@@ -8,31 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ParquetCompressionCodecEnum. */
+/**
+ * Defines values for ParquetCompressionCodecEnum.
+ */
 public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<ParquetCompressionCodecEnum> {
-    /** Static value none for ParquetCompressionCodecEnum. */
+    /**
+     * Static value none for ParquetCompressionCodecEnum.
+     */
     public static final ParquetCompressionCodecEnum NONE = fromString("none");
 
-    /** Static value gzip for ParquetCompressionCodecEnum. */
+    /**
+     * Static value gzip for ParquetCompressionCodecEnum.
+     */
     public static final ParquetCompressionCodecEnum GZIP = fromString("gzip");
 
-    /** Static value snappy for ParquetCompressionCodecEnum. */
+    /**
+     * Static value snappy for ParquetCompressionCodecEnum.
+     */
     public static final ParquetCompressionCodecEnum SNAPPY = fromString("snappy");
 
-    /** Static value lzo for ParquetCompressionCodecEnum. */
+    /**
+     * Static value lzo for ParquetCompressionCodecEnum.
+     */
     public static final ParquetCompressionCodecEnum LZO = fromString("lzo");
 
     /**
      * Creates a new instance of ParquetCompressionCodecEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ParquetCompressionCodecEnum() {}
+    public ParquetCompressionCodecEnum() {
+    }
 
     /**
      * Creates or finds a ParquetCompressionCodecEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ParquetCompressionCodecEnum.
      */
@@ -43,7 +54,7 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
 
     /**
      * Gets known ParquetCompressionCodecEnum values.
-     *
+     * 
      * @return known ParquetCompressionCodecEnum values.
      */
     public static Collection<ParquetCompressionCodecEnum> values() {

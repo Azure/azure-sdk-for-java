@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure ML WebService Input/Output file. */
+/**
+ * Azure ML WebService Input/Output file.
+ */
 @Fluent
 public final class AzureMLWebServiceFile {
     /*
@@ -23,13 +25,16 @@ public final class AzureMLWebServiceFile {
     @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
-    /** Creates an instance of AzureMLWebServiceFile class. */
-    public AzureMLWebServiceFile() {}
+    /**
+     * Creates an instance of AzureMLWebServiceFile class.
+     */
+    public AzureMLWebServiceFile() {
+    }
 
     /**
      * Get the filePath property: The relative file path, including container name, in the Azure Blob Storage specified
      * by the LinkedService. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the filePath value.
      */
     public Object getFilePath() {
@@ -39,7 +44,7 @@ public final class AzureMLWebServiceFile {
     /**
      * Set the filePath property: The relative file path, including container name, in the Azure Blob Storage specified
      * by the LinkedService. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the AzureMLWebServiceFile object itself.
      */
@@ -51,7 +56,7 @@ public final class AzureMLWebServiceFile {
     /**
      * Get the linkedServiceName property: Reference to an Azure Storage LinkedService, where Azure ML WebService
      * Input/Output file located.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -61,7 +66,7 @@ public final class AzureMLWebServiceFile {
     /**
      * Set the linkedServiceName property: Reference to an Azure Storage LinkedService, where Azure ML WebService
      * Input/Output file located.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the AzureMLWebServiceFile object itself.
      */

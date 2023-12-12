@@ -13,24 +13,34 @@ import java.util.Collection;
  * community or prefix.
  */
 public final class RouteMapActionType extends ExpandableStringEnum<RouteMapActionType> {
-    /** Static value Unknown for RouteMapActionType. */
+    /**
+     * Static value Unknown for RouteMapActionType.
+     */
     public static final RouteMapActionType UNKNOWN = fromString("Unknown");
 
-    /** Static value Remove for RouteMapActionType. */
+    /**
+     * Static value Remove for RouteMapActionType.
+     */
     public static final RouteMapActionType REMOVE = fromString("Remove");
 
-    /** Static value Add for RouteMapActionType. */
+    /**
+     * Static value Add for RouteMapActionType.
+     */
     public static final RouteMapActionType ADD = fromString("Add");
 
-    /** Static value Replace for RouteMapActionType. */
+    /**
+     * Static value Replace for RouteMapActionType.
+     */
     public static final RouteMapActionType REPLACE = fromString("Replace");
 
-    /** Static value Drop for RouteMapActionType. */
+    /**
+     * Static value Drop for RouteMapActionType.
+     */
     public static final RouteMapActionType DROP = fromString("Drop");
 
     /**
      * Creates a new instance of RouteMapActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +49,7 @@ public final class RouteMapActionType extends ExpandableStringEnum<RouteMapActio
 
     /**
      * Creates or finds a RouteMapActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RouteMapActionType.
      */
@@ -50,7 +60,7 @@ public final class RouteMapActionType extends ExpandableStringEnum<RouteMapActio
 
     /**
      * Gets known RouteMapActionType values.
-     *
+     * 
      * @return known RouteMapActionType values.
      */
     public static Collection<RouteMapActionType> values() {

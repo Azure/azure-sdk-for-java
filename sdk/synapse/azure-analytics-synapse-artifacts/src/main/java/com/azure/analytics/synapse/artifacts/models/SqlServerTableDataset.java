@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The on-premises SQL Server dataset. */
+/**
+ * The on-premises SQL Server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlServerTable")
 @JsonFlatten
@@ -36,13 +38,16 @@ public class SqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of SqlServerTableDataset class. */
-    public SqlServerTableDataset() {}
+    /**
+     * Creates an instance of SqlServerTableDataset class.
+     */
+    public SqlServerTableDataset() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +57,7 @@ public class SqlServerTableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SqlServerTableDataset object itself.
      */
@@ -64,7 +69,7 @@ public class SqlServerTableDataset extends Dataset {
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the SQL Server dataset. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -74,7 +79,7 @@ public class SqlServerTableDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of the SQL Server dataset. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the SqlServerTableDataset object itself.
      */
@@ -86,7 +91,7 @@ public class SqlServerTableDataset extends Dataset {
     /**
      * Get the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -96,7 +101,7 @@ public class SqlServerTableDataset extends Dataset {
     /**
      * Set the table property: The table name of the SQL Server dataset. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SqlServerTableDataset object itself.
      */
@@ -105,49 +110,63 @@ public class SqlServerTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

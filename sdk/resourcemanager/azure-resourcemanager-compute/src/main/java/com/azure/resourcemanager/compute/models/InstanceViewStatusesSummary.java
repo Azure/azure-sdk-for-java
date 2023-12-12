@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Instance view statuses. */
+/**
+ * Instance view statuses.
+ */
 @Immutable
 public final class InstanceViewStatusesSummary {
     /*
@@ -17,13 +19,15 @@ public final class InstanceViewStatusesSummary {
     @JsonProperty(value = "statusesSummary", access = JsonProperty.Access.WRITE_ONLY)
     private List<StatusCodeCount> statusesSummary;
 
-    /** Creates an instance of InstanceViewStatusesSummary class. */
+    /**
+     * Creates an instance of InstanceViewStatusesSummary class.
+     */
     public InstanceViewStatusesSummary() {
     }
 
     /**
      * Get the statusesSummary property: The summary.
-     *
+     * 
      * @return the statusesSummary value.
      */
     public List<StatusCodeCount> statusesSummary() {
@@ -32,7 +36,7 @@ public final class InstanceViewStatusesSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

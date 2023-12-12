@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of IP configuration. */
+/**
+ * Properties of IP configuration.
+ */
 @Fluent
 public final class IpConfigurationPropertiesFormatInner {
     /*
@@ -42,13 +44,15 @@ public final class IpConfigurationPropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of IpConfigurationPropertiesFormatInner class. */
+    /**
+     * Creates an instance of IpConfigurationPropertiesFormatInner class.
+     */
     public IpConfigurationPropertiesFormatInner() {
     }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -57,7 +61,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAddress property: The private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -68,7 +72,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -77,19 +81,19 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
-    public IpConfigurationPropertiesFormatInner withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public IpConfigurationPropertiesFormatInner
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -98,7 +102,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Set the subnet property: The reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -109,7 +113,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Get the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -118,7 +122,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Set the publicIpAddress property: The reference to the public IP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -129,7 +133,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +142,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

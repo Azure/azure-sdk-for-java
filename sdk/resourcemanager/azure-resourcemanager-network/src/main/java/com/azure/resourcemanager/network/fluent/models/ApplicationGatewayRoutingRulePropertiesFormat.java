@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRouting
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of routing rule of the application gateway. */
+/**
+ * Properties of routing rule of the application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRoutingRulePropertiesFormat {
     /*
@@ -49,13 +51,15 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayRoutingRulePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayRoutingRulePropertiesFormat class.
+     */
     public ApplicationGatewayRoutingRulePropertiesFormat() {
     }
 
     /**
      * Get the ruleType property: Rule type.
-     *
+     * 
      * @return the ruleType value.
      */
     public ApplicationGatewayRequestRoutingRuleType ruleType() {
@@ -64,19 +68,19 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the ruleType property: Rule type.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayRoutingRulePropertiesFormat withRuleType(
-        ApplicationGatewayRequestRoutingRuleType ruleType) {
+    public ApplicationGatewayRoutingRulePropertiesFormat
+        withRuleType(ApplicationGatewayRequestRoutingRuleType ruleType) {
         this.ruleType = ruleType;
         return this;
     }
 
     /**
      * Get the priority property: Priority of the routing rule.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -85,7 +89,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the priority property: Priority of the routing rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -96,7 +100,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -105,7 +109,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -116,7 +120,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the backendSettings property: Backend settings resource of the application gateway.
-     *
+     * 
      * @return the backendSettings value.
      */
     public SubResource backendSettings() {
@@ -125,7 +129,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the backendSettings property: Backend settings resource of the application gateway.
-     *
+     * 
      * @param backendSettings the backendSettings value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -136,7 +140,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the listener property: Listener resource of the application gateway.
-     *
+     * 
      * @return the listener value.
      */
     public SubResource listener() {
@@ -145,7 +149,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the listener property: Listener resource of the application gateway.
-     *
+     * 
      * @param listener the listener value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -156,7 +160,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -165,7 +169,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

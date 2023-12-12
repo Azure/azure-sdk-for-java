@@ -42,7 +42,7 @@
       --add-reads com.azure.storage.blob.cryptography=com.azure.http.netty
       --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
-    <parallelizeLiveTests>true</parallelizeLiveTests>
+    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>
 
   <dependencies>
@@ -125,7 +125,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.7.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.7.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

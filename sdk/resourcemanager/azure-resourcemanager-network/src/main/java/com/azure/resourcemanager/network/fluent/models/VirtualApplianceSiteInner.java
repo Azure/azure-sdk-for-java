@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.Office365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Appliance Site resource. */
+/**
+ * Virtual Appliance Site resource.
+ */
 @Fluent
 public final class VirtualApplianceSiteInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class VirtualApplianceSiteInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VirtualApplianceSiteInner class. */
+    /**
+     * Creates an instance of VirtualApplianceSiteInner class.
+     */
     public VirtualApplianceSiteInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Virtual Appliance Sites.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualApplianceSiteProperties innerProperties() {
@@ -52,7 +56,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the name property: Name of the virtual appliance site.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Set the name property: Name of the virtual appliance site.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualApplianceSiteInner object itself.
      */
@@ -72,7 +76,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the type property: Site type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualApplianceSiteInner withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the addressPrefix property: Address Prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -106,7 +112,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Set the addressPrefix property: Address Prefix.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the VirtualApplianceSiteInner object itself.
      */
@@ -120,7 +126,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the o365Policy property: Office 365 Policy.
-     *
+     * 
      * @return the o365Policy value.
      */
     public Office365PolicyProperties o365Policy() {
@@ -129,7 +135,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Set the o365Policy property: Office 365 Policy.
-     *
+     * 
      * @param o365Policy the o365Policy value to set.
      * @return the VirtualApplianceSiteInner object itself.
      */
@@ -143,7 +149,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -152,7 +158,7 @@ public final class VirtualApplianceSiteInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

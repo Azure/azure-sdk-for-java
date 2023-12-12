@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DialogStateResponse model.
- */
+/** The DialogStateResponse model. */
 @Fluent
 public final class DialogStateResponse {
     /*
@@ -31,14 +29,8 @@ public final class DialogStateResponse {
     private String operationContext;
 
     /**
-     * Creates an instance of DialogStateResponse class.
-     */
-    public DialogStateResponse() {
-    }
-
-    /**
      * Get the dialogId property: The dialog ID.
-     * 
+     *
      * @return the dialogId value.
      */
     public String getDialogId() {
@@ -47,7 +39,7 @@ public final class DialogStateResponse {
 
     /**
      * Set the dialogId property: The dialog ID.
-     * 
+     *
      * @param dialogId the dialogId value to set.
      * @return the DialogStateResponse object itself.
      */
@@ -58,7 +50,7 @@ public final class DialogStateResponse {
 
     /**
      * Get the dialog property: Defines dialog.
-     * 
+     *
      * @return the dialog value.
      */
     public BaseDialog getDialog() {
@@ -67,7 +59,7 @@ public final class DialogStateResponse {
 
     /**
      * Set the dialog property: Defines dialog.
-     * 
+     *
      * @param dialog the dialog value to set.
      * @return the DialogStateResponse object itself.
      */
@@ -78,7 +70,7 @@ public final class DialogStateResponse {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -87,7 +79,7 @@ public final class DialogStateResponse {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the DialogStateResponse object itself.
      */

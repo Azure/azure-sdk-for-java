@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Address prefix type. */
+/**
+ * Address prefix type.
+ */
 public final class AddressPrefixType extends ExpandableStringEnum<AddressPrefixType> {
-    /** Static value IPPrefix for AddressPrefixType. */
+    /**
+     * Static value IPPrefix for AddressPrefixType.
+     */
     public static final AddressPrefixType IPPREFIX = fromString("IPPrefix");
 
-    /** Static value ServiceTag for AddressPrefixType. */
+    /**
+     * Static value ServiceTag for AddressPrefixType.
+     */
     public static final AddressPrefixType SERVICE_TAG = fromString("ServiceTag");
 
     /**
      * Creates a new instance of AddressPrefixType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AddressPrefixType extends ExpandableStringEnum<AddressPrefixT
 
     /**
      * Creates or finds a AddressPrefixType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AddressPrefixType.
      */
@@ -38,7 +44,7 @@ public final class AddressPrefixType extends ExpandableStringEnum<AddressPrefixT
 
     /**
      * Gets known AddressPrefixType values.
-     *
+     * 
      * @return known AddressPrefixType values.
      */
     public static Collection<AddressPrefixType> values() {

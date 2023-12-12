@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The IPSec integrity algorithm (IKE phase 1). */
+/**
+ * The IPSec integrity algorithm (IKE phase 1).
+ */
 public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
-    /** Static value MD5 for IpsecIntegrity. */
+    /**
+     * Static value MD5 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity MD5 = fromString("MD5");
 
-    /** Static value SHA1 for IpsecIntegrity. */
+    /**
+     * Static value SHA1 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity SHA1 = fromString("SHA1");
 
-    /** Static value SHA256 for IpsecIntegrity. */
+    /**
+     * Static value SHA256 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity SHA256 = fromString("SHA256");
 
-    /** Static value GCMAES128 for IpsecIntegrity. */
+    /**
+     * Static value GCMAES128 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity GCMAES128 = fromString("GCMAES128");
 
-    /** Static value GCMAES192 for IpsecIntegrity. */
+    /**
+     * Static value GCMAES192 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity GCMAES192 = fromString("GCMAES192");
 
-    /** Static value GCMAES256 for IpsecIntegrity. */
+    /**
+     * Static value GCMAES256 for IpsecIntegrity.
+     */
     public static final IpsecIntegrity GCMAES256 = fromString("GCMAES256");
 
     /**
      * Creates a new instance of IpsecIntegrity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
 
     /**
      * Creates or finds a IpsecIntegrity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpsecIntegrity.
      */
@@ -50,7 +64,7 @@ public final class IpsecIntegrity extends ExpandableStringEnum<IpsecIntegrity> {
 
     /**
      * Gets known IpsecIntegrity values.
-     *
+     * 
      * @return known IpsecIntegrity values.
      */
     public static Collection<IpsecIntegrity> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains ServiceProviderProperties in an ExpressRouteCircuit. */
+/**
+ * Contains ServiceProviderProperties in an ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitServiceProviderProperties {
     /*
@@ -28,13 +30,15 @@ public final class ExpressRouteCircuitServiceProviderProperties {
     @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;
 
-    /** Creates an instance of ExpressRouteCircuitServiceProviderProperties class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitServiceProviderProperties class.
+     */
     public ExpressRouteCircuitServiceProviderProperties() {
     }
 
     /**
      * Get the serviceProviderName property: The serviceProviderName.
-     *
+     * 
      * @return the serviceProviderName value.
      */
     public String serviceProviderName() {
@@ -43,7 +47,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the serviceProviderName property: The serviceProviderName.
-     *
+     * 
      * @param serviceProviderName the serviceProviderName value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Get the peeringLocation property: The peering location.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -63,7 +67,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the peeringLocation property: The peering location.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Get the bandwidthInMbps property: The BandwidthInMbps.
-     *
+     * 
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -83,7 +87,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Set the bandwidthInMbps property: The BandwidthInMbps.
-     *
+     * 
      * @param bandwidthInMbps the bandwidthInMbps value to set.
      * @return the ExpressRouteCircuitServiceProviderProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class ExpressRouteCircuitServiceProviderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

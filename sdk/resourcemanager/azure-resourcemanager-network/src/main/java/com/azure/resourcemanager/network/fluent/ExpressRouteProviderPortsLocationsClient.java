@@ -17,20 +17,20 @@ import reactor.core.publisher.Mono;
 public interface ExpressRouteProviderPortsLocationsClient {
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteProviderPort API service call along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteProviderPortListResultInner>> listWithResponseAsync(String filter);
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteProviderPort API service call on successful completion of {@link Mono}.
@@ -40,7 +40,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For example, you can use $filter=location eq '{state}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +53,7 @@ public interface ExpressRouteProviderPortsLocationsClient {
 
     /**
      * Retrieves all the ExpressRouteProviderPorts in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListExpressRouteProviderPort API service call.

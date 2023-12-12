@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Route resource. */
+/**
+ * Route resource.
+ */
 @Fluent
 public final class RoutePropertiesFormat {
     /*
@@ -44,13 +46,15 @@ public final class RoutePropertiesFormat {
     @JsonProperty(value = "hasBgpOverride")
     private Boolean hasBgpOverride;
 
-    /** Creates an instance of RoutePropertiesFormat class. */
+    /**
+     * Creates an instance of RoutePropertiesFormat class.
+     */
     public RoutePropertiesFormat() {
     }
 
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -59,7 +63,7 @@ public final class RoutePropertiesFormat {
 
     /**
      * Set the addressPrefix property: The destination CIDR to which the route applies.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -70,7 +74,7 @@ public final class RoutePropertiesFormat {
 
     /**
      * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -79,7 +83,7 @@ public final class RoutePropertiesFormat {
 
     /**
      * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -91,7 +95,7 @@ public final class RoutePropertiesFormat {
     /**
      * Get the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -101,7 +105,7 @@ public final class RoutePropertiesFormat {
     /**
      * Set the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -112,7 +116,7 @@ public final class RoutePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -122,7 +126,7 @@ public final class RoutePropertiesFormat {
     /**
      * Get the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
      * regardless of LPM.
-     *
+     * 
      * @return the hasBgpOverride value.
      */
     public Boolean hasBgpOverride() {
@@ -132,7 +136,7 @@ public final class RoutePropertiesFormat {
     /**
      * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
      * regardless of LPM.
-     *
+     * 
      * @param hasBgpOverride the hasBgpOverride value to set.
      * @return the RoutePropertiesFormat object itself.
      */
@@ -143,15 +147,13 @@ public final class RoutePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nextHopType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nextHopType in model RoutePropertiesFormat"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nextHopType in model RoutePropertiesFormat"));
         }
     }
 

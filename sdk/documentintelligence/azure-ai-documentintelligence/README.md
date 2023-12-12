@@ -32,6 +32,23 @@ It includes the following main features:
 ```
 [//]: # ({x-version-update-end})
 
+> Note: This version of the client library defaults to the `"2023-10-31-preview"` version of the service.
+
+This table shows the relationship between SDK versions and supported API versions of the service:
+
+| SDK version  |Supported API version of service
+|--------------|-
+| 1.0.0-beta.1 | 2023-10-31-preview
+
+> Note: Please rely on the older `azure-ai-formrecognizer` library through the older service API versions for retired
+> models, such as `"prebuilt-businessCard"` and `"prebuilt-document"`. For more information, see [Changelog][changelog].
+> The below table describes the relationship of each client and its supported API version(s):
+
+| API version        |Supported clients
+|--------------------|-
+| 2023-10-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient
+| 2023-07-31         | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK
+
 ### Authentication
 
 In order to interact with the Azure Document Intelligence Service you'll need to create an instance of client class,

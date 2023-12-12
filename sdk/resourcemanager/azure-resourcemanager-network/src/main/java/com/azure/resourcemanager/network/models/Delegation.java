@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ServiceDelegationProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details the service to which the subnet is delegated. */
+/**
+ * Details the service to which the subnet is delegated.
+ */
 @Fluent
 public final class Delegation extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class Delegation extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of Delegation class. */
+    /**
+     * Creates an instance of Delegation class.
+     */
     public Delegation() {
     }
 
     /**
      * Get the innerProperties property: Properties of the subnet.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceDelegationPropertiesFormat innerProperties() {
@@ -53,7 +57,7 @@ public final class Delegation extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a subnet. This name can be used to access
      * the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class Delegation extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a subnet. This name can be used to access
      * the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the Delegation object itself.
      */
@@ -74,7 +78,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,7 +87,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -92,7 +96,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Delegation object itself.
      */
@@ -101,7 +105,9 @@ public final class Delegation extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Delegation withId(String id) {
         super.withId(id);
@@ -111,7 +117,7 @@ public final class Delegation extends SubResource {
     /**
      * Get the serviceName property: The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -121,7 +127,7 @@ public final class Delegation extends SubResource {
     /**
      * Set the serviceName property: The name of the service to whom the subnet should be delegated (e.g.
      * Microsoft.Sql/servers).
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the Delegation object itself.
      */
@@ -135,7 +141,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Get the actions property: The actions permitted to the service upon delegation.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -144,7 +150,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service delegation resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +159,7 @@ public final class Delegation extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
