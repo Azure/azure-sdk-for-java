@@ -154,14 +154,14 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
                 // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
                 sleepIfRunningAgainstService(30 * 1000);
 
-
                 StepVerifier.create(primaryDataLakeServiceAsyncClient.getProperties())
                     .assertNext(p -> validatePropsSet(sentProperties, p))
                     .verifyComplete();
 
                 break;
             } catch (Exception ex) {
-                sleepIfRunningAgainstService(30 * 1000); // Retry delay
+                // Retry delay
+                sleepIfRunningAgainstService(30 * 1000);
             } finally {
                 retry++;
             }

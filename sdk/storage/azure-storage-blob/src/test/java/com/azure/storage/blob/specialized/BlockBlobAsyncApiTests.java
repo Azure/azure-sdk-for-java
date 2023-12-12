@@ -939,14 +939,6 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(e.getErrorCode(), BlobErrorCode.BLOB_ALREADY_EXISTS);
             });
-
-        File randomFile = getRandomFile(50);
-        randomFile.deleteOnExit();
-        createdFiles.add(randomFile);
-        Files.deleteIfExists(randomFile.toPath());
-
-        StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString()))
-            .verifyError(BlobStorageException.class);
     }
 
     @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
@@ -956,13 +948,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block();
-
-        File randomFile = getRandomFile(50);
-        randomFile.deleteOnExit();
-        createdFiles.add(randomFile);
-
-        StepVerifier.create(blobAsyncClient.uploadFromFile(randomFile.toPath().toString(), true))
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), true))
             .verifyComplete();
     }
 
