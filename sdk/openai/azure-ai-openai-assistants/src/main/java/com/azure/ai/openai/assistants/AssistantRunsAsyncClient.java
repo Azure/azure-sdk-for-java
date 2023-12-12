@@ -784,7 +784,7 @@ public final class AssistantRunsAsyncClient {
     public Mono<AssistantRun> submitRunToolOutputs(String threadId, String runId) {
         // Generated convenience method for submitRunToolOutputsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return submitRunToolOutputsWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
+        return submitRunToolOutputsWithResponse(threadId, runId, null, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantRun.class));
     }
 

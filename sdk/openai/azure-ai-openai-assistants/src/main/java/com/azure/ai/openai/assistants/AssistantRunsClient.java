@@ -760,7 +760,7 @@ public final class AssistantRunsClient {
     public AssistantRun submitRunToolOutputs(String threadId, String runId) {
         // Generated convenience method for submitRunToolOutputsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return submitRunToolOutputsWithResponse(threadId, runId, request, requestOptions).getValue()
+        return submitRunToolOutputsWithResponse(threadId, runId, null, requestOptions).getValue()
             .toObject(AssistantRun.class);
     }
 

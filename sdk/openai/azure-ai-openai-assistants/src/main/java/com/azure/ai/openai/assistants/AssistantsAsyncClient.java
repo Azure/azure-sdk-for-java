@@ -669,7 +669,7 @@ public final class AssistantsAsyncClient {
     public Mono<AssistantFile> createAssistantFile(String assistantId) {
         // Generated convenience method for createAssistantFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAssistantFileWithResponse(assistantId, request, requestOptions).flatMap(FluxUtil::toMono)
+        return createAssistantFileWithResponse(assistantId, null, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AssistantFile.class));
     }
 
