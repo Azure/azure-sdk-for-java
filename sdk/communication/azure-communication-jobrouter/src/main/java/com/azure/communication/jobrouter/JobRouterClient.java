@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
@@ -17,7 +16,6 @@ import com.azure.communication.jobrouter.implementation.models.CompleteJobOption
 import com.azure.communication.jobrouter.implementation.models.CompleteJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.DeclineJobOfferResultInternal;
-import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
@@ -25,7 +23,6 @@ import com.azure.communication.jobrouter.implementation.models.RouterWorkerInter
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
 import com.azure.communication.jobrouter.models.CreateJobOptions;
 import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
 import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
@@ -530,13 +527,11 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions,
-        RequestOptions requestOptions) {
+    public Response<RouterJob> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob),
-            requestOptions);
-        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(),
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
+            BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<RouterJob>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class)));
     }
 
