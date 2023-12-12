@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -13,6 +14,7 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
@@ -257,6 +259,7 @@ public final class JobRouterClientBuilder
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
+        policies.add(new HmacAuthenticationPolicy(new AzureKeyCredential(credential.getKey())));
         HttpHeaders headers = new HttpHeaders();
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
