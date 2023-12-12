@@ -366,9 +366,9 @@ public final class ResourceWriteCancelEventData implements JsonSerializable<Reso
         });
     }
 
-    static final private ClientLogger LOGGER = new ClientLogger(ResourceWriteCancelEventData.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceWriteCancelEventData.class);
 
-    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.

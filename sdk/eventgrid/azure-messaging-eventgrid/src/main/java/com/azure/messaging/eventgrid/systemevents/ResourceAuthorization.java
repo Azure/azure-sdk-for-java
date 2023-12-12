@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Get the scope property: The scope of the authorization.
-     *
+     * 
      * @return the scope value.
      */
     public String getScope() {
@@ -50,7 +49,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Set the scope property: The scope of the authorization.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -61,7 +60,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Get the action property: The action being requested.
-     *
+     * 
      * @return the action value.
      */
     public String getAction() {
@@ -70,7 +69,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Set the action property: The action being requested.
-     *
+     * 
      * @param action the action value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -81,7 +80,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Get the evidence property: The evidence for the authorization.
-     *
+     * 
      * @return the evidence value.
      */
     public Map<String, String> getEvidence() {
@@ -90,7 +89,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Set the evidence property: The evidence for the authorization.
-     *
+     * 
      * @param evidence the evidence value to set.
      * @return the ResourceAuthorization object itself.
      */
@@ -110,7 +109,7 @@ public final class ResourceAuthorization implements JsonSerializable<ResourceAut
 
     /**
      * Reads an instance of ResourceAuthorization from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceAuthorization if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

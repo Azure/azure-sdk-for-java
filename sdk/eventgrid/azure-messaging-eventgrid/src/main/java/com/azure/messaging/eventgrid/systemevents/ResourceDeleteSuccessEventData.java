@@ -367,9 +367,9 @@ public final class ResourceDeleteSuccessEventData implements JsonSerializable<Re
         });
     }
 
-    static final private ClientLogger LOGGER = new ClientLogger(ResourceDeleteSuccessEventData.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteSuccessEventData.class);
 
-    static final private SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
      * Get the claims property: The properties of the claims.

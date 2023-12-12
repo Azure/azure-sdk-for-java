@@ -225,7 +225,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
         });
     }
 
-    static final private ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class);
 
     /**
      * Get the tags property: The resource tags.
