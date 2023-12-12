@@ -159,6 +159,7 @@
 
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
+/sdk/openai/azure-ai-openai-assistant/               @brandom-msft @jpalvarezl @mssfang
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
