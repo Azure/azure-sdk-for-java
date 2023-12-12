@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- Removed classes `RoutingConfigurationNfv`, `PropagatedRouteTableNfv` and `RoutingConfigurationNfvSubResource`.
+- Removed class `RoutingConfigurationNfv`. Please used class `RoutingConfiguration`.
 
 ### Other Changes
 
