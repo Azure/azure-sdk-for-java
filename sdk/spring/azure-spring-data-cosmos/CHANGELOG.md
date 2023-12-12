@@ -11,7 +11,7 @@
 * Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
 
 #### Other Changes
-* Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 37840](https://github.com/Azure/azure-sdk-for-java/pull/37840).
+* Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 38029](https://github.com/Azure/azure-sdk-for-java/pull/38029).
 
 ### 5.7.0 (2023-11-07)
 
