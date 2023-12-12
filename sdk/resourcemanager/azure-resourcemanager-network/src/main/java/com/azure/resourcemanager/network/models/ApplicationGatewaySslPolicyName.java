@@ -8,31 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Ssl predefined policy name enums. */
+/**
+ * Ssl predefined policy name enums.
+ */
 public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<ApplicationGatewaySslPolicyName> {
-    /** Static value AppGwSslPolicy20150501 for ApplicationGatewaySslPolicyName. */
-    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20150501 =
-        fromString("AppGwSslPolicy20150501");
+    /**
+     * Static value AppGwSslPolicy20150501 for ApplicationGatewaySslPolicyName.
+     */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20150501
+        = fromString("AppGwSslPolicy20150501");
 
-    /** Static value AppGwSslPolicy20170401 for ApplicationGatewaySslPolicyName. */
-    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20170401 =
-        fromString("AppGwSslPolicy20170401");
+    /**
+     * Static value AppGwSslPolicy20170401 for ApplicationGatewaySslPolicyName.
+     */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20170401
+        = fromString("AppGwSslPolicy20170401");
 
-    /** Static value AppGwSslPolicy20170401S for ApplicationGatewaySslPolicyName. */
-    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20170401S =
-        fromString("AppGwSslPolicy20170401S");
+    /**
+     * Static value AppGwSslPolicy20170401S for ApplicationGatewaySslPolicyName.
+     */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20170401S
+        = fromString("AppGwSslPolicy20170401S");
 
-    /** Static value AppGwSslPolicy20220101 for ApplicationGatewaySslPolicyName. */
-    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101 =
-        fromString("AppGwSslPolicy20220101");
+    /**
+     * Static value AppGwSslPolicy20220101 for ApplicationGatewaySslPolicyName.
+     */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101
+        = fromString("AppGwSslPolicy20220101");
 
-    /** Static value AppGwSslPolicy20220101S for ApplicationGatewaySslPolicyName. */
-    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101S =
-        fromString("AppGwSslPolicy20220101S");
+    /**
+     * Static value AppGwSslPolicy20220101S for ApplicationGatewaySslPolicyName.
+     */
+    public static final ApplicationGatewaySslPolicyName APP_GW_SSL_POLICY20220101S
+        = fromString("AppGwSslPolicy20220101S");
 
     /**
      * Creates a new instance of ApplicationGatewaySslPolicyName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -41,7 +53,7 @@ public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<
 
     /**
      * Creates or finds a ApplicationGatewaySslPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewaySslPolicyName.
      */
@@ -52,7 +64,7 @@ public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<
 
     /**
      * Gets known ApplicationGatewaySslPolicyName values.
-     *
+     * 
      * @return known ApplicationGatewaySslPolicyName values.
      */
     public static Collection<ApplicationGatewaySslPolicyName> values() {

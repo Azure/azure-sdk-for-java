@@ -1149,6 +1149,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.network.models.BastionShareableLinkTokenListRequest",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.network.models.BastionActiveSessionListResult",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -2275,6 +2280,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -3944,21 +3954,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.network.models.RoutingConfigurationNfv",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.network.models.RoutingConfigurationNfvSubResource",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
-  "name" : "com.azure.resourcemanager.network.models.PropagatedRouteTableNfv",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.network.models.NetworkVirtualApplianceConnectionList",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -4655,6 +4650,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionStateType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetectionProfileType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

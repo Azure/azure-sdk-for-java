@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application security group properties. */
+/**
+ * Application security group properties.
+ */
 @Immutable
 public final class ApplicationSecurityGroupPropertiesFormat {
     /*
@@ -24,15 +26,17 @@ public final class ApplicationSecurityGroupPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationSecurityGroupPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationSecurityGroupPropertiesFormat class.
+     */
     public ApplicationSecurityGroupPropertiesFormat() {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
-     * identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource
-     * groups.
-     *
+     * Get the resourceGuid property: The resource GUID property of the application security group resource. It
+     * uniquely identifies a resource, even if the user changes its name or migrate the resource across subscriptions
+     * or resource groups.
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -41,7 +45,7 @@ public final class ApplicationSecurityGroupPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the application security group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -50,7 +54,7 @@ public final class ApplicationSecurityGroupPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Constraints that determine the list of available Internet service providers. */
+/**
+ * Constraints that determine the list of available Internet service providers.
+ */
 @Fluent
 public final class AvailableProvidersListParameters {
     /*
@@ -35,13 +37,15 @@ public final class AvailableProvidersListParameters {
     @JsonProperty(value = "city")
     private String city;
 
-    /** Creates an instance of AvailableProvidersListParameters class. */
+    /**
+     * Creates an instance of AvailableProvidersListParameters class.
+     */
     public AvailableProvidersListParameters() {
     }
 
     /**
      * Get the azureLocations property: A list of Azure regions.
-     *
+     * 
      * @return the azureLocations value.
      */
     public List<String> azureLocations() {
@@ -50,7 +54,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the azureLocations property: A list of Azure regions.
-     *
+     * 
      * @param azureLocations the azureLocations value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -61,7 +65,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the country property: The country for available providers list.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -70,7 +74,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the country property: The country for available providers list.
-     *
+     * 
      * @param country the country value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -81,7 +85,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the state property: The state for available providers list.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -90,7 +94,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the state property: The state for available providers list.
-     *
+     * 
      * @param state the state value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -101,7 +105,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Get the city property: The city or town for available providers list.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -110,7 +114,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Set the city property: The city or town for available providers list.
-     *
+     * 
      * @param city the city value to set.
      * @return the AvailableProvidersListParameters object itself.
      */
@@ -121,7 +125,7 @@ public final class AvailableProvidersListParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

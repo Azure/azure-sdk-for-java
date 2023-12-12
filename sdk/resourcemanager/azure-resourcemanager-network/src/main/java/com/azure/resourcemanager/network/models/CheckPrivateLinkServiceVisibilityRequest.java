@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request body of the CheckPrivateLinkServiceVisibility API service call. */
+/**
+ * Request body of the CheckPrivateLinkServiceVisibility API service call.
+ */
 @Fluent
 public final class CheckPrivateLinkServiceVisibilityRequest {
     /*
@@ -16,13 +18,15 @@ public final class CheckPrivateLinkServiceVisibilityRequest {
     @JsonProperty(value = "privateLinkServiceAlias")
     private String privateLinkServiceAlias;
 
-    /** Creates an instance of CheckPrivateLinkServiceVisibilityRequest class. */
+    /**
+     * Creates an instance of CheckPrivateLinkServiceVisibilityRequest class.
+     */
     public CheckPrivateLinkServiceVisibilityRequest() {
     }
 
     /**
      * Get the privateLinkServiceAlias property: The alias of the private link service.
-     *
+     * 
      * @return the privateLinkServiceAlias value.
      */
     public String privateLinkServiceAlias() {
@@ -31,7 +35,7 @@ public final class CheckPrivateLinkServiceVisibilityRequest {
 
     /**
      * Set the privateLinkServiceAlias property: The alias of the private link service.
-     *
+     * 
      * @param privateLinkServiceAlias the privateLinkServiceAlias value to set.
      * @return the CheckPrivateLinkServiceVisibilityRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class CheckPrivateLinkServiceVisibilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

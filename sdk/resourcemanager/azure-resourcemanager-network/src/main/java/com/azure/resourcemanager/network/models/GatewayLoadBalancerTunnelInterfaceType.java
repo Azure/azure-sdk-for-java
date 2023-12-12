@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Traffic type of gateway load balancer tunnel interface. */
+/**
+ * Traffic type of gateway load balancer tunnel interface.
+ */
 public final class GatewayLoadBalancerTunnelInterfaceType
     extends ExpandableStringEnum<GatewayLoadBalancerTunnelInterfaceType> {
-    /** Static value None for GatewayLoadBalancerTunnelInterfaceType. */
+    /**
+     * Static value None for GatewayLoadBalancerTunnelInterfaceType.
+     */
     public static final GatewayLoadBalancerTunnelInterfaceType NONE = fromString("None");
 
-    /** Static value Internal for GatewayLoadBalancerTunnelInterfaceType. */
+    /**
+     * Static value Internal for GatewayLoadBalancerTunnelInterfaceType.
+     */
     public static final GatewayLoadBalancerTunnelInterfaceType INTERNAL = fromString("Internal");
 
-    /** Static value External for GatewayLoadBalancerTunnelInterfaceType. */
+    /**
+     * Static value External for GatewayLoadBalancerTunnelInterfaceType.
+     */
     public static final GatewayLoadBalancerTunnelInterfaceType EXTERNAL = fromString("External");
 
     /**
      * Creates a new instance of GatewayLoadBalancerTunnelInterfaceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class GatewayLoadBalancerTunnelInterfaceType
 
     /**
      * Creates or finds a GatewayLoadBalancerTunnelInterfaceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GatewayLoadBalancerTunnelInterfaceType.
      */
@@ -42,7 +50,7 @@ public final class GatewayLoadBalancerTunnelInterfaceType
 
     /**
      * Gets known GatewayLoadBalancerTunnelInterfaceType values.
-     *
+     * 
      * @return known GatewayLoadBalancerTunnelInterfaceType values.
      */
     public static Collection<GatewayLoadBalancerTunnelInterfaceType> values() {

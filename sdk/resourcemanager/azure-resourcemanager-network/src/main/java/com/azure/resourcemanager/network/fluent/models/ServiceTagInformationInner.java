@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.ServiceTagInformationPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The service tag information. */
+/**
+ * The service tag information.
+ */
 @Immutable
 public final class ServiceTagInformationInner {
     /*
@@ -35,13 +37,15 @@ public final class ServiceTagInformationInner {
     @JsonProperty(value = "serviceTagChangeNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceTagChangeNumber;
 
-    /** Creates an instance of ServiceTagInformationInner class. */
+    /**
+     * Creates an instance of ServiceTagInformationInner class.
+     */
     public ServiceTagInformationInner() {
     }
 
     /**
      * Get the properties property: Properties of the service tag information.
-     *
+     * 
      * @return the properties value.
      */
     public ServiceTagInformationPropertiesFormat properties() {
@@ -50,7 +54,7 @@ public final class ServiceTagInformationInner {
 
     /**
      * Get the name property: The name of service tag.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class ServiceTagInformationInner {
 
     /**
      * Get the id property: The ID of service tag.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +72,7 @@ public final class ServiceTagInformationInner {
 
     /**
      * Get the serviceTagChangeNumber property: The iteration number of service tag object for region.
-     *
+     * 
      * @return the serviceTagChangeNumber value.
      */
     public String serviceTagChangeNumber() {
@@ -77,7 +81,7 @@ public final class ServiceTagInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
