@@ -306,6 +306,11 @@
       <artifactId>jackson-databind</artifactId>
       <version>2.15.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.15.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
+    </dependency>
 
     <!-- TEST-->
     <dependency>
@@ -403,6 +408,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.mysql:mysql-connector-j:[8.1.0]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
+                <include>com.fasterxml.jackson.core:jackson-core:[2.15.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>jakarta.servlet:jakarta.servlet-api:[6.0.0]</include> <!-- {x-include-update;jakarta.servlet:jakarta.servlet-api;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[3.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
