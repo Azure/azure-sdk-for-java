@@ -8,20 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpandTypesForGetCapacityReservationGroups. */
+/**
+ * Defines values for ExpandTypesForGetCapacityReservationGroups.
+ */
 public final class ExpandTypesForGetCapacityReservationGroups
     extends ExpandableStringEnum<ExpandTypesForGetCapacityReservationGroups> {
-    /** Static value virtualMachineScaleSetVMs/$ref for ExpandTypesForGetCapacityReservationGroups. */
-    public static final ExpandTypesForGetCapacityReservationGroups VIRTUAL_MACHINE_SCALE_SET_VMS_REF =
-        fromString("virtualMachineScaleSetVMs/$ref");
+    /**
+     * Static value virtualMachineScaleSetVMs/$ref for ExpandTypesForGetCapacityReservationGroups.
+     */
+    public static final ExpandTypesForGetCapacityReservationGroups VIRTUAL_MACHINE_SCALE_SET_VMS_REF
+        = fromString("virtualMachineScaleSetVMs/$ref");
 
-    /** Static value virtualMachines/$ref for ExpandTypesForGetCapacityReservationGroups. */
-    public static final ExpandTypesForGetCapacityReservationGroups VIRTUAL_MACHINES_REF =
-        fromString("virtualMachines/$ref");
+    /**
+     * Static value virtualMachines/$ref for ExpandTypesForGetCapacityReservationGroups.
+     */
+    public static final ExpandTypesForGetCapacityReservationGroups VIRTUAL_MACHINES_REF
+        = fromString("virtualMachines/$ref");
 
     /**
      * Creates a new instance of ExpandTypesForGetCapacityReservationGroups value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +36,7 @@ public final class ExpandTypesForGetCapacityReservationGroups
 
     /**
      * Creates or finds a ExpandTypesForGetCapacityReservationGroups from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpandTypesForGetCapacityReservationGroups.
      */
@@ -41,7 +47,7 @@ public final class ExpandTypesForGetCapacityReservationGroups
 
     /**
      * Gets known ExpandTypesForGetCapacityReservationGroups values.
-     *
+     * 
      * @return known ExpandTypesForGetCapacityReservationGroups values.
      */
     public static Collection<ExpandTypesForGetCapacityReservationGroups> values() {

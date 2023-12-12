@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RouteMapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RouteMapsClient.
+ */
 public interface RouteMapsClient {
     /**
      * Retrieves the details of a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -30,15 +32,15 @@ public interface RouteMapsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RouteMap child resource of a Virtual hub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteMapInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName);
+    Mono<Response<RouteMapInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeMapName);
 
     /**
      * Retrieves the details of a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -52,7 +54,7 @@ public interface RouteMapsClient {
 
     /**
      * Retrieves the details of a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -63,12 +65,12 @@ public interface RouteMapsClient {
      * @return the RouteMap child resource of a Virtual hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteMapInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String routeMapName, Context context);
+    Response<RouteMapInner> getWithResponse(String resourceGroupName, String virtualHubName, String routeMapName,
+        Context context);
 
     /**
      * Retrieves the details of a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -82,7 +84,7 @@ public interface RouteMapsClient {
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -91,15 +93,15 @@ public interface RouteMapsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the RouteMap child resource of a Virtual hub along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeMapName, RouteMapInner routeMapParameters);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -110,12 +112,12 @@ public interface RouteMapsClient {
      * @return the {@link PollerFlux} for polling of the RouteMap child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
+    PollerFlux<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -126,12 +128,12 @@ public interface RouteMapsClient {
      * @return the {@link SyncPoller} for polling of the RouteMap child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
+    SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -143,16 +145,12 @@ public interface RouteMapsClient {
      * @return the {@link SyncPoller} for polling of the RouteMap child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeMapName,
-        RouteMapInner routeMapParameters,
-        Context context);
+    SyncPoller<PollResult<RouteMapInner>, RouteMapInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routeMapName, RouteMapInner routeMapParameters, Context context);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -163,12 +161,12 @@ public interface RouteMapsClient {
      * @return the RouteMap child resource of a Virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteMapInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
+    Mono<RouteMapInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName, String routeMapName,
+        RouteMapInner routeMapParameters);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -179,12 +177,12 @@ public interface RouteMapsClient {
      * @return the RouteMap child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteMapInner createOrUpdate(
-        String resourceGroupName, String virtualHubName, String routeMapName, RouteMapInner routeMapParameters);
+    RouteMapInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeMapName,
+        RouteMapInner routeMapParameters);
 
     /**
      * Creates a RouteMap if it doesn't exist else updates the existing one.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -196,16 +194,12 @@ public interface RouteMapsClient {
      * @return the RouteMap child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteMapInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routeMapName,
-        RouteMapInner routeMapParameters,
-        Context context);
+    RouteMapInner createOrUpdate(String resourceGroupName, String virtualHubName, String routeMapName,
+        RouteMapInner routeMapParameters, Context context);
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -215,12 +209,12 @@ public interface RouteMapsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routeMapName);
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -230,12 +224,12 @@ public interface RouteMapsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routeMapName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routeMapName);
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -245,12 +239,12 @@ public interface RouteMapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeMapName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routeMapName);
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -261,12 +255,12 @@ public interface RouteMapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routeMapName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName, String routeMapName,
+        Context context);
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -280,7 +274,7 @@ public interface RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -293,7 +287,7 @@ public interface RouteMapsClient {
 
     /**
      * Deletes a RouteMap.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param routeMapName The name of the RouteMap.
@@ -307,43 +301,43 @@ public interface RouteMapsClient {
 
     /**
      * Retrieves the details of all RouteMaps.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RouteMapInner> listAsync(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RouteMaps.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RouteMapInner> list(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RouteMaps.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RouteMap's resource group'.
      * @param virtualHubName The name of the VirtualHub containing the RouteMap.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of RouteMaps and a URL nextLink to get the next set of results as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RouteMapInner> list(String resourceGroupName, String virtualHubName, Context context);

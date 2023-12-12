@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trusted Root certificates properties for tls. */
+/**
+ * Trusted Root certificates properties for tls.
+ */
 @Fluent
 public final class FirewallPolicyCertificateAuthority {
     /*
@@ -22,14 +24,16 @@ public final class FirewallPolicyCertificateAuthority {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of FirewallPolicyCertificateAuthority class. */
+    /**
+     * Creates an instance of FirewallPolicyCertificateAuthority class.
+     */
     public FirewallPolicyCertificateAuthority() {
     }
 
     /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -39,7 +43,7 @@ public final class FirewallPolicyCertificateAuthority {
     /**
      * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
-     *
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the FirewallPolicyCertificateAuthority object itself.
      */
@@ -50,7 +54,7 @@ public final class FirewallPolicyCertificateAuthority {
 
     /**
      * Get the name property: Name of the CA certificate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class FirewallPolicyCertificateAuthority {
 
     /**
      * Set the name property: Name of the CA certificate.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyCertificateAuthority object itself.
      */
@@ -70,7 +74,7 @@ public final class FirewallPolicyCertificateAuthority {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

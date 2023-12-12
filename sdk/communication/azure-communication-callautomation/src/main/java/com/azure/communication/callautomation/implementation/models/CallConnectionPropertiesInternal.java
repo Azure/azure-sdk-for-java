@@ -70,8 +70,8 @@ public final class CallConnectionPropertiesInternal {
     /*
      * Source identity.
      */
-    @JsonProperty(value = "sourceIdentity")
-    private CommunicationIdentifierModel sourceIdentity;
+    @JsonProperty(value = "source")
+    private CommunicationIdentifierModel source;
 
     /*
      * The correlation ID.
@@ -83,8 +83,8 @@ public final class CallConnectionPropertiesInternal {
      * Identity of the answering entity. Only populated when identity is
      * provided in the request.
      */
-    @JsonProperty(value = "answeredByIdentifier")
-    private CommunicationUserIdentifierModel answeredByIdentifier;
+    @JsonProperty(value = "answeredBy")
+    private CommunicationUserIdentifierModel answeredBy;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -270,22 +270,22 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the sourceIdentity property: Source identity.
+     * Get the source property: Source identity.
      *
-     * @return the sourceIdentity value.
+     * @return the source value.
      */
-    public CommunicationIdentifierModel getSourceIdentity() {
-        return this.sourceIdentity;
+    public CommunicationIdentifierModel getSource() {
+        return this.source;
     }
 
     /**
-     * Set the sourceIdentity property: Source identity.
+     * Set the source property: Source identity.
      *
-     * @param sourceIdentity the sourceIdentity value to set.
+     * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
-        this.sourceIdentity = sourceIdentity;
+    public CallConnectionPropertiesInternal setSource(CommunicationIdentifierModel source) {
+        this.source = source;
         return this;
     }
 
@@ -310,25 +310,24 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the answeredByIdentifier property: Identity of the answering entity. Only populated when identity is provided
-     * in the request.
+     * Get the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
+     * request.
      *
-     * @return the answeredByIdentifier value.
+     * @return the answeredBy value.
      */
-    public CommunicationUserIdentifierModel getAnsweredByIdentifier() {
-        return this.answeredByIdentifier;
+    public CommunicationUserIdentifierModel getAnsweredBy() {
+        return this.answeredBy;
     }
 
     /**
-     * Set the answeredByIdentifier property: Identity of the answering entity. Only populated when identity is provided
-     * in the request.
+     * Set the answeredBy property: Identity of the answering entity. Only populated when identity is provided in the
+     * request.
      *
-     * @param answeredByIdentifier the answeredByIdentifier value to set.
+     * @param answeredBy the answeredBy value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setAnsweredByIdentifier(
-            CommunicationUserIdentifierModel answeredByIdentifier) {
-        this.answeredByIdentifier = answeredByIdentifier;
+    public CallConnectionPropertiesInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
+        this.answeredBy = answeredBy;
         return this;
     }
 }

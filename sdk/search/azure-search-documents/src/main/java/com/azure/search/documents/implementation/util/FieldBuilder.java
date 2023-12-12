@@ -248,7 +248,7 @@ public final class FieldBuilder {
         }
 
         throw LOGGER.logExceptionAsError(
-            new RuntimeException("Collection type '" + arrayOrListType.getTypeName() + "' is not supported."));
+            new RuntimeException("Collection type '" + arrayOrListType + "' is not supported."));
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
@@ -392,9 +392,9 @@ public final class FieldBuilder {
         if (!(type instanceof ParameterizedType)) {
             if (UNSUPPORTED_TYPES.contains(type)) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Type '" + type.getTypeName() + "' is not supported. Please use @FieldIgnore to exclude the field "
-                        + "and manually build SearchField to the list if the field is needed. For more information, "
-                        + "refer to link: aka.ms/azsdk/java/search/fieldbuilder"));
+                    "Type '" + type + "' is not supported. Please use @FieldIgnore to exclude the field and manually "
+                        + "build SearchField to the list if the field is needed. For more information, refer to link: "
+                        + "aka.ms/azsdk/java/search/fieldbuilder"));
             }
             return;
         }
@@ -411,7 +411,7 @@ public final class FieldBuilder {
 
         if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Collection type '" + type.getTypeName() + "' is not supported"));
+                new IllegalArgumentException("Collection type '" + type + "' is not supported"));
         }
     }
 

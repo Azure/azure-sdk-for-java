@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Sku
- *
- * <p>SQL pool SKU.
+ * 
+ * SQL pool SKU.
  */
 @Fluent
 public final class Sku {
@@ -33,12 +33,15 @@ public final class Sku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of Sku class. */
-    public Sku() {}
+    /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
 
     /**
      * Get the tier property: The service tier.
-     *
+     * 
      * @return the tier value.
      */
     public String getTier() {
@@ -47,7 +50,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The service tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -58,7 +61,7 @@ public final class Sku {
 
     /**
      * Get the name property: The SKU name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -67,7 +70,7 @@ public final class Sku {
 
     /**
      * Set the name property: The SKU name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -79,7 +82,7 @@ public final class Sku {
     /**
      * Get the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
      * scale out/in is not possible for the resource this may be omitted.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer getCapacity() {
@@ -89,7 +92,7 @@ public final class Sku {
     /**
      * Set the capacity property: If the SKU supports scale out/in then the capacity integer should be included. If
      * scale out/in is not possible for the resource this may be omitted.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */

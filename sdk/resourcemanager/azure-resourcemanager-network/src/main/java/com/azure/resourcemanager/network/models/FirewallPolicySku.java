@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of Firewall policy. */
+/**
+ * SKU of Firewall policy.
+ */
 @Fluent
 public final class FirewallPolicySku {
     /*
@@ -16,13 +18,15 @@ public final class FirewallPolicySku {
     @JsonProperty(value = "tier")
     private FirewallPolicySkuTier tier;
 
-    /** Creates an instance of FirewallPolicySku class. */
+    /**
+     * Creates an instance of FirewallPolicySku class.
+     */
     public FirewallPolicySku() {
     }
 
     /**
      * Get the tier property: Tier of Firewall Policy.
-     *
+     * 
      * @return the tier value.
      */
     public FirewallPolicySkuTier tier() {
@@ -31,7 +35,7 @@ public final class FirewallPolicySku {
 
     /**
      * Set the tier property: Tier of Firewall Policy.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the FirewallPolicySku object itself.
      */
@@ -42,7 +46,7 @@ public final class FirewallPolicySku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

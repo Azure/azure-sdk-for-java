@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Set of actions in the Rewrite Rule in Application Gateway. */
+/**
+ * Set of actions in the Rewrite Rule in Application Gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRewriteRuleActionSet {
     /*
@@ -29,13 +31,15 @@ public final class ApplicationGatewayRewriteRuleActionSet {
     @JsonProperty(value = "urlConfiguration")
     private ApplicationGatewayUrlConfiguration urlConfiguration;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleActionSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleActionSet class.
+     */
     public ApplicationGatewayRewriteRuleActionSet() {
     }
 
     /**
      * Get the requestHeaderConfigurations property: Request Header Actions in the Action Set.
-     *
+     * 
      * @return the requestHeaderConfigurations value.
      */
     public List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations() {
@@ -44,19 +48,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the requestHeaderConfigurations property: Request Header Actions in the Action Set.
-     *
+     * 
      * @param requestHeaderConfigurations the requestHeaderConfigurations value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withRequestHeaderConfigurations(
-        List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withRequestHeaderConfigurations(List<ApplicationGatewayHeaderConfiguration> requestHeaderConfigurations) {
         this.requestHeaderConfigurations = requestHeaderConfigurations;
         return this;
     }
 
     /**
      * Get the responseHeaderConfigurations property: Response Header Actions in the Action Set.
-     *
+     * 
      * @return the responseHeaderConfigurations value.
      */
     public List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations() {
@@ -65,19 +69,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the responseHeaderConfigurations property: Response Header Actions in the Action Set.
-     *
+     * 
      * @param responseHeaderConfigurations the responseHeaderConfigurations value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withResponseHeaderConfigurations(
-        List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withResponseHeaderConfigurations(List<ApplicationGatewayHeaderConfiguration> responseHeaderConfigurations) {
         this.responseHeaderConfigurations = responseHeaderConfigurations;
         return this;
     }
 
     /**
      * Get the urlConfiguration property: Url Configuration Action in the Action Set.
-     *
+     * 
      * @return the urlConfiguration value.
      */
     public ApplicationGatewayUrlConfiguration urlConfiguration() {
@@ -86,19 +90,19 @@ public final class ApplicationGatewayRewriteRuleActionSet {
 
     /**
      * Set the urlConfiguration property: Url Configuration Action in the Action Set.
-     *
+     * 
      * @param urlConfiguration the urlConfiguration value to set.
      * @return the ApplicationGatewayRewriteRuleActionSet object itself.
      */
-    public ApplicationGatewayRewriteRuleActionSet withUrlConfiguration(
-        ApplicationGatewayUrlConfiguration urlConfiguration) {
+    public ApplicationGatewayRewriteRuleActionSet
+        withUrlConfiguration(ApplicationGatewayUrlConfiguration urlConfiguration) {
         this.urlConfiguration = urlConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

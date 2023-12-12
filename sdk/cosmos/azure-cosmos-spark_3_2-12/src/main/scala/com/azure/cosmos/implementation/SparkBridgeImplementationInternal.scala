@@ -359,4 +359,14 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
   def configureSimpleObjectMapper(allowDuplicateProperties: Boolean) : Unit = {
     Utils.configureSimpleObjectMapper(allowDuplicateProperties)
   }
+
+  def overrideDefaultTcpOptionsForSparkUsage(): Unit = {
+    val overrideJson = "{\"timeoutDetectionEnabled\": true, \"timeoutDetectionDisableCPUThreshold\": 70.0," +
+      "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
+      "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
+      "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
+      "\"connectTimeout\": \"PT10S\", \"connectionAcquisitionTimeout\": \"PT10S\"}"
+
+    System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+  }
 }

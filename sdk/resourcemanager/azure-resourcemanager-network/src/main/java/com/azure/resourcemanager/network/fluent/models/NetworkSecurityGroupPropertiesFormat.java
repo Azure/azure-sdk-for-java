@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Security Group resource. */
+/**
+ * Network Security Group resource.
+ */
 @Fluent
 public final class NetworkSecurityGroupPropertiesFormat {
     /*
@@ -61,14 +63,16 @@ public final class NetworkSecurityGroupPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkSecurityGroupPropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkSecurityGroupPropertiesFormat class.
+     */
     public NetworkSecurityGroupPropertiesFormat() {
     }
 
     /**
      * Get the flushConnection property: When enabled, flows created from Network Security Group connections will be
      * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
-     *
+     * 
      * @return the flushConnection value.
      */
     public Boolean flushConnection() {
@@ -78,7 +82,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
     /**
      * Set the flushConnection property: When enabled, flows created from Network Security Group connections will be
      * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
-     *
+     * 
      * @param flushConnection the flushConnection value to set.
      * @return the NetworkSecurityGroupPropertiesFormat object itself.
      */
@@ -89,7 +93,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the securityRules property: A collection of security rules of the network security group.
-     *
+     * 
      * @return the securityRules value.
      */
     public List<SecurityRuleInner> securityRules() {
@@ -98,7 +102,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Set the securityRules property: A collection of security rules of the network security group.
-     *
+     * 
      * @param securityRules the securityRules value to set.
      * @return the NetworkSecurityGroupPropertiesFormat object itself.
      */
@@ -109,7 +113,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the defaultSecurityRules property: The default security rules of network security group.
-     *
+     * 
      * @return the defaultSecurityRules value.
      */
     public List<SecurityRuleInner> defaultSecurityRules() {
@@ -118,7 +122,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the networkInterfaces property: A collection of references to network interfaces.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -127,7 +131,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -136,7 +140,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the flowLogs property: A collection of references to flow log resources.
-     *
+     * 
      * @return the flowLogs value.
      */
     public List<FlowLogInner> flowLogs() {
@@ -145,7 +149,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network security group resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -154,7 +158,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the network security group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -163,7 +167,7 @@ public final class NetworkSecurityGroupPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

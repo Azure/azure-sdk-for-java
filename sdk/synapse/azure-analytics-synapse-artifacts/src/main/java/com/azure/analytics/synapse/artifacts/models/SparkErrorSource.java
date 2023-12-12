@@ -8,31 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkErrorSource. */
+/**
+ * Defines values for SparkErrorSource.
+ */
 public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSource> {
-    /** Static value System for SparkErrorSource. */
+    /**
+     * Static value System for SparkErrorSource.
+     */
     public static final SparkErrorSource SYSTEM = fromString("System");
 
-    /** Static value User for SparkErrorSource. */
+    /**
+     * Static value User for SparkErrorSource.
+     */
     public static final SparkErrorSource USER = fromString("User");
 
-    /** Static value Unknown for SparkErrorSource. */
+    /**
+     * Static value Unknown for SparkErrorSource.
+     */
     public static final SparkErrorSource UNKNOWN = fromString("Unknown");
 
-    /** Static value Dependency for SparkErrorSource. */
+    /**
+     * Static value Dependency for SparkErrorSource.
+     */
     public static final SparkErrorSource DEPENDENCY = fromString("Dependency");
 
     /**
      * Creates a new instance of SparkErrorSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SparkErrorSource() {}
+    public SparkErrorSource() {
+    }
 
     /**
      * Creates or finds a SparkErrorSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SparkErrorSource.
      */
@@ -43,7 +54,7 @@ public final class SparkErrorSource extends ExpandableStringEnum<SparkErrorSourc
 
     /**
      * Gets known SparkErrorSource values.
-     *
+     * 
      * @return known SparkErrorSource values.
      */
     public static Collection<SparkErrorSource> values() {

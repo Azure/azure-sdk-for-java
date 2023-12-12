@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ScopeConnectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of scope connections. */
+/**
+ * List of scope connections.
+ */
 @Fluent
 public final class ScopeConnectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class ScopeConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ScopeConnectionListResult class. */
+    /**
+     * Creates an instance of ScopeConnectionListResult class.
+     */
     public ScopeConnectionListResult() {
     }
 
     /**
      * Get the value property: List of scope connections.
-     *
+     * 
      * @return the value value.
      */
     public List<ScopeConnectionInner> value() {
@@ -39,7 +43,7 @@ public final class ScopeConnectionListResult {
 
     /**
      * Set the value property: List of scope connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScopeConnectionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ScopeConnectionListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ScopeConnectionListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ScopeConnectionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ScopeConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

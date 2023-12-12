@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of packet capture sessions. */
+/**
+ * List of packet capture sessions.
+ */
 @Fluent
 public final class PacketCaptureListResult {
     /*
@@ -18,13 +20,15 @@ public final class PacketCaptureListResult {
     @JsonProperty(value = "value")
     private List<PacketCaptureResultInner> value;
 
-    /** Creates an instance of PacketCaptureListResult class. */
+    /**
+     * Creates an instance of PacketCaptureListResult class.
+     */
     public PacketCaptureListResult() {
     }
 
     /**
      * Get the value property: Information about packet capture sessions.
-     *
+     * 
      * @return the value value.
      */
     public List<PacketCaptureResultInner> value() {
@@ -33,7 +37,7 @@ public final class PacketCaptureListResult {
 
     /**
      * Set the value property: Information about packet capture sessions.
-     *
+     * 
      * @param value the value value to set.
      * @return the PacketCaptureListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class PacketCaptureListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

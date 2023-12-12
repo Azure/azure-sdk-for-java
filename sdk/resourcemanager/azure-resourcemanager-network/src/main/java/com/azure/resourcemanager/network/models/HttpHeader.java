@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HTTP header. */
+/**
+ * The HTTP header.
+ */
 @Fluent
 public final class HttpHeader {
     /*
@@ -22,13 +24,15 @@ public final class HttpHeader {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of HttpHeader class. */
+    /**
+     * Creates an instance of HttpHeader class.
+     */
     public HttpHeader() {
     }
 
     /**
      * Get the name property: The name in HTTP header.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class HttpHeader {
 
     /**
      * Set the name property: The name in HTTP header.
-     *
+     * 
      * @param name the name value to set.
      * @return the HttpHeader object itself.
      */
@@ -48,7 +52,7 @@ public final class HttpHeader {
 
     /**
      * Get the value property: The value in HTTP header.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class HttpHeader {
 
     /**
      * Set the value property: The value in HTTP header.
-     *
+     * 
      * @param value the value value to set.
      * @return the HttpHeader object itself.
      */
@@ -68,7 +72,7 @@ public final class HttpHeader {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

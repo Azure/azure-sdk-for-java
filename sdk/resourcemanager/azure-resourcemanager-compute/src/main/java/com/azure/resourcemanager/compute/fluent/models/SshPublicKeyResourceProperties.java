@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the SSH public key. */
+/**
+ * Properties of the SSH public key.
+ */
 @Fluent
 public final class SshPublicKeyResourceProperties {
     /*
@@ -19,16 +21,18 @@ public final class SshPublicKeyResourceProperties {
     @JsonProperty(value = "publicKey")
     private String publicKey;
 
-    /** Creates an instance of SshPublicKeyResourceProperties class. */
+    /**
+     * Creates an instance of SshPublicKeyResourceProperties class.
+     */
     public SshPublicKeyResourceProperties() {
     }
 
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -38,9 +42,9 @@ public final class SshPublicKeyResourceProperties {
     /**
      * Set the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @param publicKey the publicKey value to set.
      * @return the SshPublicKeyResourceProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class SshPublicKeyResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

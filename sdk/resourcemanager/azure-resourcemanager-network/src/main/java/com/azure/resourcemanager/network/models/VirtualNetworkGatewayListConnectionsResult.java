@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the VirtualNetworkGatewayListConnections API service call. */
+/**
+ * Response for the VirtualNetworkGatewayListConnections API service call.
+ */
 @Fluent
 public final class VirtualNetworkGatewayListConnectionsResult {
     /*
@@ -24,13 +26,15 @@ public final class VirtualNetworkGatewayListConnectionsResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworkGatewayListConnectionsResult class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayListConnectionsResult class.
+     */
     public VirtualNetworkGatewayListConnectionsResult() {
     }
 
     /**
      * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkGatewayConnectionListEntityInner> value() {
@@ -39,19 +43,19 @@ public final class VirtualNetworkGatewayListConnectionsResult {
 
     /**
      * Set the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkGatewayListConnectionsResult object itself.
      */
-    public VirtualNetworkGatewayListConnectionsResult withValue(
-        List<VirtualNetworkGatewayConnectionListEntityInner> value) {
+    public VirtualNetworkGatewayListConnectionsResult
+        withValue(List<VirtualNetworkGatewayConnectionListEntityInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class VirtualNetworkGatewayListConnectionsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

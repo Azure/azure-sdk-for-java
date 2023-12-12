@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.VirtualNetworkUsageName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Usage details for subnet. */
+/**
+ * Usage details for subnet.
+ */
 @Immutable
 public final class VirtualNetworkUsageInner {
     /*
@@ -41,13 +43,15 @@ public final class VirtualNetworkUsageInner {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
-    /** Creates an instance of VirtualNetworkUsageInner class. */
+    /**
+     * Creates an instance of VirtualNetworkUsageInner class.
+     */
     public VirtualNetworkUsageInner() {
     }
 
     /**
      * Get the currentValue property: Indicates number of IPs used from the Subnet.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -56,7 +60,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the id property: Subnet identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -65,7 +69,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the limit property: Indicates the size of the subnet.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -74,7 +78,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the name property: The name containing common and localized value for usage.
-     *
+     * 
      * @return the name value.
      */
     public VirtualNetworkUsageName name() {
@@ -83,7 +87,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the unit property: Usage units. Returns 'Count'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -92,7 +96,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

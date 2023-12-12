@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of on demand test probe request. */
+/**
+ * Details of on demand test probe request.
+ */
 @Fluent
 public final class ApplicationGatewayOnDemandProbe {
     /*
@@ -60,13 +62,15 @@ public final class ApplicationGatewayOnDemandProbe {
     @JsonProperty(value = "backendHttpSettings")
     private SubResource backendHttpSettings;
 
-    /** Creates an instance of ApplicationGatewayOnDemandProbe class. */
+    /**
+     * Creates an instance of ApplicationGatewayOnDemandProbe class.
+     */
     public ApplicationGatewayOnDemandProbe() {
     }
 
     /**
      * Get the protocol property: The protocol used for the probe.
-     *
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -75,7 +79,7 @@ public final class ApplicationGatewayOnDemandProbe {
 
     /**
      * Set the protocol property: The protocol used for the probe.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -86,7 +90,7 @@ public final class ApplicationGatewayOnDemandProbe {
 
     /**
      * Get the host property: Host name to send the probe to.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -95,7 +99,7 @@ public final class ApplicationGatewayOnDemandProbe {
 
     /**
      * Set the host property: Host name to send the probe to.
-     *
+     * 
      * @param host the host value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -107,7 +111,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Get the path property: Relative path of probe. Valid path starts from '/'. Probe is sent to
      * &lt;Protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -117,7 +121,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Set the path property: Relative path of probe. Valid path starts from '/'. Probe is sent to
      * &lt;Protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
-     *
+     * 
      * @param path the path value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -129,7 +133,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Get the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -139,7 +143,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Set the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -151,7 +155,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Get the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
-     *
+     * 
      * @return the pickHostnameFromBackendHttpSettings value.
      */
     public Boolean pickHostnameFromBackendHttpSettings() {
@@ -161,19 +165,19 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Set the pickHostnameFromBackendHttpSettings property: Whether the host header should be picked from the backend
      * http settings. Default value is false.
-     *
+     * 
      * @param pickHostnameFromBackendHttpSettings the pickHostnameFromBackendHttpSettings value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
-    public ApplicationGatewayOnDemandProbe withPickHostnameFromBackendHttpSettings(
-        Boolean pickHostnameFromBackendHttpSettings) {
+    public ApplicationGatewayOnDemandProbe
+        withPickHostnameFromBackendHttpSettings(Boolean pickHostnameFromBackendHttpSettings) {
         this.pickHostnameFromBackendHttpSettings = pickHostnameFromBackendHttpSettings;
         return this;
     }
 
     /**
      * Get the match property: Criterion for classifying a healthy probe response.
-     *
+     * 
      * @return the match value.
      */
     public ApplicationGatewayProbeHealthResponseMatch match() {
@@ -182,7 +186,7 @@ public final class ApplicationGatewayOnDemandProbe {
 
     /**
      * Set the match property: Criterion for classifying a healthy probe response.
-     *
+     * 
      * @param match the match value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -192,9 +196,9 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
-     * be sent.
-     *
+     * Get the backendAddressPool property: Reference to backend pool of application gateway to which probe request
+     * will be sent.
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -202,9 +206,9 @@ public final class ApplicationGatewayOnDemandProbe {
     }
 
     /**
-     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request will
-     * be sent.
-     *
+     * Set the backendAddressPool property: Reference to backend pool of application gateway to which probe request
+     * will be sent.
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -216,7 +220,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Get the backendHttpSettings property: Reference to backend http setting of application gateway to be used for
      * test probe.
-     *
+     * 
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
@@ -226,7 +230,7 @@ public final class ApplicationGatewayOnDemandProbe {
     /**
      * Set the backendHttpSettings property: Reference to backend http setting of application gateway to be used for
      * test probe.
-     *
+     * 
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayOnDemandProbe object itself.
      */
@@ -237,7 +241,7 @@ public final class ApplicationGatewayOnDemandProbe {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
