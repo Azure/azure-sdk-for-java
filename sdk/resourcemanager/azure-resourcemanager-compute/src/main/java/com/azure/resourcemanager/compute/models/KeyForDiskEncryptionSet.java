@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots. */
+/**
+ * Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots.
+ */
 @Fluent
 public final class KeyForDiskEncryptionSet {
     /*
@@ -25,14 +27,17 @@ public final class KeyForDiskEncryptionSet {
     @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
-    /** Creates an instance of KeyForDiskEncryptionSet class. */
+    /**
+     * Creates an instance of KeyForDiskEncryptionSet class.
+     */
     public KeyForDiskEncryptionSet() {
     }
 
     /**
-     * Get the sourceVault property: Resource id of the KeyVault containing the key or secret. This property is optional
-     * and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set subscription.
-     *
+     * Get the sourceVault property: Resource id of the KeyVault containing the key or secret. This property is
+     * optional and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set
+     * subscription.
+     * 
      * @return the sourceVault value.
      */
     public SourceVault sourceVault() {
@@ -40,9 +45,10 @@ public final class KeyForDiskEncryptionSet {
     }
 
     /**
-     * Set the sourceVault property: Resource id of the KeyVault containing the key or secret. This property is optional
-     * and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set subscription.
-     *
+     * Set the sourceVault property: Resource id of the KeyVault containing the key or secret. This property is
+     * optional and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set
+     * subscription.
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyForDiskEncryptionSet object itself.
      */
@@ -54,7 +60,7 @@ public final class KeyForDiskEncryptionSet {
     /**
      * Get the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is
      * required regardless of rotationToLatestKeyVersionEnabled value.
-     *
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -64,7 +70,7 @@ public final class KeyForDiskEncryptionSet {
     /**
      * Set the keyUrl property: Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is
      * required regardless of rotationToLatestKeyVersionEnabled value.
-     *
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KeyForDiskEncryptionSet object itself.
      */
@@ -75,7 +81,7 @@ public final class KeyForDiskEncryptionSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -83,9 +89,8 @@ public final class KeyForDiskEncryptionSet {
             sourceVault().validate();
         }
         if (keyUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyUrl in model KeyForDiskEncryptionSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyUrl in model KeyForDiskEncryptionSet"));
         }
     }
 

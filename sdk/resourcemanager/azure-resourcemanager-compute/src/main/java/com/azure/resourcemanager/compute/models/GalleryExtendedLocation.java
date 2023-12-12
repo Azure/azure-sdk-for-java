@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The name of the extended location. */
+/**
+ * The name of the extended location.
+ */
 @Fluent
 public final class GalleryExtendedLocation {
     /*
@@ -22,13 +24,15 @@ public final class GalleryExtendedLocation {
     @JsonProperty(value = "type")
     private GalleryExtendedLocationType type;
 
-    /** Creates an instance of GalleryExtendedLocation class. */
+    /**
+     * Creates an instance of GalleryExtendedLocation class.
+     */
     public GalleryExtendedLocation() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class GalleryExtendedLocation {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the GalleryExtendedLocation object itself.
      */
@@ -48,7 +52,7 @@ public final class GalleryExtendedLocation {
 
     /**
      * Get the type property: It is type of the extended location.
-     *
+     * 
      * @return the type value.
      */
     public GalleryExtendedLocationType type() {
@@ -57,7 +61,7 @@ public final class GalleryExtendedLocation {
 
     /**
      * Set the type property: It is type of the extended location.
-     *
+     * 
      * @param type the type value to set.
      * @return the GalleryExtendedLocation object itself.
      */
@@ -68,7 +72,7 @@ public final class GalleryExtendedLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

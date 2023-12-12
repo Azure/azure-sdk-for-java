@@ -27,14 +27,16 @@ public final class LoadBalancerFrontendIpConfiguration {
     @JsonProperty(value = "properties", required = true)
     private LoadBalancerFrontendIpConfigurationProperties properties;
 
-    /** Creates an instance of LoadBalancerFrontendIpConfiguration class. */
+    /**
+     * Creates an instance of LoadBalancerFrontendIpConfiguration class.
+     */
     public LoadBalancerFrontendIpConfiguration() {
     }
 
     /**
      * Get the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +46,7 @@ public final class LoadBalancerFrontendIpConfiguration {
     /**
      * Set the name property: The name of the resource that is unique within the set of frontend IP configurations used
      * by the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the LoadBalancerFrontendIpConfiguration object itself.
      */
@@ -55,7 +57,7 @@ public final class LoadBalancerFrontendIpConfiguration {
 
     /**
      * Get the properties property: Properties of load balancer frontend ip configuration.
-     *
+     * 
      * @return the properties value.
      */
     public LoadBalancerFrontendIpConfigurationProperties properties() {
@@ -64,33 +66,29 @@ public final class LoadBalancerFrontendIpConfiguration {
 
     /**
      * Set the properties property: Properties of load balancer frontend ip configuration.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LoadBalancerFrontendIpConfiguration object itself.
      */
-    public LoadBalancerFrontendIpConfiguration withProperties(
-        LoadBalancerFrontendIpConfigurationProperties properties) {
+    public LoadBalancerFrontendIpConfiguration
+        withProperties(LoadBalancerFrontendIpConfigurationProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model LoadBalancerFrontendIpConfiguration"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model LoadBalancerFrontendIpConfiguration"));
         } else {
             properties().validate();
         }

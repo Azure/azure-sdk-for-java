@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Api request input for LogAnalytics getRequestRateByInterval Api. */
+/**
+ * Api request input for LogAnalytics getRequestRateByInterval Api.
+ */
 @Fluent
 public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     /*
@@ -18,13 +20,15 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
     @JsonProperty(value = "intervalLength", required = true)
     private IntervalInMins intervalLength;
 
-    /** Creates an instance of RequestRateByIntervalInput class. */
+    /**
+     * Creates an instance of RequestRateByIntervalInput class.
+     */
     public RequestRateByIntervalInput() {
     }
 
     /**
      * Get the intervalLength property: Interval value in minutes used to create LogAnalytics call rate logs.
-     *
+     * 
      * @return the intervalLength value.
      */
     public IntervalInMins intervalLength() {
@@ -33,7 +37,7 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
 
     /**
      * Set the intervalLength property: Interval value in minutes used to create LogAnalytics call rate logs.
-     *
+     * 
      * @param intervalLength the intervalLength value to set.
      * @return the RequestRateByIntervalInput object itself.
      */
@@ -42,56 +46,72 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withBlobContainerSasUri(String blobContainerSasUri) {
         super.withBlobContainerSasUri(blobContainerSasUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withFromTime(OffsetDateTime fromTime) {
         super.withFromTime(fromTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withToTime(OffsetDateTime toTime) {
         super.withToTime(toTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withGroupByThrottlePolicy(Boolean groupByThrottlePolicy) {
         super.withGroupByThrottlePolicy(groupByThrottlePolicy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withGroupByOperationName(Boolean groupByOperationName) {
         super.withGroupByOperationName(groupByOperationName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withGroupByResourceName(Boolean groupByResourceName) {
         super.withGroupByResourceName(groupByResourceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withGroupByClientApplicationId(Boolean groupByClientApplicationId) {
         super.withGroupByClientApplicationId(groupByClientApplicationId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RequestRateByIntervalInput withGroupByUserAgent(Boolean groupByUserAgent) {
         super.withGroupByUserAgent(groupByUserAgent);
@@ -100,17 +120,15 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (intervalLength() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property intervalLength in model RequestRateByIntervalInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property intervalLength in model RequestRateByIntervalInput"));
         }
     }
 

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetIpC
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set network profile's IP configuration. */
+/**
+ * Describes a virtual machine scale set network profile's IP configuration.
+ */
 @Fluent
 public final class VirtualMachineScaleSetIpConfiguration {
     /*
@@ -26,13 +28,15 @@ public final class VirtualMachineScaleSetIpConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineScaleSetIpConfiguration class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetIpConfiguration class.
+     */
     public VirtualMachineScaleSetIpConfiguration() {
     }
 
     /**
      * Get the name property: The IP configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +45,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Set the name property: The IP configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -53,7 +57,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
     /**
      * Get the innerProperties property: Describes a virtual machine scale set network profile's IP configuration
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties() {
@@ -62,7 +66,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Get the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
@@ -71,7 +75,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Set the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -86,7 +90,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -96,7 +100,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
     /**
      * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -110,7 +114,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Get the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration() {
@@ -119,7 +123,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Set the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -135,7 +139,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
     /**
      * Get the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -145,7 +149,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
     /**
      * Set the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -158,10 +162,10 @@ public final class VirtualMachineScaleSetIpConfiguration {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
-     * of application gateways. A scale set can reference backend address pools of multiple application gateways.
+     * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
+     * pools of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
-     *
+     * 
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
@@ -169,15 +173,15 @@ public final class VirtualMachineScaleSetIpConfiguration {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
-     * of application gateways. A scale set can reference backend address pools of multiple application gateways.
+     * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address
+     * pools of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
-     *
+     * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withApplicationGatewayBackendAddressPools(
-        List<SubResource> applicationGatewayBackendAddressPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withApplicationGatewayBackendAddressPools(List<SubResource> applicationGatewayBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -187,7 +191,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
@@ -196,12 +200,12 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Set the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withApplicationSecurityGroups(
-        List<SubResource> applicationSecurityGroups) {
+    public VirtualMachineScaleSetIpConfiguration
+        withApplicationSecurityGroups(List<SubResource> applicationSecurityGroups) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -213,7 +217,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
      * Get the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
      * Multiple scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
@@ -224,12 +228,12 @@ public final class VirtualMachineScaleSetIpConfiguration {
      * Set the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
      * Multiple scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withLoadBalancerBackendAddressPools(
-        List<SubResource> loadBalancerBackendAddressPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -241,7 +245,7 @@ public final class VirtualMachineScaleSetIpConfiguration {
      * Get the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
      * scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @return the loadBalancerInboundNatPools value.
      */
     public List<SubResource> loadBalancerInboundNatPools() {
@@ -252,12 +256,12 @@ public final class VirtualMachineScaleSetIpConfiguration {
      * Set the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
      * scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withLoadBalancerInboundNatPools(
-        List<SubResource> loadBalancerInboundNatPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -267,15 +271,13 @@ public final class VirtualMachineScaleSetIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

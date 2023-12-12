@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the disk image base class. */
+/**
+ * This is the disk image base class.
+ */
 @Fluent
 public class SharedGalleryDiskImage {
     /*
@@ -22,13 +24,15 @@ public class SharedGalleryDiskImage {
     @JsonProperty(value = "hostCaching")
     private SharedGalleryHostCaching hostCaching;
 
-    /** Creates an instance of SharedGalleryDiskImage class. */
+    /**
+     * Creates an instance of SharedGalleryDiskImage class.
+     */
     public SharedGalleryDiskImage() {
     }
 
     /**
      * Get the diskSizeGB property: This property indicates the size of the VHD to be created.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -36,8 +40,9 @@ public class SharedGalleryDiskImage {
     }
 
     /**
-     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
+     * 'ReadWrite'.
+     * 
      * @return the hostCaching value.
      */
     public SharedGalleryHostCaching hostCaching() {
@@ -45,8 +50,9 @@ public class SharedGalleryDiskImage {
     }
 
     /**
-     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
+     * 'ReadWrite'.
+     * 
      * @param hostCaching the hostCaching value to set.
      * @return the SharedGalleryDiskImage object itself.
      */
@@ -57,7 +63,7 @@ public class SharedGalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

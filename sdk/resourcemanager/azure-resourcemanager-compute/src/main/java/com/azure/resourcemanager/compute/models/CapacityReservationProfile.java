@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters of a capacity reservation Profile. */
+/**
+ * The parameters of a capacity reservation Profile.
+ */
 @Fluent
 public final class CapacityReservationProfile {
     /*
@@ -19,7 +21,9 @@ public final class CapacityReservationProfile {
     @JsonProperty(value = "capacityReservationGroup")
     private SubResource capacityReservationGroup;
 
-    /** Creates an instance of CapacityReservationProfile class. */
+    /**
+     * Creates an instance of CapacityReservationProfile class.
+     */
     public CapacityReservationProfile() {
     }
 
@@ -27,7 +31,7 @@ public final class CapacityReservationProfile {
      * Get the capacityReservationGroup property: Specifies the capacity reservation group resource id that should be
      * used for allocating the virtual machine or scaleset vm instances provided enough capacity has been reserved.
      * Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @return the capacityReservationGroup value.
      */
     public SubResource capacityReservationGroup() {
@@ -38,7 +42,7 @@ public final class CapacityReservationProfile {
      * Set the capacityReservationGroup property: Specifies the capacity reservation group resource id that should be
      * used for allocating the virtual machine or scaleset vm instances provided enough capacity has been reserved.
      * Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param capacityReservationGroup the capacityReservationGroup value to set.
      * @return the CapacityReservationProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class CapacityReservationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

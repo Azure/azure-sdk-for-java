@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view of a virtual machine extension handler. */
+/**
+ * The instance view of a virtual machine extension handler.
+ */
 @Fluent
 public final class VirtualMachineExtensionHandlerInstanceView {
     /*
@@ -28,13 +30,15 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     @JsonProperty(value = "status")
     private InstanceViewStatus status;
 
-    /** Creates an instance of VirtualMachineExtensionHandlerInstanceView class. */
+    /**
+     * Creates an instance of VirtualMachineExtensionHandlerInstanceView class.
+     */
     public VirtualMachineExtensionHandlerInstanceView() {
     }
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -43,7 +47,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -54,7 +58,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -63,7 +67,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -74,7 +78,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Get the status property: The extension handler status.
-     *
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -83,7 +87,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Set the status property: The extension handler status.
-     *
+     * 
      * @param status the status value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -94,7 +98,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

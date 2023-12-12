@@ -5,16 +5,40 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.CommunityGalleryMetadata;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Specifies information about the Community Gallery that you want to create or update. */
+/**
+ * Specifies information about the Community Gallery that you want to create or update.
+ */
 @Fluent
 public final class CommunityGalleryInner extends PirCommunityGalleryResource {
-    /** Creates an instance of CommunityGalleryInner class. */
+    /*
+     * Describes the properties of a community gallery.
+     */
+    @JsonProperty(value = "properties")
+    private CommunityGalleryProperties innerProperties;
+
+    /**
+     * Creates an instance of CommunityGalleryInner class.
+     */
     public CommunityGalleryInner() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the innerProperties property: Describes the properties of a community gallery.
+     * 
+     * @return the innerProperties value.
+     */
+    private CommunityGalleryProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunityGalleryInner withUniqueId(String uniqueId) {
         super.withUniqueId(uniqueId);
@@ -22,12 +46,84 @@ public final class CommunityGalleryInner extends PirCommunityGalleryResource {
     }
 
     /**
+     * Get the disclaimer property: The disclaimer for a community gallery resource.
+     * 
+     * @return the disclaimer value.
+     */
+    public String disclaimer() {
+        return this.innerProperties() == null ? null : this.innerProperties().disclaimer();
+    }
+
+    /**
+     * Set the disclaimer property: The disclaimer for a community gallery resource.
+     * 
+     * @param disclaimer the disclaimer value to set.
+     * @return the CommunityGalleryInner object itself.
+     */
+    public CommunityGalleryInner withDisclaimer(String disclaimer) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryProperties();
+        }
+        this.innerProperties().withDisclaimer(disclaimer);
+        return this;
+    }
+
+    /**
+     * Get the artifactTags property: The artifact tags of a community gallery resource.
+     * 
+     * @return the artifactTags value.
+     */
+    public Map<String, String> artifactTags() {
+        return this.innerProperties() == null ? null : this.innerProperties().artifactTags();
+    }
+
+    /**
+     * Set the artifactTags property: The artifact tags of a community gallery resource.
+     * 
+     * @param artifactTags the artifactTags value to set.
+     * @return the CommunityGalleryInner object itself.
+     */
+    public CommunityGalleryInner withArtifactTags(Map<String, String> artifactTags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryProperties();
+        }
+        this.innerProperties().withArtifactTags(artifactTags);
+        return this;
+    }
+
+    /**
+     * Get the communityMetadata property: The metadata of community gallery.
+     * 
+     * @return the communityMetadata value.
+     */
+    public CommunityGalleryMetadata communityMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().communityMetadata();
+    }
+
+    /**
+     * Set the communityMetadata property: The metadata of community gallery.
+     * 
+     * @param communityMetadata the communityMetadata value to set.
+     * @return the CommunityGalleryInner object itself.
+     */
+    public CommunityGalleryInner withCommunityMetadata(CommunityGalleryMetadata communityMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunityGalleryProperties();
+        }
+        this.innerProperties().withCommunityMetadata(communityMetadata);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }
