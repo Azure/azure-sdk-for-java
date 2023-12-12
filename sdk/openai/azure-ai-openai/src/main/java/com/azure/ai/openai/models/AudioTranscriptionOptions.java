@@ -5,7 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +21,7 @@ public final class AudioTranscriptionOptions {
      */
     @Generated
     @JsonProperty(value = "file")
-    private byte[] file;
+    private BinaryData file;
 
     /*
      * The requested format of the transcription response data, which will influence the content and detail of the
@@ -68,17 +68,6 @@ public final class AudioTranscriptionOptions {
     private String model;
 
     /**
-     * Creates an instance of AudioTranscriptionOptions class.
-     *
-     * @param file the file value to set.
-     */
-    @Generated
-    @JsonCreator
-    public AudioTranscriptionOptions(@JsonProperty(value = "file") byte[] file) {
-        this.file = file;
-    }
-
-    /**
      * Get the file property: The audio data to transcribe. This must be the binary content of a file in one of the
      * supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
@@ -86,8 +75,8 @@ public final class AudioTranscriptionOptions {
      * @return the file value.
      */
     @Generated
-    public byte[] getFile() {
-        return CoreUtils.clone(this.file);
+    public BinaryData getFile() {
+        return this.file;
     }
 
     /**
@@ -248,6 +237,46 @@ public final class AudioTranscriptionOptions {
     @Generated
     public AudioTranscriptionOptions setFilename(String filename) {
         this.filename = filename;
+        return this;
+    }
+
+    /*
+     * The filename for file
+     */
+    @Generated
+    @JsonProperty(value = "file")
+    private String fileFilename = "file";
+
+    /**
+     * Creates an instance of AudioTranscriptionOptions class.
+     *
+     * @param file the file value to set.
+     */
+    @Generated
+    @JsonCreator
+    public AudioTranscriptionOptions(@JsonProperty(value = "file") BinaryData file) {
+        this.file = file;
+    }
+
+    /**
+     * Get the fileFilename property: The filename for file.
+     *
+     * @return the fileFilename value.
+     */
+    @Generated
+    public String getFileFilename() {
+        return this.fileFilename;
+    }
+
+    /**
+     * Set the fileFilename property: The filename for file.
+     *
+     * @param fileFilename the fileFilename value to set.
+     * @return the AudioTranscriptionOptions object itself.
+     */
+    @Generated
+    public AudioTranscriptionOptions setFileFilename(String fileFilename) {
+        this.fileFilename = fileFilename;
         return this;
     }
 }
