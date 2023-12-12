@@ -186,7 +186,6 @@ For additional samples please take a look at the [Document Intelligence Samples]
 [DocumentIntelligenceAdministrationClientBuilder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/documentanalysis/administration/DocumentIntelligenceAdministrationClientBuilder.java
 [DocumentIntelligenceAdministrationClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/documentanalysis/administration/DocumentIntelligenceAdministrationClient.java
 [DocumentIntelligenceAdministrationAsyncClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/main/java/com/azure/ai/documentintelligence/documentanalysis/administration/DocumentIntelligenceAdministrationAsyncClient.java
-[FormRecognizerMigrationInstantiateClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md#instantiating-clients
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
