@@ -562,7 +562,7 @@ public final class AssistantRunsClient {
      * @param threadId The ID of the thread to run.
      * @param model The overridden model that the assistant should use to run the thread.
      * @param instructions The overridden system instructions the assistant should use to run the thread.
-     * @param tools The overriden list of enabled tools the assistant should use to run the thread.
+     * @param tools The overridden list of enabled tools the assistant should use to run the thread.
      * @param metadata A set of key/value pairs used to store additional information about the object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
