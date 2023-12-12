@@ -13,7 +13,9 @@ import com.azure.resourcemanager.communication.models.DomainsProvisioningState;
 import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that describes the properties of a Domains resource. */
+/**
+ * A class that describes the properties of a Domains resource.
+ */
 @Fluent
 public final class DomainProperties {
     /*
@@ -64,13 +66,15 @@ public final class DomainProperties {
     @JsonProperty(value = "userEngagementTracking")
     private UserEngagementTracking userEngagementTracking;
 
-    /** Creates an instance of DomainProperties class. */
+    /**
+     * Creates an instance of DomainProperties class.
+     */
     public DomainProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DomainsProvisioningState provisioningState() {
@@ -79,7 +83,7 @@ public final class DomainProperties {
 
     /**
      * Get the dataLocation property: The location where the Domains resource data is stored at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -88,7 +92,7 @@ public final class DomainProperties {
 
     /**
      * Get the fromSenderDomain property: P2 sender domain that is displayed to the email recipients [RFC 5322].
-     *
+     * 
      * @return the fromSenderDomain value.
      */
     public String fromSenderDomain() {
@@ -97,7 +101,7 @@ public final class DomainProperties {
 
     /**
      * Get the mailFromSenderDomain property: P1 sender domain that is present on the email envelope [RFC 5321].
-     *
+     * 
      * @return the mailFromSenderDomain value.
      */
     public String mailFromSenderDomain() {
@@ -106,7 +110,7 @@ public final class DomainProperties {
 
     /**
      * Get the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @return the domainManagement value.
      */
     public DomainManagement domainManagement() {
@@ -115,7 +119,7 @@ public final class DomainProperties {
 
     /**
      * Set the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @param domainManagement the domainManagement value to set.
      * @return the DomainProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class DomainProperties {
 
     /**
      * Get the verificationStates property: List of VerificationStatusRecord.
-     *
+     * 
      * @return the verificationStates value.
      */
     public DomainPropertiesVerificationStates verificationStates() {
@@ -135,7 +139,7 @@ public final class DomainProperties {
 
     /**
      * Get the verificationRecords property: List of DnsRecord.
-     *
+     * 
      * @return the verificationRecords value.
      */
     public DomainPropertiesVerificationRecords verificationRecords() {
@@ -144,7 +148,7 @@ public final class DomainProperties {
 
     /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -153,7 +157,7 @@ public final class DomainProperties {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the DomainProperties object itself.
      */
@@ -164,15 +168,13 @@ public final class DomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainManagement() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainManagement in model DomainProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property domainManagement in model DomainProperties"));
         }
         if (verificationStates() != null) {
             verificationStates().validate();

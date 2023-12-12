@@ -18,16 +18,13 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationServiceResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationServiceResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"mkkvnip\",\"dataLocation\":\"oxzjnchgejspod\",\"notificationHubId\":\"ilzyd\",\"version\":\"o\",\"immutableResourceId\":\"yahux\",\"linkedDomains\":[\"mqnjaqw\",\"xj\"]},\"identity\":{\"principalId\":\"f3be8d2b-688a-43d4-b0e2-568d52bbf68a\",\"tenantId\":\"aa2f6424-5eb3-4ea7-969c-7b27078085de\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tegjvwmf\":{\"principalId\":\"028d0a20-3f3a-4509-9709-5529c3345b41\",\"clientId\":\"2c276202-c35c-4e33-ae63-214905256dd0\"},\"scmdvpjhulsuu\":{\"principalId\":\"581132a1-2434-47f8-8fa2-25e765ff3802\",\"clientId\":\"a18b8111-ae79-467a-9d7f-4c4c7cee71d7\"},\"jozkrwfndiod\":{\"principalId\":\"9bc35d3d-b2dc-4d5f-bd41-e5226ab8f7f5\",\"clientId\":\"cd63bb0f-6d43-495b-ace0-bcda2cdbbbb2\"},\"lwejdpv\":{\"principalId\":\"bdf563b0-8e4a-4f95-8f71-753bded5109d\",\"clientId\":\"2514dd15-7058-4c25-8714-edd3d27603d3\"}}},\"location\":\"yoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"},\"id\":\"qtrgqjbpfzfsinzg\",\"name\":\"f\",\"type\":\"jrwzox\"},{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"lluwfzitonpeq\",\"dataLocation\":\"pjkjlxofpdv\",\"notificationHubId\":\"fxxypininmayhuy\",\"version\":\"kpode\",\"immutableResourceId\":\"oginuvamiheognar\",\"linkedDomains\":[\"theotusiv\"]},\"identity\":{\"principalId\":\"bfc89781-93dd-40a1-a646-9945c48b3729\",\"tenantId\":\"31adea66-0d67-4d1e-886a-88f59f449d55\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nhungbw\":{\"principalId\":\"5d2c90d7-d1df-4048-a4c4-b7bcae2baadd\",\"clientId\":\"684b20ec-8ac2-4eaa-91a3-429b08ee9873\"}}},\"location\":\"rnfygxgispem\",\"tags\":{\"fxqeof\":\"fkufublj\",\"jqul\":\"aeqjhqjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\"},\"id\":\"skcqvkocrcjd\",\"name\":\"wtnhxbnjbiksqr\",\"type\":\"lssai\"}],\"nextLink\":\"p\"}")
-                .toObject(CommunicationServiceResourceList.class);
+        CommunicationServiceResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"mkkvnip\",\"dataLocation\":\"oxzjnchgejspod\",\"notificationHubId\":\"ilzyd\",\"version\":\"o\",\"immutableResourceId\":\"yahux\",\"linkedDomains\":[\"mqnjaqw\",\"xj\"]},\"identity\":{\"principalId\":\"f23243a9-97a8-4db7-9630-79edf0f5ec5b\",\"tenantId\":\"8bda4b90-13fd-4b49-967f-939e714660f3\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"tegjvwmf\":{\"principalId\":\"918e4f18-5c32-48e7-b6fd-ffac2b2256f4\",\"clientId\":\"05fae119-b77b-4d17-8814-96e439c2fb82\"},\"scmdvpjhulsuu\":{\"principalId\":\"3a087802-ad98-4d9d-9f8f-6217eba9e6ce\",\"clientId\":\"a378160e-3ffa-4c66-88a3-403fabb2932b\"},\"jozkrwfndiod\":{\"principalId\":\"5e1a04a4-5740-460c-8ed5-423b2500ba73\",\"clientId\":\"b4b0ea7a-f230-4708-8133-960a22271c73\"},\"lwejdpv\":{\"principalId\":\"9ec2ade8-bd9d-4015-b062-94498fb8d4cb\",\"clientId\":\"f49d609a-4d01-4c6e-9317-3466b417bd76\"}}},\"location\":\"yoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"},\"id\":\"qtrgqjbpfzfsinzg\",\"name\":\"f\",\"type\":\"jrwzox\"},{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"lluwfzitonpeq\",\"dataLocation\":\"pjkjlxofpdv\",\"notificationHubId\":\"fxxypininmayhuy\",\"version\":\"kpode\",\"immutableResourceId\":\"oginuvamiheognar\",\"linkedDomains\":[\"theotusiv\"]},\"identity\":{\"principalId\":\"ca5f15e1-4a32-4f3d-b695-af9387168a20\",\"tenantId\":\"e9113944-d7cd-4fa8-b7ea-9324f26b9eb5\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"nhungbw\":{\"principalId\":\"ae3f5fa4-ccd9-4efe-b9fb-5a87f0690c7e\",\"clientId\":\"a4717b06-5633-4bac-aa21-86fac88b45fc\"}}},\"location\":\"rnfygxgispem\",\"tags\":{\"fxqeof\":\"fkufublj\",\"jqul\":\"aeqjhqjbasvms\",\"clxxwrljdo\":\"gsntnbybkzgcwr\"},\"id\":\"skcqvkocrcjd\",\"name\":\"wtnhxbnjbiksqr\",\"type\":\"lssai\"}],\"nextLink\":\"p\"}")
+            .toObject(CommunicationServiceResourceList.class);
         Assertions.assertEquals("yoqpsoaccta", model.value().get(0).location());
         Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            model.value().get(0).identity().type());
         Assertions.assertEquals("oxzjnchgejspod", model.value().get(0).dataLocation());
         Assertions.assertEquals("mqnjaqw", model.value().get(0).linkedDomains().get(0));
         Assertions.assertEquals("p", model.nextLink());
@@ -35,47 +32,28 @@ public final class CommunicationServiceResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceResourceList model =
-            new CommunicationServiceResourceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CommunicationServiceResourceInner()
-                                .withLocation("yoqpsoaccta")
-                                .withTags(mapOf("dfdosygexp", "ljlahbcryf", "dphlxaolt", "ojakhmsbzjhcrze"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                        .withUserAssignedIdentities(
-                                            mapOf(
-                                                "tegjvwmf",
-                                                new UserAssignedIdentity(),
-                                                "scmdvpjhulsuu",
-                                                new UserAssignedIdentity(),
-                                                "jozkrwfndiod",
-                                                new UserAssignedIdentity(),
-                                                "lwejdpv",
-                                                new UserAssignedIdentity())))
-                                .withDataLocation("oxzjnchgejspod")
-                                .withLinkedDomains(Arrays.asList("mqnjaqw", "xj")),
-                            new CommunicationServiceResourceInner()
-                                .withLocation("rnfygxgispem")
-                                .withTags(
-                                    mapOf(
-                                        "fxqeof", "fkufublj", "jqul", "aeqjhqjbasvms", "clxxwrljdo", "gsntnbybkzgcwr"))
-                                .withIdentity(
-                                    new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf("nhungbw", new UserAssignedIdentity())))
-                                .withDataLocation("pjkjlxofpdv")
-                                .withLinkedDomains(Arrays.asList("theotusiv"))))
+        CommunicationServiceResourceList model
+            = new CommunicationServiceResourceList()
+                .withValue(Arrays.asList(
+                    new CommunicationServiceResourceInner().withLocation("yoqpsoaccta")
+                        .withTags(mapOf("dfdosygexp", "ljlahbcryf", "dphlxaolt", "ojakhmsbzjhcrze"))
+                        .withIdentity(new ManagedServiceIdentity()
+                            .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("tegjvwmf", new UserAssignedIdentity(), "scmdvpjhulsuu",
+                                new UserAssignedIdentity(), "jozkrwfndiod", new UserAssignedIdentity(), "lwejdpv",
+                                new UserAssignedIdentity())))
+                        .withDataLocation("oxzjnchgejspod").withLinkedDomains(Arrays.asList("mqnjaqw", "xj")),
+                    new CommunicationServiceResourceInner().withLocation("rnfygxgispem")
+                        .withTags(mapOf("fxqeof", "fkufublj", "jqul", "aeqjhqjbasvms", "clxxwrljdo", "gsntnbybkzgcwr"))
+                        .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                            .withUserAssignedIdentities(mapOf("nhungbw", new UserAssignedIdentity())))
+                        .withDataLocation("pjkjlxofpdv").withLinkedDomains(Arrays.asList("theotusiv"))))
                 .withNextLink("p");
         model = BinaryData.fromObject(model).toObject(CommunicationServiceResourceList.class);
         Assertions.assertEquals("yoqpsoaccta", model.value().get(0).location());
         Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.value().get(0).identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            model.value().get(0).identity().type());
         Assertions.assertEquals("oxzjnchgejspod", model.value().get(0).dataLocation());
         Assertions.assertEquals("mqnjaqw", model.value().get(0).linkedDomains().get(0));
         Assertions.assertEquals("p", model.nextLink());

@@ -36,20 +36,6 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
     private String filepathField;
 
     /*
-     * The names of index fields that should be treated as content.
-     */
-    @Generated
-    @JsonProperty(value = "contentFieldNames")
-    private List<String> contentFieldNames;
-
-    /*
-     * The separator pattern that content fields should use.
-     */
-    @Generated
-    @JsonProperty(value = "contentFieldSeparator")
-    private String contentFieldSeparator;
-
-    /*
      * The names of fields that represent vector data.
      */
     @Generated
@@ -130,50 +116,6 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
     }
 
     /**
-     * Get the contentFieldNames property: The names of index fields that should be treated as content.
-     *
-     * @return the contentFieldNames value.
-     */
-    @Generated
-    public List<String> getContentFieldNames() {
-        return this.contentFieldNames;
-    }
-
-    /**
-     * Set the contentFieldNames property: The names of index fields that should be treated as content.
-     *
-     * @param contentFieldNames the contentFieldNames value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setContentFieldNames(List<String> contentFieldNames) {
-        this.contentFieldNames = contentFieldNames;
-        return this;
-    }
-
-    /**
-     * Get the contentFieldSeparator property: The separator pattern that content fields should use.
-     *
-     * @return the contentFieldSeparator value.
-     */
-    @Generated
-    public String getContentFieldSeparator() {
-        return this.contentFieldSeparator;
-    }
-
-    /**
-     * Set the contentFieldSeparator property: The separator pattern that content fields should use.
-     *
-     * @param contentFieldSeparator the contentFieldSeparator value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setContentFieldSeparator(String contentFieldSeparator) {
-        this.contentFieldSeparator = contentFieldSeparator;
-        return this;
-    }
-
-    /**
      * Get the vectorFields property: The names of fields that represent vector data.
      *
      * @return the vectorFields value.
@@ -192,6 +134,93 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
     @Generated
     public AzureCognitiveSearchIndexFieldMappingOptions setVectorFields(List<String> vectorFields) {
         this.vectorFields = vectorFields;
+        return this;
+    }
+
+    /*
+     * The names of index fields that should be treated as content.
+     */
+    @Generated
+    @JsonProperty(value = "contentFields")
+    private List<String> contentFields;
+
+    /*
+     * The separator pattern that content fields should use.
+     */
+    @Generated
+    @JsonProperty(value = "contentFieldsSeparator")
+    private String contentFieldsSeparator;
+
+    /*
+     * The names of fields that represent image vector data.
+     */
+    @Generated
+    @JsonProperty(value = "imageVectorFields")
+    private List<String> imageVectorFields;
+
+    /**
+     * Get the contentFields property: The names of index fields that should be treated as content.
+     *
+     * @return the contentFields value.
+     */
+    @Generated
+    public List<String> getContentFields() {
+        return this.contentFields;
+    }
+
+    /**
+     * Set the contentFields property: The names of index fields that should be treated as content.
+     *
+     * @param contentFields the contentFields value to set.
+     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchIndexFieldMappingOptions setContentFields(List<String> contentFields) {
+        this.contentFields = contentFields;
+        return this;
+    }
+
+    /**
+     * Get the contentFieldsSeparator property: The separator pattern that content fields should use.
+     *
+     * @return the contentFieldsSeparator value.
+     */
+    @Generated
+    public String getContentFieldsSeparator() {
+        return this.contentFieldsSeparator;
+    }
+
+    /**
+     * Set the contentFieldsSeparator property: The separator pattern that content fields should use.
+     *
+     * @param contentFieldsSeparator the contentFieldsSeparator value to set.
+     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchIndexFieldMappingOptions setContentFieldsSeparator(String contentFieldsSeparator) {
+        this.contentFieldsSeparator = contentFieldsSeparator;
+        return this;
+    }
+
+    /**
+     * Get the imageVectorFields property: The names of fields that represent image vector data.
+     *
+     * @return the imageVectorFields value.
+     */
+    @Generated
+    public List<String> getImageVectorFields() {
+        return this.imageVectorFields;
+    }
+
+    /**
+     * Set the imageVectorFields property: The names of fields that represent image vector data.
+     *
+     * @param imageVectorFields the imageVectorFields value to set.
+     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     */
+    @Generated
+    public AzureCognitiveSearchIndexFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
+        this.imageVectorFields = imageVectorFields;
         return this;
     }
 }

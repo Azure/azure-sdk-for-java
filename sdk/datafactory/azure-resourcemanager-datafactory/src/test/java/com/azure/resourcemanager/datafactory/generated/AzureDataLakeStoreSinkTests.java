@@ -10,25 +10,17 @@ import com.azure.resourcemanager.datafactory.models.AzureDataLakeStoreSink;
 public final class AzureDataLakeStoreSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataLakeStoreSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDataLakeStoreSink\",\"copyBehavior\":\"datayipjzgmxqaupy\",\"enableAdlsSingleFileParallel\":\"datagoyp\",\"writeBatchSize\":\"dataooyyfysn\",\"writeBatchTimeout\":\"datajnl\",\"sinkRetryCount\":\"datacmhonojese\",\"sinkRetryWait\":\"dataxel\",\"maxConcurrentConnections\":\"dataxwmpziy\",\"disableMetricsCollection\":\"datasjswedkfof\",\"\":{\"utzlvx\":\"datapunwp\",\"vddwgozr\":\"dataolvedzrjkrpor\"}}")
-                .toObject(AzureDataLakeStoreSink.class);
+        AzureDataLakeStoreSink model = BinaryData.fromString(
+            "{\"type\":\"AzureDataLakeStoreSink\",\"copyBehavior\":\"datasyvryo\",\"enableAdlsSingleFileParallel\":\"dataqikcork\",\"writeBatchSize\":\"dataobobxfhtb\",\"writeBatchTimeout\":\"datavwzjycgcie\",\"sinkRetryCount\":\"datax\",\"sinkRetryWait\":\"datazvnghtknr\",\"maxConcurrentConnections\":\"datahysnmyuvf\",\"disableMetricsCollection\":\"datacnrapxw\",\"\":{\"lojjcz\":\"dataxoelfobehrcf\",\"gnqa\":\"dataytfwkvirmbrd\",\"ybh\":\"datankms\"}}")
+            .toObject(AzureDataLakeStoreSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreSink model =
-            new AzureDataLakeStoreSink()
-                .withWriteBatchSize("dataooyyfysn")
-                .withWriteBatchTimeout("datajnl")
-                .withSinkRetryCount("datacmhonojese")
-                .withSinkRetryWait("dataxel")
-                .withMaxConcurrentConnections("dataxwmpziy")
-                .withDisableMetricsCollection("datasjswedkfof")
-                .withCopyBehavior("datayipjzgmxqaupy")
-                .withEnableAdlsSingleFileParallel("datagoyp");
+        AzureDataLakeStoreSink model = new AzureDataLakeStoreSink().withWriteBatchSize("dataobobxfhtb")
+            .withWriteBatchTimeout("datavwzjycgcie").withSinkRetryCount("datax").withSinkRetryWait("datazvnghtknr")
+            .withMaxConcurrentConnections("datahysnmyuvf").withDisableMetricsCollection("datacnrapxw")
+            .withCopyBehavior("datasyvryo").withEnableAdlsSingleFileParallel("dataqikcork");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreSink.class);
     }
 }

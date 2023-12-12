@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Vpn-Sites. */
+/**
+ * List of Vpn-Sites.
+ */
 @Fluent
 public final class GetVpnSitesConfigurationRequest {
     /*
@@ -24,13 +26,15 @@ public final class GetVpnSitesConfigurationRequest {
     @JsonProperty(value = "outputBlobSasUrl", required = true)
     private String outputBlobSasUrl;
 
-    /** Creates an instance of GetVpnSitesConfigurationRequest class. */
+    /**
+     * Creates an instance of GetVpnSitesConfigurationRequest class.
+     */
     public GetVpnSitesConfigurationRequest() {
     }
 
     /**
      * Get the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * 
      * @return the vpnSites value.
      */
     public List<String> vpnSites() {
@@ -39,7 +43,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Set the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * 
      * @param vpnSites the vpnSites value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -50,7 +54,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Get the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * 
      * @return the outputBlobSasUrl value.
      */
     public String outputBlobSasUrl() {
@@ -59,7 +63,7 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Set the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * 
      * @param outputBlobSasUrl the outputBlobSasUrl value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -70,15 +74,13 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (outputBlobSasUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
         }
     }
 

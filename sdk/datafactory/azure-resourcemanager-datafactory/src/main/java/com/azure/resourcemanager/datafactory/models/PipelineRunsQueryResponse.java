@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.PipelineRunsQueryResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of PipelineRunsQueryResponse. */
+/**
+ * An immutable client-side representation of PipelineRunsQueryResponse.
+ */
 public interface PipelineRunsQueryResponse {
     /**
      * Gets the value property: List of pipeline runs.
-     *
+     * 
      * @return the value value.
      */
     List<PipelineRun> value();
@@ -19,14 +21,14 @@ public interface PipelineRunsQueryResponse {
     /**
      * Gets the continuationToken property: The continuation token for getting the next page of results, if any
      * remaining results exist, null otherwise.
-     *
+     * 
      * @return the continuationToken value.
      */
     String continuationToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.PipelineRunsQueryResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     PipelineRunsQueryResponseInner innerModel();

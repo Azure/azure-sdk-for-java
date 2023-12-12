@@ -27,7 +27,9 @@ public final class RestorePointEncryption {
     @JsonProperty(value = "type")
     private RestorePointEncryptionType type;
 
-    /** Creates an instance of RestorePointEncryption class. */
+    /**
+     * Creates an instance of RestorePointEncryption class.
+     */
     public RestorePointEncryption() {
     }
 
@@ -35,7 +37,7 @@ public final class RestorePointEncryption {
      * Get the diskEncryptionSet property: Describes the parameter of customer managed disk encryption set resource id
      * that can be specified for disk. **Note:** The disk encryption set resource id can only be specified for managed
      * disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
-     *
+     * 
      * @return the diskEncryptionSet value.
      */
     public DiskEncryptionSetParameters diskEncryptionSet() {
@@ -46,7 +48,7 @@ public final class RestorePointEncryption {
      * Set the diskEncryptionSet property: Describes the parameter of customer managed disk encryption set resource id
      * that can be specified for disk. **Note:** The disk encryption set resource id can only be specified for managed
      * disk. Please refer https://aka.ms/mdssewithcmkoverview for more details.
-     *
+     * 
      * @param diskEncryptionSet the diskEncryptionSet value to set.
      * @return the RestorePointEncryption object itself.
      */
@@ -57,7 +59,7 @@ public final class RestorePointEncryption {
 
     /**
      * Get the type property: The type of key used to encrypt the data of the disk restore point.
-     *
+     * 
      * @return the type value.
      */
     public RestorePointEncryptionType type() {
@@ -66,7 +68,7 @@ public final class RestorePointEncryption {
 
     /**
      * Set the type property: The type of key used to encrypt the data of the disk restore point.
-     *
+     * 
      * @param type the type value to set.
      * @return the RestorePointEncryption object itself.
      */
@@ -77,7 +79,7 @@ public final class RestorePointEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

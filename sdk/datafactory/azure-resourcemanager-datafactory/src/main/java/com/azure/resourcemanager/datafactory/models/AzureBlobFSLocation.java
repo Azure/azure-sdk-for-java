@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of azure blobFS dataset. */
+/**
+ * The location of azure blobFS dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSLocation")
 @Fluent
@@ -20,14 +22,16 @@ public final class AzureBlobFSLocation extends DatasetLocation {
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
 
-    /** Creates an instance of AzureBlobFSLocation class. */
+    /**
+     * Creates an instance of AzureBlobFSLocation class.
+     */
     public AzureBlobFSLocation() {
     }
 
     /**
      * Get the fileSystem property: Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the fileSystem value.
      */
     public Object fileSystem() {
@@ -37,7 +41,7 @@ public final class AzureBlobFSLocation extends DatasetLocation {
     /**
      * Set the fileSystem property: Specify the fileSystem of azure blobFS. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the AzureBlobFSLocation object itself.
      */
@@ -46,14 +50,18 @@ public final class AzureBlobFSLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -62,7 +70,7 @@ public final class AzureBlobFSLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

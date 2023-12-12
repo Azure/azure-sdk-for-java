@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeCustomerVi
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeSsisProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed integration runtime type properties. */
+/**
+ * Managed integration runtime type properties.
+ */
 @Fluent
 public final class ManagedIntegrationRuntimeTypeProperties {
     /*
@@ -31,13 +33,15 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "customerVirtualNetwork")
     private IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork;
 
-    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeTypeProperties class.
+     */
     public ManagedIntegrationRuntimeTypeProperties() {
     }
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties computeProperties() {
@@ -46,19 +50,19 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withComputeProperties(
-        IntegrationRuntimeComputeProperties computeProperties) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
         this.computeProperties = computeProperties;
         return this;
     }
 
     /**
      * Get the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties ssisProperties() {
@@ -67,7 +71,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
@@ -77,9 +81,9 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     }
 
     /**
-     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
-     * join.
-     *
+     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
+     * will join.
+     * 
      * @return the customerVirtualNetwork value.
      */
     public IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork() {
@@ -87,21 +91,21 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     }
 
     /**
-     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
-     * join.
-     *
+     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
+     * will join.
+     * 
      * @param customerVirtualNetwork the customerVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withCustomerVirtualNetwork(
-        IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withCustomerVirtualNetwork(IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork) {
         this.customerVirtualNetwork = customerVirtualNetwork;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

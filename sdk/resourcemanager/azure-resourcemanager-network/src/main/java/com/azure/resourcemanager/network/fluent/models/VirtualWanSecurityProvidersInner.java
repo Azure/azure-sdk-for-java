@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.VirtualWanSecurityProvider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of SecurityProviders. */
+/**
+ * Collection of SecurityProviders.
+ */
 @Fluent
 public final class VirtualWanSecurityProvidersInner {
     /*
@@ -18,13 +20,15 @@ public final class VirtualWanSecurityProvidersInner {
     @JsonProperty(value = "supportedProviders")
     private List<VirtualWanSecurityProvider> supportedProviders;
 
-    /** Creates an instance of VirtualWanSecurityProvidersInner class. */
+    /**
+     * Creates an instance of VirtualWanSecurityProvidersInner class.
+     */
     public VirtualWanSecurityProvidersInner() {
     }
 
     /**
      * Get the supportedProviders property: List of VirtualWAN security providers.
-     *
+     * 
      * @return the supportedProviders value.
      */
     public List<VirtualWanSecurityProvider> supportedProviders() {
@@ -33,19 +37,19 @@ public final class VirtualWanSecurityProvidersInner {
 
     /**
      * Set the supportedProviders property: List of VirtualWAN security providers.
-     *
+     * 
      * @param supportedProviders the supportedProviders value to set.
      * @return the VirtualWanSecurityProvidersInner object itself.
      */
-    public VirtualWanSecurityProvidersInner withSupportedProviders(
-        List<VirtualWanSecurityProvider> supportedProviders) {
+    public VirtualWanSecurityProvidersInner
+        withSupportedProviders(List<VirtualWanSecurityProvider> supportedProviders) {
         this.supportedProviders = supportedProviders;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Common Data Service for Apps linked service. */
+/**
+ * Common Data Service for Apps linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CommonDataServiceForApps")
 @JsonFlatten
@@ -105,14 +107,17 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of CommonDataServiceForAppsLinkedService class. */
-    public CommonDataServiceForAppsLinkedService() {}
+    /**
+     * Creates an instance of CommonDataServiceForAppsLinkedService class.
+     */
+    public CommonDataServiceForAppsLinkedService() {
+    }
 
     /**
      * Get the deploymentType property: The deployment type of the Common Data Service for Apps instance. 'Online' for
      * Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with
      * Ifd. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the deploymentType value.
      */
     public Object getDeploymentType() {
@@ -123,7 +128,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Set the deploymentType property: The deployment type of the Common Data Service for Apps instance. 'Online' for
      * Common Data Service for Apps Online and 'OnPremisesWithIfd' for Common Data Service for Apps on-premises with
      * Ifd. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -135,7 +140,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Get the hostName property: The host name of the on-premises Common Data Service for Apps server. The property is
      * required for on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the hostName value.
      */
     public Object getHostName() {
@@ -145,7 +150,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Set the hostName property: The host name of the on-premises Common Data Service for Apps server. The property is
      * required for on-prem and not allowed for online. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param hostName the hostName value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -158,7 +163,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Get the port property: The port of on-premises Common Data Service for Apps server. The property is required for
      * on-prem and not allowed for online. Default is 443. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @return the port value.
      */
     public Object getPort() {
@@ -169,7 +174,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Set the port property: The port of on-premises Common Data Service for Apps server. The property is required for
      * on-prem and not allowed for online. Default is 443. Type: integer (or Expression with resultType integer),
      * minimum: 0.
-     *
+     * 
      * @param port the port value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -181,7 +186,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Get the serviceUri property: The URL to the Microsoft Common Data Service for Apps server. The property is
      * required for on-line and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serviceUri value.
      */
     public Object getServiceUri() {
@@ -191,7 +196,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Set the serviceUri property: The URL to the Microsoft Common Data Service for Apps server. The property is
      * required for on-line and not allowed for on-prem. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -204,7 +209,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Get the organizationName property: The organization name of the Common Data Service for Apps instance. The
      * property is required for on-prem and required for online when there are more than one Common Data Service for
      * Apps instances associated with the user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the organizationName value.
      */
     public Object getOrganizationName() {
@@ -215,7 +220,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Set the organizationName property: The organization name of the Common Data Service for Apps instance. The
      * property is required for on-prem and required for online when there are more than one Common Data Service for
      * Apps instances associated with the user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param organizationName the organizationName value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -228,7 +233,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Get the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
      * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -239,7 +244,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Set the authenticationType property: The authentication type to connect to Common Data Service for Apps server.
      * 'Office365' for online scenario, 'Ifd' for on-premises with Ifd scenario. 'AADServicePrincipal' for
      * Server-To-Server authentication in online scenario. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -251,7 +256,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Get the username property: User name to access the Common Data Service for Apps instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -261,7 +266,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Set the username property: User name to access the Common Data Service for Apps instance. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -272,7 +277,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to access the Common Data Service for Apps instance.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -281,7 +286,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to access the Common Data Service for Apps instance.
-     *
+     * 
      * @param password the password value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -293,7 +298,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -303,7 +308,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The client ID of the application in Azure Active Directory used for
      * Server-To-Server authentication. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -314,7 +319,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
-     *
+     * 
      * @return the servicePrincipalCredentialType value.
      */
     public Object getServicePrincipalCredentialType() {
@@ -323,12 +328,12 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalCredentialType property: A string from ServicePrincipalCredentialEnum or an expression.
-     *
+     * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
-    public CommonDataServiceForAppsLinkedService setServicePrincipalCredentialType(
-            Object servicePrincipalCredentialType) {
+    public CommonDataServiceForAppsLinkedService
+        setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
         this.servicePrincipalCredentialType = servicePrincipalCredentialType;
         return this;
     }
@@ -338,7 +343,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the servicePrincipalCredential value.
      */
     public SecretBase getServicePrincipalCredential() {
@@ -350,7 +355,7 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
      * Directory. If servicePrincipalCredentialType is 'ServicePrincipalKey', servicePrincipalCredential can be
      * SecureString or AzureKeyVaultSecretReference. If servicePrincipalCredentialType is 'ServicePrincipalCert',
      * servicePrincipalCredential can only be AzureKeyVaultSecretReference.
-     *
+     * 
      * @param servicePrincipalCredential the servicePrincipalCredential value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -360,9 +365,9 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -370,9 +375,9 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CommonDataServiceForAppsLinkedService object itself.
      */
@@ -381,28 +386,36 @@ public class CommonDataServiceForAppsLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

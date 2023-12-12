@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FrontendsInterfaces. */
+/**
+ * Resource collection API of FrontendsInterfaces.
+ */
 public interface FrontendsInterfaces {
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface FrontendsInterfaces {
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface FrontendsInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Frontend> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context);
+    PagedIterable<Frontend> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -48,12 +50,12 @@ public interface FrontendsInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Frontend along with {@link Response}.
      */
-    Response<Frontend> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context);
+    Response<Frontend> getWithResponse(String resourceGroupName, String trafficControllerName, String frontendName,
+        Context context);
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -66,7 +68,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -78,7 +80,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -91,7 +93,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface FrontendsInterfaces {
 
     /**
      * Begins definition for a new Frontend resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Frontend definition.
      */

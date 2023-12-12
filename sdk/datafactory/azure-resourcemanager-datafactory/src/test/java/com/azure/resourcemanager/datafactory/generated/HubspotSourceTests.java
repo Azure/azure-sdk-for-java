@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.HubspotSource;
 public final class HubspotSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HubspotSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HubspotSource\",\"query\":\"dataclkbwkmwdrvkb\",\"queryTimeout\":\"datavnnvk\",\"additionalColumns\":\"datazldzzjj\",\"sourceRetryCount\":\"datahjqengopdvnzn\",\"sourceRetryWait\":\"dataiodaj\",\"maxConcurrentConnections\":\"dataszdyv\",\"disableMetricsCollection\":\"dataiufbw\",\"\":{\"edbhnkl\":\"datawhnzhsmu\"}}")
-                .toObject(HubspotSource.class);
+        HubspotSource model = BinaryData.fromString(
+            "{\"type\":\"HubspotSource\",\"query\":\"datazbhmyhjg\",\"queryTimeout\":\"datayernckggwiquka\",\"additionalColumns\":\"dataokeolzizfbunzm\",\"sourceRetryCount\":\"datafttmjomuwl\",\"sourceRetryWait\":\"datajwkpznsfbi\",\"maxConcurrentConnections\":\"datafzgpvdlx\",\"disableMetricsCollection\":\"dataotclcuxzllnwmgqc\",\"\":{\"dguuvgavvzvdfy\":\"datajequoxmpgfspwhf\",\"m\":\"dataqzx\"}}")
+            .toObject(HubspotSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HubspotSource model =
-            new HubspotSource()
-                .withSourceRetryCount("datahjqengopdvnzn")
-                .withSourceRetryWait("dataiodaj")
-                .withMaxConcurrentConnections("dataszdyv")
-                .withDisableMetricsCollection("dataiufbw")
-                .withQueryTimeout("datavnnvk")
-                .withAdditionalColumns("datazldzzjj")
-                .withQuery("dataclkbwkmwdrvkb");
+        HubspotSource model = new HubspotSource().withSourceRetryCount("datafttmjomuwl")
+            .withSourceRetryWait("datajwkpznsfbi").withMaxConcurrentConnections("datafzgpvdlx")
+            .withDisableMetricsCollection("dataotclcuxzllnwmgqc").withQueryTimeout("datayernckggwiquka")
+            .withAdditionalColumns("dataokeolzizfbunzm").withQuery("datazbhmyhjg");
         model = BinaryData.fromObject(model).toObject(HubspotSource.class);
     }
 }

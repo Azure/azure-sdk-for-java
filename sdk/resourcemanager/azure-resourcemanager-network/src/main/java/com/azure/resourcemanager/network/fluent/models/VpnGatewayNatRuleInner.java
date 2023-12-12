@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.VpnNatRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VpnGatewayNatRule Resource. */
+/**
+ * VpnGatewayNatRule Resource.
+ */
 @Fluent
 public final class VpnGatewayNatRuleInner extends SubResource {
     /*
@@ -40,13 +42,15 @@ public final class VpnGatewayNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VpnGatewayNatRuleInner class. */
+    /**
+     * Creates an instance of VpnGatewayNatRuleInner class.
+     */
     public VpnGatewayNatRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the VpnGateway NAT rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnGatewayNatRuleProperties innerProperties() {
@@ -56,7 +60,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +70,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -77,7 +81,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -86,14 +90,16 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnGatewayNatRuleInner withId(String id) {
         super.withId(id);
@@ -102,7 +108,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -111,7 +117,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @return the type value.
      */
     public VpnNatRuleType typePropertiesType() {
@@ -120,7 +126,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Set the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @param type the type value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -134,7 +140,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
@@ -143,7 +149,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Set the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -157,7 +163,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
@@ -166,7 +172,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Set the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @param internalMappings the internalMappings value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -180,7 +186,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
@@ -189,7 +195,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Set the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @param externalMappings the externalMappings value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -203,7 +209,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -212,7 +218,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Set the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the VpnGatewayNatRuleInner object itself.
      */
@@ -226,7 +232,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the egressVpnSiteLinkConnections property: List of egress VpnSiteLinkConnections.
-     *
+     * 
      * @return the egressVpnSiteLinkConnections value.
      */
     public List<SubResource> egressVpnSiteLinkConnections() {
@@ -235,7 +241,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Get the ingressVpnSiteLinkConnections property: List of ingress VpnSiteLinkConnections.
-     *
+     * 
      * @return the ingressVpnSiteLinkConnections value.
      */
     public List<SubResource> ingressVpnSiteLinkConnections() {
@@ -244,7 +250,7 @@ public final class VpnGatewayNatRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

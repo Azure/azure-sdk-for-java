@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Salesforce Service Cloud object dataset properties. */
+/**
+ * Salesforce Service Cloud object dataset properties.
+ */
 @Fluent
 public final class SalesforceServiceCloudObjectDatasetTypeProperties {
     /*
@@ -16,14 +18,16 @@ public final class SalesforceServiceCloudObjectDatasetTypeProperties {
     @JsonProperty(value = "objectApiName")
     private Object objectApiName;
 
-    /** Creates an instance of SalesforceServiceCloudObjectDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SalesforceServiceCloudObjectDatasetTypeProperties class.
+     */
     public SalesforceServiceCloudObjectDatasetTypeProperties() {
     }
 
     /**
      * Get the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the objectApiName value.
      */
     public Object objectApiName() {
@@ -33,7 +37,7 @@ public final class SalesforceServiceCloudObjectDatasetTypeProperties {
     /**
      * Set the objectApiName property: The Salesforce Service Cloud object API name. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceServiceCloudObjectDatasetTypeProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class SalesforceServiceCloudObjectDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

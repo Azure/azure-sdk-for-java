@@ -102,7 +102,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "prompt_filter_results")
-    private List<PromptFilterResult> promptFilterResults;
+    private List<ContentFilterResultsForPrompt> promptFilterResults;
 
     /**
      * Backing member for the prompt filtering result during the rename transition. More details <a
@@ -112,19 +112,41 @@ public final class ChatCompletions {
      */
     @Deprecated
     @JsonProperty(value = "prompt_annotations")
-    private List<PromptFilterResult> promptAnnotations;
+    private List<ContentFilterResultsForPrompt> promptAnnotations;
 
     /**
      * Get the promptFilterResults property: Content filtering results for zero or more prompts in the request. In a
-     * streaming request, results for different prompts may arrive at different times or in different orders.
+     * streaming request,
+     * results for different prompts may arrive at different times or in different orders.
      *
      * @return the promptFilterResults value.
      */
-    public List<PromptFilterResult> getPromptFilterResults() {
+    public List<ContentFilterResultsForPrompt> getPromptFilterResults() {
         if (this.promptFilterResults != null) {
             return this.promptFilterResults;
         }
         return this.promptAnnotations;
+    }
+
+    /*
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
+     * that
+     * might impact determinism.
+     */
+    @Generated
+    @JsonProperty(value = "system_fingerprint")
+    private String systemFingerprint;
+
+    /**
+     * Get the systemFingerprint property: Can be used in conjunction with the `seed` request parameter to understand
+     * when backend changes have been made that
+     * might impact determinism.
+     *
+     * @return the systemFingerprint value.
+     */
+    @Generated
+    public String getSystemFingerprint() {
+        return this.systemFingerprint;
     }
 
     /**

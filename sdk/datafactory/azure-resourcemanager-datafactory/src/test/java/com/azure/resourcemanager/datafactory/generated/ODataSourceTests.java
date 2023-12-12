@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.ODataSource;
 public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ODataSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ODataSource\",\"query\":\"dataqjneszxte\",\"httpRequestTimeout\":\"datahxphxokdbv\",\"additionalColumns\":\"dataqttusuxxb\",\"sourceRetryCount\":\"datapvue\",\"sourceRetryWait\":\"datarnnwgrxzcn\",\"maxConcurrentConnections\":\"datauezxluimkwbwmg\",\"disableMetricsCollection\":\"dataqlsn\",\"\":{\"cfvinjxciun\":\"datahpcjztziuuuyv\",\"zbp\":\"datatcxgdgqkletlwav\",\"drqgionm\":\"dataxxvft\"}}")
-                .toObject(ODataSource.class);
+        ODataSource model = BinaryData.fromString(
+            "{\"type\":\"ODataSource\",\"query\":\"datavhjkwfolpj\",\"httpRequestTimeout\":\"datapahvoiranxqnz\",\"additionalColumns\":\"datavnldtqykz\",\"sourceRetryCount\":\"datadoqrejl\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"dataicyozryoxmfrxf\",\"disableMetricsCollection\":\"datacjialvchfumlfgm\",\"\":{\"ipklfwn\":\"dataxko\",\"dkvljitbnhg\":\"datafkbqlrtffsw\",\"abgsdxtwqqukgo\":\"datarvlarozswmucr\",\"ksltunrwxsqvx\":\"datalvjgsk\"}}")
+            .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model =
-            new ODataSource()
-                .withSourceRetryCount("datapvue")
-                .withSourceRetryWait("datarnnwgrxzcn")
-                .withMaxConcurrentConnections("datauezxluimkwbwmg")
-                .withDisableMetricsCollection("dataqlsn")
-                .withQuery("dataqjneszxte")
-                .withHttpRequestTimeout("datahxphxokdbv")
-                .withAdditionalColumns("dataqttusuxxb");
+        ODataSource model = new ODataSource().withSourceRetryCount("datadoqrejl").withSourceRetryWait("datan")
+            .withMaxConcurrentConnections("dataicyozryoxmfrxf").withDisableMetricsCollection("datacjialvchfumlfgm")
+            .withQuery("datavhjkwfolpj").withHttpRequestTimeout("datapahvoiranxqnz")
+            .withAdditionalColumns("datavnldtqykz");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

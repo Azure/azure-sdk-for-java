@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of P2S Vpn connection health request. */
+/**
+ * List of P2S Vpn connection health request.
+ */
 @Fluent
 public final class P2SVpnConnectionHealthRequest {
     /*
@@ -23,14 +25,16 @@ public final class P2SVpnConnectionHealthRequest {
     @JsonProperty(value = "outputBlobSasUrl")
     private String outputBlobSasUrl;
 
-    /** Creates an instance of P2SVpnConnectionHealthRequest class. */
+    /**
+     * Creates an instance of P2SVpnConnectionHealthRequest class.
+     */
     public P2SVpnConnectionHealthRequest() {
     }
 
     /**
      * Get the vpnUserNamesFilter property: The list of p2s vpn user names whose p2s vpn connection detailed health to
      * retrieve for.
-     *
+     * 
      * @return the vpnUserNamesFilter value.
      */
     public List<String> vpnUserNamesFilter() {
@@ -40,7 +44,7 @@ public final class P2SVpnConnectionHealthRequest {
     /**
      * Set the vpnUserNamesFilter property: The list of p2s vpn user names whose p2s vpn connection detailed health to
      * retrieve for.
-     *
+     * 
      * @param vpnUserNamesFilter the vpnUserNamesFilter value to set.
      * @return the P2SVpnConnectionHealthRequest object itself.
      */
@@ -51,7 +55,7 @@ public final class P2SVpnConnectionHealthRequest {
 
     /**
      * Get the outputBlobSasUrl property: The sas-url to download the P2S Vpn connection health detail.
-     *
+     * 
      * @return the outputBlobSasUrl value.
      */
     public String outputBlobSasUrl() {
@@ -60,7 +64,7 @@ public final class P2SVpnConnectionHealthRequest {
 
     /**
      * Set the outputBlobSasUrl property: The sas-url to download the P2S Vpn connection health detail.
-     *
+     * 
      * @param outputBlobSasUrl the outputBlobSasUrl value to set.
      * @return the P2SVpnConnectionHealthRequest object itself.
      */
@@ -71,7 +75,7 @@ public final class P2SVpnConnectionHealthRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

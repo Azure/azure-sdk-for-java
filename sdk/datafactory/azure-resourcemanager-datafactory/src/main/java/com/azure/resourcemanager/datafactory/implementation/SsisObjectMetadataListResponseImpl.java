@@ -15,8 +15,7 @@ public final class SsisObjectMetadataListResponseImpl implements SsisObjectMetad
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    SsisObjectMetadataListResponseImpl(
-        SsisObjectMetadataListResponseInner innerObject,
+    SsisObjectMetadataListResponseImpl(SsisObjectMetadataListResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

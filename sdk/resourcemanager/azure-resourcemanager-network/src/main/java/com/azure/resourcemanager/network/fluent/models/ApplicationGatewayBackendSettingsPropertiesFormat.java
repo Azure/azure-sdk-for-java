@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of Backend address pool settings of an application gateway. */
+/**
+ * Properties of Backend address pool settings of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     /*
@@ -64,13 +66,15 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayBackendSettingsPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendSettingsPropertiesFormat class.
+     */
     public ApplicationGatewayBackendSettingsPropertiesFormat() {
     }
 
     /**
      * Get the port property: The destination port on the backend.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -79,7 +83,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the port property: The destination port on the backend.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -90,7 +94,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -99,7 +103,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -109,9 +113,9 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     }
 
     /**
-     * Get the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
-     * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * Get the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response
+     * is not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -119,9 +123,9 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     }
 
     /**
-     * Set the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
-     * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * Set the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response
+     * is not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
+     * 
      * @param timeout the timeout value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -132,7 +136,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @return the probe value.
      */
     public SubResource probe() {
@@ -141,7 +145,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @param probe the probe value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -152,7 +156,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @return the trustedRootCertificates value.
      */
     public List<SubResource> trustedRootCertificates() {
@@ -161,19 +165,19 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendSettingsPropertiesFormat withTrustedRootCertificates(
-        List<SubResource> trustedRootCertificates) {
+    public ApplicationGatewayBackendSettingsPropertiesFormat
+        withTrustedRootCertificates(List<SubResource> trustedRootCertificates) {
         this.trustedRootCertificates = trustedRootCertificates;
         return this;
     }
 
     /**
      * Get the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -182,7 +186,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -192,9 +196,9 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     }
 
     /**
-     * Get the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
-     * backend server for Tls protocol. Default value is false.
-     *
+     * Get the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of
+     * the backend server for Tls protocol. Default value is false.
+     * 
      * @return the pickHostnameFromBackendAddress value.
      */
     public Boolean pickHostnameFromBackendAddress() {
@@ -202,21 +206,21 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     }
 
     /**
-     * Set the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
-     * backend server for Tls protocol. Default value is false.
-     *
+     * Set the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of
+     * the backend server for Tls protocol. Default value is false.
+     * 
      * @param pickHostnameFromBackendAddress the pickHostnameFromBackendAddress value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendSettingsPropertiesFormat withPickHostnameFromBackendAddress(
-        Boolean pickHostnameFromBackendAddress) {
+    public ApplicationGatewayBackendSettingsPropertiesFormat
+        withPickHostnameFromBackendAddress(Boolean pickHostnameFromBackendAddress) {
         this.pickHostnameFromBackendAddress = pickHostnameFromBackendAddress;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -225,7 +229,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

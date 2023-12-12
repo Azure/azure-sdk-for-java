@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ExpressRouteServiceProvider. */
+/**
+ * Properties of ExpressRouteServiceProvider.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderPropertiesFormat {
     /*
@@ -31,13 +33,15 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ExpressRouteServiceProviderPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRouteServiceProviderPropertiesFormat class.
+     */
     public ExpressRouteServiceProviderPropertiesFormat() {
     }
 
     /**
      * Get the peeringLocations property: A list of peering locations.
-     *
+     * 
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
@@ -46,7 +50,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Set the peeringLocations property: A list of peering locations.
-     *
+     * 
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
@@ -57,7 +61,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Get the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * 
      * @return the bandwidthsOffered value.
      */
     public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
@@ -66,19 +70,19 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Set the bandwidthsOffered property: A list of bandwidths offered.
-     *
+     * 
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
-    public ExpressRouteServiceProviderPropertiesFormat withBandwidthsOffered(
-        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+    public ExpressRouteServiceProviderPropertiesFormat
+        withBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
         this.bandwidthsOffered = bandwidthsOffered;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route service provider resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -87,7 +91,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

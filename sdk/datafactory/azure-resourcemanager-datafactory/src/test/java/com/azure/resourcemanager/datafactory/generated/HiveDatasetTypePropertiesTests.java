@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.HiveDatasetTypeProper
 public final class HiveDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HiveDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tableName\":\"datanocscygimizl\",\"table\":\"datajbwmgksrlmsppp\",\"schema\":\"dataszthjtryjskdiylg\"}")
-                .toObject(HiveDatasetTypeProperties.class);
+        HiveDatasetTypeProperties model = BinaryData.fromString(
+            "{\"tableName\":\"datanocscygimizl\",\"table\":\"datajbwmgksrlmsppp\",\"schema\":\"dataszthjtryjskdiylg\"}")
+            .toObject(HiveDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HiveDatasetTypeProperties model =
-            new HiveDatasetTypeProperties()
-                .withTableName("datanocscygimizl")
-                .withTable("datajbwmgksrlmsppp")
-                .withSchema("dataszthjtryjskdiylg");
+        HiveDatasetTypeProperties model = new HiveDatasetTypeProperties().withTableName("datanocscygimizl")
+            .withTable("datajbwmgksrlmsppp").withSchema("dataszthjtryjskdiylg");
         model = BinaryData.fromObject(model).toObject(HiveDatasetTypeProperties.class);
     }
 }

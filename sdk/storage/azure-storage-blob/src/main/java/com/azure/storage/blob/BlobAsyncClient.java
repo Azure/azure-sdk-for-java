@@ -940,10 +940,11 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
      *     .setLeaseId&#40;leaseId&#41;
      *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * Long blockSize = 100 * 1024 * 1024L; &#47;&#47; 100 MB;
      *
      * client.uploadFromFileWithResponse&#40;new BlobUploadFromFileOptions&#40;filePath&#41;
      *     .setParallelTransferOptions&#40;
-     *         new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE&#41;&#41;
+     *         new ParallelTransferOptions&#40;&#41;.setBlockSizeLong&#40;blockSize&#41;&#41;
      *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
      *     .setRequestConditions&#40;requestConditions&#41;&#41;
      *     .doOnError&#40;throwable -&gt; System.err.printf&#40;&quot;Failed to upload from file %s%n&quot;, throwable.getMessage&#40;&#41;&#41;&#41;

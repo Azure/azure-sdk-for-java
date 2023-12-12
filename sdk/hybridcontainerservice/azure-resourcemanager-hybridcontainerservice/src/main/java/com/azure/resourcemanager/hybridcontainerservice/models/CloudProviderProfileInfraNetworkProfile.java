@@ -8,25 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** InfraNetworkProfile - List of infra network profiles for the provisioned cluster. */
+/**
+ * InfraNetworkProfile - List of infra network profiles for the provisioned cluster.
+ */
 @Fluent
 public final class CloudProviderProfileInfraNetworkProfile {
     /*
-     * Array of references to azure resource corresponding to the new HybridAKSNetwork object e.g.
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/virtualNetworks/{virtualNetworkName}
+     * Array of references to azure resource corresponding to the Network object e.g.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/
+     * logicalNetworks/{logicalNetworkName}
      */
     @JsonProperty(value = "vnetSubnetIds")
     private List<String> vnetSubnetIds;
 
-    /** Creates an instance of CloudProviderProfileInfraNetworkProfile class. */
+    /**
+     * Creates an instance of CloudProviderProfileInfraNetworkProfile class.
+     */
     public CloudProviderProfileInfraNetworkProfile() {
     }
 
     /**
-     * Get the vnetSubnetIds property: Array of references to azure resource corresponding to the new HybridAKSNetwork
-     * object e.g.
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/virtualNetworks/{virtualNetworkName}.
-     *
+     * Get the vnetSubnetIds property: Array of references to azure resource corresponding to the Network object e.g.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}.
+     * 
      * @return the vnetSubnetIds value.
      */
     public List<String> vnetSubnetIds() {
@@ -34,10 +38,9 @@ public final class CloudProviderProfileInfraNetworkProfile {
     }
 
     /**
-     * Set the vnetSubnetIds property: Array of references to azure resource corresponding to the new HybridAKSNetwork
-     * object e.g.
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridContainerService/virtualNetworks/{virtualNetworkName}.
-     *
+     * Set the vnetSubnetIds property: Array of references to azure resource corresponding to the Network object e.g.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/logicalNetworks/{logicalNetworkName}.
+     * 
      * @param vnetSubnetIds the vnetSubnetIds value to set.
      * @return the CloudProviderProfileInfraNetworkProfile object itself.
      */
@@ -48,7 +51,7 @@ public final class CloudProviderProfileInfraNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

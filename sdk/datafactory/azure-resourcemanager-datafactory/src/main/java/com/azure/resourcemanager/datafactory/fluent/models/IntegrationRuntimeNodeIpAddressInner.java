@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IP address of self-hosted integration runtime node. */
+/**
+ * The IP address of self-hosted integration runtime node.
+ */
 @Immutable
 public final class IntegrationRuntimeNodeIpAddressInner {
     /*
@@ -16,13 +18,15 @@ public final class IntegrationRuntimeNodeIpAddressInner {
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
-    /** Creates an instance of IntegrationRuntimeNodeIpAddressInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeNodeIpAddressInner class.
+     */
     public IntegrationRuntimeNodeIpAddressInner() {
     }
 
     /**
      * Get the ipAddress property: The IP address of self-hosted integration runtime node.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -31,7 +35,7 @@ public final class IntegrationRuntimeNodeIpAddressInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

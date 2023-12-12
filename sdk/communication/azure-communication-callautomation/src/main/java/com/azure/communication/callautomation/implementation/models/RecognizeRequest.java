@@ -42,10 +42,13 @@ public final class RecognizeRequest {
     private String operationContext;
 
     /*
-     * The callback URI to override the main callback URI.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /**
      * Get the recognizeInputType property: Determines the type of the recognition.
@@ -150,22 +153,26 @@ public final class RecognizeRequest {
     }
 
     /**
-     * Get the callbackUri property: The callback URI to override the main callback URI.
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @return the callbackUri value.
+     * @return the operationCallbackUri value.
      */
-    public String getCallbackUri() {
-        return this.callbackUri;
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
     }
 
     /**
-     * Set the callbackUri property: The callback URI to override the main callback URI.
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      *
-     * @param callbackUri the callbackUri value to set.
+     * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RecognizeRequest object itself.
      */
-    public RecognizeRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
+    public RecognizeRequest setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

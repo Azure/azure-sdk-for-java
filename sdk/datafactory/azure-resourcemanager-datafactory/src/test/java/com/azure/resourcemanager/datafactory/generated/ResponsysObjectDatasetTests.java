@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResponsysObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResponsysObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ResponsysObject\",\"typeProperties\":{\"tableName\":\"dataxcsdqoxhdenmj\"},\"description\":\"xgrggyciw\",\"structure\":\"dataqinr\",\"schema\":\"datavvmrn\",\"linkedServiceName\":{\"referenceName\":\"rdijox\",\"parameters\":{\"b\":\"datasychdcjggcmpncj\",\"owvfxe\":\"databnoq\",\"irvcpol\":\"datatzgwjeky\",\"ilbdvxlfhlzzgap\":\"datavgppp\"}},\"parameters\":{\"xnroyhthesyw\":{\"type\":\"SecureString\",\"defaultValue\":\"datablscrmzquuzywkgo\"}},\"annotations\":[\"datavg\"],\"folder\":{\"name\":\"c\"},\"\":{\"zyrgrlh\":\"datazcwuejmxlfzl\"}}")
-                .toObject(ResponsysObjectDataset.class);
+        ResponsysObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"ResponsysObject\",\"typeProperties\":{\"tableName\":\"dataxcsdqoxhdenmj\"},\"description\":\"xgrggyciw\",\"structure\":\"dataqinr\",\"schema\":\"datavvmrn\",\"linkedServiceName\":{\"referenceName\":\"rdijox\",\"parameters\":{\"b\":\"datasychdcjggcmpncj\",\"owvfxe\":\"databnoq\",\"irvcpol\":\"datatzgwjeky\",\"ilbdvxlfhlzzgap\":\"datavgppp\"}},\"parameters\":{\"xnroyhthesyw\":{\"type\":\"SecureString\",\"defaultValue\":\"datablscrmzquuzywkgo\"}},\"annotations\":[\"datavg\"],\"folder\":{\"name\":\"c\"},\"\":{\"zyrgrlh\":\"datazcwuejmxlfzl\"}}")
+            .toObject(ResponsysObjectDataset.class);
         Assertions.assertEquals("xgrggyciw", model.description());
         Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xnroyhthesyw").type());
@@ -31,33 +29,16 @@ public final class ResponsysObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponsysObjectDataset model =
-            new ResponsysObjectDataset()
-                .withDescription("xgrggyciw")
-                .withStructure("dataqinr")
-                .withSchema("datavvmrn")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("rdijox")
-                        .withParameters(
-                            mapOf(
-                                "b",
-                                "datasychdcjggcmpncj",
-                                "owvfxe",
-                                "databnoq",
-                                "irvcpol",
-                                "datatzgwjeky",
-                                "ilbdvxlfhlzzgap",
-                                "datavgppp")))
-                .withParameters(
-                    mapOf(
-                        "xnroyhthesyw",
-                        new ParameterSpecification()
-                            .withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("datablscrmzquuzywkgo")))
-                .withAnnotations(Arrays.asList("datavg"))
-                .withFolder(new DatasetFolder().withName("c"))
-                .withTableName("dataxcsdqoxhdenmj");
+        ResponsysObjectDataset model = new ResponsysObjectDataset().withDescription("xgrggyciw")
+            .withStructure("dataqinr").withSchema("datavvmrn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("rdijox")
+                .withParameters(mapOf("b", "datasychdcjggcmpncj", "owvfxe", "databnoq", "irvcpol", "datatzgwjeky",
+                    "ilbdvxlfhlzzgap", "datavgppp")))
+            .withParameters(mapOf("xnroyhthesyw",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("datablscrmzquuzywkgo")))
+            .withAnnotations(Arrays.asList("datavg")).withFolder(new DatasetFolder().withName("c"))
+            .withTableName("dataxcsdqoxhdenmj");
         model = BinaryData.fromObject(model).toObject(ResponsysObjectDataset.class);
         Assertions.assertEquals("xgrggyciw", model.description());
         Assertions.assertEquals("rdijox", model.linkedServiceName().referenceName());

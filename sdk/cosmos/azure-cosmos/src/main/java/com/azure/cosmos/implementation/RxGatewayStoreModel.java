@@ -112,6 +112,17 @@ public class RxGatewayStoreModel implements RxStoreModel {
         this.sessionContainer = sessionContainer;
     }
 
+    public RxGatewayStoreModel(RxGatewayStoreModel inner) {
+        this.clientContext = inner.clientContext;
+        this.defaultHeaders = inner.defaultHeaders;
+        this.defaultConsistencyLevel = inner.defaultConsistencyLevel;
+        this.globalEndpointManager = inner.globalEndpointManager;
+        this.queryCompatibilityMode = inner.queryCompatibilityMode;
+
+        this.httpClient = inner.httpClient;
+        this.sessionContainer = inner.sessionContainer;
+    }
+
     void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
         this.gatewayServiceConfigurationReader = gatewayServiceConfigurationReader;
     }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Informix table dataset properties. */
+/**
+ * Informix table dataset properties.
+ */
 @Fluent
 public final class InformixTableDatasetTypeProperties {
     /*
@@ -16,13 +18,15 @@ public final class InformixTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
-    /** Creates an instance of InformixTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of InformixTableDatasetTypeProperties class.
+     */
     public InformixTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The Informix table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -31,7 +35,7 @@ public final class InformixTableDatasetTypeProperties {
 
     /**
      * Set the tableName property: The Informix table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the InformixTableDatasetTypeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class InformixTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
