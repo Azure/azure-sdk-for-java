@@ -320,6 +320,24 @@ public class VersioningAsyncTests extends BlobTestBase {
     }
 
     @Test
+    public void copyFromUrlBlobsWithVersion() {
+        BlockBlobItem blobItemV1 = blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
+            DATA.getDefaultDataSize()).block();
+        BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
+        sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize()).block();
+
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
+            null, null, null, null))
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION_ID));
+                assertNotEquals(blobItemV1.getVersionId(), r.getHeaders().getValue(X_MS_VERSION_ID));
+            })
+            .verifyComplete();
+    }
+
+    @Test
     public void setTierWithVersion() {
         Flux<ByteBuffer> inputV1 = Flux.just(ByteBuffer.wrap(contentV1.getBytes(StandardCharsets.UTF_8)));
         Flux<ByteBuffer> inputV2 = Flux.just(ByteBuffer.wrap(contentV2.getBytes(StandardCharsets.UTF_8)));

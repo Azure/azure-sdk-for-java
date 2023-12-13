@@ -15,11 +15,14 @@ import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -507,6 +510,194 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         bc.downloadStream(downloadStream); // Check if block was appended correctly by downloading the block
         TestUtils.assertArraysEqual(randomData, downloadStream.toByteArray());
+    }
+
+    @Test
+    public void appendBlockFromURLMin() {
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        BlobRange blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES);
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<AppendBlobItem> response = destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, blobRange, null,
+            null, null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        validateBasicHeaders(response.getHeaders());
+    }
+
+    @Test
+    public void appendBlockFromURLRange() {
+        byte[] data = getRandomByteArray(4 * 1024);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        destURL.appendBlockFromUrl(bc.getBlobUrl() + "?" + sas, new BlobRange(2 * 1024, 1024L));
+
+        ByteArrayOutputStream downloadStream = new ByteArrayOutputStream(1024);
+        destURL.downloadStream(downloadStream);
+        TestUtils.assertArraysEqual(data, 2 * 1024, downloadStream.toByteArray(), 0, 1024);
+    }
+
+    @Test
+    public void appendBlockFromURLMD5() {
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertDoesNotThrow(() -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+            MessageDigest.getInstance("MD5").digest(data), null, null, null, Context.NONE));
+
+    }
+
+    @Test
+    public void appendBlockFromURLMD5Fail() {
+        byte[] data = getRandomByteArray(1024);
+        bc.appendBlock(new ByteArrayInputStream(data), data.length);
+
+        AppendBlobClient destURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        destURL.create();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null, null, null, Context.NONE));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockSupplier")
+    public void appendBlockFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                                String noneMatch, String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t);
+        match = setupBlobMatchCondition(bc, match);
+        leaseID = setupBlobLeaseCondition(bc, leaseID);
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        sourceURL.create();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
+            null).getStatusCode();
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, bac, null, null,
+            null), 201);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFailSupplier")
+    public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                                    String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE, String tags) {
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        setupBlobLeaseCondition(bc, leaseID);
+
+        AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+            .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags);
+
+        AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        sourceURL.create();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
+            null);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+            null, bac, null, null, Context.NONE));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFromURLSupplier")
+    public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+                                           String sourceIfMatch, String sourceIfNoneMatch) {
+        AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        sourceURL.create();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
+            null);
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .setIfNoneMatch(sourceIfNoneMatch);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null, null, null, smac, null,
+            null), 201);
+    }
+
+    private static Stream<Arguments> appendBlockFromURLSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG)
+        );
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("appendBlockFromURLFailSupplier")
+    public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
+                                               OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        AppendBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        sourceURL.create();
+        sourceURL.appendBlockWithResponse(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), null, null, null,
+            null);
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+            null, null, smac, null, Context.NONE));
+    }
+
+    private static Stream<Arguments> appendBlockFromURLFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG)
+        );
     }
 
     @Test

@@ -20,9 +20,11 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.Block;
@@ -31,6 +33,7 @@ import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
@@ -39,6 +42,7 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.http.WireTapHttpClient;
@@ -61,6 +65,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
@@ -345,6 +350,46 @@ public class BlockBlobApiTests extends BlobTestBase {
         }
     }
 
+    @Test
+    public void stageBlockFromUrl() {
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String blockID = getBlockID();
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        HttpHeaders headers = bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl() + "?" + sas, null, null, null,
+            null, null, null).getHeaders();
+
+        assertNotNull(headers.getValue(X_MS_CONTENT_CRC64));
+        assertNotNull(headers.getValue(X_MS_REQUEST_ID));
+        assertNotNull(headers.getValue(X_MS_VERSION));
+        assertTrue(Boolean.parseBoolean(headers.getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
+
+        BlockList response = bu2.listBlocks(BlockListType.ALL);
+        assertEquals(response.getUncommittedBlocks().size(), 1);
+        assertEquals(response.getCommittedBlocks().size(), 0);
+        assertEquals(response.getUncommittedBlocks().get(0).getName(), blockID);
+
+        bu2.commitBlockList(Collections.singletonList(blockID));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bu2.downloadStream(outputStream);
+
+        assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
+    }
+
+    @Test
+    public void stageBlockFromUrlMin() {
+        BlockBlobClient bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String blockID = getBlockID();
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        assertResponseStatusCode(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl() + "?" + sas, null, null,
+            null, null, null, null), 201);
+    }
+
     @ParameterizedTest
     @MethodSource("stageBlockFromURLIASupplier")
     public void stageBlockFromURLIA(boolean getBlockId, String sourceURL, Class<? extends Throwable> exceptionType) {
@@ -359,6 +404,65 @@ public class BlockBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void stageBlockFromURLRange() {
+        BlockBlobClient destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        destURL.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl() + "?" + sas, new BlobRange(2L, 3L));
+        BlockList blockList = destURL.listBlocks(BlockListType.UNCOMMITTED);
+
+        assertEquals(blockList.getCommittedBlocks().size(), 0);
+        assertEquals(blockList.getUncommittedBlocks().size(), 1);
+    }
+
+    @Test
+    public void stageBlockFromURLMD5() {
+        BlockBlobClient destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        assertDoesNotThrow(() -> destURL.stageBlockFromUrlWithResponse(getBlockID(), blockBlobClient.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(DATA.getDefaultBytes()), null,
+            null, null, null));
+    }
+
+    @Test
+    public void stageBlockFromURLMD5Fail() {
+        BlockBlobClient destURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        assertThrows(BlobStorageException.class, () -> destURL.stageBlockFromUrlWithResponse(getBlockID(),
+            blockBlobClient.getBlobUrl() + "?" + sas, null, "garbage".getBytes(), null, null,
+            null, null));
+    }
+
+    @Test
+    public void stageBlockFromURLLease() {
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        assertDoesNotThrow(() -> blockBlobClient.stageBlockFromUrlWithResponse(getBlockID(),
+            blockBlobClient.getBlobUrl() + "?" + sas, null, null,
+            setupBlobLeaseCondition(blockBlobClient, RECEIVED_LEASE_ID), null, null,
+            null));
+    }
+
+    @Test
+    public void stageBlockFromURLLeaseFail() {
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        assertThrows(BlobStorageException.class, () -> blockBlobClient.stageBlockFromUrlWithResponse(getBlockID(),
+            blockBlobClient.getBlobUrl() + "?" + sas, null, null, "garbage", null,
+            null, null));
+    }
+
+    @Test
     public void stageBlockFromURLError() {
         blockBlobClient = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
             .getBlobClient(generateBlobName())
@@ -366,6 +470,65 @@ public class BlockBlobApiTests extends BlobTestBase {
 
         assertThrows(BlobStorageException.class, () ->
                 blockBlobClient.stageBlockFromUrl(getBlockID(), blockBlobClient.getBlobUrl(), null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("stageBlockFromURLSourceACSupplier")
+    public void stageBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+                                          String sourceIfMatch, String sourceIfNoneMatch) {
+        String blockID = getBlockID();
+
+        BlockBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        sourceURL.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch);
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(sourceIfNoneMatch);
+
+        assertResponseStatusCode(blockBlobClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl() + "?" + sas,
+            null, null, null, smac, null, null), 201);
+    }
+
+    private static Stream<Arguments> stageBlockFromURLSourceACSupplier() {
+        return Stream.of(Arguments.of(null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG));
+    }
+
+    @ParameterizedTest
+    @MethodSource("stageBlockFromURLSourceACFailSupplier")
+    public void stageBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
+                                              OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        String blockID = getBlockID();
+
+        BlockBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        sourceURL.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
+
+        assertThrows(BlobStorageException.class, () ->
+            blockBlobClient.stageBlockFromUrlWithResponse(blockID, sourceURL.getBlobUrl() + "?" + sas, null,
+                null, null, smac, null, null));
+    }
+    private static Stream<Arguments> stageBlockFromURLSourceACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
     @Test
@@ -1485,6 +1648,42 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10)), BlobErrorCode.CONDITION_NOT_MET),
             Arguments.of(new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)), BlobErrorCode.CONDITION_NOT_MET),
             Arguments.of(new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb"), BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION));
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20210608ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("uploadFromUrlCopySourceTagsSupplier")
+    public void uploadFromUrlCopySourceTags(BlobCopySourceTagsMode mode) {
+        Map<String, String> sourceTags = Collections.singletonMap("foo", "bar");
+        Map<String, String> destTags = Collections.singletonMap("fizz", "buzz");
+        blockBlobClient.setTags(sourceTags);
+
+        String sas = blockBlobClient.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+
+        BlobClient bc2 = cc.getBlobClient(generateBlobName());
+
+        BlobCopyFromUrlOptions options = new BlobCopyFromUrlOptions(blockBlobClient.getBlobUrl() + "?" + sas)
+            .setCopySourceTagsMode(mode);
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            options.setTags(destTags);
+        }
+
+        bc2.copyFromUrlWithResponse(options, null, null);
+        Map<String, String> receivedTags = bc2.getTags();
+
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            assertEquals(receivedTags, destTags);
+        } else {
+            assertEquals(receivedTags, sourceTags);
+        }
+    }
+
+    private static Stream<Arguments> uploadFromUrlCopySourceTagsSupplier() {
+        return Stream.of(
+            Arguments.of(BlobCopySourceTagsMode.COPY),
+            Arguments.of(BlobCopySourceTagsMode.REPLACE)
+        );
     }
 
     @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20211202ServiceVersion")

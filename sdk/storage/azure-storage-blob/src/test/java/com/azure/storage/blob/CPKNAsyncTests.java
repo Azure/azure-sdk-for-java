@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
@@ -19,6 +20,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -291,6 +293,22 @@ public class CPKNAsyncTests extends BlobTestBase {
                 Assertions.assertTrue(r.getValue().isServerEncrypted());
                 Assertions.assertEquals(scope1, r.getValue().getEncryptionScope());
             })
+            .verifyComplete();
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20201206ServiceVersion")
+    @Test
+    public void asyncCopyEncryptionScope() {
+        BlobAsyncClient blobSource = ccAsync.getBlobAsyncClient(generateBlobName());
+        blobSource.upload(DATA.getDefaultBinaryData()).block();
+
+        String sas = blobSource.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+
+        cpknBlockBlob.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(blobSource.getBlobUrl() + "?" + sas)).block();
+
+        StepVerifier.create(cpknBlockBlob.getProperties())
+            .assertNext(r -> assertEquals(scope1, r.getEncryptionScope()))
             .verifyComplete();
     }
 

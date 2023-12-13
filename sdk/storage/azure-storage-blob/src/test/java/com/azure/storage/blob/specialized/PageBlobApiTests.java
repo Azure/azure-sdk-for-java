@@ -22,6 +22,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ClearRange;
+import com.azure.storage.blob.models.CopyStatusType;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.PageBlobItem;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageList;
@@ -31,7 +33,10 @@ import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
+import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -514,9 +519,202 @@ public class PageBlobApiTests extends BlobTestBase {
     }
 
     @Test
+    public void uploadPageFromURLMin() {
+        PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destURL.create(PageBlobClient.PAGE_BYTES);
+        destURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+
+        String sas = destURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        Response<PageBlobItem> response = bc.uploadPagesFromUrlWithResponse(pageRange,
+            destURL.getBlobUrl() + "?" + sas, null, null, null,
+            null, null, null);
+
+        assertResponseStatusCode(response, 201);
+        assertTrue(validateBasicHeaders(response.getHeaders()));
+    }
+
+    @Test
+    public void uploadPageFromURLRange() {
+        byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES * 4);
+
+        PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES * 4);
+        sourceURL.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 4 - 1),
+            new ByteArrayInputStream(data));
+
+        PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destURL.create(PageBlobClient.PAGE_BYTES * 2);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        destURL.uploadPagesFromUrl(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES * 2 - 1),
+            sourceURL.getBlobUrl() + "?" + sas, PageBlobClient.PAGE_BYTES * 2L);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        destURL.downloadStream(outputStream);
+        TestUtils.assertArraysEqual(data, PageBlobClient.PAGE_BYTES * 2, outputStream.toByteArray(),
+            0, PageBlobClient.PAGE_BYTES * 2);
+    }
+
+    @Test
     public void uploadPageFromURLIA() {
         assertThrows(IllegalArgumentException.class, () -> bc.uploadPagesFromUrl(null, bc.getBlobUrl(),
             (long) PageBlobClient.PAGE_BYTES));
+    }
+
+    @Test
+    public void uploadPageFromURLMD5() throws NoSuchAlgorithmException {
+        PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destURL.create(PageBlobClient.PAGE_BYTES);
+        byte[] data = getRandomByteArray(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        bc.uploadPages(pageRange, new ByteArrayInputStream(data));
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertDoesNotThrow(() -> destURL.uploadPagesFromUrlWithResponse(pageRange, bc.getBlobUrl() + "?" + sas,
+            null, MessageDigest.getInstance("MD5").digest(data), null,
+            null, null, null));
+    }
+
+    @Test
+    public void uploadPageFromURLMD5Fail() {
+        PageBlobClient destURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        destURL.create(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        bc.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> destURL.uploadPagesFromUrlWithResponse(pageRange,
+            bc.getBlobUrl() + "?" + sas, null, MessageDigest.getInstance("MD5")
+            .digest("garbage".getBytes()), null, null, null, null));
+
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("uploadPageACSupplier")
+    public void uploadPageFromURLDestinationAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                               String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+                                               String tags) {
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bc.setTags(t);
+        PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+
+        PageBlobRequestConditions pac = new PageBlobRequestConditions()
+            .setLeaseId(setupBlobLeaseCondition(bc, leaseID))
+            .setIfMatch(setupBlobMatchCondition(bc, match))
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfSequenceNumberLessThan(sequenceNumberLT)
+            .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+            .setIfSequenceNumberEqualTo(sequenceNumberEqual)
+            .setTagsConditions(tags);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
+            null, null, pac, null, null, null),
+            201);
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadPageACFailSupplier")
+    public void uploadPageFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                                   String noneMatch, String leaseID, Long sequenceNumberLT, Long sequenceNumberLTE, Long sequenceNumberEqual,
+                                                   String tags) {
+        PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+
+        noneMatch = setupBlobMatchCondition(bc, noneMatch);
+        PageBlobRequestConditions pac = new PageBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfSequenceNumberLessThan(sequenceNumberLT)
+            .setIfSequenceNumberLessThanOrEqualTo(sequenceNumberLTE)
+            .setIfSequenceNumberEqualTo(sequenceNumberEqual)
+            .setTagsConditions(tags);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
+            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null, pac,
+            null, null, null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadPageFromURLSourceACSupplier")
+    public void uploadPageFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
+                                          String sourceIfMatch, String sourceIfNoneMatch) {
+        PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+
+        sourceIfMatch = setupBlobMatchCondition(sourceURL, sourceIfMatch);
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(sourceIfNoneMatch);
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc.uploadPagesFromUrlWithResponse(pageRange, sourceURL.getBlobUrl() + "?" + sas,
+            null, null, null, smac, null, null),
+            201);
+    }
+
+    private static Stream<Arguments> uploadPageFromURLSourceACSupplier() {
+        return Stream.of(Arguments.of(null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG));
+    }
+
+    @ParameterizedTest
+    @MethodSource("uploadPageFromURLSourceACFailSupplier")
+    public void uploadPageFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
+                                              OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch) {
+        PageBlobClient sourceURL = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        sourceURL.create(PageBlobClient.PAGE_BYTES);
+        PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
+        sourceURL.uploadPages(pageRange, new ByteArrayInputStream(getRandomByteArray(PageBlobClient.PAGE_BYTES)));
+
+        BlobRequestConditions smac = new BlobRequestConditions()
+            .setIfModifiedSince(sourceIfModifiedSince)
+            .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
+            .setIfMatch(sourceIfMatch)
+            .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
+
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertThrows(BlobStorageException.class, () -> bc.uploadPagesFromUrlWithResponse(
+            pageRange, sourceURL.getBlobUrl() + "?" + sas, null, null,
+            null, smac, null, null));
+    }
+
+    private static Stream<Arguments> uploadPageFromURLSourceACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG));
     }
 
     @Test
@@ -1285,6 +1483,133 @@ public class PageBlobApiTests extends BlobTestBase {
     public void sequenceNumberError() {
         bc = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         assertThrows(BlobStorageException.class, () -> bc.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0L));
+    }
+
+    @Test
+    public void startIncrementalCopy() {
+        PageBlobClient bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        String snapId = bc.createSnapshot().getSnapshotId();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        Response<CopyStatusType> copyResponse = bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapId, null, null,
+            null);
+
+        CopyStatusType status = copyResponse.getValue();
+        OffsetDateTime start = testResourceNamer.now();
+        while (status != CopyStatusType.SUCCESS) {
+            status = bc2.getProperties().getCopyStatus();
+            OffsetDateTime currentTime = testResourceNamer.now();
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
+                throw new RuntimeException("Copy failed or took too long");
+            }
+            sleepIfRunningAgainstService(1000);
+        }
+
+        BlobProperties properties = bc2.getProperties();
+        assertTrue(properties.isIncrementalCopy());
+        assertNotNull(properties.getCopyDestinationSnapshot());
+        validateBasicHeaders(copyResponse.getHeaders());
+        assertNotNull(copyResponse.getHeaders().getValue(X_MS_COPY_ID));
+        assertNotNull(copyResponse.getValue());
+    }
+
+    @Test
+    public void startIncrementalCopyMin() {
+        PageBlobClient bc2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        String snapshot = bc.createSnapshot().getSnapshotId();
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        assertResponseStatusCode(bc2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas, snapshot, null, null, null), 202);
+    }
+
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @ParameterizedTest
+    @MethodSource("startIncrementalCopyACSupplier")
+    public void startIncrementalCopyAC(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                       String noneMatch, String tags) {
+        PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        String snapshot = bc.createSnapshot().getSnapshotId();
+
+        sleepIfRunningAgainstService(10 * 1000);
+
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+
+        Response<CopyStatusType> copyResponse = bu2.copyIncrementalWithResponse(bc.getBlobUrl() + "?" + sas,
+            snapshot, null, null, null);
+
+        CopyStatusType status = copyResponse.getValue();
+        OffsetDateTime start = testResourceNamer.now();
+        while (status != CopyStatusType.SUCCESS) {
+            status = bu2.getProperties().getCopyStatus();
+            OffsetDateTime currentTime = testResourceNamer.now();
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
+                throw new RuntimeException("Copy failed or took too long");
+            }
+            sleepIfRunningAgainstService(1000);
+        }
+        Map<String, String> t = new HashMap<>();
+        t.put("foo", "bar");
+        bu2.setTags(t);
+
+        snapshot = bc.createSnapshot().getSnapshotId();
+        match = setupBlobMatchCondition(bu2, match);
+        PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags);
+
+        assertResponseStatusCode(bu2.copyIncrementalWithResponse(
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, snapshot).setRequestConditions(mac),
+            null, null),  202);
+    }
+
+    private static Stream<Arguments> startIncrementalCopyACSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, null, null),
+            Arguments.of(OLD_DATE, null, null, null, null),
+            Arguments.of(null, NEW_DATE, null, null, null),
+            Arguments.of(null, null, RECEIVED_ETAG, null, null),
+            Arguments.of(null, null, null, GARBAGE_ETAG, null),
+            Arguments.of(null, null, null, null, "\"foo\" = 'bar'"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("startIncrementalCopyACFailSupplier")
+    public void startIncrementalCopyACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
+                                           String noneMatch, String tags) {
+
+        PageBlobClient bu2 = cc.getBlobClient(generateBlobName()).getPageBlobClient();
+        String snapshot = bc.createSnapshot().getSnapshotId();
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)));
+        bu2.copyIncremental(bc.getBlobUrl() + "?" + sas, snapshot);
+        String finalSnapshot = bc.createSnapshot().getSnapshotId();
+        noneMatch = setupBlobMatchCondition(bu2, noneMatch);
+        PageBlobCopyIncrementalRequestConditions mac = new PageBlobCopyIncrementalRequestConditions()
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setTagsConditions(tags);
+
+        assertThrows(BlobStorageException.class, () -> bu2.copyIncrementalWithResponse(
+            new PageBlobCopyIncrementalOptions(bc.getBlobUrl() + "?" + sas, finalSnapshot)
+            .setRequestConditions(mac), null, null));
+    }
+
+    private static Stream<Arguments> startIncrementalCopyACFailSupplier() {
+        return Stream.of(
+            Arguments.of(NEW_DATE, null, null, null, null),
+            Arguments.of(null, OLD_DATE, null, null, null),
+            Arguments.of(null, null, GARBAGE_ETAG, null, null),
+            Arguments.of(null, null, null, RECEIVED_ETAG, null),
+            Arguments.of(null, null, null, null, "\"notfoo\" = 'notbar'"));
     }
 
     @Test

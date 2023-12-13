@@ -1205,21 +1205,23 @@ public class BlobTestBase extends TestProxyTestBase {
     protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
                                         List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers);
-        BlobContainerAccessPolicies status = cc.getAccessPolicy();
+        /*BlobContainerAccessPolicies status = cc.getAccessPolicy();
         while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
             status = cc.getAccessPolicy();
             sleepIfRunningAgainstService(2000);
-        }
+        }*/
+        sleepIfRunningAgainstService(30 * 1000);
     }
 
     protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
                                         List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers).block();
-        BlobContainerAccessPolicies status = cc.getAccessPolicy().block();
+        /*BlobContainerAccessPolicies status = cc.getAccessPolicy().block();
         while (status.getBlobAccessType() != access || !areIdentifiersEqual(status.getIdentifiers(), identifiers)) {
             status = cc.getAccessPolicy().block();
             sleepIfRunningAgainstService(2000);
-        }
+        }*/
+        sleepIfRunningAgainstService(30 * 1000);
     }
 
     protected boolean areIdentifiersEqual(List<BlobSignedIdentifier> l1, List<BlobSignedIdentifier> l2) {
