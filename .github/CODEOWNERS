@@ -160,6 +160,9 @@
 # PRLabel: %Open AI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
 
+# PRLabel: %Image Analysis
+/sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
+
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
 
