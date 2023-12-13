@@ -772,21 +772,9 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than once"));
-            }
-        };
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
+            Mono.delay(Duration.ofSeconds(2))
+                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
@@ -813,15 +801,9 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else if (invocationCount[0] == 1) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+                return Mono.delay(Duration.ofSeconds(2))
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             }
         };
 
@@ -844,21 +826,9 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than once"));
-            }
-        };
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
+            Mono.delay(Duration.ofSeconds(2))
+                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
@@ -885,15 +855,9 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else if (invocationCount[0] == 1) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+                return Mono.delay(Duration.ofSeconds(2))
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             }
         };
 
@@ -916,21 +880,9 @@ public class PollerTests {
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
-        int[] invocationCount = new int[1];
-        invocationCount[0] = -1;
-        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
-            invocationCount[0]++;
-            if (invocationCount[0] == 0) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than once"));
-            }
-        };
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored ->
+            Mono.delay(Duration.ofSeconds(2))
+                .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
 
         SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
@@ -957,15 +909,9 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
-            } else if (invocationCount[0] == 1) {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    return Mono.error(e);
-                }
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             } else {
-                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+                return Mono.delay(Duration.ofSeconds(2))
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             }
         };
 
