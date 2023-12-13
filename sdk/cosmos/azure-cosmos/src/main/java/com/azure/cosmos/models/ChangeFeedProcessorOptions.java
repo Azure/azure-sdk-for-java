@@ -375,8 +375,10 @@ public final class ChangeFeedProcessorOptions {
         return this;
     }
 
-    public ChangeFeedProcessorOptions setFeedThroughputControlConfig(ThroughputControlGroupConfig feedPollThroughputControlGroupConfig) {
-        checkNotNull(this.feedPollThroughputControlGroupConfig, "Argument 'throughputControlGroupConfig' can not be null");
+    public ChangeFeedProcessorOptions setFeedPollThroughputControlConfig(ThroughputControlGroupConfig feedPollThroughputControlGroupConfig) {
+        checkNotNull(
+            this.feedPollThroughputControlGroupConfig,
+            "Argument 'feedPollThroughputControlGroupConfig' can not be null");
         this.feedPollThroughputControlGroupConfig = feedPollThroughputControlGroupConfig;
 
         return this;

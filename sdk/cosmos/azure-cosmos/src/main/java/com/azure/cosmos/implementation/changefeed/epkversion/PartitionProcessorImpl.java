@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -82,6 +84,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
+        this.enableLocalThroughputControlIfApplicable();
 
         return Flux.just(this)
             .flatMap(value -> {
@@ -290,5 +293,22 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             this.checkpointer);
 
         return this.observer.processChanges(context, response.getResults());
+    }
+
+    private void enableLocalThroughputControlIfApplicable() {
+        if (this.settings.getFeedPollThroughputControlConfig() != null) {
+            ThroughputControlGroupConfig throughputControlGroupConfigForPkRange =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName(this.settings.getFeedPollThroughputControlConfig().getGroupName() + "-" + this.lease.getLeaseToken())
+                    .targetThroughput(this.settings.getFeedPollThroughputControlConfig().getTargetThroughput())
+                    .targetThroughputThreshold(this.settings.getFeedPollThroughputControlConfig().getTargetThroughputThreshold())
+                    .priorityLevel(this.settings.getFeedPollThroughputControlConfig().getPriorityLevel())
+                    .build();
+
+            this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForPkRange);
+
+            this.options.setThroughputControlGroupName(throughputControlGroupConfigForPkRange.getGroupName()); // this will be used to populate the requests
+            logger.debug("Enable local throughput control for lease " + lease.getLeaseToken());
+        }
     }
 }
