@@ -1,7 +1,5 @@
-/*
- * // Copyright (c) Microsoft Corporation. All rights reserved.
- * // Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.spring.cloud.feature.management.filters.recurrence;
 
@@ -22,19 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequiredParameterTest {
-    private final String Pattern = "Recurrence.Pattern";
-    private final String PatternType = "Recurrence.Pattern.Type";
-    private final String Interval = "Recurrence.Pattern.Interval";
-    private final String Index = "Recurrence.Pattern.Index";
-    private final String DaysOfWeek = "Recurrence.Pattern.DaysOfWeek";
-    private final String FirstDayOfWeek = "Recurrence.Pattern.FirstDayOfWeek";
-    private final String Month = "Recurrence.Pattern.Month";
-    private final String DayOfMonth = "Recurrence.Pattern.DayOfMonth";
-    private final String Range = "Recurrence.Range";
-    private final String RangeType = "Recurrence.Range.Type";
-    private final String NumberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
-    private final String RecurrenceTimeZone = "Recurrence.Range.RecurrenceTimeZone";
-    private final String EndDate = "Recurrence.Range.EndDate";
+    private final String pattern = "Recurrence.Pattern";
+    private final String patternType = "Recurrence.Pattern.Type";
+    private final String interval = "Recurrence.Pattern.Interval";
+    private final String index = "Recurrence.Pattern.Index";
+    private final String daysOfWeek = "Recurrence.Pattern.DaysOfWeek";
+    private final String firstDayOfWeek = "Recurrence.Pattern.FirstDayOfWeek";
+    private final String month = "Recurrence.Pattern.Month";
+    private final String dayOfMonth = "Recurrence.Pattern.DayOfMonth";
+    private final String range = "Recurrence.Range";
+    private final String rangeType = "Recurrence.Range.Type";
+    private final String numberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
+    private final String recurrenceTimeZone = "Recurrence.Range.RecurrenceTimeZone";
+    private final String endDate = "Recurrence.Range.EndDate";
 
     @Test
     public void generalRequiredParameterTest() {
@@ -62,7 +60,7 @@ public class RequiredParameterTest {
         final Recurrence recurrence3 = new Recurrence();
         recurrence3.setRange(new RecurrenceRange());
         settings3.setRecurrence(recurrence3);
-        consumeValidationTestData(settings3, Pattern, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings3, pattern, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // no range in recurrence parameter
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
@@ -71,7 +69,7 @@ public class RequiredParameterTest {
         final Recurrence recurrence4 = new Recurrence();
         recurrence4.setPattern(new RecurrencePattern());
         settings4.setRecurrence(recurrence4);
-        consumeValidationTestData(settings4, Range, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings4, range, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // no type in recurrence pattern parameter
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
@@ -81,7 +79,7 @@ public class RequiredParameterTest {
         recurrence5.setPattern(new RecurrencePattern());
         recurrence5.setRange(new RecurrenceRange());
         settings5.setRecurrence(recurrence5);
-        consumeValidationTestData(settings5, PatternType, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings5, patternType, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // no type in recurrence range parameter
         final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
@@ -93,7 +91,7 @@ public class RequiredParameterTest {
         recurrence6.setPattern(pattern6);
         recurrence6.setRange(new RecurrenceRange());
         settings6.setRecurrence(recurrence6);
-        consumeValidationTestData(settings6, RangeType, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings6, rangeType, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test
@@ -113,7 +111,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, PatternType, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, patternType, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -134,7 +132,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, Interval, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, interval, RecurrenceConstants.OUT_OF_RANGE);
     }
 
     @Test
@@ -156,7 +154,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, FirstDayOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, firstDayOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -177,7 +175,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -199,7 +197,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, Index, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, index, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -221,7 +219,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, dayOfMonth, RecurrenceConstants.OUT_OF_RANGE);
     }
 
     @Test
@@ -243,7 +241,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, Month, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, month, RecurrenceConstants.OUT_OF_RANGE);
     }
 
     @Test
@@ -263,7 +261,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, RangeType, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, rangeType, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -284,7 +282,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, NumberOfOccurrences, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, numberOfOccurrences, RecurrenceConstants.OUT_OF_RANGE);
     }
 
     @Test
@@ -305,7 +303,7 @@ public class RequiredParameterTest {
         settings.setEnd("2023-09-01T02:00:00+08:00");
         settings.setRecurrence(recurrence);
 
-        consumeValidationTestData(settings, RecurrenceTimeZone, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(settings, recurrenceTimeZone, RecurrenceConstants.UNRECOGNIZED_VALUE);
     }
 
     @Test
@@ -368,14 +366,14 @@ public class RequiredParameterTest {
         pattern.setType("Daily");
         range.setType("EndDate");
         range.setEndDate("2023-08-31");
-        consumeValidationTestData(settings, EndDate, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, endDate, RecurrenceConstants.OUT_OF_RANGE);
 
         // endDate is before first start time when different zone id
         settings.setStart("2023-09-01T23:00:00+00:00");
         settings.setEnd("2023-09-01T23:00:01+00:00");
         range.setEndDate("2023-09-01");
         range.setRecurrenceTimeZone("UTC+08:00");
-        consumeValidationTestData(settings, EndDate, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(settings, endDate, RecurrenceConstants.OUT_OF_RANGE);
 
     }
 
@@ -395,7 +393,7 @@ public class RequiredParameterTest {
         pattern.setType("Weekly");
         pattern.setDaysOfWeek(null);
         recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test
@@ -413,7 +411,7 @@ public class RequiredParameterTest {
         final RecurrencePattern pattern = new RecurrencePattern();
         pattern.setType("AbsoluteMonthly");
         recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, dayOfMonth, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test
@@ -431,7 +429,7 @@ public class RequiredParameterTest {
         final RecurrencePattern pattern1 = new RecurrencePattern();
         pattern1.setType("RelativeMonthly");
         recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // index parameter is required
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -439,7 +437,7 @@ public class RequiredParameterTest {
         pattern2.setDaysOfWeek(List.of("Friday"));
         pattern2.setIndex(null);
         recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, Index, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, index, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test
@@ -458,14 +456,14 @@ public class RequiredParameterTest {
         pattern1.setType("AbsoluteYearly");
         pattern1.setDayOfMonth(1);
         recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, Month, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, month, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // dayOfMonth parameter is required
         final RecurrencePattern pattern2 = new RecurrencePattern();
         pattern2.setType("AbsoluteYearly");
         pattern2.setMonth(9);
         recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, DayOfMonth, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, dayOfMonth, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     @Test
@@ -484,14 +482,14 @@ public class RequiredParameterTest {
         pattern1.setType("RelativeYearly");
         pattern1.setMonth(9);
         recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, DaysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // month parameter is required
         final RecurrencePattern pattern2 = new RecurrencePattern();
         pattern2.setType("RelativeYearly");
         pattern2.setDaysOfWeek(List.of("Friday"));
         recurrence.setPattern(pattern2);
-        consumeValidationTestData(settings, Month, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, month, RecurrenceConstants.REQUIRED_PARAMETER);
 
         // index parameter is required
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -500,7 +498,7 @@ public class RequiredParameterTest {
         pattern3.setMonth(9);
         pattern3.setIndex(null);
         recurrence.setPattern(pattern3);
-        consumeValidationTestData(settings, Index, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(settings, index, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
     private void consumeValidationTestData(TimeWindowFilterSettings settings, String parameterName, String errorMessage) {

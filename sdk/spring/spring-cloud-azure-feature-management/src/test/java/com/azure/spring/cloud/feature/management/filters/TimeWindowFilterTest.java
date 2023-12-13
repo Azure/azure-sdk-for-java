@@ -25,7 +25,7 @@ public class TimeWindowFilterTest {
     public void middleTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
             ZonedDateTime.now().minusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters.put(TIME_WINDOW_FILTER_SETTING_END,
@@ -38,7 +38,7 @@ public class TimeWindowFilterTest {
     public void beforeTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
             ZonedDateTime.now().plusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters.put(TIME_WINDOW_FILTER_SETTING_END,
@@ -51,7 +51,7 @@ public class TimeWindowFilterTest {
     public void afterTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
             ZonedDateTime.now().minusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters.put(TIME_WINDOW_FILTER_SETTING_END,
@@ -64,7 +64,7 @@ public class TimeWindowFilterTest {
     public void noStartTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(TIME_WINDOW_FILTER_SETTING_END,
             ZonedDateTime.now().plusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
         context.setParameters(parameters);
@@ -75,7 +75,7 @@ public class TimeWindowFilterTest {
     public void noEndTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
             ZonedDateTime.now().minusDays(1).format(DateTimeFormatter.RFC_1123_DATE_TIME));
         context.setParameters(parameters);
@@ -86,7 +86,7 @@ public class TimeWindowFilterTest {
     public void noInputsTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
@@ -95,7 +95,7 @@ public class TimeWindowFilterTest {
     public void recurrenceTest() {
         TimeWindowFilter filter = new TimeWindowFilter();
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         ZonedDateTime starTime = ZonedDateTime.now().minusDays(7);
         parameters.put(TIME_WINDOW_FILTER_SETTING_START,
             starTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
@@ -113,7 +113,7 @@ public class TimeWindowFilterTest {
         Map<String, Object> rangeParameters = new LinkedHashMap<>();
         rangeParameters.put("type", "NoEnd");
 
-        Map<String, Object> recurrenceParameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> recurrenceParameters = new LinkedHashMap<>();
         recurrenceParameters.put("pattern", patternParameters);
         recurrenceParameters.put("range", rangeParameters);
 

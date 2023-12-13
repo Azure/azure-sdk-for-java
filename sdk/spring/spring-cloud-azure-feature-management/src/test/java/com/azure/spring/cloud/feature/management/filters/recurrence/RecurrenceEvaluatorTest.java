@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RecurrenceEvaluatorTest {
 
     @Test
-    public void daily_True() {
+    public void dailyTrue() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2023-09-02T00:00:00+08:00");
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -34,7 +34,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void daily_MultiInterval_True() {
+    public void dailyMultiIntervalTrue() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2023-09-05T00:00:00+08:00");
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -51,7 +51,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void daily_MultiInterval_True_2() {
+    public void dailyMultiIntervalTrue2() {
         final ZonedDateTime now3 = ZonedDateTime.parse("2023-09-06T00:00:00+08:00");
         final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -68,7 +68,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void daily_NumberedRange_False() {
+    public void dailyNumberedRangeFalse() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2023-09-03T00:00:00+08:00");
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -86,7 +86,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void daily_EndDateRange_False() {
+    public void dailyEndDateRangeFalse() {
         final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-02T17:00:00+00:00");
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
@@ -105,7 +105,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_DaysOfWeek_True() {
+    public void weeklyDaysOfWeekTrue() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the 2nd week
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -122,7 +122,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_DaysOfWeek_Interval_True() {
+    public void weeklyDaysOfWeekIntervalTrue() {
         final ZonedDateTime now3 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the first week
         final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -140,7 +140,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_DaysOfWeek_Interval_False() {
+    public void weeklyDaysOfWeekIntervalFalse() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2023-09-04T00:00:00+08:00");    // Monday in the second week
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -159,7 +159,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_DaysOfWeek_Interval_NumberedRange_True() {
+    public void weeklyDaysOfWeekIntervalNumberedRangeTrue() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2023-09-17T00:00:00+08:00");    // Sunday in the 3rd week
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -180,7 +180,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_TimeWindowAcrossDays_NumberedRange_True() {
+    public void weeklyTimeWindowAcrossDaysNumberedRangeTrue() {
         final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
@@ -201,7 +201,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void weekly_TimeWindowAcrossDays_NumberedRange_False() {
+    public void weeklyTimeWindowAcrossDaysNumberedRangeFalse() {
         final ZonedDateTime now6 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
         final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern6 = new RecurrencePattern();
@@ -222,7 +222,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteMonthly_True() {
+    public void absoluteMonthlyTrue() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2023-10-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -239,7 +239,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteMonthly_MultiInterval_True() {
+    public void absoluteMonthlyMultiIntervalTrue() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2024-02-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -257,7 +257,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteMonthly_MultiInterval_NumberedRange_False() {
+    public void absoluteMonthlyMultiIntervalNumberedRangeFalse() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2024-01-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -277,7 +277,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteMonthly_MultiInterval_EndDateRange_True() {
+    public void absoluteMonthlyMultiIntervalEndDateRangeTrue() {
         final ZonedDateTime now5 = ZonedDateTime.parse("2024-02-29T00:00:00+08:00");
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
@@ -297,7 +297,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteMonthly_MultiInterval_EndDateRange_False() {
+    public void absoluteMonthlyMultiIntervalEndDateRangeFalse() {
         final ZonedDateTime now6 = ZonedDateTime.parse("2023-10-29T00:00:00+08:00");
         final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern6 = new RecurrencePattern();
@@ -316,7 +316,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_FirstFriday_False() {
+    public void relativeMonthlyFirstFridayFalse() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2023-09-08T00:00:00+08:00");    // second Friday in 2023 Sep
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -333,7 +333,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_SecondFriday_True() {
+    public void relativeMonthlySecondFridayTrue() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2023-10-13T00:00:00+08:00");    // second Friday in 2023 Oct
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -351,7 +351,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_SecondFriday_MultiInterval_False() {
+    public void relativeMonthlySecondFridayMultiIntervalFalse() {
         final ZonedDateTime now3 = ZonedDateTime.parse("2023-10-13T00:00:00+08:00");    // second Friday in 2023 Oct
         final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -370,7 +370,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_SecondFriday_MultiInterval_True() {
+    public void relativeMonthlySecondFridayMultiIntervalTrue() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2023-12-08T00:00:00+08:00");    // second Friday in 2023 Dec
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -389,7 +389,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_LastFriday_True() {
+    public void relativeMonthlyLastFridayTrue() {
         final ZonedDateTime now5 = ZonedDateTime.parse("2023-10-27T00:00:00+08:00");    // forth Friday in 2023 Oct
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
@@ -407,7 +407,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_LastFriday_True_2() {
+    public void relativeMonthlyLastFridayTrue2() {
         final ZonedDateTime now6 = ZonedDateTime.parse("2023-12-29T00:00:00+08:00");    // fifth Friday in 2023 Dec
         final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern6 = new RecurrencePattern();
@@ -425,7 +425,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_LastSundayOrMonday_True() {
+    public void relativeMonthlyLastSundayOrMondayTrue() {
         final ZonedDateTime now7 = ZonedDateTime.parse("2023-10-29T00:00:00+08:00");    // last Sunday in 2023 Oct
         final TimeWindowFilterSettings settings7 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern7 = new RecurrencePattern();
@@ -443,7 +443,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_LastSundayOrMonday_False() {
+    public void relativeMonthlyLastSundayOrMondayFalse() {
         final ZonedDateTime now7 = ZonedDateTime.parse("2023-10-30T00:00:00+08:00");    // last Monday in 2023 Oct
         final TimeWindowFilterSettings settings7 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern7 = new RecurrencePattern();
@@ -461,7 +461,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_FirstWeekExceptSunday_False() {
+    public void relativeMonthlyFirstWeekExceptSundayFalse() {
         final ZonedDateTime now8 = ZonedDateTime.parse("2023-10-01T00:00:00+08:00");    // first Sunday in 2023 Oct
         final TimeWindowFilterSettings settings8 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern8 = new RecurrencePattern();
@@ -478,7 +478,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_FirstWeekday_True() {
+    public void relativeMonthlyFirstWeekdayTrue() {
         final ZonedDateTime now9 = ZonedDateTime.parse("2023-10-02T00:00:00+08:00");    // first weekday of Oct
         final TimeWindowFilterSettings settings9 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern9 = new RecurrencePattern();
@@ -495,7 +495,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeMonthly_FirstDay_NumberedRange_False() {
+    public void relativeMonthlyFirstDayNumberedRangeFalse() {
         final ZonedDateTime now10 = ZonedDateTime.parse("2023-12-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings10 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern10 = new RecurrencePattern();
@@ -514,7 +514,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteYearly_True() {
+    public void absoluteYearlyTrue() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2024-09-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -532,7 +532,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteYearly_False() {
+    public void absoluteYearlyFalse() {
         final ZonedDateTime now3 = ZonedDateTime.parse("2024-10-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -550,7 +550,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteYearly_MultiInterval_True() {
+    public void absoluteYearlyMultiIntervalTrue() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2026-09-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -569,7 +569,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void absoluteYearly_MultiInterval_NumberedRange_False() {
+    public void absoluteYearlyMultiIntervalNumberedRangeFalse() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2029-09-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -590,7 +590,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeYearly_FirstFriday_True() {
+    public void relativeYearlyFirstFridayTrue() {
         final ZonedDateTime now1 = ZonedDateTime.parse("2024-09-06T00:00:00+08:00");    // first Friday in Sep
         final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern1 = new RecurrencePattern();
@@ -608,7 +608,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeYearly_FirstWeekExceptSunday_False() {
+    public void relativeYearlyFirstWeekExceptSundayFalse() {
         final ZonedDateTime now2 = ZonedDateTime.parse("2024-09-01T00:00:00+08:00");    // Sunday
         final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern2 = new RecurrencePattern();
@@ -626,7 +626,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeYearly_FirstWeek_False() {
+    public void relativeYearlyFirstWeekFalse() {
         final ZonedDateTime now3 = ZonedDateTime.parse("2024-09-08T00:00:00+08:00");    // Second Sunday
         final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern3 = new RecurrencePattern();
@@ -644,7 +644,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeYearly_FirstDay_NumberedRange_False() {
+    public void relativeYearlyFirstDayNumberedRangeFalse() {
         final ZonedDateTime now4 = ZonedDateTime.parse("2026-09-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings4 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern4 = new RecurrencePattern();
@@ -664,7 +664,7 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
-    public void relativeYearly_FirstDay_NumberedRange_True() {
+    public void relativeYearlyFirstDayNumberedRangeTrue() {
         final ZonedDateTime now5 = ZonedDateTime.parse("2025-09-01T00:00:00+08:00");
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
