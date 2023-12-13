@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,13 +41,23 @@ public class PartitionKeyBasedBloomFilter {
     public void tryRecordPartitionKey(
         Long collectionRid,
         String firstPreferredWritableRegion,
-        String region,
+        Map<String, String> sessionTokenToRegionMapping,
         String partitionKeyAsStringifiedJson) {
 
-        if (!region.equals(firstPreferredWritableRegion)) {
-             if (isBloomFilterInitialized.get()) {
-                this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson, region, collectionRid));
-                this.recordedRegions.add(region);
+        for (Map.Entry<String, String> sessionTokenToRegionPair : sessionTokenToRegionMapping.entrySet()) {
+
+            String sessionTokenUnparsedInner = sessionTokenToRegionPair.getKey();
+            String regionInner = sessionTokenToRegionPair.getValue();
+
+            // a session token should have been received from a region to consider an EPK
+            // to also have been requested from the region
+            if (!regionInner.equals(firstPreferredWritableRegion) && !Strings.isNullOrEmpty(sessionTokenUnparsedInner)) {
+
+                if (isBloomFilterInitialized.get()) {
+                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson,
+                        regionInner, collectionRid));
+                    this.recordedRegions.add(regionInner);
+                }
             }
         }
     }

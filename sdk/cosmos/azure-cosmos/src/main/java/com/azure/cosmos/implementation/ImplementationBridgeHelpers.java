@@ -79,7 +79,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
@@ -759,7 +758,7 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            String getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics);
+            Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

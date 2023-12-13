@@ -278,14 +278,15 @@ public final class SessionContainer implements ISessionContainer {
 
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         String partitionKey = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY);
-        String regionWithSuccessResponse = diagnosticsAccessor.getRegionWithSuccessResponse(request.requestContext.cosmosDiagnostics);
+        Map<String, String> sessionTokenToRegionMapping
+            = diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics);
 
         if (!Strings.isNullOrEmpty(token)) {
             ValueHolder<ResourceId> resourceId = ValueHolder.initialize(null);
             ValueHolder<String> collectionName = ValueHolder.initialize(null);
 
             if (shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
-                this.setSessionToken(request, resourceId.v, regionWithSuccessResponse, collectionName.v, token, partitionKey);
+                this.setSessionToken(request, resourceId.v, sessionTokenToRegionMapping, collectionName.v, token, partitionKey);
             }
         }
     }
@@ -303,7 +304,7 @@ public final class SessionContainer implements ISessionContainer {
         String partitionKey = responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY);
 
         if (!Strings.isNullOrEmpty(token)) {
-            this.setSessionToken(null, resourceId, StringUtils.EMPTY, collectionName, token, partitionKey);
+            this.setSessionToken(null, resourceId, new ConcurrentHashMap<>(), collectionName, token, partitionKey);
         }
     }
 
@@ -315,17 +316,17 @@ public final class SessionContainer implements ISessionContainer {
 
         ResourceId resourceId = ResourceId.parse(collectionRid);
         String collectionName = PathsHelper.getCollectionPath(collectionFullName);
-        String regionWithSuccessResponse = diagnosticsAccessor.getRegionWithSuccessResponse(request.requestContext.cosmosDiagnostics);
+        Map<String, String> sessionTokenToRegionMapping = diagnosticsAccessor.getSessionTokenToRegionMappings(request.requestContext.cosmosDiagnostics);
 
         String token = responseHeaders.get(HttpConstants.HttpHeaders.SESSION_TOKEN);
         String partitionKey = responseHeaders.get(HttpConstants.HttpHeaders.PARTITION_KEY);
 
         if (!Strings.isNullOrEmpty(token)) {
-            this.setSessionToken(request, resourceId, regionWithSuccessResponse, collectionName, token, partitionKey);
+            this.setSessionToken(request, resourceId, sessionTokenToRegionMapping, collectionName, token, partitionKey);
         }
     }
 
-    private void setSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String regionWithSuccessResponse, String collectionName, String token, String partitionKey) {
+    private void setSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, Map<String, String> sessionTokenToRegionMapping, String collectionName, String token, String partitionKey) {
         String partitionKeyRangeId;
         ISessionToken parsedSessionToken;
 
@@ -347,7 +348,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
                     this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
             if (isKnownCollection) {
-                this.addSessionToken(request, resourceId, regionWithSuccessResponse, partitionKeyRangeId, partitionKey, parsedSessionToken);
+                this.addSessionToken(request, resourceId, sessionTokenToRegionMapping, partitionKeyRangeId, partitionKey, parsedSessionToken);
             }
         } finally {
             this.readLock.unlock();
@@ -360,7 +361,7 @@ public final class SessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
                     this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
                 }
-                addSessionToken(request, resourceId, regionWithSuccessResponse, partitionKeyRangeId, partitionKey, parsedSessionToken);
+                addSessionToken(request, resourceId, sessionTokenToRegionMapping, partitionKeyRangeId, partitionKey, parsedSessionToken);
             } finally {
                 this.writeLock.unlock();
             }
@@ -383,20 +384,20 @@ public final class SessionContainer implements ISessionContainer {
 
     private void recordPartitionKeyInBloomFilter(
         Long collectionRid,
-        String regionWithSuccessResponse,
+        Map<String, String> sessionTokenToRegionMapping,
         String partitionKey) {
 
-        // TODO (abhmohanty): create utility
-        if (regionWithSuccessResponse != null && !regionWithSuccessResponse.isEmpty()) {
-            if (partitionKey != null && !partitionKey.isEmpty()) {
-                if (this.firstPreferredWritableRegionCached.get().equals(StringUtils.EMPTY)) {
+        if (sessionTokenToRegionMapping != null && !sessionTokenToRegionMapping.isEmpty()) {
+            if (!Strings.isNullOrEmpty(partitionKey)) {
+
+                if (Strings.isNullOrEmpty(this.firstPreferredWritableRegionCached.get())) {
                     this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredWritableRegion(this.globalEndpointManager));
                 }
 
                 this.partitionKeyBasedBloomFilter.tryRecordPartitionKey(
                     collectionRid,
                     this.firstPreferredWritableRegionCached.get(),
-                    regionWithSuccessResponse,
+                    sessionTokenToRegionMapping,
                     partitionKey);
             }
         }
@@ -404,17 +405,17 @@ public final class SessionContainer implements ISessionContainer {
 
     private void recordRegionScopedSessionToken(
         PkRangeBasedRegionScopedSessionTokenRegistry pkRangeBasedRegionScopedSessionTokenRegistry,
-        String regionWithSuccessResponse,
+        Map<String, String> sessionTokenToRegionMapping,
         String pkRangeId,
         ISessionToken parsedSessionToken) {
 
-        if (regionWithSuccessResponse != null && !regionWithSuccessResponse.isEmpty()) {
+        if (sessionTokenToRegionMapping != null && !sessionTokenToRegionMapping.isEmpty()) {
             pkRangeBasedRegionScopedSessionTokenRegistry.tryRecordSessionToken(
-                regionWithSuccessResponse, pkRangeId, parsedSessionToken);
+                sessionTokenToRegionMapping, pkRangeId, parsedSessionToken);
         }
     }
 
-    private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String regionWithSuccessResponse, String partitionKeyRangeId, String partitionKey, ISessionToken parsedSessionToken) {
+    private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, Map<String, String> sessionTokenToRegionMapping, String partitionKeyRangeId, String partitionKey, ISessionToken parsedSessionToken) {
 
         final Long collectionResourceId = resourceId.getUniqueDocumentCollectionId();
 
@@ -429,13 +430,13 @@ public final class SessionContainer implements ISessionContainer {
 
                 if (shouldPartitionKeyBeRecorded(this.globalEndpointManager, request, this.sessionConsistencyOptions)) {
                     this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
-                    this.recordPartitionKeyInBloomFilter(collectionResourceId, regionWithSuccessResponse, partitionKey);
+                    this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping, partitionKey);
                 }
 
                 if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
                     this.recordRegionScopedSessionToken(
                         pkRangeBasedRegionScopedSessionTokenRegistry,
-                        regionWithSuccessResponse,
+                        sessionTokenToRegionMapping,
                         partitionKeyRangeId,
                         parsedSessionToken);
                 }
@@ -475,14 +476,14 @@ public final class SessionContainer implements ISessionContainer {
                 if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
                     this.recordRegionScopedSessionToken(
                         pkRangeBasedRegionScopedSessionTokenRegistry,
-                        regionWithSuccessResponse,
+                        sessionTokenToRegionMapping,
                         partitionKeyRangeId,
                         parsedSessionToken);
                 }
 
                 if (shouldPartitionKeyBeRecorded(this.globalEndpointManager, request, this.sessionConsistencyOptions)) {
                     this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
-                    this.recordPartitionKeyInBloomFilter(collectionResourceId, regionWithSuccessResponse, partitionKey);
+                    this.recordPartitionKeyInBloomFilter(collectionResourceId, sessionTokenToRegionMapping, partitionKey);
                 }
             }
         }

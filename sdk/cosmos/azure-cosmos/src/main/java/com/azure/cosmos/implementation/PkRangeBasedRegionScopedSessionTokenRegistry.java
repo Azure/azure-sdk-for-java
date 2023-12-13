@@ -2,6 +2,7 @@ package com.azure.cosmos.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PkRangeBasedRegionScopedSessionTokenRegistry {
@@ -12,17 +13,33 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         this.pkRangeIdToRegionScopedSessionTokens = new ConcurrentHashMap<>();
     }
 
-    public void tryRecordSessionToken(String region, String pkRangeId, ISessionToken sessionToken) {
-        this.pkRangeIdToRegionScopedSessionTokens.compute(pkRangeId, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
+    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId, ISessionToken sessionToken) {
 
-            if (regionToSessionTokensAsVal == null) {
-                regionToSessionTokensAsVal = new ConcurrentHashMap<>();
+        for (Map.Entry<String, String> sessionTokenToRegion : sessionTokenToRegionMapping.entrySet()) {
+
+            String sessionTokenUnparsedInner = sessionTokenToRegion.getKey();
+            String regionInner = sessionTokenToRegion.getValue();
+
+            if (!Strings.isNullOrEmpty(sessionTokenUnparsedInner) && !Strings.isNullOrEmpty(regionInner)) {
+
+                String[] sessionTokenSegments = sessionTokenUnparsedInner.split(":");
+
+                assert sessionTokenSegments.length > 1;
+
+                ISessionToken parsedRegionSpecificSessionToken = SessionTokenHelper.parse(sessionTokenSegments[1]);
+
+                this.pkRangeIdToRegionScopedSessionTokens.compute(pkRangeId, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
+
+                    if (regionToSessionTokensAsVal == null) {
+                        regionToSessionTokensAsVal = new ConcurrentHashMap<>();
+                    }
+
+                    regionToSessionTokensAsVal.merge(regionInner, parsedRegionSpecificSessionToken, ISessionToken::merge);
+
+                    return regionToSessionTokensAsVal;
+                });
             }
-
-            regionToSessionTokensAsVal.merge(region, sessionToken, ISessionToken::merge);
-
-            return regionToSessionTokensAsVal;
-        });
+        }
     }
 
     public ISessionToken tryResolveSessionToken(List<String> lesserPreferredRegionsPkProbablyRequestedFrom, String firstPreferredRegion, String pkRangeId) {

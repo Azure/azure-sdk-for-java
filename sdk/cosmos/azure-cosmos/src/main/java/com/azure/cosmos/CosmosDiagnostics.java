@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -322,8 +323,8 @@ public final class CosmosDiagnostics {
         return this;
     }
 
-    String getRegionWithSuccessResponse() {
-        return this.clientSideRequestStatistics.getRegionWithSuccessResponse();
+    Map<String, String> getSessionTokenToRegionMapping() {
+        return this.clientSideRequestStatistics.getSessionTokenToRegionContactedMapping();
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -470,8 +471,8 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public String getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics) {
-                    return cosmosDiagnostics.getRegionWithSuccessResponse();
+                public Map<String, String> getSessionTokenToRegionMappings(CosmosDiagnostics cosmosDiagnostics) {
+                    return cosmosDiagnostics.getSessionTokenToRegionMapping();
                 }
             });
     }

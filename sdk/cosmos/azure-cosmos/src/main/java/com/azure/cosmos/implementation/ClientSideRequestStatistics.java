@@ -29,8 +29,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
@@ -48,6 +48,7 @@ public class ClientSideRequestStatistics {
     private Instant requestEndTimeUTC;
     private Set<String> regionsContacted;
     private Set<URI> locationEndpointsContacted;
+    private Map<String, String> sessionTokenToRegionContactedMapping;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
     private List<GatewayStatistics> gatewayStatisticsList;
@@ -55,7 +56,6 @@ public class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
     private final String userAgent;
-    private final AtomicReference<String> regionWithSuccessResponse;
     private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
@@ -76,7 +76,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
-        this.regionWithSuccessResponse = new AtomicReference<>(StringUtils.EMPTY);
+        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>();
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -99,7 +99,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
-        this.regionWithSuccessResponse = new AtomicReference<>(StringUtils.EMPTY);
+        this.sessionTokenToRegionContactedMapping = new ConcurrentHashMap<>(toBeCloned.sessionTokenToRegionContactedMapping);
     }
 
     @JsonIgnore
@@ -180,10 +180,15 @@ public class ClientSideRequestStatistics {
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
-                int statusCode = storeResultDiagnostics.getStatusCode();
+                if (storeResultDiagnostics.getStoreResponseDiagnostics() != null) {
+                    StoreResponseDiagnostics storeResponseDiagnosticsInner =
+                        storeResultDiagnostics.getStoreResponseDiagnostics();
 
-                if (HttpConstants.StatusCodes.OK <= statusCode && statusCode <= HttpConstants.StatusCodes.NOT_MODIFIED) {
-                    this.regionWithSuccessResponse.set(storeResponseStatistics.regionName);
+                    String sessionTokenAsStringInner = storeResponseDiagnosticsInner.getSessionTokenAsString();
+
+                    if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
+                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, storeResponseStatistics.regionName);
+                    }
                 }
             }
 
@@ -216,14 +221,20 @@ public class ClientSideRequestStatistics {
 
             if (locationEndPoint != null) {
 
-                String regionContacted = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+                String regionContactedInner = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
 
-                this.regionsContacted.add(regionContacted);
+                this.regionsContacted.add(regionContactedInner);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
-                if (storeResponseDiagnostics.getStatusCode() >= HttpConstants.StatusCodes.OK && storeResponseDiagnostics.getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED) {
-                    this.regionWithSuccessResponse.set(regionContacted);
+                if (storeResponseDiagnostics != null) {
+
+                    String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString();
+
+                    if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
+                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInner);
+                    }
                 }
+
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -383,6 +394,23 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    private void mergeSessionTokenToRegionContactedMappings(Map<String, String> otherSessionTokenToRegionMapping) {
+        if (otherSessionTokenToRegionMapping == null) {
+            return;
+        }
+
+        if (this.sessionTokenToRegionContactedMapping == null || this.sessionTokenToRegionContactedMapping.isEmpty()) {
+            this.sessionTokenToRegionContactedMapping = otherSessionTokenToRegionMapping;
+            return;
+        }
+
+        for (Map.Entry<String, String> pair : otherSessionTokenToRegionMapping.entrySet()) {
+            this.sessionTokenToRegionContactedMapping.putIfAbsent(
+                pair.getKey(),
+                pair.getValue());
+        }
+    }
+
     private void mergeFailedReplica(Set<URI> other) {
         if (other == null) {
             return;
@@ -470,6 +498,7 @@ public class ClientSideRequestStatistics {
         }
 
         this.mergeAddressResolutionStatistics(other.addressResolutionStatistics);
+        this.mergeSessionTokenToRegionContactedMappings(other.sessionTokenToRegionContactedMapping);
         this.mergeContactedReplicas(other.contactedReplicas);
         this.mergeFailedReplica(other.failedReplicas);
         this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
@@ -517,10 +546,6 @@ public class ClientSideRequestStatistics {
 
     public void setLocationEndpointsContacted(Set<URI> locationEndpointsContacted) {
         this.locationEndpointsContacted = locationEndpointsContacted;
-    }
-
-    public String getRegionWithSuccessResponse() {
-        return regionWithSuccessResponse.get();
     }
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
@@ -592,6 +617,10 @@ public class ClientSideRequestStatistics {
 
     public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
         return addressResolutionStatistics;
+    }
+
+    public Map<String, String> getSessionTokenToRegionContactedMapping() {
+        return this.sessionTokenToRegionContactedMapping;
     }
 
     public List<GatewayStatistics> getGatewayStatisticsList() {
