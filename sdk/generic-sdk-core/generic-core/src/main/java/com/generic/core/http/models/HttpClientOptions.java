@@ -3,7 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.annotation.Fluent;
+import com.generic.core.annotation.Metadata;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.models.Header;
@@ -13,12 +13,14 @@ import com.generic.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Collections;
 
+import static com.generic.core.annotation.TypeConditions.FLUENT;
+
 /**
  * General configuration options for {@link HttpClient HttpClients}.
  * <p>
  * {@link HttpClient} implementations may not support all configuration options in this class.
  */
-@Fluent
+@Metadata(conditions = FLUENT)
 public final class HttpClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);

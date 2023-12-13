@@ -3,9 +3,9 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.annotation.Fluent;
+import com.generic.core.annotation.Metadata;
+import com.generic.core.annotation.TypeConditions;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.util.logging.ClientLogger;
@@ -13,11 +13,13 @@ import com.generic.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static com.generic.core.annotation.TypeConditions.FLUENT;
+
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
  * {@link Header} and request body.
  */
-@Fluent
+@Metadata(conditions = FLUENT)
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);

@@ -3,11 +3,13 @@
 
 package com.generic.core.models;
 
-import com.generic.core.annotation.Immutable;
+import com.generic.core.annotation.Metadata;
 import com.generic.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.generic.core.annotation.TypeConditions.IMMUTABLE;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies. Most applications do
@@ -16,7 +18,7 @@ import java.util.Optional;
  * <p>Each context object is immutable. The {@link #addData(Object, Object)} method creates a new {@code Context} object
  * that refers to its parent, forming a linked list.</p>
  */
-@Immutable
+@Metadata(conditions = IMMUTABLE)
 public class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 

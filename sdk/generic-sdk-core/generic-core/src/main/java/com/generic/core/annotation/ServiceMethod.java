@@ -16,7 +16,6 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS)
 @Target(METHOD)
 public @interface ServiceMethod {
-
     /**
      * This represents the return type expected from this service method.
      *

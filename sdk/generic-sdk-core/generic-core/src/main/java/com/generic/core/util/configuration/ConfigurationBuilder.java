@@ -3,7 +3,8 @@
 
 package com.generic.core.util.configuration;
 
-import com.generic.core.annotation.Fluent;
+import com.generic.core.annotation.Metadata;
+import com.generic.core.annotation.TypeConditions;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.util.logging.ClientLogger;
@@ -13,10 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.generic.core.annotation.TypeConditions.FLUENT;
+
 /**
  * Builds {@link Configuration} with external source.
  */
-@Fluent
+@Metadata(conditions = FLUENT)
 public final class ConfigurationBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationBuilder.class);
     private final MutableConfigurationSource mutableSource;

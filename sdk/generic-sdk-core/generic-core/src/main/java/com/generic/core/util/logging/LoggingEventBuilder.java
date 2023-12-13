@@ -3,7 +3,7 @@
 
 package com.generic.core.util.logging;
 
-import com.generic.core.annotation.Fluent;
+import com.generic.core.annotation.Metadata;
 import com.generic.core.implementation.util.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static com.generic.core.annotation.TypeConditions.FLUENT;
+
 /**
  * This class provides fluent API to write logs using {@link ClientLogger} and
  * enrich them with additional context.
@@ -28,7 +30,7 @@ import java.util.function.Supplier;
  * <!-- src_embed com.generic.core.util.logging.loggingeventbuilder -->
  * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
  */
-@Fluent
+@Metadata(conditions = FLUENT)
 public final class LoggingEventBuilder {
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
     private static final String SDK_LOG_MESSAGE_KEY = "sdk.message";
