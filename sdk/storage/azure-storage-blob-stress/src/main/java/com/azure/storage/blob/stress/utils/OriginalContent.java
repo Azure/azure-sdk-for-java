@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.zip.CRC32;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -47,32 +45,31 @@ public class OriginalContent {
             data -> blobClient
                 .upload(BinaryData.fromStream(data))
                 .doFinally(i -> dataChecksum = data.getCrc()),
-            data -> data.close())
+                CrcInputStream::close)
             .then();
+
     }
 
-    public Mono<Boolean> checkMatch(Path downloadPath, Context span) {
-        if (dataChecksum == -1) {
-            return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
-        }
-
-        return calculateCrc(downloadPath)
-            .map(crc -> {
-                if (crc != dataChecksum) {
-                    try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
-                        logMismatch(crc, getFileSize(downloadPath), readHead(downloadPath));
-                    } catch (Exception e) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                    }
-                    return false;
-                }
-                return true;
-            });
+   public Mono<Boolean> checkMatch(BinaryData data, Context span) {
+       if (dataChecksum == -1) {
+           return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
+       }
+       return calculateCrc(data)
+           .map(crc -> {
+               if (crc != dataChecksum) {
+                   try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
+                       logMismatch(crc, data.getLength(), readHead(data));
+                   } catch (Exception e) {
+                       throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                   }
+                   return false;
+               }
+               return true;
+           });
    }
 
-    private static Mono<Long> calculateCrc(Path downloadPath) {
-        return BinaryData
-            .fromFile(downloadPath)
+    public Mono<Long> calculateCrc(BinaryData data) {
+        return data
             .toFluxByteBuffer()
             .reduce(new CRC32(),
                 (crc, bb) -> {
@@ -93,17 +90,9 @@ public class OriginalContent {
             .log("mismatched crc");
     }
 
-    private static long getFileSize(Path path) {
-        try {
-            return Files.size(path);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-        }
-    }
-
-    private byte[] readHead(Path path) {
+    private byte[] readHead(BinaryData data) {
         int len = (int)Math.min(blobSize, 1024L);
-        try (InputStream file = Files.newInputStream(path)) {
+        try (InputStream file = data.toStream()) {
             byte[] buf = new byte[len];
             int pos = 0;
             int read;

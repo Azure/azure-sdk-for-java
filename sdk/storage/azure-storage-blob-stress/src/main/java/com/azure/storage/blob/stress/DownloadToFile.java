@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.stress;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
@@ -44,7 +45,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
-            return ORIGINAL_CONTENT.checkMatch(downloadPath, span).block();
+            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block().booleanValue();
         } finally {
             deleteFile(downloadPath);
         }
@@ -55,8 +56,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
             path ->  asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
-                    .flatMap(ignored -> ORIGINAL_CONTENT.checkMatch(path, span)),
-            path -> deleteFile(path));
+                    .flatMap(ignored -> ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(path), span)),
+            DownloadToFile::deleteFile);
     }
 
     private static void deleteFile(Path path) {
