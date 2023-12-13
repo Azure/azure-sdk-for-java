@@ -43,7 +43,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     @Override
-    public synchronized void onSubscribe(Subscription s) {
+    public void onSubscribe(Subscription s) {
         // Only set the Subscription if one has not been previously set.
         // Any additional Subscriptions will be cancelled.
         if (Operators.validate(subscription, s)) {
@@ -54,7 +54,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     @Override
-    public synchronized void onNext(ByteBuffer bytes) {
+    public void onNext(ByteBuffer bytes) {
         try {
             if (state == State.WRITING) {
                 onErrorInternal(new IllegalStateException("Received onNext while processing another write operation."));
@@ -105,7 +105,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     @Override
-    public synchronized void onError(Throwable throwable) {
+    public void onError(Throwable throwable) {
         onErrorInternal(throwable);
     }
 
@@ -131,7 +131,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     @Override
-    public synchronized void onComplete() {
+    public void onComplete() {
         State state = this.state;
         // code 2 and greater are completion states which means the erroneous complete should be dropped as we already
         // completed.
