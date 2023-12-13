@@ -35,7 +35,7 @@ abstract class VertxHttpResponseBase extends HttpResponse {
         return azureHeaders;
     }
 
-    protected HttpClientResponse getVertxHttpResponse() {
+    HttpClientResponse getVertxHttpResponse() {
         return this.vertxHttpResponse;
     }
 

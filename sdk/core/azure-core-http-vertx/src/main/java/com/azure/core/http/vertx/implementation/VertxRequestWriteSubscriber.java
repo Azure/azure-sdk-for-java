@@ -18,7 +18,7 @@ import reactor.util.context.Context;
 import java.nio.ByteBuffer;
 
 /**
- * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vertx Request}.
+ * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vert.x request}.
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {

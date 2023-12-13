@@ -15,10 +15,10 @@ import java.nio.ByteBuffer;
  * Default HTTP response for Vert.x.
  */
 public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
+    private volatile boolean closed;
 
     public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
-        super(azureHttpRequest, vertxHttpResponse);
-        vertxHttpResponse.pause();
+        super(azureHttpRequest, vertxHttpResponse.pause());
     }
 
     @Override
@@ -35,13 +35,22 @@ public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     private Flux<ByteBuffer> streamResponseBody() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
-            vertxHttpResponse.handler(buffer -> {
-                sink.next(buffer.getByteBuf().nioBuffer());
-            }).endHandler(event -> {
-                sink.complete();
-            }).exceptionHandler(sink::error);
+            vertxHttpResponse.handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer()))
+                .endHandler(event -> {
+                    closed = true;
+                    sink.complete();
+                })
+                .exceptionHandler(sink::error);
 
             vertxHttpResponse.resume();
         });
+    }
+
+    @Override
+    public void close() {
+        HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
+        if (vertxHttpResponse != null && !closed) {
+            vertxHttpResponse.netSocket().close(ignored -> closed = true);
+        }
     }
 }

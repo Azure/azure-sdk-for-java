@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
@@ -39,6 +40,9 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
+
     private final Vertx vertx;
     final io.vertx.core.http.HttpClient client;
 
@@ -59,7 +63,9 @@ class VertxAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        // boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
         RequestOptions options = new RequestOptions()
@@ -90,13 +96,18 @@ class VertxAsyncHttpClient implements HttpClient {
                     // TODO (alzimmer)
                     // For now Vertx will always use a buffered response until reliability issues when using streaming
                     // can be resolved.
-                    vertxHttpResponse.body(bodyEvent -> {
-                        if (bodyEvent.succeeded()) {
-                            sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
-                        } else {
-                            sink.error(bodyEvent.cause());
-                        }
-                    });
+                    if (eagerlyReadResponse || ignoreResponseBody) {
+                        vertxHttpResponse.body(bodyEvent -> {
+                            if (bodyEvent.succeeded()) {
+                                sink.success(
+                                    new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
+                            } else {
+                                sink.error(bodyEvent.cause());
+                            }
+                        });
+                    } else {
+                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+                    }
                 } else {
                     sink.error(event.cause());
                 }
