@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of the disk. */
+/**
+ * The instance view of the disk.
+ */
 @Fluent
 public final class DiskInstanceView {
     /*
@@ -29,13 +31,15 @@ public final class DiskInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
-    /** Creates an instance of DiskInstanceView class. */
+    /**
+     * Creates an instance of DiskInstanceView class.
+     */
     public DiskInstanceView() {
     }
 
     /**
      * Get the name property: The disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class DiskInstanceView {
 
     /**
      * Set the name property: The disk name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -56,7 +60,7 @@ public final class DiskInstanceView {
     /**
      * Get the encryptionSettings property: Specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public List<DiskEncryptionSettings> encryptionSettings() {
@@ -66,7 +70,7 @@ public final class DiskInstanceView {
     /**
      * Set the encryptionSettings property: Specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt;
      * Minimum api-version: 2015-06-15.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -77,7 +81,7 @@ public final class DiskInstanceView {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -86,7 +90,7 @@ public final class DiskInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the DiskInstanceView object itself.
      */
@@ -97,7 +101,7 @@ public final class DiskInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

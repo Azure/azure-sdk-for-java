@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the state of the image. */
+/**
+ * Describes the state of the image.
+ */
 public final class ImageState extends ExpandableStringEnum<ImageState> {
-    /** Static value Active for ImageState. */
+    /**
+     * Static value Active for ImageState.
+     */
     public static final ImageState ACTIVE = fromString("Active");
 
-    /** Static value ScheduledForDeprecation for ImageState. */
+    /**
+     * Static value ScheduledForDeprecation for ImageState.
+     */
     public static final ImageState SCHEDULED_FOR_DEPRECATION = fromString("ScheduledForDeprecation");
 
-    /** Static value Deprecated for ImageState. */
+    /**
+     * Static value Deprecated for ImageState.
+     */
     public static final ImageState DEPRECATED = fromString("Deprecated");
 
     /**
      * Creates a new instance of ImageState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ImageState extends ExpandableStringEnum<ImageState> {
 
     /**
      * Creates or finds a ImageState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageState.
      */
@@ -41,7 +49,7 @@ public final class ImageState extends ExpandableStringEnum<ImageState> {
 
     /**
      * Gets known ImageState values.
-     *
+     * 
      * @return known ImageState values.
      */
     public static Collection<ImageState> values() {

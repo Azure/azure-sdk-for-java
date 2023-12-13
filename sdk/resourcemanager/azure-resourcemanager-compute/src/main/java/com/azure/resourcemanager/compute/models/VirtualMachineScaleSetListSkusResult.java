@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSku
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Virtual Machine Scale Set List Skus operation response. */
+/**
+ * The Virtual Machine Scale Set List Skus operation response.
+ */
 @Fluent
 public final class VirtualMachineScaleSetListSkusResult {
     /*
@@ -26,13 +28,15 @@ public final class VirtualMachineScaleSetListSkusResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualMachineScaleSetListSkusResult class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetListSkusResult class.
+     */
     public VirtualMachineScaleSetListSkusResult() {
     }
 
     /**
      * Get the value property: The list of skus available for the virtual machine scale set.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineScaleSetSkuInner> value() {
@@ -41,7 +45,7 @@ public final class VirtualMachineScaleSetListSkusResult {
 
     /**
      * Set the value property: The list of skus available for the virtual machine scale set.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineScaleSetListSkusResult object itself.
      */
@@ -51,9 +55,9 @@ public final class VirtualMachineScaleSetListSkusResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with
-     * this to fetch the next page of VMSS Skus.
-     *
+     * Get the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext()
+     * with this to fetch the next page of VMSS Skus.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +65,9 @@ public final class VirtualMachineScaleSetListSkusResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext() with
-     * this to fetch the next page of VMSS Skus.
-     *
+     * Set the nextLink property: The uri to fetch the next page of Virtual Machine Scale Set Skus. Call ListNext()
+     * with this to fetch the next page of VMSS Skus.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineScaleSetListSkusResult object itself.
      */
@@ -74,15 +78,13 @@ public final class VirtualMachineScaleSetListSkusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineScaleSetListSkusResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model VirtualMachineScaleSetListSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }

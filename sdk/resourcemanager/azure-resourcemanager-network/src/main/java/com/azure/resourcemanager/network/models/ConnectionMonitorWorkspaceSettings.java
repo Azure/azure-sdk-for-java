@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the settings for producing output into a log analytics workspace. */
+/**
+ * Describes the settings for producing output into a log analytics workspace.
+ */
 @Fluent
 public final class ConnectionMonitorWorkspaceSettings {
     /*
@@ -16,13 +18,15 @@ public final class ConnectionMonitorWorkspaceSettings {
     @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
-    /** Creates an instance of ConnectionMonitorWorkspaceSettings class. */
+    /**
+     * Creates an instance of ConnectionMonitorWorkspaceSettings class.
+     */
     public ConnectionMonitorWorkspaceSettings() {
     }
 
     /**
      * Get the workspaceResourceId property: Log analytics workspace resource ID.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -31,7 +35,7 @@ public final class ConnectionMonitorWorkspaceSettings {
 
     /**
      * Set the workspaceResourceId property: Log analytics workspace resource ID.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the ConnectionMonitorWorkspaceSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class ConnectionMonitorWorkspaceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

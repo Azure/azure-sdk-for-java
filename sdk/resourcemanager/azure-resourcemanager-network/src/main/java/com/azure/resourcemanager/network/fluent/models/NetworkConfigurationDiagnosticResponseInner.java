@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Results of network configuration diagnostic on the target resource. */
+/**
+ * Results of network configuration diagnostic on the target resource.
+ */
 @Immutable
 public final class NetworkConfigurationDiagnosticResponseInner {
     /*
@@ -18,13 +20,15 @@ public final class NetworkConfigurationDiagnosticResponseInner {
     @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkConfigurationDiagnosticResult> results;
 
-    /** Creates an instance of NetworkConfigurationDiagnosticResponseInner class. */
+    /**
+     * Creates an instance of NetworkConfigurationDiagnosticResponseInner class.
+     */
     public NetworkConfigurationDiagnosticResponseInner() {
     }
 
     /**
      * Get the results property: List of network configuration diagnostic results.
-     *
+     * 
      * @return the results value.
      */
     public List<NetworkConfigurationDiagnosticResult> results() {
@@ -33,7 +37,7 @@ public final class NetworkConfigurationDiagnosticResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

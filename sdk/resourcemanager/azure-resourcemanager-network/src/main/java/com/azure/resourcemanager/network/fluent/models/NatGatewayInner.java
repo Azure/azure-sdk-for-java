@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Nat Gateway resource. */
+/**
+ * Nat Gateway resource.
+ */
 @Fluent
 public final class NatGatewayInner extends Resource {
     /*
@@ -46,13 +48,15 @@ public final class NatGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NatGatewayInner class. */
+    /**
+     * Creates an instance of NatGatewayInner class.
+     */
     public NatGatewayInner() {
     }
 
     /**
      * Get the sku property: The nat gateway SKU.
-     *
+     * 
      * @return the sku value.
      */
     public NatGatewaySku sku() {
@@ -61,7 +65,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the sku property: The nat gateway SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -72,7 +76,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Nat Gateway properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NatGatewayPropertiesFormat innerProperties() {
@@ -81,7 +85,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the zones property: A list of availability zones denoting the zone in which Nat Gateway should be deployed.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -90,7 +94,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the zones property: A list of availability zones denoting the zone in which Nat Gateway should be deployed.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -101,7 +105,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -110,7 +114,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -119,7 +123,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -128,14 +132,18 @@ public final class NatGatewayInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NatGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NatGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -144,7 +152,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -153,7 +161,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the nat gateway.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -167,7 +175,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -176,7 +184,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the publicIpAddresses property: An array of public ip addresses associated with the nat gateway resource.
-     *
+     * 
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -190,7 +198,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     *
+     * 
      * @return the publicIpPrefixes value.
      */
     public List<SubResource> publicIpPrefixes() {
@@ -199,7 +207,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Set the publicIpPrefixes property: An array of public ip prefixes associated with the nat gateway resource.
-     *
+     * 
      * @param publicIpPrefixes the publicIpPrefixes value to set.
      * @return the NatGatewayInner object itself.
      */
@@ -213,7 +221,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the subnets property: An array of references to the subnets using this nat gateway resource.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubResource> subnets() {
@@ -222,7 +230,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the NAT gateway resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -231,7 +239,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -240,7 +248,7 @@ public final class NatGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

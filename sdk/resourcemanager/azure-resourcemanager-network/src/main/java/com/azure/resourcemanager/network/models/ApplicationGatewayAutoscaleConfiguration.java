@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Gateway autoscale configuration. */
+/**
+ * Application Gateway autoscale configuration.
+ */
 @Fluent
 public final class ApplicationGatewayAutoscaleConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     @JsonProperty(value = "maxCapacity")
     private Integer maxCapacity;
 
-    /** Creates an instance of ApplicationGatewayAutoscaleConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayAutoscaleConfiguration class.
+     */
     public ApplicationGatewayAutoscaleConfiguration() {
     }
 
     /**
      * Get the minCapacity property: Lower bound on number of Application Gateway capacity.
-     *
+     * 
      * @return the minCapacity value.
      */
     public int minCapacity() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Set the minCapacity property: Lower bound on number of Application Gateway capacity.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Get the maxCapacity property: Upper bound on number of Application Gateway capacity.
-     *
+     * 
      * @return the maxCapacity value.
      */
     public Integer maxCapacity() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Set the maxCapacity property: Upper bound on number of Application Gateway capacity.
-     *
+     * 
      * @param maxCapacity the maxCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

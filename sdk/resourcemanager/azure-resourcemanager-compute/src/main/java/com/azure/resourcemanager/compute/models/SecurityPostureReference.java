@@ -10,13 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version: 2023-03-01.
+ * Specifies the security posture to be used for all virtual machines in the scale set. Minimum api-version:
+ * 2023-03-01.
  */
 @Fluent
 public final class SecurityPostureReference {
     /*
      * The security posture reference id in the form of
-     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest
+     * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{
+     * major.*}|latest
      */
     @JsonProperty(value = "id")
     private String id;
@@ -27,14 +29,16 @@ public final class SecurityPostureReference {
     @JsonProperty(value = "excludeExtensions")
     private List<VirtualMachineExtensionInner> excludeExtensions;
 
-    /** Creates an instance of SecurityPostureReference class. */
+    /**
+     * Creates an instance of SecurityPostureReference class.
+     */
     public SecurityPostureReference() {
     }
 
     /**
      * Get the id property: The security posture reference id in the form of
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class SecurityPostureReference {
     /**
      * Set the id property: The security posture reference id in the form of
      * /CommunityGalleries/{communityGalleryName}/securityPostures/{securityPostureName}/versions/{major.minor.patch}|{major.*}|latest.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecurityPostureReference object itself.
      */
@@ -56,7 +60,7 @@ public final class SecurityPostureReference {
     /**
      * Get the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
      * Posture.
-     *
+     * 
      * @return the excludeExtensions value.
      */
     public List<VirtualMachineExtensionInner> excludeExtensions() {
@@ -66,7 +70,7 @@ public final class SecurityPostureReference {
     /**
      * Set the excludeExtensions property: List of virtual machine extensions to exclude when applying the Security
      * Posture.
-     *
+     * 
      * @param excludeExtensions the excludeExtensions value to set.
      * @return the SecurityPostureReference object itself.
      */
@@ -77,7 +81,7 @@ public final class SecurityPostureReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

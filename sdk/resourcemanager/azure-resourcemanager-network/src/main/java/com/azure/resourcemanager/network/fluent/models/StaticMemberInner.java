@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StaticMember Item. */
+/**
+ * StaticMember Item.
+ */
 @Fluent
 public final class StaticMemberInner extends ChildResource {
     /*
@@ -25,13 +27,15 @@ public final class StaticMemberInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of StaticMemberInner class. */
+    /**
+     * Creates an instance of StaticMemberInner class.
+     */
     public StaticMemberInner() {
     }
 
     /**
      * Get the innerProperties property: The Static Member properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticMemberProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -58,7 +62,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the StaticMemberInner object itself.
      */
@@ -72,7 +76,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the region property: Resource region.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -81,7 +85,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -90,7 +94,7 @@ public final class StaticMemberInner extends ChildResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

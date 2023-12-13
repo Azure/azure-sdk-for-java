@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration phase of Network Interface resource. */
+/**
+ * Migration phase of Network Interface resource.
+ */
 public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<NetworkInterfaceMigrationPhase> {
-    /** Static value None for NetworkInterfaceMigrationPhase. */
+    /**
+     * Static value None for NetworkInterfaceMigrationPhase.
+     */
     public static final NetworkInterfaceMigrationPhase NONE = fromString("None");
 
-    /** Static value Prepare for NetworkInterfaceMigrationPhase. */
+    /**
+     * Static value Prepare for NetworkInterfaceMigrationPhase.
+     */
     public static final NetworkInterfaceMigrationPhase PREPARE = fromString("Prepare");
 
-    /** Static value Commit for NetworkInterfaceMigrationPhase. */
+    /**
+     * Static value Commit for NetworkInterfaceMigrationPhase.
+     */
     public static final NetworkInterfaceMigrationPhase COMMIT = fromString("Commit");
 
-    /** Static value Abort for NetworkInterfaceMigrationPhase. */
+    /**
+     * Static value Abort for NetworkInterfaceMigrationPhase.
+     */
     public static final NetworkInterfaceMigrationPhase ABORT = fromString("Abort");
 
-    /** Static value Committed for NetworkInterfaceMigrationPhase. */
+    /**
+     * Static value Committed for NetworkInterfaceMigrationPhase.
+     */
     public static final NetworkInterfaceMigrationPhase COMMITTED = fromString("Committed");
 
     /**
      * Creates a new instance of NetworkInterfaceMigrationPhase value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<N
 
     /**
      * Creates or finds a NetworkInterfaceMigrationPhase from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkInterfaceMigrationPhase.
      */
@@ -47,7 +59,7 @@ public final class NetworkInterfaceMigrationPhase extends ExpandableStringEnum<N
 
     /**
      * Gets known NetworkInterfaceMigrationPhase values.
-     *
+     * 
      * @return known NetworkInterfaceMigrationPhase values.
      */
     public static Collection<NetworkInterfaceMigrationPhase> values() {

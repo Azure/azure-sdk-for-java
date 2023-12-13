@@ -9,30 +9,28 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.network.fluent.models.NetworkGroupInner;
 
-/** Contains all response data for the createOrUpdate operation. */
+/**
+ * Contains all response data for the createOrUpdate operation.
+ */
 public final class NetworkGroupsCreateOrUpdateResponse
     extends ResponseBase<NetworkGroupsCreateOrUpdateHeaders, NetworkGroupInner> {
     /**
      * Creates an instance of NetworkGroupsCreateOrUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this NetworkGroupsCreateOrUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public NetworkGroupsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        NetworkGroupInner value,
-        NetworkGroupsCreateOrUpdateHeaders headers) {
+    public NetworkGroupsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        NetworkGroupInner value, NetworkGroupsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override
