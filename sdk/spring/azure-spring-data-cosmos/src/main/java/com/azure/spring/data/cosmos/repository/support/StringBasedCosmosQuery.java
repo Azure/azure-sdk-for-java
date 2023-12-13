@@ -91,7 +91,8 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             }
         }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
+        String formattedQuery = expandedQuery.replaceAll("\\s+{1,}", " ");
+        SqlQuerySpec querySpec = new SqlQuerySpec(formattedQuery, sqlParameters);
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());

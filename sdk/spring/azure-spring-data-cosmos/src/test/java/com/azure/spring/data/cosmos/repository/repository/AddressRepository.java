@@ -62,6 +62,20 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     @Query(value = "select * from a where a.city IN (@cities)")
     List<Address> annotatedFindByCityIn(@Param("cities") List<String> cities, Sort sort);
 
+    @Query(value = """
+        select *
+        from a where
+        a.city = @city
+        """)
+    List<Address> annotatedFindByCityWithSort(@Param("city") String city, Sort sort);
+
+    @Query(value = """
+        select *
+        from a
+        where a.city = @city
+        """)
+    List<Address> annotatedFindByCityWithSort2(@Param("city") String city, Sort sort);
+
     @Query(value = "select * from a where a.longId IN (@longList)")
     List<Address> annotatedFindByInLongParameters(@Param("longList") List<Long> longsList, Sort sort);
 
