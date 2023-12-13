@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -83,6 +85,24 @@ class PartitionProcessorImpl implements PartitionProcessor {
         logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
+        String throughputControlName = null;
+
+        // suppose this is th first time to process
+        // if throughput control is configured, then set it up and use it
+        if (this.settings.getFeedPollThroughputControlConfig() != null) {
+            throughputControlName = this.settings.getFeedPollThroughputControlConfig().getGroupName() + "-" + this.lease.getLeaseToken();
+            ThroughputControlGroupConfig throughputControlGroupConfigForPkRange =
+                new ThroughputControlGroupConfigBuilder()
+                    .groupName(throughputControlName)
+                    .targetThroughput(this.settings.getFeedPollThroughputControlConfig().getTargetThroughput())
+                    .targetThroughputThreshold(this.settings.getFeedPollThroughputControlConfig().getTargetThroughputThreshold())
+                    .priorityLevel(this.settings.getFeedPollThroughputControlConfig().getPriorityLevel())
+                    .build();
+
+            this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForPkRange);
+            this.options.setThroughputControlGroupName(throughputControlName); // this will be used to populate the requests
+            logger.info("Enable local throughput control for lease " + lease.getLeaseToken());
+        }
 
         return Flux.just(this)
             .flatMap( value -> {

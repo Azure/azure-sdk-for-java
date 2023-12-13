@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 
 import java.time.Duration;
@@ -17,6 +18,7 @@ public class ProcessorSettings {
     private Duration feedPollDelay;
     private final ChangeFeedState startState;
     private final CosmosAsyncContainer collectionSelfLink;
+    private ThroughputControlGroupConfig feedPollThroughputControlConfig;
 
     public ProcessorSettings(
         ChangeFeedState startState,
@@ -47,11 +49,20 @@ public class ProcessorSettings {
         return this;
     }
 
+    public ProcessorSettings withFeedPollThroughputControlConfig(ThroughputControlGroupConfig throughputControlGroupConfig) {
+        this.feedPollThroughputControlConfig = throughputControlGroupConfig;
+        return this;
+    }
+
     public ChangeFeedState getStartState() {
         return this.startState;
     }
 
     public CosmosAsyncContainer getCollectionSelfLink() {
         return this.collectionSelfLink;
+    }
+
+    public ThroughputControlGroupConfig getFeedPollThroughputControlConfig() {
+        return this.feedPollThroughputControlConfig;
     }
 }

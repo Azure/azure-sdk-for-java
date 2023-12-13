@@ -94,9 +94,11 @@ class PartitionProcessorFactoryImpl implements PartitionProcessorFactory<JsonNod
             state = lease.getContinuationState(this.collectionResourceId, ChangeFeedMode.INCREMENTAL);
         }
 
-        ProcessorSettings settings = new ProcessorSettings(state, this.collectionSelfLink)
-            .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
-            .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount());
+        ProcessorSettings settings =
+            new ProcessorSettings(state, this.collectionSelfLink)
+                .withFeedPollDelay(this.changeFeedProcessorOptions.getFeedPollDelay())
+                .withMaxItemCount(this.changeFeedProcessorOptions.getMaxItemCount())
+                .withFeedPollThroughputControlConfig(this.changeFeedProcessorOptions.getFeedPollThroughputControlGroupConfig());
 
         PartitionCheckpointer checkpointer = new PartitionCheckpointerImpl(this.leaseCheckpointer, lease);
         return new PartitionProcessorImpl(observer, this.documentClient, settings, checkpointer, lease);
