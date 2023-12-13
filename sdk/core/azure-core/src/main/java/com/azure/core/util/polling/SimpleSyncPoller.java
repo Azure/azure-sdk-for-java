@@ -77,7 +77,6 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
         try {
             pollingSemaphore.acquire();
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 

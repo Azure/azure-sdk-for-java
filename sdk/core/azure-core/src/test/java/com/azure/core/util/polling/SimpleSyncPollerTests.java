@@ -377,7 +377,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
@@ -415,7 +414,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
@@ -452,7 +450,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
@@ -490,7 +487,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
@@ -527,7 +523,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 
@@ -565,7 +560,6 @@ public class SimpleSyncPollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     throw new RuntimeException(e);
                 }
 

@@ -778,7 +778,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
@@ -816,7 +815,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
@@ -852,7 +850,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
@@ -890,7 +887,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
@@ -926,7 +922,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
@@ -964,7 +959,6 @@ public class PollerTests {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                     return Mono.error(e);
                 }
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
