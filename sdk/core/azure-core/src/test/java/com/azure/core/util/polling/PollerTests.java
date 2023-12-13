@@ -778,7 +778,7 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
@@ -815,7 +815,7 @@ public class PollerTests {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             } else if (invocationCount[0] == 1) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
@@ -850,7 +850,7 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
@@ -887,7 +887,7 @@ public class PollerTests {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             } else if (invocationCount[0] == 1) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
@@ -922,7 +922,7 @@ public class PollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
@@ -959,7 +959,7 @@ public class PollerTests {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
             } else if (invocationCount[0] == 1) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     return Mono.error(e);
                 }
