@@ -9,8 +9,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static com.azure.core.util.polling.PollingUtil.validatePollInterval;
+import static com.azure.core.util.polling.PollingUtil.validateTimeout;
 
 /**
  * INTERNAL PACKAGE PRIVATE CLASS
@@ -75,12 +79,16 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> poll() {
-        PollResponse<T> response = this.pollOperation.apply(this.pollingContext).block();
-        this.pollingContext.setLatestResponse(response);
-        if (response.getStatus().isComplete()) {
-            this.terminalPollContext = this.pollingContext.copy();
-        }
-        return response;
+        return this.pollOperation.apply(this.pollingContext)
+            .map(response -> {
+                this.pollingContext.setLatestResponse(response);
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = this.pollingContext.copy();
+                }
+
+                return response;
+            })
+            .block();
     }
 
     @Override
@@ -88,38 +96,41 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = PollingUtil.pollingLoopAsync(context, pollOperation,
-                cancelOperation, fetchResultOperation, pollInterval).blockLast();
-            PollResponse<T> response = PollingUtil.toPollResponse(finalAsyncPollResponse);
-            this.terminalPollContext = context;
-            return response;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .last()
+            .map(response -> {
+                this.terminalPollContext = context;
+                return PollingUtil.toPollResponse(response);
+            })
+            .block();
     }
 
     @Override
     public PollResponse<T> waitForCompletion(Duration timeout) {
-        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
-        }
+        validateTimeout(timeout, LOGGER);
 
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = PollingUtil.pollingLoopAsync(context, pollOperation,
-                cancelOperation, fetchResultOperation, pollInterval)
-                .timeout(timeout) // timeout the polling loop if a single poll takes long than the timeout
-                .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
-                .blockLast(); // Continue looping until the final response is returned, or times out
-            PollResponse<T> response = PollingUtil.toPollResponse(finalAsyncPollResponse);
-            this.terminalPollContext = context;
-            return response;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
+            .last() // Continue looping until the final response is returned, or times out
+            .timeout(timeout) // timeout the polling loop if a single poll takes long than the timeout
+            .flatMap(response -> {
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return Mono.just(PollingUtil.toPollResponse(response));
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
@@ -127,48 +138,49 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null
-            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
+            && statusToWaitFor.equals(currentTerminalPollContext.getLatestResponse().getStatus())) {
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> asyncPollResponse = PollingUtil.pollingLoopAsync(context, pollOperation,
-                    cancelOperation, fetchResultOperation, pollInterval)
-                .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // take until terminal status
-                .blockLast();
-            PollResponse<T> response = PollingUtil.toPollResponse(asyncPollResponse);
-            if (response.getStatus().isComplete()) {
-                this.terminalPollContext = context;
-            }
-            return response;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // take until terminal status
+            .last()
+            .map(response -> {
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                }
+                return PollingUtil.toPollResponse(response);
+            })
+            .block();
     }
 
     @Override
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
-        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
-        }
+        validateTimeout(timeout, LOGGER);
+
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null
-            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
+            && statusToWaitFor.equals(currentTerminalPollContext.getLatestResponse().getStatus())) {
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> asyncPollResponse = PollingUtil.pollingLoopAsync(context, pollOperation,
-                    cancelOperation, fetchResultOperation, pollInterval)
-                .timeout(timeout) // timeout the polling loop if a single poll takes long than the timeout
-                .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
-                .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // Or take until terminal status
-                .blockLast();
-            PollResponse<T> response = PollingUtil.toPollResponse(asyncPollResponse);
-            if (response.getStatus().isComplete()) {
-                this.terminalPollContext = context;
-            }
-            return response;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
+            .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // Or take until terminal status
+            .last()
+            .timeout(timeout) // timeout the polling loop if a single poll takes long than the timeout
+            .flatMap(response -> {
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return Mono.just(PollingUtil.toPollResponse(response));
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
@@ -176,13 +188,39 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
             return this.fetchResultOperation.apply(currentTerminalPollContext).block();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            AsyncPollResponse<T, U> finalAsyncPollResponse = PollingUtil.pollingLoopAsync(context, pollOperation,
-                cancelOperation, fetchResultOperation, pollInterval).blockLast();
-            this.terminalPollContext = context;
-            return finalAsyncPollResponse.getFinalResult().block();
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .last()
+            .flatMap(response -> {
+                this.terminalPollContext = context;
+                return response.getFinalResult();
+            })
+            .block();
+    }
+
+    @Override
+    public U getFinalResult(Duration timeout) {
+        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
+        if (currentTerminalPollContext != null) {
+            return this.fetchResultOperation.apply(currentTerminalPollContext).block();
+        }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
+            .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
+            .last()
+            .timeout(timeout) // timeout the polling loop if a single poll takes long than the timeout
+            .flatMap(response -> {
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return response.getFinalResult();
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
@@ -191,25 +229,21 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         if (context1.getActivationResponse() == context1.getLatestResponse()) {
             this.cancelOperation.apply(context1, context1.getActivationResponse()).block();
         } else {
-            try {
-                this.cancelOperation.apply(null, this.activationResponse).block();
-            } catch (PollContextRequiredException crp) {
-                PollingContext<T> context2 = this.pollingContext.copy();
-                PollingUtil.pollingLoopAsync(context2, pollOperation, cancelOperation, fetchResultOperation,
-                    pollInterval).next().block();
-                this.cancelOperation.apply(context2, this.activationResponse).block();
-            }
+            this.cancelOperation.apply(null, this.activationResponse)
+                .onErrorResume(PollContextRequiredException.class, crp -> {
+                    PollingContext<T> context2 = this.pollingContext.copy();
+                    return PollingUtil.pollingLoopAsync(context2, pollOperation, cancelOperation,
+                        fetchResultOperation, pollInterval)
+                        .next()
+                        .then(this.cancelOperation.apply(context2, this.activationResponse));
+                })
+                .block();
         }
     }
 
     @Override
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for 'pollInterval' is not allowed."));
-        }
-        this.pollInterval = pollInterval;
+        this.pollInterval = validatePollInterval(pollInterval, LOGGER);
         return this;
     }
 }

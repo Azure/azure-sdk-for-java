@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
@@ -25,6 +26,7 @@ import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULL
 import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -320,8 +322,6 @@ public class PollerTests {
     public void getResultCanBeCalledFromOperatorChainTest() {
         final Duration retryAfter = Duration.ofMillis(10);
 
-        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS, new Response("0"), retryAfter);
-        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS, new Response("1"), retryAfter);
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new Response("2"), retryAfter);
         final Response activationResponse = new Response("Foo");
@@ -332,8 +332,8 @@ public class PollerTests {
         int[] callCount = new int[1];
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             switch (callCount[0]++) {
-                case 0: return Mono.just(response0);
-                case 1: return Mono.just(response1);
+                case 0: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), retryAfter));
+                case 1: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), retryAfter));
                 case 2: return Mono.just(response2);
                 default: return Mono.error(new IllegalStateException("Too many requests"));
             }
@@ -381,7 +381,7 @@ public class PollerTests {
             if (count <= 2) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1")));
             } else if (count == 3) {
-                throw new RuntimeException("Polling operation failed!");
+                return Mono.error(new RuntimeException("Polling operation failed!"));
             } else if (count == 4) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("2")));
             } else {
@@ -538,8 +538,6 @@ public class PollerTests {
 
     @Test
     public void waitForCompletionShouldReturnTerminalPollResponse() {
-        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10));
-        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10));
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new Response("2"), Duration.ofMillis(10));
 
@@ -550,8 +548,8 @@ public class PollerTests {
         int[] pollCallCount = new int[1];
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             switch (pollCallCount[0]++) {
-                case 0: return Mono.just(response0);
-                case 1: return Mono.just(response1);
+                case 0: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                case 1: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
                 case 2: return Mono.just(response2);
                 default: return Mono.error(new IllegalStateException("Too many requests"));
             }
@@ -575,21 +573,14 @@ public class PollerTests {
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        //
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS,
-                        new Response("0"), Duration.ofMillis(10)));
-                case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS,
-                        new Response("1"), Duration.ofMillis(10)));
-                case 2:
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        new Response("2"), Duration.ofMillis(10)));
-                default:
-                    throw new RuntimeException("Poll should not be called after terminal response");
+                case 0: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                case 1: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
+                case 2: return Mono.just(new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                    new Response("2"), Duration.ofMillis(10)));
+                default: return Mono.error(new RuntimeException("Poll should not be called after terminal response"));
             }
         };
 
@@ -608,8 +599,6 @@ public class PollerTests {
 
     @Test
     public void getResultShouldNotPollOnCompletedPoller() {
-        PollResponse<Response> response0 = new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10));
-        PollResponse<Response> response1 = new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10));
         PollResponse<Response> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new Response("2"), Duration.ofMillis(10));
 
@@ -623,8 +612,8 @@ public class PollerTests {
         int[] pollCallCount = new int[1];
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             switch (pollCallCount[0]++) {
-                case 0: return Mono.just(response0);
-                case 1: return Mono.just(response1);
+                case 0: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                case 1: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
                 case 2: return Mono.just(response2);
                 default: return Mono.error(new IllegalStateException("Too many requests"));
             }
@@ -655,21 +644,13 @@ public class PollerTests {
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
-        //
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS,
-                        new Response("0"), Duration.ofMillis(10)));
-                case 1:
-                    return Mono.just(new PollResponse<>(IN_PROGRESS,
-                        new Response("1"), Duration.ofMillis(10)));
-                case 2:
-                    return Mono.just(new PollResponse<>(matchStatus,
-                        new Response("1"), Duration.ofMillis(10)));
-                default:
-                    throw new RuntimeException("Poll should not be called after matching response");
+                case 0: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                case 1: return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
+                case 2: return Mono.just(new PollResponse<>(matchStatus, new Response("1"), Duration.ofMillis(10)));
+                default: return Mono.error(new RuntimeException("Poll should not be called after matching response"));
             }
         };
 
@@ -694,7 +675,7 @@ public class PollerTests {
             if (count <= 2) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("1")));
             } else if (count == 3) {
-                throw new RuntimeException("Polling operation failed!");
+                return Mono.error(new RuntimeException("Polling operation failed!"));
             } else if (count == 4) {
                 return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("2")));
             } else {
@@ -777,6 +758,198 @@ public class PollerTests {
             .expectNextCount(5)
             .expectComplete()
             .verify(STEPVERIFIER_TIMEOUT);
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
+     * than the timeout period.
+     */
+    @Test
+    public void waitForCompletionSinglePollTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than once"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(Duration.ofMillis(100)));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the timeout period.
+     */
+    @Test
+    public void waitForCompletionOperationTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else if (invocationCount[0] == 1) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitForCompletion(Duration.ofMillis(100)));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
+     * than the timeout period.
+     */
+    @Test
+    public void waitUntilSinglePollTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than once"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't reach the {@code statusToWaitFor} within the timeout period.
+     */
+    @Test
+    public void waitUntilOperationTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else if (invocationCount[0] == 1) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if a single poll takes longer
+     * than the timeout period.
+     */
+    @Test
+    public void getFinalResultSinglePollTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than once"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult(Duration.ofMillis(100)));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
+    }
+
+    /**
+     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
+     * doesn't complete within the timeout period.
+     */
+    @Test
+    public void getFinalResultOperationTimesOut() {
+        final Response activationResponse = new Response("Activated");
+        Function<PollingContext<Response>, Mono<Response>> activationOperation
+            = ignored -> Mono.just(activationResponse);
+
+        int[] invocationCount = new int[1];
+        invocationCount[0] = -1;
+        Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
+            invocationCount[0]++;
+            if (invocationCount[0] == 0) {
+                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+            } else if (invocationCount[0] == 1) {
+                return Mono.delay(Duration.ofMillis(5000))
+                    .thenReturn(new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
+            } else {
+                return Mono.error(new RuntimeException("Poll should not be called more than twice"));
+            }
+        };
+
+        SyncPoller<Response, CertificateOutput> poller = new SyncOverAsyncPoller<>(Duration.ofMillis(10),
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
+            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class,
+            () -> poller.getFinalResult(Duration.ofMillis(100)));
+        assertInstanceOf(TimeoutException.class, exception.getCause());
     }
 
     public static class Response {

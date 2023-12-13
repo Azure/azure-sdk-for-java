@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -44,18 +45,27 @@ class PollingUtil {
             PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
             pollingContext.setLatestResponse(pollResponse1);
         };
+
         while (!intermediatePollResponse.getStatus().isComplete()) {
             long elapsedTime = System.currentTimeMillis() - startTime;
             if (timeBound && elapsedTime >= timeoutInMillis) {
                 scheduler.shutdown();
-                return intermediatePollResponse;
+                if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
+                    return intermediatePollResponse;
+                } else {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(
+                        new TimeoutException("Polling didn't complete before the timeout period.")));
+                }
             }
+
             if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
+
             final ScheduledFuture<?> pollOp = scheduler.schedule(pollOpRunnable,
                 getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+
             try {
                 if (timeBound) {
                     pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
@@ -66,6 +76,7 @@ class PollingUtil {
                 scheduler.shutdown();
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             }
+
             intermediatePollResponse = pollingContext.getLatestResponse();
         }
 
@@ -173,5 +184,39 @@ class PollingUtil {
         }
 
         return false;
+    }
+
+    /**
+     * Validates the timeout.
+     *
+     * @param timeout The timeout.
+     * @param logger The logger.
+     * @throws NullPointerException if {@code timeout} is null.
+     * @throws IllegalArgumentException if {@code timeout} is negative or zero.
+     */
+    static void validateTimeout(Duration timeout, ClientLogger logger) {
+        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
+        if (timeout.isNegative() || timeout.isZero()) {
+            throw logger.logExceptionAsWarning(
+                new IllegalArgumentException("Negative or zero value for timeout is not allowed."));
+        }
+    }
+
+    /**
+     * Validates the poll interval.
+     *
+     * @param pollInterval The poll interval.
+     * @param logger The logger.
+     * @return The poll interval.
+     * @throws NullPointerException if {@code pollInterval} is null.
+     * @throws IllegalArgumentException if {@code pollInterval} is negative or zero.
+     */
+    static Duration validatePollInterval(Duration pollInterval, ClientLogger logger) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
+            throw logger.logExceptionAsWarning(
+                new IllegalArgumentException("Negative or zero value for pollInterval is not allowed."));
+        }
+        return pollInterval;
     }
 }
