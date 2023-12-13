@@ -32,8 +32,6 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.Objects;
 
@@ -42,7 +40,6 @@ import java.util.Objects;
  */
 class VertxAsyncHttpClient implements HttpClient {
     private final Vertx vertx;
-    private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
     /**
@@ -50,13 +47,9 @@ class VertxAsyncHttpClient implements HttpClient {
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    @SuppressWarnings("deprecation")
     VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Vertx vertx) {
-        Objects.requireNonNull(client, "client cannot be null");
-        Objects.requireNonNull(vertx, "vertx cannot be null");
-        this.client = client;
-        this.vertx = vertx;
-        this.scheduler = Schedulers.fromExecutor(vertx.nettyEventLoopGroup());
+        this.client = Objects.requireNonNull(client, "client cannot be null");
+        this.vertx = Objects.requireNonNull(vertx, "vertx cannot be null");
     }
 
     @Override
@@ -175,8 +168,7 @@ class VertxAsyncHttpClient implements HttpClient {
             });
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-            azureRequest.getBody().subscribeOn(scheduler)
-                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
+            azureRequest.getBody().subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
         }
     }
 
