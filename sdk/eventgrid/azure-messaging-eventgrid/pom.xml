@@ -76,7 +76,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-json</artifactId>
+      <artifactId>azure-json</artifactId> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <version>1.1.0</version>
     </dependency>
     <dependency>
