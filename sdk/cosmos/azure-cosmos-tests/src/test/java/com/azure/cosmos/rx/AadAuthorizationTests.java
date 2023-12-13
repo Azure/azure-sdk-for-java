@@ -21,6 +21,7 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,6 +79,29 @@ public class AadAuthorizationTests extends TestSuiteBase {
         }
 
         Thread.sleep(TIMEOUT);
+
+        TokenCredential dummyServicePrincipal = new ClientSecretCredentialBuilder()
+            .authorityHost("https://login.microsoftonline.com")
+            .tenantId("72f988bf-86f1-41af-91ab-2d7cd011db47")
+            .clientId("1950a258-227b-4e31-a9cf-717495945fc2")
+            .clientSecret("clientSecret")
+            .build();
+
+        try {
+            CosmosAsyncClient badCosmosAadClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST) // Cosmos public emulator endpoint
+                .credential(dummyServicePrincipal)
+                .buildAsyncClient();
+
+        }
+        catch (Exception e) {
+            log.info("Expected exception: {}", e.getMessage());
+            log.info("Expected cause: {}", e.getCause().toString());
+            assert e.getMessage().contains("Invalid client secret provided");
+            assert e.getCause().toString().contains("Invalid client secret provided");
+        }
+
+
 
         TokenCredential emulatorCredential = new AadSimpleEmulatorTokenCredential(TestConfigurations.MASTER_KEY); // Cosmos public emulator key
         CosmosAsyncClient cosmosAadClient = new CosmosClientBuilder()

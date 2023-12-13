@@ -52,13 +52,13 @@ val spark = SparkSession
 
 var createThroughputControl = s"""
 /* NOTE: It is important to enable TTL (can be off/-1 by default) on the throughput control container */
-CREATE TABLE IF NOT EXISTS cosmosCatalogSrc.${cosmosSourceDatabaseName}.ThroughputControl -- source database name - ThroughputControl table will be created there
+CREATE TABLE IF NOT EXISTS cosmosCatalogSrc.`${cosmosSourceDatabaseName}`.ThroughputControl -- source database name - ThroughputControl table will be created there
 USING cosmos.oltp
 OPTIONS(spark.cosmos.database = '${cosmosSourceDatabaseName}') -- reference source database. Do NOT change value partitionKeyPath = '/groupId' below - it must be named '/groupId' for Throughput control feature to work
 TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput = '4000', indexingPolicy = 'AllProperties', defaultTtlInSeconds = '-1')
 """
 var createTargetResources= s"""
-CREATE TABLE IF NOT EXISTS cosmosCatalogTgt.$cosmosTargetDatabaseName.$cosmosTargetContainerName -- reference target database and container - it will be created here
+CREATE TABLE IF NOT EXISTS cosmosCatalogTgt.`$cosmosTargetDatabaseName`.`$cosmosTargetContainerName` -- reference target database and container - it will be created here
 USING cosmos.oltp 
 TBLPROPERTIES(partitionKeyPath = '$cosmosTargetContainerPartitionKey', autoScaleMaxThroughput = $cosmosTargetContainerProvisionedThroughput, indexingPolicy = 'OnlySystemProperties')
 """
