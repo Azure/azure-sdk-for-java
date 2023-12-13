@@ -29,103 +29,61 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchResourceRequestInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchResourceRequestInput model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"zaqsqsycbkbfk\",\"tenantId\":\"kdkexxp\",\"type\":\"fmxa\",\"userAssignedIdentities\":{\"gddtocj\":{\"principalId\":\"147cb136-2a60-4b06-a131-c36478985f49\",\"clientId\":\"bad0465d-c493-4571-acf2-db91e0a6d8d9\"},\"vpmouexhdzxib\":{\"principalId\":\"fa798c48-b47c-46a7-a1cb-6be53b13431e\",\"clientId\":\"d11aa6fb-e394-4b1c-8aa2-0364c6a070a1\"},\"jnxqbzvddntwn\":{\"principalId\":\"c138d274-8916-453f-bdd1-b0e35693f694\",\"clientId\":\"44478ebc-2907-4142-8991-3d0946f358ba\"},\"cbtwnpzaoqvuh\":{\"principalId\":\"1deba60b-57d2-4ea7-ab29-55811c0a2e0b\",\"clientId\":\"d02b3ab6-928d-4e8b-a8a0-cfe564603bd4\"}}},\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":51.7805556269055},\"immutabilitySettings\":{\"state\":\"Disabled\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}}},\"tags\":{\"wqvhkhixuigdt\":\"mqc\",\"hm\":\"pbobjo\"}}")
-                .toObject(PatchResourceRequestInput.class);
-        Assertions.assertEquals("fmxa", model.identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                51.7805556269055D,
-                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.DISABLED,
-                model.properties().featureSettings().crossRegionRestoreSettings().state());
-        Assertions.assertEquals("mqc", model.tags().get("wqvhkhixuigdt"));
+        PatchResourceRequestInput model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"u\",\"tenantId\":\"a\",\"type\":\"rzayv\",\"userAssignedIdentities\":{\"dfgiot\":{\"principalId\":\"4f181bcb-6fca-4f0e-88d3-e562feb919df\",\"clientId\":\"5afb413d-37ae-4476-b45a-d95f727f251e\"},\"utqxlngx\":{\"principalId\":\"122f9a10-ba05-46b7-aac1-3a255af300ae\",\"clientId\":\"cdeb164c-aa3e-4cdc-8f41-ef684e4c2c3a\"}}},\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"Off\",\"retentionDurationInDays\":41.63738367235476},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Disabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}}},\"tags\":{\"ehoqfbowskan\":\"abhjybi\",\"ywgndrv\":\"ktzlcuiywg\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"}}")
+            .toObject(PatchResourceRequestInput.class);
+        Assertions.assertEquals("rzayv", model.identity().type());
+        Assertions.assertEquals(AlertsState.DISABLED,
+            model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.OFF,
+            model.properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(41.63738367235476D,
+            model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.UNLOCKED,
+            model.properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.DISABLED,
+            model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("abhjybi", model.tags().get("ehoqfbowskan"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchResourceRequestInput model =
-            new PatchResourceRequestInput()
-                .withIdentity(
-                    new DppIdentityDetails()
-                        .withType("fmxa")
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "gddtocj",
-                                new UserAssignedIdentity(),
-                                "vpmouexhdzxib",
-                                new UserAssignedIdentity(),
-                                "jnxqbzvddntwn",
-                                new UserAssignedIdentity(),
-                                "cbtwnpzaoqvuh",
-                                new UserAssignedIdentity())))
-                .withProperties(
-                    new PatchBackupVaultInput()
-                        .withMonitoringSettings(
-                            new MonitoringSettings()
-                                .withAzureMonitorAlertSettings(
-                                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
-                        .withSecuritySettings(
-                            new SecuritySettings()
-                                .withSoftDeleteSettings(
-                                    new SoftDeleteSettings()
-                                        .withState(SoftDeleteState.ALWAYS_ON)
-                                        .withRetentionDurationInDays(51.7805556269055D))
-                                .withImmutabilitySettings(
-                                    new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
-                        .withFeatureSettings(
-                            new FeatureSettings()
-                                .withCrossSubscriptionRestoreSettings(
-                                    new CrossSubscriptionRestoreSettings()
-                                        .withState(CrossSubscriptionRestoreState.ENABLED))
-                                .withCrossRegionRestoreSettings(
-                                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.DISABLED))))
-                .withTags(mapOf("wqvhkhixuigdt", "mqc", "hm", "pbobjo"));
+        PatchResourceRequestInput model = new PatchResourceRequestInput()
+            .withIdentity(new DppIdentityDetails().withType("rzayv").withUserAssignedIdentities(
+                mapOf("dfgiot", new UserAssignedIdentity(), "utqxlngx", new UserAssignedIdentity())))
+            .withProperties(new PatchBackupVaultInput()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.OFF)
+                        .withRetentionDurationInDays(41.63738367235476D))
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
+                .withFeatureSettings(new FeatureSettings()
+                    .withCrossSubscriptionRestoreSettings(
+                        new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.DISABLED))
+                    .withCrossRegionRestoreSettings(
+                        new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))))
+            .withTags(mapOf("ehoqfbowskan", "abhjybi", "ywgndrv", "ktzlcuiywg", "ocpecfvmmco", "nhzgpphrcgyn"));
         model = BinaryData.fromObject(model).toObject(PatchResourceRequestInput.class);
-        Assertions.assertEquals("fmxa", model.identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                51.7805556269055D,
-                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.DISABLED,
-                model.properties().featureSettings().crossRegionRestoreSettings().state());
-        Assertions.assertEquals("mqc", model.tags().get("wqvhkhixuigdt"));
+        Assertions.assertEquals("rzayv", model.identity().type());
+        Assertions.assertEquals(AlertsState.DISABLED,
+            model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.OFF,
+            model.properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(41.63738367235476D,
+            model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.UNLOCKED,
+            model.properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.DISABLED,
+            model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("abhjybi", model.tags().get("ehoqfbowskan"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

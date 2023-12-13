@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for DeletedBackupInstances Get. */
+/**
+ * Samples for DeletedBackupInstances Get.
+ */
 public final class DeletedBackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
      */
     /**
      * Sample code: Get DeletedBackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDeletedBackupInstance(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .deletedBackupInstances()
-            .getWithResponse(
-                "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
+    public static void
+        getDeletedBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.deletedBackupInstances().getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1",
+            com.azure.core.util.Context.NONE);
     }
 }

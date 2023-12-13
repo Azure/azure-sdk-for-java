@@ -31,70 +31,39 @@ public final class DataProtectionOperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"display\":{\"description\":\"ttzaefed\",\"operation\":\"hchrphkmcrjdqn\",\"provider\":\"fzpbgtgkyl\",\"resource\":\"ghrjeuutl\"},\"name\":\"ez\",\"isDataAction\":false,\"origin\":\"kvbwnhhtqlgeh\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"blobDuration\":\"fhpfeoajvgcxtx\",\"displayName\":\"sheafid\",\"name\":\"ugsresmkssjhoi\"},{\"blobDuration\":\"xfkfwegprhptill\",\"displayName\":\"biqtgdq\",\"name\":\"mcwsldrizetpwb\"},{\"blobDuration\":\"lllibph\",\"displayName\":\"zmizakakan\",\"name\":\"p\"},{\"blobDuration\":\"jzhajoy\",\"displayName\":\"jlmuoyxprimrsopt\",\"name\":\"cjmeislstvasy\"}]}}}]}";
+        String responseStr
+            = "{\"value\":[{\"display\":{\"description\":\"fhpfeoajvgcxtx\",\"operation\":\"sheafid\",\"provider\":\"ugsresmkssjhoi\",\"resource\":\"xfkfwegprhptill\"},\"name\":\"biqtgdq\",\"isDataAction\":true,\"origin\":\"wsldrizetpwbr\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"blobDuration\":\"phbqz\",\"displayName\":\"zakakankjpdn\",\"name\":\"ha\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ClientDiscoveryValueForSingleApi> response =
-            manager.dataProtectionOperations().list(com.azure.core.util.Context.NONE);
+        PagedIterable<ClientDiscoveryValueForSingleApi> response
+            = manager.dataProtectionOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ttzaefed", response.iterator().next().display().description());
-        Assertions.assertEquals("hchrphkmcrjdqn", response.iterator().next().display().operation());
-        Assertions.assertEquals("fzpbgtgkyl", response.iterator().next().display().provider());
-        Assertions.assertEquals("ghrjeuutl", response.iterator().next().display().resource());
-        Assertions.assertEquals("ez", response.iterator().next().name());
-        Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("kvbwnhhtqlgeh", response.iterator().next().origin());
-        Assertions
-            .assertEquals(
-                "fhpfeoajvgcxtx",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .serviceSpecification()
-                    .logSpecifications()
-                    .get(0)
-                    .blobDuration());
-        Assertions
-            .assertEquals(
-                "sheafid",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .serviceSpecification()
-                    .logSpecifications()
-                    .get(0)
-                    .displayName());
-        Assertions
-            .assertEquals(
-                "ugsresmkssjhoi",
-                response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("fhpfeoajvgcxtx", response.iterator().next().display().description());
+        Assertions.assertEquals("sheafid", response.iterator().next().display().operation());
+        Assertions.assertEquals("ugsresmkssjhoi", response.iterator().next().display().provider());
+        Assertions.assertEquals("xfkfwegprhptill", response.iterator().next().display().resource());
+        Assertions.assertEquals("biqtgdq", response.iterator().next().name());
+        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals("wsldrizetpwbr", response.iterator().next().origin());
+        Assertions.assertEquals("phbqz",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("zakakankjpdn",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("ha",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Parameters for Backup Datasource. */
+/**
+ * Parameters for Backup Datasource.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,17 +22,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(
         name = "KubernetesClusterBackupDatasourceParameters",
         value = KubernetesClusterBackupDatasourceParameters.class),
-    @JsonSubTypes.Type(name = "BlobBackupDatasourceParameters", value = BlobBackupDatasourceParameters.class)
-})
+    @JsonSubTypes.Type(name = "BlobBackupDatasourceParameters", value = BlobBackupDatasourceParameters.class) })
 @Immutable
 public class BackupDatasourceParameters {
-    /** Creates an instance of BackupDatasourceParameters class. */
+    /**
+     * Creates an instance of BackupDatasourceParameters class.
+     */
     public BackupDatasourceParameters() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

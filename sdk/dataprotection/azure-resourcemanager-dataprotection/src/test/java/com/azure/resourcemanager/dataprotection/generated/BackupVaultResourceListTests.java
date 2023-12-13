@@ -34,236 +34,133 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupVaultResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupVaultResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"InProgress\",\"resourceMoveDetails\":{\"operationId\":\"czmehmtzopbsp\",\"startTimeUtc\":\"upi\",\"completionTimeUtc\":\"sybbejhph\",\"sourceResourcePath\":\"cmsxaobhdxbm\",\"targetResourcePath\":\"ioq\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"On\",\"retentionDurationInDays\":12.53974621306525},\"immutabilitySettings\":{\"state\":\"Locked\"}},\"storageSettings\":[{\"datastoreType\":\"ArchiveStore\",\"type\":\"ZoneRedundant\"}],\"isVaultProtectedByResourceGuard\":false,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}},\"secureScore\":\"Maximum\"},\"identity\":{\"principalId\":\"gkdmb\",\"tenantId\":\"zlobcufpd\",\"type\":\"rbt\",\"userAssignedIdentities\":{\"qglhq\":{\"principalId\":\"f2d3b8e7-52a0-4f8b-b8c7-36079f909e5d\",\"clientId\":\"0cff634b-fd47-4068-b753-cfe92b8d0770\"},\"foooj\":{\"principalId\":\"0eaa23b0-2246-4ac9-9535-d7a040c9eeb6\",\"clientId\":\"3b924f59-ee26-4a50-a04d-68b9c823eb9a\"},\"fsqesaagdfmglzlh\":{\"principalId\":\"6ed79fac-a234-44ee-8992-1d781ed629a6\",\"clientId\":\"d9e48a54-1d25-4553-a9e1-5b77ad8009fc\"},\"ifkwmrvktsizntoc\":{\"principalId\":\"6145262b-4c14-4055-9825-0c4b1036b8a7\",\"clientId\":\"5bf44891-dd30-45d2-b606-3a01f0586d48\"}}},\"eTag\":\"a\",\"location\":\"ajpsquc\",\"tags\":{\"kfo\":\"yf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"},{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"CommitTimedout\",\"resourceMoveDetails\":{\"operationId\":\"qhsmyurkdtml\",\"startTimeUtc\":\"ekuksjtx\",\"completionTimeUtc\":\"cdm\",\"sourceResourcePath\":\"rcryuanzwuxzdxta\",\"targetResourcePath\":\"lhmwhfpmrqobm\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":30.42594303603623},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"ZoneRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"Maximum\"},\"identity\":{\"principalId\":\"zufcyzkohdbi\",\"tenantId\":\"nufhf\",\"type\":\"jysagith\",\"userAssignedIdentities\":{\"ifpikxwczby\":{\"principalId\":\"ef399efe-6d7b-4c2d-a4e3-61ff69034318\",\"clientId\":\"7db38b12-8fb5-4bc4-8eee-981e777a83be\"}}},\"eTag\":\"npqxuh\",\"location\":\"y\",\"tags\":{\"rkxvdum\":\"wby\",\"xgaudccs\":\"grtfwvu\",\"jcny\":\"h\",\"kryhtnapczwlokj\":\"j\"},\"id\":\"emkkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"},{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"CommitTimedout\",\"resourceMoveDetails\":{\"operationId\":\"aqwi\",\"startTimeUtc\":\"sprozvcput\",\"completionTimeUtc\":\"jvwmfda\",\"sourceResourcePath\":\"cmdv\",\"targetResourcePath\":\"hulsuuvmkjozkrwf\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":59.75135945335241},\"immutabilitySettings\":{\"state\":\"Disabled\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"GeoRedundant\"},{\"datastoreType\":\"VaultStore\",\"type\":\"ZoneRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"None\"},\"identity\":{\"principalId\":\"lahbcryff\",\"tenantId\":\"dosyg\",\"type\":\"paojakhmsbzjh\",\"userAssignedIdentities\":{\"dphlxaolt\":{\"principalId\":\"cbc53dd9-b826-4009-88b3-a2f5261abe4d\",\"clientId\":\"cd7e0a0a-a5e2-4c16-ba4c-e561a5008c3e\"},\"rgqjbpfzfsinzg\":{\"principalId\":\"be86cbae-a4b5-4e66-810c-4b462e1e04dd\",\"clientId\":\"38642b6a-9468-46e6-a44c-361a9720c2a0\"}}},\"eTag\":\"cjrwzoxxjtfellu\",\"location\":\"zitonpeqfpjkjl\",\"tags\":{\"nmayhuybb\":\"pdvhpfxxypin\",\"inuvamiheogn\":\"podepoo\",\"usivye\":\"rxzxtheo\"},\"id\":\"cciqihnhungbwjz\",\"name\":\"nfygxgispemvtz\",\"type\":\"kufubljo\"}],\"nextLink\":\"qeof\"}")
-                .toObject(BackupVaultResourceList.class);
-        Assertions.assertEquals("qeof", model.nextLink());
+        BackupVaultResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"InProgress\",\"resourceMoveDetails\":{\"operationId\":\"czmehmtzopbsp\",\"startTimeUtc\":\"upi\",\"completionTimeUtc\":\"sybbejhph\",\"sourceResourcePath\":\"cmsxaobhdxbm\",\"targetResourcePath\":\"ioq\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"On\",\"retentionDurationInDays\":12.53974621306525},\"immutabilitySettings\":{\"state\":\"Locked\"}},\"storageSettings\":[{\"datastoreType\":\"ArchiveStore\",\"type\":\"ZoneRedundant\"}],\"isVaultProtectedByResourceGuard\":false,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}},\"secureScore\":\"Maximum\",\"replicatedRegions\":[\"gkdmb\",\"azlobcufpdznrbt\",\"qqjnqgl\",\"qgn\"]},\"identity\":{\"principalId\":\"oo\",\"tenantId\":\"wifsq\",\"type\":\"aagdfmg\",\"userAssignedIdentities\":{\"xrifkwmrvkts\":{\"principalId\":\"869ca0d9-d976-4e77-8655-634679804b91\",\"clientId\":\"b75e27bf-5c30-42d4-a648-9124e920c396\"},\"to\":{\"principalId\":\"2e2fd882-88ce-4fa6-8337-cfeb6d29f4c6\",\"clientId\":\"023f4d97-7282-4e69-b889-63df5b25b634\"}}},\"eTag\":\"pa\",\"location\":\"ajpsquc\",\"tags\":{\"kfo\":\"yf\"},\"id\":\"knygjofjddeq\",\"name\":\"rd\",\"type\":\"upewnwreitjzy\"},{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"CommitTimedout\",\"resourceMoveDetails\":{\"operationId\":\"qhsmyurkdtml\",\"startTimeUtc\":\"ekuksjtx\",\"completionTimeUtc\":\"cdm\",\"sourceResourcePath\":\"rcryuanzwuxzdxta\",\"targetResourcePath\":\"lhmwhfpmrqobm\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":30.42594303603623},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"ZoneRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"Maximum\",\"replicatedRegions\":[\"zufcyzkohdbi\",\"anufhfcbjysag\",\"th\",\"qhabifpikxwcz\"]},\"identity\":{\"principalId\":\"cnpqxuhivyqniwby\",\"tenantId\":\"k\",\"type\":\"dumjgrtfwvuk\",\"userAssignedIdentities\":{\"ccsnhsjc\":{\"principalId\":\"ff179c49-e52a-4572-bb11-44bb445238f9\",\"clientId\":\"f7e17e46-0672-479d-9d22-e2d9bac78df3\"},\"j\":{\"principalId\":\"cf5ab398-8efa-40ce-8b07-26047da4a0e7\",\"clientId\":\"e09ed8e3-8d9f-46b0-93ad-a0471ee4f591\"},\"yhtnapczwlokjye\":{\"principalId\":\"238dc5ec-f3e1-4e9d-83c6-a55242335924\",\"clientId\":\"0902af24-5c6a-4d65-99c5-23ad61a11077\"}}},\"eTag\":\"kvnipjoxz\",\"location\":\"chgejspodm\",\"tags\":{\"o\":\"zyde\",\"wixjsprozvcp\":\"wyahuxinpmqnja\",\"atscmd\":\"tegjvwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"},\"id\":\"iodjp\",\"name\":\"lwejdpv\",\"type\":\"ryo\"},{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Unknown\",\"resourceMoveState\":\"MoveSucceeded\",\"resourceMoveDetails\":{\"operationId\":\"kljla\",\"startTimeUtc\":\"cr\",\"completionTimeUtc\":\"fdfdosygexpa\",\"sourceResourcePath\":\"akhmsbzjhcrz\",\"targetResourcePath\":\"dphlxaolt\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":14.134109255164462},\"immutabilitySettings\":{\"state\":\"Locked\"}},\"storageSettings\":[{\"datastoreType\":\"ArchiveStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"ArchiveStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"VaultStore\",\"type\":\"GeoRedundant\"},{\"datastoreType\":\"ArchiveStore\",\"type\":\"LocallyRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"None\",\"replicatedRegions\":[\"peqfpjkjl\"]},\"identity\":{\"principalId\":\"pdvhpfxxypin\",\"tenantId\":\"mayhuybbkpodepoo\",\"type\":\"nuvamiheogna\",\"userAssignedIdentities\":{\"heotusiv\":{\"principalId\":\"aab40eff-1d43-4d4f-ae5b-4885070b813d\",\"clientId\":\"f8a4f266-1093-4d8d-927f-4b425e5232db\"},\"cciqihnhungbwjz\":{\"principalId\":\"cc9e38db-7064-46d7-bef7-af501af858d3\",\"clientId\":\"8adfdd72-7b1b-4022-b5dc-e78ee760d1b7\"},\"ygxgispemvtz\":{\"principalId\":\"331a8ce2-51a0-40a3-9ffe-1b9e44be33f1\",\"clientId\":\"9f762a40-79b0-4b6a-9df2-2d9b571f5201\"},\"fublj\":{\"principalId\":\"d7f39aad-8418-4942-93ed-b9b993bdbec8\",\"clientId\":\"278112a3-132c-43ad-8322-b66f8fdb8026\"}}},\"eTag\":\"xqeofjaeqjhqjba\",\"location\":\"msmjqulngsntn\",\"tags\":{\"xwrljdouskcqvkoc\":\"kzgcwrwcl\",\"sqrglssainq\":\"cjdkwtnhxbnjbi\",\"eebvmgxsab\":\"jwnzlljfmp\"},\"id\":\"yqduujit\",\"name\":\"jczdzevndh\",\"type\":\"rwpdappdsbdkvwrw\"}],\"nextLink\":\"eusnhutj\"}")
+            .toObject(BackupVaultResourceList.class);
+        Assertions.assertEquals("eusnhutj", model.nextLink());
         Assertions.assertEquals("ajpsquc", model.value().get(0).location());
         Assertions.assertEquals("yf", model.value().get(0).tags().get("kfo"));
-        Assertions.assertEquals("a", model.value().get(0).etag());
-        Assertions.assertEquals("rbt", model.value().get(0).identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model
-                    .value()
-                    .get(0)
-                    .properties()
-                    .monitoringSettings()
-                    .azureMonitorAlertSettings()
-                    .alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ON, model.value().get(0).properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                12.53974621306525D,
-                model.value().get(0).properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.LOCKED,
-                model.value().get(0).properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                StorageSettingStoreTypes.ARCHIVE_STORE,
-                model.value().get(0).properties().storageSettings().get(0).datastoreType());
-        Assertions
-            .assertEquals(
-                StorageSettingTypes.ZONE_REDUNDANT, model.value().get(0).properties().storageSettings().get(0).type());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.value().get(0).properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.DISABLED,
-                model.value().get(0).properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("pa", model.value().get(0).etag());
+        Assertions.assertEquals("aagdfmg", model.value().get(0).identity().type());
+        Assertions.assertEquals(AlertsState.DISABLED, model.value().get(0).properties().monitoringSettings()
+            .azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ON,
+            model.value().get(0).properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(12.53974621306525D,
+            model.value().get(0).properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.LOCKED,
+            model.value().get(0).properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(StorageSettingStoreTypes.ARCHIVE_STORE,
+            model.value().get(0).properties().storageSettings().get(0).datastoreType());
+        Assertions.assertEquals(StorageSettingTypes.ZONE_REDUNDANT,
+            model.value().get(0).properties().storageSettings().get(0).type());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.value().get(0).properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.DISABLED,
+            model.value().get(0).properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("gkdmb", model.value().get(0).properties().replicatedRegions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultResourceList model =
-            new BackupVaultResourceList()
-                .withNextLink("qeof")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new BackupVaultResourceInner()
-                                .withLocation("ajpsquc")
-                                .withTags(mapOf("kfo", "yf"))
-                                .withEtag("a")
-                                .withIdentity(
-                                    new DppIdentityDetails()
-                                        .withType("rbt")
-                                        .withUserAssignedIdentities(
-                                            mapOf(
-                                                "qglhq",
-                                                new UserAssignedIdentity(),
-                                                "foooj",
-                                                new UserAssignedIdentity(),
-                                                "fsqesaagdfmglzlh",
-                                                new UserAssignedIdentity(),
-                                                "ifkwmrvktsizntoc",
-                                                new UserAssignedIdentity())))
-                                .withProperties(
-                                    new BackupVault()
-                                        .withMonitoringSettings(
-                                            new MonitoringSettings()
-                                                .withAzureMonitorAlertSettings(
-                                                    new AzureMonitorAlertSettings()
-                                                        .withAlertsForAllJobFailures(AlertsState.DISABLED)))
-                                        .withSecuritySettings(
-                                            new SecuritySettings()
-                                                .withSoftDeleteSettings(
-                                                    new SoftDeleteSettings()
-                                                        .withState(SoftDeleteState.ON)
-                                                        .withRetentionDurationInDays(12.53974621306525D))
-                                                .withImmutabilitySettings(
-                                                    new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
-                                        .withStorageSettings(
-                                            Arrays
-                                                .asList(
-                                                    new StorageSetting()
-                                                        .withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
-                                                        .withType(StorageSettingTypes.ZONE_REDUNDANT)))
-                                        .withFeatureSettings(
-                                            new FeatureSettings()
-                                                .withCrossSubscriptionRestoreSettings(
-                                                    new CrossSubscriptionRestoreSettings()
-                                                        .withState(CrossSubscriptionRestoreState.ENABLED))
-                                                .withCrossRegionRestoreSettings(
-                                                    new CrossRegionRestoreSettings()
-                                                        .withState(CrossRegionRestoreState.DISABLED)))),
-                            new BackupVaultResourceInner()
-                                .withLocation("y")
-                                .withTags(
-                                    mapOf("rkxvdum", "wby", "xgaudccs", "grtfwvu", "jcny", "h", "kryhtnapczwlokj", "j"))
-                                .withEtag("npqxuh")
-                                .withIdentity(
-                                    new DppIdentityDetails()
-                                        .withType("jysagith")
-                                        .withUserAssignedIdentities(mapOf("ifpikxwczby", new UserAssignedIdentity())))
-                                .withProperties(
-                                    new BackupVault()
-                                        .withMonitoringSettings(
-                                            new MonitoringSettings()
-                                                .withAzureMonitorAlertSettings(
-                                                    new AzureMonitorAlertSettings()
-                                                        .withAlertsForAllJobFailures(AlertsState.DISABLED)))
-                                        .withSecuritySettings(
-                                            new SecuritySettings()
-                                                .withSoftDeleteSettings(
-                                                    new SoftDeleteSettings()
-                                                        .withState(SoftDeleteState.ALWAYS_ON)
-                                                        .withRetentionDurationInDays(30.42594303603623D))
-                                                .withImmutabilitySettings(
-                                                    new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
-                                        .withStorageSettings(
-                                            Arrays
-                                                .asList(
-                                                    new StorageSetting()
-                                                        .withDatastoreType(StorageSettingStoreTypes.OPERATIONAL_STORE)
-                                                        .withType(StorageSettingTypes.ZONE_REDUNDANT)))
-                                        .withFeatureSettings(
-                                            new FeatureSettings()
-                                                .withCrossSubscriptionRestoreSettings(
-                                                    new CrossSubscriptionRestoreSettings()
-                                                        .withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED))
-                                                .withCrossRegionRestoreSettings(
-                                                    new CrossRegionRestoreSettings()
-                                                        .withState(CrossRegionRestoreState.ENABLED)))),
-                            new BackupVaultResourceInner()
-                                .withLocation("zitonpeqfpjkjl")
-                                .withTags(
-                                    mapOf("nmayhuybb", "pdvhpfxxypin", "inuvamiheogn", "podepoo", "usivye", "rxzxtheo"))
-                                .withEtag("cjrwzoxxjtfellu")
-                                .withIdentity(
-                                    new DppIdentityDetails()
-                                        .withType("paojakhmsbzjh")
-                                        .withUserAssignedIdentities(
-                                            mapOf(
-                                                "dphlxaolt",
-                                                new UserAssignedIdentity(),
-                                                "rgqjbpfzfsinzg",
-                                                new UserAssignedIdentity())))
-                                .withProperties(
-                                    new BackupVault()
-                                        .withMonitoringSettings(
-                                            new MonitoringSettings()
-                                                .withAzureMonitorAlertSettings(
-                                                    new AzureMonitorAlertSettings()
-                                                        .withAlertsForAllJobFailures(AlertsState.ENABLED)))
-                                        .withSecuritySettings(
-                                            new SecuritySettings()
-                                                .withSoftDeleteSettings(
-                                                    new SoftDeleteSettings()
-                                                        .withState(SoftDeleteState.ALWAYS_ON)
-                                                        .withRetentionDurationInDays(59.75135945335241D))
-                                                .withImmutabilitySettings(
-                                                    new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
-                                        .withStorageSettings(
-                                            Arrays
-                                                .asList(
-                                                    new StorageSetting()
-                                                        .withDatastoreType(StorageSettingStoreTypes.OPERATIONAL_STORE)
-                                                        .withType(StorageSettingTypes.GEO_REDUNDANT),
-                                                    new StorageSetting()
-                                                        .withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
-                                                        .withType(StorageSettingTypes.ZONE_REDUNDANT)))
-                                        .withFeatureSettings(
-                                            new FeatureSettings()
-                                                .withCrossSubscriptionRestoreSettings(
-                                                    new CrossSubscriptionRestoreSettings()
-                                                        .withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED))
-                                                .withCrossRegionRestoreSettings(
-                                                    new CrossRegionRestoreSettings()
-                                                        .withState(CrossRegionRestoreState.ENABLED))))));
+        BackupVaultResourceList model = new BackupVaultResourceList().withNextLink("eusnhutj").withValue(Arrays.asList(
+            new BackupVaultResourceInner().withLocation("ajpsquc").withTags(mapOf("kfo", "yf")).withEtag("pa")
+                .withIdentity(new DppIdentityDetails().withType("aagdfmg").withUserAssignedIdentities(
+                    mapOf("xrifkwmrvkts", new UserAssignedIdentity(), "to", new UserAssignedIdentity())))
+                .withProperties(new BackupVault()
+                    .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+                    .withSecuritySettings(new SecuritySettings()
+                        .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ON)
+                            .withRetentionDurationInDays(12.53974621306525D))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
+                    .withStorageSettings(
+                        Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
+                            .withType(StorageSettingTypes.ZONE_REDUNDANT)))
+                    .withFeatureSettings(new FeatureSettings()
+                        .withCrossSubscriptionRestoreSettings(
+                            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
+                        .withCrossRegionRestoreSettings(
+                            new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.DISABLED)))
+                    .withReplicatedRegions(Arrays.asList("gkdmb", "azlobcufpdznrbt", "qqjnqgl", "qgn"))),
+            new BackupVaultResourceInner().withLocation("chgejspodm")
+                .withTags(mapOf("o", "zyde", "wixjsprozvcp", "wyahuxinpmqnja", "atscmd", "tegjvwmf", "zkrwfn",
+                    "pjhulsuuvmkj"))
+                .withEtag("kvnipjoxz")
+                .withIdentity(new DppIdentityDetails().withType("dumjgrtfwvuk")
+                    .withUserAssignedIdentities(mapOf("ccsnhsjc", new UserAssignedIdentity(), "j",
+                        new UserAssignedIdentity(), "yhtnapczwlokjye", new UserAssignedIdentity())))
+                .withProperties(new BackupVault()
+                    .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+                    .withSecuritySettings(new SecuritySettings()
+                        .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                            .withRetentionDurationInDays(30.42594303603623D))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
+                    .withStorageSettings(
+                        Arrays.asList(new StorageSetting().withDatastoreType(StorageSettingStoreTypes.OPERATIONAL_STORE)
+                            .withType(StorageSettingTypes.ZONE_REDUNDANT)))
+                    .withFeatureSettings(new FeatureSettings()
+                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                            .withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED))
+                        .withCrossRegionRestoreSettings(
+                            new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)))
+                    .withReplicatedRegions(Arrays.asList("zufcyzkohdbi", "anufhfcbjysag", "th", "qhabifpikxwcz"))),
+            new BackupVaultResourceInner().withLocation("msmjqulngsntn")
+                .withTags(
+                    mapOf("xwrljdouskcqvkoc", "kzgcwrwcl", "sqrglssainq", "cjdkwtnhxbnjbi", "eebvmgxsab", "jwnzlljfmp"))
+                .withEtag("xqeofjaeqjhqjba")
+                .withIdentity(new DppIdentityDetails().withType("nuvamiheogna").withUserAssignedIdentities(
+                    mapOf("heotusiv", new UserAssignedIdentity(), "cciqihnhungbwjz", new UserAssignedIdentity(),
+                        "ygxgispemvtz", new UserAssignedIdentity(), "fublj", new UserAssignedIdentity())))
+                .withProperties(new BackupVault()
+                    .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
+                    .withSecuritySettings(new SecuritySettings()
+                        .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                            .withRetentionDurationInDays(14.134109255164462D))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
+                    .withStorageSettings(Arrays.asList(
+                        new StorageSetting().withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
+                            .withType(StorageSettingTypes.ZONE_REDUNDANT),
+                        new StorageSetting().withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
+                            .withType(StorageSettingTypes.ZONE_REDUNDANT),
+                        new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                            .withType(StorageSettingTypes.GEO_REDUNDANT),
+                        new StorageSetting().withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
+                            .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
+                    .withFeatureSettings(new FeatureSettings()
+                        .withCrossSubscriptionRestoreSettings(
+                            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
+                        .withCrossRegionRestoreSettings(
+                            new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)))
+                    .withReplicatedRegions(Arrays.asList("peqfpjkjl")))));
         model = BinaryData.fromObject(model).toObject(BackupVaultResourceList.class);
-        Assertions.assertEquals("qeof", model.nextLink());
+        Assertions.assertEquals("eusnhutj", model.nextLink());
         Assertions.assertEquals("ajpsquc", model.value().get(0).location());
         Assertions.assertEquals("yf", model.value().get(0).tags().get("kfo"));
-        Assertions.assertEquals("a", model.value().get(0).etag());
-        Assertions.assertEquals("rbt", model.value().get(0).identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model
-                    .value()
-                    .get(0)
-                    .properties()
-                    .monitoringSettings()
-                    .azureMonitorAlertSettings()
-                    .alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ON, model.value().get(0).properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                12.53974621306525D,
-                model.value().get(0).properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.LOCKED,
-                model.value().get(0).properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                StorageSettingStoreTypes.ARCHIVE_STORE,
-                model.value().get(0).properties().storageSettings().get(0).datastoreType());
-        Assertions
-            .assertEquals(
-                StorageSettingTypes.ZONE_REDUNDANT, model.value().get(0).properties().storageSettings().get(0).type());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.ENABLED,
-                model.value().get(0).properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.DISABLED,
-                model.value().get(0).properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("pa", model.value().get(0).etag());
+        Assertions.assertEquals("aagdfmg", model.value().get(0).identity().type());
+        Assertions.assertEquals(AlertsState.DISABLED, model.value().get(0).properties().monitoringSettings()
+            .azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ON,
+            model.value().get(0).properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(12.53974621306525D,
+            model.value().get(0).properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.LOCKED,
+            model.value().get(0).properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(StorageSettingStoreTypes.ARCHIVE_STORE,
+            model.value().get(0).properties().storageSettings().get(0).datastoreType());
+        Assertions.assertEquals(StorageSettingTypes.ZONE_REDUNDANT,
+            model.value().get(0).properties().storageSettings().get(0).type());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.value().get(0).properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.DISABLED,
+            model.value().get(0).properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("gkdmb", model.value().get(0).properties().replicatedRegions().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

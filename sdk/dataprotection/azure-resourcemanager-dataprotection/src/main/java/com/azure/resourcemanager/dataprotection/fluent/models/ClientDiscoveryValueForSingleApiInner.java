@@ -11,14 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ClientDiscoveryValueForSingleApi
- *
- * <p>Available operation details.
+ * 
+ * Available operation details.
  */
 @Fluent
 public final class ClientDiscoveryValueForSingleApiInner {
     /*
      * ClientDiscoveryDisplay
-     *
+     * 
      * Contains the localized display information for this particular operation
      */
     @JsonProperty(value = "display")
@@ -44,21 +44,23 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /*
      * ClientDiscoveryForProperties
-     *
+     * 
      * Properties for the given operation.
      */
     @JsonProperty(value = "properties")
     private ClientDiscoveryForProperties properties;
 
-    /** Creates an instance of ClientDiscoveryValueForSingleApiInner class. */
+    /**
+     * Creates an instance of ClientDiscoveryValueForSingleApiInner class.
+     */
     public ClientDiscoveryValueForSingleApiInner() {
     }
 
     /**
      * Get the display property: ClientDiscoveryDisplay
-     *
-     * <p>Contains the localized display information for this particular operation.
-     *
+     * 
+     * Contains the localized display information for this particular operation.
+     * 
      * @return the display value.
      */
     public ClientDiscoveryDisplay display() {
@@ -67,9 +69,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the display property: ClientDiscoveryDisplay
-     *
-     * <p>Contains the localized display information for this particular operation.
-     *
+     * 
+     * Contains the localized display information for this particular operation.
+     * 
      * @param display the display value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -80,7 +82,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Get the name property: Name of the Operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +91,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the name property: Name of the Operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -100,7 +102,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -109,7 +111,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -121,7 +123,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
     /**
      * Get the origin property: The intended executor of the operation;governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -131,7 +133,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
     /**
      * Set the origin property: The intended executor of the operation;governs the display of the operation in the RBAC
      * UX and the audit logs UX.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -142,9 +144,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Get the properties property: ClientDiscoveryForProperties
-     *
-     * <p>Properties for the given operation.
-     *
+     * 
+     * Properties for the given operation.
+     * 
      * @return the properties value.
      */
     public ClientDiscoveryForProperties properties() {
@@ -153,9 +155,9 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Set the properties property: ClientDiscoveryForProperties
-     *
-     * <p>Properties for the given operation.
-     *
+     * 
+     * Properties for the given operation.
+     * 
      * @param properties the properties value to set.
      * @return the ClientDiscoveryValueForSingleApiInner object itself.
      */
@@ -166,7 +168,7 @@ public final class ClientDiscoveryValueForSingleApiInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

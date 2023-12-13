@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Class to contain criteria for item level restore. */
+/**
+ * Class to contain criteria for item level restore.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,17 +25,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "KubernetesStorageClassRestoreCriteria",
         value = KubernetesStorageClassRestoreCriteria.class),
     @JsonSubTypes.Type(name = "KubernetesPVRestoreCriteria", value = KubernetesPVRestoreCriteria.class),
-    @JsonSubTypes.Type(name = "KubernetesClusterRestoreCriteria", value = KubernetesClusterRestoreCriteria.class)
-})
+    @JsonSubTypes.Type(name = "KubernetesClusterRestoreCriteria", value = KubernetesClusterRestoreCriteria.class),
+    @JsonSubTypes.Type(
+        name = "KubernetesClusterVaultTierRestoreCriteria",
+        value = KubernetesClusterVaultTierRestoreCriteria.class) })
 @Immutable
 public class ItemLevelRestoreCriteria {
-    /** Creates an instance of ItemLevelRestoreCriteria class. */
+    /**
+     * Creates an instance of ItemLevelRestoreCriteria class.
+     */
     public ItemLevelRestoreCriteria() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

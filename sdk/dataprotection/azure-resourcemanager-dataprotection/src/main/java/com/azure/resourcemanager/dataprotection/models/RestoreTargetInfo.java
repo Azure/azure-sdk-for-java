@@ -10,14 +10,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Class encapsulating restore target parameters. */
+/**
+ * Class encapsulating restore target parameters.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("RestoreTargetInfo")
 @Fluent
 public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     /*
      * Datasource
-     *
+     * 
      * Information of target DS
      */
     @JsonProperty(value = "datasourceInfo", required = true)
@@ -25,7 +27,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /*
      * DatasourceSet
-     *
+     * 
      * Information of target DS Set
      */
     @JsonProperty(value = "datasourceSetInfo")
@@ -37,15 +39,17 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
     @JsonProperty(value = "datasourceAuthCredentials")
     private AuthCredentials datasourceAuthCredentials;
 
-    /** Creates an instance of RestoreTargetInfo class. */
+    /**
+     * Creates an instance of RestoreTargetInfo class.
+     */
     public RestoreTargetInfo() {
     }
 
     /**
      * Get the datasourceInfo property: Datasource
-     *
-     * <p>Information of target DS.
-     *
+     * 
+     * Information of target DS.
+     * 
      * @return the datasourceInfo value.
      */
     public Datasource datasourceInfo() {
@@ -54,9 +58,9 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceInfo property: Datasource
-     *
-     * <p>Information of target DS.
-     *
+     * 
+     * Information of target DS.
+     * 
      * @param datasourceInfo the datasourceInfo value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -67,9 +71,9 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceSetInfo property: DatasourceSet
-     *
-     * <p>Information of target DS Set.
-     *
+     * 
+     * Information of target DS Set.
+     * 
      * @return the datasourceSetInfo value.
      */
     public DatasourceSet datasourceSetInfo() {
@@ -78,9 +82,9 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceSetInfo property: DatasourceSet
-     *
-     * <p>Information of target DS Set.
-     *
+     * 
+     * Information of target DS Set.
+     * 
      * @param datasourceSetInfo the datasourceSetInfo value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -91,7 +95,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Get the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @return the datasourceAuthCredentials value.
      */
     public AuthCredentials datasourceAuthCredentials() {
@@ -100,7 +104,7 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Set the datasourceAuthCredentials property: Credentials to use to authenticate with data source provider.
-     *
+     * 
      * @param datasourceAuthCredentials the datasourceAuthCredentials value to set.
      * @return the RestoreTargetInfo object itself.
      */
@@ -109,14 +113,18 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreTargetInfo withRecoveryOption(RecoveryOption recoveryOption) {
         super.withRecoveryOption(recoveryOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RestoreTargetInfo withRestoreLocation(String restoreLocation) {
         super.withRestoreLocation(restoreLocation);
@@ -125,17 +133,15 @@ public final class RestoreTargetInfo extends RestoreTargetInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (datasourceInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property datasourceInfo in model RestoreTargetInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property datasourceInfo in model RestoreTargetInfo"));
         } else {
             datasourceInfo().validate();
         }
