@@ -7,11 +7,13 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RestorableTimeRanges. */
+/**
+ * Resource collection API of RestorableTimeRanges.
+ */
 public interface RestorableTimeRanges {
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -22,16 +24,13 @@ public interface RestorableTimeRanges {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Restore Ranges Response along with {@link Response}.
      */
-    Response<AzureBackupFindRestorableTimeRangesResponseResource> findWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
+    Response<AzureBackupFindRestorableTimeRangesResponseResource> findWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters,
         Context context);
 
     /**
      * The find operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -41,9 +40,6 @@ public interface RestorableTimeRanges {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Restore Ranges Response.
      */
-    AzureBackupFindRestorableTimeRangesResponseResource find(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters);
+    AzureBackupFindRestorableTimeRangesResponseResource find(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters);
 }

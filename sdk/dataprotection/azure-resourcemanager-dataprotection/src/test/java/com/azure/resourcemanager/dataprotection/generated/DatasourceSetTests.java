@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasourceSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatasourceSet model =
-            BinaryData
-                .fromString(
-                    "{\"datasourceType\":\"lwzbhvgyugu\",\"objectType\":\"vmkfssxqu\",\"resourceID\":\"kfplgmgsxnk\",\"resourceLocation\":\"kde\",\"resourceName\":\"pvlopwiyighxpkd\",\"resourceType\":\"baiuebbaumny\",\"resourceUri\":\"ped\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
-                .toObject(DatasourceSet.class);
+        DatasourceSet model = BinaryData.fromString(
+            "{\"datasourceType\":\"lwzbhvgyugu\",\"objectType\":\"vmkfssxqu\",\"resourceID\":\"kfplgmgsxnk\",\"resourceLocation\":\"kde\",\"resourceName\":\"pvlopwiyighxpkd\",\"resourceType\":\"baiuebbaumny\",\"resourceUri\":\"ped\",\"resourceProperties\":{\"objectType\":\"BaseResourceProperties\"}}")
+            .toObject(DatasourceSet.class);
         Assertions.assertEquals("lwzbhvgyugu", model.datasourceType());
         Assertions.assertEquals("vmkfssxqu", model.objectType());
         Assertions.assertEquals("kfplgmgsxnk", model.resourceId());
@@ -28,16 +26,10 @@ public final class DatasourceSetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatasourceSet model =
-            new DatasourceSet()
-                .withDatasourceType("lwzbhvgyugu")
-                .withObjectType("vmkfssxqu")
-                .withResourceId("kfplgmgsxnk")
-                .withResourceLocation("kde")
-                .withResourceName("pvlopwiyighxpkd")
-                .withResourceType("baiuebbaumny")
-                .withResourceUri("ped")
-                .withResourceProperties(new BaseResourceProperties());
+        DatasourceSet model = new DatasourceSet().withDatasourceType("lwzbhvgyugu").withObjectType("vmkfssxqu")
+            .withResourceId("kfplgmgsxnk").withResourceLocation("kde").withResourceName("pvlopwiyighxpkd")
+            .withResourceType("baiuebbaumny").withResourceUri("ped")
+            .withResourceProperties(new BaseResourceProperties());
         model = BinaryData.fromObject(model).toObject(DatasourceSet.class);
         Assertions.assertEquals("lwzbhvgyugu", model.datasourceType());
         Assertions.assertEquals("vmkfssxqu", model.objectType());

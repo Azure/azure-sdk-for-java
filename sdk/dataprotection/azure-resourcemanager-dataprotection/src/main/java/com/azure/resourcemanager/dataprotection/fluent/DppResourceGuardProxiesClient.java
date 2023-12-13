@@ -13,11 +13,13 @@ import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardProxy
 import com.azure.resourcemanager.dataprotection.fluent.models.UnlockDeleteResponseInner;
 import com.azure.resourcemanager.dataprotection.models.UnlockDeleteRequest;
 
-/** An instance of this class provides access to all the operations defined in DppResourceGuardProxiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DppResourceGuardProxiesClient.
+ */
 public interface DppResourceGuardProxiesClient {
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface DppResourceGuardProxiesClient {
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface DppResourceGuardProxiesClient {
      * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceGuardProxyBaseResourceInner> list(
-        String resourceGroupName, String vaultName, Context context);
+    PagedIterable<ResourceGuardProxyBaseResourceInner> list(String resourceGroupName, String vaultName,
+        Context context);
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -54,15 +56,15 @@ public interface DppResourceGuardProxiesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceGuardProxyBaseResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context);
+    Response<ResourceGuardProxyBaseResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, Context context);
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -76,7 +78,7 @@ public interface DppResourceGuardProxiesClient {
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -86,19 +88,15 @@ public interface DppResourceGuardProxiesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceGuardProxyBaseResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters,
-        Context context);
+    Response<ResourceGuardProxyBaseResourceInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters, Context context);
 
     /**
      * Creates or Updates a ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -109,15 +107,12 @@ public interface DppResourceGuardProxiesClient {
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceGuardProxyBaseResourceInner createOrUpdate(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        ResourceGuardProxyBaseResourceInner parameters);
+    ResourceGuardProxyBaseResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, ResourceGuardProxyBaseResourceInner parameters);
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -128,12 +123,12 @@ public interface DppResourceGuardProxiesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        Context context);
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -146,7 +141,7 @@ public interface DppResourceGuardProxiesClient {
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -158,16 +153,12 @@ public interface DppResourceGuardProxiesClient {
      * @return response of Unlock Delete API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context);
+    Response<UnlockDeleteResponseInner> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context);
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -178,6 +169,6 @@ public interface DppResourceGuardProxiesClient {
      * @return response of Unlock Delete API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UnlockDeleteResponseInner unlockDelete(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters);
+    UnlockDeleteResponseInner unlockDelete(String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        UnlockDeleteRequest parameters);
 }

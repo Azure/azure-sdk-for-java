@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Soft delete related settings. */
+/**
+ * Soft delete related settings.
+ */
 @Fluent
 public final class SoftDeleteSettings {
     /*
@@ -22,13 +24,15 @@ public final class SoftDeleteSettings {
     @JsonProperty(value = "retentionDurationInDays")
     private Double retentionDurationInDays;
 
-    /** Creates an instance of SoftDeleteSettings class. */
+    /**
+     * Creates an instance of SoftDeleteSettings class.
+     */
     public SoftDeleteSettings() {
     }
 
     /**
      * Get the state property: State of soft delete.
-     *
+     * 
      * @return the state value.
      */
     public SoftDeleteState state() {
@@ -37,7 +41,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Set the state property: State of soft delete.
-     *
+     * 
      * @param state the state value to set.
      * @return the SoftDeleteSettings object itself.
      */
@@ -48,7 +52,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Get the retentionDurationInDays property: Soft delete retention duration.
-     *
+     * 
      * @return the retentionDurationInDays value.
      */
     public Double retentionDurationInDays() {
@@ -57,7 +61,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Set the retentionDurationInDays property: Soft delete retention duration.
-     *
+     * 
      * @param retentionDurationInDays the retentionDurationInDays value to set.
      * @return the SoftDeleteSettings object itself.
      */
@@ -68,7 +72,7 @@ public final class SoftDeleteSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

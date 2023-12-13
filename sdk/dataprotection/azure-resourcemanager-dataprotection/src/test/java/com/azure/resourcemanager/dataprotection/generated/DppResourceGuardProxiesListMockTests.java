@@ -31,60 +31,33 @@ public final class DppResourceGuardProxiesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"mzgwe\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"xwefohecbvopwndy\",\"defaultResourceRequest\":\"eallklmtkhlo\"},{\"vaultCriticalOperation\":\"x\",\"defaultResourceRequest\":\"vbrdfjmzsyzfho\"}],\"lastUpdatedTime\":\"h\",\"description\":\"cyychunsjlp\"},\"id\":\"twszhvvuic\",\"name\":\"hvtrrmhwrbfdpyf\",\"type\":\"ubhvj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"vtzejetjklnti\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"zkdbqzolx\",\"defaultResourceRequest\":\"vhqjwtrhtgvg\"},{\"vaultCriticalOperation\":\"c\",\"defaultResourceRequest\":\"kolawjmjsmwrokc\"}],\"lastUpdatedTime\":\"fzzzwyjafitlhg\",\"description\":\"nuchlgmltxdwhmo\"},\"id\":\"sgzv\",\"name\":\"ns\",\"type\":\"nj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ResourceGuardProxyBaseResource> response =
-            manager.dppResourceGuardProxies().list("v", "xmycjimryvwgcw", com.azure.core.util.Context.NONE);
+        PagedIterable<ResourceGuardProxyBaseResource> response = manager.dppResourceGuardProxies()
+            .list("blkujrllfojuidjp", "uyjucejikzo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mzgwe", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions
-            .assertEquals(
-                "xwefohecbvopwndy",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .resourceGuardOperationDetails()
-                    .get(0)
-                    .vaultCriticalOperation());
-        Assertions
-            .assertEquals(
-                "eallklmtkhlo",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .resourceGuardOperationDetails()
-                    .get(0)
-                    .defaultResourceRequest());
-        Assertions.assertEquals("h", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("cyychunsjlp", response.iterator().next().properties().description());
+        Assertions.assertEquals("vtzejetjklnti", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions.assertEquals("zkdbqzolx",
+            response.iterator().next().properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
+        Assertions.assertEquals("vhqjwtrhtgvg",
+            response.iterator().next().properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
+        Assertions.assertEquals("fzzzwyjafitlhg", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("nuchlgmltxdwhmo", response.iterator().next().properties().description());
     }
 }

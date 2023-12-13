@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for different types of authentication credentials. */
+/**
+ * Base class for different types of authentication credentials.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -17,17 +19,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = AuthCredentials.class)
 @JsonTypeName("AuthCredentials")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SecretStoreBasedAuthCredentials", value = SecretStoreBasedAuthCredentials.class)
-})
+    @JsonSubTypes.Type(name = "SecretStoreBasedAuthCredentials", value = SecretStoreBasedAuthCredentials.class) })
 @Immutable
 public class AuthCredentials {
-    /** Creates an instance of AuthCredentials class. */
+    /**
+     * Creates an instance of AuthCredentials class.
+     */
     public AuthCredentials() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
