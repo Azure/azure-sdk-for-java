@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -792,7 +794,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitForCompletion(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
     /**
@@ -829,7 +831,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitForCompletion(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
     /**
@@ -864,7 +866,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
     /**
@@ -901,7 +903,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
     /**
@@ -936,7 +938,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.getFinalResult(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
     }
 
     /**
@@ -973,7 +975,14 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.getFinalResult(Duration.ofMillis(100)));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+    }
+
+    private static String printException(Throwable throwable) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        throwable.printStackTrace(pw);
+        return sw.toString();
     }
 
     public static class Response {
