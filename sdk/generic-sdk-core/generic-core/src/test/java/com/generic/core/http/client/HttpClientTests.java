@@ -6,17 +6,11 @@ package com.generic.core.http.client;
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
-import com.generic.core.http.annotation.Delete;
-import com.generic.core.http.annotation.ExpectedResponses;
-import com.generic.core.http.annotation.Get;
-import com.generic.core.http.annotation.Head;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HostParam;
-import com.generic.core.http.annotation.Patch;
+import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
-import com.generic.core.http.annotation.Post;
-import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpResponseException;
@@ -468,15 +462,12 @@ public abstract class HttpClientTests {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service1")
     private interface Service1 {
-        @Get("bytes/100")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = {200})
         byte[] getByteArray(@HostParam("url") String url);
     }
 
@@ -495,8 +486,7 @@ public abstract class HttpClientTests {
     @Host("{scheme}://{hostName}")
     @ServiceInterface(name = "Service2")
     private interface Service2 {
-        @Get("bytes/{numberOfBytes}")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = {200})
         byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String host,
                             @PathParam("numberOfBytes") int numberOfBytes);
     }
@@ -527,8 +517,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service3")
     private interface Service3 {
-        @Get("bytes/100")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = {200})
         void getNothing(@HostParam("url") String url);
     }
 
@@ -543,20 +532,16 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service5")
     private interface Service5 {
-        @Get("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200})
         HttpBinJSON getAnything(@HostParam("url") String url);
 
-        @Get("anything/with+plus")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/with+plus", expectedStatusCodes = {200})
         HttpBinJSON getAnythingWithPlus(@HostParam("url") String url);
 
-        @Get("anything/{path}")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = {200})
         HttpBinJSON getAnythingWithPathParam(@HostParam("url") String url, @PathParam("path") String pathParam);
 
-        @Get("anything/{path}")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything/{path}", expectedStatusCodes = {200})
         HttpBinJSON getAnythingWithEncodedPathParam(@HostParam("url") String url,
                                                     @PathParam(value = "path", encoded = true) String pathParam);
     }
@@ -634,12 +619,10 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service6")
     private interface Service6 {
-        @Get("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200})
         HttpBinJSON getAnything(@HostParam("url") String url, @QueryParam("a") String a, @QueryParam("b") int b);
 
-        @Get("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200})
         HttpBinJSON getAnythingWithEncoded(@HostParam("url") String url,
                                            @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
     }
@@ -679,8 +662,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service7")
     private interface Service7 {
-        @Get("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200})
         HttpBinJSON getAnything(@HostParam("url") String url, @HeaderParam("a") String a, @HeaderParam("b") int b);
 
     }
@@ -721,8 +703,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service8")
     private interface Service8 {
-        @Post("post")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "post", expectedStatusCodes = {200})
         HttpBinJSON post(@HostParam("url") String url,
                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
@@ -747,43 +728,36 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service9")
     private interface Service9 {
-        @Put("put")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
-        @Put("put")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
                                             @HeaderParam("Content-Length") long contentLength);
 
-        @Put("put")
-        @ExpectedResponses({201})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
         HttpBinJSON putWithUnexpectedResponse(@HostParam("url") String url,
                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @Put("put")
-        @ExpectedResponses({201})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
         @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("url") String url,
                                                               @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @Put("put")
-        @ExpectedResponses({201})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
         @UnexpectedResponseExceptionInformation(statusCode = {200}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("url") String url,
                                                                         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @Put("put")
-        @ExpectedResponses({201})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
         @UnexpectedResponseExceptionInformation(statusCode = {400})
         @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("url") String url,
                                                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
-        @Put("put")
-        @ExpectedResponses({201})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {201})
         @UnexpectedResponseExceptionInformation(statusCode = {400}, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("url") String url,
                                                                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
@@ -850,16 +824,13 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service10")
     private interface Service10 {
-        @Head("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "anything", expectedStatusCodes = {200})
         Response<Void> head(@HostParam("url") String url);
 
-        @Head("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "anything", expectedStatusCodes = {200})
         boolean headBoolean(@HostParam("url") String url);
 
-        @Head("anything")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "anything", expectedStatusCodes = {200})
         void voidHead(@HostParam("url") String url);
     }
 
@@ -885,8 +856,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service11")
     private interface Service11 {
-        @Delete("delete")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.DELETE, path = "delete", expectedStatusCodes = {200})
         HttpBinJSON delete(@HostParam("url") String url,
                            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
@@ -902,8 +872,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service12")
     private interface Service12 {
-        @Patch("patch")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PATCH, path = "patch", expectedStatusCodes = {200})
         HttpBinJSON patch(@HostParam("url") String url,
                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
@@ -919,9 +888,8 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service13")
     private interface Service13 {
-        @Get("anything")
-        @ExpectedResponses({200})
-        @com.generic.core.http.annotation.Headers({"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200},
+            headers = {"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -947,17 +915,15 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service14")
     private interface Service14 {
-        @Get("anything")
-        @ExpectedResponses({200})
-        @com.generic.core.http.annotation.Headers({"MyHeader:MyHeaderValue"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = {200},
+            headers = {"MyHeader:MyHeaderValue"})
         HttpBinJSON get(@HostParam("url") String url);
     }
 
     @Host("{url}")
     @ServiceInterface(name = "Service16")
     private interface Service16 {
-        @Put("put")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         HttpBinJSON putByteArray(@HostParam("url") String url,
                                  @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
@@ -980,8 +946,7 @@ public abstract class HttpClientTests {
     @Host("{scheme}://{hostPart1}{hostPart2}")
     @ServiceInterface(name = "Service17")
     private interface Service17 {
-        @Get("get")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "get", expectedStatusCodes = {200})
         HttpBinJSON get(@HostParam("scheme") String scheme, @HostParam("hostPart1") String hostPart1,
                         @HostParam("hostPart2") String hostPart2);
     }
@@ -997,32 +962,28 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service18")
     private interface Service18 {
-        @Get("status/200")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/200")
         void getStatus200(@HostParam("url") String url);
 
-        @Get("status/200")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/200", expectedStatusCodes = {200})
         void getStatus200WithExpectedResponse200(@HostParam("url") String url);
 
-        @Get("status/300")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/300")
         void getStatus300(@HostParam("url") String url);
 
-        @Get("status/300")
-        @ExpectedResponses({300})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/300", expectedStatusCodes = {300})
         void getStatus300WithExpectedResponse300(@HostParam("url") String url);
 
-        @Get("status/400")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/400")
         void getStatus400(@HostParam("url") String url);
 
-        @Get("status/400")
-        @ExpectedResponses({400})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/400", expectedStatusCodes = {400})
         void getStatus400WithExpectedResponse400(@HostParam("url") String url);
 
-        @Get("status/500")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/500")
         void getStatus500(@HostParam("url") String url);
 
-        @Get("status/500")
-        @ExpectedResponses({500})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "status/500", expectedStatusCodes = {500})
         void getStatus500WithExpectedResponse500(@HostParam("url") String url);
     }
 
@@ -1069,55 +1030,51 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service19")
     private interface Service19 {
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("url") String url,
                                                       @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithNoContentTypeAndByteArrayBody(@HostParam("url") String url,
                                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@HostParam("url") String url,
                                                                          @BodyParam(ContentType.APPLICATION_JSON) String body);
 
-        @Put("put")
-        @com.generic.core.http.annotation.Headers({"Content-Type: application/json"})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = {"Content-Type: application/json"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
                                                                             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
-        @Put("put")
-        @com.generic.core.http.annotation.Headers({"Content-Type: application/json; charset=utf-8"})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = {"Content-Type: application/json; charset=utf-8"})
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
                                                                                    @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @Put("put")
-        @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = {"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
                                                                                 @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @Put("put")
-        @com.generic.core.http.annotation.Headers({"Content-Type: application/octet-stream"})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = {"Content-Type: application/octet-stream"})
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
                                                                                    @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("url") String url,
                                                                             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
                                                                                       @BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
                                                                                @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
                                                                                    @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
                                                                                       @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
     }
@@ -1415,10 +1372,10 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service20")
     private interface Service20 {
-        @Get("bytes/100")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100")
         Response<Void> getVoidResponse(@HostParam("url") String url);
 
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         Response<HttpBinJSON> putBody(@HostParam("url") String url,
                                       @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
     }
@@ -1475,8 +1432,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "UnexpectedOKService")
     interface UnexpectedOKService {
-        @Get("/bytes/1024")
-        @ExpectedResponses({400})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/1024", expectedStatusCodes = {400})
         Response<InputStream> getBytes(@HostParam("url") String url);
     }
 
@@ -1491,8 +1447,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service21")
     private interface Service21 {
-        @Get("/bytes/100")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100", expectedStatusCodes = {200})
         byte[] getBytes100(@HostParam("url") String url);
     }
 
@@ -1507,7 +1462,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "DownloadService")
     interface DownloadService {
-        @Get("/bytes/30720")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
         Response<InputStream> getBytes(@HostParam("url") String url, Context context);
     }
 
@@ -1544,7 +1499,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "BinaryDataUploadServ")
     interface BinaryDataUploadService {
-        @Put("/put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "/put")
         Response<HttpBinJSON> put(@HostParam("url") String host, @BodyParam("text/plain") BinaryData content,
                                   @HeaderParam("Content-Length") long contentLength);
     }
@@ -1575,7 +1530,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service22")
     interface Service22 {
-        @Get("/")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/")
         byte[] getBytes(@HostParam("url") String url);
     }
 
@@ -1590,7 +1545,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service23")
     interface Service23 {
-        @Get("bytes/28")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/28")
         byte[] getBytes(@HostParam("url") String url);
     }
 
@@ -1605,7 +1560,7 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service24")
     interface Service24 {
-        @Put("put")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON put(@HostParam("url") String url, @HeaderParam("ABC") Map<String, String> headerCollection);
     }
 
@@ -1678,13 +1633,11 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service27")
     interface Service27 {
-        @Put("put")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         HttpBinJSON put(@HostParam("url") String url, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody,
                         RequestOptions requestOptions);
 
-        @Put("put")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
         @UnexpectedResponseExceptionInformation(exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putBodyAndContentLength(@HostParam("url") String url,
                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) ByteBuffer body,
@@ -1748,16 +1701,13 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service28")
     public interface Service28 {
-        @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom", expectedStatusCodes = {200})
         void headvoid(@HostParam("url") String url);
 
-        @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom", expectedStatusCodes = {200})
         Void headVoid(@HostParam("url") String url);
 
-        @Head("voideagerreadoom")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom", expectedStatusCodes = {200})
         Response<Void> headResponseVoid(@HostParam("url") String url);
     }
 
@@ -1778,16 +1728,13 @@ public abstract class HttpClientTests {
     @Host("{url}")
     @ServiceInterface(name = "Service29")
     public interface Service29 {
-        @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = {200})
         void headvoid(@HostParam("url") String url);
 
-        @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = {200})
         Void headVoid(@HostParam("url") String url);
 
-        @Put("voiderrorreturned")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = {200})
         Response<Void> headResponseVoid(@HostParam("url") String url);
     }
 

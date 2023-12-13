@@ -4,26 +4,17 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
-import com.generic.core.http.annotation.Delete;
-import com.generic.core.http.annotation.ExpectedResponses;
 import com.generic.core.http.annotation.FormParam;
-import com.generic.core.http.annotation.Get;
-import com.generic.core.http.annotation.Head;
 import com.generic.core.http.annotation.HeaderParam;
-import com.generic.core.http.annotation.Headers;
 import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HostParam;
-import com.generic.core.http.annotation.Options;
-import com.generic.core.http.annotation.Patch;
+import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
-import com.generic.core.http.annotation.Post;
-import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.ReturnValueWireType;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
@@ -35,6 +26,7 @@ import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Header;
+import com.generic.core.models.Headers;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.models.SimpleClass;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -73,31 +65,31 @@ public class SwaggerMethodParserTests {
     interface OperationMethods {
         void noMethod();
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void getMethod();
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void getMethodWithContext(Context context);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void getMethodWithRequestOptions(RequestOptions requestOptions);
 
-        @Put("test")
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "test")
         void putMethod();
 
-        @Head("test")
+        @HttpRequestInformation(method = HttpMethod.HEAD, path = "test")
         void headMethod();
 
-        @Delete("test")
+        @HttpRequestInformation(method = HttpMethod.DELETE, path = "test")
         void deleteMethod();
 
-        @Post("test")
+        @HttpRequestInformation(method = HttpMethod.POST, path = "test")
         void postMethod();
 
-        @Patch("test")
+        @HttpRequestInformation(method = HttpMethod.PATCH, path = "test")
         void patchMethod();
 
-        @Options("test")
+        @HttpRequestInformation(method = HttpMethod.OPTIONS, path = "test")
         void optionsMethod();
     }
 
@@ -144,19 +136,16 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "WireTypesMethods")
     interface WireTypesMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
 
-        @Get("test")
-        @ReturnValueWireType(Base64Url.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", responseBodyClass = Base64Url.class)
         void base64Url();
 
-        @Get("test")
-        @ReturnValueWireType(DateTimeRfc1123.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", responseBodyClass = DateTimeRfc1123.class)
         void dateTimeRfc1123();
 
-        @Get("test")
-        @ReturnValueWireType(Boolean.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", responseBodyClass = Boolean.class)
         void unknownType();
     }
 
@@ -182,28 +171,26 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "HeaderMethods")
     interface HeaderMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noHeaders();
 
-        @Get("test")
-        @Headers({"", ":", "nameOnly:", ":valueOnly"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"", ":", "nameOnly:", ":valueOnly"})
         void malformedHeaders();
 
-        @Get("test")
-        @Headers({"name1:value1", " name2: value2", "name3 :value3 "})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test",
+            headers = {"name1:value1", "name2:value2", "name3:value3"})
         void headers();
 
-        @Get("test")
-        @Headers({"name:value1", "name:value2"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"name:value1", "name:value2"})
         void sameKeyTwiceLastWins();
     }
 
     @ParameterizedTest
     @MethodSource("headersSupplier")
-    public void headers(Method method, com.generic.core.models.Headers expectedHeaders) {
+    public void headers(Method method, Headers expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        com.generic.core.models.Headers actual = new com.generic.core.models.Headers();
+        Headers actual = new Headers();
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (Header header : actual) {
@@ -214,13 +201,13 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
         Class<HeaderMethods> clazz = HeaderMethods.class;
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new com.generic.core.models.Headers()),
-            Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new com.generic.core.models.Headers()),
-            Arguments.of(clazz.getDeclaredMethod("headers"), new com.generic.core.models.Headers()
+            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new Headers()),
+            Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new Headers()),
+            Arguments.of(clazz.getDeclaredMethod("headers"), new Headers()
                 .set(HttpHeaderName.fromString("name1"), "value1")
                 .set(HttpHeaderName.fromString("name2"), "value2")
                 .set(HttpHeaderName.fromString("name3"), "value3")),
-            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new com.generic.core.models.Headers()
+            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new Headers()
                 .set(HttpHeaderName.fromString("name"), "value2"))
         );
     }
@@ -228,19 +215,19 @@ public class SwaggerMethodParserTests {
     @Host("https://{sub1}.host.com")
     @ServiceInterface(name = "HostSubstitutionMethods")
     interface HostSubstitutionMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noSubstitutions(String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitution(@HostParam("sub1") String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitutionWrongParam(@HostParam("sub2") String sub2);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
@@ -281,19 +268,19 @@ public class SwaggerMethodParserTests {
     @Host("{sub1}://raw.host.com")
     @ServiceInterface(name = "SchemeSubstitutionMethods")
     interface SchemeSubstitutionMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noSubstitutions(String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitution(@HostParam("sub1") String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodingSubstitution(@HostParam(value = "sub1", encoded = false) String sub1);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitutionWrongParam(@HostParam("sub2") String sub2);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodingSubstitutionWrongParam(@HostParam(value = "sub2", encoded = false) String sub2);
     }
 
@@ -334,13 +321,13 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "PathSubstitutionMethods")
     interface PathSubstitutionMethods {
-        @Get("{sub1}")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "{sub1}")
         void noSubstitutions(String sub1);
 
-        @Get("{sub1}")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "{sub1}")
         void substitution(@PathParam("sub1") String sub1);
 
-        @Get("{sub1}")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "{sub1}")
         void encodedSubstitution(@PathParam(value = "sub1", encoded = true) String sub1);
     }
 
@@ -372,10 +359,10 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "QuerySubstitutionMethods")
     interface QuerySubstitutionMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedSubstitutions(@QueryParam(value = "sub1", encoded = true) String sub1,
                                   @QueryParam(value = "sub2", encoded = true) boolean sub2);
 
@@ -414,14 +401,13 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "HeaderSubstitutionMethods")
     interface HeaderSubstitutionMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
-        @Get("test")
-        @Headers({"sub1:sub1", "sub2:false"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"sub1:sub1", "sub2:false"})
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void headerMap(@HeaderParam("x-ms-meta-") Map<String, String> headers);
     }
 
@@ -430,7 +416,7 @@ public class SwaggerMethodParserTests {
     public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        com.generic.core.models.Headers actual = new com.generic.core.models.Headers();
+        Headers actual = new Headers();
         swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
         for (Header header : actual) {
@@ -447,7 +433,7 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new com.generic.core.models.Headers()
+        Map<String, String> complexHeaderMap = new Headers()
             .set(HttpHeaderName.fromString("key1"), (String) null)
             .set(HttpHeaderName.fromString("key2"), "value2")
             .toMap();
@@ -471,22 +457,22 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "BodySubstitutionMethods")
     interface BodySubstitutionMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void applicationJsonBody(@BodyParam(APPLICATION_JSON) String jsonBody);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void formBody(@FormParam("name") String name, @FormParam("age") Integer age,
                       @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedFormBody(@FormParam(value = "name", encoded = true) String name, @FormParam("age") Integer age,
                              @FormParam("dob") OffsetDateTime dob,
                              @FormParam("favoriteColors") List<String> favoriteColors);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedFormKey(@FormParam(value = "x:ms:value") String value);
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedFormKey2(@FormParam(value = "x:ms:value", encoded = true) String value);
     }
 
@@ -594,15 +580,13 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "ExpectedStatusCodeMethods")
     interface ExpectedStatusCodeMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noExpectedStatusCodes();
 
-        @Get("test")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", expectedStatusCodes = {200})
         void only200IsExpected();
 
-        @Get("test")
-        @ExpectedResponses({429, 503})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", expectedStatusCodes = {429, 503})
         void retryAfterExpected();
     }
 
@@ -642,14 +626,14 @@ public class SwaggerMethodParserTests {
     @Host("https://raw.host.com")
     @ServiceInterface(name = "UnexpectedStatusCodeMethods")
     interface UnexpectedStatusCodeMethods {
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noUnexpectedStatusCodes();
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
         void notFoundStatusCode();
 
-        @Get("test")
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_NOT_FOUND", statusCode = {400, 404})
         @UnexpectedResponseExceptionInformation(exceptionTypeName = "RESOURCE_MODIFIED")
         void customDefault();

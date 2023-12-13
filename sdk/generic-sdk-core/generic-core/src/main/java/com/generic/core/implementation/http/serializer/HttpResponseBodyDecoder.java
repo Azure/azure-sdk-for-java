@@ -3,9 +3,9 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.http.annotation.ReturnValueWireType;
-import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.Response;
+import com.generic.core.http.annotation.HttpRequestInformation;
+import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.TypeUtil;
@@ -28,7 +28,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Decoder to decode body of HTTP response.
+ * Decoder to decode the body of an {@link HttpResponse}.
  */
 public final class HttpResponseBodyDecoder {
     // HttpResponseBodyDecoder is a commonly used class, use a static logger.
@@ -36,23 +36,23 @@ public final class HttpResponseBodyDecoder {
 
     /**
      * Decodes the body of an {@link HttpResponse} into the type returned by the called API.
-     * <p>
-     * If the response body cannot be decoded, null will be returned.
      *
-     * @param body The response body retrieved from the {@code httpResponse} to decode.
+     * <p>If the response body cannot be decoded, null will be returned.</p>
+     *
+     * @param body The response body retrieved from the {@link HttpResponse} to decode.
      * @param httpResponse The {@link HttpResponse}.
-     * @param serializer The {@link ObjectSerializer} that performs decoding.
-     * @param decodeData The API method metadata used during decoding of the response.
+     * @param serializer The {@link ObjectSerializer} that performs the decoding.
+     * @param decodeData The API method metadata used during decoding of the {@link HttpResponse response}.
      *
-     * @return The decoded response body, or null if the body could not be decoded.
+     * @return The decoded {@link HttpResponse response} body, or {@code null} if the body could not be decoded.
      *
-     * @throws HttpResponseException If the body fails to decode.
+     * @throws HttpResponseException If the body cannot be decoded.
      */
     public static Object decodeByteArray(byte[] body, HttpResponse httpResponse, ObjectSerializer serializer,
                                          HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        // Check for HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
+        // Check for the HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
         // response body as an empty byte array.
         if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored.
@@ -118,12 +118,13 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Checks the response status code is considered as error.
+     * Checks the {@link HttpResponse response} status code is considered as error.
      *
      * @param statusCode The status code from the response.
      * @param decodeData Metadata about the API response.
      *
-     * @return true if the response status code is considered as error, false otherwise.
+     * @return {@code true} if the {@link HttpResponse response} status code is considered as error, {@code false}
+     * otherwise.
      */
     static boolean isErrorStatus(int statusCode, HttpResponseDecodeData decodeData) {
         return !decodeData.isExpectedResponseStatusCode(statusCode);
@@ -132,15 +133,14 @@ public final class HttpResponseBodyDecoder {
     /**
      * Deserialize the given string value representing content of a REST API response.
      *
-     * @param value the string value to deserialize.
-     * @param resultType the return type of the java proxy method.
-     * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
-     * 'entity type' (wireType) of REST API wire response body.
+     * @param value The string value to deserialize.
+     * @param resultType The return type of the Java proxy method.
+     * @param wireType Value of the optional {@link HttpRequestInformation#responseBodyClass()} annotation present in
+     * the Java proxy method indicating 'entity type' (wireType) of REST API wire response body.
      *
      * @return Deserialized object.
      */
     private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer) {
-
         if (wireType == null) {
             return deserialize(value, resultType, serializer);
         } else {
@@ -157,17 +157,18 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Given: (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value (2). and
-     * {@link ReturnValueWireType} annotation value indicating 'entity type' (wireType) of same REST API's wire response
-     * body this method construct 'response body Type'.
-     * <p>
-     * Note: When {@link ReturnValueWireType} annotation is applied to a proxy method, then the raw HTTP response
-     * content will need to parsed using the derived 'response body Type' then converted to actual {@code returnType}.
+     * Given: (1). The {@link Type result type} of the Java proxy method return value and (2). The
+     * {@link HttpRequestInformation#responseBodyClass()} annotation value indicating the 'entity type' (wireType) of
+     * the same REST APIs wire response body, this method will construct the 'response body Type'.
      *
-     * @param resultType The {@code java.lang.reflect.Type} of java proxy method return value.
-     * @param wireType The {@code java.lang.reflect.Type} of entity in REST API response body.
+     * <p>Note: When the {@link HttpRequestInformation#responseBodyClass()} annotation is applied to a proxy method,
+     * the raw HTTP response content will need to be parsed using the derived 'response body Type' and then converted to
+     * the actual {@code returnType}.</p>
      *
-     * @return The {@code java.lang.reflect.Type} of REST API response body.
+     * @param resultType The {@link Type} of java proxy method return value.
+     * @param wireType The {@link Type} of entity in REST API response body.
+     *
+     * @return The {@link Type} of REST API response body.
      */
     private static Type constructWireResponseType(Type resultType, Type wireType) {
         Objects.requireNonNull(wireType);
@@ -199,12 +200,12 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Converts the object {@code wireResponse} that was deserialized using 'response body Type' (produced by
-     * {@code constructWireResponseType(args)} method) to resultType.
+     * Converts the object {@code wireResponse} that was deserialized using the 'response body Type' (produced by
+     * {@link HttpResponseBodyDecoder#constructWireResponseType} method) to the {@code resultType}.
      *
      * @param wireResponse The object to convert.
-     * @param resultType The {@code java.lang.reflect.Type} to convert wireResponse to.
-     * @param wireType The {@code java.lang.reflect.Type} of the wireResponse.
+     * @param resultType The {@link Type} to convert the {@code wireResponse} to.
+     * @param wireType The {@link Type} of the {@code wireResponse}.
      *
      * @return The converted object.
      */
@@ -259,7 +260,7 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Get the {@link Type} of the REST API 'returned entity'.
+     * Get the {@link Type} entity returned by the REST API.
      *
      * @return The entity type.
      */
@@ -274,9 +275,9 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Ensure that request property and method is set in the response.
+     * Ensure that the request property and method are set in the {@link HttpResponse response}.
      *
-     * @param httpResponse the response to validate
+     * @param httpResponse The {@link HttpResponse response} to validate.
      */
     private static void ensureRequestSet(HttpResponse httpResponse) {
         Objects.requireNonNull(httpResponse.getRequest());

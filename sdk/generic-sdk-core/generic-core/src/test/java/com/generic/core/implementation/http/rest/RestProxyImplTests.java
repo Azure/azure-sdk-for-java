@@ -7,11 +7,9 @@ import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
-import com.generic.core.http.annotation.ExpectedResponses;
-import com.generic.core.http.annotation.Get;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.Host;
-import com.generic.core.http.annotation.Post;
+import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
@@ -45,15 +43,13 @@ public class RestProxyImplTests {
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
     interface TestInterface {
-        @Post("my/url/path")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType,
                                   @HeaderParam("Content-Length") Long contentLength, Context context
         );
 
-        @Get("my/url/path")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         void testVoidMethod(Context context);
     }
 

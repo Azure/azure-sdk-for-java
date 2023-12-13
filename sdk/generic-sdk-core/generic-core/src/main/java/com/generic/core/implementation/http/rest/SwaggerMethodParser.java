@@ -5,20 +5,12 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
-import com.generic.core.http.annotation.Delete;
-import com.generic.core.http.annotation.ExpectedResponses;
 import com.generic.core.http.annotation.FormParam;
-import com.generic.core.http.annotation.Get;
-import com.generic.core.http.annotation.Head;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
-import com.generic.core.http.annotation.Options;
-import com.generic.core.http.annotation.Patch;
+import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
-import com.generic.core.http.annotation.Post;
-import com.generic.core.http.annotation.Put;
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.annotation.ReturnValueWireType;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpHeaderName;
@@ -53,6 +45,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,9 +62,6 @@ import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
  * {@link RestProxy}.
  */
 public class SwaggerMethodParser implements HttpResponseDecodeData {
-    private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
-        Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
-
     // TODO (alzimmer): There are many optimizations available to SwaggerMethodParser with regards to runtime.
     // The replacement locations and parameter ordering should remain consistent for the lifetime of an application,
     // so these values can be determined once and used for optimizations.
@@ -122,56 +112,33 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
         methodLogger = new ClientLogger(fullyQualifiedMethodName);
 
-        if (swaggerMethod.isAnnotationPresent(Get.class)) {
-            this.httpMethod = HttpMethod.GET;
-            this.relativePath = swaggerMethod.getAnnotation(Get.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Put.class)) {
-            this.httpMethod = HttpMethod.PUT;
-            this.relativePath = swaggerMethod.getAnnotation(Put.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Head.class)) {
-            this.httpMethod = HttpMethod.HEAD;
-            this.relativePath = swaggerMethod.getAnnotation(Head.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Delete.class)) {
-            this.httpMethod = HttpMethod.DELETE;
-            this.relativePath = swaggerMethod.getAnnotation(Delete.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Post.class)) {
-            this.httpMethod = HttpMethod.POST;
-            this.relativePath = swaggerMethod.getAnnotation(Post.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Patch.class)) {
-            this.httpMethod = HttpMethod.PATCH;
-            this.relativePath = swaggerMethod.getAnnotation(Patch.class).value();
-        } else if (swaggerMethod.isAnnotationPresent(Options.class)) {
-            this.httpMethod = HttpMethod.OPTIONS;
-            this.relativePath = swaggerMethod.getAnnotation(Options.class).value();
-        } else {
+        if (!swaggerMethod.isAnnotationPresent(HttpRequestInformation.class)) {
             // Should this also check whether there are multiple HTTP method annotations as well?
-            throw new MissingRequiredAnnotationException(REQUIRED_HTTP_METHODS, swaggerMethod);
+            throw new MissingRequiredAnnotationException(Collections.singletonList(HttpRequestInformation.class),
+                swaggerMethod);
         }
 
-        returnType = swaggerMethod.getGenericReturnType();
+        HttpRequestInformation httpRequestInformation =
+            swaggerMethod.getAnnotation(HttpRequestInformation.class);
 
-        final ReturnValueWireType returnValueWireTypeAnnotation =
-            swaggerMethod.getAnnotation(ReturnValueWireType.class);
+        this.httpMethod = httpRequestInformation.method();
+        this.relativePath = httpRequestInformation.path();
 
-        if (returnValueWireTypeAnnotation != null) {
-            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
+        Class<?> returnValueWireType = httpRequestInformation.responseBodyClass();
 
-            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
-                this.returnValueWireType = returnValueWireType;
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else {
-                this.returnValueWireType = null;
-            }
+        if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
+            this.returnValueWireType = returnValueWireType;
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+            this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
         } else {
             this.returnValueWireType = null;
         }
 
-        if (swaggerMethod.isAnnotationPresent(com.generic.core.http.annotation.Headers.class)) {
-            final com.generic.core.http.annotation.Headers headersAnnotation =
-                swaggerMethod.getAnnotation(com.generic.core.http.annotation.Headers.class);
-            final String[] headers = headersAnnotation.value();
+        returnType = swaggerMethod.getGenericReturnType();
 
+        final String[] headers = httpRequestInformation.headers();
+
+        if (headers != null) {
             for (final String header : headers) {
                 final int colonIndex = header.indexOf(":");
 
@@ -195,12 +162,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             }
         }
 
-        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
+        final int[] expectedResponses = httpRequestInformation.expectedStatusCodes();
 
-        if (expectedResponses != null && expectedResponses.value().length > 0) {
+        if (expectedResponses.length > 0) {
             expectedStatusCodes = new BitSet();
 
-            for (int code : expectedResponses.value()) {
+            for (int code : expectedResponses) {
                 expectedStatusCodes.set(code);
             }
         } else {

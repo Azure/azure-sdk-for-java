@@ -32,7 +32,8 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
     public MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
-        Method swaggerInterfaceMethod) {
+                                              Method swaggerInterfaceMethod) {
+
         super("Either " + optionsToString(requiredAnnotationOptions) + " annotation must be defined on the method "
             + methodFullName(swaggerInterfaceMethod) + ".");
     }
@@ -43,8 +44,8 @@ public class MissingRequiredAnnotationException extends RuntimeException {
 
     private static String optionsToString(List<Class<? extends Annotation>> requiredAnnotationOptions) {
         final StringBuilder result = new StringBuilder();
-
         final int optionCount = requiredAnnotationOptions.size();
+
         for (int i = 0; i < optionCount; ++i) {
             if (1 <= i) {
                 result.append(", ");
@@ -52,6 +53,7 @@ public class MissingRequiredAnnotationException extends RuntimeException {
             if (i == optionCount - 1) {
                 result.append("or ");
             }
+
             result.append(getAnnotationName(requiredAnnotationOptions.get(i)));
         }
 

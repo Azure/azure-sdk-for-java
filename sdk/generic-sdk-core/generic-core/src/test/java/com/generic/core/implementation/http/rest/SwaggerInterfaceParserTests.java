@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.annotation.ExpectedResponses;
-import com.generic.core.http.annotation.Get;
-import com.generic.core.http.annotation.Host;
 import com.generic.core.annotation.ServiceInterface;
+import com.generic.core.http.annotation.Host;
+import com.generic.core.http.annotation.HttpRequestInformation;
+import com.generic.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -51,8 +51,7 @@ public class SwaggerInterfaceParserTests {
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
     interface TestInterface4 {
-        @Get("my/url/path")
-        @ExpectedResponses({200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         void testMethod4();
     }
 
