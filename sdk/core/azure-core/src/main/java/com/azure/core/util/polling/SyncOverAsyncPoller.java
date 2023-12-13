@@ -118,18 +118,19 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         }
 
         PollingContext<T> context = this.pollingContext.copy();
-        AsyncPollResponse<T, U> response = PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation,
-                fetchResultOperation, pollInterval)
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
             .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
-            .blockLast();
-
-        if (response != null && response.getStatus().isComplete()) {
-            this.terminalPollContext = context;
-            return PollingUtil.toPollResponse(response);
-        } else {
-            throw LOGGER.logExceptionAsWarning(new RuntimeException(
-                new TimeoutException("Polling didn't complete before the timeout period.")));
-        }
+            .switchIfEmpty(Mono.error(() -> new TimeoutException("Polling didn't complete before the timeout period.")))
+            .last()
+            .flatMap(response -> {
+                if (response != null && response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return Mono.just(PollingUtil.toPollResponse(response));
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
@@ -166,20 +167,22 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         }
 
         PollingContext<T> context = this.pollingContext.copy();
-        AsyncPollResponse<T, U> response = PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation,
-                fetchResultOperation, pollInterval)
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
             .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
-            .blockLast();
-
-        if (PollingUtil.matchStatus(response, statusToWaitFor)) {
-            if (response.getStatus().isComplete()) {
-                this.terminalPollContext = context;
-            }
-            return PollingUtil.toPollResponse(response);
-        } else {
-            throw LOGGER.logExceptionAsWarning(new RuntimeException(
-                new TimeoutException("Polling didn't complete before the timeout period.")));
-        }
+            .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // take until terminal status
+            .switchIfEmpty(Mono.error(() -> new TimeoutException("Polling didn't complete before the timeout period.")))
+            .last()
+            .flatMap(response -> {
+                if (PollingUtil.matchStatus(response, statusToWaitFor)) {
+                    if (response.getStatus().isComplete()) {
+                        this.terminalPollContext = context;
+                    }
+                    return Mono.just(PollingUtil.toPollResponse(response));
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
@@ -207,18 +210,19 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
         }
 
         PollingContext<T> context = this.pollingContext.copy();
-        AsyncPollResponse<T, U> response = PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation,
-                fetchResultOperation, pollInterval)
+        return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
             .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
-            .blockLast();
-
-        if (response != null && response.getStatus().isComplete()) {
-            this.terminalPollContext = context;
-            return response.getFinalResult().block();
-        } else {
-            throw LOGGER.logExceptionAsWarning(new RuntimeException(
-                new TimeoutException("Polling didn't complete before the timeout period.")));
-        }
+            .switchIfEmpty(Mono.error(() -> new TimeoutException("Polling didn't complete before the timeout period.")))
+            .last()
+            .flatMap(response -> {
+                if (response != null && response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
+                    return response.getFinalResult();
+                } else {
+                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                }
+            })
+            .block();
     }
 
     @Override
