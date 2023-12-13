@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the cloud service role sku. */
+/**
+ * Describes the cloud service role sku.
+ */
 @Fluent
 public final class CloudServiceRoleSku {
     /*
@@ -29,14 +31,16 @@ public final class CloudServiceRoleSku {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
-    /** Creates an instance of CloudServiceRoleSku class. */
+    /**
+     * Creates an instance of CloudServiceRoleSku class.
+     */
     public CloudServiceRoleSku() {
     }
 
     /**
      * Get the name property: The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is
      * currently on, you need to delete and recreate the cloud service or move back to the old sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +50,7 @@ public final class CloudServiceRoleSku {
     /**
      * Set the name property: The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is
      * currently on, you need to delete and recreate the cloud service or move back to the old sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the CloudServiceRoleSku object itself.
      */
@@ -58,7 +62,7 @@ public final class CloudServiceRoleSku {
     /**
      * Get the tier property: Specifies the tier of the cloud service. Possible Values are &lt;br /&gt;&lt;br /&gt;
      * **Standard** &lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -68,7 +72,7 @@ public final class CloudServiceRoleSku {
     /**
      * Set the tier property: Specifies the tier of the cloud service. Possible Values are &lt;br /&gt;&lt;br /&gt;
      * **Standard** &lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the CloudServiceRoleSku object itself.
      */
@@ -79,7 +83,7 @@ public final class CloudServiceRoleSku {
 
     /**
      * Get the capacity property: Specifies the number of role instances in the cloud service.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -88,7 +92,7 @@ public final class CloudServiceRoleSku {
 
     /**
      * Set the capacity property: Specifies the number of role instances in the cloud service.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the CloudServiceRoleSku object itself.
      */
@@ -99,7 +103,7 @@ public final class CloudServiceRoleSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

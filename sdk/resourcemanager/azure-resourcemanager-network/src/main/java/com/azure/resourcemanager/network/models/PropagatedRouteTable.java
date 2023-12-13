@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of RouteTables to advertise the routes to. */
+/**
+ * The list of RouteTables to advertise the routes to.
+ */
 @Fluent
 public final class PropagatedRouteTable {
     /*
@@ -24,13 +26,15 @@ public final class PropagatedRouteTable {
     @JsonProperty(value = "ids")
     private List<SubResource> ids;
 
-    /** Creates an instance of PropagatedRouteTable class. */
+    /**
+     * Creates an instance of PropagatedRouteTable class.
+     */
     public PropagatedRouteTable() {
     }
 
     /**
      * Get the labels property: The list of labels.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -39,7 +43,7 @@ public final class PropagatedRouteTable {
 
     /**
      * Set the labels property: The list of labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the PropagatedRouteTable object itself.
      */
@@ -50,7 +54,7 @@ public final class PropagatedRouteTable {
 
     /**
      * Get the ids property: The list of resource ids of all the RouteTables.
-     *
+     * 
      * @return the ids value.
      */
     public List<SubResource> ids() {
@@ -59,7 +63,7 @@ public final class PropagatedRouteTable {
 
     /**
      * Set the ids property: The list of resource ids of all the RouteTables.
-     *
+     * 
      * @param ids the ids value to set.
      * @return the PropagatedRouteTable object itself.
      */
@@ -70,7 +74,7 @@ public final class PropagatedRouteTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

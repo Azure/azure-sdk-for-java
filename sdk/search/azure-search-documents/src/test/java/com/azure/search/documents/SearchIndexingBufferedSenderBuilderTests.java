@@ -5,6 +5,8 @@ package com.azure.search.documents;
 
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -15,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests {@link SearchClientBuilder.SearchIndexingBufferedSenderBuilder}.
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class SearchIndexingBufferedSenderBuilderTests {
     private static final Map<String, Duration> FOOL_SPOTBUGS = new HashMap<>();
     private static final TypeReference<Map<String, Object>> DOCUMENT_TYPE = new TypeReference<Map<String, Object>>() {

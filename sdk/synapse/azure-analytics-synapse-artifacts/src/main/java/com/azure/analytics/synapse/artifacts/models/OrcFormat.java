@@ -8,22 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The data stored in Optimized Row Columnar (ORC) format. */
+/**
+ * The data stored in Optimized Row Columnar (ORC) format.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OrcFormat")
 @Fluent
 public final class OrcFormat extends DatasetStorageFormat {
-    /** Creates an instance of OrcFormat class. */
-    public OrcFormat() {}
+    /**
+     * Creates an instance of OrcFormat class.
+     */
+    public OrcFormat() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcFormat setSerializer(Object serializer) {
         super.setSerializer(serializer);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrcFormat setDeserializer(Object deserializer) {
         super.setDeserializer(deserializer);

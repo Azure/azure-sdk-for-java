@@ -3,9 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.models.events.AddParticipantCancelled;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Immutable;
 
 /**
@@ -14,9 +13,8 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class CancelAddParticipantEventResult {
     private final boolean isSuccess;
-    private final AddParticipantCancelled successResult;
+    private final CancelAddParticipantSucceeded successResult;
     private final CancelAddParticipantFailed failureResult;
-    private final CommunicationIdentifier participant;
     private final String invitationId;
 
     /**
@@ -28,11 +26,10 @@ public final class CancelAddParticipantEventResult {
      * @param participant the participant.
      * @param invitationId the invitation id.
      */
-    CancelAddParticipantEventResult(boolean isSuccess, AddParticipantCancelled successResult, CancelAddParticipantFailed failureResult, CommunicationIdentifier participant, String invitationId) {
+    CancelAddParticipantEventResult(boolean isSuccess, CancelAddParticipantSucceeded successResult, CancelAddParticipantFailed failureResult, String invitationId) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
         this.failureResult = failureResult;
-        this.participant = participant;
         this.invitationId = invitationId;
     }
 
@@ -50,7 +47,7 @@ public final class CancelAddParticipantEventResult {
      *
      * @return the add participant cancelled success event.
      */
-    public AddParticipantCancelled getSuccessResult() {
+    public CancelAddParticipantSucceeded getSuccessResult() {
         return successResult;
     }
 
@@ -61,15 +58,6 @@ public final class CancelAddParticipantEventResult {
      */
     public CancelAddParticipantFailed getFailureResult() {
         return failureResult;
-    }
-
-    /**
-     * Gets the participant.
-     *
-     * @return the participant.
-     */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
     }
 
     /**

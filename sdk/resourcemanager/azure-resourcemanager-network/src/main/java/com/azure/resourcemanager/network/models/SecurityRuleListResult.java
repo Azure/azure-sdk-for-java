@@ -27,13 +27,15 @@ public final class SecurityRuleListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SecurityRuleListResult class. */
+    /**
+     * Creates an instance of SecurityRuleListResult class.
+     */
     public SecurityRuleListResult() {
     }
 
     /**
      * Get the value property: The security rules in a network security group.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityRuleInner> value() {
@@ -42,7 +44,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Set the value property: The security rules in a network security group.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityRuleListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SecurityRuleListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class SecurityRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

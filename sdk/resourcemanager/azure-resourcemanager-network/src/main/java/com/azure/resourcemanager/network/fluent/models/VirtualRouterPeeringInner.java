@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Router Peering resource. */
+/**
+ * Virtual Router Peering resource.
+ */
 @Fluent
 public final class VirtualRouterPeeringInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class VirtualRouterPeeringInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VirtualRouterPeeringInner class. */
+    /**
+     * Creates an instance of VirtualRouterPeeringInner class.
+     */
     public VirtualRouterPeeringInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Virtual Router Peering.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualRouterPeeringProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the name property: Name of the virtual router peering that is unique within a virtual router.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Set the name property: Name of the virtual router peering that is unique within a virtual router.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualRouterPeeringInner object itself.
      */
@@ -71,7 +75,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the type property: Peering type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualRouterPeeringInner withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the peerAsn property: Peer ASN.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -105,7 +111,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Set the peerAsn property: Peer ASN.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the VirtualRouterPeeringInner object itself.
      */
@@ -119,7 +125,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the peerIp property: Peer IP.
-     *
+     * 
      * @return the peerIp value.
      */
     public String peerIp() {
@@ -128,7 +134,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Set the peerIp property: Peer IP.
-     *
+     * 
      * @param peerIp the peerIp value to set.
      * @return the VirtualRouterPeeringInner object itself.
      */
@@ -142,7 +148,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -151,7 +157,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

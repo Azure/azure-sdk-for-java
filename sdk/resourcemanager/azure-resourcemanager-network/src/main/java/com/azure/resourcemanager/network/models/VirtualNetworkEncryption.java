@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. */
+/**
+ * Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet.
+ */
 @Fluent
 public final class VirtualNetworkEncryption {
     /*
@@ -22,13 +24,15 @@ public final class VirtualNetworkEncryption {
     @JsonProperty(value = "enforcement")
     private VirtualNetworkEncryptionEnforcement enforcement;
 
-    /** Creates an instance of VirtualNetworkEncryption class. */
+    /**
+     * Creates an instance of VirtualNetworkEncryption class.
+     */
     public VirtualNetworkEncryption() {
     }
 
     /**
      * Get the enabled property: Indicates if encryption is enabled on the virtual network.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -37,7 +41,7 @@ public final class VirtualNetworkEncryption {
 
     /**
      * Set the enabled property: Indicates if encryption is enabled on the virtual network.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the VirtualNetworkEncryption object itself.
      */
@@ -48,7 +52,7 @@ public final class VirtualNetworkEncryption {
 
     /**
      * Get the enforcement property: If the encrypted VNet allows VM that does not support encryption.
-     *
+     * 
      * @return the enforcement value.
      */
     public VirtualNetworkEncryptionEnforcement enforcement() {
@@ -57,7 +61,7 @@ public final class VirtualNetworkEncryption {
 
     /**
      * Set the enforcement property: If the encrypted VNet allows VM that does not support encryption.
-     *
+     * 
      * @param enforcement the enforcement value to set.
      * @return the VirtualNetworkEncryption object itself.
      */
@@ -68,7 +72,7 @@ public final class VirtualNetworkEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

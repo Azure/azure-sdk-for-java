@@ -219,4 +219,35 @@ public final class AudioTranscriptionOptions {
         this.model = model;
         return this;
     }
+
+    /*
+     * The optional filename or descriptive identifier to associate with with the audio data.
+     */
+    @Generated
+    @JsonProperty(value = "filename")
+    private String filename;
+
+    /**
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @return the filename value.
+     */
+    @Generated
+    public String getFilename() {
+        return this.filename;
+    }
+
+    /**
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
+     * data.
+     *
+     * @param filename the filename value to set.
+     * @return the AudioTranscriptionOptions object itself.
+     */
+    @Generated
+    public AudioTranscriptionOptions setFilename(String filename) {
+        this.filename = filename;
+        return this;
+    }
 }

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Type conversion settings. */
+/**
+ * Type conversion settings.
+ */
 @Fluent
 public final class TypeConversionSettings {
     /*
@@ -47,13 +49,16 @@ public final class TypeConversionSettings {
     @JsonProperty(value = "culture")
     private Object culture;
 
-    /** Creates an instance of TypeConversionSettings class. */
-    public TypeConversionSettings() {}
+    /**
+     * Creates an instance of TypeConversionSettings class.
+     */
+    public TypeConversionSettings() {
+    }
 
     /**
      * Get the allowDataTruncation property: Whether to allow data truncation when converting the data. Type: boolean
      * (or Expression with resultType boolean).
-     *
+     * 
      * @return the allowDataTruncation value.
      */
     public Object getAllowDataTruncation() {
@@ -63,7 +68,7 @@ public final class TypeConversionSettings {
     /**
      * Set the allowDataTruncation property: Whether to allow data truncation when converting the data. Type: boolean
      * (or Expression with resultType boolean).
-     *
+     * 
      * @param allowDataTruncation the allowDataTruncation value to set.
      * @return the TypeConversionSettings object itself.
      */
@@ -75,7 +80,7 @@ public final class TypeConversionSettings {
     /**
      * Get the treatBooleanAsNumber property: Whether to treat boolean values as numbers. Type: boolean (or Expression
      * with resultType boolean).
-     *
+     * 
      * @return the treatBooleanAsNumber value.
      */
     public Object getTreatBooleanAsNumber() {
@@ -85,7 +90,7 @@ public final class TypeConversionSettings {
     /**
      * Set the treatBooleanAsNumber property: Whether to treat boolean values as numbers. Type: boolean (or Expression
      * with resultType boolean).
-     *
+     * 
      * @param treatBooleanAsNumber the treatBooleanAsNumber value to set.
      * @return the TypeConversionSettings object itself.
      */
@@ -97,7 +102,7 @@ public final class TypeConversionSettings {
     /**
      * Get the dateTimeFormat property: The format for DateTime values. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the dateTimeFormat value.
      */
     public Object getDateTimeFormat() {
@@ -107,7 +112,7 @@ public final class TypeConversionSettings {
     /**
      * Set the dateTimeFormat property: The format for DateTime values. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param dateTimeFormat the dateTimeFormat value to set.
      * @return the TypeConversionSettings object itself.
      */
@@ -119,7 +124,7 @@ public final class TypeConversionSettings {
     /**
      * Get the dateTimeOffsetFormat property: The format for DateTimeOffset values. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the dateTimeOffsetFormat value.
      */
     public Object getDateTimeOffsetFormat() {
@@ -129,7 +134,7 @@ public final class TypeConversionSettings {
     /**
      * Set the dateTimeOffsetFormat property: The format for DateTimeOffset values. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param dateTimeOffsetFormat the dateTimeOffsetFormat value to set.
      * @return the TypeConversionSettings object itself.
      */
@@ -141,7 +146,7 @@ public final class TypeConversionSettings {
     /**
      * Get the timeSpanFormat property: The format for TimeSpan values. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the timeSpanFormat value.
      */
     public Object getTimeSpanFormat() {
@@ -151,7 +156,7 @@ public final class TypeConversionSettings {
     /**
      * Set the timeSpanFormat property: The format for TimeSpan values. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param timeSpanFormat the timeSpanFormat value to set.
      * @return the TypeConversionSettings object itself.
      */
@@ -163,7 +168,7 @@ public final class TypeConversionSettings {
     /**
      * Get the culture property: The culture used to convert data from/to string. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the culture value.
      */
     public Object getCulture() {
@@ -173,7 +178,7 @@ public final class TypeConversionSettings {
     /**
      * Set the culture property: The culture used to convert data from/to string. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param culture the culture value to set.
      * @return the TypeConversionSettings object itself.
      */

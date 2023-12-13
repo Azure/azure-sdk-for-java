@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a cloud service IP Configuration. */
+/**
+ * Describes a cloud service IP Configuration.
+ */
 @Fluent
 public final class LoadBalancerFrontendIpConfigurationProperties {
     /*
@@ -29,13 +31,15 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of LoadBalancerFrontendIpConfigurationProperties class. */
+    /**
+     * Creates an instance of LoadBalancerFrontendIpConfigurationProperties class.
+     */
     public LoadBalancerFrontendIpConfigurationProperties() {
     }
 
     /**
      * Get the publicIpAddress property: The reference to the public ip address resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -44,7 +48,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Set the publicIpAddress property: The reference to the public ip address resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the LoadBalancerFrontendIpConfigurationProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Get the subnet property: The reference to the virtual network subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -64,7 +68,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Set the subnet property: The reference to the virtual network subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the LoadBalancerFrontendIpConfigurationProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Get the privateIpAddress property: The virtual network private IP address of the IP configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -84,7 +88,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Set the privateIpAddress property: The virtual network private IP address of the IP configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the LoadBalancerFrontendIpConfigurationProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class LoadBalancerFrontendIpConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

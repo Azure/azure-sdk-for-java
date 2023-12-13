@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
@@ -63,7 +65,8 @@ import java.util.function.Consumer;
  */
 @SuppressWarnings("unused")
 public class BlobClientBaseJavaDocCodeSnippets {
-    private BlobClientBase client = new BlobClientBase(null);
+    private BlobClient client = new BlobClientBuilder().endpoint("https://storageaccount.blob.core.windows.net")
+        .containerName("containerName").blobName("blobName").sasToken("sasToken").buildClient();
     private String leaseId = "leaseId";
     private String tags = "tags";
     private String copyId = "copyId";

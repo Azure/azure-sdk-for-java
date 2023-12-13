@@ -79,13 +79,16 @@ public class TumblingWindowTrigger extends Trigger {
     @JsonProperty(value = "typeProperties.dependsOn")
     private List<DependencyReference> dependsOn;
 
-    /** Creates an instance of TumblingWindowTrigger class. */
-    public TumblingWindowTrigger() {}
+    /**
+     * Creates an instance of TumblingWindowTrigger class.
+     */
+    public TumblingWindowTrigger() {
+    }
 
     /**
      * Get the pipeline property: Pipeline for which runs are created when an event is fired for trigger window that is
      * ready.
-     *
+     * 
      * @return the pipeline value.
      */
     public TriggerPipelineReference getPipeline() {
@@ -95,7 +98,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Set the pipeline property: Pipeline for which runs are created when an event is fired for trigger window that is
      * ready.
-     *
+     * 
      * @param pipeline the pipeline value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -106,7 +109,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the frequency property: The frequency of the time windows.
-     *
+     * 
      * @return the frequency value.
      */
     public TumblingWindowFrequency getFrequency() {
@@ -115,7 +118,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the frequency property: The frequency of the time windows.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -126,7 +129,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the interval property: The interval of the time windows. The minimum interval allowed is 15 Minutes.
-     *
+     * 
      * @return the interval value.
      */
     public int getInterval() {
@@ -135,7 +138,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the interval property: The interval of the time windows. The minimum interval allowed is 15 Minutes.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -147,7 +150,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Get the startTime property: The start time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -157,7 +160,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Set the startTime property: The start time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -169,7 +172,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Get the endTime property: The end time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -179,7 +182,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Set the endTime property: The end time for the time period for the trigger during which events are fired for
      * windows that are ready. Only UTC time is currently supported.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -192,7 +195,7 @@ public class TumblingWindowTrigger extends Trigger {
      * Get the delay property: Specifies how long the trigger waits past due time before triggering new run. It doesn't
      * alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the delay value.
      */
     public Object getDelay() {
@@ -203,7 +206,7 @@ public class TumblingWindowTrigger extends Trigger {
      * Set the delay property: Specifies how long the trigger waits past due time before triggering new run. It doesn't
      * alter window start and end time. The default is 0. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param delay the delay value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -215,7 +218,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Get the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a new
      * run is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int getMaxConcurrency() {
@@ -225,7 +228,7 @@ public class TumblingWindowTrigger extends Trigger {
     /**
      * Set the maxConcurrency property: The max number of parallel time windows (ready for execution) for which a new
      * run is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -236,7 +239,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the retryPolicy property: Retry policy that will be applied for failed pipeline runs.
-     *
+     * 
      * @return the retryPolicy value.
      */
     public RetryPolicy getRetryPolicy() {
@@ -245,7 +248,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the retryPolicy property: Retry policy that will be applied for failed pipeline runs.
-     *
+     * 
      * @param retryPolicy the retryPolicy value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -256,7 +259,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Get the dependsOn property: Triggers that this trigger depends on. Only tumbling window triggers are supported.
-     *
+     * 
      * @return the dependsOn value.
      */
     public List<DependencyReference> getDependsOn() {
@@ -265,7 +268,7 @@ public class TumblingWindowTrigger extends Trigger {
 
     /**
      * Set the dependsOn property: Triggers that this trigger depends on. Only tumbling window triggers are supported.
-     *
+     * 
      * @param dependsOn the dependsOn value to set.
      * @return the TumblingWindowTrigger object itself.
      */
@@ -274,14 +277,18 @@ public class TumblingWindowTrigger extends Trigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TumblingWindowTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TumblingWindowTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for DisconnectActiveSessions. */
+/**
+ * Response for DisconnectActiveSessions.
+ */
 @Fluent
 public final class BastionSessionDeleteResult {
     /*
@@ -24,13 +26,15 @@ public final class BastionSessionDeleteResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of BastionSessionDeleteResult class. */
+    /**
+     * Creates an instance of BastionSessionDeleteResult class.
+     */
     public BastionSessionDeleteResult() {
     }
 
     /**
      * Get the value property: List of sessions with their corresponding state.
-     *
+     * 
      * @return the value value.
      */
     public List<BastionSessionStateInner> value() {
@@ -39,7 +43,7 @@ public final class BastionSessionDeleteResult {
 
     /**
      * Set the value property: List of sessions with their corresponding state.
-     *
+     * 
      * @param value the value value to set.
      * @return the BastionSessionDeleteResult object itself.
      */
@@ -50,7 +54,7 @@ public final class BastionSessionDeleteResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class BastionSessionDeleteResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BastionSessionDeleteResult object itself.
      */
@@ -70,7 +74,7 @@ public final class BastionSessionDeleteResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

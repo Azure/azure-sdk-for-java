@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of Frontend IP configuration of an application gateway. */
+/**
+ * Properties of Frontend IP configuration of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
     /*
@@ -49,13 +51,15 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayFrontendIpConfigurationPropertiesFormat class.
+     */
     public ApplicationGatewayFrontendIpConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -64,7 +68,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Set the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -84,19 +88,19 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Set the privateIpAllocationMethod property: The private IP address allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -105,7 +109,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Set the subnet property: Reference to the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
@@ -116,7 +120,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Get the publicIpAddress property: Reference to the PublicIP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -125,7 +129,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Set the publicIpAddress property: Reference to the PublicIP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
@@ -136,7 +140,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Get the privateLinkConfiguration property: Reference to the application gateway private link configuration.
-     *
+     * 
      * @return the privateLinkConfiguration value.
      */
     public SubResource privateLinkConfiguration() {
@@ -145,19 +149,19 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Set the privateLinkConfiguration property: Reference to the application gateway private link configuration.
-     *
+     * 
      * @param privateLinkConfiguration the privateLinkConfiguration value to set.
      * @return the ApplicationGatewayFrontendIpConfigurationPropertiesFormat object itself.
      */
-    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat withPrivateLinkConfiguration(
-        SubResource privateLinkConfiguration) {
+    public ApplicationGatewayFrontendIpConfigurationPropertiesFormat
+        withPrivateLinkConfiguration(SubResource privateLinkConfiguration) {
         this.privateLinkConfiguration = privateLinkConfiguration;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the frontend IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -166,7 +170,7 @@ public final class ApplicationGatewayFrontendIpConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

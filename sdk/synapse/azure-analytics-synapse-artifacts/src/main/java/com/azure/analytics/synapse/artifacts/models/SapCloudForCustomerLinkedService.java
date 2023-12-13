@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for SAP Cloud for Customer. */
+/**
+ * Linked service for SAP Cloud for Customer.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomer")
 @JsonFlatten
@@ -45,13 +47,16 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SapCloudForCustomerLinkedService class. */
-    public SapCloudForCustomerLinkedService() {}
+    /**
+     * Creates an instance of SapCloudForCustomerLinkedService class.
+     */
+    public SapCloudForCustomerLinkedService() {
+    }
 
     /**
      * Get the url property: The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -61,7 +66,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Set the url property: The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -73,7 +78,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Get the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -83,7 +88,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * Set the username property: The username for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -94,7 +99,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password for Basic authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -103,7 +108,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password for Basic authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -113,10 +118,10 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
+     * be provided. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -124,10 +129,10 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Either encryptedCredential or username/password must be
-     * provided. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Either encryptedCredential or username/password must
+     * be provided. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
@@ -136,28 +141,36 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

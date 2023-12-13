@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `userData` for `VirtualMachine` in create and update.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
 
 ## 2.33.0 (2023-11-24)
 
