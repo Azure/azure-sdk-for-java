@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.ArrayUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -72,8 +73,8 @@ public class StoreResultDiagnostics {
         this.retryAfterInMs = storeResult.retryAfterInMs;
 
         // TODO (abhmohanty) : double check this
-        this.statusCode = storeResult.getStoreResponse() != null ? -1 : storeResult.getStoreResponse().getStatus();
-        this.subStatusCode = storeResult.getStoreResponse() != null ? -1: storeResult.getStoreResponse().getSubStatusCode();
+        this.statusCode = storeResult.getStoreResponse() != null ? storeResult.getStoreResponse().getStatus() : 0;
+        this.subStatusCode = storeResult.getStoreResponse() != null ? storeResult.getStoreResponse().getSubStatusCode() : HttpConstants.SubStatusCodes.UNKNOWN;
     }
 
     private StoreResultDiagnostics(StoreResult storeResult, CosmosException e, RxDocumentServiceRequest request) {

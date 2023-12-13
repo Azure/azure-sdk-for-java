@@ -1,69 +1,100 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
+import com.azure.cosmos.implementation.guava25.hash.Funnel;
 import com.azure.cosmos.implementation.guava25.hash.Funnels;
+import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PartitionKeyBasedBloomFilter {
 
     private static final int EXPECTED_INSERTIONS = 5_000_000;
-    private final BloomFilter<String> stringBasedBloomFilter;
+    private static final double ALLOWED_FALSE_POSITIVE_RATE = 0.001;
+    private BloomFilter<PartitionKeyBasedBloomFilterType> pkBasedBloomFilter;
     private final Set<String> recordedRegions;
+    private final AtomicBoolean isBloomFilterInitialized;
+    private final Funnel<PartitionKeyBasedBloomFilterType> funnel;
 
     public PartitionKeyBasedBloomFilter() {
-        this.stringBasedBloomFilter = BloomFilter.create(Funnels.stringFunnel(StandardCharsets.UTF_8), EXPECTED_INSERTIONS);
         this.recordedRegions = ConcurrentHashMap.newKeySet();
+        this.isBloomFilterInitialized = new AtomicBoolean(false);
+        this.funnel = (from, into) -> into
+            .putLong(from.collectionRid)
+            .putString(from.partitionKeyAsStringifiedJson, StandardCharsets.UTF_8)
+            .putString(from.region, StandardCharsets.UTF_8);
     }
 
-    public void tryRecordPartitionKey(Long collectionRid, String firstPreferredWritableRegion, String region, String partitionKey) {
+    public void tryInitializeBloomFilter() {
+        if (this.isBloomFilterInitialized.compareAndSet(false, true)) {
+            this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
+        }
+    }
+
+    public void tryRecordPartitionKey(
+        Long collectionRid,
+        String firstPreferredWritableRegion,
+        String region,
+        String partitionKeyAsStringifiedJson) {
 
         if (!region.equals(firstPreferredWritableRegion)) {
-            final String effectiveKey = constructEffectiveKeyForBloomFilter(collectionRid, region, partitionKey);
-            this.stringBasedBloomFilter.put(effectiveKey);
-            this.recordedRegions.add(region);
+             if (isBloomFilterInitialized.get()) {
+                this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson, region, collectionRid));
+                this.recordedRegions.add(region);
+            }
         }
     }
 
     public ISessionToken tryResolveSessionToken(
         Long collectionRid,
-        String partitionKey,
+        String partitionKeyAsStringifiedJson,
         String pkRangeId,
         String firstPreferredWritableRegion,
-        RegionBasedSessionTokenRegistry regionBasedSessionTokenRegistry) {
+        PkRangeBasedRegionScopedSessionTokenRegistry pkRangeBasedRegionScopedSessionTokenRegistry) {
 
         List<String> regionsPkIsProbablyRequestedFrom = new ArrayList<>();
 
-        for (String region : this.recordedRegions) {
+        if (this.isBloomFilterInitialized.get()) {
+            for (String region : this.recordedRegions) {
 
-            String effectiveKey = constructEffectiveKeyForBloomFilter(collectionRid, region, partitionKey);
-
-            if (this.stringBasedBloomFilter.mightContain(effectiveKey)) {
-                regionsPkIsProbablyRequestedFrom.add(region);
+                if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson, region, collectionRid))) {
+                    regionsPkIsProbablyRequestedFrom.add(region);
+                }
             }
         }
 
-        return regionBasedSessionTokenRegistry.tryResolveSessionToken(regionsPkIsProbablyRequestedFrom, firstPreferredWritableRegion, pkRangeId);
+        return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(regionsPkIsProbablyRequestedFrom, firstPreferredWritableRegion, pkRangeId);
     }
 
-    private static String constructEffectiveKeyForBloomFilter(Long collectionRid, String region, String partitionKey) {
-        if (collectionRid == null) {
-            throw new IllegalArgumentException("collectionRid cannot be null.");
+    public static class PartitionKeyBasedBloomFilterType {
+
+        private final String partitionKeyAsStringifiedJson;
+        private final String region;
+        private final Long collectionRid;
+
+        public PartitionKeyBasedBloomFilterType(String partitionKeyAsStringifiedJson, String region, Long collectionRid) {
+            this.partitionKeyAsStringifiedJson = partitionKeyAsStringifiedJson;
+            this.region = region;
+            this.collectionRid = collectionRid;
         }
 
-        if (region == null || region.isEmpty()) {
-            throw new IllegalArgumentException("region cannot be empty or null.");
+        public String getPartitionKeyAsStringifiedJson() {
+            return partitionKeyAsStringifiedJson;
         }
 
-        if (partitionKey == null || partitionKey.isEmpty()) {
-            throw new IllegalArgumentException("partitionKey cannot be empty or null.");
+        public String getRegion() {
+            return region;
         }
 
-        return region + ":" + collectionRid + ":" + partitionKey;
+        public Long getCollectionRid() {
+            return collectionRid;
+        }
     }
 
 }

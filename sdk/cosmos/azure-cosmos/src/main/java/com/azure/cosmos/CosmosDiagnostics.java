@@ -322,7 +322,7 @@ public final class CosmosDiagnostics {
         return this;
     }
 
-    Set<String> getRegionWithSuccessResponse() {
+    String getRegionWithSuccessResponse() {
         return this.clientSideRequestStatistics.getRegionWithSuccessResponse();
     }
 
@@ -470,7 +470,7 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public Set<String> getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics) {
+                public String getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics) {
                     return cosmosDiagnostics.getRegionWithSuccessResponse();
                 }
             });

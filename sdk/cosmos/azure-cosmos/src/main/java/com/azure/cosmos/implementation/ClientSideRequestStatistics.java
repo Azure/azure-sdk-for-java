@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
@@ -54,7 +55,7 @@ public class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
     private final String userAgent;
-    private final Set<String> regionWithSuccessResponse;
+    private final AtomicReference<String> regionWithSuccessResponse;
     private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
@@ -75,7 +76,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
-        this.regionWithSuccessResponse = Collections.synchronizedSet(new HashSet<>());
+        this.regionWithSuccessResponse = new AtomicReference<>(StringUtils.EMPTY);
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -98,7 +99,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
-        this.regionWithSuccessResponse = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionWithSuccessResponse));
+        this.regionWithSuccessResponse = new AtomicReference<>(StringUtils.EMPTY);
     }
 
     @JsonIgnore
@@ -182,7 +183,7 @@ public class ClientSideRequestStatistics {
                 int statusCode = storeResultDiagnostics.getStatusCode();
 
                 if (HttpConstants.StatusCodes.OK <= statusCode && statusCode <= HttpConstants.StatusCodes.NOT_MODIFIED) {
-                    this.regionWithSuccessResponse.add(storeResponseStatistics.regionName);
+                    this.regionWithSuccessResponse.set(storeResponseStatistics.regionName);
                 }
             }
 
@@ -214,8 +215,15 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+
+                String regionContacted = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+
+                this.regionsContacted.add(regionContacted);
                 this.locationEndpointsContacted.add(locationEndPoint);
+
+                if (storeResponseDiagnostics.getStatusCode() >= HttpConstants.StatusCodes.OK && storeResponseDiagnostics.getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED) {
+                    this.regionWithSuccessResponse.set(regionContacted);
+                }
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -511,8 +519,8 @@ public class ClientSideRequestStatistics {
         this.locationEndpointsContacted = locationEndpointsContacted;
     }
 
-    public Set<String> getRegionWithSuccessResponse() {
-        return regionWithSuccessResponse;
+    public String getRegionWithSuccessResponse() {
+        return regionWithSuccessResponse.get();
     }
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){

@@ -759,7 +759,7 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            Set<String> getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics);
+            String getRegionWithSuccessResponse(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 

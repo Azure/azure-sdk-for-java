@@ -1250,10 +1250,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
-                    // set the session token
-                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
-                        getAltLink(resourceResponse.getResource()),
-                        resourceResponse.getResponseHeaders());
+
+                           // set the session token
+                           if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
+                               this.sessionContainer.setSessionToken(
+                                   request,
+                                   resourceResponse.getResource().getResourceId(),
+                                   getAltLink(resourceResponse.getResource()),
+                                   resourceResponse.getResponseHeaders());
+                           } else {
+                               this.sessionContainer.setSessionToken(
+                                   resourceResponse.getResource().getResourceId(),
+                                   getAltLink(resourceResponse.getResource()),
+                                   resourceResponse.getResponseHeaders());
+                           }
                 });
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
@@ -1305,9 +1315,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
-                            getAltLink(resourceResponse.getResource()),
-                            resourceResponse.getResponseHeaders());
+                        if (this.sessionConsistencyOptions.isPartitionKeyScopedSessionCapturingEnabled()) {
+                            this.sessionContainer.setSessionToken(
+                                request,
+                                resourceResponse.getResource().getResourceId(),
+                                getAltLink(resourceResponse.getResource()),
+                                resourceResponse.getResponseHeaders());
+                        } else {
+                            this.sessionContainer.setSessionToken(
+                                resourceResponse.getResource().getResourceId(),
+                                getAltLink(resourceResponse.getResource()),
+                                resourceResponse.getResponseHeaders());
+                        }
                     }
                 });
 

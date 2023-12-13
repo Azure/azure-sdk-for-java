@@ -4,24 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RegionBasedSessionTokenRegistry {
+public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
-    private final ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> regionToPkRangeBasedSessionTokens;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> pkRangeIdToRegionScopedSessionTokens;
 
-    public RegionBasedSessionTokenRegistry() {
-        this.regionToPkRangeBasedSessionTokens = new ConcurrentHashMap<>();
+    public PkRangeBasedRegionScopedSessionTokenRegistry() {
+        this.pkRangeIdToRegionScopedSessionTokens = new ConcurrentHashMap<>();
     }
 
     public void tryRecordSessionToken(String region, String pkRangeId, ISessionToken sessionToken) {
-        this.regionToPkRangeBasedSessionTokens.compute(region, (regionAsKey, pkRangeIdToSessionTokensAsVal) -> {
+        this.pkRangeIdToRegionScopedSessionTokens.compute(pkRangeId, (pkRangeIdAsKey, regionToSessionTokensAsVal) -> {
 
-            if (pkRangeIdToSessionTokensAsVal == null) {
-                pkRangeIdToSessionTokensAsVal = new ConcurrentHashMap<>();
+            if (regionToSessionTokensAsVal == null) {
+                regionToSessionTokensAsVal = new ConcurrentHashMap<>();
             }
 
-            pkRangeIdToSessionTokensAsVal.merge(pkRangeId, sessionToken, ISessionToken::merge);
+            regionToSessionTokensAsVal.merge(region, sessionToken, ISessionToken::merge);
 
-            return pkRangeIdToSessionTokensAsVal;
+            return regionToSessionTokensAsVal;
         });
     }
 
@@ -31,17 +31,21 @@ public class RegionBasedSessionTokenRegistry {
         regionSpecificSessionTokens.add(resolveRegionSpecificSessionToken(firstPreferredRegion, pkRangeId));
 
         for (String region : lesserPreferredRegionsPkProbablyRequestedFrom) {
-            regionSpecificSessionTokens.add(resolveRegionSpecificSessionToken(region, pkRangeId));
+            ISessionToken regionSpecificSessionToken = resolveRegionSpecificSessionToken(region, pkRangeId);
+
+            if (regionSpecificSessionToken != null) {
+                regionSpecificSessionTokens.add(resolveRegionSpecificSessionToken(region, pkRangeId));
+            }
         }
 
         return mergeSessionToken(regionSpecificSessionTokens);
     }
 
     private ISessionToken resolveRegionSpecificSessionToken(String region, String pkRangeId) {
-        ConcurrentHashMap<String, ISessionToken> regionSpecificSessionTokenRegistry = this.regionToPkRangeBasedSessionTokens.get(region);
+        ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistry = this.pkRangeIdToRegionScopedSessionTokens.get(pkRangeId);
 
-        if (regionSpecificSessionTokenRegistry != null) {
-            return regionSpecificSessionTokenRegistry.get(pkRangeId);
+        if (pkRangeIdSpecificSessionTokenRegistry != null) {
+            return pkRangeIdSpecificSessionTokenRegistry.get(region);
         }
 
         return null;
