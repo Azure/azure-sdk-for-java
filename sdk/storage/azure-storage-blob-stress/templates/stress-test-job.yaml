@@ -44,7 +44,7 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: 2000Mi
+          memory: 3000Mi
           cpu: "1.0"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
