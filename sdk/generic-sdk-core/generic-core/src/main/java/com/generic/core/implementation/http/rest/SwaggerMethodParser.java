@@ -9,6 +9,7 @@ import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
+import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
@@ -124,16 +125,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.httpMethod = httpRequestInformation.method();
         this.relativePath = httpRequestInformation.path();
 
-        Class<?> returnValueWireType = httpRequestInformation.responseBodyClass();
-
-        if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
-            this.returnValueWireType = returnValueWireType;
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-            this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-        } else {
-            this.returnValueWireType = null;
-        }
-
         returnType = swaggerMethod.getGenericReturnType();
 
         final String[] headers = httpRequestInformation.headers();
@@ -162,19 +153,38 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             }
         }
 
-        final int[] expectedResponses = httpRequestInformation.expectedStatusCodes();
+        if (swaggerMethod.isAnnotationPresent(HttpResponseInformation.class)) {
+            HttpResponseInformation httpResponseInformation =
+                swaggerMethod.getAnnotation(HttpResponseInformation.class);
 
-        if (expectedResponses.length > 0) {
-            expectedStatusCodes = new BitSet();
+            Class<?> returnValueWireType = httpResponseInformation.returnValueWireType();
 
-            for (int code : expectedResponses) {
-                expectedStatusCodes.set(code);
+            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
+                this.returnValueWireType = returnValueWireType;
+            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
+            } else {
+                this.returnValueWireType = null;
+            }
+
+            final int[] expectedResponses = httpResponseInformation.expectedStatusCodes();
+
+            if (expectedResponses.length > 0) {
+                expectedStatusCodes = new BitSet();
+
+                for (int code : expectedResponses) {
+                    expectedStatusCodes.set(code);
+                }
+            } else {
+                expectedStatusCodes = null;
             }
         } else {
+            returnValueWireType = null;
             expectedStatusCodes = null;
         }
 
-        unexpectedResponseExceptionInformations = swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionInformation.class);
+        unexpectedResponseExceptionInformations =
+            swaggerMethod.getAnnotationsByType(UnexpectedResponseExceptionInformation.class);
 
         Integer bodyContentMethodParameterIndex = null;
         String bodyContentType = null;

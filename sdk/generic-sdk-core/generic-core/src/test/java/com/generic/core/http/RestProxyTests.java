@@ -8,6 +8,7 @@ import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HttpRequestInformation;
+import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
@@ -52,33 +53,40 @@ public class RestProxyTests {
     @Host("https://azure.com")
     @ServiceInterface(name = "myService")
     interface TestInterface {
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Response<Void> testMethod(
             @BodyParam("application/octet-stream") ByteBuffer request,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
 
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Response<Void> testMethod(
             @BodyParam("application/octet-stream") BinaryData data,
             @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Content-Length") Long contentLength
         );
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Void testMethodReturnsVoid();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         void testVoidMethod();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Response<Void> testMethodReturnsResponseVoid();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
+        @HttpResponseInformation(expectedStatusCodes = {200})
         Response<InputStream> testDownload();
     }
 

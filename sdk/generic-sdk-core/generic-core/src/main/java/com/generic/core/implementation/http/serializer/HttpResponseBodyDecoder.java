@@ -5,6 +5,7 @@ package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.HttpRequestInformation;
+import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
@@ -135,7 +136,7 @@ public final class HttpResponseBodyDecoder {
      *
      * @param value The string value to deserialize.
      * @param resultType The return type of the Java proxy method.
-     * @param wireType Value of the optional {@link HttpRequestInformation#responseBodyClass()} annotation present in
+     * @param wireType Value of the optional {@link HttpResponseInformation#returnValueWireType()} annotation present in
      * the Java proxy method indicating 'entity type' (wireType) of REST API wire response body.
      *
      * @return Deserialized object.
@@ -158,10 +159,10 @@ public final class HttpResponseBodyDecoder {
 
     /**
      * Given: (1). The {@link Type result type} of the Java proxy method return value and (2). The
-     * {@link HttpRequestInformation#responseBodyClass()} annotation value indicating the 'entity type' (wireType) of
+     * {@link HttpResponseInformation#returnValueWireType()} annotation value indicating the 'entity type' (wireType) of
      * the same REST APIs wire response body, this method will construct the 'response body Type'.
      *
-     * <p>Note: When the {@link HttpRequestInformation#responseBodyClass()} annotation is applied to a proxy method,
+     * <p>Note: When the {@link HttpResponseInformation#returnValueWireType()} annotation is applied to a proxy method,
      * the raw HTTP response content will need to be parsed using the derived 'response body Type' and then converted to
      * the actual {@code returnType}.</p>
      *
