@@ -9,7 +9,6 @@ import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
-import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
@@ -42,15 +41,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class RestProxyImplTests {
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface {
-        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path")
-        @HttpResponseInformation(expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path", expectedStatusCodes = {200})
         Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType,
                                   @HeaderParam("Content-Length") Long contentLength, Context context
         );
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
-        @HttpResponseInformation(expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         void testVoidMethod(Context context);
     }
 

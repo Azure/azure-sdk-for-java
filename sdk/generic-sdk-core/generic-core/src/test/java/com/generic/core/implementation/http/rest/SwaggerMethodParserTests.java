@@ -10,7 +10,6 @@ import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
-import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
@@ -137,16 +136,13 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @HttpResponseInformation(returnValueWireType = Base64Url.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Url.class)
         void base64Url();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @HttpResponseInformation(returnValueWireType = DateTimeRfc1123.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = DateTimeRfc1123.class)
         void dateTimeRfc1123();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @HttpResponseInformation(returnValueWireType = Boolean.class)
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Boolean.class)
         void unknownType();
     }
 
@@ -174,14 +170,14 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noHeaders();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"", ":", "nameOnly:", ":valueOnly"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"", ":", "nameOnly:", ":valueOnly"})
         void malformedHeaders();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test",
-            headers = {"name1:value1", "name2:value2", "name3:value3"})
+            requestHeaders = {"name1:value1", "name2:value2", "name3:value3"})
         void headers();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"name:value1", "name:value2"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"name:value1", "name:value2"})
         void sameKeyTwiceLastWins();
     }
 
@@ -399,7 +395,7 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", headers = {"sub1:sub1", "sub2:false"})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", requestHeaders = {"sub1:sub1", "sub2:false"})
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
@@ -576,12 +572,10 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noExpectedStatusCodes();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @HttpResponseInformation(expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", expectedStatusCodes = {200})
         void only200IsExpected();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
-        @HttpResponseInformation(expectedStatusCodes = {429, 503})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", expectedStatusCodes = {429, 503})
         void retryAfterExpected();
     }
 

@@ -9,7 +9,6 @@ import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
-import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
@@ -78,7 +77,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
-    private final Headers headers = new Headers();
+    private final Headers requestHeaders = new Headers();
+    private final Headers responseHeaders = new Headers();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
@@ -127,25 +127,25 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         returnType = swaggerMethod.getGenericReturnType();
 
-        final String[] headers = httpRequestInformation.headers();
+        final String[] requestHeaders = httpRequestInformation.requestHeaders();
 
-        if (headers != null) {
-            for (final String header : headers) {
-                final int colonIndex = header.indexOf(":");
+        if (requestHeaders != null) {
+            for (final String requestHeader : requestHeaders) {
+                final int colonIndex = requestHeader.indexOf(":");
 
                 if (colonIndex >= 0) {
-                    final String headerName = header.substring(0, colonIndex).trim();
+                    final String headerName = requestHeader.substring(0, colonIndex).trim();
 
                     if (!headerName.isEmpty()) {
-                        final String headerValue = header.substring(colonIndex + 1).trim();
+                        final String headerValue = requestHeader.substring(colonIndex + 1).trim();
 
                         if (!headerValue.isEmpty()) {
                             if (headerValue.contains(",")) {
                                 // There are multiple values for this header, so we split them out.
-                                this.headers.set(HttpHeaderName.fromString(headerName),
+                                this.requestHeaders.set(HttpHeaderName.fromString(headerName),
                                     Arrays.asList(headerValue.split(",")));
                             } else {
-                                this.headers.set(HttpHeaderName.fromString(headerName), headerValue);
+                                this.requestHeaders.set(HttpHeaderName.fromString(headerName), headerValue);
                             }
                         }
                     }
@@ -153,33 +153,25 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             }
         }
 
-        if (swaggerMethod.isAnnotationPresent(HttpResponseInformation.class)) {
-            HttpResponseInformation httpResponseInformation =
-                swaggerMethod.getAnnotation(HttpResponseInformation.class);
+        Class<?> returnValueWireType = httpRequestInformation.returnValueWireType();
 
-            Class<?> returnValueWireType = httpResponseInformation.returnValueWireType();
+        if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
+            this.returnValueWireType = returnValueWireType;
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
+            this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
+        } else {
+            this.returnValueWireType = null;
+        }
 
-            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeRfc1123.class) {
-                this.returnValueWireType = returnValueWireType;
-            } else if (TypeUtil.isTypeOrSubTypeOf(returnValueWireType, List.class)) {
-                this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
-            } else {
-                this.returnValueWireType = null;
-            }
+        final int[] expectedResponses = httpRequestInformation.expectedStatusCodes();
 
-            final int[] expectedResponses = httpResponseInformation.expectedStatusCodes();
+        if (expectedResponses.length > 0) {
+            expectedStatusCodes = new BitSet();
 
-            if (expectedResponses.length > 0) {
-                expectedStatusCodes = new BitSet();
-
-                for (int code : expectedResponses) {
-                    expectedStatusCodes.set(code);
-                }
-            } else {
-                expectedStatusCodes = null;
+            for (int code : expectedResponses) {
+                expectedStatusCodes.set(code);
             }
         } else {
-            returnValueWireType = null;
             expectedStatusCodes = null;
         }
 
@@ -375,11 +367,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * {@link Headers}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
-     * @param Headers The {@link Headers} where the header values will be set.
+     * @param headers The {@link Headers} where the header values will be set.
      * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, Headers Headers, ObjectSerializer serializer) {
-        Headers.setAllHeaders(headers);
+    public void setHeaders(Object[] swaggerMethodArguments, Headers headers, ObjectSerializer serializer) {
+        headers.setAllHeaders(requestHeaders);
 
         if (swaggerMethodArguments == null) {
             return;
@@ -401,14 +393,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
 
                         if (headerValue != null) {
-                            Headers.set(HttpHeaderName.fromString(headerName), headerValue);
+                            headers.set(HttpHeaderName.fromString(headerName), headerValue);
                         }
                     }
                 } else {
                     final String headerValue = serialize(serializer, methodArgument);
 
                     if (headerValue != null) {
-                        Headers.set(headerSubstitution.getHeaderName(), headerValue);
+                        headers.set(headerSubstitution.getHeaderName(), headerValue);
                     }
                 }
             }

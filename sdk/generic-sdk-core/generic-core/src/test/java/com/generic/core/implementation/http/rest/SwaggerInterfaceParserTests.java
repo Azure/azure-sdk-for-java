@@ -5,7 +5,6 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.annotation.HttpRequestInformation;
-import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
 
@@ -50,8 +49,7 @@ public class SwaggerInterfaceParserTests {
 
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface4 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
-        @HttpResponseInformation(expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
         void testMethod4();
     }
 
