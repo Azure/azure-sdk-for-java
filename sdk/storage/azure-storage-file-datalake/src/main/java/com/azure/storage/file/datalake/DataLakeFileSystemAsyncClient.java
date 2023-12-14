@@ -1659,7 +1659,7 @@ public class DataLakeFileSystemAsyncClient {
             .pipeline(blobDataLakeStorageFs.getHttpPipeline())
             .url(blobUrl)
             .fileSystem(blobDataLakeStorageFs.getFileSystem())
-            .path(Utility.urlDecode(deletedPath))
+            .path(deletedPath)
             .version(serviceVersion.getVersion())
             .buildClient();
 
