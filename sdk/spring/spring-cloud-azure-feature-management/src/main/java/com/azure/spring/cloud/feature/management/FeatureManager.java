@@ -2,12 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.azure.spring.cloud.feature.management.implementation.ClientSideFeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.ServerSideFeatureManagementProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -16,7 +20,6 @@ import org.springframework.util.ReflectionUtils;
 
 import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
-import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -32,21 +35,24 @@ public class FeatureManager {
 
     private transient ApplicationContext context;
 
-    private final FeatureManagementProperties featureManagementConfigurations;
+    private final ClientSideFeatureManagementProperties clientSideConfigurations;
+    private final ServerSideFeatureManagementProperties serverSideConfigurations;
 
     private transient FeatureManagementConfigProperties properties;
 
     /**
      * Can be called to check if a feature is enabled or disabled.
-     * 
+     *
      * @param context ApplicationContext
-     * @param featureManagementConfigurations Configuration Properties for Feature Flags
+     * @param clientSideConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
      */
-    FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
+    FeatureManager(ApplicationContext context, ClientSideFeatureManagementProperties clientSideConfigurations,
+        ServerSideFeatureManagementProperties serverSideConfigurations,
         FeatureManagementConfigProperties properties) {
         this.context = context;
-        this.featureManagementConfigurations = featureManagementConfigurations;
+        this.clientSideConfigurations = clientSideConfigurations;
+        this.serverSideConfigurations = serverSideConfigurations;
         this.properties = properties;
     }
 
@@ -77,20 +83,23 @@ public class FeatureManager {
     }
 
     private boolean checkFeature(String feature) throws FilterNotFoundException {
-        if (featureManagementConfigurations.getFeatureManagement() == null
-            || featureManagementConfigurations.getOnOff() == null) {
+        if (clientSideConfigurations.getFeatureManagement() == null
+            || clientSideConfigurations.getOnOff() == null
+            || serverSideConfigurations.getFeatureManagement() == null
+            || serverSideConfigurations.getOnOff() == null) {
             return false;
         }
 
-        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
+        final boolean hasClientSideConfigurations = clientSideConfigurations.getOnOff().size() > 0
+            || clientSideConfigurations.getFeatureManagement().size() > 0;
+        final FeatureManagementProperties configurations = hasClientSideConfigurations ? clientSideConfigurations : serverSideConfigurations;
 
+        Boolean boolFeature = configurations.getOnOff().get(feature);
         if (boolFeature != null) {
             return boolFeature;
         }
-
-        Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
-
-        if (featureItem == null || !featureItem.getEvaluate()) {
+        Feature featureItem = configurations.getFeatureManagement().get(feature);
+        if (featureItem != null && !featureItem.getEvaluate()) {
             return false;
         }
 
@@ -131,8 +140,8 @@ public class FeatureManager {
     public Set<String> getAllFeatureNames() {
         Set<String> allFeatures = new HashSet<>();
 
-        allFeatures.addAll(featureManagementConfigurations.getOnOff().keySet());
-        allFeatures.addAll(featureManagementConfigurations.getFeatureManagement().keySet());
+        allFeatures.addAll(clientSideConfigurations.getOnOff().keySet());
+        allFeatures.addAll(clientSideConfigurations.getFeatureManagement().keySet());
         return allFeatures;
     }
 
@@ -140,14 +149,14 @@ public class FeatureManager {
      * @return the featureManagement
      */
     Map<String, Feature> getFeatureManagement() {
-        return featureManagementConfigurations.getFeatureManagement();
+        return clientSideConfigurations.getFeatureManagement();
     }
 
     /**
      * @return the onOff
      */
     Map<String, Boolean> getOnOff() {
-        return featureManagementConfigurations.getOnOff();
+        return clientSideConfigurations.getOnOff();
     }
 
 }
