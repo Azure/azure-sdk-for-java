@@ -605,12 +605,13 @@ public final class ImageAnalysisAsyncClient {
      * 
      * @return represents the outcome of an Image Analysis operation on successful completion of {@link Mono}.
      */
-    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures, ImageAnalysisOptions options) {
+    public Mono<ImageAnalysisResult> analyze(BinaryData imageBuffer, List<VisualFeatures> visualFeatures,
+        ImageAnalysisOptions options) {
         if (options == null) {
             return analyzeFromBuffer(visualFeatures, imageBuffer, null, null, null, null);
         } else {
-            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(), options.getGenderNeutralCaption(),
-                options.getSmartCropsAspectRatios(), options.getModelVersion());
+            return analyzeFromBuffer(visualFeatures, imageBuffer, options.getLanguage(),
+                options.getGenderNeutralCaption(), options.getSmartCropsAspectRatios(), options.getModelVersion());
         }
     }
 }
