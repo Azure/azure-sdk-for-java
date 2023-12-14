@@ -63,9 +63,8 @@ public class FunctionAppsImpl
                         return Mono.zip(
                             this.inner().getConfigurationAsync(resourceGroupName, name),
                             this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
-                            ((siteConfigResourceInner, siteLogsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, siteLogsConfigInner)
-                            ));
+                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
+                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
                     }
                 });
     }
