@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.UnexpectedLengthException;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
@@ -64,11 +63,11 @@ public final class RestProxyUtils {
 
     private static void validateLengthInternal(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new UnexpectedLengthException(bodyTooLarge(length, expectedLength), length, expectedLength);
+            throw new IllegalStateException(bodyTooLarge(length, expectedLength));
         }
 
         if (length < expectedLength) {
-            throw new UnexpectedLengthException(bodyTooSmall(length, expectedLength), length, expectedLength);
+            throw new IllegalStateException(bodyTooSmall(length, expectedLength));
         }
     }
 

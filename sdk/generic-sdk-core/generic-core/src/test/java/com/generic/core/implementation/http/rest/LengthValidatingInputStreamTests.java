@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.UnexpectedLengthException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -37,25 +36,25 @@ public class LengthValidatingInputStreamTests {
         InputStream inner = new ByteArrayInputStream(new byte[4095]);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
-        assertThrows(UnexpectedLengthException.class, () -> readStream(validatorStream));
-        assertThrows(UnexpectedLengthException.class, () -> readStreamByteByByte(validatorStream));
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> readStream(validatorStream));
+        assertThrows(IllegalStateException.class, () -> readStreamByteByByte(validatorStream));
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.mark(Integer.MAX_VALUE);
             validatorStream.read(new byte[12]);
             validatorStream.reset();
             readStream(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.mark(Integer.MAX_VALUE);
             validatorStream.read(new byte[12]);
             validatorStream.reset();
             readStreamByteByByte(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.skip(10);
             readStream(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.skip(10);
             readStreamByteByByte(validatorStream);
         });
@@ -66,25 +65,25 @@ public class LengthValidatingInputStreamTests {
         InputStream inner = new ByteArrayInputStream(new byte[4097]);
         InputStream validatorStream = new LengthValidatingInputStream(inner, 4096);
 
-        assertThrows(UnexpectedLengthException.class, () -> readStream(validatorStream));
-        assertThrows(UnexpectedLengthException.class, () -> readStreamByteByByte(validatorStream));
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> readStream(validatorStream));
+        assertThrows(IllegalStateException.class, () -> readStreamByteByByte(validatorStream));
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.mark(Integer.MAX_VALUE);
             validatorStream.read(new byte[12]);
             validatorStream.reset();
             readStream(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.mark(Integer.MAX_VALUE);
             validatorStream.read(new byte[12]);
             validatorStream.reset();
             readStreamByteByByte(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.skip(10);
             readStream(validatorStream);
         });
-        assertThrows(UnexpectedLengthException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             validatorStream.skip(10);
             readStreamByteByByte(validatorStream);
         });

@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.UnexpectedLengthException;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
@@ -27,8 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class RestProxyUtilsTests {
     private static final String SAMPLE = "sample";
@@ -57,7 +54,7 @@ public class RestProxyUtilsTests {
     @ParameterizedTest
     @MethodSource("unexpectedBodyLengthTooSmallDataProvider")
     public void unexpectedBodyLengthTooSmall(HttpRequest httpRequest) {
-        assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest), "Request body "
+        assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest), "Request body "
             + "emitted " + EXPECTED.length + " bytes, less than the expected " + (EXPECTED.length + 1) + " bytes.");
     }
 
@@ -68,7 +65,7 @@ public class RestProxyUtilsTests {
     @ParameterizedTest
     @MethodSource("unexpectedBodyLengthTooLargeDataProvider")
     public void unexpectedBodyLengthTooLarge(HttpRequest httpRequest) {
-        assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest), "Request body "
+        assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest), "Request body "
             + "emitted " + EXPECTED.length + " bytes, more than the expected " + (EXPECTED.length - 1) + " bytes.");
     }
 
@@ -124,8 +121,8 @@ public class RestProxyUtilsTests {
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L))
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
-            UnexpectedLengthException thrown =
-                assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest),
+            IllegalStateException thrown =
+                assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
                     "Expected validateLength() to throw, but it didn't");
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, more than the expected "
                 + (EXPECTED.length - 1) + " bytes.", thrown.getMessage());
@@ -139,8 +136,8 @@ public class RestProxyUtilsTests {
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L))
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
-            UnexpectedLengthException thrown =
-                assertThrows(UnexpectedLengthException.class, () -> validateAndCollectRequest(httpRequest),
+            IllegalStateException thrown =
+                assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
                     "Expected validateLength() to throw, but it didn't");
 
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, less than the expected "

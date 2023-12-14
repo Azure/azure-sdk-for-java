@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.exception.UnexpectedLengthException;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import static com.generic.core.implementation.http.rest.RestProxyUtils.bodyTooLarge;
+import static com.generic.core.implementation.http.rest.RestProxyUtils.bodyTooSmall;
 
 /**
  * An {@link InputStream} decorator that tracks the number of bytes read from an inner {@link InputStream} and throws
@@ -110,11 +112,9 @@ final class LengthValidatingInputStream extends InputStream {
         if (readSize == -1) {
             // If the inner InputStream has reached termination validate that the read bytes matches what was expected.
             if (position > expectedReadSize) {
-                throw new UnexpectedLengthException(RestProxyUtils.bodyTooLarge(position, expectedReadSize), position,
-                    expectedReadSize);
+                throw new IllegalStateException(bodyTooLarge(position, expectedReadSize));
             } else if (position < expectedReadSize) {
-                throw new UnexpectedLengthException(RestProxyUtils.bodyTooSmall(position, expectedReadSize), position,
-                    expectedReadSize);
+                throw new IllegalStateException(bodyTooSmall(position, expectedReadSize));
             }
         } else {
             position += readSize;

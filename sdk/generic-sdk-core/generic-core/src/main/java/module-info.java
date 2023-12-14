@@ -8,7 +8,6 @@ module com.generic.core {
     // public API surface area
     exports com.generic.core.annotation;
     exports com.generic.core.credential;
-    exports com.generic.core.exception;
     exports com.generic.core.models;
 
     exports com.generic.core.http;

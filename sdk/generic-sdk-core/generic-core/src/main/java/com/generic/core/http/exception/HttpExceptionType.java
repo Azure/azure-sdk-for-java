@@ -25,24 +25,6 @@ public final class HttpExceptionType implements ExpandableStringEnum<HttpExcepti
     }
 
     /**
-     * Gets the HTTP exception type name based on the name passed into {@link #fromString(String)}.
-     *
-     * @return The HTTP exception type name name based on the construction of this {@link HttpExceptionType}.
-     */
-    public String getCaseSensitiveName() {
-        return toString();
-    }
-
-    /**
-     * Gets the HTTP exception type name based on the name passed into {@link #fromString(String)} lower cased.
-     *
-     * @return The HTTP exception type name based on the construction of this {@link HttpExceptionType} lower cased.
-     */
-    public String getCaseInsensitiveName() {
-        return caseInsensitive;
-    }
-
-    /**
      * Gets known {@link HttpExceptionType} values.
      *
      * @return The known {@link HttpExceptionType} values.
