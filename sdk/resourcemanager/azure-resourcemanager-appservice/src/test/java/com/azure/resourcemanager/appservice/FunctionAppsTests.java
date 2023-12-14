@@ -11,6 +11,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -30,6 +31,7 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -495,9 +497,13 @@ public class FunctionAppsTests extends AppServiceTest {
             .define(rgName1)
             .withRegion(region)
             .create();
-        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
         webappName1 = generateRandomResourceName("java-function-", 20);
-        FunctionApp functionApp = appServiceManager
+        // function app not created, get will throw exception
+        Assertions.assertThrows(ManagementException.class, () -> appServiceManager
+            .serviceClient().getWebApps().getByResourceGroup(rgName1, webappName1));
+
+        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
+        appServiceManager
             .functionApps()
             .define(webappName1)
             .withRegion(region)
@@ -508,15 +514,25 @@ public class FunctionAppsTests extends AppServiceTest {
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
             .create();
 
+        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
+
         Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
 
         functionApp.update()
             .withMaxReplicas(15)
+            .apply();
+
+        // only changed max, min not changed
+        Assertions.assertEquals(15, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        functionApp.update()
             .withMinReplicas(5)
             .apply();
 
+        // only changed min, max not changed
         Assertions.assertEquals(15, functionApp.maxReplicas());
         Assertions.assertEquals(5, functionApp.minReplicas());
     }

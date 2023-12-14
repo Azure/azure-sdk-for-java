@@ -208,8 +208,10 @@ class FunctionAppImpl
                         .getStorageConnectionString(storageAccountToSet.name(), key.value(),
                             manager().environment());
                     addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                    addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                     if (!isFunctionAppOnACA()) {
+                        // Function App on ACA only supports Application Insights.
+                        // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
+                        addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                         return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())
                             .flatMap(appServicePlan -> {
                                 if (appServicePlan == null
@@ -702,7 +704,11 @@ class FunctionAppImpl
      * @return whether this Function App is on Azure Container Apps environment
      */
     private boolean isFunctionAppOnACA() {
-        return !CoreUtils.isNullOrEmpty(this.innerModel().managedEnvironmentId());
+        return isFunctionAppOnACA(innerModel());
+    }
+
+    static boolean isFunctionAppOnACA(SiteInner siteInner) {
+        return siteInner != null && !CoreUtils.isNullOrEmpty(siteInner.managedEnvironmentId());
     }
 
     @Host("{$host}")

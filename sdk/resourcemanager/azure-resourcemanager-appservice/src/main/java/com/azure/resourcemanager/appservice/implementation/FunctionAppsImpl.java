@@ -39,14 +39,7 @@ public class FunctionAppsImpl
 
     @Override
     public FunctionApp getByResourceGroup(String groupName, String name) {
-        SiteInner siteInner = this.inner().getByResourceGroup(groupName, name);
-        if (siteInner == null) {
-            return null;
-        }
-        return wrapModel(
-            siteInner,
-            this.inner().getConfiguration(groupName, name),
-            this.inner().getDiagnosticLogsConfiguration(groupName, name));
+        return getByResourceGroupAsync(groupName, name).block();
     }
 
     @Override
@@ -62,13 +55,20 @@ public class FunctionAppsImpl
         return this
             .getInnerAsync(resourceGroupName, name)
             .flatMap(
-                siteInner ->
-                    Mono
-                        .zip(
-                            this.inner().getConfigurationAsync(resourceGroupName, name),
-                            this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
-                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
-                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+                siteInner -> this.inner().getConfigurationAsync(resourceGroupName, name)
+                    .flatMap(
+                        siteConfigResourceInner -> {
+                            if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
+                                return Mono.just(wrapModel(siteInner, siteConfigResourceInner, null));
+                            } else {
+                                return this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name)
+                                    .flatMap(
+                                        logsConfigInner ->
+                                            Mono.just(wrapModel(siteInner, siteConfigResourceInner, logsConfigInner))
+                                    );
+                            }
+                        }
+                    ));
     }
 
     @Override
