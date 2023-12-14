@@ -93,7 +93,8 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
             }
         }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
+        String formattedQuery = expandedQuery.replaceAll("\\s+{1,}", " ");
+        SqlQuerySpec querySpec = new SqlQuerySpec(formattedQuery, sqlParameters);
         if (isCountQuery()) {
             final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             final Mono<Long> mono = this.operations.count(querySpec, container);
