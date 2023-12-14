@@ -209,7 +209,7 @@ class FunctionAppImpl
                             manager().environment());
                     addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                     if (!isFunctionAppOnACA()) {
-                        // Function App on ACA only supports Application Insights.
+                        // Function App on ACA only supports Application Insights as log option.
                         // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
                         addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                         return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())

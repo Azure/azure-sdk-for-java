@@ -57,6 +57,7 @@ public class FunctionAppsImpl
             .flatMap(
                 siteInner -> {
                     if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
+                        // Function App on ACA only supports Application Insights as log option.
                         return this.inner().getConfigurationAsync(resourceGroupName, name)
                             .map(siteConfigResourceInner -> wrapModel(siteInner, siteConfigResourceInner, null));
                     } else {
