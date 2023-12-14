@@ -365,7 +365,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -409,7 +410,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -451,7 +453,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -517,7 +520,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -581,7 +585,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
@@ -623,7 +628,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
@@ -664,7 +670,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
@@ -728,7 +735,8 @@ public final class OpenAIClientImpl {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)

@@ -12,6 +12,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
+import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
@@ -43,6 +44,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -938,7 +940,8 @@ public final class OpenAIAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -1287,7 +1290,8 @@ public final class OpenAIAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
@@ -1329,7 +1333,8 @@ public final class OpenAIAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
@@ -1393,7 +1398,8 @@ public final class OpenAIAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     file: byte[] (Required)
+     *     file: BinaryData (Required)
+     *     file: String (Optional)
      *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
@@ -1450,7 +1456,16 @@ public final class OpenAIAsyncClient {
         // Generated convenience method for getAudioTranscriptionAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
-            BinaryData.fromObject(audioTranscriptionOptions), requestOptions).flatMap(FluxUtil::toMono)
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("file", audioTranscriptionOptions.getFile(),
+                    audioTranscriptionOptions.getFileFilename())
+                .serializeTextField("filename", audioTranscriptionOptions.getFilename())
+                .serializeTextField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
+                .serializeTextField("language", audioTranscriptionOptions.getLanguage())
+                .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
+                .serializeTextField("temperature", Objects.toString(audioTranscriptionOptions.getTemperature()))
+                .serializeTextField("model", audioTranscriptionOptions.getModel()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
 
@@ -1476,7 +1491,15 @@ public final class OpenAIAsyncClient {
         // Generated convenience method for getAudioTranslationAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
-            BinaryData.fromObject(audioTranslationOptions), requestOptions).flatMap(FluxUtil::toMono)
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("file", audioTranslationOptions.getFile(),
+                    audioTranslationOptions.getFileFilename())
+                .serializeTextField("filename", audioTranslationOptions.getFilename())
+                .serializeTextField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
+                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+                .serializeTextField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
+                .serializeTextField("model", audioTranslationOptions.getModel()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(String.class));
     }
 
@@ -1610,5 +1633,75 @@ public final class OpenAIAsyncClient {
         return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(ImageGenerations.class));
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transcribed text and associated metadata from provided spoken audio data on successful completion of
+     * {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
+        AudioTranscriptionOptions audioTranscriptionOptions) {
+        // Generated convenience method for getAudioTranscriptionAsResponseObjectWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("file", audioTranscriptionOptions.getFile(),
+                    audioTranscriptionOptions.getFileFilename())
+                .serializeTextField("filename", audioTranscriptionOptions.getFilename())
+                .serializeTextField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
+                .serializeTextField("language", audioTranscriptionOptions.getLanguage())
+                .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
+                .serializeTextField("temperature", Objects.toString(audioTranscriptionOptions.getTemperature()))
+                .serializeTextField("model", audioTranscriptionOptions.getModel()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranscription.class));
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio data on successful
+     * completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AudioTranslation> getAudioTranslationAsResponseObject(String deploymentOrModelName,
+        AudioTranslationOptions audioTranslationOptions) {
+        // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName,
+            new MultipartFormDataHelper(requestOptions)
+                .serializeFileField("file", audioTranslationOptions.getFile(),
+                    audioTranslationOptions.getFileFilename())
+                .serializeTextField("filename", audioTranslationOptions.getFilename())
+                .serializeTextField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
+                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
+                .serializeTextField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
+                .serializeTextField("model", audioTranslationOptions.getModel()).end().getRequestBody(),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(AudioTranslation.class));
     }
 }
