@@ -38,6 +38,8 @@ import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+// TODO (trask) can probably align dropping compatibility with old HTTP semconv with the release of
+//  Application Insights Java 4.0
 public final class SpanDataMapper {
 
     // visible for testing
