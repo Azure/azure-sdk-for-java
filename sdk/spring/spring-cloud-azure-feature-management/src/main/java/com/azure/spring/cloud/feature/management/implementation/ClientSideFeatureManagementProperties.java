@@ -22,8 +22,8 @@ public class ClientSideFeatureManagementProperties extends FeatureManagementProp
     private static final ObjectMapper MAPPER = new ObjectMapper()
         .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
-    @SuppressWarnings("unchecked")
     @Override
+    @SuppressWarnings("unchecked")
     protected void addToFeatures(Map<? extends String, ? extends Object> features, String key, String combined) {
         Object featureValue = features.get(key);
         if (!combined.isEmpty() && !combined.endsWith(".")) {
