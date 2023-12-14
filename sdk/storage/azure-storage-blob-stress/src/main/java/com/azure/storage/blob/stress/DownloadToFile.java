@@ -45,7 +45,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
-            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block().booleanValue();
+            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
         }
@@ -63,7 +63,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     private static void deleteFile(Path path) {
         try {
             path.toFile().delete();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOGGER.atInfo()
                 .addKeyValue("path", path)
                 .log("failed to delete file", e);

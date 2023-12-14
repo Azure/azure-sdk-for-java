@@ -3,17 +3,19 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.blob.stress.utils.TelemetryHelper;
+import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -32,12 +34,15 @@ public class OpenInputStream extends BlobScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected boolean runInternal(Context span) {
+    protected boolean runInternal(Context span) throws IOException {
         try (InputStream stream = syncClient.openInputStream()) {
-            return ORIGINAL_CONTENT.checkMatch(BinaryData.fromStream(stream), span).block().booleanValue();
-        } catch (Exception e) {
-            LOGGER.error("Failed to open input stream", e);
-            return false;
+            try (CrcInputStream crcStream = new CrcInputStream(stream)) {
+                byte[] buffer = new byte[8192];
+                while (crcStream.read(buffer) != -1) {
+                    // do nothing
+                }
+                return ORIGINAL_CONTENT.checkMatch(crcStream.getContentInfo(), span).block();
+            }
         }
     }
 

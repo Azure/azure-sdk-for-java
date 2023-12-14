@@ -9,12 +9,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.stress.ContentInfo;
 import com.azure.storage.stress.CrcInputStream;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.CRC32;
 
@@ -41,68 +45,51 @@ public class OriginalContent {
         }
 
         this.blobSize = blobSize;
-        return Mono.using(() -> new CrcInputStream(BLOB_CONTENT_HEAD, blobSize),
-            data -> blobClient
-                .upload(BinaryData.fromStream(data))
-                .doFinally(i -> dataChecksum = data.getCrc()),
+        return Mono.using(
+                () -> new CrcInputStream(BLOB_CONTENT_HEAD, blobSize),
+                data -> blobClient
+                        .upload(BinaryData.fromStream(data, blobSize))
+                        .then(data.getContentInfo())
+                        .doOnSuccess(info -> dataChecksum = info.getCrc()),
                 CrcInputStream::close)
             .then();
-
     }
 
-   public Mono<Boolean> checkMatch(BinaryData data, Context span) {
-       if (dataChecksum == -1) {
-           return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
-       }
-       return calculateCrc(data)
-           .map(crc -> {
-               if (crc != dataChecksum) {
-                   try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
-                       logMismatch(crc, data.getLength(), readHead(data));
-                   } catch (Exception e) {
-                       throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                   }
-                   return false;
-               }
-               return true;
-           });
-   }
-
-    public Mono<Long> calculateCrc(BinaryData data) {
-        return data
-            .toFluxByteBuffer()
-            .reduce(new CRC32(),
-                (crc, bb) -> {
-                    crc.update(bb);
-                    return crc;
-                })
-            .map(CRC32::getValue);
+    public Mono<Boolean> checkMatch(BinaryData data, Context span) {
+        return checkMatch(data.toFluxByteBuffer(), span);
     }
 
-    private void logMismatch(long actualCrc, long actualLength, byte[] actualContentHead) {
-        // future: if mismatch, compare against original file
-        LOGGER.atError()
-            .addKeyValue("expectedCrc", dataChecksum)
-            .addKeyValue("actualCrc", actualCrc)
-            .addKeyValue("expectedLength", blobSize)
-            .addKeyValue("actualLength", actualLength)
-            .addKeyValue("actualContentHead", new String(actualContentHead, StandardCharsets.UTF_8))
-            .log("mismatched crc");
+    public Mono<Boolean> checkMatch(Flux<ByteBuffer> data, Context span) {
+        return checkMatch(ContentInfo.fromFluxByteBuffer(data), span);
     }
 
-    private byte[] readHead(BinaryData data) {
-        int len = (int)Math.min(blobSize, 1024L);
-        try (InputStream file = data.toStream()) {
-            byte[] buf = new byte[len];
-            int pos = 0;
-            int read;
-            while (pos < len && (read = file.read(buf, pos, len)) != -1) {
-                pos += read;
-            }
-            return buf;
+    public Mono<Boolean> checkMatch(Mono<ContentInfo> contentInfo, Context span) {
+        if (dataChecksum == -1) {
+            return monoError(LOGGER, new IllegalStateException("setupBlob must complete first"));
         }
-        catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        return contentInfo
+                .map(info -> {
+                    if (info.getCrc() != dataChecksum) {
+                        logMismatch(info.getCrc(), info.getLength(), info.getHead(), span);
+                        return false;
+                    }
+
+                    return true;
+                });
+    }
+
+    private void logMismatch(long actualCrc, long actualLength, byte[] actualContentHead, Context span) {
+        try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
+            // future: if mismatch, compare against original file
+            LOGGER.atError()
+                    .addKeyValue("expectedCrc", dataChecksum)
+                    .addKeyValue("actualCrc", actualCrc)
+                    .addKeyValue("expectedLength", blobSize)
+                    .addKeyValue("actualLength", actualLength)
+                    .addKeyValue("actualContentHead", new String(actualContentHead, 0, (int)Math.min(1024, actualLength), StandardCharsets.UTF_8))
+                    .log("mismatched crc");
+        } catch (Throwable e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
