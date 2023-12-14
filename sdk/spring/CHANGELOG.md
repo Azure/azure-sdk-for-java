@@ -1,6 +1,6 @@
 # Release History
 
-## 4.14.0 (2023-12-11)
+## 4.14.0 (2023-12-14)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.18. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>18) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.8. (Note: 2020.0.x (x>6) and 2021.0.y (y>8) should be supported, but they aren't tested with this release.)
 
@@ -13,7 +13,7 @@
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Other Changes
-- Switch to use `ServiceBusJmsConnectionFactory` from `azure-servicebus-jms`, deprecate the older `ServiceBusJmsConnectionFactory` from `spring-cloud-azure-autoconfigure`. Deprecate `ServiceBusJmsConnectionFactoryCustomizer` and replaced by `AzureServiceBusJmsConnectionFactoryCustomizer`. Deprecate `AzureServiceBusJmsCredentialSupplier` and remove `jmsAADAuthenticationCustomizer` because new `ServiceBusJmsConnectionFactory` already supports Microsoft Entra ID authentication [#37369](https://github.com/Azure/azure-sdk-for-java/pull/37369).
+- Switch to use `ServiceBusJmsConnectionFactory` from `azure-servicebus-jms` [#37369](https://github.com/Azure/azure-sdk-for-java/pull/37369).
 
 ### Spring Cloud Azure Appconfiguration Config
 This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
@@ -24,7 +24,7 @@ This section includes changes in `spring-cloud-azure-starter-appconfiguration-co
 
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
-Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3410-2023-12-11) for more details.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3410-2023-12-14) for more details.
 
 ## 5.7.0 (2023-11-07)
 - This release is compatible with Spring Boot 3.0.0-3.1.5. (Note: 3.1.x (x>3) should be supported, but they aren't tested with this release.)

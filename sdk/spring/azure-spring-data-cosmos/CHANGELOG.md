@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.41.0 (2023-12-11)
+### 3.41.0 (2023-12-14)
 
 #### Bugs Fixed
 * Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
