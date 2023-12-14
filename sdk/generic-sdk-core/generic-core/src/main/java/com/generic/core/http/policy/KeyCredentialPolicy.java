@@ -10,7 +10,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.models.Headers;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.Objects;
 

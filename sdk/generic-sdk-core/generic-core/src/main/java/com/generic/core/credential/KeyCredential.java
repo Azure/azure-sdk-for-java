@@ -3,7 +3,7 @@
 
 package com.generic.core.credential;
 
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.Objects;
 

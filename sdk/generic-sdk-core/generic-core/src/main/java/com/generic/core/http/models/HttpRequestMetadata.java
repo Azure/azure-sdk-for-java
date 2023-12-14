@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.models.Context;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 /**
  * Contains metadata associated with a given {@link HttpRequest}.

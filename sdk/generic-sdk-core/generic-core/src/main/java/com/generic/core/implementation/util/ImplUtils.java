@@ -10,7 +10,7 @@ import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.models.Headers;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

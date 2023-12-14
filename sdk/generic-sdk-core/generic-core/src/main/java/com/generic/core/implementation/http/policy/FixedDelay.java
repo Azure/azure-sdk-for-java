@@ -4,7 +4,7 @@
 package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.policy.FixedDelayOptions;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;

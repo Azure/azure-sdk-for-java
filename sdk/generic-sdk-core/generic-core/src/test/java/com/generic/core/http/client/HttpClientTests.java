@@ -33,7 +33,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.models.HttpBinJSON;
 import com.generic.core.models.RequestOptions;
 import com.generic.core.models.TypeReference;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

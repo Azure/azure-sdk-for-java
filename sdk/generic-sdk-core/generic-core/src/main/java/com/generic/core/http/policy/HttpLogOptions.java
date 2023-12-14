@@ -6,7 +6,7 @@ package com.generic.core.http.policy;
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.Arrays;
 import java.util.Collections;

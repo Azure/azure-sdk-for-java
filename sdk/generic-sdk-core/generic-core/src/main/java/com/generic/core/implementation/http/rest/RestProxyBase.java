@@ -23,7 +23,7 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import com.generic.core.models.RequestOptions;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 

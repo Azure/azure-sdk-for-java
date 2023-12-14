@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation.util;
 
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.util.ClientLogger;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,7 +51,7 @@ public final class Providers<TProvider, TInstance> {
             defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
 
-            LOGGER.log(LogLevel.VERBOSE, () -> String.format("Using {%s} as the default {%s}.",
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> String.format("Using {%s} as the default {%s}.",
                 defaultProviderName, providerClass.getName()));
         } else {
             defaultProvider = null;
@@ -64,7 +63,7 @@ public final class Providers<TProvider, TInstance> {
             String additionalProviderName = additionalProvider.getClass().getName();
 
             availableProviders.put(additionalProviderName, additionalProvider);
-            LOGGER.log(LogLevel.VERBOSE, () -> String.format("Additional provider found on the classpath: {%s}",
+            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> String.format("Additional provider found on the classpath: {%s}",
                 additionalProviderName));
         }
 

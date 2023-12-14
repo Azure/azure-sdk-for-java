@@ -10,8 +10,7 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.RedirectStrategy;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.util.ClientLogger;
 
 import java.net.HttpURLConnection;
 import java.util.EnumSet;
@@ -61,7 +60,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HttpHeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            LOGGER.log(LogLevel.ERROR, () ->
+            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
                 String.format("'locationHeader' provided as null will be defaulted to {%s}", HttpHeaderName.LOCATION));
 
             return HttpHeaderName.LOCATION;
@@ -72,7 +71,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            LOGGER.log(LogLevel.ERROR, () ->
+            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
                 String.format("'allowedMethods' provided as null will be defaulted to {%s}",
                     DEFAULT_REDIRECT_ALLOWED_METHODS));
 

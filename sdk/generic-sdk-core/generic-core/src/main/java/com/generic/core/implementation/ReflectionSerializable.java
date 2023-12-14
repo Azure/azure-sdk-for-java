@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation;
 
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import com.generic.json.JsonProviders;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;

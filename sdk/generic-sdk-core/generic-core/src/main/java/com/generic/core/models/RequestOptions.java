@@ -8,7 +8,7 @@ import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.http.rest.ErrorOptions;
 import com.generic.core.implementation.http.rest.UrlEscapers;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.EnumSet;
 import java.util.Objects;

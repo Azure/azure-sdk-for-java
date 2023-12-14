@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.nio.charset.StandardCharsets;
 import java.time.DateTimeException;

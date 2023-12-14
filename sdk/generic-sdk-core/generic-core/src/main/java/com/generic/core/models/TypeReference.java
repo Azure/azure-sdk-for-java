@@ -4,7 +4,7 @@
 package com.generic.core.models;
 
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

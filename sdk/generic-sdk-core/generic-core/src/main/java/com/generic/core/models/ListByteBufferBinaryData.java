@@ -1,7 +1,7 @@
 package com.generic.core.models;
 
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.InputStream;

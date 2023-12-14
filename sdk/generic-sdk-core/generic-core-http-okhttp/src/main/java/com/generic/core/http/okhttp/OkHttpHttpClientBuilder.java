@@ -8,7 +8,7 @@ import com.generic.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;

@@ -17,10 +17,10 @@ module com.generic.core {
     exports com.generic.core.http.exception;
     exports com.generic.core.http.client;
     exports com.generic.core.http.models;
+    exports com.generic.core.util;
     exports com.generic.core.http.pipeline;
     exports com.generic.core.http.policy;
     exports com.generic.core.util.configuration;
-    exports com.generic.core.util.logging;
     exports com.generic.core.util.serializer;
 
     uses com.generic.core.http.client.HttpClientProvider;

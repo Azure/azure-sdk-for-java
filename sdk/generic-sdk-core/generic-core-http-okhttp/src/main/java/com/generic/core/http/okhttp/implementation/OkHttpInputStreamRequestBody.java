@@ -4,7 +4,7 @@
 package com.generic.core.http.okhttp.implementation;
 
 import com.generic.core.models.InputStreamBinaryData;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import okhttp3.MediaType;
 import okio.BufferedSink;
 import okio.Okio;

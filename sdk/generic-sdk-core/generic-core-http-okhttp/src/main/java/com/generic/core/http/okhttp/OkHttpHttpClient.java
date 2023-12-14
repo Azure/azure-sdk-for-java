@@ -17,7 +17,7 @@ import com.generic.core.models.FileBinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.models.InputStreamBinaryData;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

@@ -4,8 +4,7 @@
 package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
 
@@ -15,21 +14,21 @@ import java.time.Duration;
 @FunctionalInterface
 public interface HttpResponseLogger {
     /**
-     * Gets the {@link LogLevel} used to log the HTTP response.
+     * Gets the {@link ClientLogger.LogLevel} used to log the HTTP response.
      * <p>
-     * By default, this will return {@link LogLevel#INFORMATIONAL}.
+     * By default, this will return {@link ClientLogger.LogLevel#INFORMATIONAL}.
      *
      * @param response The response being logged.
-     * @return The {@link LogLevel} used to log the HTTP response.
+     * @return The {@link ClientLogger.LogLevel} used to log the HTTP response.
      */
-    default LogLevel getLogLevel(HttpResponse response) {
-        return LogLevel.INFORMATIONAL;
+    default ClientLogger.LogLevel getLogLevel(HttpResponse response) {
+        return ClientLogger.LogLevel.INFORMATIONAL;
     }
 
     /**
      * Logs the HTTP response.
      * <p>
-     * To get the {@link LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponse)} .
+     * To get the {@link ClientLogger.LogLevel} used to log the HTTP response use {@link #getLogLevel(HttpResponse)} .
      *
      * @param logger The {@link ClientLogger} used to log the response.
      * @param response The response being logged.

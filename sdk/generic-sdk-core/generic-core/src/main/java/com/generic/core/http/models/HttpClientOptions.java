@@ -8,7 +8,7 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.models.Header;
 import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
 import java.util.Collections;

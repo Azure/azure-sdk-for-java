@@ -3,7 +3,7 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.exception.UnexpectedLengthException;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
 import java.io.InputStream;

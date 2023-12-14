@@ -6,7 +6,7 @@ package com.generic.core.implementation.http;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 /**
  * Represents a class responsible for maintaining information related to request-specific context and pipeline data.

@@ -6,7 +6,7 @@ package com.generic.core.http.models;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationProperty;
 import com.generic.core.util.configuration.ConfigurationPropertyBuilder;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;

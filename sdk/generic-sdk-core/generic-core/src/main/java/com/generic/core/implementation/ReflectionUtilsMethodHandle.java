@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.generic.core.implementation;
 
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.util.ClientLogger;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -63,7 +62,7 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
             } else {
-                LOGGER.log(LogLevel.INFORMATIONAL,
+                LOGGER.log(ClientLogger.LogLevel.INFORMATIONAL,
                     () -> "Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
                           + "Will attempt to fallback to using the package-private constructor.", throwable);
             }

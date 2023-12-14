@@ -6,7 +6,7 @@ package com.generic.core.http.okhttp.implementation;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.util.AuthorizationChallengeHandler;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
 import okhttp3.Interceptor;

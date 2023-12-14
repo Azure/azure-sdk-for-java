@@ -7,7 +7,7 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.implementation.util.EnvironmentConfiguration;
 import com.generic.core.implementation.util.CoreUtils;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.Collections;
 import java.util.HashMap;

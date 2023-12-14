@@ -4,7 +4,7 @@
 package com.generic.core.models;
 
 import com.generic.core.annotation.Metadata;
-import com.generic.core.util.logging.ClientLogger;
+import com.generic.core.util.ClientLogger;
 
 import java.util.Objects;
 import java.util.Optional;

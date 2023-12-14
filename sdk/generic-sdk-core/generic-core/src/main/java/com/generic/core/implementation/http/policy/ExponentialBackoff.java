@@ -7,8 +7,7 @@ import com.generic.core.http.policy.ExponentialBackoffOptions;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.ObjectsUtil;
 import com.generic.core.util.configuration.Configuration;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LogLevel;
+import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -39,7 +38,7 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.log(LogLevel.VERBOSE, () -> String.format("{%s} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> String.format("{%s} was loaded but is an invalid number. Using 3 retries as the maximum.",
                     PROPERTY_REQUEST_RETRY_COUNT));
             }
         }

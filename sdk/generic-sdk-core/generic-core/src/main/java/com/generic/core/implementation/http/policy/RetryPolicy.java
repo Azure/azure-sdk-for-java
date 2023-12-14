@@ -12,8 +12,7 @@ import com.generic.core.http.policy.RetryOptions;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.Headers;
-import com.generic.core.util.logging.ClientLogger;
-import com.generic.core.util.logging.LoggingEventBuilder;
+import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -210,7 +209,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             .log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
+    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
                                           Throwable throwable) {
         loggingEventBuilder
             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
