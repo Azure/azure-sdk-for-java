@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.42.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.41.0 (2023-12-14)
 
 #### Bugs Fixed
