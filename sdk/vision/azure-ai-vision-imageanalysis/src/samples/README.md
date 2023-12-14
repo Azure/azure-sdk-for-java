@@ -4,8 +4,8 @@ languages:
   - java
 products:
   - azure
-  - azure-ai-vision-imageanalysis
-urlFragment: imageanalysis-samples
+  - azure-computer-vision
+urlFragment: image-analysis-java-samples
 ---
 
 # Samples for Image Analysis client library for Java
