@@ -46,7 +46,7 @@ public class MetricDataMapper {
 
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
     private static final List<String> EXCLUDED_METRIC_NAMES = new ArrayList<>();
-    public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights_internal_metric_name");
+    public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
@@ -154,7 +154,7 @@ public class MetricDataMapper {
 
         // We emit some metrics via OpenTelemetry that have names which use characters that aren't
         // supported in OpenTelemetry metric names, and so we put the real metric names into an attribute
-        // (where these characters are supported) and then pull the name back out when sending it to Breeze.
+        // (where these characters are supported).
         String metricName = pointData.getAttributes().get(APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME);
         if (metricName != null) {
             pointBuilder.setName(metricName);
