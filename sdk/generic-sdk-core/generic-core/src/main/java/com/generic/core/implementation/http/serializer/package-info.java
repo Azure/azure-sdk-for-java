@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing interfaces describing serialization and deserialization contract.
+ * Package containing implementation-specific serialization and deserialization APIs that should not be used by
+ * end-users.
  */
 package com.generic.core.implementation.http.serializer;
