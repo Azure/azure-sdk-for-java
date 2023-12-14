@@ -5,63 +5,66 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The AnomalyAlertingConfiguration model. */
+/**
+ * The AnomalyAlertingConfiguration model.
+ */
 @Fluent
-public final class AnomalyAlertingConfiguration {
+public final class AnomalyAlertingConfiguration implements JsonSerializable<AnomalyAlertingConfiguration> {
     /*
      * anomaly alerting configuration unique id
      */
-    @JsonProperty(value = "anomalyAlertingConfigurationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID anomalyAlertingConfigurationId;
 
     /*
      * anomaly alerting configuration name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * anomaly alerting configuration description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * cross metrics operator
-     *
+     * 
      * should be specified when setting up multiple metric alerting configurations
      */
-    @JsonProperty(value = "crossMetricsOperator")
     private AnomalyAlertingConfigurationLogicType crossMetricsOperator;
 
     /*
      * dimensions used to split alert
      */
-    @JsonProperty(value = "splitAlertByDimensions")
     private List<String> splitAlertByDimensions;
 
     /*
      * hook unique ids
      */
-    @JsonProperty(value = "hookIds", required = true)
     private List<UUID> hookIds;
 
     /*
      * Anomaly alerting configurations
      */
-    @JsonProperty(value = "metricAlertingConfigurations", required = true)
     private List<MetricAlertingConfiguration> metricAlertingConfigurations;
 
-    /** Creates an instance of AnomalyAlertingConfiguration class. */
-    public AnomalyAlertingConfiguration() {}
+    /**
+     * Creates an instance of AnomalyAlertingConfiguration class.
+     */
+    public AnomalyAlertingConfiguration() {
+    }
 
     /**
      * Get the anomalyAlertingConfigurationId property: anomaly alerting configuration unique id.
-     *
+     * 
      * @return the anomalyAlertingConfigurationId value.
      */
     public UUID getAnomalyAlertingConfigurationId() {
@@ -70,7 +73,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Get the name property: anomaly alerting configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -79,7 +82,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the name property: anomaly alerting configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
@@ -90,7 +93,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Get the description property: anomaly alerting configuration description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -99,7 +102,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the description property: anomaly alerting configuration description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
@@ -110,9 +113,9 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Get the crossMetricsOperator property: cross metrics operator
-     *
-     * <p>should be specified when setting up multiple metric alerting configurations.
-     *
+     * 
+     * should be specified when setting up multiple metric alerting configurations.
+     * 
      * @return the crossMetricsOperator value.
      */
     public AnomalyAlertingConfigurationLogicType getCrossMetricsOperator() {
@@ -121,21 +124,21 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the crossMetricsOperator property: cross metrics operator
-     *
-     * <p>should be specified when setting up multiple metric alerting configurations.
-     *
+     * 
+     * should be specified when setting up multiple metric alerting configurations.
+     * 
      * @param crossMetricsOperator the crossMetricsOperator value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    public AnomalyAlertingConfiguration setCrossMetricsOperator(
-            AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
+    public AnomalyAlertingConfiguration
+        setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType crossMetricsOperator) {
         this.crossMetricsOperator = crossMetricsOperator;
         return this;
     }
 
     /**
      * Get the splitAlertByDimensions property: dimensions used to split alert.
-     *
+     * 
      * @return the splitAlertByDimensions value.
      */
     public List<String> getSplitAlertByDimensions() {
@@ -144,7 +147,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the splitAlertByDimensions property: dimensions used to split alert.
-     *
+     * 
      * @param splitAlertByDimensions the splitAlertByDimensions value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
@@ -155,7 +158,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Get the hookIds property: hook unique ids.
-     *
+     * 
      * @return the hookIds value.
      */
     public List<UUID> getHookIds() {
@@ -164,7 +167,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the hookIds property: hook unique ids.
-     *
+     * 
      * @param hookIds the hookIds value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
@@ -175,7 +178,7 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Get the metricAlertingConfigurations property: Anomaly alerting configurations.
-     *
+     * 
      * @return the metricAlertingConfigurations value.
      */
     public List<MetricAlertingConfiguration> getMetricAlertingConfigurations() {
@@ -184,13 +187,75 @@ public final class AnomalyAlertingConfiguration {
 
     /**
      * Set the metricAlertingConfigurations property: Anomaly alerting configurations.
-     *
+     * 
      * @param metricAlertingConfigurations the metricAlertingConfigurations value to set.
      * @return the AnomalyAlertingConfiguration object itself.
      */
-    public AnomalyAlertingConfiguration setMetricAlertingConfigurations(
-            List<MetricAlertingConfiguration> metricAlertingConfigurations) {
+    public AnomalyAlertingConfiguration
+        setMetricAlertingConfigurations(List<MetricAlertingConfiguration> metricAlertingConfigurations) {
         this.metricAlertingConfigurations = metricAlertingConfigurations;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("hookIds", this.hookIds,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("metricAlertingConfigurations", this.metricAlertingConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("crossMetricsOperator", Objects.toString(this.crossMetricsOperator, null));
+        jsonWriter.writeArrayField("splitAlertByDimensions", this.splitAlertByDimensions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnomalyAlertingConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnomalyAlertingConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnomalyAlertingConfiguration.
+     */
+    public static AnomalyAlertingConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnomalyAlertingConfiguration deserializedAnomalyAlertingConfiguration = new AnomalyAlertingConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAnomalyAlertingConfiguration.name = reader.getString();
+                } else if ("hookIds".equals(fieldName)) {
+                    List<UUID> hookIds = reader.readArray(
+                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedAnomalyAlertingConfiguration.hookIds = hookIds;
+                } else if ("metricAlertingConfigurations".equals(fieldName)) {
+                    List<MetricAlertingConfiguration> metricAlertingConfigurations
+                        = reader.readArray(reader1 -> MetricAlertingConfiguration.fromJson(reader1));
+                    deserializedAnomalyAlertingConfiguration.metricAlertingConfigurations
+                        = metricAlertingConfigurations;
+                } else if ("anomalyAlertingConfigurationId".equals(fieldName)) {
+                    deserializedAnomalyAlertingConfiguration.anomalyAlertingConfigurationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAnomalyAlertingConfiguration.description = reader.getString();
+                } else if ("crossMetricsOperator".equals(fieldName)) {
+                    deserializedAnomalyAlertingConfiguration.crossMetricsOperator
+                        = AnomalyAlertingConfigurationLogicType.fromString(reader.getString());
+                } else if ("splitAlertByDimensions".equals(fieldName)) {
+                    List<String> splitAlertByDimensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAnomalyAlertingConfiguration.splitAlertByDimensions = splitAlertByDimensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnomalyAlertingConfiguration;
+        });
     }
 }
