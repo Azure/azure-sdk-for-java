@@ -33,7 +33,7 @@ public class ChatCompletionsWithYourData {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
+        String azureOpenaiKey = "https://sdk8428.openai.azure.com/";
         String endpoint = "{azure-open-ai-endpoint}";
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
@@ -52,7 +52,7 @@ public class ChatCompletionsWithYourData {
 
         // The name of the index you want to use as a data source. This index name is created by running Azure Search Sample,
         // https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java#L75
-        String azureSearchIndexName = "{azure-cognitive-search-index-name}"; // "hotels-vector-sample-index"
+        String azureSearchIndexName = "{azure-search-index-name}"; // "hotels-vector-sample-index"
 
         AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
