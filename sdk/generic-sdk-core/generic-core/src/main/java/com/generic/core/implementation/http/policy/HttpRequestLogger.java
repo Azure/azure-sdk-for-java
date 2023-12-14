@@ -4,6 +4,7 @@
 package com.generic.core.implementation.http.policy;
 
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.util.ClientLogger;
 
 /**

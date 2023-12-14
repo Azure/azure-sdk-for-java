@@ -20,10 +20,9 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.policy.HttpLogOptions;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.RestProxy;
-import com.generic.core.implementation.http.policy.HttpLoggingPolicy;
+import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -1524,8 +1523,8 @@ public abstract class HttpClientTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(
-                new HttpLoggingPolicy(new HttpLogOptions()
-                    .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+                new HttpLoggingPolicy(new HttpLoggingPolicy.HttpLogOptions()
+                    .setLogLevel(HttpLoggingPolicy.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response =

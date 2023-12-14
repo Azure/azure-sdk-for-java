@@ -13,8 +13,6 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.policy.DefaultRedirectStrategy;
-import com.generic.core.implementation.http.policy.RedirectPolicy;
-import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

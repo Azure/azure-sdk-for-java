@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http.policy;
+package com.generic.core.http.policy;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.http.policy.RetryOptions;
+import com.generic.core.implementation.http.policy.ExponentialBackoff;
+import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.Headers;
@@ -249,5 +250,199 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // None of the well-known headers have been found, return the default delay duration.
         return retryStrategy.calculateRetryDelay(tryCount);
+    }
+
+    /**
+     * The configuration for retries.
+     */
+    public static class RetryOptions {
+        private final ExponentialBackoffOptions exponentialBackoffOptions;
+        private final FixedDelayOptions fixedDelayOptions;
+
+        /**
+         * Creates a new instance that uses {@link ExponentialBackoffOptions}.
+         *
+         * @param exponentialBackoffOptions The {@link ExponentialBackoffOptions}.
+         */
+        public RetryOptions(ExponentialBackoffOptions exponentialBackoffOptions) {
+            this.exponentialBackoffOptions = Objects.requireNonNull(
+                exponentialBackoffOptions, "'exponentialBackoffOptions' cannot be null.");
+            fixedDelayOptions = null;
+        }
+
+        /**
+         * Creates a new instance that uses {@link FixedDelayOptions}.
+         *
+         * @param fixedDelayOptions The {@link FixedDelayOptions}.
+         */
+        public RetryOptions(FixedDelayOptions fixedDelayOptions) {
+            this.fixedDelayOptions = Objects.requireNonNull(
+                fixedDelayOptions, "'fixedDelayOptions' cannot be null.");
+            exponentialBackoffOptions = null;
+        }
+
+        /**
+         * Gets the configuration for exponential backoff if configured.
+         *
+         * @return The {@link ExponentialBackoffOptions}.
+         */
+        public ExponentialBackoffOptions getExponentialBackoffOptions() {
+            return exponentialBackoffOptions;
+        }
+
+        /**
+         * Gets the configuration for exponential backoff if configured.
+         *
+         * @return The {@link FixedDelayOptions}.
+         */
+        public FixedDelayOptions getFixedDelayOptions() {
+            return fixedDelayOptions;
+        }
+    }
+
+    /**
+     * The configuration for a fixed-delay retry that has a fixed delay duration between each retry attempt.
+     */
+    public static class FixedDelayOptions {
+        private static final ClientLogger LOGGER = new ClientLogger(FixedDelayOptions.class);
+        private final int maxRetries;
+        private final Duration delay;
+
+        /**
+         * Creates an instance of {@link FixedDelayOptions}.
+         *
+         * @param maxRetries The max number of retry attempts that can be made.
+         * @param delay The fixed delay duration between retry attempts.
+         * @throws IllegalArgumentException If {@code maxRetries} is negative.
+         * @throws NullPointerException If {@code delay} is {@code null}.
+         */
+        public FixedDelayOptions(int maxRetries, Duration delay) {
+            if (maxRetries < 0) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            }
+            this.maxRetries = maxRetries;
+            this.delay = Objects.requireNonNull(delay, "'delay' cannot be null.");
+        }
+
+        /**
+         * Gets the max retry attempts that can be made.
+         *
+         * @return The max retry attempts that can be made.
+         */
+        public int getMaxRetries() {
+            return maxRetries;
+        }
+
+        /**
+         * Gets the max retry attempts that can be made.
+         *
+         * @return The max retry attempts that can be made.
+         */
+        public Duration getDelay() {
+            return delay;
+        }
+    }
+
+    /**
+     * The configuration for exponential backoff that has a delay duration that exponentially
+     * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
+     * provided max delay duration.
+     */
+    public static class ExponentialBackoffOptions {
+        private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffOptions.class);
+
+        private Integer maxRetries;
+        private Duration baseDelay;
+        private Duration maxDelay;
+
+        /**
+         * Creates a new instance of {@link ExponentialBackoffOptions}.
+         */
+        public ExponentialBackoffOptions() {
+        }
+
+        /**
+         * Gets the max retry attempts that can be made.
+         *
+         * @return The max retry attempts that can be made.
+         */
+        public Integer getMaxRetries() {
+            return maxRetries;
+        }
+
+        /**
+         * Sets the max retry attempts that can be made.
+         *
+         * @param maxRetries the max retry attempts that can be made.
+         * @throws IllegalArgumentException if {@code maxRetries} is less than 0.
+         * @return The updated {@link ExponentialBackoffOptions}
+         */
+        public ExponentialBackoffOptions setMaxRetries(Integer maxRetries) {
+            if (maxRetries != null && maxRetries < 0) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max retries cannot be less than 0."));
+            }
+            this.maxRetries = maxRetries;
+            return this;
+        }
+
+        /**
+         * Gets the base delay duration for retry.
+         *
+         * @return The base delay duration for retry.
+         */
+        public Duration getBaseDelay() {
+            return baseDelay;
+        }
+
+        /**
+         * Sets the base delay duration for retry.
+         *
+         * @param baseDelay the base delay duration for retry.
+         * @throws IllegalArgumentException if {@code baseDelay} is less than or equal
+         * to 0 or {@code maxDelay} has been set and is less than {@code baseDelay}.
+         * @return The updated {@link ExponentialBackoffOptions}
+         */
+        public ExponentialBackoffOptions setBaseDelay(Duration baseDelay) {
+            validateDelays(baseDelay, maxDelay);
+            this.baseDelay = baseDelay;
+            return this;
+        }
+
+        /**
+         * Gets the max delay duration for retry.
+         *
+         * @return The max delay duration for retry.
+         */
+        public Duration getMaxDelay() {
+            return maxDelay;
+        }
+
+        /**
+         * Sets the max delay duration for retry.
+         *
+         * @param maxDelay the max delay duration for retry.
+         * @throws IllegalArgumentException if {@code maxDelay} is less than or equal
+         * to 0 or {@code baseDelay} has been set and is more than {@code maxDelay}.
+         * @return The updated {@link ExponentialBackoffOptions}
+         */
+        public ExponentialBackoffOptions setMaxDelay(Duration maxDelay) {
+            validateDelays(baseDelay, maxDelay);
+            this.maxDelay = maxDelay;
+            return this;
+        }
+
+        private void validateDelays(Duration baseDelay, Duration maxDelay) {
+            if (baseDelay != null && (baseDelay.isZero() || baseDelay.isNegative())) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be negative or 0."));
+            }
+            if (maxDelay != null && (maxDelay.isZero() || maxDelay.isNegative())) {
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("'maxDelay' cannot be negative or 0."));
+            }
+
+            if (baseDelay != null && maxDelay != null && baseDelay.compareTo(maxDelay) > 0) {
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
+            }
+        }
     }
 }

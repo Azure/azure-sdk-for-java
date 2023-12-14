@@ -47,7 +47,7 @@ public class FixedDelayTest {
 
     @Test
     public void testFixedDelayOptions() {
-        FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(3, Duration.ofSeconds(1));
+        RetryPolicy.FixedDelayOptions fixedDelayOptions = new RetryPolicy.FixedDelayOptions(3, Duration.ofSeconds(1));
         FixedDelay fixedDelay = new FixedDelay(fixedDelayOptions);
         assertEquals(fixedDelay.getMaxRetries(), 3);
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);

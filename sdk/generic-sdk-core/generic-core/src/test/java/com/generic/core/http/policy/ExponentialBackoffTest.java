@@ -20,7 +20,7 @@ public class ExponentialBackoffTest {
     @Test
     public void testZeroBaseDelay() {
         assertThrows(IllegalArgumentException.class, () -> {
-            new ExponentialBackoff(new ExponentialBackoffOptions().setMaxRetries(3).setBaseDelay(Duration.ofSeconds(0))
+            new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions().setMaxRetries(3).setBaseDelay(Duration.ofSeconds(0))
                 .setMaxDelay(Duration.ofMillis(1000)));
         });
     }
@@ -32,25 +32,25 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testBaseGreaterThanMaxDelay() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new ExponentialBackoffOptions()
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions()
             .setMaxRetries(3).setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMillis(500))));
     }
 
     @Test
     public void testNegativeMaxRetries() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new ExponentialBackoffOptions()
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions()
             .setMaxRetries(-1).setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMillis(5000))));
     }
 
     @Test
     public void testNegativeBaseDelay() {
-        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new ExponentialBackoffOptions()
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions()
             .setMaxRetries(5).setBaseDelay(Duration.ofSeconds(-1)).setMaxDelay(Duration.ofMillis(5000))));
     }
 
     @Test
     public void testBaseEqualToMaxDelay() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(new ExponentialBackoffOptions().setMaxRetries(3)
+        ExponentialBackoff expBackoff = new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions().setMaxRetries(3)
             .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofMillis(1000)));
         assertEquals(expBackoff.getMaxRetries(), 3);
         assertTrue(expBackoff.calculateRetryDelay(0).toMillis() <= 1000);
@@ -72,7 +72,7 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testExponentialBackoff() {
-        ExponentialBackoff expBackoff = new ExponentialBackoff(new ExponentialBackoffOptions().setMaxRetries(10)
+        ExponentialBackoff expBackoff = new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions().setMaxRetries(10)
             .setBaseDelay(Duration.ofSeconds(1)).setMaxDelay(Duration.ofSeconds(10)));
 
         // exponential backoff
@@ -89,7 +89,7 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testExponentialBackoffOptions() {
-        ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions()
+        RetryPolicy.ExponentialBackoffOptions exponentialBackoffOptions = new RetryPolicy.ExponentialBackoffOptions()
             .setMaxRetries(10)
             .setBaseDelay(Duration.ofSeconds(1))
             .setMaxDelay(Duration.ofSeconds(10));

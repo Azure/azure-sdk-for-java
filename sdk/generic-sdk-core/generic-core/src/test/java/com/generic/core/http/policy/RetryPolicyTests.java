@@ -13,10 +13,8 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
-import com.generic.core.implementation.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.Context;
 import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -210,7 +208,7 @@ public class RetryPolicyTests {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
-        ExponentialBackoff exponentialBackoff = new ExponentialBackoff(new ExponentialBackoffOptions()
+        ExponentialBackoff exponentialBackoff = new ExponentialBackoff(new RetryPolicy.ExponentialBackoffOptions()
             .setMaxRetries(maxRetries).setBaseDelay(Duration.ofMillis(baseDelayMillis))
             .setMaxDelay(Duration.ofMillis(maxDelayMillis)));
         final HttpPipeline pipeline = new HttpPipelineBuilder()

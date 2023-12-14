@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.policy.FixedDelayOptions;
+import com.generic.core.http.policy.RetryPolicy;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
@@ -37,9 +37,9 @@ public class FixedDelay implements RetryStrategy {
     /**
      * Creates an instance of {@link FixedDelay}.
      *
-     * @param fixedDelayOptions The {@link FixedDelayOptions}.
+     * @param fixedDelayOptions The {@link RetryPolicy.FixedDelayOptions}.
      */
-    public FixedDelay(FixedDelayOptions fixedDelayOptions) {
+    public FixedDelay(RetryPolicy.FixedDelayOptions fixedDelayOptions) {
         this(
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
             Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()

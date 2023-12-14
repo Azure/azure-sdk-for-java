@@ -5,7 +5,6 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.policy.RedirectPolicy;
 
 import java.util.Set;
 

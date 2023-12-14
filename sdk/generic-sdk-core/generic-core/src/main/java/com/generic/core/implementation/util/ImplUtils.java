@@ -5,7 +5,7 @@ package com.generic.core.implementation.util;
 
 
 import com.generic.core.http.models.HttpHeaderName;
-import com.generic.core.http.policy.RetryOptions;
+import com.generic.core.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.implementation.http.policy.RetryStrategy;
@@ -362,12 +362,12 @@ public final class ImplUtils {
     }
 
     /**
-     * Converts the {@link RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
+     * Converts the {@link RetryPolicy.RetryOptions} into a {@link RetryStrategy} so it can be more easily consumed.
      *
      * @param retryOptions The retry options.
      * @return The retry strategy based on the retry options.
      */
-    public static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+    public static RetryStrategy getRetryStrategyFromOptions(RetryPolicy.RetryOptions retryOptions) {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         if (retryOptions.getExponentialBackoffOptions() != null) {

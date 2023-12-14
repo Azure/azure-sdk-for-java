@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.policy.ExponentialBackoffOptions;
+import com.generic.core.http.policy.RetryPolicy;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.ObjectsUtil;
 import com.generic.core.util.configuration.Configuration;
@@ -63,10 +63,10 @@ public class ExponentialBackoff implements RetryStrategy {
     /**
      * Creates an instance of {@link ExponentialBackoff}.
      *
-     * @param options The {@link ExponentialBackoffOptions}.
+     * @param options The {@link RetryPolicy.ExponentialBackoffOptions}.
      * @throws NullPointerException if {@code options} is {@code null}.
      */
-    public ExponentialBackoff(ExponentialBackoffOptions options) {
+    public ExponentialBackoff(RetryPolicy.ExponentialBackoffOptions options) {
         this(
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),

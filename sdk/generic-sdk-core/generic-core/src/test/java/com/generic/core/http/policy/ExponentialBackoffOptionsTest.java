@@ -13,19 +13,19 @@ public class ExponentialBackoffOptionsTest {
     @Test
     public void testZeroBaseDelay() {
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
             .setBaseDelay(Duration.ofSeconds(0)));
     }
 
     @Test
     public void testBaseGreaterThanMaxDelay() {
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
                 .setBaseDelay(Duration.ofSeconds(1))
                 .setMaxDelay(Duration.ofMillis(500)));
 
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
                 .setMaxDelay(Duration.ofMillis(500))
                 .setBaseDelay(Duration.ofSeconds(1)));
     }
@@ -33,21 +33,21 @@ public class ExponentialBackoffOptionsTest {
     @Test
     public void testNegativeMaxRetries() {
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
                 .setMaxRetries(-1));
     }
 
     @Test
     public void testNegativeBaseDelay() {
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
                 .setBaseDelay(Duration.ofSeconds(-1)));
     }
 
     @Test
     public void testNegativeMaxDelay() {
         assertThrows(IllegalArgumentException.class, () ->
-            new ExponentialBackoffOptions()
+            new RetryPolicy.ExponentialBackoffOptions()
                 .setMaxDelay(Duration.ofSeconds(-1)));
     }
 }
