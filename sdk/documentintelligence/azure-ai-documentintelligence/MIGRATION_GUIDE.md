@@ -99,6 +99,16 @@ version of the library introduces two new clients
 analyzing documents and provide support for the new features added by the service in
 API version `2023-10-31-preview` and later.
 
+This below table describes the relationship between SDK versions and supported API versions of the service:
+
+| SDK version                 | Supported API version of service |
+|-----------------------------|----------------------------------|
+| 1.0.0-beta.x                | 2023-10-31-preview (default)     |
+| 3.3.X (Form Recognizer SDK) | 2.0, 2.1, 2022-08-31, 2023-07-31 |
+| 3.2.X (Form Recognizer SDK) | 2.0, 2.1, 2022-08-31             |
+| 3.1.X (Form Recognizer SDK) | 2.0, 2.1                         |
+| 3.0.0 (Form Recognizer SDK) | 2.0                              |
+
 The below table describes the relationship of each client and its supported API version(s):
 
 | API version                          | Supported clients                                                       |
@@ -170,7 +180,7 @@ the _Currency_ field in result has been removed.
                   new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
     ```
 
-  For the complete sample, see [Sample: KeyValuePair][Sample-AnalyzeAddOnKeyValuePair.
+  For the complete sample, see [Sample: KeyValuePair][Sample-AnalyzeAddOnKeyValuePair].
 
 - All prebuilt models can be seen [here][service_supported_models]. If you wish to still use these models, please rely on the older 
   `azure-ai-formrecognizer` library through the older service API versions.
