@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -187,7 +188,7 @@ public class ClientSideRequestStatistics {
                     String sessionTokenAsStringInner = storeResponseDiagnosticsInner.getSessionTokenAsString();
 
                     if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
-                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, storeResponseStatistics.regionName);
+                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
                     }
                 }
             }
@@ -228,7 +229,7 @@ public class ClientSideRequestStatistics {
 
                 if (storeResponseDiagnostics != null) {
 
-                    String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString();
+                    String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString().toLowerCase(Locale.ROOT).trim().replace(" ", "");
 
                     if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
                         this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInner);

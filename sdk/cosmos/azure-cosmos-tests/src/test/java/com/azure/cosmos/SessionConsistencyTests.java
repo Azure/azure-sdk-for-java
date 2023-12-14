@@ -23,6 +23,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
@@ -199,6 +201,20 @@ public class SessionConsistencyTests extends TestSuiteBase {
 
         Assertions.assertThat(stringBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk1", "eastus", 1L))).isTrue();
         Assertions.assertThat(stringBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
+    }
+
+    @Test
+    public void testInstantDiffs() {
+        Instant ingestionStartTime = Instant.parse("2023-12-13T23:10:21.450001300Z");
+        Instant splitStartTime = Instant.parse("2023-12-13T23:11:54.058740900Z");
+        Instant splitEndTime = Instant.parse("2023-12-13T23:18:45.605638400Z");
+        Instant ingestionEndTime = Instant.parse("2023-12-13T23:20:10.398898100Z");
+        Instant cfpStartTime = Instant.parse("2023-12-13T23:10:27.907105100Z");
+        Instant cfpEndTime = Instant.parse("2023-12-13T23:20:14.786120900Z");
+
+        logger.info("Split duration : {}", Duration.between(splitStartTime, splitEndTime).toMillis());
+        logger.info("Bulk ingestion duration : {}", Duration.between(ingestionStartTime, splitStartTime).plus(Duration.between(splitEndTime, ingestionEndTime)).toMillis());
+        logger.info("CFP ingestion duration : {}", Duration.between(cfpStartTime, cfpEndTime).minus(Duration.between(splitStartTime, splitEndTime)).toMillis());
     }
 
     @AfterClass

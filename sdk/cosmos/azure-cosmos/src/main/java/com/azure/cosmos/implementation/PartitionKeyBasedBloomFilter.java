@@ -1,11 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
 import com.azure.cosmos.implementation.guava25.hash.Funnel;
-import com.azure.cosmos.implementation.guava25.hash.Funnels;
-import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,6 +71,14 @@ public class PartitionKeyBasedBloomFilter {
 
         List<String> regionsPkIsProbablyRequestedFrom = new ArrayList<>();
 
+        if (Strings.isNullOrEmpty(partitionKeyAsStringifiedJson)) {
+            return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(
+                regionsPkIsProbablyRequestedFrom,
+                firstPreferredWritableRegion,
+                pkRangeId,
+                true);
+        }
+
         if (this.isBloomFilterInitialized.get()) {
             for (String region : this.recordedRegions) {
 
@@ -80,7 +88,11 @@ public class PartitionKeyBasedBloomFilter {
             }
         }
 
-        return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(regionsPkIsProbablyRequestedFrom, firstPreferredWritableRegion, pkRangeId);
+        return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(
+            regionsPkIsProbablyRequestedFrom,
+            firstPreferredWritableRegion,
+            pkRangeId,
+            false);
     }
 
     public static class PartitionKeyBasedBloomFilterType {

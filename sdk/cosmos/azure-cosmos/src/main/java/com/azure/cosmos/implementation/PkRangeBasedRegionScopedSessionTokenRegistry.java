@@ -1,6 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,27 +46,57 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         }
     }
 
-    public ISessionToken tryResolveSessionToken(List<String> lesserPreferredRegionsPkProbablyRequestedFrom, String firstPreferredRegion, String pkRangeId) {
+    public ISessionToken tryResolveSessionToken(
+        List<String> lesserPreferredRegionsPkProbablyRequestedFrom,
+        String firstPreferredWritableRegion,
+        String partitionKeyRangeId,
+        boolean shouldUseAllRegionScopedSessionTokens) {
+
         List<ISessionToken> regionSpecificSessionTokens = new ArrayList<>();
 
-        regionSpecificSessionTokens.add(resolveRegionSpecificSessionToken(firstPreferredRegion, pkRangeId));
+        // a case where the request is not targeted to a logical partition
+        // therefore resolve session token representing all regions
+        if (shouldUseAllRegionScopedSessionTokens) {
+            return resolveSessionTokenRepresentingAllRegions(partitionKeyRangeId);
+        }
+
+        ISessionToken sessionTokenForFirstPreferredWritableRegion
+            = resolveRegionSpecificSessionToken(firstPreferredWritableRegion, partitionKeyRangeId);
+
+        // todo (abhmohanty): evaluate cases where the session token for the first preferred writable region
+        // todo is not present
+        if (sessionTokenForFirstPreferredWritableRegion != null) {
+            regionSpecificSessionTokens.add(sessionTokenForFirstPreferredWritableRegion);
+        }
 
         for (String region : lesserPreferredRegionsPkProbablyRequestedFrom) {
-            ISessionToken regionSpecificSessionToken = resolveRegionSpecificSessionToken(region, pkRangeId);
+            ISessionToken regionSpecificSessionToken = resolveRegionSpecificSessionToken(region, partitionKeyRangeId);
 
             if (regionSpecificSessionToken != null) {
-                regionSpecificSessionTokens.add(resolveRegionSpecificSessionToken(region, pkRangeId));
+                regionSpecificSessionTokens.add(regionSpecificSessionToken);
             }
         }
 
         return mergeSessionToken(regionSpecificSessionTokens);
     }
 
-    private ISessionToken resolveRegionSpecificSessionToken(String region, String pkRangeId) {
-        ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistry = this.pkRangeIdToRegionScopedSessionTokens.get(pkRangeId);
+    private ISessionToken resolveRegionSpecificSessionToken(String region, String partitionKeyRangeId) {
+        ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistryInner = this.pkRangeIdToRegionScopedSessionTokens.get(partitionKeyRangeId);
 
-        if (pkRangeIdSpecificSessionTokenRegistry != null) {
-            return pkRangeIdSpecificSessionTokenRegistry.get(region);
+        if (pkRangeIdSpecificSessionTokenRegistryInner != null) {
+            return pkRangeIdSpecificSessionTokenRegistryInner.get(region);
+        }
+
+        return null;
+    }
+
+    private ISessionToken resolveSessionTokenRepresentingAllRegions(String partitionKeyRangeId) {
+        ConcurrentHashMap<String, ISessionToken> pkRangeIdSpecificSessionTokenRegistryInner = this.pkRangeIdToRegionScopedSessionTokens.get(partitionKeyRangeId);
+        List<ISessionToken> sessionTokensAcrossAllRegions;
+
+        if (pkRangeIdSpecificSessionTokenRegistryInner != null) {
+            sessionTokensAcrossAllRegions = pkRangeIdSpecificSessionTokenRegistryInner.values().stream().toList();
+            return mergeSessionToken(sessionTokensAcrossAllRegions);
         }
 
         return null;
@@ -70,7 +104,7 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
 
     private ISessionToken mergeSessionToken(List<ISessionToken> sessionTokens) {
 
-        if (sessionTokens.isEmpty() || sessionTokens == null) {
+        if (sessionTokens == null || sessionTokens.isEmpty()) {
             return null;
         }
 
