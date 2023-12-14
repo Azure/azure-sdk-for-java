@@ -1,16 +1,20 @@
 ## Release History
 
-### 5.8.0-beta.1 (Unreleased)
+### 5.9.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
-* Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
 
 #### Other Changes
+
+### 5.8.0 (2023-12-14)
+
+#### Bugs Fixed
+* Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
+* Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
 
 ### 5.7.0 (2023-11-07)
 
