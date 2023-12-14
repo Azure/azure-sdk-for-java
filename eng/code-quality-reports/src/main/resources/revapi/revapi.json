@@ -296,6 +296,12 @@
           "justification": "Removing Jackson annotations from Text Analytics in transition to stream-style."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.ai\\.metricsadvisor\\.(administration\\.)?models.*",
+          "justification": "Removing Jackson annotations from Metrics Advisor in transition to stream-style."
+        },
+        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
