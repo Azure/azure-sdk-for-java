@@ -1057,7 +1057,7 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
         beginClassifyDocumentWithModel(String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
@@ -1067,6 +1067,6 @@ public final class DocumentAnalysisClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResult.class));
+            TypeReference.createInstance(AnalyzeResultOperation.class));
     }
 }

@@ -363,11 +363,11 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         if (documentClassifierDetails.get() != null) {
             String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
-                SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+                SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
                     syncPoller
                     = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(), new ClassifyDocumentRequest().setBase64Source(data))
                     .setPollInterval(durationTestMode);
-                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult().getAnalyzeResult();
                 Assertions.assertNotNull(analyzeResult);
                 // TODO: (service bug) Document count should be 3
                 Assertions.assertEquals(1, analyzeResult.getDocuments().size());
@@ -412,11 +412,11 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
         if (documentClassifierDetails.get() != null) {
             String classifierId = documentClassifierDetails.get().getClassifierId();
             dataRunner((data, dataLength) -> {
-                SyncPoller<AnalyzeResultOperation, AnalyzeResult>
+                SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
                     syncPoller
                     = client.beginClassifyDocument(documentClassifierDetails.get().getClassifierId(), new ClassifyDocumentRequest().setBase64Source(data))
                     .setPollInterval(durationTestMode);
-                AnalyzeResult analyzeResult = syncPoller.getFinalResult();
+                AnalyzeResult analyzeResult = syncPoller.getFinalResult().getAnalyzeResult();
                 Assertions.assertNotNull(analyzeResult);
                 // TODO: (service bug) Document count should be 3
                 Assertions.assertEquals(1, analyzeResult.getDocuments().size());
