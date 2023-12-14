@@ -8,7 +8,6 @@ import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
-import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.client.HttpClient;
@@ -41,8 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyImplTests {
-    @Host("https://azure.com")
-    @ServiceInterface(name = "myService")
+    @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/url/path")
         @HttpResponseInformation(expectedStatusCodes = {200})

@@ -3,13 +3,11 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.annotation.Host;
 import com.generic.core.annotation.ServiceInterface;
 
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 
 /**
  * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
@@ -25,38 +23,35 @@ public final class SwaggerInterfaceParser {
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface name.
      *
      * @param swaggerInterface The interface that will be parsed.
+     *
      * @return The {@link SwaggerInterfaceParser} for the passed interface.
      */
     public static SwaggerInterfaceParser getInstance(Class<?> swaggerInterface) {
-//        if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
-//            INTERFACE_PARSERS.clear();
-//        }
+        //if (INTERFACE_PARSERS.size() >= MAX_CACHE_SIZE) {
+        //    INTERFACE_PARSERS.clear();
+        //}
 
         return INTERFACE_PARSERS.computeIfAbsent(swaggerInterface, SwaggerInterfaceParser::new);
     }
 
     SwaggerInterfaceParser(Class<?> swaggerInterface) {
-        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-        if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
-            this.host = hostAnnotation.value();
-        } else {
-            throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
-        }
-
         ServiceInterface serviceAnnotation = swaggerInterface.getAnnotation(ServiceInterface.class);
+
         if (serviceAnnotation != null && !serviceAnnotation.name().isEmpty()) {
             serviceName = serviceAnnotation.name();
+            host = serviceAnnotation.host();
         } else {
             throw new MissingRequiredAnnotationException(ServiceInterface.class, swaggerInterface);
         }
     }
 
     /**
-     * Get the method parser that is associated with the provided swaggerMethod. The method parser can be used to get
-     * details about the Swagger REST API call.
+     * Get the method parser that is associated with the provided {@code swaggerMethod}. The method parser can be used
+     * to get details about the Swagger REST API call.
      *
-     * @param swaggerMethod the method to generate a parser for
-     * @return the SwaggerMethodParser associated with the provided swaggerMethod
+     * @param swaggerMethod The method to generate a parser for.
+     *
+     * @return The {@link SwaggerMethodParser} associated with the provided {@code swaggerMethod}.
      */
     public SwaggerMethodParser getMethodParser(Method swaggerMethod) {
         return methodParsers.computeIfAbsent(swaggerMethod, sm -> new SwaggerMethodParser(this, sm));
@@ -64,14 +59,20 @@ public final class SwaggerInterfaceParser {
 
     /**
      * Get the desired host that the provided Swagger interface will target with its REST API calls. This value is
-     * retrieved from the @Host annotation placed on the Swagger interface.
+     * retrieved from the {@link ServiceInterface#host()} annotation placed on the Swagger interface.
      *
-     * @return The value of the @Host annotation.
+     * @return The value of the {@link ServiceInterface#host()} annotation.
      */
     public String getHost() {
         return host;
     }
 
+    /**
+     * Get the name of the service. This value is retrieved from the {@link ServiceInterface#name()} annotation placed
+     * on the Swagger interface.
+     *
+     * @return The value of the {@link ServiceInterface#name()} annotation.
+     */
     public String getServiceName() {
         return serviceName;
     }

@@ -8,7 +8,6 @@ import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
-import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.HttpResponseInformation;
@@ -61,8 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SwaggerMethodParserTests {
     private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "OperationMethods")
+    @ServiceInterface(name = "OperationMethods", host = "https://raw.host.com")
     interface OperationMethods {
         void noMethod();
 
@@ -134,8 +132,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "WireTypesMethods")
+    @ServiceInterface(name = "WireTypesMethods", host = "https://raw.host.com")
     interface WireTypesMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
@@ -172,8 +169,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "HeaderMethods")
+    @ServiceInterface(name = "HeaderMethods", host = "https://raw.host.com")
     interface HeaderMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noHeaders();
@@ -216,8 +212,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://{sub1}.host.com")
-    @ServiceInterface(name = "HostSubstitutionMethods")
+    @ServiceInterface(name = "HostSubstitutionMethods", host = "https://{sub1}.host.com")
     interface HostSubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noSubstitutions(String sub1);
@@ -269,8 +264,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("{sub1}://raw.host.com")
-    @ServiceInterface(name = "SchemeSubstitutionMethods")
+    @ServiceInterface(name = "SchemeSubstitutionMethods", host = "{sub1}://raw.host.com")
     interface SchemeSubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noSubstitutions(String sub1);
@@ -322,8 +316,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "PathSubstitutionMethods")
+    @ServiceInterface(name = "PathSubstitutionMethods", host = "https://raw.host.com")
     interface PathSubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "{sub1}")
         void noSubstitutions(String sub1);
@@ -360,8 +353,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "QuerySubstitutionMethods")
+    @ServiceInterface(name = "QuerySubstitutionMethods", host = "https://raw.host.com")
     interface QuerySubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
@@ -402,8 +394,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "HeaderSubstitutionMethods")
+    @ServiceInterface(name = "HeaderSubstitutionMethods", host = "https://raw.host.com")
     interface HeaderSubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
@@ -458,8 +449,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "BodySubstitutionMethods")
+    @ServiceInterface(name = "BodySubstitutionMethods", host = "https://raw.host.com")
     interface BodySubstitutionMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void applicationJsonBody(@BodyParam(APPLICATION_JSON) String jsonBody);
@@ -581,8 +571,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "ExpectedStatusCodeMethods")
+    @ServiceInterface(name = "ExpectedStatusCodeMethods", host = "https://raw.host.com")
     interface ExpectedStatusCodeMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noExpectedStatusCodes();
@@ -629,8 +618,7 @@ public class SwaggerMethodParserTests {
         );
     }
 
-    @Host("https://raw.host.com")
-    @ServiceInterface(name = "UnexpectedStatusCodeMethods")
+    @ServiceInterface(name = "UnexpectedStatusCodeMethods", host = "https://raw.host.com")
     interface UnexpectedStatusCodeMethods {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noUnexpectedStatusCodes();

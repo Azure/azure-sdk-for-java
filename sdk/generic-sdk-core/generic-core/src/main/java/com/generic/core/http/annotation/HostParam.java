@@ -3,6 +3,8 @@
 
 package com.generic.core.http.annotation;
 
+import com.generic.core.annotation.ServiceInterface;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
@@ -10,7 +12,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation to annotate replacement of parameterized segments in a dynamic {@link Host}.
+ * Annotation to annotate replacement of parameterized segments in a dynamic {@link ServiceInterface#host()}.
  *
  * <p>You provide the value, which should be the same (case sensitive) with the parameterized segments in '{}' in the
  * host, unless there's only one parameterized segment, then you can leave the value empty. This is extremely useful

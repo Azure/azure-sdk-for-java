@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.HttpResponseInformation;
 import com.generic.core.http.models.HttpMethod;
@@ -21,36 +20,35 @@ public class SwaggerInterfaceParserTests {
     interface TestInterface1 {
     }
 
-    @Host("https://management.azure.com")
+    @ServiceInterface(name = "myService")
     interface TestInterface2 {
     }
 
-    @Host("https://management.azure.com")
-    @ServiceInterface(name = "myService")
+    @ServiceInterface(name = "myService", host = "https://management.azure.com")
     interface TestInterface3 {
     }
 
     @Test
-    public void hostWithNoHostAnnotation() {
+    public void serviceWithNoServiceInterfaceAnnotation() {
         assertThrows(MissingRequiredAnnotationException.class,
             () -> SwaggerInterfaceParser.getInstance(TestInterface1.class));
     }
 
     @Test
-    public void hostWithNoServiceNameAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class,
-            () -> SwaggerInterfaceParser.getInstance(TestInterface2.class));
+    public void serviceWithNoHostInServiceInterfaceAnnotation() {
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(TestInterface2.class);
+        assertEquals("", interfaceParser.getHost());
+        assertEquals("myService", interfaceParser.getServiceName());
     }
 
     @Test
-    public void hostWithHostAnnotation() {
+    public void serviceWithServiceInterfaceAnnotation() {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(TestInterface3.class);
         assertEquals("https://management.azure.com", interfaceParser.getHost());
         assertEquals("myService", interfaceParser.getServiceName());
     }
 
-    @Host("https://azure.com")
-    @ServiceInterface(name = "myService")
+    @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface4 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path")
         @HttpResponseInformation(expectedStatusCodes = {200})

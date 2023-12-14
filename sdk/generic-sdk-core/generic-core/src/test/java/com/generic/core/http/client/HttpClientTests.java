@@ -7,7 +7,6 @@ import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
-import com.generic.core.http.annotation.Host;
 import com.generic.core.http.annotation.HostParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.HttpResponseInformation;
@@ -465,8 +464,7 @@ public abstract class HttpClientTests {
         }
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service1")
+    @ServiceInterface(name = "Service1", host = "{url}")
     private interface Service1 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -484,9 +482,7 @@ public abstract class HttpClientTests {
         assertEquals(100, result.length);
     }
 
-
-    @Host("{scheme}://{hostName}")
-    @ServiceInterface(name = "Service2")
+    @ServiceInterface(name = "Service2", host = "{scheme}://{hostName}")
     private interface Service2 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -517,8 +513,7 @@ public abstract class HttpClientTests {
         assertNull(result);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service3")
+    @ServiceInterface(name = "Service3", host = "{url}")
     private interface Service3 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -533,8 +528,7 @@ public abstract class HttpClientTests {
         assertDoesNotThrow(() -> createService(Service3.class).getNothing(getRequestUri()));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service5")
+    @ServiceInterface(name = "Service5", host = "{url}")
     private interface Service5 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -624,8 +618,7 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.url());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service6")
+    @ServiceInterface(name = "Service6", host = "{url}")
     private interface Service6 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -669,8 +662,7 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/anything?b=15", json.url());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service7")
+    @ServiceInterface(name = "Service7", host = "{url}")
     private interface Service7 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -711,8 +703,7 @@ public abstract class HttpClientTests {
         assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service8")
+    @ServiceInterface(name = "Service8", host = "{url}")
     private interface Service8 {
         @HttpRequestInformation(method = HttpMethod.POST, path = "post")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -737,8 +728,7 @@ public abstract class HttpClientTests {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    @Host("{url}")
-    @ServiceInterface(name = "Service9")
+    @ServiceInterface(name = "Service9", host = "{url}")
     private interface Service9 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -839,9 +829,7 @@ public abstract class HttpClientTests {
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
-
-    @Host("{url}")
-    @ServiceInterface(name = "Service10")
+    @ServiceInterface(name = "Service10", host = "{url}")
     private interface Service10 {
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "anything")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -875,8 +863,7 @@ public abstract class HttpClientTests {
         createService(Service10.class).voidHead(getRequestUri());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service11")
+    @ServiceInterface(name = "Service11", host = "{url}")
     private interface Service11 {
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "delete")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -892,8 +879,7 @@ public abstract class HttpClientTests {
         assertEquals("false", json.data());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service12")
+    @ServiceInterface(name = "Service12", host = "{url}")
     private interface Service12 {
         @HttpRequestInformation(method = HttpMethod.PATCH, path = "patch")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -909,8 +895,7 @@ public abstract class HttpClientTests {
         assertEquals("body-contents", json.data());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service13")
+    @ServiceInterface(name = "Service13", host = "{url}")
     private interface Service13 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything",
             headers = {"MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value"})
@@ -937,16 +922,14 @@ public abstract class HttpClientTests {
         assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues(MY_OTHER_HEADER));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service14")
+    @ServiceInterface(name = "Service14", host = "{url}")
     private interface Service14 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", headers = {"MyHeader:MyHeaderValue"})
         @HttpResponseInformation(expectedStatusCodes = {200})
         HttpBinJSON get(@HostParam("url") String url);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service16")
+    @ServiceInterface(name = "Service16", host = "{url}")
     private interface Service16 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -969,8 +952,7 @@ public abstract class HttpClientTests {
         assertArrayEquals(expectedBytes, actualBytes);
     }
 
-    @Host("{scheme}://{hostPart1}{hostPart2}")
-    @ServiceInterface(name = "Service17")
+    @ServiceInterface(name = "Service17", host = "{scheme}://{hostPart1}{hostPart2}")
     private interface Service17 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "get")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -986,8 +968,7 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/get", result.url());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service18")
+    @ServiceInterface(name = "Service18", host = "{url}")
     private interface Service18 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "status/200")
         void getStatus200(@HostParam("url") String url);
@@ -1058,8 +1039,7 @@ public abstract class HttpClientTests {
         assertDoesNotThrow(() -> createService(Service18.class).getStatus500WithExpectedResponse500(getRequestUri()));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service19")
+    @ServiceInterface(name = "Service19", host = "{url}")
     private interface Service19 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("url") String url,
@@ -1400,8 +1380,7 @@ public abstract class HttpClientTests {
         assertEquals(new String(new byte[]{0, 1, 2, 3, 4}), result.data());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service20")
+    @ServiceInterface(name = "Service20", host = "{url}")
     private interface Service20 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100")
         Response<Void> getVoidResponse(@HostParam("url") String url);
@@ -1460,8 +1439,7 @@ public abstract class HttpClientTests {
         assertNotNull(headers);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "UnexpectedOKService")
+    @ServiceInterface(name = "UnexpectedOKService", host = "{url}")
     interface UnexpectedOKService {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/1024")
         @HttpResponseInformation(expectedStatusCodes = {400})
@@ -1476,8 +1454,7 @@ public abstract class HttpClientTests {
         assertEquals("Status code 200, (1024-byte body)", e.getMessage());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service21")
+    @ServiceInterface(name = "Service21", host = "{url}")
     private interface Service21 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/100")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -1492,8 +1469,7 @@ public abstract class HttpClientTests {
         assertEquals(100, bytes.length);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "DownloadService")
+    @ServiceInterface(name = "DownloadService", host = "{url}")
     interface DownloadService {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/bytes/30720")
         Response<InputStream> getBytes(@HostParam("url") String url, Context context);
@@ -1529,8 +1505,7 @@ public abstract class HttpClientTests {
             Arguments.of(Named.named("default", Context.NONE)));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "BinaryDataUploadServ")
+    @ServiceInterface(name = "BinaryDataUploadServ", host = "{url}")
     interface BinaryDataUploadService {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/put")
         Response<HttpBinJSON> put(@HostParam("url") String host, @BodyParam("text/plain") BinaryData content,
@@ -1560,8 +1535,7 @@ public abstract class HttpClientTests {
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service22")
+    @ServiceInterface(name = "Service22", host = "{url}")
     interface Service22 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "/")
         byte[] getBytes(@HostParam("url") String url);
@@ -1575,8 +1549,7 @@ public abstract class HttpClientTests {
         assertEquals(27, bytes.length);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service23")
+    @ServiceInterface(name = "Service23", host = "{url}")
     interface Service23 {
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/28")
         byte[] getBytes(@HostParam("url") String url);
@@ -1590,8 +1563,7 @@ public abstract class HttpClientTests {
         assertEquals(28, bytes.length);
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service24")
+    @ServiceInterface(name = "Service24", host = "{url}")
     interface Service24 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         HttpBinJSON put(@HostParam("url") String url, @HeaderParam("ABC") Map<String, String> headerCollection);
@@ -1614,8 +1586,7 @@ public abstract class HttpClientTests {
         assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
     }
 
-    /*@Host("{url}")
-    @ServiceInterface(name = "Service26")
+    /*@ServiceInterface(name = "Service26", host = "{url}")
     interface Service26 {
         @Post("post")
         HttpBinFormDataJSON postForm(@HostParam("url") String url, @FormParam("custname") String name,
@@ -1663,8 +1634,7 @@ public abstract class HttpClientTests {
     }
      */
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service27")
+    @ServiceInterface(name = "Service27", host = "{url}")
     interface Service27 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -1733,8 +1703,7 @@ public abstract class HttpClientTests {
         assertEquals("randomValue2", response.getHeaderValue("randomHeader"));
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service28")
+    @ServiceInterface(name = "Service28", host = "{url}")
     public interface Service28 {
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "voideagerreadoom")
         @HttpResponseInformation(expectedStatusCodes = {200})
@@ -1763,8 +1732,7 @@ public abstract class HttpClientTests {
         );
     }
 
-    @Host("{url}")
-    @ServiceInterface(name = "Service29")
+    @ServiceInterface(name = "Service29", host = "{url}")
     public interface Service29 {
         @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned")
         @HttpResponseInformation(expectedStatusCodes = {200})
