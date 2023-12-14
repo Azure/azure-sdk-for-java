@@ -527,13 +527,15 @@ public final class JobRouterClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions,
+        RequestOptions requestOptions) {
         // Note: Update return type to Response<RouterJob> in version 2.
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
         Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
             BinaryData.fromObject(routerJob), requestOptions);
         return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BinaryData.fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
+            BinaryData
+                .fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
     }
 
     /**
