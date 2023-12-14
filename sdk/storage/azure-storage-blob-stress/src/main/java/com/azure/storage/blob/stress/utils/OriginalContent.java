@@ -13,14 +13,9 @@ import com.azure.storage.stress.ContentInfo;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.zip.CRC32;
+import java.util.Base64;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -49,9 +44,9 @@ public class OriginalContent {
                 () -> new CrcInputStream(BLOB_CONTENT_HEAD, blobSize),
                 data -> blobClient
                         .upload(BinaryData.fromStream(data, blobSize))
-                        .then(data.getContentInfo())
-                        .doOnSuccess(info -> dataChecksum = info.getCrc()),
+                        .then(data.getContentInfo()),
                 CrcInputStream::close)
+            .map(info -> dataChecksum = info.getCrc())
             .then();
     }
 
@@ -78,7 +73,8 @@ public class OriginalContent {
                 });
     }
 
-    private void logMismatch(long actualCrc, long actualLength, byte[] actualContentHead, Context span) {
+    @SuppressWarnings("try")
+    private void logMismatch(long actualCrc, long actualLength, ByteBuffer actualContentHead, Context span) {
         try(AutoCloseable scope = TRACER.makeSpanCurrent(span)) {
             // future: if mismatch, compare against original file
             LOGGER.atError()
@@ -86,7 +82,7 @@ public class OriginalContent {
                     .addKeyValue("actualCrc", actualCrc)
                     .addKeyValue("expectedLength", blobSize)
                     .addKeyValue("actualLength", actualLength)
-                    .addKeyValue("actualContentHead", new String(actualContentHead, 0, (int)Math.min(1024, actualLength), StandardCharsets.UTF_8))
+                    .addKeyValue("actualContentHead", Base64.getEncoder().encode(actualContentHead))
                     .log("mismatched crc");
         } catch (Throwable e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));

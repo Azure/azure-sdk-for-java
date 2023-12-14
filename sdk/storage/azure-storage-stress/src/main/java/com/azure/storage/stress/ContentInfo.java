@@ -10,9 +10,9 @@ import java.util.zip.CRC32;
 public class ContentInfo {
     private final long length;
     private final long crc;
-    private final byte[] head;
+    private final ByteBuffer head;
 
-    public ContentInfo(long crc, long length, byte[] head) {
+    public ContentInfo(long crc, long length, ByteBuffer head) {
         this.crc = crc;
         this.length = length;
         this.head = head;
@@ -20,16 +20,18 @@ public class ContentInfo {
 
     public static Mono<ContentInfo> fromFluxByteBuffer(Flux<ByteBuffer> data) {
         AtomicLong length = new AtomicLong(0);
-        byte[] head = new byte[1024];
+        ByteBuffer head = ByteBuffer.allocate(1024);
         Mono<Long> crcMono = data
                 .reduce(new CRC32(),
                         (crc, bb) -> {
-                            long len = length.get();
-                            if (len < head.length) {
+                            length.getAndAdd(bb.remaining());
+                            if (head.hasRemaining())
+                            {
                                 ByteBuffer dup = bb.duplicate();
-                                dup.get(head, (int)len, Math.min(dup.remaining(), head.length - (int)len));
+                                while (head.hasRemaining()) {
+                                    head.put(dup.get());
+                                }
                             }
-                            length.addAndGet(bb.remaining());
                             crc.update(bb);
                             return crc;
                         })
@@ -46,7 +48,7 @@ public class ContentInfo {
         return crc;
     }
 
-    public byte[] getHead() {
+    public ByteBuffer getHead() {
         return head;
     }
 }

@@ -7,11 +7,11 @@ metadata:
 spec:
   containers:
     - name: fault-injector
-      image: azsdkengsys.azurecr.io/stress/httpfaultinjector:latest
+      image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-500-on-error
       imagePullPolicy: Always
       resources:
         limits:
-          memory: 1500Mi
+          memory: 3Gi
           cpu: "0.5"
     - name: main
       image:  {{ .Stress.imageTag }}
@@ -27,7 +27,7 @@ spec:
           export APPLICATIONINSIGHTS_ROLE_NAME=storage-{{ .Stress.BaseName }};
           java \
           -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.17.jar \
-          -Xms1g -Xmx1500m \
+          -Xms1g \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
           -jar /app/azure-storage-blob-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
@@ -49,7 +49,7 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: 2000Mi
+          memory: 2Gi
           cpu: "1.0"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

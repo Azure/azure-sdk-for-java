@@ -8,13 +8,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.RepeatingInputStream;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.Arrays;
+import java.nio.ByteBuffer;
 import java.util.zip.CRC32;
 
 public class CrcInputStream extends InputStream {
@@ -22,7 +20,7 @@ public class CrcInputStream extends InputStream {
     private final Sinks.One<ContentInfo> sink = Sinks.one();
     private final InputStream inputStream;
     private final CRC32 crc = new CRC32();
-    private final byte[] head = new byte[1024];
+    private final ByteBuffer head = ByteBuffer.allocate(1024);
     private long length = 0;
 
     public CrcInputStream(BinaryData source, long size) {
@@ -39,12 +37,11 @@ public class CrcInputStream extends InputStream {
             int b = inputStream.read();
             if (b >= 0) {
                 crc.update(b);
-                if (length < head.length) {
-                    head[(int) length] = (byte) b;
+                if (head.hasRemaining()) {
+                    head.put((byte) b);
                 }
                 length++;
-            }
-            if (b == -1) {
+            } else {
                 sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
             }
             return b;
@@ -55,17 +52,16 @@ public class CrcInputStream extends InputStream {
     }
 
     @Override
-    public synchronized int read(byte b[], int off, int len) throws IOException {
+    public synchronized int read(byte buf[], int off, int len) throws IOException {
         try {
-            int read = inputStream.read(b, off, len);
+            int read = inputStream.read(buf, off, len);
             if (read > 0) {
-                crc.update(b, off, read);
-                if (length < head.length) {
-                    System.arraycopy(b, off, head, (int)length, Math.min(read, head.length - (int)length));
-                }
                 length += read;
-            }
-            if (read == -1) {
+                crc.update(buf, off, read);
+                if (head.hasRemaining()) {
+                    head.put(buf, off, Math.min(read, head.remaining()));
+                }
+            } else {
                 sink.emitValue(new ContentInfo(crc.getValue(), length, head), Sinks.EmitFailureHandler.FAIL_FAST);
             }
             return read;
