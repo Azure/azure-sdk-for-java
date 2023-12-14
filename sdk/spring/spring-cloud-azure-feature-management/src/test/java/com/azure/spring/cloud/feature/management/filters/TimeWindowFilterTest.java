@@ -104,18 +104,18 @@ public class TimeWindowFilterTest {
 
         // occurs weekly
         Map<String, Object> patternParameters = new LinkedHashMap<>();
-        List<String> daysOfWeek = new ArrayList<>();
-        daysOfWeek.add(starTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US));
-        patternParameters.put("type", "weekly");
-        patternParameters.put("interval", 1);
-        patternParameters.put("daysOfWeek", daysOfWeek);
+        Map<String, String> daysOfWeek = new LinkedHashMap<String, String>();
+        daysOfWeek.put("0", starTime.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US));
+        patternParameters.put("Type", "weekly");
+        patternParameters.put("Interval", 1);
+        patternParameters.put("DaysOfWeek", daysOfWeek);
 
         Map<String, Object> rangeParameters = new LinkedHashMap<>();
-        rangeParameters.put("type", "NoEnd");
+        rangeParameters.put("Type", "NoEnd");
 
         Map<String, Object> recurrenceParameters = new LinkedHashMap<>();
-        recurrenceParameters.put("pattern", patternParameters);
-        recurrenceParameters.put("range", rangeParameters);
+        recurrenceParameters.put("Pattern", patternParameters);
+        recurrenceParameters.put("Range", rangeParameters);
 
         parameters.put(TIME_WINDOW_FILTER_SETTING_RECURRENCE, recurrenceParameters);
         context.setParameters(parameters);

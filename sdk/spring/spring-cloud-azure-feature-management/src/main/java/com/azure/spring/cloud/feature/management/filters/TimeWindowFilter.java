@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.feature.management.filters;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -12,8 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.Map;
 
 import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
 import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 /**
@@ -22,6 +26,8 @@ import static com.azure.spring.cloud.feature.management.models.FilterParameters.
 public final class TimeWindowFilter implements FeatureFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
+        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * Evaluates whether a feature is enabled based on a configurable time window.
@@ -31,9 +37,17 @@ public final class TimeWindowFilter implements FeatureFilter {
      */
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
-        final ObjectMapper objectMapper = JsonMapper.builder()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
-        final TimeWindowFilterSettings settings = objectMapper.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
+        final Map<String, Object> parameters = context.getParameters();
+        final Object recurrenceObject = parameters.get(TIME_WINDOW_FILTER_SETTING_RECURRENCE);
+        if (recurrenceObject != null) {
+            final Map<String, Object> recurrenceParameters = (Map<String, Object>) recurrenceObject;
+            final Object patternObj = recurrenceParameters.get(RecurrenceConstants.RECURRENCE_PATTERN);
+            if (patternObj != null) {
+                updateValueFromMapToList((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
+            }
+        }
+
+        final TimeWindowFilterSettings settings = OBJECT_MAPPER.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
         final ZonedDateTime now = ZonedDateTime.now();
 
         if (settings.getStart() == null && settings.getEnd() == null) {
@@ -54,6 +68,14 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
 
         return false;
+    }
+
+    private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
+        Object objectMap = parameters.get(key);
+        if (objectMap instanceof Map) {
+            Collection<Object> toType = ((Map<String, Object>) objectMap).values();
+            parameters.put(key, toType);
+        }
     }
 
 }
