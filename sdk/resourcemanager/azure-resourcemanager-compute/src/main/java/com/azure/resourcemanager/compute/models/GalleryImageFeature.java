@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A feature for gallery image. */
+/**
+ * A feature for gallery image.
+ */
 @Fluent
 public final class GalleryImageFeature {
     /*
@@ -22,13 +24,15 @@ public final class GalleryImageFeature {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of GalleryImageFeature class. */
+    /**
+     * Creates an instance of GalleryImageFeature class.
+     */
     public GalleryImageFeature() {
     }
 
     /**
      * Get the name property: The name of the gallery image feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class GalleryImageFeature {
 
     /**
      * Set the name property: The name of the gallery image feature.
-     *
+     * 
      * @param name the name value to set.
      * @return the GalleryImageFeature object itself.
      */
@@ -48,7 +52,7 @@ public final class GalleryImageFeature {
 
     /**
      * Get the value property: The value of the gallery image feature.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class GalleryImageFeature {
 
     /**
      * Set the value property: The value of the gallery image feature.
-     *
+     * 
      * @param value the value value to set.
      * @return the GalleryImageFeature object itself.
      */
@@ -68,7 +72,7 @@ public final class GalleryImageFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

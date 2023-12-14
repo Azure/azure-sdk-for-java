@@ -13,7 +13,7 @@ import com.azure.core.util.BinaryData;
 public final class GroupMessageEvent {
 
     private final String group;
-    private final WebPubSubDataType dataType;
+    private final WebPubSubDataFormat dataFormat;
     private final BinaryData data;
     private final String fromUserId;
     private final Long sequenceId;
@@ -23,14 +23,14 @@ public final class GroupMessageEvent {
      *
      * @param group the group name.
      * @param data the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param fromUserId the userId of sender.
      * @param sequenceId the sequenceId.
      */
-    public GroupMessageEvent(String group, BinaryData data, WebPubSubDataType dataType, String fromUserId,
+    public GroupMessageEvent(String group, BinaryData data, WebPubSubDataFormat dataFormat, String fromUserId,
                              Long sequenceId) {
         this.data = data;
-        this.dataType = dataType;
+        this.dataFormat = dataFormat;
         this.fromUserId = fromUserId;
         this.group = group;
         this.sequenceId = sequenceId;
@@ -46,12 +46,12 @@ public final class GroupMessageEvent {
     }
 
     /**
-     * Gets the data type.
+     * Gets the data format.
      *
-     * @return the data type.
+     * @return the data format.
      */
-    public WebPubSubDataType getDataType() {
-        return dataType;
+    public WebPubSubDataFormat getDataFormat() {
+        return dataFormat;
     }
 
     /**

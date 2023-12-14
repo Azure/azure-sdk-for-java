@@ -8,15 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CapacityReservationInstanceViewTypes. */
+/**
+ * Defines values for CapacityReservationInstanceViewTypes.
+ */
 public final class CapacityReservationInstanceViewTypes
     extends ExpandableStringEnum<CapacityReservationInstanceViewTypes> {
-    /** Static value instanceView for CapacityReservationInstanceViewTypes. */
+    /**
+     * Static value instanceView for CapacityReservationInstanceViewTypes.
+     */
     public static final CapacityReservationInstanceViewTypes INSTANCE_VIEW = fromString("instanceView");
 
     /**
      * Creates a new instance of CapacityReservationInstanceViewTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -25,7 +29,7 @@ public final class CapacityReservationInstanceViewTypes
 
     /**
      * Creates or finds a CapacityReservationInstanceViewTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CapacityReservationInstanceViewTypes.
      */
@@ -36,7 +40,7 @@ public final class CapacityReservationInstanceViewTypes
 
     /**
      * Gets known CapacityReservationInstanceViewTypes values.
-     *
+     * 
      * @return known CapacityReservationInstanceViewTypes values.
      */
     public static Collection<CapacityReservationInstanceViewTypes> values() {

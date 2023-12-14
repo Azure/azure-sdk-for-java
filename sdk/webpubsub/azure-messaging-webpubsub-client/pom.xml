@@ -80,13 +80,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
-      <version>1.2.10</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;dependency} -->
+      <version>1.2.11</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

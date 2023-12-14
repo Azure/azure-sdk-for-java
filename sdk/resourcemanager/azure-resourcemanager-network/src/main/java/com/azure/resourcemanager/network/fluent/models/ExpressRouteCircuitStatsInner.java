@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains stats associated with the peering. */
+/**
+ * Contains stats associated with the peering.
+ */
 @Fluent
 public final class ExpressRouteCircuitStatsInner {
     /*
@@ -34,13 +36,15 @@ public final class ExpressRouteCircuitStatsInner {
     @JsonProperty(value = "secondarybytesOut")
     private Long secondarybytesOut;
 
-    /** Creates an instance of ExpressRouteCircuitStatsInner class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitStatsInner class.
+     */
     public ExpressRouteCircuitStatsInner() {
     }
 
     /**
      * Get the primarybytesIn property: The Primary BytesIn of the peering.
-     *
+     * 
      * @return the primarybytesIn value.
      */
     public Long primarybytesIn() {
@@ -49,7 +53,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the primarybytesIn property: The Primary BytesIn of the peering.
-     *
+     * 
      * @param primarybytesIn the primarybytesIn value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -60,7 +64,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the primarybytesOut property: The primary BytesOut of the peering.
-     *
+     * 
      * @return the primarybytesOut value.
      */
     public Long primarybytesOut() {
@@ -69,7 +73,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the primarybytesOut property: The primary BytesOut of the peering.
-     *
+     * 
      * @param primarybytesOut the primarybytesOut value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -80,7 +84,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the secondarybytesIn property: The secondary BytesIn of the peering.
-     *
+     * 
      * @return the secondarybytesIn value.
      */
     public Long secondarybytesIn() {
@@ -89,7 +93,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the secondarybytesIn property: The secondary BytesIn of the peering.
-     *
+     * 
      * @param secondarybytesIn the secondarybytesIn value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -100,7 +104,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the secondarybytesOut property: The secondary BytesOut of the peering.
-     *
+     * 
      * @return the secondarybytesOut value.
      */
     public Long secondarybytesOut() {
@@ -109,7 +113,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the secondarybytesOut property: The secondary BytesOut of the peering.
-     *
+     * 
      * @param secondarybytesOut the secondarybytesOut value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -120,7 +124,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,13 +7,12 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The failed to remove participant event.
- */
+/** The failed to remove participant event. */
 @Immutable
 public final class RemoveParticipantFailed {
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -43,21 +42,16 @@ public final class RemoveParticipantFailed {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for
+     * skype chain ID.
      */
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /**
-     * Creates an instance of RemoveParticipantFailed class.
-     */
-    public RemoveParticipantFailed() {
-    }
-
-    /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -66,7 +60,7 @@ public final class RemoveParticipantFailed {
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     * 
+     *
      * @return the resultInformation value.
      */
     public ResultInformation getResultInformation() {
@@ -75,7 +69,7 @@ public final class RemoveParticipantFailed {
 
     /**
      * Get the participant property: Participant.
-     * 
+     *
      * @return the participant value.
      */
     public CommunicationIdentifierModel getParticipant() {
@@ -84,7 +78,7 @@ public final class RemoveParticipantFailed {
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     * 
+     *
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -93,7 +87,7 @@ public final class RemoveParticipantFailed {
 
     /**
      * Get the serverCallId property: Server call ID.
-     * 
+     *
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -101,9 +95,9 @@ public final class RemoveParticipantFailed {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
-     * chain ID.
-     * 
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
+     * ID.
+     *
      * @return the correlationId value.
      */
     public String getCorrelationId() {

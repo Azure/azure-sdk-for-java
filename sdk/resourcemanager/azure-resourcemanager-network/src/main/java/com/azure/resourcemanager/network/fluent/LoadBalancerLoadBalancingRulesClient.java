@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerLoadBalancingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadBalancerLoadBalancingRulesClient.
+ */
 public interface LoadBalancerLoadBalancingRulesClient {
     /**
      * Gets all the load balancing rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
 
     /**
      * Gets all the load balancing rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
 
     /**
      * Gets all the load balancing rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -57,7 +59,7 @@ public interface LoadBalancerLoadBalancingRulesClient {
 
     /**
      * Gets the specified load balancer load balancing rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.
@@ -65,15 +67,15 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified load balancer load balancing rule along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String loadBalancingRuleName);
+    Mono<Response<LoadBalancingRuleInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String loadBalancingRuleName);
 
     /**
      * Gets the specified load balancer load balancing rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.
@@ -83,12 +85,12 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @return the specified load balancer load balancing rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancingRuleInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String loadBalancingRuleName);
+    Mono<LoadBalancingRuleInner> getAsync(String resourceGroupName, String loadBalancerName,
+        String loadBalancingRuleName);
 
     /**
      * Gets the specified load balancer load balancing rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.
@@ -99,12 +101,12 @@ public interface LoadBalancerLoadBalancingRulesClient {
      * @return the specified load balancer load balancing rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadBalancingRuleInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String loadBalancingRuleName, Context context);
+    Response<LoadBalancingRuleInner> getWithResponse(String resourceGroupName, String loadBalancerName,
+        String loadBalancingRuleName, Context context);
 
     /**
      * Gets the specified load balancer load balancing rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param loadBalancingRuleName The name of the load balancing rule.

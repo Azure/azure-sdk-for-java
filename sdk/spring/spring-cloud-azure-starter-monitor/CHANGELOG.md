@@ -10,22 +10,10 @@
 
 ### Other Changes
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2
 
-### Features Added
+### Dependency Updates
+- Bump to OpenTelemetry 1.32.0
+- Disable when the Application Insights agent is enabled
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.0.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+## 1.0.0-beta.1

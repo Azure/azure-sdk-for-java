@@ -8,7 +8,18 @@
 
 ### Bugs Fixed
 
+- Removes extraneous log messages when deserializing topics or subscriptions. ([32325](https://github.com/Azure/azure-sdk-for-java/issues/32325))
+
 ### Other Changes
+
+## 7.14.7 (2023-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
+- Upgraded `azure-core-amqp` from `2.8.13` to `2.8.14`.
+- Upgraded `azure-identity` from `1.11.0` to `1.11.1`.
 
 ## 7.15.0-beta.5 (2023-11-22)
 

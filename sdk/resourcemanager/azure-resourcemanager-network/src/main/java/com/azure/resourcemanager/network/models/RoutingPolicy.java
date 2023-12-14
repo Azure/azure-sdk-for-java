@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The routing policy object used in a RoutingIntent resource. */
+/**
+ * The routing policy object used in a RoutingIntent resource.
+ */
 @Fluent
 public final class RoutingPolicy {
     /*
@@ -30,13 +32,15 @@ public final class RoutingPolicy {
     @JsonProperty(value = "nextHop", required = true)
     private String nextHop;
 
-    /** Creates an instance of RoutingPolicy class. */
+    /**
+     * Creates an instance of RoutingPolicy class.
+     */
     public RoutingPolicy() {
     }
 
     /**
      * Get the name property: The unique name for the routing policy.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +49,7 @@ public final class RoutingPolicy {
 
     /**
      * Set the name property: The unique name for the routing policy.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoutingPolicy object itself.
      */
@@ -57,7 +61,7 @@ public final class RoutingPolicy {
     /**
      * Get the destinations property: List of all destinations which this routing policy is applicable to (for example:
      * Internet, PrivateTraffic).
-     *
+     * 
      * @return the destinations value.
      */
     public List<String> destinations() {
@@ -67,7 +71,7 @@ public final class RoutingPolicy {
     /**
      * Set the destinations property: List of all destinations which this routing policy is applicable to (for example:
      * Internet, PrivateTraffic).
-     *
+     * 
      * @param destinations the destinations value to set.
      * @return the RoutingPolicy object itself.
      */
@@ -78,7 +82,7 @@ public final class RoutingPolicy {
 
     /**
      * Get the nextHop property: The next hop resource id on which this routing policy is applicable to.
-     *
+     * 
      * @return the nextHop value.
      */
     public String nextHop() {
@@ -87,7 +91,7 @@ public final class RoutingPolicy {
 
     /**
      * Set the nextHop property: The next hop resource id on which this routing policy is applicable to.
-     *
+     * 
      * @param nextHop the nextHop value to set.
      * @return the RoutingPolicy object itself.
      */
@@ -98,24 +102,21 @@ public final class RoutingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RoutingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RoutingPolicy"));
         }
         if (destinations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property destinations in model RoutingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property destinations in model RoutingPolicy"));
         }
         if (nextHop() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextHop in model RoutingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nextHop in model RoutingPolicy"));
         }
     }
 

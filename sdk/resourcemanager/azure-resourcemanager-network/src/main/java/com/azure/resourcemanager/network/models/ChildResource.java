@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Proxy resource representation. */
+/**
+ * Proxy resource representation.
+ */
 @Immutable
 public class ChildResource extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public class ChildResource extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ChildResource class. */
+    /**
+     * Creates an instance of ChildResource class.
+     */
     public ChildResource() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -32,7 +36,7 @@ public class ChildResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

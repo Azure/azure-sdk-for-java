@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayLoadDis
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Load Distribution Policy of an application gateway. */
+/**
+ * Load Distribution Policy of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayLoadDistributionPolicy extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayLoadDistributionPolicy class. */
+    /**
+     * Creates an instance of ApplicationGatewayLoadDistributionPolicy class.
+     */
     public ApplicationGatewayLoadDistributionPolicy() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayLoadDistributionPolicyPropertiesFormat innerProperties() {
@@ -52,7 +56,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
@@ -72,7 +76,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayLoadDistributionPolicy withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionTargets value.
      */
     public List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets() {
@@ -106,12 +112,12 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionTargets the loadDistributionTargets value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicy withLoadDistributionTargets(
-        List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
+    public ApplicationGatewayLoadDistributionPolicy
+        withLoadDistributionTargets(List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayLoadDistributionPolicyPropertiesFormat();
         }
@@ -121,7 +127,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionAlgorithm value.
      */
     public ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm() {
@@ -130,12 +136,12 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionAlgorithm the loadDistributionAlgorithm value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicy withLoadDistributionAlgorithm(
-        ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
+    public ApplicationGatewayLoadDistributionPolicy
+        withLoadDistributionAlgorithm(ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayLoadDistributionPolicyPropertiesFormat();
         }
@@ -145,7 +151,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the provisioningState property: The provisioning state of the Load Distribution Policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -154,7 +160,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -2377,6 +2377,22 @@ public class FileApiTest extends DataLakeTestBase {
         assertEquals(dataSize, fc.getProperties().getFileSize());
     }
 
+    @Test
+    public void uploadFromFileEmptyFile() {
+        File file = getRandomFile(0);
+        file.deleteOnExit();
+        createdFiles.add(file);
+
+        Response<PathInfo> response = fc.uploadFromFileWithResponse(file.toPath().toString(), null, null, null, null,
+            null, null);
+        // uploadFromFileWithResponse will return 200 for a non-empty file, but since we are uploading an empty file,
+        // it will return 201 since only createWithResponse gets called
+        assertEquals(201, response.getStatusCode());
+        assertNotNull(response.getValue().getETag());
+
+        assertEquals(0, fc.getProperties().getFileSize());
+    }
+
     private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0);
         for (ByteBuffer buffer : buffers) {

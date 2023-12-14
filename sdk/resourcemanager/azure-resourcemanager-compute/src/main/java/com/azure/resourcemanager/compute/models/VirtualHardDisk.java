@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the uri of a disk. */
+/**
+ * Describes the uri of a disk.
+ */
 @Fluent
 public final class VirtualHardDisk {
     /*
@@ -16,13 +18,15 @@ public final class VirtualHardDisk {
     @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of VirtualHardDisk class. */
+    /**
+     * Creates an instance of VirtualHardDisk class.
+     */
     public VirtualHardDisk() {
     }
 
     /**
      * Get the uri property: Specifies the virtual hard disk's uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -31,7 +35,7 @@ public final class VirtualHardDisk {
 
     /**
      * Set the uri property: Specifies the virtual hard disk's uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the VirtualHardDisk object itself.
      */
@@ -42,7 +46,7 @@ public final class VirtualHardDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
