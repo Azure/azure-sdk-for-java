@@ -303,5 +303,4 @@ additional questions or comments.
 [vision_studio]: https://portal.vision.cognitive.azure.com/gallery/imageanalysis
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples)
 [sdk_source_code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main)
-[sample_image]()
 
