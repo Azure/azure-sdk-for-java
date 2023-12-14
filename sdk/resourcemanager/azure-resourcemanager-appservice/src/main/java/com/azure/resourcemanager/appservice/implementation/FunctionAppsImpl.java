@@ -55,20 +55,19 @@ public class FunctionAppsImpl
         return this
             .getInnerAsync(resourceGroupName, name)
             .flatMap(
-                siteInner -> this.inner().getConfigurationAsync(resourceGroupName, name)
-                    .flatMap(
-                        siteConfigResourceInner -> {
-                            if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
-                                return Mono.just(wrapModel(siteInner, siteConfigResourceInner, null));
-                            } else {
-                                return this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name)
-                                    .flatMap(
-                                        logsConfigInner ->
-                                            Mono.just(wrapModel(siteInner, siteConfigResourceInner, logsConfigInner))
-                                    );
-                            }
-                        }
-                    ));
+                siteInner -> {
+                    if (FunctionAppImpl.isFunctionAppOnACA(siteInner)) {
+                        return this.inner().getConfigurationAsync(resourceGroupName, name)
+                            .map(siteConfigResourceInner -> wrapModel(siteInner, siteConfigResourceInner, null));
+                    } else {
+                        return Mono.zip(
+                            this.inner().getConfigurationAsync(resourceGroupName, name),
+                            this.inner().getDiagnosticLogsConfigurationAsync(resourceGroupName, name),
+                            ((siteConfigResourceInner, siteLogsConfigInner) ->
+                                wrapModel(siteInner, siteConfigResourceInner, siteLogsConfigInner)
+                            ));
+                    }
+                });
     }
 
     @Override
