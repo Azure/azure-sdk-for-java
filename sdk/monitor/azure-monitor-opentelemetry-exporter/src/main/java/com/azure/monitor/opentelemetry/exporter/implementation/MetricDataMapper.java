@@ -26,6 +26,7 @@ import reactor.util.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -154,7 +155,7 @@ public class MetricDataMapper {
 
         // We emit some metrics via OpenTelemetry that have names which use characters that aren't
         // supported in OpenTelemetry metric names, and so we put the real metric names into an attribute
-        // (where these characters are supported).
+        // (where these characters are supported) and then pull the name back out when sending it to Breeze.
         String metricName = pointData.getAttributes().get(APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME);
         if (metricName != null) {
             pointBuilder.setName(metricName);
@@ -164,7 +165,10 @@ public class MetricDataMapper {
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
 
+        // remove any attributes that start with "applicationinsights.internal."
         Attributes attributes = pointData.getAttributes();
+        attributes.asMap().keySet().removeIf(it -> it.getKey().startsWith("applicationinsights.internal."));
+
         if (isPreAggregatedStandardMetric) {
             Long statusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(statusCode, captureHttpServer4xxAsError);
