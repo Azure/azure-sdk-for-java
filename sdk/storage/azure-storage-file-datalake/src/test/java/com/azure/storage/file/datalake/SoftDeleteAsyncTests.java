@@ -106,7 +106,6 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     @ValueSource(strings = {"!'();[]@&%=+\\$,#äÄöÖüÜß;", "%21%27%28%29%3B%5B%5D%40%26%25%3D%2B%24%2C%23äÄöÖüÜß%3B",
         " my cool directory ", "directory"})
     public void restorePathSpecialCharacters(String name) {
-        name = Utility.urlEncode(name);
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient("dir" + name);
         dir.create().block();
         dir.delete().block();
@@ -120,8 +119,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
         String dirDeletionId = paths.get(0).getDeletionId();
         String fileDeletionId = paths.get(1).getDeletionId();
 
-        StepVerifier.create(fileSystemClient.undeletePath(Utility.urlEncode(dir.getDirectoryName()),
-            dirDeletionId))
+        StepVerifier.create(fileSystemClient.undeletePath(dir.getDirectoryName(), dirDeletionId))
             .assertNext(r -> assertInstanceOf(DataLakeDirectoryAsyncClient.class, r))
             .verifyComplete();
 
@@ -129,7 +127,7 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
-        StepVerifier.create(fileSystemClient.undeletePath(Utility.urlEncode(file.getFileName()), fileDeletionId))
+        StepVerifier.create(fileSystemClient.undeletePath(file.getFileName(), fileDeletionId))
             .assertNext(r -> assertInstanceOf(DataLakeFileAsyncClient.class, r))
             .verifyComplete();
 

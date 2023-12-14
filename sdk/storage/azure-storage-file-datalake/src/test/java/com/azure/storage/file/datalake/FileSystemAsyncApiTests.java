@@ -2135,10 +2135,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(dc2.getPropertiesWithResponse(null), 200);
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths())
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir2", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file1", r.getName()))
-            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file2", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir1", r.getName()))
+            .assertNext(r -> assertEquals(name + "dir2", r.getName()))
+            .assertNext(r -> assertEquals(name + "file1", r.getName()))
+            .assertNext(r -> assertEquals(name + "file2", r.getName()))
             .verifyComplete();
     }
 
