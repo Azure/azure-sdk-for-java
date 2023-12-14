@@ -21,8 +21,7 @@ import java.util.function.Function;
  * <!-- src_embed com.generic.core.util.Configuration -->
  * <!-- end com.generic.core.util.Configuration -->
  */
-public class Configuration implements Cloneable {
-
+public class Configuration {
     // Default properties - these are what we read from the environment
     /**
      * URL of the proxy for HTTP connections.
@@ -234,7 +233,6 @@ public class Configuration implements Cloneable {
     public boolean contains(String name) {
         return get(name) != null;
     }
-
 
     /**
      * Checks if configuration contains the property. If property can be shared between clients, checks this

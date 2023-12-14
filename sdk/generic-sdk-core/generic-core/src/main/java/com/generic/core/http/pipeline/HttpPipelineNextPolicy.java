@@ -9,7 +9,7 @@ import com.generic.core.implementation.http.HttpPipelineCallState;
 /**
  * A type that invokes next policy in the pipeline.
  */
-public class HttpPipelineNextPolicy implements Cloneable {
+public class HttpPipelineNextPolicy {
     private final HttpPipelineCallState state;
 
     /**
