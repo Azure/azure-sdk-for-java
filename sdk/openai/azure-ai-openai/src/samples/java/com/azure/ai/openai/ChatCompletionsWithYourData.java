@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ChatCompletionsWithYourData {
     /**
-     * Runs the sample and demonstrates configuration of Azure Cognitive Search as a data source.
+     * Runs the sample and demonstrates configuration of Azure AI Search as a data source.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -42,19 +42,19 @@ public class ChatCompletionsWithYourData {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
-        // These configuration values come from your Azure Cognitive Search resource. Using Azure
-        // Cognitive Search as a data source is briefly described in the "Azure OpenAI on
+        // These configuration values come from your Azure AI Search resource. Using Azure
+        // AI Search as a data source is briefly described in the "Azure OpenAI on
         // your data" quickstart, linked above. A more detailed guide can be found here:
         // https://learn.microsoft.com/azure/search/search-get-started-portal
-        // Your Azure Cognitive Search endpoint, admin key, and index name
-        String azureSearchEndpoint = "{azure-cognitive-search-endpoint}";
-        String azureSearchAdminKey = "{azure-cognitive-search-key}";
+        // Your Azure AI Search endpoint, admin key, and index name
+        String azureSearchEndpoint = "{azure-search-endpoint}";
+        String azureSearchAdminKey = "{azure-search-key}";
 
         // The name of the index you want to use as a data source. This index name is created by running Azure Search Sample,
         // https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java#L75
         String azureSearchIndexName = "{azure-search-index-name}"; // "hotels-vector-sample-index"
 
-        AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+        AzureCognitiveSearchChatExtensionConfiguration searchConfiguration =
                 new AzureCognitiveSearchChatExtensionConfiguration(
                         new AzureCognitiveSearchChatExtensionParameters(azureSearchEndpoint, azureSearchIndexName)
                                 .setAuthentication(new OnYourDataApiKeyAuthenticationOptions(azureSearchAdminKey))
@@ -74,7 +74,7 @@ public class ChatCompletionsWithYourData {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestUserMessage(question));
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages)
-                .setDataSources(Arrays.asList(cognitiveSearchConfiguration));
+                .setDataSources(Arrays.asList(searchConfiguration));
 
         ChatCompletions chatCompletions = client.getChatCompletions(deploymentOrModelId, chatCompletionsOptions);
 
