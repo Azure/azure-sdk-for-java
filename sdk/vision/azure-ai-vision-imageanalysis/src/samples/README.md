@@ -16,30 +16,30 @@ These are runnable console Java programs that show how to use the Image Analysis
 
 |**File Name**|**Description**|
 |----------------|-------------|
-|[SampleAnalyzeAllImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleAnalyzeAllImageFile.java) | Extract all 7 visual features from an image file, using a synchronous client. Logging turned on.|
-|[SampleCaptionImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFile.java) and [SampleCaptionImageUrl.java](java/com/azure/ai/vision/imageanalysis/SampleCaptionImageUrl.java)| Generate a human-readable sentence that describes the content of an image file or image URL, using a synchronous client. |
-|[SampleDenseCaptionsImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleDenseCaptionsImageFile.java) | Generating a human-readable caption for up to 10 different regions in the image, including one for the whole image, using a synchronous client.|
-|[SampleOcrImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleOcrImageFile.java) and [SampleOcrImageUrl.java](java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrl.java)|  Extract printed or handwritten text from an image file or image URL, using a synchronous client. |
-|[SampleTagsImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleTagsImageFile.java) | Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in an image file, using a synchronous client. |
-|[SampleObjectsImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleObjectsImageFile.java) | Detect physical objects in an image file and return their location, using a synchronous client. |
-|[SampleSmartCropsImageFile.java](java/com/azure/ai/vision/imageanalysis/SampleSmartCropsImageFile.java) | Find a representative sub-region of the image for thumbnail generation, using a synchronous client .| 
-|[SamplePeopleImageFile.java](java/com/azure/ai/vision/imageanalysis/SamplePeopleImageFile.java) | Locate people in the image and return their location, using a synchronous client.|
+|[SampleAnalyzeAllImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleAnalyzeAllImageFile.java) | Extract all 7 visual features from an image file, using a synchronous client. Logging turned on.|
+|[SampleCaptionImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFile.java) and [SampleCaptionImageUrl.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageUrl.java)| Generate a human-readable sentence that describes the content of an image file or image URL, using a synchronous client. |
+|[SampleDenseCaptionsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleDenseCaptionsImageFile.java) | Generating a human-readable caption for up to 10 different regions in the image, including one for the whole image, using a synchronous client.|
+|[SampleOcrImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageFile.java) and [SampleOcrImageUrl.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrl.java)|  Extract printed or handwritten text from an image file or image URL, using a synchronous client. |
+|[SampleTagsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleTagsImageFile.java) | Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in an image file, using a synchronous client. |
+|[SampleObjectsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleObjectsImageFile.java) | Detect physical objects in an image file and return their location, using a synchronous client. |
+|[SampleSmartCropsImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleSmartCropsImageFile.java) | Find a representative sub-region of the image for thumbnail generation, using a synchronous client .| 
+|[SamplePeopleImageFile.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SamplePeopleImageFile.java) | Locate people in the image and return their location, using a synchronous client.|
 
 ## Asynchronous client sample
 
 |**File Name**|**Description**|
 |----------------|-------------|
-|[SampleCaptionImageFileAsync.java](java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileAsync.java) | Generate a human-readable sentence that describes the content of an image file, using an asynchronous client. |
+|[SampleCaptionImageFileAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileAsync.java) | Generate a human-readable sentence that describes the content of an image file, using an asynchronous client. |
 
 ## Prerequisites
 
-See [Prerequisites](../../README.md#prerequisites) here.
+See [Prerequisites](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#prerequisites) here.
 
 In addition, to compile and run these samples in a command-prompt / terminal window you will need [Maven](https://maven.apache.org/) installed. To verify your installation, type `mvn -version` in a command line window.
 
 ## Set environment variables
 
-See [Set environment variables](../../README.md#set-environment-variables) here.
+See [Set environment variables](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#set-environment-variables) here.
 
 ## Compile the sample
 
@@ -47,7 +47,7 @@ See [Set environment variables](../../README.md#set-environment-variables) here.
 
 * Open a command-prompt / terminal window and navigate to the samples folder `sdk\vision\azure-ai-vision-imageanalysis\src\samples\java\com\azure\ai\vision\imageanalysis` 
 
-* Run the following to copy all dependencies locally (note the [pom.xml](java/com\azure/ai/vision/imageanalysis/pom.xml) file in this folder):
+* Run the following to copy all dependencies locally (note the [pom.xml](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/pom.xml) file in this folder):
   ```
   mvn clean dependency:copy-dependencies
   ```
@@ -70,7 +70,7 @@ java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
 
 The sample `SampleAnalyzeAllImageFile.java` analyzes the image `sample.jpg` in this folder:
 
-![sample JPEG image](java/com/azure/ai/vision/imageanalysis/sample.jpg)
+![sample JPEG image](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg)
 
 And produces an output similar to the following:
 
@@ -133,5 +133,5 @@ Image analysis results:
 
 ## Troubleshooting
 
-See [Troubleshooting](../../README.md#troubleshooting) here.
+See [Troubleshooting](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/README.md#troubleshooting) here.
 

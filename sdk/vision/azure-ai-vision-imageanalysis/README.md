@@ -9,11 +9,11 @@ Use the Image Analysis client library to:
 * Get the analysis result
 
 [Product documentation][image_analysis_overview] 
-| [Samples](src/samples)
+| [Samples][samples]
 | [Vision Studio][vision_studio]
 | [API reference documentation](https://learn.microsoft.com/java/api/com.azure.ai.vision.imageanalysis)
 | [Maven Package](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis)
-| [SDK source code](src/main)
+| [SDK source code][sdk_source_code]
 
 ## Getting started
 
@@ -89,13 +89,13 @@ ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
 
 Once you've initialized an `ImageAnalysisClient`, you need to select one or more visual features to analyze. The options are specified by the enum class `VisualFeatures`. The following features are supported:
 
-1. `VisualFeatures.CAPTION` ([Examples](#generate-an-image-caption-for-an-image-file) | [Samples](src/samples)): Generate a human-readable sentence that describes the content of an image.
-1. `VisualFeatures.READ` ([Examples](#extract-text-from-the-image-file) | [Samples](src/samples)): Also known as Optical Character Recognition (OCR). Extract printed or handwritten text from images.
-1. `VisualFeatures.DENSE_CAPTIONS` ([Samples](src/samples)): Dense Captions provides more details by generating one-sentence captions for up to 10 different regions in the image, including one for the whole image. 
-1. `VisualFeatures.TAGS` ([Samples](src/samples)): Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in images.
-1. `VisualFeatures.OBJECTS` ([Samples](src/samples)): Object detection. This is similar to tagging, but focused on detecting physical objects in the image and returning their location.
-1. `VisualFeatures.SMART_CROPS` ([Samples](src/samples)): Used to find a representative sub-region of the image for thumbnail generation, with priority given to include faces.
-1. `VisualFeatures.PEOPLE` ([Samples](src/samples)): Detect people in the image and return their location.
+1. `VisualFeatures.CAPTION` ([Examples](#generate-an-image-caption-for-an-image-file) | [Samples][samples]): Generate a human-readable sentence that describes the content of an image.
+1. `VisualFeatures.READ` ([Examples](#extract-text-from-the-image-file) | [Samples][samples]): Also known as Optical Character Recognition (OCR). Extract printed or handwritten text from images.
+1. `VisualFeatures.DENSE_CAPTIONS` ([Samples][samples]): Dense Captions provides more details by generating one-sentence captions for up to 10 different regions in the image, including one for the whole image. 
+1. `VisualFeatures.TAGS` ([Samples][samples]): Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in images.
+1. `VisualFeatures.OBJECTS` ([Samples][samples]): Object detection. This is similar to tagging, but focused on detecting physical objects in the image and returning their location.
+1. `VisualFeatures.SMART_CROPS` ([Samples][samples]): Used to find a representative sub-region of the image for thumbnail generation, with priority given to include faces.
+1. `VisualFeatures.PEOPLE` ([Samples][samples]): Detect people in the image and return their location.
 
 For more information about these features, see [Image Analysis overview][image_analysis_overview], and the [Concepts][image_analysis_concepts] page.
 
@@ -103,7 +103,7 @@ For more information about these features, see [Image Analysis overview][image_a
 
 The `ImageAnalysisClient` has two overloads for the method `analyze`:
 * Analyze an image from a memory buffer, using the [BinaryData](https://learn.microsoft.com/java/api/com.azure.core.util.binarydata) object. The client will upload the image to the service as the REQUEST body. 
-* Analyze an image from a publicly-accessible URL, using the [java.lang.URL](https://docs.oracle.com/java/javase/20/docs/api/java.base/java/net/URL.html) object. The client will send the image URL to the service. The service will fetch the image.
+* Analyze an image from a publicly-accessible URL, using the [java.lang.URL](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/net/URL.html) object. The client will send the image URL to the service. The service will fetch the image.
 
 The examples below show how to do both. The `analyze` examples populate the input `BinaryData` object by loading an image from a file on disk.
 
@@ -126,11 +126,11 @@ The following sections provide code snippets covering these common Image Analysi
 
 These snippets use the synchronous `client` from [Create and authenticate the client](#3-create-and-authenticate-the-client).
 
-See the [Samples](src/samples) folder for fully working samples for all visual features, including asynchronous clients.
+See the [Samples][samples] folder for fully working samples for all visual features, including asynchronous clients.
 
 ### Generate an image caption for an image file
 
-This example demonstrates how to generate a one-sentence caption for the image file [sample.jpg](sample.jpg) using the `ImageAnalysisClient`. The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+This example demonstrates how to generate a one-sentence caption for the image file `sample.jpg` using the `ImageAnalysisClient`. The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
 A call to `getCaption()` on this result will return a `CaptionResult` object.
 It contains the generated caption and its confidence score in the range [0, 1]. By default the caption may contain gender terms such as "man", "woman", or "boy", "girl". You have the option to request gender-neutral terms such as "person" or "child" by setting `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
 
@@ -172,7 +172,7 @@ System.out.println("   \"" + result.getCaption().getText() + "\", Confidence "
 
 ### Extract text from an image file
 
-This example demonstrates how to extract printed or hand-written text for the image file [sample.jpg](sample.jpg) using the `ImageAnalysisClient`. The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+This example demonstrates how to extract printed or hand-written text for the image file `sample.jpg` using the `ImageAnalysisClient`. The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
 A call to `getRead()` on the result will return a `ReadResult` object.
 It includes a list of text lines and a bounding polygon surrounding each text line. For each line, it also returns a list of words in the text line and a bounding polygon surrounding each word.
 
@@ -278,7 +278,7 @@ ImageAnalysisClient client = new ImageAnalysisClientBuilder()
 
 ## Next steps
 
-* Have a look at the [Samples](src/samples) folder, containing fully runnable Java code for Image Analysis (all visual features, synchronous and asynchronous clients, from image file or URL).
+* Have a look at the [Samples][samples] folder, containing fully runnable Java code for Image Analysis (all visual features, synchronous and asynchronous clients, from image file or URL).
 
 ## Contributing
 
@@ -301,4 +301,7 @@ additional questions or comments.
 [image_analysis_overview]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0
 [image_analysis_concepts]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40
 [vision_studio]: https://portal.vision.cognitive.azure.com/gallery/imageanalysis
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples)
+[sdk_source_code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main)
+[sample_image]()
 
