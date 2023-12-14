@@ -41,7 +41,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
@@ -51,7 +51,7 @@
                 <!-- Special allowance for performance libraries as they aren't shipped. -->
                 <include>com.beust:jcommander:[1.78]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 
-                <include>io.projectreactor:reactor-core:[3.5.11]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.6.0]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
