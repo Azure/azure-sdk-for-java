@@ -45,7 +45,7 @@ public class AnalyzeAddOnFonts {
         File document = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/addOns/fonts_and_languages.png");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
             client.beginAnalyzeDocument("prebuilt-layout", null,
                 null,
                 null,
@@ -54,7 +54,7 @@ public class AnalyzeAddOnFonts {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         // DocumentStyle has the following font related attributes:
         Map<String, List<DocumentStyle>> similarFontFamilies = new HashMap<>(); // e.g., 'Arial, sans-serif

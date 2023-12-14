@@ -5,6 +5,7 @@
 package com.azure.ai.documentintelligence.implementation;
 
 import com.azure.ai.documentintelligence.DocumentIntelligenceServiceVersion;
+import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
@@ -60,7 +61,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Gets The Document Intelligence service endpoint.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -74,7 +75,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
@@ -88,7 +89,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -102,7 +103,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -111,7 +112,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     * 
+     *
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
@@ -122,7 +123,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
@@ -134,7 +135,7 @@ public final class DocumentAnalysisClientImpl {
 
     /**
      * Initializes an instance of DocumentAnalysisClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
@@ -265,7 +266,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -351,7 +352,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -437,7 +438,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -521,7 +522,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -534,7 +535,7 @@ public final class DocumentAnalysisClientImpl {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
@@ -605,7 +606,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -691,7 +692,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -701,17 +702,17 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocumentWithModel(String modelId,
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocumentWithModel(String modelId,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -751,7 +752,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -808,7 +809,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -864,7 +865,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -924,7 +925,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -984,7 +985,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1045,7 +1046,7 @@ public final class DocumentAnalysisClientImpl {
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1056,7 +1057,7 @@ public final class DocumentAnalysisClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult>
         beginClassifyDocumentWithModel(String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
@@ -1066,6 +1067,6 @@ public final class DocumentAnalysisClientImpl {
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 }

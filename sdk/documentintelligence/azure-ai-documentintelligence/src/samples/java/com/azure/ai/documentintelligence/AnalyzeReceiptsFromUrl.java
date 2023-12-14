@@ -39,7 +39,7 @@ public class AnalyzeReceiptsFromUrl {
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence"
                 + "/azure-ai-documentintelligence/src/samples/resources/sample-forms/receipts/contoso-allinone.jpg";
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -49,7 +49,7 @@ public class AnalyzeReceiptsFromUrl {
                 null,
                 new AnalyzeDocumentRequest().setUrlSource(receiptUrl));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);

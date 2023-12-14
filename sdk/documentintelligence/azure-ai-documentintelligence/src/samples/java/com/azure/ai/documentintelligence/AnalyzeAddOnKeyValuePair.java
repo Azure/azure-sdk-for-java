@@ -40,7 +40,7 @@ public class AnalyzeAddOnKeyValuePair {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutResultPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutResultPoller =
                 client.beginAnalyzeDocument("prebuilt-layout", null,
                         null,
                         null,
@@ -49,7 +49,7 @@ public class AnalyzeAddOnKeyValuePair {
                         null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();
 
         analyzeLayoutResult.getKeyValuePairs().forEach(
                 keyValuePair -> {

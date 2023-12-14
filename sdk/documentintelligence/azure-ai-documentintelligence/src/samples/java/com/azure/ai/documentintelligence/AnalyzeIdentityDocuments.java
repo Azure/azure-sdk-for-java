@@ -41,7 +41,7 @@ public class AnalyzeIdentityDocuments {
         File licenseDocumentFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/identityDocuments/license.png");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller =
             client.beginAnalyzeDocument("prebuilt-idDocument",
                 null,
                 null,
@@ -51,7 +51,7 @@ public class AnalyzeIdentityDocuments {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(licenseDocumentFile.toPath())));
 
-        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult identityDocumentResults = analyzeIdentityDocumentPoller.getFinalResult();
 
         for (int i = 0; i < identityDocumentResults.getDocuments().size(); i++) {
             Document analyzedIDDocument = identityDocumentResults.getDocuments().get(i);
