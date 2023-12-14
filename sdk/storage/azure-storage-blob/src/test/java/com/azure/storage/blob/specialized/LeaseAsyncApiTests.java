@@ -173,12 +173,12 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 validateBasicHeaders(r.getHeaders());
                 assertNotNull(r.getValue());
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
             })
             .verifyComplete();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.LEASED))
+            .assertNext(r -> assertEquals(LeaseStateType.LEASED, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -249,7 +249,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.AVAILABLE))
+            .assertNext(r -> assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -479,7 +479,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(leaseClient.acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime)))
             .assertNext(r -> {
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
                 assertNotNull(r.getValue());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
             })
@@ -572,13 +572,13 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         sleepIfRunningAgainstService(16000);
         StepVerifier.create(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()))
             .assertNext(r -> {
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
             })
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.LEASED))
+            .assertNext(r -> assertEquals(LeaseStateType.LEASED, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -650,7 +650,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r ->  assertEquals(r.getLeaseState(), LeaseStateType.AVAILABLE))
+            .assertNext(r ->  assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState()))
             .verifyComplete();
     }
 

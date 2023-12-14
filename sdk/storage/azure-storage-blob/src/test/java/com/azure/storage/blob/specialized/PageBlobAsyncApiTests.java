@@ -98,7 +98,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void createSequenceNumber() {
         bc.createWithResponse(PageBlobClient.PAGE_BYTES, 2L, null, null, null).block();
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getBlobSequenceNumber(), 2))
+            .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
             .verifyComplete();
     }
 
@@ -147,7 +147,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue().getMetadata(), metadata);
+                assertEquals(metadata, r.getValue().getMetadata());
             })
             .verifyComplete();
     }
@@ -176,7 +176,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue(), tags);
+                assertEquals(tags, r.getValue());
             })
             .verifyComplete();
     }
@@ -274,7 +274,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         bc.createIfNotExistsWithResponse(new PageBlobCreateOptions(PageBlobClient.PAGE_BYTES).setSequenceNumber(2L)).block();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getBlobSequenceNumber(), 2))
+            .assertNext(r -> assertEquals(2, r.getBlobSequenceNumber()))
             .verifyComplete();
     }
 
@@ -331,7 +331,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue().getMetadata(), metadata);
+                assertEquals(metadata, r.getValue().getMetadata());
             })
             .verifyComplete();
     }
@@ -362,7 +362,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue(), tags);
+                assertEquals(tags, r.getValue());
             })
             .verifyComplete();
     }
@@ -382,7 +382,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 assertResponseStatusCode(r, 201);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
                 assertNotNull(r.getHeaders().getValue("x-ms-content-crc64"));
-                assertEquals(r.getValue().getBlobSequenceNumber(), 0);
+                assertEquals(0, r.getValue().getBlobSequenceNumber());
                 assertTrue(r.getValue().isServerEncrypted());
             })
             .verifyComplete();
@@ -923,16 +923,16 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         // when: "max results on options"
         StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
             new BlobRange(0, 4L * Constants.KB)).setMaxResultsPerPage(1)).byPage())
-            .assertNext(r -> assertEquals(r.getValue().size(), 1))
-            .assertNext(r -> assertEquals(r.getValue().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getValue().size()))
+            .assertNext(r -> assertEquals(1, r.getValue().size()))
             .verifyComplete();
 
 
         // when: "max results on iterableByPage"
         StepVerifier.create(bc.listPageRanges(new ListPageRangesOptions(
             new BlobRange(0, 4L * Constants.KB))).byPage(1))
-            .assertNext(r -> assertEquals(r.getValue().size(), 1))
-            .assertNext(r -> assertEquals(r.getValue().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getValue().size()))
+            .assertNext(r -> assertEquals(1, r.getValue().size()))
             .verifyComplete();
     }
 
@@ -951,7 +951,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                 return bc.listPageRanges(new ListPageRangesOptions(new BlobRange(0, 4L * Constants.KB))).byPage(r.getContinuationToken());
             }))
             .assertNext(r -> {
-                assertEquals(r.getValue().size(), 1);
+                assertEquals(1, r.getValue().size());
             })
             .verifyComplete();
     }
@@ -1050,7 +1050,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
                     assertEquals(expectedRange.getEnd(), actualRange.getEnd());
                 }
 
-                assertEquals(Integer.parseInt(r.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)), 4 * Constants.MB);
+                assertEquals(4 * Constants.MB, Integer.parseInt(r.getHeaders().getValue(X_MS_BLOB_CONTENT_LENGTH)));
             })
             .verifyComplete();
     }
@@ -1202,14 +1202,14 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         // when: "max results on options"
         StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot).setMaxResultsPerPage(2)).byPage())
-            .assertNext(r -> assertEquals(r.getValue().size(), 2))
-            .assertNext(r -> assertEquals(r.getValue().size(), 2))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
             .verifyComplete();
 
         // when: "max results on iterableByPage"
         StepVerifier.create(bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(2))
-            .assertNext(r -> assertEquals(r.getValue().size(), 2))
-            .assertNext(r -> assertEquals(r.getValue().size(), 2))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
             .verifyComplete();
     }
 
@@ -1231,7 +1231,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .flatMap(r -> {
                 return bc.listPageRangesDiff(new ListPageRangesDiffOptions(new BlobRange(0, 4L * Constants.KB), snapshot)).byPage(r.getContinuationToken());
             }))
-            .assertNext(r -> assertEquals(r.getValue().size(), 2))
+            .assertNext(r -> assertEquals(2, r.getValue().size()))
             .verifyComplete();
     }
 
@@ -1387,7 +1387,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.updateSequenceNumberWithResponse(action, number, null))
             .assertNext(r -> {
                 assertTrue(validateBasicHeaders(r.getHeaders()));
-                assertEquals(r.getValue().getBlobSequenceNumber(), result);
+                assertEquals(result, r.getValue().getBlobSequenceNumber());
             })
             .verifyComplete();
 
@@ -1598,7 +1598,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
     public void getBlobNameAndBuildClient(String originalBlobName, String finalBlobName) {
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(originalBlobName);
         PageBlobAsyncClient blockClient = ccAsync.getBlobAsyncClient(client.getBlobName()).getPageBlobAsyncClient();
-        assertEquals(blockClient.getBlobName(), finalBlobName);
+        assertEquals(finalBlobName, blockClient.getBlobName());
     }
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
@@ -1632,7 +1632,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .buildPageBlobAsyncClient();
 
         StepVerifier.create(specialBlob.getPropertiesWithResponse(null))
-            .assertNext(r ->  assertEquals(r.getHeaders().getValue(X_MS_VERSION), "2017-11-09"))
+            .assertNext(r ->  assertEquals("2017-11-09", r.getHeaders().getValue(X_MS_VERSION)))
             .verifyComplete();
     }
 

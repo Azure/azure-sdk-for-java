@@ -213,7 +213,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc.uploadWithResponse(input, pto, null, null, null, null).block();
 
         StepVerifier.create(bc.getBlockBlobAsyncClient().listBlocks(BlockListType.ALL))
-            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), numBlocks))
+            .assertNext(r -> assertEquals(numBlocks, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -518,7 +518,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setTagsConditions(tags);
 
         StepVerifier.create(bc.downloadWithResponse(null, null, bac, false))
-            .assertNext(r -> assertEquals(r.getStatusCode(), 200))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
 
@@ -541,7 +541,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setTagsConditions(tags);
 
         StepVerifier.create(bc.downloadStreamWithResponse(null, null, bac, false))
-            .assertNext(r -> assertEquals(r.getStatusCode(), 200))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
 
@@ -564,7 +564,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setTagsConditions(tags);
 
         StepVerifier.create(bc.downloadContentWithResponse(null, bac))
-            .assertNext(r -> assertEquals(r.getStatusCode(), 200))
+            .assertNext(r -> assertEquals(200, r.getStatusCode()))
             .verifyComplete();
     }
 
@@ -785,7 +785,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024), null, null,
             false))
             .assertNext(r -> {
-                assertEquals(r.getValue().getBlobType(), BlobType.BLOCK_BLOB);
+                assertEquals(BlobType.BLOCK_BLOB, r.getValue().getBlobType());
                 assertNotNull(r.getValue().getCreationTime());
             })
             .verifyComplete();
@@ -827,7 +827,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             null, null, false);
 
         StepVerifier.create(downloadMono)
-            .assertNext(it -> assertEquals(it.getValue().getBlobType(), BlobType.BLOCK_BLOB))
+            .assertNext(it -> assertEquals(BlobType.BLOCK_BLOB, it.getValue().getBlobType()))
             .verifyComplete();
 
         assertTrue(compareFiles(file, outFile, 0, fileSize));
@@ -1199,7 +1199,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
                 assertTrue(validateBasicHeaders(headers));
                 assertTrue(CoreUtils.isNullOrEmpty(properties.getMetadata()));
-                assertEquals(properties.getBlobType(), BlobType.BLOCK_BLOB);
+                assertEquals(BlobType.BLOCK_BLOB, properties.getBlobType());
                 assertNull(properties.getCopyCompletionTime()); // tested in "copy"
                 assertNull(properties.getCopyStatusDescription()); // only returned when the service has errors; cannot validate
                 assertNull(properties.getCopyId()); // tested in "abort copy"
@@ -1209,8 +1209,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 assertNull(properties.isIncrementalCopy()); // tested in PageBlob."start incremental copy"
                 assertNull(properties.getCopyDestinationSnapshot()); // tested in PageBlob."start incremental copy"
                 assertNull(properties.getLeaseDuration()); // tested in "acquire lease"
-                assertEquals(properties.getLeaseState(), LeaseStateType.AVAILABLE);
-                assertEquals(properties.getLeaseStatus(), LeaseStatusType.UNLOCKED);
+                assertEquals(LeaseStateType.AVAILABLE, properties.getLeaseState());
+                assertEquals(LeaseStatusType.UNLOCKED, properties.getLeaseStatus());
                 assertTrue(properties.getBlobSize() >= 0);
                 assertNotNull(properties.getContentType());
                 assertNotNull(properties.getContentMd5());
@@ -1219,14 +1219,14 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 assertNull(properties.getContentLanguage()); // tested in "set HTTP headers"
                 assertNull(properties.getCacheControl()); // tested in "set HTTP headers"
                 assertNull(properties.getBlobSequenceNumber()); // tested in PageBlob."create sequence number"
-                assertEquals(headers.getValue(HttpHeaderName.ACCEPT_RANGES), "bytes");
+                assertEquals("bytes", headers.getValue(HttpHeaderName.ACCEPT_RANGES));
                 assertNull(properties.getCommittedBlockCount()); // tested in AppendBlob."append block"
                 assertTrue(properties.isServerEncrypted());
-                assertEquals(properties.getAccessTier(), AccessTier.HOT);
+                assertEquals(AccessTier.HOT, properties.getAccessTier());
                 assertTrue(properties.isAccessTierInferred());
                 assertNull(properties.getArchiveStatus()); // tested in "set tier"
                 assertNotNull(properties.getCreationTime());
-                assertEquals(properties.getTagCount(), 1);
+                assertEquals(1, properties.getTagCount());
                 assertNull(properties.getRehydratePriority()); // tested in setTier rehydrate priority
                 assertNull(properties.isSealed()); // tested in AppendBlob. "seal blob"
                 assertNotNull(properties.getRequestId());
@@ -1306,14 +1306,14 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 } catch (MalformedURLException e) {
                     throw new RuntimeException(e);
                 }
-                assertEquals(r.getObjectReplicationDestinationPolicyId(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
+                assertEquals("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", r.getObjectReplicationDestinationPolicyId());
             })
             .verifyComplete();
 
         StepVerifier.create(destBlob.downloadWithResponse(null, null, null,
             false))
-            .assertNext(r -> assertEquals(r.getDeserializedHeaders().getObjectReplicationDestinationPolicyId(),
-                "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"))
+            .assertNext(r -> assertEquals("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80",
+                r.getDeserializedHeaders().getObjectReplicationDestinationPolicyId()))
             .verifyComplete();
     }
 
@@ -1773,7 +1773,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(bc.createSnapshotWithResponse(metadata, null)
             .flatMap(r -> {
-                assertEquals(r.getStatusCode(), 201);
+                assertEquals(201, r.getStatusCode());
                 return r.getValue().getProperties();
             }))
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
@@ -1940,7 +1940,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             .setPollInterval(getPollingDuration(1000)));
         poller.blockLast();
 
-        StepVerifier.create(bu2.getTags()).assertNext(it -> assertEquals(it, tags)).verifyComplete();
+        StepVerifier.create(bu2.getTags()).assertNext(it -> assertEquals(tags, it)).verifyComplete();
     }
 
     private static Stream<Arguments> copyTagsSupplier() {
@@ -2110,7 +2110,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc.deleteWithResponse(option, null).block();
 
         StepVerifier.create(ccAsync.listBlobs().count())
-            .assertNext(r -> assertEquals(r, blobsRemaining))
+            .assertNext(r -> assertEquals(blobsRemaining, r))
             .verifyComplete();
     }
 
@@ -2202,7 +2202,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
             .assertNext(r -> {
                 assertFalse(r.getValue());
-                assertEquals(r.getStatusCode(), 404);
+                assertEquals(404, r.getStatusCode());
             })
             .verifyComplete();
     }
@@ -2212,14 +2212,14 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
             .assertNext(r -> {
                 assertTrue(r.getValue());
-                assertEquals(r.getStatusCode(), 202);
+                assertEquals(202, r.getStatusCode());
             })
             .verifyComplete();
 
         StepVerifier.create(bc.deleteIfExistsWithResponse(null, null))
             .assertNext(r -> {
                 assertFalse(r.getValue());
-                assertEquals(r.getStatusCode(), 404);
+                assertEquals(404, r.getStatusCode());
             })
             .verifyComplete();
     }
@@ -2235,7 +2235,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc.deleteIfExistsWithResponse(option, null).block();
 
         StepVerifier.create(ccAsync.listBlobs().count())
-            .assertNext(r -> assertEquals(r, blobsRemaining))
+            .assertNext(r -> assertEquals(blobsRemaining, r))
             .verifyComplete();
     }
 
@@ -2466,8 +2466,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(bc.getPropertiesWithResponse(null))
             .assertNext(r -> {
-                assertEquals(r.getStatusCode(), 200);
-                assertEquals(r.getValue().getRehydratePriority(), rehydratePriority);
+                assertEquals(200, r.getStatusCode());
+                assertEquals(rehydratePriority, r.getValue().getRehydratePriority());
             })
             .verifyComplete();
     }
@@ -2487,11 +2487,11 @@ public class BlobAsyncApiTests extends BlobTestBase {
         bc2.setAccessTier(AccessTier.COOL).block();
 
         StepVerifier.create(bc2.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COOL))
+            .assertNext(r -> assertEquals(AccessTier.COOL, r.getAccessTier()))
             .verifyComplete();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertNotEquals(r.getAccessTier(), AccessTier.COOL))
+            .assertNext(r -> assertNotEquals(AccessTier.COOL, r.getAccessTier()))
             .verifyComplete();
     }
 
@@ -2514,7 +2514,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.setAccessTier(AccessTier.fromString("garbage")))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.INVALID_HEADER_VALUE);
+                assertEquals(BlobErrorCode.INVALID_HEADER_VALUE, e.getErrorCode());
             });
 
         // cleanup:
@@ -2601,7 +2601,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
             null, null).block();
 
         StepVerifier.create(bcCopy.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), tier2))
+            .assertNext(r -> assertEquals(tier2, r.getAccessTier()))
             .verifyComplete();
     }
 
@@ -2680,7 +2680,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(originalBlobName);
         BlobAsyncClientBase baseClient = ccAsync.getBlobAsyncClient(client.getBlobName()).getBlockBlobAsyncClient();
 
-        assertEquals(baseClient.getBlobName(), finalBlobName);
+        assertEquals(finalBlobName, baseClient.getBlobName());
     }
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {

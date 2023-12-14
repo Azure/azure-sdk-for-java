@@ -165,7 +165,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             DATA.getDefaultDataSize(), null, null), 201);
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(r -> assertEquals(r.getUncommittedBlocks().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getUncommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -176,7 +176,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             getBlockID(), binaryData)), 201);
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(r -> assertEquals(r.getUncommittedBlocks().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getUncommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -197,7 +197,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             getBlockID(), binaryData)), 201);
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(r -> assertEquals(r.getUncommittedBlocks().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getUncommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -214,7 +214,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             binaryData)), 201);
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(r -> assertEquals(r.getUncommittedBlocks().size(), 1))
+            .assertNext(r -> assertEquals(1, r.getUncommittedBlocks().size()))
             .verifyComplete();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(wireTap.getLastRequest().getBody()))
@@ -289,7 +289,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             null))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+                assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
             });
     }
 
@@ -300,7 +300,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .digest("garbage".getBytes()))))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+                assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
             });
     }
 
@@ -335,7 +335,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
                 DATA.getDefaultDataSize(), null, GARBAGE_LEASE_ID))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+                assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
             });
     }
 
@@ -411,16 +411,16 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(bu2.listBlocks(BlockListType.ALL))
             .assertNext(r -> {
-                assertEquals(r.getUncommittedBlocks().size(), 1);
-                assertEquals(r.getCommittedBlocks().size(), 0);
-                assertEquals(r.getUncommittedBlocks().get(0).getName(), blockID);
+                assertEquals(1, r.getUncommittedBlocks().size());
+                assertEquals(0, r.getCommittedBlocks().size());
+                assertEquals(blockID, r.getUncommittedBlocks().get(0).getName());
             })
             .verifyComplete();
 
         bu2.commitBlockList(Collections.singletonList(blockID)).block();
 
         StepVerifier.create(bu2.downloadStream())
-            .assertNext(r -> assertEquals(r, DATA.getDefaultData()))
+            .assertNext(r -> assertEquals(DATA.getDefaultData(), r))
             .verifyComplete();
     }
 
@@ -461,8 +461,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(destURL.listBlocks(BlockListType.UNCOMMITTED))
             .assertNext(r -> {
-                assertEquals(r.getCommittedBlocks().size(), 0);
-                assertEquals(r.getUncommittedBlocks().size(), 1);
+                assertEquals(0, r.getCommittedBlocks().size());
+                assertEquals(1, r.getUncommittedBlocks().size());
             })
             .verifyComplete();
     }
@@ -691,7 +691,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.getPropertiesWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue().getMetadata(), metadata);
+                assertEquals(metadata, r.getValue().getMetadata());
             })
             .verifyComplete();
     }
@@ -720,7 +720,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.getTagsWithResponse(new BlobGetTagsOptions()))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue(), tags);
+                assertEquals(tags, r.getValue());
             })
             .verifyComplete();
     }
@@ -799,7 +799,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         blockBlobAsyncClient.commitBlockListWithResponse(commitOptions).block();
 
         StepVerifier.create(blockBlobAsyncClient.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COLD))
+            .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
 
@@ -825,12 +825,12 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
                 for (Block block : r.getCommittedBlocks()) {
                     actualCommittedBlocks.add(block.getName());
-                    assertEquals(block.getSize(), DATA.getDefaultDataSize());
+                    assertEquals(DATA.getDefaultDataSize(), block.getSize());
                 }
 
                 for (Block block : r.getUncommittedBlocks()) {
                     actualUncommittedBlocks.add(block.getName());
-                    assertEquals(block.getSize(), DATA.getDefaultDataSize());
+                    assertEquals(DATA.getDefaultDataSize(), block.getSize());
                 }
 
             })
@@ -857,8 +857,8 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(type))
             .assertNext(r -> {
-                assertEquals(r.getCommittedBlocks().size(), committedCount);
-                assertEquals(r.getUncommittedBlocks().size(), uncommittedCount);
+                assertEquals(committedCount, r.getCommittedBlocks().size());
+                assertEquals(uncommittedCount, r.getUncommittedBlocks().size());
             })
             .verifyComplete();
     }
@@ -894,7 +894,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.listBlocksWithResponse(BlockListType.ALL, GARBAGE_LEASE_ID))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION);
+                assertEquals(BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION, e.getErrorCode());
             });
     }
 
@@ -918,7 +918,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .setIfTagsMatch("\"notfoo\" = 'notbar'")))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.CONDITION_NOT_MET);
+                assertEquals(BlobErrorCode.CONDITION_NOT_MET, e.getErrorCode());
             });
     }
 
@@ -988,7 +988,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         assertAsyncResponseStatusCode(wireTapClient.uploadWithResponse(uploadOptions), 201);
 
         // Check that replayable BinaryData contents are passed to http client unchanged.
-        assertEquals(wireTap.getLastRequest().getBodyAsBinaryData(), binaryData);
+        assertEquals(binaryData, wireTap.getLastRequest().getBodyAsBinaryData());
     }
 
     /* Upload From File Tests: Need to run on liveMode only since blockBlob wil generate a `UUID.randomUUID()`
@@ -1027,7 +1027,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         compareFiles(file, outFile, 0, fileSize);
         StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), committedBlockCount))
+            .assertNext(it -> assertEquals(committedBlockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1110,7 +1110,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.BLOB_ALREADY_EXISTS);
+                assertEquals(BlobErrorCode.BLOB_ALREADY_EXISTS, e.getErrorCode());
             });
     }
 
@@ -1164,7 +1164,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             null, null, null, null))
             .verifyComplete();
 
-        assertEquals(uploadReporter.getReportedByteCount(), size);
+        assertEquals(size, uploadReporter.getReportedByteCount());
     }
 
     private static Stream<Arguments> uploadFromFileReporterSupplier() {
@@ -1195,7 +1195,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             null, null, null, null))
             .verifyComplete();
 
-        assertEquals(uploadListener.getReportedByteCount(), size);
+        assertEquals(size, uploadListener.getReportedByteCount());
     }
 
     @ParameterizedTest
@@ -1212,7 +1212,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             null, null, null, null).block();
 
         StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
-            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), expectedBlockCount))
+            .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1473,7 +1473,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             AccessTier.COOL, null, null).block();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COOL))
+            .assertNext(r -> assertEquals(AccessTier.COOL, r.getAccessTier()))
             .verifyComplete();
     }
 
@@ -1486,7 +1486,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             AccessTier.COLD, null, null).block();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COLD))
+            .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
 
@@ -1583,12 +1583,12 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         // todo isbr: allow comparison of huge blobs -  Instead of having to load everything into memory we can compare iteratively.
         if (dataSize < 100 * 1024 * 1024) {
             StepVerifier.create(collectBytesInBuffer(blockBlobAsyncClient.downloadStream()))
-                .assertNext(it -> assertEquals(it, data))
+                .assertNext(it -> assertEquals(data, it))
                 .verifyComplete();
         }
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), blockCount))
+            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1720,7 +1720,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(asyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
             null, null, null, null))
             .assertNext(it -> {
-                assertEquals(it.getStatusCode(), 201);
+                assertEquals(201, it.getStatusCode());
                 /*
                  * Verify that the reporting count is equal or greater than the size divided by block size in the case
                  * that operations need to be retried. Retry attempts will increment the reporting count.
@@ -1794,7 +1794,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), blockCount))
+            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1826,7 +1826,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), blockCount))
+            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1856,7 +1856,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), blockCount))
+            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -1883,7 +1883,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), blockCount))
+            .assertNext(it -> assertEquals(blockCount, it.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -2037,7 +2037,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
             .listBlocks(BlockListType.COMMITTED)))
-            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), expectedBlockCount))
+            .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -2070,7 +2070,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
 
         StepVerifier.create(Objects.requireNonNull(blobAsyncClient.getBlockBlobAsyncClient()
             .listBlocks(BlockListType.COMMITTED)))
-            .assertNext(r -> assertEquals(r.getCommittedBlocks().size(), expectedBlockCount))
+            .assertNext(r -> assertEquals(expectedBlockCount, r.getCommittedBlocks().size()))
             .verifyComplete();
     }
 
@@ -2288,7 +2288,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         BlobAsyncClient client = ccAsync.getBlobAsyncClient(originalBlobName);
         BlockBlobAsyncClient blockClient = ccAsync.getBlobAsyncClient(client.getBlobName()).getBlockBlobAsyncClient();
 
-        assertEquals(blockClient.getBlobName(), finalBlobName);
+        assertEquals(finalBlobName, blockClient.getBlobName());
     }
 
     private static Stream<Arguments> getBlobNameAndBuildClientSupplier() {
@@ -2472,7 +2472,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), BlobErrorCode.MD5MISMATCH);
+                assertEquals(BlobErrorCode.MD5MISMATCH, e.getErrorCode());
             });
     }
 
@@ -2493,7 +2493,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), errorCode);
+                assertEquals(errorCode, e.getErrorCode());
             });
     }
 
@@ -2528,7 +2528,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(blockBlobAsyncClient.uploadFromUrlWithResponse(options))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(e.getErrorCode(), errorCode);
+                assertEquals(errorCode, e.getErrorCode());
             });
     }
 
@@ -2568,9 +2568,9 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         StepVerifier.create(bc2.getTags())
             .assertNext(r -> {
                 if (BlobCopySourceTagsMode.REPLACE == mode) {
-                    assertEquals(r, destTags);
+                    assertEquals(destTags, r);
                 } else {
-                    assertEquals(r, sourceTags);
+                    assertEquals(sourceTags, r);
                 }
             })
             .verifyComplete();
@@ -2600,7 +2600,7 @@ public class BlockBlobAsyncApiTests  extends BlobTestBase {
         blockBlobAsyncClient.uploadFromUrlWithResponse(uploadOptions).block();
 
         StepVerifier.create(blockBlobAsyncClient.getProperties())
-            .assertNext(r -> assertEquals(r.getAccessTier(), AccessTier.COLD))
+            .assertNext(r -> assertEquals(AccessTier.COLD, r.getAccessTier()))
             .verifyComplete();
     }
 

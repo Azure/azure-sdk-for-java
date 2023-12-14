@@ -1847,7 +1847,7 @@ public class BlobApiTests extends BlobTestBase {
             .blobClient(bc)
             .buildBlockBlobClient()
             .upload(new ByteArrayInputStream(getRandomByteArray(8 * 1024 * 1024)), 8 * 1024 * 1024,
-            true);
+                true);
 
         BlobContainerClient cu2 = alternateBlobServiceClient.getBlobContainerClient(generateBlobName());
         cu2.create();

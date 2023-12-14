@@ -30,7 +30,7 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
     public void setAccessPolicyMinAccess() {
         setAccessPolicySleepAsync(ccAsync, PublicAccessType.CONTAINER, null);
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertEquals(r.getBlobPublicAccess(), PublicAccessType.CONTAINER))
+            .assertNext(r -> assertEquals(PublicAccessType.CONTAINER, r.getBlobPublicAccess()))
             .verifyComplete();
     }
 
@@ -49,7 +49,7 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         setAccessPolicySleepAsync(ccAsync, null, ids);
 
         StepVerifier.create(ccAsync.getAccessPolicy())
-            .assertNext(r -> assertEquals(r.getIdentifiers().get(0).getId(), "0000"))
+            .assertNext(r -> assertEquals("0000", r.getIdentifiers().get(0).getId()))
             .verifyComplete();
     }
 
@@ -75,14 +75,14 @@ public class AccessPolicyAsyncTests extends BlobTestBase {
         StepVerifier.create(ccAsync.getAccessPolicyWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals(r.getValue().getBlobAccessType(), PublicAccessType.BLOB);
+                assertEquals(PublicAccessType.BLOB, r.getValue().getBlobAccessType());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn(),
-                    identifier.getAccessPolicy().getExpiresOn());
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn(),
-                    identifier.getAccessPolicy().getStartsOn());
-                assertEquals(r.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions(),
-                    identifier.getAccessPolicy().getPermissions());
+                assertEquals(identifier.getAccessPolicy().getExpiresOn(),
+                    r.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn());
+                assertEquals(identifier.getAccessPolicy().getStartsOn(),
+                    r.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn());
+                assertEquals(identifier.getAccessPolicy().getPermissions(),
+                    r.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
             })
             .verifyComplete();
     }

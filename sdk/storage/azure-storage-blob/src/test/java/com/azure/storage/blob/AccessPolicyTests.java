@@ -33,7 +33,7 @@ public class AccessPolicyTests extends BlobTestBase {
     @Test
     public void setAccessPolicyMinAccess() {
         setAccessPolicySleep(cc, PublicAccessType.CONTAINER, null);
-        assertEquals(cc.getProperties().getBlobPublicAccess(), PublicAccessType.CONTAINER);
+        assertEquals(PublicAccessType.CONTAINER, cc.getProperties().getBlobPublicAccess());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class AccessPolicyTests extends BlobTestBase {
 
         setAccessPolicySleep(cc, null, ids);
 
-        assertEquals(cc.getAccessPolicy().getIdentifiers().get(0).getId(), "0000");
+        assertEquals("0000", cc.getAccessPolicy().getIdentifiers().get(0).getId());
     }
 
     @Test
@@ -73,14 +73,13 @@ public class AccessPolicyTests extends BlobTestBase {
             null);
 
         assertResponseStatusCode(response, 200);
-        assertEquals(response.getValue().getBlobAccessType(), PublicAccessType.BLOB);
+        assertEquals(PublicAccessType.BLOB, response.getValue().getBlobAccessType());
         assertTrue(validateBasicHeaders(response.getHeaders()));
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn(),
-            identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn(),
-            identifier.getAccessPolicy().getStartsOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions(),
-            identifier.getAccessPolicy().getPermissions());
+        assertEquals(identifier.getAccessPolicy().getExpiresOn(),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn());
+        assertEquals(identifier.getAccessPolicy().getStartsOn(),
+            response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn());
+        assertEquals(identifier.getAccessPolicy().getPermissions(), response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions());
     }
 
     //ServiceApiTests
