@@ -195,7 +195,7 @@ public final class SpanDataMapper {
     private static String getDependencyName(SpanData span) {
         String name = span.getName();
 
-        String method = getStableAttribute(span.getAttributes(), SemanticAttributes.HTTP_REQUEST_METHOD, SemanticAttributes.HTTP_METHOD);
+        String method = getStableOrOldAttribute(span.getAttributes(), SemanticAttributes.HTTP_REQUEST_METHOD, SemanticAttributes.HTTP_METHOD);
         if (method == null) {
             return name;
         }
@@ -204,7 +204,7 @@ public final class SpanDataMapper {
             return name;
         }
 
-        String url = getStableAttribute(span.getAttributes(), SemanticAttributes.URL_FULL, SemanticAttributes.HTTP_URL);
+        String url = getStableOrOldAttribute(span.getAttributes(), SemanticAttributes.URL_FULL, SemanticAttributes.HTTP_URL);
         if (url == null) {
             return name;
         }
@@ -219,7 +219,7 @@ public final class SpanDataMapper {
     private static void applySemanticConventions(
         RemoteDependencyTelemetryBuilder telemetryBuilder, SpanData span) {
         Attributes attributes = span.getAttributes();
-        String httpMethod = getStableAttribute(attributes, SemanticAttributes.HTTP_REQUEST_METHOD, SemanticAttributes.HTTP_METHOD);
+        String httpMethod = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_REQUEST_METHOD, SemanticAttributes.HTTP_METHOD);
         if (httpMethod != null) {
             applyHttpClientSpan(telemetryBuilder, attributes);
             return;
@@ -304,14 +304,14 @@ public final class SpanDataMapper {
     private static void applyHttpClientSpan(
         RemoteDependencyTelemetryBuilder telemetryBuilder, Attributes attributes) {
 
-        String httpUrl = getStableAttribute(attributes, SemanticAttributes.URL_FULL, SemanticAttributes.HTTP_URL);
+        String httpUrl = getStableOrOldAttribute(attributes, SemanticAttributes.URL_FULL, SemanticAttributes.HTTP_URL);
         int defaultPort = getDefaultPortForHttpUrl(httpUrl);
         String target = getTargetOrDefault(attributes, defaultPort, "Http");
 
         telemetryBuilder.setType("Http");
         telemetryBuilder.setTarget(target);
 
-        Long httpStatusCode = getStableAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+        Long httpStatusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
         if (httpStatusCode != null) {
             telemetryBuilder.setResultCode(Long.toString(httpStatusCode));
         } else {
@@ -545,7 +545,7 @@ public final class SpanDataMapper {
             telemetryBuilder.setUrl(httpUrl);
         }
 
-        Long httpStatusCode = getStableAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+        Long httpStatusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
         if (httpStatusCode == null) {
             httpStatusCode = attributes.get(SemanticAttributes.RPC_GRPC_STATUS_CODE);
         }
@@ -555,7 +555,7 @@ public final class SpanDataMapper {
             telemetryBuilder.setResponseCode("0");
         }
 
-        String locationIp = getStableAttribute(attributes, SemanticAttributes.CLIENT_ADDRESS, SemanticAttributes.HTTP_CLIENT_IP);
+        String locationIp = getStableOrOldAttribute(attributes, SemanticAttributes.CLIENT_ADDRESS, SemanticAttributes.HTTP_CLIENT_IP);
         if (locationIp == null) {
             // only use net.peer.ip if http.client_ip is not available
             locationIp = attributes.get(SemanticAttributes.NET_SOCK_PEER_ADDR);
@@ -615,7 +615,7 @@ public final class SpanDataMapper {
                 return true;
             case UNSET:
                 if (captureHttpServer4xxAsError) {
-                    Long statusCode = getStableAttribute(span.getAttributes(), SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+                    Long statusCode = getStableOrOldAttribute(span.getAttributes(), SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
                     return statusCode == null || statusCode < 400;
                 }
                 return true;
@@ -818,7 +818,7 @@ public final class SpanDataMapper {
     }
 
 
-    public static <T> T getStableAttribute(Attributes attributes, AttributeKey<T> stable, AttributeKey<T> old) {
+    public static <T> T getStableOrOldAttribute(Attributes attributes, AttributeKey<T> stable, AttributeKey<T> old) {
         T value = attributes.get(stable);
         if (value != null) {
             return value;

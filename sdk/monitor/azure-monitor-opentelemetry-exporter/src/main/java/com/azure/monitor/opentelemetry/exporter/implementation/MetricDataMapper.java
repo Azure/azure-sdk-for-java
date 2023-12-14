@@ -32,7 +32,7 @@ import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
 import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.EMPTY_MAPPINGS;
-import static com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper.getStableAttribute;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper.getStableOrOldAttribute;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -159,7 +159,7 @@ public class MetricDataMapper {
 
         Attributes attributes = pointData.getAttributes();
         if (isPreAggregatedStandardMetric) {
-            Long statusCode = getStableAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
+            Long statusCode = getStableOrOldAttribute(attributes, SemanticAttributes.HTTP_RESPONSE_STATUS_CODE, SemanticAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(statusCode, captureHttpServer4xxAsError);
             Boolean isSynthetic = attributes.get(IS_SYNTHETIC);
 
@@ -175,7 +175,7 @@ public class MetricDataMapper {
                 int defaultPort;
                 if (metricData.getName().startsWith("http")) {
                     dependencyType = "Http";
-                    defaultPort = getDefaultPortForHttpScheme(getStableAttribute(attributes, SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
+                    defaultPort = getDefaultPortForHttpScheme(getStableOrOldAttribute(attributes, SemanticAttributes.URL_SCHEME, SemanticAttributes.HTTP_SCHEME));
                 } else {
                     dependencyType = attributes.get(SemanticAttributes.RPC_SYSTEM);
                     if (dependencyType == null) {
