@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Network base admin rule. */
+/**
+ * Network base admin rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import java.util.List;
 @JsonTypeName("ActiveBaseSecurityAdminRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Custom", value = ActiveSecurityAdminRule.class),
-    @JsonSubTypes.Type(name = "Default", value = ActiveDefaultSecurityAdminRule.class)
-})
+    @JsonSubTypes.Type(name = "Default", value = ActiveDefaultSecurityAdminRule.class) })
 @Fluent
 public class ActiveBaseSecurityAdminRule {
     /*
@@ -67,13 +68,15 @@ public class ActiveBaseSecurityAdminRule {
     @JsonProperty(value = "ruleGroups")
     private List<ConfigurationGroup> ruleGroups;
 
-    /** Creates an instance of ActiveBaseSecurityAdminRule class. */
+    /**
+     * Creates an instance of ActiveBaseSecurityAdminRule class.
+     */
     public ActiveBaseSecurityAdminRule() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -82,7 +85,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -93,7 +96,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Get the commitTime property: Deployment time string.
-     *
+     * 
      * @return the commitTime value.
      */
     public OffsetDateTime commitTime() {
@@ -102,7 +105,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the commitTime property: Deployment time string.
-     *
+     * 
      * @param commitTime the commitTime value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -113,7 +116,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Get the region property: Deployment region.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -122,7 +125,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the region property: Deployment region.
-     *
+     * 
      * @param region the region value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -133,7 +136,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Get the configurationDescription property: A description of the security admin configuration.
-     *
+     * 
      * @return the configurationDescription value.
      */
     public String configurationDescription() {
@@ -142,7 +145,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the configurationDescription property: A description of the security admin configuration.
-     *
+     * 
      * @param configurationDescription the configurationDescription value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -153,7 +156,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Get the ruleCollectionDescription property: A description of the rule collection.
-     *
+     * 
      * @return the ruleCollectionDescription value.
      */
     public String ruleCollectionDescription() {
@@ -162,7 +165,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleCollectionDescription property: A description of the rule collection.
-     *
+     * 
      * @param ruleCollectionDescription the ruleCollectionDescription value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -173,7 +176,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Get the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     *
+     * 
      * @return the ruleCollectionAppliesToGroups value.
      */
     public List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups() {
@@ -182,19 +185,19 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleCollectionAppliesToGroups property: Groups for rule collection.
-     *
+     * 
      * @param ruleCollectionAppliesToGroups the ruleCollectionAppliesToGroups value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
-    public ActiveBaseSecurityAdminRule withRuleCollectionAppliesToGroups(
-        List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups) {
+    public ActiveBaseSecurityAdminRule
+        withRuleCollectionAppliesToGroups(List<NetworkManagerSecurityGroupItem> ruleCollectionAppliesToGroups) {
         this.ruleCollectionAppliesToGroups = ruleCollectionAppliesToGroups;
         return this;
     }
 
     /**
      * Get the ruleGroups property: Effective configuration groups.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ConfigurationGroup> ruleGroups() {
@@ -203,7 +206,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Set the ruleGroups property: Effective configuration groups.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ActiveBaseSecurityAdminRule object itself.
      */
@@ -214,7 +217,7 @@ public class ActiveBaseSecurityAdminRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

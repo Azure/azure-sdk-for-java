@@ -17,7 +17,6 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.FunctionParameters;
 import com.azure.ai.openai.models.FunctionProperties;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

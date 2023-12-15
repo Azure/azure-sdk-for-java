@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The base resource set for visibility and auto-approval. */
+/**
+ * The base resource set for visibility and auto-approval.
+ */
 @Fluent
 public class ResourceSet {
     /*
@@ -17,13 +19,15 @@ public class ResourceSet {
     @JsonProperty(value = "subscriptions")
     private List<String> subscriptions;
 
-    /** Creates an instance of ResourceSet class. */
+    /**
+     * Creates an instance of ResourceSet class.
+     */
     public ResourceSet() {
     }
 
     /**
      * Get the subscriptions property: The list of subscriptions.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<String> subscriptions() {
@@ -32,7 +36,7 @@ public class ResourceSet {
 
     /**
      * Set the subscriptions property: The list of subscriptions.
-     *
+     * 
      * @param subscriptions the subscriptions value to set.
      * @return the ResourceSet object itself.
      */
@@ -43,7 +47,7 @@ public class ResourceSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

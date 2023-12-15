@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the private link service. */
+/**
+ * Properties of the private link service.
+ */
 @Fluent
 public final class PrivateLinkServiceProperties {
     /*
@@ -74,14 +76,16 @@ public final class PrivateLinkServiceProperties {
     @JsonProperty(value = "enableProxyProtocol")
     private Boolean enableProxyProtocol;
 
-    /** Creates an instance of PrivateLinkServiceProperties class. */
+    /**
+     * Creates an instance of PrivateLinkServiceProperties class.
+     */
     public PrivateLinkServiceProperties() {
     }
 
     /**
      * Get the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     *
+     * 
      * @return the loadBalancerFrontendIpConfigurations value.
      */
     public List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations() {
@@ -91,7 +95,7 @@ public final class PrivateLinkServiceProperties {
     /**
      * Set the loadBalancerFrontendIpConfigurations property: An array of references to the load balancer IP
      * configurations.
-     *
+     * 
      * @param loadBalancerFrontendIpConfigurations the loadBalancerFrontendIpConfigurations value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the ipConfigurations property: An array of private link service IP configurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<PrivateLinkServiceIpConfigurationInner> ipConfigurations() {
@@ -112,12 +116,12 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Set the ipConfigurations property: An array of private link service IP configurations.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
-    public PrivateLinkServiceProperties withIpConfigurations(
-        List<PrivateLinkServiceIpConfigurationInner> ipConfigurations) {
+    public PrivateLinkServiceProperties
+        withIpConfigurations(List<PrivateLinkServiceIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -125,7 +129,7 @@ public final class PrivateLinkServiceProperties {
     /**
      * Get the networkInterfaces property: An array of references to the network interfaces created for this private
      * link service.
-     *
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -134,7 +138,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -143,7 +147,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the privateEndpointConnections property: An array of list about connections to the private endpoint.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -152,7 +156,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the visibility property: The visibility list of the private link service.
-     *
+     * 
      * @return the visibility value.
      */
     public PrivateLinkServicePropertiesVisibility visibility() {
@@ -161,7 +165,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Set the visibility property: The visibility list of the private link service.
-     *
+     * 
      * @param visibility the visibility value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -172,7 +176,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the autoApproval property: The auto-approval list of the private link service.
-     *
+     * 
      * @return the autoApproval value.
      */
     public PrivateLinkServicePropertiesAutoApproval autoApproval() {
@@ -181,7 +185,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Set the autoApproval property: The auto-approval list of the private link service.
-     *
+     * 
      * @param autoApproval the autoApproval value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -192,7 +196,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the fqdns property: The list of Fqdn.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -201,7 +205,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Set the fqdns property: The list of Fqdn.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -212,7 +216,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the alias property: The alias of the private link service.
-     *
+     * 
      * @return the alias value.
      */
     public String alias() {
@@ -221,7 +225,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Get the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     *
+     * 
      * @return the enableProxyProtocol value.
      */
     public Boolean enableProxyProtocol() {
@@ -230,7 +234,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Set the enableProxyProtocol property: Whether the private link service is enabled for proxy protocol or not.
-     *
+     * 
      * @param enableProxyProtocol the enableProxyProtocol value to set.
      * @return the PrivateLinkServiceProperties object itself.
      */
@@ -241,7 +245,7 @@ public final class PrivateLinkServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

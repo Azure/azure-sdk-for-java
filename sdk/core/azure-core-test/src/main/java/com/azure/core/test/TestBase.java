@@ -214,9 +214,8 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
+        String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName());
         if (shouldLogExecutionStatus()) {
-            String testName = getTestName(testInfo.getTestMethod(), testInfo.getDisplayName());
-
             if (testStartTimeMillis > 0) {
                 long duration = System.currentTimeMillis() - testStartTimeMillis;
                 System.out.println("Finished test " + testName + " in " + duration + " ms.");
@@ -226,7 +225,7 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         if (testContextManager != null) {
-            ThreadDumper.removeRunningTest(testContextManager.getTestPlaybackRecordingName());
+            ThreadDumper.removeRunningTest(testName);
 
             if (testContextManager.didTestRun()) {
                 afterTest();

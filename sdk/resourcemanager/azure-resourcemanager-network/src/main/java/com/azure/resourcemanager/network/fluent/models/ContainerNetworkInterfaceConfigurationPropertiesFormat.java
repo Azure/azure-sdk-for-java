@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container network interface configuration properties. */
+/**
+ * Container network interface configuration properties.
+ */
 @Fluent
 public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     /*
@@ -31,13 +33,15 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat class.
+     */
     public ContainerNetworkInterfaceConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationProfileInner> ipConfigurations() {
@@ -46,12 +50,12 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
 
     /**
      * Set the ipConfigurations property: A list of ip configurations of the container network interface configuration.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat object itself.
      */
-    public ContainerNetworkInterfaceConfigurationPropertiesFormat withIpConfigurations(
-        List<IpConfigurationProfileInner> ipConfigurations) {
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat
+        withIpConfigurations(List<IpConfigurationProfileInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -59,7 +63,7 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     /**
      * Get the containerNetworkInterfaces property: A list of container network interfaces created from this container
      * network interface configuration.
-     *
+     * 
      * @return the containerNetworkInterfaces value.
      */
     public List<SubResource> containerNetworkInterfaces() {
@@ -69,12 +73,12 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     /**
      * Set the containerNetworkInterfaces property: A list of container network interfaces created from this container
      * network interface configuration.
-     *
+     * 
      * @param containerNetworkInterfaces the containerNetworkInterfaces value to set.
      * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat object itself.
      */
-    public ContainerNetworkInterfaceConfigurationPropertiesFormat withContainerNetworkInterfaces(
-        List<SubResource> containerNetworkInterfaces) {
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat
+        withContainerNetworkInterfaces(List<SubResource> containerNetworkInterfaces) {
         this.containerNetworkInterfaces = containerNetworkInterfaces;
         return this;
     }
@@ -82,7 +86,7 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     /**
      * Get the provisioningState property: The provisioning state of the container network interface configuration
      * resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -91,7 +95,7 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -29,13 +29,15 @@ public final class DiffDiskSettings {
     @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
-    /** Creates an instance of DiffDiskSettings class. */
+    /**
+     * Creates an instance of DiffDiskSettings class.
+     */
     public DiffDiskSettings() {
     }
 
     /**
      * Get the option property: Specifies the ephemeral disk settings for operating system disk.
-     *
+     * 
      * @return the option value.
      */
     public DiffDiskOptions option() {
@@ -44,7 +46,7 @@ public final class DiffDiskSettings {
 
     /**
      * Set the option property: Specifies the ephemeral disk settings for operating system disk.
-     *
+     * 
      * @param option the option value to set.
      * @return the DiffDiskSettings object itself.
      */
@@ -59,7 +61,7 @@ public final class DiffDiskSettings {
      * size otherwise **ResourceDisk** is used. Refer to the VM size documentation for Windows VM at
      * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
      * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
-     *
+     * 
      * @return the placement value.
      */
     public DiffDiskPlacement placement() {
@@ -72,7 +74,7 @@ public final class DiffDiskSettings {
      * size otherwise **ResourceDisk** is used. Refer to the VM size documentation for Windows VM at
      * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
      * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
-     *
+     * 
      * @param placement the placement value to set.
      * @return the DiffDiskSettings object itself.
      */
@@ -83,7 +85,7 @@ public final class DiffDiskSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

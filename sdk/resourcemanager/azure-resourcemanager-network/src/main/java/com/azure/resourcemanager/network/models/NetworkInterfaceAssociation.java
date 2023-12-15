@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network interface and its custom security rules. */
+/**
+ * Network interface and its custom security rules.
+ */
 @Fluent
 public final class NetworkInterfaceAssociation {
     /*
@@ -24,13 +26,15 @@ public final class NetworkInterfaceAssociation {
     @JsonProperty(value = "securityRules")
     private List<SecurityRuleInner> securityRules;
 
-    /** Creates an instance of NetworkInterfaceAssociation class. */
+    /**
+     * Creates an instance of NetworkInterfaceAssociation class.
+     */
     public NetworkInterfaceAssociation() {
     }
 
     /**
      * Get the id property: Network interface ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,7 +43,7 @@ public final class NetworkInterfaceAssociation {
 
     /**
      * Get the securityRules property: Collection of custom security rules.
-     *
+     * 
      * @return the securityRules value.
      */
     public List<SecurityRuleInner> securityRules() {
@@ -48,7 +52,7 @@ public final class NetworkInterfaceAssociation {
 
     /**
      * Set the securityRules property: Collection of custom security rules.
-     *
+     * 
      * @param securityRules the securityRules value to set.
      * @return the NetworkInterfaceAssociation object itself.
      */
@@ -59,7 +63,7 @@ public final class NetworkInterfaceAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

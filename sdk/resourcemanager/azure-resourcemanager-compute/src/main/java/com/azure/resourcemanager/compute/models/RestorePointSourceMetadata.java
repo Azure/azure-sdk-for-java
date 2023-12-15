@@ -74,13 +74,15 @@ public final class RestorePointSourceMetadata {
     @JsonProperty(value = "hyperVGeneration", access = JsonProperty.Access.WRITE_ONLY)
     private HyperVGenerationTypes hyperVGeneration;
 
-    /** Creates an instance of RestorePointSourceMetadata class. */
+    /**
+     * Creates an instance of RestorePointSourceMetadata class.
+     */
     public RestorePointSourceMetadata() {
     }
 
     /**
      * Get the hardwareProfile property: Gets the hardware profile.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -89,7 +91,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the storageProfile property: Gets the storage profile.
-     *
+     * 
      * @return the storageProfile value.
      */
     public RestorePointSourceVMStorageProfile storageProfile() {
@@ -98,7 +100,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Set the storageProfile property: Gets the storage profile.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the RestorePointSourceMetadata object itself.
      */
@@ -109,7 +111,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the osProfile property: Gets the OS profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -118,7 +120,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the diagnosticsProfile property: Gets the diagnostics profile.
-     *
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -127,7 +129,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the licenseType property: Gets the license type, which is for bring your own license scenario.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -136,7 +138,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the vmId property: Gets the virtual machine unique id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -145,7 +147,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the securityProfile property: Gets the security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -154,7 +156,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the location property: Location of the VM from which the restore point was created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -162,9 +164,9 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is a
-     * base-64 encoded value.
-     *
+     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is
+     * a base-64 encoded value.
+     * 
      * @return the userData value.
      */
     public String userData() {
@@ -173,7 +175,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the hyperVGeneration property: HyperVGeneration of the source VM for which restore point is captured.
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
@@ -182,7 +184,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

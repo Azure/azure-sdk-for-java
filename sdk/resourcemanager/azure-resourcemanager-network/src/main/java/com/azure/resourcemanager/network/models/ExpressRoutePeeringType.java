@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The peering type. */
+/**
+ * The peering type.
+ */
 public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressRoutePeeringType> {
-    /** Static value AzurePublicPeering for ExpressRoutePeeringType. */
+    /**
+     * Static value AzurePublicPeering for ExpressRoutePeeringType.
+     */
     public static final ExpressRoutePeeringType AZURE_PUBLIC_PEERING = fromString("AzurePublicPeering");
 
-    /** Static value AzurePrivatePeering for ExpressRoutePeeringType. */
+    /**
+     * Static value AzurePrivatePeering for ExpressRoutePeeringType.
+     */
     public static final ExpressRoutePeeringType AZURE_PRIVATE_PEERING = fromString("AzurePrivatePeering");
 
-    /** Static value MicrosoftPeering for ExpressRoutePeeringType. */
+    /**
+     * Static value MicrosoftPeering for ExpressRoutePeeringType.
+     */
     public static final ExpressRoutePeeringType MICROSOFT_PEERING = fromString("MicrosoftPeering");
 
     /**
      * Creates a new instance of ExpressRoutePeeringType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressR
 
     /**
      * Creates or finds a ExpressRoutePeeringType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRoutePeeringType.
      */
@@ -41,7 +49,7 @@ public final class ExpressRoutePeeringType extends ExpandableStringEnum<ExpressR
 
     /**
      * Gets known ExpressRoutePeeringType values.
-     *
+     * 
      * @return known ExpressRoutePeeringType values.
      */
     public static Collection<ExpressRoutePeeringType> values() {

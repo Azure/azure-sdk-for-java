@@ -13,15 +13,19 @@ import java.util.Collection;
  * the vnet.
  */
 public final class AdminState extends ExpandableStringEnum<AdminState> {
-    /** Static value Enabled for AdminState. */
+    /**
+     * Static value Enabled for AdminState.
+     */
     public static final AdminState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for AdminState. */
+    /**
+     * Static value Disabled for AdminState.
+     */
     public static final AdminState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of AdminState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class AdminState extends ExpandableStringEnum<AdminState> {
 
     /**
      * Creates or finds a AdminState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdminState.
      */
@@ -41,7 +45,7 @@ public final class AdminState extends ExpandableStringEnum<AdminState> {
 
     /**
      * Gets known AdminState values.
-     *
+     * 
      * @return known AdminState values.
      */
     public static Collection<AdminState> values() {

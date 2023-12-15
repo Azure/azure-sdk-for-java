@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ExpressRoute Port Authorization Properties
- *
- * <p>Properties of ExpressRoutePort Authorization.
+ * 
+ * Properties of ExpressRoutePort Authorization.
  */
 @Immutable
 public final class ExpressRoutePortAuthorizationPropertiesFormat {
@@ -40,13 +40,15 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ExpressRoutePortAuthorizationPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRoutePortAuthorizationPropertiesFormat class.
+     */
     public ExpressRoutePortAuthorizationPropertiesFormat() {
     }
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -55,7 +57,7 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
 
     /**
      * Get the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @return the authorizationUseStatus value.
      */
     public ExpressRoutePortAuthorizationUseStatus authorizationUseStatus() {
@@ -64,7 +66,7 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
 
     /**
      * Get the circuitResourceUri property: The reference to the ExpressRoute circuit resource using the authorization.
-     *
+     * 
      * @return the circuitResourceUri value.
      */
     public String circuitResourceUri() {
@@ -73,7 +75,7 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -82,7 +84,7 @@ public final class ExpressRoutePortAuthorizationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CapacityReservationGroupInstanceView model. */
+/**
+ * The CapacityReservationGroupInstanceView model.
+ */
 @Immutable
 public final class CapacityReservationGroupInstanceView {
     /*
@@ -17,14 +19,23 @@ public final class CapacityReservationGroupInstanceView {
     @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapacityReservationInstanceViewWithName> capacityReservations;
 
-    /** Creates an instance of CapacityReservationGroupInstanceView class. */
+    /*
+     * List of the subscriptions that the capacity reservation group is shared with. **Note:** Minimum api-version:
+     * 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
+     */
+    @JsonProperty(value = "sharedSubscriptionIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResourceReadOnly> sharedSubscriptionIds;
+
+    /**
+     * Creates an instance of CapacityReservationGroupInstanceView class.
+     */
     public CapacityReservationGroupInstanceView() {
     }
 
     /**
      * Get the capacityReservations property: List of instance view of the capacity reservations under the capacity
      * reservation group.
-     *
+     * 
      * @return the capacityReservations value.
      */
     public List<CapacityReservationInstanceViewWithName> capacityReservations() {
@@ -32,13 +43,27 @@ public final class CapacityReservationGroupInstanceView {
     }
 
     /**
+     * Get the sharedSubscriptionIds property: List of the subscriptions that the capacity reservation group is shared
+     * with. **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for
+     * more details.
+     * 
+     * @return the sharedSubscriptionIds value.
+     */
+    public List<SubResourceReadOnly> sharedSubscriptionIds() {
+        return this.sharedSubscriptionIds;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (capacityReservations() != null) {
             capacityReservations().forEach(e -> e.validate());
+        }
+        if (sharedSubscriptionIds() != null) {
+            sharedSubscriptionIds().forEach(e -> e.validate());
         }
     }
 }

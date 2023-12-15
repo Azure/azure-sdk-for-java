@@ -1,6 +1,6 @@
 name: learn.microsoft.com feedback control
 description: |
-  ⛔ This template is integrated into the feedback control on the bottom of each API reference page on learn.microsoft.com. Several fields are automatically filled for you. Don't use for other purposes. ⛔
+  ⛔ Don't use this template directly. Instead, click the feedback option at the bottom of a learn.microsoft.com page. ⛔
 body:
   - type: markdown
     attributes:
