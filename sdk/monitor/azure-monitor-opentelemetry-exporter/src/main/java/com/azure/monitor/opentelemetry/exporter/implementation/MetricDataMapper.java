@@ -32,6 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
+import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.METRIC;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -195,7 +196,7 @@ public class MetricDataMapper {
                     metricTelemetryBuilder, statusCode, success, dependencyType, target, isSynthetic);
             }
         } else {
-            MappingsBuilder mappingsBuilder = new MappingsBuilder();
+            MappingsBuilder mappingsBuilder = new MappingsBuilder(METRIC);
             mappingsBuilder.build().map(attributes, metricTelemetryBuilder);
         }
     }
