@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +18,15 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         this.pkRangeIdToRegionScopedSessionTokens = new ConcurrentHashMap<>();
     }
 
+    public ConcurrentHashMap<String, ConcurrentHashMap<String, ISessionToken>> getPkRangeIdToRegionScopedSessionTokens() {
+        return this.pkRangeIdToRegionScopedSessionTokens;
+    }
+
     public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId, ISessionToken sessionToken) {
+
+        if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
+            return;
+        }
 
         for (Map.Entry<String, String> sessionTokenToRegion : sessionTokenToRegionMapping.entrySet()) {
 
@@ -50,24 +59,23 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         List<String> lesserPreferredRegionsPkProbablyRequestedFrom,
         String firstPreferredWritableRegion,
         String partitionKeyRangeId,
-        boolean shouldUseAllRegionScopedSessionTokens) {
+        boolean canUseRegionScopedSessionTokens) {
 
         List<ISessionToken> regionSpecificSessionTokens = new ArrayList<>();
-
-        // a case where the request is not targeted to a logical partition
-        // therefore resolve session token representing all regions
-        if (shouldUseAllRegionScopedSessionTokens) {
-            return resolveSessionTokenRepresentingAllRegions(partitionKeyRangeId);
-        }
 
         ISessionToken sessionTokenForFirstPreferredWritableRegion
             = resolveRegionSpecificSessionToken(firstPreferredWritableRegion, partitionKeyRangeId);
 
-        // todo (abhmohanty): evaluate cases where the session token for the first preferred writable region
-        // todo is not present
-        if (sessionTokenForFirstPreferredWritableRegion != null) {
-            regionSpecificSessionTokens.add(sessionTokenForFirstPreferredWritableRegion);
+        // case 1 : where the request is not targeted to a logical partition
+        // therefore resolve session token representing all regions
+        // case 2 : where the session token for the first preferred writable region
+        // has not been recorded - then merge session token for all recorded regions - increases
+        // 404/1002 retries but ensures read your own write guarantee
+        if (!canUseRegionScopedSessionTokens || sessionTokenForFirstPreferredWritableRegion == null) {
+            return resolveSessionTokenRepresentingAllRegions(partitionKeyRangeId);
         }
+
+        regionSpecificSessionTokens.add(sessionTokenForFirstPreferredWritableRegion);
 
         for (String region : lesserPreferredRegionsPkProbablyRequestedFrom) {
             ISessionToken regionSpecificSessionToken = resolveRegionSpecificSessionToken(region, partitionKeyRangeId);
@@ -78,6 +86,10 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         }
 
         return mergeSessionToken(regionSpecificSessionTokens);
+    }
+
+    public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
+        return this.pkRangeIdToRegionScopedSessionTokens.containsKey(partitionKeyRangeId);
     }
 
     private ISessionToken resolveRegionSpecificSessionToken(String region, String partitionKeyRangeId) {

@@ -4,14 +4,14 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 
@@ -112,12 +112,42 @@ public class SessionTokenHelper {
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
+                                                           PartitionKeyBasedBloomFilter pkBasedBloomFilter,
+                                                           PkRangeBasedRegionScopedSessionTokenRegistry pkRangeBasedRegionScopedSessionTokenRegistry,
+                                                           PartitionKeyInternal partitionKey,
+                                                           PartitionKeyDefinition partitionKeyDefinition,
+                                                           Long collectionRid,
                                                            String partitionKeyRangeId,
-                                                           ConcurrentHashMap<String, ISessionToken> rangeIdToTokenMap) {
-        if (rangeIdToTokenMap != null) {
-            if (rangeIdToTokenMap.containsKey(partitionKeyRangeId)) {
-                return rangeIdToTokenMap.get(partitionKeyRangeId);
+                                                           String firstPreferredWritableRegion,
+                                                           boolean canUseRegionScopedSessionTokens) {
+
+        if (pkRangeBasedRegionScopedSessionTokenRegistry != null) {
+
+            List<String> partitionKeyPossibleRegions = new ArrayList<>();
+
+            if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
+
+                if (canUseRegionScopedSessionTokens) {
+                    partitionKeyPossibleRegions =
+                        pkBasedBloomFilter.tryResolvePartitionKeyPossibleRegions(collectionRid, partitionKey,
+                            partitionKeyDefinition);
+
+                    return pkRangeBasedRegionScopedSessionTokenRegistry
+                        .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
+                            partitionKeyRangeId, true);
+                }
+
+                return pkRangeBasedRegionScopedSessionTokenRegistry
+                    .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
+                        partitionKeyRangeId, false);
+
             } else {
+                if (canUseRegionScopedSessionTokens) {
+                    partitionKeyPossibleRegions =
+                        pkBasedBloomFilter.tryResolvePartitionKeyPossibleRegions(collectionRid, partitionKey,
+                            partitionKeyDefinition);
+                }
+
                 ISessionToken parentSessionToken = null;
 
                 Collection<String> parents = request.requestContext.resolvedPartitionKeyRange.getParents();
@@ -125,11 +155,19 @@ public class SessionTokenHelper {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
                         String parentId = parentsList.get(i);
-                        if (rangeIdToTokenMap.containsKey(parentId)) {
-                            // A partition can have more than 1 parent (merge). In that case, we apply Merge to generate a token with both parent's max LSNs
-                            parentSessionToken =
-                                parentSessionToken != null
-                                    ? parentSessionToken.merge(rangeIdToTokenMap.get(parentId)) : rangeIdToTokenMap.get(parentId);
+                        if (pkRangeBasedRegionScopedSessionTokenRegistry.isPartitionKeyRangeIdPresent(parentId)) {
+                            // A partition can have more than 1 parent (merge). In that case, we apply Merge to
+                            // generate a token with both parent's max LSNs
+
+                            ISessionToken resolvedSessionTokenForParentId = pkRangeBasedRegionScopedSessionTokenRegistry
+                                .tryResolveSessionToken(partitionKeyPossibleRegions, firstPreferredWritableRegion,
+                                    parentId, canUseRegionScopedSessionTokens);
+
+                            if (resolvedSessionTokenForParentId != null) {
+                                parentSessionToken = parentSessionToken != null ?
+                                    parentSessionToken.merge(resolvedSessionTokenForParentId) :
+                                    resolvedSessionTokenForParentId;
+                            }
                         }
                     }
 

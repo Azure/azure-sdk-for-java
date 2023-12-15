@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.guava25.hash.BloomFilter;
 import com.azure.cosmos.implementation.guava25.hash.Funnel;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,7 +45,27 @@ public class PartitionKeyBasedBloomFilter {
         Long collectionRid,
         String firstPreferredWritableRegion,
         Map<String, String> sessionTokenToRegionMapping,
-        String partitionKeyAsStringifiedJson) {
+        PartitionKeyInternal partitionKeyInternal,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
+            return;
+        }
+
+        if (partitionKeyInternal == null) {
+            return;
+        }
+
+        if (partitionKeyDefinition == null) {
+            return;
+        }
+
+        if (Strings.isNullOrEmpty(firstPreferredWritableRegion)) {
+            return;
+        }
+
+        String effectivePartitionKeyHashAsString = PartitionKeyInternalHelper
+            .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
         for (Map.Entry<String, String> sessionTokenToRegionPair : sessionTokenToRegionMapping.entrySet()) {
 
@@ -54,7 +77,7 @@ public class PartitionKeyBasedBloomFilter {
             if (!regionInner.equals(firstPreferredWritableRegion) && !Strings.isNullOrEmpty(sessionTokenUnparsedInner)) {
 
                 if (isBloomFilterInitialized.get()) {
-                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson,
+                    this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyHashAsString,
                         regionInner, collectionRid));
                     this.recordedRegions.add(regionInner);
                 }
@@ -62,37 +85,19 @@ public class PartitionKeyBasedBloomFilter {
         }
     }
 
-    public ISessionToken tryResolveSessionToken(
-        Long collectionRid,
-        String partitionKeyAsStringifiedJson,
-        String pkRangeId,
-        String firstPreferredWritableRegion,
-        PkRangeBasedRegionScopedSessionTokenRegistry pkRangeBasedRegionScopedSessionTokenRegistry) {
+    public List<String> tryResolvePartitionKeyPossibleRegions(
+        Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
-        List<String> regionsPkIsProbablyRequestedFrom = new ArrayList<>();
+        List<String> regionsPartitionKeyHasProbablySeen = new ArrayList<>();
+        String effectivePartitionKeyAsString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
-        if (Strings.isNullOrEmpty(partitionKeyAsStringifiedJson)) {
-            return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(
-                regionsPkIsProbablyRequestedFrom,
-                firstPreferredWritableRegion,
-                pkRangeId,
-                true);
-        }
-
-        if (this.isBloomFilterInitialized.get()) {
-            for (String region : this.recordedRegions) {
-
-                if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(partitionKeyAsStringifiedJson, region, collectionRid))) {
-                    regionsPkIsProbablyRequestedFrom.add(region);
-                }
+        for (String region : this.recordedRegions) {
+            if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyAsString, region, collectionRid))) {
+                regionsPartitionKeyHasProbablySeen.add(region);
             }
         }
 
-        return pkRangeBasedRegionScopedSessionTokenRegistry.tryResolveSessionToken(
-            regionsPkIsProbablyRequestedFrom,
-            firstPreferredWritableRegion,
-            pkRangeId,
-            false);
+        return regionsPartitionKeyHasProbablySeen;
     }
 
     public static class PartitionKeyBasedBloomFilterType {
