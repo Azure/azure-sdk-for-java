@@ -187,8 +187,9 @@ public class ClientSideRequestStatistics {
 
                     String sessionTokenAsStringInner = storeResponseDiagnosticsInner.getSessionTokenAsString();
 
-                    if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
-                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).trim().replace(" ", ""));
+                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
+                        String regionLowerCased = storeResponseStatistics.regionName.toLowerCase(Locale.ROOT).replace(" ", "");
+                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionLowerCased);
                     }
                 }
             }
@@ -229,13 +230,13 @@ public class ClientSideRequestStatistics {
 
                 if (storeResponseDiagnostics != null) {
 
-                    String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+                    String sessionTokenAsStringInner = storeResponseDiagnostics.getSessionTokenAsString();
 
-                    if (sessionTokenAsStringInner != null && !sessionTokenAsStringInner.isEmpty()) {
-                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInner);
+                    if (!Strings.isNullOrEmpty(sessionTokenAsStringInner)) {
+                        String regionContactedInnerLowerCased = regionContactedInner.toLowerCase(Locale.ROOT).replace(" ", "");
+                        this.sessionTokenToRegionContactedMapping.put(sessionTokenAsStringInner, regionContactedInnerLowerCased);
                     }
                 }
-
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();

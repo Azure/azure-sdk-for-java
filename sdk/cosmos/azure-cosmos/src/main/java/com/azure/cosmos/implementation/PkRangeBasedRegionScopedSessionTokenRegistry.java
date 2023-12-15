@@ -22,7 +22,7 @@ public class PkRangeBasedRegionScopedSessionTokenRegistry {
         return this.pkRangeIdToRegionScopedSessionTokens;
     }
 
-    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId, ISessionToken sessionToken) {
+    public void tryRecordSessionToken(Map<String, String> sessionTokenToRegionMapping, String pkRangeId) {
 
         if (sessionTokenToRegionMapping == null || sessionTokenToRegionMapping.isEmpty()) {
             return;
