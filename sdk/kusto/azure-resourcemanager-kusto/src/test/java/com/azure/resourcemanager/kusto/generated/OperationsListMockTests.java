@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"rnnqb\",\"display\":{\"provider\":\"pizxqltgrdogyp\",\"operation\":\"x\",\"resource\":\"fihwu\",\"description\":\"ctafsrbxrblm\"},\"origin\":\"owxih\",\"properties\":\"datanxw\"}]}";
+            "{\"value\":[{\"name\":\"rkphyjdxr\",\"display\":{\"provider\":\"uqd\",\"operation\":\"xmrgchbapxkiy\",\"resource\":\"j\",\"description\":\"ajb\"},\"origin\":\"cgduusio\",\"properties\":\"datablevpmcluj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rnnqb", response.iterator().next().name());
-        Assertions.assertEquals("pizxqltgrdogyp", response.iterator().next().display().provider());
-        Assertions.assertEquals("x", response.iterator().next().display().operation());
-        Assertions.assertEquals("fihwu", response.iterator().next().display().resource());
-        Assertions.assertEquals("ctafsrbxrblm", response.iterator().next().display().description());
-        Assertions.assertEquals("owxih", response.iterator().next().origin());
+        Assertions.assertEquals("rkphyjdxr", response.iterator().next().name());
+        Assertions.assertEquals("uqd", response.iterator().next().display().provider());
+        Assertions.assertEquals("xmrgchbapxkiy", response.iterator().next().display().operation());
+        Assertions.assertEquals("j", response.iterator().next().display().resource());
+        Assertions.assertEquals("ajb", response.iterator().next().display().description());
+        Assertions.assertEquals("cgduusio", response.iterator().next().origin());
     }
 }

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.datafactory.models.WebActivityMethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Web activity type properties. */
+/**
+ * Web activity type properties.
+ */
 @Fluent
 public final class WebActivityTypeProperties {
     /*
@@ -74,13 +76,15 @@ public final class WebActivityTypeProperties {
     @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
 
-    /** Creates an instance of WebActivityTypeProperties class. */
+    /**
+     * Creates an instance of WebActivityTypeProperties class.
+     */
     public WebActivityTypeProperties() {
     }
 
     /**
      * Get the method property: Rest API method for target endpoint.
-     *
+     * 
      * @return the method value.
      */
     public WebActivityMethod method() {
@@ -89,7 +93,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the method property: Rest API method for target endpoint.
-     *
+     * 
      * @param method the method value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -99,8 +103,9 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -108,8 +113,9 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
-     *
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param url the url value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -122,7 +128,7 @@ public final class WebActivityTypeProperties {
      * Get the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the headers value.
      */
     public Object headers() {
@@ -133,7 +139,7 @@ public final class WebActivityTypeProperties {
      * Set the headers property: Represents the headers that will be sent to the request. For example, to set the
      * language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param headers the headers value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -145,7 +151,7 @@ public final class WebActivityTypeProperties {
     /**
      * Get the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the body value.
      */
     public Object body() {
@@ -155,7 +161,7 @@ public final class WebActivityTypeProperties {
     /**
      * Set the body property: Represents the payload that will be sent to the endpoint. Required for POST/PUT method,
      * not allowed for GET method Type: string (or Expression with resultType string).
-     *
+     * 
      * @param body the body value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -166,7 +172,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Get the authentication property: Authentication method used for calling the endpoint.
-     *
+     * 
      * @return the authentication value.
      */
     public WebActivityAuthentication authentication() {
@@ -175,7 +181,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the authentication property: Authentication method used for calling the endpoint.
-     *
+     * 
      * @param authentication the authentication value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -186,7 +192,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Get the disableCertValidation property: When set to true, Certificate validation will be disabled.
-     *
+     * 
      * @return the disableCertValidation value.
      */
     public Boolean disableCertValidation() {
@@ -195,7 +201,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the disableCertValidation property: When set to true, Certificate validation will be disabled.
-     *
+     * 
      * @param disableCertValidation the disableCertValidation value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -206,7 +212,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Get the datasets property: List of datasets passed to web endpoint.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetReference> datasets() {
@@ -215,7 +221,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the datasets property: List of datasets passed to web endpoint.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -226,7 +232,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Get the linkedServices property: List of linked services passed to web endpoint.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceReference> linkedServices() {
@@ -235,7 +241,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the linkedServices property: List of linked services passed to web endpoint.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -246,7 +252,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Get the connectVia property: The integration runtime reference.
-     *
+     * 
      * @return the connectVia value.
      */
     public IntegrationRuntimeReference connectVia() {
@@ -255,7 +261,7 @@ public final class WebActivityTypeProperties {
 
     /**
      * Set the connectVia property: The integration runtime reference.
-     *
+     * 
      * @param connectVia the connectVia value to set.
      * @return the WebActivityTypeProperties object itself.
      */
@@ -266,20 +272,17 @@ public final class WebActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property method in model WebActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property method in model WebActivityTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
         }
         if (authentication() != null) {
             authentication().validate();

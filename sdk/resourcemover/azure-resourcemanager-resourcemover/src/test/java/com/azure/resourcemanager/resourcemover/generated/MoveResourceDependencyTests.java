@@ -18,35 +18,35 @@ public final class MoveResourceDependencyTests {
         MoveResourceDependency model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"erhhbcsglumm\",\"resolutionStatus\":\"tjaodxobnb\",\"resolutionType\":\"Manual\",\"dependencyType\":\"RequiredForMove\",\"manualResolution\":{\"targetId\":\"kajionpim\"},\"automaticResolution\":{\"moveResourceId\":\"stxgc\"},\"isOptional\":\"dg\"}")
+                    "{\"id\":\"wgndrvynhzgpp\",\"resolutionStatus\":\"cgyncocpecf\",\"resolutionType\":\"Manual\",\"dependencyType\":\"RequiredForPrepare\",\"manualResolution\":{\"targetId\":\"sxlzevgbmqj\"},\"automaticResolution\":{\"moveResourceId\":\"c\"},\"isOptional\":\"mivkwlzuvcc\"}")
                 .toObject(MoveResourceDependency.class);
-        Assertions.assertEquals("erhhbcsglumm", model.id());
-        Assertions.assertEquals("tjaodxobnb", model.resolutionStatus());
+        Assertions.assertEquals("wgndrvynhzgpp", model.id());
+        Assertions.assertEquals("cgyncocpecf", model.resolutionStatus());
         Assertions.assertEquals(ResolutionType.MANUAL, model.resolutionType());
-        Assertions.assertEquals(DependencyType.REQUIRED_FOR_MOVE, model.dependencyType());
-        Assertions.assertEquals("kajionpim", model.manualResolution().targetId());
-        Assertions.assertEquals("stxgc", model.automaticResolution().moveResourceId());
-        Assertions.assertEquals("dg", model.isOptional());
+        Assertions.assertEquals(DependencyType.REQUIRED_FOR_PREPARE, model.dependencyType());
+        Assertions.assertEquals("sxlzevgbmqj", model.manualResolution().targetId());
+        Assertions.assertEquals("c", model.automaticResolution().moveResourceId());
+        Assertions.assertEquals("mivkwlzuvcc", model.isOptional());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MoveResourceDependency model =
             new MoveResourceDependency()
-                .withId("erhhbcsglumm")
-                .withResolutionStatus("tjaodxobnb")
+                .withId("wgndrvynhzgpp")
+                .withResolutionStatus("cgyncocpecf")
                 .withResolutionType(ResolutionType.MANUAL)
-                .withDependencyType(DependencyType.REQUIRED_FOR_MOVE)
-                .withManualResolution(new ManualResolutionProperties().withTargetId("kajionpim"))
-                .withAutomaticResolution(new AutomaticResolutionProperties().withMoveResourceId("stxgc"))
-                .withIsOptional("dg");
+                .withDependencyType(DependencyType.REQUIRED_FOR_PREPARE)
+                .withManualResolution(new ManualResolutionProperties().withTargetId("sxlzevgbmqj"))
+                .withAutomaticResolution(new AutomaticResolutionProperties().withMoveResourceId("c"))
+                .withIsOptional("mivkwlzuvcc");
         model = BinaryData.fromObject(model).toObject(MoveResourceDependency.class);
-        Assertions.assertEquals("erhhbcsglumm", model.id());
-        Assertions.assertEquals("tjaodxobnb", model.resolutionStatus());
+        Assertions.assertEquals("wgndrvynhzgpp", model.id());
+        Assertions.assertEquals("cgyncocpecf", model.resolutionStatus());
         Assertions.assertEquals(ResolutionType.MANUAL, model.resolutionType());
-        Assertions.assertEquals(DependencyType.REQUIRED_FOR_MOVE, model.dependencyType());
-        Assertions.assertEquals("kajionpim", model.manualResolution().targetId());
-        Assertions.assertEquals("stxgc", model.automaticResolution().moveResourceId());
-        Assertions.assertEquals("dg", model.isOptional());
+        Assertions.assertEquals(DependencyType.REQUIRED_FOR_PREPARE, model.dependencyType());
+        Assertions.assertEquals("sxlzevgbmqj", model.manualResolution().targetId());
+        Assertions.assertEquals("c", model.automaticResolution().moveResourceId());
+        Assertions.assertEquals("mivkwlzuvcc", model.isOptional());
     }
 }

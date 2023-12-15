@@ -56,14 +56,14 @@ public class Paginator {
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-            String continuationToken,
-            BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
-            Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-            int top,
-            int maxPageSize,
-            int maxPreFetchCount,
-            OperationContextAndListenerTuple operationContext,
-            List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        String continuationToken,
+        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
+        int top,
+        int maxPageSize,
+        int maxPreFetchCount,
+        OperationContextAndListenerTuple operationContext,
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
@@ -149,7 +149,7 @@ public class Paginator {
                 maxPageSize,
                 operationContext,
                 cancelledRequestDiagnosticsTracker),
-                preFetchCount);
+            preFetchCount);
     }
 
     public static int getPreFetchCount(CosmosQueryRequestOptions queryOptions, int top, int maxPageSize) {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Common Data Service for Apps entity dataset properties. */
+/**
+ * Common Data Service for Apps entity dataset properties.
+ */
 @Fluent
 public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
     /*
@@ -16,13 +18,16 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
     @JsonProperty(value = "entityName")
     private Object entityName;
 
-    /** Creates an instance of CommonDataServiceForAppsEntityDatasetTypeProperties class. */
+    /**
+     * Creates an instance of CommonDataServiceForAppsEntityDatasetTypeProperties class.
+     */
     public CommonDataServiceForAppsEntityDatasetTypeProperties() {
     }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the entityName value.
      */
     public Object entityName() {
@@ -30,8 +35,9 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param entityName the entityName value to set.
      * @return the CommonDataServiceForAppsEntityDatasetTypeProperties object itself.
      */
@@ -42,7 +48,7 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

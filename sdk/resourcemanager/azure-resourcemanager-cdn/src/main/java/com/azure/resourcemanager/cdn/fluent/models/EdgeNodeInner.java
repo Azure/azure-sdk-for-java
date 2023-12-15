@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.IpAddressGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,11 +19,9 @@ public final class EdgeNodeInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EdgeNodeProperties innerProperties;
 
-    /*
-     * Read only system data
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    /** Creates an instance of EdgeNodeInner class. */
+    public EdgeNodeInner() {
+    }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties required to create an edgenode.
@@ -33,15 +30,6 @@ public final class EdgeNodeInner extends ProxyResource {
      */
     private EdgeNodeProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the systemData property: Read only system data.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**

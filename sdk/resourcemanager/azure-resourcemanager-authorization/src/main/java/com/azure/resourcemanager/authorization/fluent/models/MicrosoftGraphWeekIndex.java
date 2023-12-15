@@ -26,6 +26,15 @@ public final class MicrosoftGraphWeekIndex extends ExpandableStringEnum<Microsof
     public static final MicrosoftGraphWeekIndex LAST = fromString("last");
 
     /**
+     * Creates a new instance of MicrosoftGraphWeekIndex value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MicrosoftGraphWeekIndex() {
+    }
+
+    /**
      * Creates or finds a MicrosoftGraphWeekIndex from its string representation.
      *
      * @param name a name to look for.

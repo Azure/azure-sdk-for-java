@@ -9,11 +9,13 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Specifies the environment in which the indexer should execute. */
+/**
+ * Specifies the environment in which the indexer should execute.
+ */
 public final class IndexerExecutionEnvironment extends ExpandableStringEnum<IndexerExecutionEnvironment> {
     /**
-     * Indicates that Azure Cognitive Search can determine where the indexer should execute. This is the default
-     * environment when nothing is specified and is the recommended value.
+     * Indicates that the search service can determine where the indexer should execute. This is the default environment
+     * when nothing is specified and is the recommended value.
      */
     public static final IndexerExecutionEnvironment STANDARD = fromString("standard");
 
@@ -26,15 +28,16 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
 
     /**
      * Creates a new instance of IndexerExecutionEnvironment value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public IndexerExecutionEnvironment() {}
+    public IndexerExecutionEnvironment() {
+    }
 
     /**
      * Creates or finds a IndexerExecutionEnvironment from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IndexerExecutionEnvironment.
      */
@@ -44,7 +47,7 @@ public final class IndexerExecutionEnvironment extends ExpandableStringEnum<Inde
 
     /**
      * Gets known IndexerExecutionEnvironment values.
-     *
+     * 
      * @return known IndexerExecutionEnvironment values.
      */
     public static Collection<IndexerExecutionEnvironment> values() {

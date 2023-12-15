@@ -28,6 +28,10 @@ public final class WafRankingsResponseDataItemMetric {
     @JsonProperty(value = "percentage")
     private Double percentage;
 
+    /** Creates an instance of WafRankingsResponseDataItemMetric class. */
+    public WafRankingsResponseDataItemMetric() {
+    }
+
     /**
      * Get the metric property: The metric property.
      *

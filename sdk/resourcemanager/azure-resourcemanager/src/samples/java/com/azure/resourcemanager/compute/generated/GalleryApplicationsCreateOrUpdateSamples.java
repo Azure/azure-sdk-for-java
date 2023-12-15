@@ -11,49 +11,34 @@ import com.azure.resourcemanager.compute.models.GalleryApplicationCustomActionPa
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import java.util.Arrays;
 
-/** Samples for GalleryApplications CreateOrUpdate. */
+/**
+ * Samples for GalleryApplications CreateOrUpdate.
+ */
 public final class GalleryApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryApplication_Create.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * GalleryApplication_Create.json
      */
     /**
      * Sample code: Create or update a simple gallery Application.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createOrUpdateASimpleGalleryApplication(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getGalleryApplications()
-            .createOrUpdate(
-                "myResourceGroup",
-                "myGalleryName",
-                "myGalleryApplicationName",
-                new GalleryApplicationInner()
-                    .withLocation("West US")
+        azure.virtualMachines().manager().serviceClient().getGalleryApplications()
+            .createOrUpdate("myResourceGroup", "myGalleryName", "myGalleryApplicationName",
+                new GalleryApplicationInner().withLocation("West US")
                     .withDescription("This is the gallery application description.")
-                    .withEula("This is the gallery application EULA.")
-                    .withPrivacyStatementUri("myPrivacyStatementUri}")
-                    .withReleaseNoteUri("myReleaseNoteUri")
-                    .withSupportedOSType(OperatingSystemTypes.WINDOWS)
-                    .withCustomActions(
-                        Arrays
-                            .asList(
-                                new GalleryApplicationCustomAction()
-                                    .withName("myCustomAction")
-                                    .withScript("myCustomActionScript")
-                                    .withDescription("This is the custom action description.")
-                                    .withParameters(
-                                        Arrays
-                                            .asList(
-                                                new GalleryApplicationCustomActionParameter()
-                                                    .withName("myCustomActionParameter")
-                                                    .withRequired(false)
-                                                    .withType(GalleryApplicationCustomActionParameterType.STRING)
-                                                    .withDefaultValue("default value of parameter.")
-                                                    .withDescription("This is the description of the parameter"))))),
+                    .withEula("This is the gallery application EULA.").withPrivacyStatementUri("myPrivacyStatementUri}")
+                    .withReleaseNoteUri("myReleaseNoteUri").withSupportedOSType(OperatingSystemTypes.WINDOWS)
+                    .withCustomActions(Arrays.asList(new GalleryApplicationCustomAction().withName("myCustomAction")
+                        .withScript("myCustomActionScript").withDescription("This is the custom action description.")
+                        .withParameters(Arrays
+                            .asList(new GalleryApplicationCustomActionParameter().withName("myCustomActionParameter")
+                                .withRequired(false).withType(GalleryApplicationCustomActionParameterType.STRING)
+                                .withDefaultValue("default value of parameter.")
+                                .withDescription("This is the description of the parameter"))))),
                 com.azure.core.util.Context.NONE);
     }
 }

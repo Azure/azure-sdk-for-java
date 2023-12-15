@@ -114,7 +114,7 @@ class ResourceParserTest {
         configuration.put("WEBSITE_SITE_NAME", "test_website_site_name");
         configuration.put("WEBSITE_INSTANCE_ID", "test_website_instance_id");
         Resource resource = createTestResource(null, null, null);
-        ResourceParser.updateRoleNameAndInstance(builder, resource, DefaultConfigProperties.createForTest(configuration));
+        ResourceParser.updateRoleNameAndInstance(builder, resource, DefaultConfigProperties.create(configuration));
         Map<String, String> tags = builder.build().getTags();
         assertThat(tags.get(ContextTagKeys.AI_CLOUD_ROLE.toString()))
             .isEqualTo("test_website_site_name");
@@ -123,7 +123,7 @@ class ResourceParserTest {
     }
 
     private static ConfigProperties getConfiguration() {
-        return DefaultConfigProperties.createForTest(Collections.singletonMap("HOSTNAME", DEFAULT_ROLE_INSTANCE));
+        return DefaultConfigProperties.create(Collections.singletonMap("HOSTNAME", DEFAULT_ROLE_INSTANCE));
     }
 
     private static Resource createTestResource(

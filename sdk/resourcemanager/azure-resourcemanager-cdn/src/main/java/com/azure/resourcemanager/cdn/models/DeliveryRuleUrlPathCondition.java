@@ -21,6 +21,10 @@ public final class DeliveryRuleUrlPathCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private UrlPathMatchConditionParameters parameters;
 
+    /** Creates an instance of DeliveryRuleUrlPathCondition class. */
+    public DeliveryRuleUrlPathCondition() {
+    }
+
     /**
      * Get the parameters property: Defines the parameters for the condition.
      *

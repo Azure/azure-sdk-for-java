@@ -17,6 +17,10 @@ public final class RateLimitRuleList {
     @JsonProperty(value = "rules")
     private List<RateLimitRule> rules;
 
+    /** Creates an instance of RateLimitRuleList class. */
+    public RateLimitRuleList() {
+    }
+
     /**
      * Get the rules property: List of rules.
      *

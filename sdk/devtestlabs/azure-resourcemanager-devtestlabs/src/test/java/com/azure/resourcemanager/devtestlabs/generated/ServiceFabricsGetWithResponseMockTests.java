@@ -31,7 +31,7 @@ public final class ServiceFabricsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"externalServiceFabricId\":\"grt\",\"environmentId\":\"ewjzl\",\"applicableSchedule\":{\"location\":\"kcfazzw\",\"tags\":{},\"id\":\"ayerzrran\",\"name\":\"ybylpol\",\"type\":\"zrghsrleink\"},\"provisioningState\":\"cjfncjwvuagfq\",\"uniqueIdentifier\":\"ltngvmreupt\"},\"location\":\"klzmijajw\",\"tags\":{\"pynwlslrcigtzjcv\":\"fsvagh\"},\"id\":\"xqlaps\",\"name\":\"ssov\",\"type\":\"xpavid\"}";
+            "{\"properties\":{\"externalServiceFabricId\":\"lhxd\",\"environmentId\":\"klciichgjsysm\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"dgwxfkzsifcu\",\"tags\":{\"gcwx\":\"u\",\"bwjtrdx\":\"ec\",\"sy\":\"izagbbgiar\"},\"id\":\"pgdqxwabzrw\",\"name\":\"qrxhaclcdos\",\"type\":\"kptjqgkifmmai\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"hedxkpbqwuntob\",\"tags\":{\"lw\":\"azz\"},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}},\"location\":\"tlqh\",\"tags\":{\"ypzkg\":\"ouvmrsiflik\",\"oksz\":\"fxfmyrqsdb\"},\"id\":\"nm\",\"name\":\"wgpterdiuw\",\"type\":\"i\"},\"provisioningState\":\"skw\",\"uniqueIdentifier\":\"sdetjygowifcqpol\"},\"location\":\"kg\",\"tags\":{\"zoxlvoc\":\"gzyy\",\"gmlilwzghjhjvmab\":\"tvdxxhe\",\"tn\":\"zbwaybfmdafbgym\",\"ipneychb\":\"preojxrjnbsconxa\"},\"id\":\"izqfsgnwdxz\",\"name\":\"dpq\",\"type\":\"rfbo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,17 @@ public final class ServiceFabricsGetWithResponseMockTests {
             manager
                 .serviceFabrics()
                 .getWithResponse(
-                    "hpriylfm", "ztraud", "vhl", "dculregp", "tmojhvrztnvgyshq", com.azure.core.util.Context.NONE)
+                    "gddhjkrukizyhgs",
+                    "tnqsktx",
+                    "fpjbqggwe",
+                    "iwdhdmncgbfzu",
+                    "cstu",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("klzmijajw", response.location());
-        Assertions.assertEquals("fsvagh", response.tags().get("pynwlslrcigtzjcv"));
-        Assertions.assertEquals("grt", response.externalServiceFabricId());
-        Assertions.assertEquals("ewjzl", response.environmentId());
+        Assertions.assertEquals("kg", response.location());
+        Assertions.assertEquals("gzyy", response.tags().get("zoxlvoc"));
+        Assertions.assertEquals("lhxd", response.externalServiceFabricId());
+        Assertions.assertEquals("klciichgjsysm", response.environmentId());
     }
 }

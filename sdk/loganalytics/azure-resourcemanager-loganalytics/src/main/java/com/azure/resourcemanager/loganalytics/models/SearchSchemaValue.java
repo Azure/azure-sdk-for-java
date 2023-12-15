@@ -53,6 +53,10 @@ public final class SearchSchemaValue {
     @JsonProperty(value = "ownerType")
     private List<String> ownerType;
 
+    /** Creates an instance of SearchSchemaValue class. */
+    public SearchSchemaValue() {
+    }
+
     /**
      * Get the name property: The name of the schema.
      *

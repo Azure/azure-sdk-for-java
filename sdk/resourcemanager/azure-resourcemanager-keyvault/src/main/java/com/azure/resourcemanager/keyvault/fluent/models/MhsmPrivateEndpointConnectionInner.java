@@ -7,6 +7,7 @@ package com.azure.resourcemanager.keyvault.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmResource;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
+import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.keyvault.models.MhsmPrivateEndpoint;
 import com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionProvisioningState;
@@ -65,6 +66,13 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
     @Override
     public MhsmPrivateEndpointConnectionInner withSku(ManagedHsmSku sku) {
         super.withSku(sku);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MhsmPrivateEndpointConnectionInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
         return this;
     }
 

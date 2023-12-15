@@ -29,6 +29,10 @@ public final class AfdDomainHttpsParameters {
     @JsonProperty(value = "secret")
     private ResourceReference secret;
 
+    /** Creates an instance of AfdDomainHttpsParameters class. */
+    public AfdDomainHttpsParameters() {
+    }
+
     /**
      * Get the certificateType property: Defines the source of the SSL certificate.
      *

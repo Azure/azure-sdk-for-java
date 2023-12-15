@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.JsonFormat;
 public final class JsonFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonFormat model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"JsonFormat\",\"filePattern\":\"datafcwrri\",\"nestingSeparator\":\"dataxeezwyhjmbjiqe\",\"encodingName\":\"dataxdbsohcw\",\"jsonNodeReference\":\"datayvdkgdetszw\",\"jsonPathDefinition\":\"datanzbjekwuycky\",\"serializer\":\"dataensmuffiwjbct\",\"deserializer\":\"datap\",\"\":{\"dxposcsl\":\"dataqjto\",\"uxidhhxomilddxj\":\"datawuusiecktybh\"}}")
-                .toObject(JsonFormat.class);
+        JsonFormat model = BinaryData.fromString(
+            "{\"type\":\"JsonFormat\",\"filePattern\":\"datasmuffiwjb\",\"nestingSeparator\":\"datavbp\",\"encodingName\":\"datajqjtotd\",\"jsonNodeReference\":\"dataosc\",\"jsonPathDefinition\":\"datahwuusiecktybh\",\"serializer\":\"dataxidhhxomil\",\"deserializer\":\"dataxj\",\"\":{\"qrslaate\":\"datagxwjwil\",\"gqwlxrhg\":\"datatwujjzgx\",\"ykbkkteozejogmk\":\"datavhvtq\",\"h\":\"datarvvmvmcofn\"}}")
+            .toObject(JsonFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonFormat model =
-            new JsonFormat()
-                .withSerializer("dataensmuffiwjbct")
-                .withDeserializer("datap")
-                .withFilePattern("datafcwrri")
-                .withNestingSeparator("dataxeezwyhjmbjiqe")
-                .withEncodingName("dataxdbsohcw")
-                .withJsonNodeReference("datayvdkgdetszw")
-                .withJsonPathDefinition("datanzbjekwuycky");
+        JsonFormat model = new JsonFormat().withSerializer("dataxidhhxomil").withDeserializer("dataxj")
+            .withFilePattern("datasmuffiwjb").withNestingSeparator("datavbp").withEncodingName("datajqjtotd")
+            .withJsonNodeReference("dataosc").withJsonPathDefinition("datahwuusiecktybh");
         model = BinaryData.fromObject(model).toObject(JsonFormat.class);
     }
 }

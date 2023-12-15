@@ -8,22 +8,30 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceNotRenewableReason. */
+/**
+ * Defines values for ResourceNotRenewableReason.
+ */
 public final class ResourceNotRenewableReason extends ExpandableStringEnum<ResourceNotRenewableReason> {
-    /** Static value RegistrationStatusNotSupportedForRenewal for ResourceNotRenewableReason. */
-    public static final ResourceNotRenewableReason REGISTRATION_STATUS_NOT_SUPPORTED_FOR_RENEWAL =
-        fromString("RegistrationStatusNotSupportedForRenewal");
+    /**
+     * Static value RegistrationStatusNotSupportedForRenewal for ResourceNotRenewableReason.
+     */
+    public static final ResourceNotRenewableReason REGISTRATION_STATUS_NOT_SUPPORTED_FOR_RENEWAL
+        = fromString("RegistrationStatusNotSupportedForRenewal");
 
-    /** Static value ExpirationNotInRenewalTimeRange for ResourceNotRenewableReason. */
-    public static final ResourceNotRenewableReason EXPIRATION_NOT_IN_RENEWAL_TIME_RANGE =
-        fromString("ExpirationNotInRenewalTimeRange");
+    /**
+     * Static value ExpirationNotInRenewalTimeRange for ResourceNotRenewableReason.
+     */
+    public static final ResourceNotRenewableReason EXPIRATION_NOT_IN_RENEWAL_TIME_RANGE
+        = fromString("ExpirationNotInRenewalTimeRange");
 
-    /** Static value SubscriptionNotActive for ResourceNotRenewableReason. */
+    /**
+     * Static value SubscriptionNotActive for ResourceNotRenewableReason.
+     */
     public static final ResourceNotRenewableReason SUBSCRIPTION_NOT_ACTIVE = fromString("SubscriptionNotActive");
 
     /**
      * Creates a new instance of ResourceNotRenewableReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +40,7 @@ public final class ResourceNotRenewableReason extends ExpandableStringEnum<Resou
 
     /**
      * Creates or finds a ResourceNotRenewableReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceNotRenewableReason.
      */
@@ -43,7 +51,7 @@ public final class ResourceNotRenewableReason extends ExpandableStringEnum<Resou
 
     /**
      * Gets known ResourceNotRenewableReason values.
-     *
+     * 
      * @return known ResourceNotRenewableReason values.
      */
     public static Collection<ResourceNotRenewableReason> values() {

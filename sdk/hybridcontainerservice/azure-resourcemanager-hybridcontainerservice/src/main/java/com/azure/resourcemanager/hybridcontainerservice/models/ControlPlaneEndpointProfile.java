@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** controlPlaneEndpoint - API server endpoint for the control plane. */
+/**
+ * controlPlaneEndpoint - API server endpoint for the control plane.
+ */
 @Fluent
 public class ControlPlaneEndpointProfile {
     /*
@@ -16,13 +18,15 @@ public class ControlPlaneEndpointProfile {
     @JsonProperty(value = "controlPlaneEndpoint")
     private ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint;
 
-    /** Creates an instance of ControlPlaneEndpointProfile class. */
+    /**
+     * Creates an instance of ControlPlaneEndpointProfile class.
+     */
     public ControlPlaneEndpointProfile() {
     }
 
     /**
      * Get the controlPlaneEndpoint property: API server endpoint for the control plane.
-     *
+     * 
      * @return the controlPlaneEndpoint value.
      */
     public ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint() {
@@ -31,19 +35,19 @@ public class ControlPlaneEndpointProfile {
 
     /**
      * Set the controlPlaneEndpoint property: API server endpoint for the control plane.
-     *
+     * 
      * @param controlPlaneEndpoint the controlPlaneEndpoint value to set.
      * @return the ControlPlaneEndpointProfile object itself.
      */
-    public ControlPlaneEndpointProfile withControlPlaneEndpoint(
-        ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint) {
+    public ControlPlaneEndpointProfile
+        withControlPlaneEndpoint(ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint) {
         this.controlPlaneEndpoint = controlPlaneEndpoint;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

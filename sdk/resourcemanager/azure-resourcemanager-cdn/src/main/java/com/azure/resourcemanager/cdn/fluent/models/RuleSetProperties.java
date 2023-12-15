@@ -17,6 +17,10 @@ public final class RuleSetProperties extends AfdStateProperties {
     @JsonProperty(value = "profileName", access = JsonProperty.Access.WRITE_ONLY)
     private String profileName;
 
+    /** Creates an instance of RuleSetProperties class. */
+    public RuleSetProperties() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the rule set.
      *

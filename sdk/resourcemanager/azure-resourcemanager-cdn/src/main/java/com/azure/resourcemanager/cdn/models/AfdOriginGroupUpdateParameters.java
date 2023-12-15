@@ -17,6 +17,10 @@ public final class AfdOriginGroupUpdateParameters {
     @JsonProperty(value = "properties")
     private AfdOriginGroupUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of AfdOriginGroupUpdateParameters class. */
+    public AfdOriginGroupUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin group.
      *

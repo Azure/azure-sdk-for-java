@@ -254,7 +254,7 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
             cosmosClientMetadataCache,
             calledFrom)),
         ThroughputControlHelper.getThroughputControlClientCacheItem(
-          userConfig, calledFrom, cosmosClientStateHandles)
+          userConfig, calledFrom, cosmosClientStateHandles, cosmosClientConfiguration.sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =

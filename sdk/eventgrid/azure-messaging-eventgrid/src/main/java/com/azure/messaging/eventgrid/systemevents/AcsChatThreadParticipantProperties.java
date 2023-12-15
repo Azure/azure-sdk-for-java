@@ -6,6 +6,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Schema of the chat thread participant. */
 @Fluent
@@ -21,6 +22,12 @@ public final class AcsChatThreadParticipantProperties {
      */
     @JsonProperty(value = "participantCommunicationIdentifier")
     private CommunicationIdentifierModel participantCommunicationIdentifier;
+
+    /*
+     * The metadata of the user
+     */
+    @JsonProperty(value = "metadata")
+    private Map<String, String> metadata;
 
     /** Creates an instance of AcsChatThreadParticipantProperties class. */
     public AcsChatThreadParticipantProperties() {}
@@ -63,6 +70,26 @@ public final class AcsChatThreadParticipantProperties {
     public AcsChatThreadParticipantProperties setParticipantCommunicationIdentifier(
             CommunicationIdentifierModel participantCommunicationIdentifier) {
         this.participantCommunicationIdentifier = participantCommunicationIdentifier;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The metadata of the user.
+     *
+     * @return the metadata value.
+     */
+    public Map<String, String> getMetadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The metadata of the user.
+     *
+     * @param metadata the metadata value to set.
+     * @return the AcsChatThreadParticipantProperties object itself.
+     */
+    public AcsChatThreadParticipantProperties setMetadata(Map<String, String> metadata) {
+        this.metadata = metadata;
         return this;
     }
 }

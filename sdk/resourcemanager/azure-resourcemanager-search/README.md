@@ -1,6 +1,6 @@
-# Azure Resource Manager Cognitive Search client library for Java
+# Azure Resource Manager Azure AI Search client library for Java
 
-Azure Resource Manager Cognitive Search client library for Java
+Azure Resource Manager Azure AI Search client library for Java
 
 For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-search</artifactId>
-    <version>2.31.0</version>
+    <version>2.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

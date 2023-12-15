@@ -16,10 +16,10 @@ public final class OperationListResultInnerTests {
         OperationListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"begibtnmxiebwwa\",\"display\":{\"provider\":\"yqcgwrtzjuzgwy\",\"resource\":\"htxongmtsavjc\",\"operation\":\"wxqpsrknftguvri\",\"description\":\"prwmdyvxqt\"},\"isDataAction\":false,\"origin\":\"user\",\"properties\":{\"exrmcqibycnojvk\":\"dataoyq\"}},{\"name\":\"e\",\"display\":{\"provider\":\"gzva\",\"resource\":\"pjyzhpv\",\"operation\":\"zcjrvxdjzlmwlx\",\"description\":\"ug\"},\"isDataAction\":false,\"origin\":\"system\",\"properties\":{\"nxipeil\":\"datajvzunluthnnp\",\"dzumveekg\":\"datajzuaejxdultskzbb\",\"bsjyofdx\":\"datawozuhkf\"}},{\"name\":\"us\",\"display\":{\"provider\":\"ouwaboekqvkeln\",\"resource\":\"vbxwyjsflhh\",\"operation\":\"aln\",\"description\":\"xisxyawjoyaqcsl\"},\"isDataAction\":false,\"origin\":\"NotSpecified\",\"properties\":{\"lixhnrztfol\":\"datazyexzn\",\"dtpnapnyiropuhp\":\"databnxknalaulppg\",\"gqgitxmedjvcsl\":\"datagvpgy\"}},{\"name\":\"qwwncw\",\"display\":{\"provider\":\"xgk\",\"resource\":\"mgucna\",\"operation\":\"t\",\"description\":\"ellwptfdy\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"cq\":\"dataceopzfqrhhuaopp\"}}],\"nextLink\":\"xolzdahzx\"}")
+                    "{\"value\":[{\"name\":\"c\",\"display\":{\"provider\":\"cpnmdyodn\",\"resource\":\"xltjcvnhltiu\",\"operation\":\"xnavvwxq\",\"description\":\"y\"},\"isDataAction\":true,\"origin\":\"NotSpecified\",\"properties\":{\"g\":\"datawlmdjrkv\",\"j\":\"datavfvpdbodaciz\"}},{\"name\":\"hkr\",\"display\":{\"provider\":\"deibqip\",\"resource\":\"ghvxndzwmkrefa\",\"operation\":\"jorwkqnyhgbij\",\"description\":\"ivfxzsjabibsyst\"},\"isDataAction\":true,\"origin\":\"system\",\"properties\":{\"jxbkzbzkdvn\":\"datavkvp\",\"zhjjklffhmouwq\":\"datajabudurgkakmo\",\"eeyebi\":\"datagzrf\"}}],\"nextLink\":\"kayuhqlbjbs\"}")
                 .toObject(OperationListResultInner.class);
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("xolzdahzx", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals("kayuhqlbjbs", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -27,15 +27,10 @@ public final class OperationListResultInnerTests {
         OperationListResultInner model =
             new OperationListResultInner()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new Operation().withIsDataAction(false),
-                            new Operation().withIsDataAction(false),
-                            new Operation().withIsDataAction(false),
-                            new Operation().withIsDataAction(true)))
-                .withNextLink("xolzdahzx");
+                    Arrays.asList(new Operation().withIsDataAction(true), new Operation().withIsDataAction(true)))
+                .withNextLink("kayuhqlbjbs");
         model = BinaryData.fromObject(model).toObject(OperationListResultInner.class);
-        Assertions.assertEquals(false, model.value().get(0).isDataAction());
-        Assertions.assertEquals("xolzdahzx", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).isDataAction());
+        Assertions.assertEquals("kayuhqlbjbs", model.nextLink());
     }
 }

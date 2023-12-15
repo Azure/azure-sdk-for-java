@@ -45,6 +45,13 @@ public interface HelpRP {
     OperationsClient getOperations();
 
     /**
+     * Gets the CheckNameAvailabilitiesClient object to access its operations.
+     *
+     * @return the CheckNameAvailabilitiesClient object.
+     */
+    CheckNameAvailabilitiesClient getCheckNameAvailabilities();
+
+    /**
      * Gets the DiagnosticsClient object to access its operations.
      *
      * @return the DiagnosticsClient object.
@@ -57,4 +64,18 @@ public interface HelpRP {
      * @return the DiscoverySolutionsClient object.
      */
     DiscoverySolutionsClient getDiscoverySolutions();
+
+    /**
+     * Gets the SolutionOperationsClient object to access its operations.
+     *
+     * @return the SolutionOperationsClient object.
+     */
+    SolutionOperationsClient getSolutionOperations();
+
+    /**
+     * Gets the TroubleshootersClient object to access its operations.
+     *
+     * @return the TroubleshootersClient object.
+     */
+    TroubleshootersClient getTroubleshooters();
 }

@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
 
-/** An instance of this class provides access to all the operations defined in FrontendsInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FrontendsInterfacesClient.
+ */
 public interface FrontendsInterfacesClient {
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface FrontendsInterfacesClient {
 
     /**
      * List Frontend resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface FrontendsInterfacesClient {
      * @return the response of a Frontend list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FrontendInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context);
+    PagedIterable<FrontendInner> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -57,12 +59,12 @@ public interface FrontendsInterfacesClient {
      * @return a Frontend along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FrontendInner> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context);
+    Response<FrontendInner> getWithResponse(String resourceGroupName, String trafficControllerName, String frontendName,
+        Context context);
 
     /**
      * Get a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -76,7 +78,7 @@ public interface FrontendsInterfacesClient {
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -87,12 +89,12 @@ public interface FrontendsInterfacesClient {
      * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource);
+    SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource);
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -104,16 +106,12 @@ public interface FrontendsInterfacesClient {
      * @return the {@link SyncPoller} for polling of frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context);
+    SyncPoller<PollResult<FrontendInner>, FrontendInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String frontendName, FrontendInner resource, Context context);
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -124,12 +122,12 @@ public interface FrontendsInterfacesClient {
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FrontendInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendInner resource);
+    FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendInner resource);
 
     /**
      * Create a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -141,16 +139,12 @@ public interface FrontendsInterfacesClient {
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FrontendInner createOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendInner resource,
-        Context context);
+    FrontendInner createOrUpdate(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendInner resource, Context context);
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -162,16 +156,12 @@ public interface FrontendsInterfacesClient {
      * @return frontend Subresource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FrontendInner> updateWithResponse(
-        String resourceGroupName,
-        String trafficControllerName,
-        String frontendName,
-        FrontendUpdate properties,
-        Context context);
+    Response<FrontendInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
+        String frontendName, FrontendUpdate properties, Context context);
 
     /**
      * Update a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -182,12 +172,12 @@ public interface FrontendsInterfacesClient {
      * @return frontend Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FrontendInner update(
-        String resourceGroupName, String trafficControllerName, String frontendName, FrontendUpdate properties);
+    FrontendInner update(String resourceGroupName, String trafficControllerName, String frontendName,
+        FrontendUpdate properties);
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -197,12 +187,12 @@ public interface FrontendsInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String frontendName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String frontendName);
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -213,12 +203,12 @@ public interface FrontendsInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String frontendName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String frontendName, Context context);
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.
@@ -231,7 +221,7 @@ public interface FrontendsInterfacesClient {
 
     /**
      * Delete a Frontend.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param frontendName Frontends.

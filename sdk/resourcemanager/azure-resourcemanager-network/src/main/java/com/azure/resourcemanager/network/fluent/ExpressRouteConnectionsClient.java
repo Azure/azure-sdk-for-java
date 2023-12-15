@@ -17,11 +17,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExpressRouteConnectionsClient.
+ */
 public interface ExpressRouteConnectionsClient {
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -32,15 +34,13 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String connectionName,
         ExpressRouteConnectionInner putExpressRouteConnectionParameters);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -52,14 +52,12 @@ public interface ExpressRouteConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteConnectionInner>, ExpressRouteConnectionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
+        String resourceGroupName, String expressRouteGatewayName, String connectionName,
         ExpressRouteConnectionInner putExpressRouteConnectionParameters);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -71,14 +69,12 @@ public interface ExpressRouteConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteConnectionInner>, ExpressRouteConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
+        String resourceGroupName, String expressRouteGatewayName, String connectionName,
         ExpressRouteConnectionInner putExpressRouteConnectionParameters);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -91,15 +87,12 @@ public interface ExpressRouteConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteConnectionInner>, ExpressRouteConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
-        ExpressRouteConnectionInner putExpressRouteConnectionParameters,
-        Context context);
+        String resourceGroupName, String expressRouteGatewayName, String connectionName,
+        ExpressRouteConnectionInner putExpressRouteConnectionParameters, Context context);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -110,15 +103,12 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
-        ExpressRouteConnectionInner putExpressRouteConnectionParameters);
+    Mono<ExpressRouteConnectionInner> createOrUpdateAsync(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName, ExpressRouteConnectionInner putExpressRouteConnectionParameters);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -129,15 +119,12 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
-        ExpressRouteConnectionInner putExpressRouteConnectionParameters);
+    ExpressRouteConnectionInner createOrUpdate(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName, ExpressRouteConnectionInner putExpressRouteConnectionParameters);
 
     /**
      * Creates a connection between an ExpressRoute gateway and an ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -149,32 +136,28 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String expressRouteGatewayName,
-        String connectionName,
-        ExpressRouteConnectionInner putExpressRouteConnectionParameters,
-        Context context);
+    ExpressRouteConnectionInner createOrUpdate(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName, ExpressRouteConnectionInner putExpressRouteConnectionParameters, Context context);
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified ExpressRouteConnection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified ExpressRouteConnection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName);
+    Mono<Response<ExpressRouteConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName, String connectionName);
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -184,12 +167,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the specified ExpressRouteConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteConnectionInner> getAsync(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName);
+    Mono<ExpressRouteConnectionInner> getAsync(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName);
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -200,12 +183,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the specified ExpressRouteConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteConnectionInner> getWithResponse(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName, Context context);
+    Response<ExpressRouteConnectionInner> getWithResponse(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName, Context context);
 
     /**
      * Gets the specified ExpressRouteConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the ExpressRoute connection.
@@ -219,7 +202,7 @@ public interface ExpressRouteConnectionsClient {
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -229,12 +212,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName);
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -244,12 +227,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName);
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -259,12 +242,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName);
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -275,12 +258,12 @@ public interface ExpressRouteConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String expressRouteGatewayName, String connectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName,
+        String connectionName, Context context);
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -294,7 +277,7 @@ public interface ExpressRouteConnectionsClient {
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -307,7 +290,7 @@ public interface ExpressRouteConnectionsClient {
 
     /**
      * Deletes a connection to a ExpressRoute circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param connectionName The name of the connection subresource.
@@ -321,7 +304,7 @@ public interface ExpressRouteConnectionsClient {
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,12 +313,12 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteConnectionListInner>> listWithResponseAsync(
-        String resourceGroupName, String expressRouteGatewayName);
+    Mono<Response<ExpressRouteConnectionListInner>> listWithResponseAsync(String resourceGroupName,
+        String expressRouteGatewayName);
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +331,7 @@ public interface ExpressRouteConnectionsClient {
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.
@@ -358,12 +341,12 @@ public interface ExpressRouteConnectionsClient {
      * @return expressRouteConnection list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteConnectionListInner> listWithResponse(
-        String resourceGroupName, String expressRouteGatewayName, Context context);
+    Response<ExpressRouteConnectionListInner> listWithResponse(String resourceGroupName, String expressRouteGatewayName,
+        Context context);
 
     /**
      * Lists ExpressRouteConnections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

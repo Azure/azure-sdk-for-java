@@ -11,7 +11,7 @@ import java.util.Collection;
 /**
  * smbAccessBasedEnumeration
  *
- * <p>Enables access based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+ * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
  */
 public final class SmbAccessBasedEnumeration extends ExpandableStringEnum<SmbAccessBasedEnumeration> {
     /** Static value Disabled for SmbAccessBasedEnumeration. */

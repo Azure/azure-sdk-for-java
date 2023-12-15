@@ -31,7 +31,6 @@ import com.azure.resourcemanager.applicationinsights.implementation.ApplicationI
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentAvailableFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentCurrentBillingFeaturesImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentFeatureCapabilitiesImpl;
-import com.azure.resourcemanager.applicationinsights.implementation.ComponentLinkedStorageAccountsOperationsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentQuotaStatusImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ComponentsImpl;
 import com.azure.resourcemanager.applicationinsights.implementation.ExportConfigurationsImpl;
@@ -51,7 +50,6 @@ import com.azure.resourcemanager.applicationinsights.models.ApiKeys;
 import com.azure.resourcemanager.applicationinsights.models.ComponentAvailableFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentCurrentBillingFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentFeatureCapabilities;
-import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccountsOperations;
 import com.azure.resourcemanager.applicationinsights.models.ComponentQuotaStatus;
 import com.azure.resourcemanager.applicationinsights.models.Components;
 import com.azure.resourcemanager.applicationinsights.models.ExportConfigurations;
@@ -74,7 +72,7 @@ import java.util.stream.Collectors;
 
 /** Entry point to ApplicationInsightsManager. Composite Swagger for Application Insights Management Client. */
 public final class ApplicationInsightsManager {
-    private Operations operations;
+    private Components components;
 
     private Annotations annotations;
 
@@ -102,15 +100,13 @@ public final class ApplicationInsightsManager {
 
     private AnalyticsItems analyticsItems;
 
+    private Operations operations;
+
     private WorkbookTemplates workbookTemplates;
 
     private MyWorkbooks myWorkbooks;
 
     private Workbooks workbooks;
-
-    private Components components;
-
-    private ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations;
 
     private LiveTokens liveTokens;
 
@@ -279,7 +275,7 @@ public final class ApplicationInsightsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.applicationinsights")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -337,15 +333,15 @@ public final class ApplicationInsightsManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
+     * Gets the resource collection API of Components. It manages ApplicationInsightsComponent.
      *
-     * @return Resource collection API of Operations.
+     * @return Resource collection API of Components.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    public Components components() {
+        if (this.components == null) {
+            this.components = new ComponentsImpl(clientObject.getComponents(), this);
         }
-        return operations;
+        return components;
     }
 
     /**
@@ -510,6 +506,18 @@ public final class ApplicationInsightsManager {
     }
 
     /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
      * Gets the resource collection API of WorkbookTemplates. It manages WorkbookTemplate.
      *
      * @return Resource collection API of WorkbookTemplates.
@@ -546,33 +554,6 @@ public final class ApplicationInsightsManager {
     }
 
     /**
-     * Gets the resource collection API of Components. It manages ApplicationInsightsComponent.
-     *
-     * @return Resource collection API of Components.
-     */
-    public Components components() {
-        if (this.components == null) {
-            this.components = new ComponentsImpl(clientObject.getComponents(), this);
-        }
-        return components;
-    }
-
-    /**
-     * Gets the resource collection API of ComponentLinkedStorageAccountsOperations. It manages
-     * ComponentLinkedStorageAccounts.
-     *
-     * @return Resource collection API of ComponentLinkedStorageAccountsOperations.
-     */
-    public ComponentLinkedStorageAccountsOperations componentLinkedStorageAccountsOperations() {
-        if (this.componentLinkedStorageAccountsOperations == null) {
-            this.componentLinkedStorageAccountsOperations =
-                new ComponentLinkedStorageAccountsOperationsImpl(
-                    clientObject.getComponentLinkedStorageAccountsOperations(), this);
-        }
-        return componentLinkedStorageAccountsOperations;
-    }
-
-    /**
      * Gets the resource collection API of LiveTokens.
      *
      * @return Resource collection API of LiveTokens.
@@ -585,8 +566,10 @@ public final class ApplicationInsightsManager {
     }
 
     /**
-     * @return Wrapped service client ApplicationInsightsManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client ApplicationInsightsManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client ApplicationInsightsManagementClient.
      */
     public ApplicationInsightsManagementClient serviceClient() {
         return this.clientObject;

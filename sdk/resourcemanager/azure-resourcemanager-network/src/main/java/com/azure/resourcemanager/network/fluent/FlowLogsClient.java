@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FlowLogsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FlowLogsClient.
+ */
 public interface FlowLogsClient {
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -34,12 +36,12 @@ public interface FlowLogsClient {
      * @return a flow log resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkWatcherName, String flowLogName, FlowLogInner parameters);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -50,12 +52,12 @@ public interface FlowLogsClient {
      * @return the {@link PollerFlux} for polling of a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
+    PollerFlux<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String networkWatcherName, String flowLogName, FlowLogInner parameters);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -66,12 +68,12 @@ public interface FlowLogsClient {
      * @return the {@link SyncPoller} for polling of a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(
-        String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
+    SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkWatcherName, String flowLogName, FlowLogInner parameters);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -83,16 +85,12 @@ public interface FlowLogsClient {
      * @return the {@link SyncPoller} for polling of a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String flowLogName,
-        FlowLogInner parameters,
-        Context context);
+    SyncPoller<PollResult<FlowLogInner>, FlowLogInner> beginCreateOrUpdate(String resourceGroupName,
+        String networkWatcherName, String flowLogName, FlowLogInner parameters, Context context);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -103,12 +101,12 @@ public interface FlowLogsClient {
      * @return a flow log resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FlowLogInner> createOrUpdateAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
+    Mono<FlowLogInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName, String flowLogName,
+        FlowLogInner parameters);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -119,12 +117,12 @@ public interface FlowLogsClient {
      * @return a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInner createOrUpdate(
-        String resourceGroupName, String networkWatcherName, String flowLogName, FlowLogInner parameters);
+    FlowLogInner createOrUpdate(String resourceGroupName, String networkWatcherName, String flowLogName,
+        FlowLogInner parameters);
 
     /**
      * Create or update a flow log for the specified network security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -136,16 +134,12 @@ public interface FlowLogsClient {
      * @return a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInner createOrUpdate(
-        String resourceGroupName,
-        String networkWatcherName,
-        String flowLogName,
-        FlowLogInner parameters,
-        Context context);
+    FlowLogInner createOrUpdate(String resourceGroupName, String networkWatcherName, String flowLogName,
+        FlowLogInner parameters, Context context);
 
     /**
      * Update tags of the specified flow log.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -156,12 +150,12 @@ public interface FlowLogsClient {
      * @return a flow log resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FlowLogInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters);
+    Mono<Response<FlowLogInner>> updateTagsWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String flowLogName, TagsObject parameters);
 
     /**
      * Update tags of the specified flow log.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -172,12 +166,12 @@ public interface FlowLogsClient {
      * @return a flow log resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FlowLogInner> updateTagsAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters);
+    Mono<FlowLogInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String flowLogName,
+        TagsObject parameters);
 
     /**
      * Update tags of the specified flow log.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -189,16 +183,12 @@ public interface FlowLogsClient {
      * @return a flow log resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FlowLogInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String networkWatcherName,
-        String flowLogName,
-        TagsObject parameters,
-        Context context);
+    Response<FlowLogInner> updateTagsWithResponse(String resourceGroupName, String networkWatcherName,
+        String flowLogName, TagsObject parameters, Context context);
 
     /**
      * Update tags of the specified flow log.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log.
@@ -209,12 +199,12 @@ public interface FlowLogsClient {
      * @return a flow log resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInner updateTags(
-        String resourceGroupName, String networkWatcherName, String flowLogName, TagsObject parameters);
+    FlowLogInner updateTags(String resourceGroupName, String networkWatcherName, String flowLogName,
+        TagsObject parameters);
 
     /**
      * Gets a flow log resource by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -224,12 +214,12 @@ public interface FlowLogsClient {
      * @return a flow log resource by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FlowLogInner>> getWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName);
+    Mono<Response<FlowLogInner>> getWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String flowLogName);
 
     /**
      * Gets a flow log resource by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -243,7 +233,7 @@ public interface FlowLogsClient {
 
     /**
      * Gets a flow log resource by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -254,12 +244,12 @@ public interface FlowLogsClient {
      * @return a flow log resource by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FlowLogInner> getWithResponse(
-        String resourceGroupName, String networkWatcherName, String flowLogName, Context context);
+    Response<FlowLogInner> getWithResponse(String resourceGroupName, String networkWatcherName, String flowLogName,
+        Context context);
 
     /**
      * Gets a flow log resource by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -273,7 +263,7 @@ public interface FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -283,12 +273,12 @@ public interface FlowLogsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkWatcherName,
+        String flowLogName);
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -298,12 +288,12 @@ public interface FlowLogsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String networkWatcherName, String flowLogName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName,
+        String flowLogName);
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -313,12 +303,12 @@ public interface FlowLogsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkWatcherName, String flowLogName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
+        String flowLogName);
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -329,12 +319,12 @@ public interface FlowLogsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkWatcherName, String flowLogName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName,
+        String flowLogName, Context context);
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -348,7 +338,7 @@ public interface FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -361,7 +351,7 @@ public interface FlowLogsClient {
 
     /**
      * Deletes the specified flow log resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param flowLogName The name of the flow log resource.
@@ -375,7 +365,7 @@ public interface FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,7 +378,7 @@ public interface FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,7 +391,7 @@ public interface FlowLogsClient {
 
     /**
      * Lists all flow log resources for the specified Network Watcher.
-     *
+     * 
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.

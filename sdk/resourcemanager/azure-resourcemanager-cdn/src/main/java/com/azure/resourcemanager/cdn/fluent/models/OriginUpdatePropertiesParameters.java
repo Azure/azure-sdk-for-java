@@ -81,6 +81,10 @@ public class OriginUpdatePropertiesParameters {
     @JsonProperty(value = "privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
 
+    /** Creates an instance of OriginUpdatePropertiesParameters class. */
+    public OriginUpdatePropertiesParameters() {
+    }
+
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.

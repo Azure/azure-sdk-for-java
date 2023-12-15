@@ -16,14 +16,14 @@ public final class MonitoredResourceListResponseTests {
         MonitoredResourceListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"qqedqytbciqfou\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"nkzsmodmglou\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"wtmutduq\"},{\"id\":\"ap\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"cuertu\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"svqwhbmdgbbjfd\"},{\"id\":\"mbmbexppbh\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"ol\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"s\"},{\"id\":\"gbquxigj\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"jaoyfhrtx\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"rkujy\"}],\"nextLink\":\"l\"}")
+                    "{\"value\":[{\"id\":\"wxmnteiwao\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"ijcmmx\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"uf\"},{\"id\":\"pymzidnsezcxtbzs\",\"sendingMetrics\":false,\"reasonForMetricsStatus\":\"cs\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"dwzjeiach\"},{\"id\":\"osfln\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"qpteeh\",\"sendingLogs\":true,\"reasonForLogsStatus\":\"pyqr\"},{\"id\":\"z\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"swjdkirso\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"hc\"}],\"nextLink\":\"nohjt\"}")
                 .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("qqedqytbciqfou", model.value().get(0).id());
-        Assertions.assertEquals(true, model.value().get(0).sendingMetrics());
-        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).reasonForMetricsStatus());
+        Assertions.assertEquals("wxmnteiwao", model.value().get(0).id());
+        Assertions.assertEquals(false, model.value().get(0).sendingMetrics());
+        Assertions.assertEquals("ijcmmx", model.value().get(0).reasonForMetricsStatus());
         Assertions.assertEquals(false, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("wtmutduq", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("l", model.nextLink());
+        Assertions.assertEquals("uf", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("nohjt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,36 +34,36 @@ public final class MonitoredResourceListResponseTests {
                     Arrays
                         .asList(
                             new MonitoredResourceInner()
-                                .withId("qqedqytbciqfou")
-                                .withSendingMetrics(true)
-                                .withReasonForMetricsStatus("nkzsmodmglou")
-                                .withSendingLogs(false)
-                                .withReasonForLogsStatus("wtmutduq"),
-                            new MonitoredResourceInner()
-                                .withId("ap")
+                                .withId("wxmnteiwao")
                                 .withSendingMetrics(false)
-                                .withReasonForMetricsStatus("cuertu")
-                                .withSendingLogs(true)
-                                .withReasonForLogsStatus("svqwhbmdgbbjfd"),
-                            new MonitoredResourceInner()
-                                .withId("mbmbexppbh")
-                                .withSendingMetrics(false)
-                                .withReasonForMetricsStatus("ol")
-                                .withSendingLogs(true)
-                                .withReasonForLogsStatus("s"),
-                            new MonitoredResourceInner()
-                                .withId("gbquxigj")
-                                .withSendingMetrics(true)
-                                .withReasonForMetricsStatus("jaoyfhrtx")
+                                .withReasonForMetricsStatus("ijcmmx")
                                 .withSendingLogs(false)
-                                .withReasonForLogsStatus("rkujy")))
-                .withNextLink("l");
+                                .withReasonForLogsStatus("uf"),
+                            new MonitoredResourceInner()
+                                .withId("pymzidnsezcxtbzs")
+                                .withSendingMetrics(false)
+                                .withReasonForMetricsStatus("cs")
+                                .withSendingLogs(true)
+                                .withReasonForLogsStatus("dwzjeiach"),
+                            new MonitoredResourceInner()
+                                .withId("osfln")
+                                .withSendingMetrics(true)
+                                .withReasonForMetricsStatus("qpteeh")
+                                .withSendingLogs(true)
+                                .withReasonForLogsStatus("pyqr"),
+                            new MonitoredResourceInner()
+                                .withId("z")
+                                .withSendingMetrics(true)
+                                .withReasonForMetricsStatus("swjdkirso")
+                                .withSendingLogs(false)
+                                .withReasonForLogsStatus("hc")))
+                .withNextLink("nohjt");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("qqedqytbciqfou", model.value().get(0).id());
-        Assertions.assertEquals(true, model.value().get(0).sendingMetrics());
-        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).reasonForMetricsStatus());
+        Assertions.assertEquals("wxmnteiwao", model.value().get(0).id());
+        Assertions.assertEquals(false, model.value().get(0).sendingMetrics());
+        Assertions.assertEquals("ijcmmx", model.value().get(0).reasonForMetricsStatus());
         Assertions.assertEquals(false, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("wtmutduq", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("l", model.nextLink());
+        Assertions.assertEquals("uf", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("nohjt", model.nextLink());
     }
 }

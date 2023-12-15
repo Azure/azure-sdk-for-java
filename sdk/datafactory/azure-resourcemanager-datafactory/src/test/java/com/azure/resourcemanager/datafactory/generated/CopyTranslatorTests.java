@@ -12,11 +12,9 @@ import java.util.Map;
 public final class CopyTranslatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CopyTranslator model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CopyTranslator\",\"\":{\"tctnqdcgobkceb\":\"datajmzpyukrwvvhc\",\"nqqiqc\":\"datartputmtjsklkw\",\"n\":\"datamfxldqtm\",\"p\":\"dataejnemrfqjhc\"}}")
-                .toObject(CopyTranslator.class);
+        CopyTranslator model = BinaryData.fromString(
+            "{\"type\":\"CopyTranslator\",\"\":{\"cbvuvwdp\":\"dataalt\",\"hnaghglaxj\":\"datal\",\"qatswvtddpicwnb\":\"datanbmfml\",\"nxerkaiikbpfaq\":\"datavlrsfmtrmod\"}}")
+            .toObject(CopyTranslator.class);
     }
 
     @org.junit.jupiter.api.Test

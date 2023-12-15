@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
+import com.azure.resourcemanager.elasticsan.models.XMsDeleteSnapshots;
+import com.azure.resourcemanager.elasticsan.models.XMsForceDelete;
+
 /** Samples for Volumes Delete. */
 public final class VolumesDeleteSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Delete_MinimumSet_Gen.
@@ -22,11 +25,13 @@ public final class VolumesDeleteSamples {
                 "elasticsanname",
                 "volumegroupname",
                 "volumename",
+                null,
+                null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2022-12-01-preview/examples/Volumes_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/Volumes_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Volumes_Delete_MaximumSet_Gen.
@@ -41,6 +46,8 @@ public final class VolumesDeleteSamples {
                 "elasticsanname",
                 "volumegroupname",
                 "volumename",
+                XMsDeleteSnapshots.TRUE,
+                XMsForceDelete.TRUE,
                 com.azure.core.util.Context.NONE);
     }
 }

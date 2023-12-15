@@ -33,7 +33,7 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"alywjhhgdn\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"Invalid\",\"message\":\"ejwcwwqiok\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,16 +65,16 @@ public final class NetAppResourcesCheckQuotaAvailabilityWithResponseMockTests {
             manager
                 .netAppResources()
                 .checkQuotaAvailabilityWithResponse(
-                    "uuepzlrphwzsoldw",
+                    "lvtno",
                     new QuotaAvailabilityRequest()
-                        .withName("yuqdu")
+                        .withName("qfzgemjdftul")
                         .withType(CheckQuotaNameResourceTypes.MICROSOFT_NET_APP_NET_APP_ACCOUNTS_CAPACITY_POOLS)
-                        .withResourceGroup("mnnrwr"),
+                        .withResourceGroup("tduceamt"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(false, response.isAvailable());
-        Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("alywjhhgdn", response.message());
+        Assertions.assertEquals(InAvailabilityReasonType.INVALID, response.reason());
+        Assertions.assertEquals("ejwcwwqiok", response.message());
     }
 }

@@ -21,6 +21,10 @@ public final class CdnManagedHttpsParameters extends CustomDomainHttpsParameters
     @JsonProperty(value = "certificateSourceParameters", required = true)
     private CdnCertificateSourceParameters certificateSourceParameters;
 
+    /** Creates an instance of CdnManagedHttpsParameters class. */
+    public CdnManagedHttpsParameters() {
+    }
+
     /**
      * Get the certificateSourceParameters property: Defines the certificate source parameters using CDN managed
      * certificate for enabling SSL.

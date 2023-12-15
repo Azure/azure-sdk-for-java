@@ -8,41 +8,74 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SaaSOfferStatus. */
+/**
+ * SaaSOfferStatus
+ * 
+ * SaaS Offer Status for confluent RP.
+ */
 public final class SaaSOfferStatus extends ExpandableStringEnum<SaaSOfferStatus> {
-    /** Static value Started for SaaSOfferStatus. */
+    /**
+     * Static value Started for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus STARTED = fromString("Started");
 
-    /** Static value PendingFulfillmentStart for SaaSOfferStatus. */
+    /**
+     * Static value PendingFulfillmentStart for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus PENDING_FULFILLMENT_START = fromString("PendingFulfillmentStart");
 
-    /** Static value InProgress for SaaSOfferStatus. */
+    /**
+     * Static value InProgress for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Subscribed for SaaSOfferStatus. */
+    /**
+     * Static value Subscribed for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus SUBSCRIBED = fromString("Subscribed");
 
-    /** Static value Suspended for SaaSOfferStatus. */
+    /**
+     * Static value Suspended for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus SUSPENDED = fromString("Suspended");
 
-    /** Static value Reinstated for SaaSOfferStatus. */
+    /**
+     * Static value Reinstated for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus REINSTATED = fromString("Reinstated");
 
-    /** Static value Succeeded for SaaSOfferStatus. */
+    /**
+     * Static value Succeeded for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for SaaSOfferStatus. */
+    /**
+     * Static value Failed for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus FAILED = fromString("Failed");
 
-    /** Static value Unsubscribed for SaaSOfferStatus. */
+    /**
+     * Static value Unsubscribed for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus UNSUBSCRIBED = fromString("Unsubscribed");
 
-    /** Static value Updating for SaaSOfferStatus. */
+    /**
+     * Static value Updating for SaaSOfferStatus.
+     */
     public static final SaaSOfferStatus UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of SaaSOfferStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SaaSOfferStatus() {
+    }
+
+    /**
      * Creates or finds a SaaSOfferStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SaaSOfferStatus.
      */
@@ -51,7 +84,11 @@ public final class SaaSOfferStatus extends ExpandableStringEnum<SaaSOfferStatus>
         return fromString(name, SaaSOfferStatus.class);
     }
 
-    /** @return known SaaSOfferStatus values. */
+    /**
+     * Gets known SaaSOfferStatus values.
+     * 
+     * @return known SaaSOfferStatus values.
+     */
     public static Collection<SaaSOfferStatus> values() {
         return values(SaaSOfferStatus.class);
     }

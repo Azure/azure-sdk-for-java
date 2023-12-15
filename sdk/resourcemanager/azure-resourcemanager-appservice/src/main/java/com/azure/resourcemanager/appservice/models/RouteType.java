@@ -9,24 +9,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by
- * RFC1918 INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static route set on the app only
- *
- * <p>These values will be used for syncing an app's routes with those from a Virtual Network.
+ * The type of route this is:
+ * DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+ * INHERITED - Routes inherited from the real Virtual Network routes
+ * STATIC - Static route set on the app only
+ * 
+ * These values will be used for syncing an app's routes with those from a Virtual Network.
  */
 public final class RouteType extends ExpandableStringEnum<RouteType> {
-    /** Static value DEFAULT for RouteType. */
+    /**
+     * Static value DEFAULT for RouteType.
+     */
     public static final RouteType DEFAULT = fromString("DEFAULT");
 
-    /** Static value INHERITED for RouteType. */
+    /**
+     * Static value INHERITED for RouteType.
+     */
     public static final RouteType INHERITED = fromString("INHERITED");
 
-    /** Static value STATIC for RouteType. */
+    /**
+     * Static value STATIC for RouteType.
+     */
     public static final RouteType STATIC = fromString("STATIC");
 
     /**
      * Creates a new instance of RouteType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +43,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
 
     /**
      * Creates or finds a RouteType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RouteType.
      */
@@ -46,7 +54,7 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
 
     /**
      * Gets known RouteType values.
-     *
+     * 
      * @return known RouteType values.
      */
     public static Collection<RouteType> values() {

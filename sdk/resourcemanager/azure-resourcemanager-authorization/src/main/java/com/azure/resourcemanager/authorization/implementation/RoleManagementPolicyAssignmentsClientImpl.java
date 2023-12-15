@@ -67,8 +67,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
     public interface RoleManagementPolicyAssignmentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
-                + "/{roleManagementPolicyAssignmentName}")
+            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleManagementPolicyAssignmentInner>> get(
@@ -81,8 +80,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
-                + "/{roleManagementPolicyAssignmentName}")
+            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleManagementPolicyAssignmentInner>> create(
@@ -96,8 +94,7 @@ public final class RoleManagementPolicyAssignmentsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments"
-                + "/{roleManagementPolicyAssignmentName}")
+            "/{scope}/providers/Microsoft.Authorization/roleManagementPolicyAssignments/{roleManagementPolicyAssignmentName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(

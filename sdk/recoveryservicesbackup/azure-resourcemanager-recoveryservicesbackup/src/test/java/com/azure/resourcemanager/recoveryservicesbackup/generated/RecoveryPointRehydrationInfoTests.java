@@ -14,9 +14,9 @@ public final class RecoveryPointRehydrationInfoTests {
     public void testDeserialize() throws Exception {
         RecoveryPointRehydrationInfo model =
             BinaryData
-                .fromString("{\"rehydrationRetentionDuration\":\"xud\",\"rehydrationPriority\":\"High\"}")
+                .fromString("{\"rehydrationRetentionDuration\":\"rhbguzozkyewnfn\",\"rehydrationPriority\":\"High\"}")
                 .toObject(RecoveryPointRehydrationInfo.class);
-        Assertions.assertEquals("xud", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("rhbguzozkyewnfn", model.rehydrationRetentionDuration());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 
@@ -24,10 +24,10 @@ public final class RecoveryPointRehydrationInfoTests {
     public void testSerialize() throws Exception {
         RecoveryPointRehydrationInfo model =
             new RecoveryPointRehydrationInfo()
-                .withRehydrationRetentionDuration("xud")
+                .withRehydrationRetentionDuration("rhbguzozkyewnfn")
                 .withRehydrationPriority(RehydrationPriority.HIGH);
         model = BinaryData.fromObject(model).toObject(RecoveryPointRehydrationInfo.class);
-        Assertions.assertEquals("xud", model.rehydrationRetentionDuration());
+        Assertions.assertEquals("rhbguzozkyewnfn", model.rehydrationRetentionDuration());
         Assertions.assertEquals(RehydrationPriority.HIGH, model.rehydrationPriority());
     }
 }

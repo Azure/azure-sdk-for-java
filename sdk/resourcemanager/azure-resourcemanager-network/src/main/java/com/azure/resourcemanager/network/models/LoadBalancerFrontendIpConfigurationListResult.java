@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListFrontendIPConfiguration API service call. */
+/**
+ * Response for ListFrontendIPConfiguration API service call.
+ */
 @Fluent
 public final class LoadBalancerFrontendIpConfigurationListResult {
     /*
@@ -24,13 +26,15 @@ public final class LoadBalancerFrontendIpConfigurationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LoadBalancerFrontendIpConfigurationListResult class. */
+    /**
+     * Creates an instance of LoadBalancerFrontendIpConfigurationListResult class.
+     */
     public LoadBalancerFrontendIpConfigurationListResult() {
     }
 
     /**
      * Get the value property: A list of frontend IP configurations in a load balancer.
-     *
+     * 
      * @return the value value.
      */
     public List<FrontendIpConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class LoadBalancerFrontendIpConfigurationListResult {
 
     /**
      * Set the value property: A list of frontend IP configurations in a load balancer.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoadBalancerFrontendIpConfigurationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class LoadBalancerFrontendIpConfigurationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LoadBalancerFrontendIpConfigurationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

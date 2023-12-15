@@ -13,8 +13,8 @@ import java.net.URISyntaxException;
  * <p>Fluent credential builder for instantiating a {@link AuthorizationCodeCredential}.</p>
  *
  * <p>Authorization Code authentication in Azure is a type of authentication mechanism that allows users to
- * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active
- * Directory (Azure AD)</a> and obtain an authorization code that can be used to request an access token to access
+ * authenticate with <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * and obtain an authorization code that can be used to request an access token to access
  * Azure resources. It is a widely used authentication mechanism and is supported by a wide range of Azure services
  * and applications. It provides a secure and scalable way to authenticate users and grant them access to Azure
  * resources.
@@ -61,7 +61,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets redirect URL for the Oauth 2.0 login request, which must be
+     * Sets redirect URL for the OAuth 2.0 login request, which must be
      * registered as a valid redirect URL on the application. The authorization code
      * will be sent to this URL, so it must be listening on this server and is able
      * to complete the {@link AuthorizationCodeCredential} construction from there.
@@ -76,10 +76,11 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     }
 
     /**
-     * Sets the client secret for the authentication. This is required for AAD web apps. Do not set this for AAD native
-     * apps.
+     * <p>Sets the client secret for the authentication. This is required for Microsoft Entra web apps.</p>
      *
-     * @param clientSecret the secret value of the AAD application.
+     * <p>Do not set this for Microsoft Entra native apps.</p>
+     *
+     * @param clientSecret the secret value of the Microsoft Entra application.
      * @return An updated instance of this builder.
      */
     public AuthorizationCodeCredentialBuilder clientSecret(String clientSecret) {

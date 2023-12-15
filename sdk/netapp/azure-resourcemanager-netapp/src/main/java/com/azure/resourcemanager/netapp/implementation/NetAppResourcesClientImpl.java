@@ -21,14 +21,22 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.NetworkSiblingSetInner;
 import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
+import com.azure.resourcemanager.netapp.models.QueryNetworkSiblingSetRequest;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
+import com.azure.resourcemanager.netapp.models.UpdateNetworkSiblingSetRequest;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetAppResourcesClient. */
@@ -106,6 +114,32 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/queryNetworkSiblingSet")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkSiblingSetInner>> queryNetworkSiblingSet(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") QueryNetworkSiblingSetRequest body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/updateNetworkSiblingSet")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSet(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") UpdateNetworkSiblingSetRequest body,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -712,5 +746,427 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RegionInfoInner queryRegionInfo(String location) {
         return queryRegionInfoWithResponse(location, Context.NONE).getValue();
+    }
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkSiblingSetInner>> queryNetworkSiblingSetWithResponseAsync(
+        String location, QueryNetworkSiblingSetRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .queryNetworkSiblingSet(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<NetworkSiblingSetInner>> queryNetworkSiblingSetWithResponseAsync(
+        String location, QueryNetworkSiblingSetRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .queryNetworkSiblingSet(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkSiblingSetInner> queryNetworkSiblingSetAsync(
+        String location, QueryNetworkSiblingSetRequest body) {
+        return queryNetworkSiblingSetWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkSiblingSetInner> queryNetworkSiblingSetWithResponse(
+        String location, QueryNetworkSiblingSetRequest body, Context context) {
+        return queryNetworkSiblingSetWithResponseAsync(location, body, context).block();
+    }
+
+    /**
+     * Describe a network sibling set
+     *
+     * <p>Get details of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Network sibling set to query.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSiblingSetInner queryNetworkSiblingSet(String location, QueryNetworkSiblingSetRequest body) {
+        return queryNetworkSiblingSetWithResponse(location, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSetWithResponseAsync(
+        String location, UpdateNetworkSiblingSetRequest body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateNetworkSiblingSet(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            body,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateNetworkSiblingSetWithResponseAsync(
+        String location, UpdateNetworkSiblingSetRequest body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateNetworkSiblingSet(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                body,
+                accept,
+                context);
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSetAsync(
+        String location, UpdateNetworkSiblingSetRequest body) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateNetworkSiblingSetWithResponseAsync(location, body);
+        return this
+            .client
+            .<NetworkSiblingSetInner, NetworkSiblingSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkSiblingSetInner.class,
+                NetworkSiblingSetInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSetAsync(
+        String location, UpdateNetworkSiblingSetRequest body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateNetworkSiblingSetWithResponseAsync(location, body, context);
+        return this
+            .client
+            .<NetworkSiblingSetInner, NetworkSiblingSetInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkSiblingSetInner.class,
+                NetworkSiblingSetInner.class,
+                context);
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body) {
+        return this.beginUpdateNetworkSiblingSetAsync(location, body).getSyncPoller();
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<NetworkSiblingSetInner>, NetworkSiblingSetInner> beginUpdateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body, Context context) {
+        return this.beginUpdateNetworkSiblingSetAsync(location, body, context).getSyncPoller();
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkSiblingSetInner> updateNetworkSiblingSetAsync(
+        String location, UpdateNetworkSiblingSetRequest body) {
+        return beginUpdateNetworkSiblingSetAsync(location, body).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<NetworkSiblingSetInner> updateNetworkSiblingSetAsync(
+        String location, UpdateNetworkSiblingSetRequest body, Context context) {
+        return beginUpdateNetworkSiblingSetAsync(location, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSiblingSetInner updateNetworkSiblingSet(String location, UpdateNetworkSiblingSetRequest body) {
+        return updateNetworkSiblingSetAsync(location, body).block();
+    }
+
+    /**
+     * Update the network features of a network sibling set
+     *
+     * <p>Update the network features of the specified network sibling set.
+     *
+     * @param location The name of Azure region.
+     * @param body Update for the specified network sibling set.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network sibling set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NetworkSiblingSetInner updateNetworkSiblingSet(
+        String location, UpdateNetworkSiblingSetRequest body, Context context) {
+        return updateNetworkSiblingSetAsync(location, body, context).block();
     }
 }

@@ -19,7 +19,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,23 +47,20 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
-final class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
+class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPropertySource {
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
-    private final List<ConfigurationSetting> featureConfigurationSettings;
+    private final String keyFilter;
+
+    private final String[] labelFilter;
+
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
-        super("FM_" + originEndpoint, replicaClient, keyFilter, labelFilter);
-        featureConfigurationSettings = new ArrayList<>();
-    }
-
-    private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
-        return listObjects == null ? emptyList() : listObjects;
+        super("FM_" + originEndpoint + "/" + getLabelName(labelFilter), replicaClient);
+        this.keyFilter = keyFilter;
+        this.labelFilter = labelFilter;
     }
 
     /**
@@ -79,7 +75,8 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
      * </p>
      *
      */
-    public void initProperties() {
+    @Override
+    public void initProperties(List<String> trim) {
         SettingSelector settingSelector = new SettingSelector();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -97,28 +94,31 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
             settingSelector.setLabelFilter(label);
 
             List<ConfigurationSetting> features = replicaClient.listSettings(settingSelector);
-            TracingInfo tracing = replicaClient.getTracingInfo();
 
             // Reading In Features
             for (ConfigurationSetting setting : features) {
                 if (setting instanceof FeatureFlagConfigurationSetting
                     && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
-                    featureConfigurationSettings.add(setting);
-                    FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-
-                    String configName = FEATURE_MANAGEMENT_KEY
-                        + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
-
-                    updateTelemetry(featureFlag, tracing);
-
-                    properties.put(configName, createFeature(featureFlag));
+                    processFeatureFlag(null, (FeatureFlagConfigurationSetting) setting, null);
                 }
             }
         }
     }
-
+    
     List<ConfigurationSetting> getFeatureFlagSettings() {
         return featureConfigurationSettings;
+    }
+
+    protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
+        TracingInfo tracing = replicaClient.getTracingInfo();
+        featureConfigurationSettings.add(setting);
+        FeatureFlagConfigurationSetting featureFlag = setting;
+
+        String configName = FEATURE_MANAGEMENT_KEY + setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
+
+        updateTelemetry(featureFlag, tracing);
+
+        properties.put(configName, createFeature(featureFlag));
     }
 
     /**
@@ -128,7 +128,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
      * @return Feature created from KeyValueItem
      */
     @SuppressWarnings("unchecked")
-    private Object createFeature(FeatureFlagConfigurationSetting item) {
+    protected static Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = getFeatureSimpleName(item);
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
         try {
@@ -181,31 +181,37 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
 
         }
         return feature;
-
     }
-    
+
     /**
      * Looks at each filter used in a Feature Flag to check what types it is using.
      * 
      * @param featureFlag FeatureFlagConfigurationSetting
      * @param tracing The TracingInfo for this store.
      */
-    private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag, TracingInfo tracing) {
+    protected static void updateTelemetry(FeatureFlagConfigurationSetting featureFlag, TracingInfo tracing) {
         for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
             tracing.getFeatureFlagTracing().updateFeatureFilterTelemetry(filter.getName());
         }
     }
 
-    private String getFeatureSimpleName(ConfigurationSetting setting) {
+    private static String getFeatureSimpleName(ConfigurationSetting setting) {
         return setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
     }
-
-    private Map<String, Object> mapValuesByIndex(List<Object> users) {
+    
+    @SuppressWarnings("null")
+    private static Map<String, Object> mapValuesByIndex(List<Object> users) {
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
     }
 
-    private void switchKeyValues(Map<String, Object> parameters, String oldKey, String newKey, Object value) {
+    private static void switchKeyValues(Map<String, Object> parameters, String oldKey, String newKey, Object value) {
         parameters.put(newKey, value);
         parameters.remove(oldKey);
+    }
+
+    private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
+        List<Object> listObjects =
+            CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
+        return listObjects == null ? emptyList() : listObjects;
     }
 }

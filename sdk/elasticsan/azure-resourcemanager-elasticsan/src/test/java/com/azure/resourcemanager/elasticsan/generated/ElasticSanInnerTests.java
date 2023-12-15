@@ -6,6 +6,7 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.ElasticSanInner;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
@@ -20,37 +21,41 @@ public final class ElasticSanInnerTests {
         ElasticSanInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"wbxgjvt\",\"vpys\",\"zdn\",\"uj\"],\"provisioningState\":\"Deleting\",\"baseSizeTiB\":6415098811593450314,\"extendedCapacitySizeTiB\":4001606914042880577,\"totalVolumeSizeGiB\":364540657930641108,\"volumeGroupCount\":7961685994099072162,\"totalIops\":2510679492644856616,\"totalMBps\":41329089410242621,\"totalSizeTiB\":4520848990140400139,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"zxufiz\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"fihrfi\",\"actionsRequired\":\"vzwdzuhtymwis\"},\"groupIds\":[\"thwxmnteiwaopvkm\",\"jcmmxdcufufsrp\",\"mzidnsezcxtb\"]},\"id\":\"gfycc\",\"name\":\"newmdwzjeiachbo\",\"type\":\"sflnrosfqp\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{\"id\":\"zvypyqrimzinp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"dkirsoodqxhcr\",\"actionsRequired\":\"ohjtckw\"},\"groupIds\":[\"oifiyipjxsqwpgr\",\"bznorcjxvsnby\",\"qabnmoc\",\"cyshurzafbljjgp\"]},\"id\":\"oq\",\"name\":\"jmkljavbqidtqajz\",\"type\":\"ulpkudjkrl\"}]},\"location\":\"bzhfepgzgqexz\",\"tags\":{\"glu\":\"xscpaierhhbc\"},\"id\":\"majtjaod\",\"name\":\"obnbdxkqpxokaj\",\"type\":\"onpimexgstxg\"}")
+                    "{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"izgazxu\",\"izuckyfihrfidfvz\"],\"provisioningState\":\"Deleting\",\"baseSizeTiB\":2309073457131020260,\"extendedCapacitySizeTiB\":3785168823699765982,\"totalVolumeSizeGiB\":7093196131799680709,\"volumeGroupCount\":1702945430371192394,\"totalIops\":9204546244351616694,\"totalMBps\":1735908186849769210,\"totalSizeTiB\":263357956670416647,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"km\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"mxdcufufsrp\",\"actionsRequired\":\"zidnsezcxtbzsgfy\"},\"groupIds\":[\"newmdwzjeiachbo\"]},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"crmnohjtckwhds\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"yip\",\"actionsRequired\":\"sqwpgrjb\"},\"groupIds\":[\"rcjxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"]},\"id\":\"pbtoqcjmkl\",\"name\":\"a\",\"type\":\"bqidtqaj\"},{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"kudjkrlkhb\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"pgzgq\",\"actionsRequired\":\"zloc\"},\"groupIds\":[\"paierh\"]},\"id\":\"csglum\",\"name\":\"a\",\"type\":\"tjaodxobnb\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{\"id\":\"xo\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"onpimexgstxg\",\"actionsRequired\":\"odgmaajrmvdjwz\"},\"groupIds\":[\"vmclw\",\"ijcoejctb\",\"aqsqsycbkbfk\",\"ukdkexxppofmxa\"]},\"id\":\"fjpgddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"qeojnxqbzvddntw\",\"tags\":{\"vuhrhcffcyddgl\":\"icbtwnpzao\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
                 .toObject(ElasticSanInner.class);
-        Assertions.assertEquals("bzhfepgzgqexz", model.location());
-        Assertions.assertEquals("xscpaierhhbc", model.tags().get("glu"));
-        Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
+        Assertions.assertEquals("qeojnxqbzvddntw", model.location());
+        Assertions.assertEquals("icbtwnpzao", model.tags().get("vuhrhcffcyddgl"));
+        Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("wbxgjvt", model.availabilityZones().get(0));
-        Assertions.assertEquals(6415098811593450314L, model.baseSizeTiB());
-        Assertions.assertEquals(4001606914042880577L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("izgazxu", model.availabilityZones().get(0));
+        Assertions.assertEquals(2309073457131020260L, model.baseSizeTiB());
+        Assertions.assertEquals(3785168823699765982L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSanInner model =
             new ElasticSanInner()
-                .withLocation("bzhfepgzgqexz")
-                .withTags(mapOf("glu", "xscpaierhhbc"))
-                .withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withAvailabilityZones(Arrays.asList("wbxgjvt", "vpys", "zdn", "uj"))
-                .withBaseSizeTiB(6415098811593450314L)
-                .withExtendedCapacitySizeTiB(4001606914042880577L);
+                .withLocation("qeojnxqbzvddntw")
+                .withTags(mapOf("vuhrhcffcyddgl", "icbtwnpzao"))
+                .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
+                .withAvailabilityZones(Arrays.asList("izgazxu", "izuckyfihrfidfvz"))
+                .withBaseSizeTiB(2309073457131020260L)
+                .withExtendedCapacitySizeTiB(3785168823699765982L)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanInner.class);
-        Assertions.assertEquals("bzhfepgzgqexz", model.location());
-        Assertions.assertEquals("xscpaierhhbc", model.tags().get("glu"));
-        Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
+        Assertions.assertEquals("qeojnxqbzvddntw", model.location());
+        Assertions.assertEquals("icbtwnpzao", model.tags().get("vuhrhcffcyddgl"));
+        Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("wbxgjvt", model.availabilityZones().get(0));
-        Assertions.assertEquals(6415098811593450314L, model.baseSizeTiB());
-        Assertions.assertEquals(4001606914042880577L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals("izgazxu", model.availabilityZones().get(0));
+        Assertions.assertEquals(2309073457131020260L, model.baseSizeTiB());
+        Assertions.assertEquals(3785168823699765982L, model.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

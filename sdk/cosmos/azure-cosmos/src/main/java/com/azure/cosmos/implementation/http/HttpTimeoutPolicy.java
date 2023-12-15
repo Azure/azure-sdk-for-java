@@ -2,16 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
-import io.netty.handler.codec.http.HttpMethod;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class HttpTimeoutPolicy {
@@ -30,7 +24,7 @@ public abstract class HttpTimeoutPolicy {
     }
 
     public int totalRetryCount() {
-        return timeoutAndDelaysList.size();
+        return timeoutAndDelaysList.size()-1;
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutAndDelaysList() {

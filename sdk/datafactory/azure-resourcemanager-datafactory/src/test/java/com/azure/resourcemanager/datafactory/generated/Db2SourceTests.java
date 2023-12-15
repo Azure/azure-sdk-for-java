@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.Db2Source;
 public final class Db2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Db2Source model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Db2Source\",\"query\":\"dataz\",\"queryTimeout\":\"datanniarjezj\",\"additionalColumns\":\"dataxiqfoqwesqykqfs\",\"sourceRetryCount\":\"datalsaipshhet\",\"sourceRetryWait\":\"datawmzgvnojgmobkali\",\"maxConcurrentConnections\":\"dataikkehpdssvlubd\",\"disableMetricsCollection\":\"dataowxsxbxd\",\"\":{\"tghmtb\":\"dataxurcekcqmjqqau\",\"shlhe\":\"datafkcnkghkrbi\"}}")
-                .toObject(Db2Source.class);
+        Db2Source model = BinaryData.fromString(
+            "{\"type\":\"Db2Source\",\"query\":\"dataoknvyilhoso\",\"queryTimeout\":\"dataioxgsrhxoyrg\",\"additionalColumns\":\"datatcctmzg\",\"sourceRetryCount\":\"dataplqhbra\",\"sourceRetryWait\":\"datakdep\",\"maxConcurrentConnections\":\"dataufyqcqfouhyeyxg\",\"disableMetricsCollection\":\"datagochpxpswp\",\"\":{\"ozr\":\"datai\"}}")
+            .toObject(Db2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Db2Source model =
-            new Db2Source()
-                .withSourceRetryCount("datalsaipshhet")
-                .withSourceRetryWait("datawmzgvnojgmobkali")
-                .withMaxConcurrentConnections("dataikkehpdssvlubd")
-                .withDisableMetricsCollection("dataowxsxbxd")
-                .withQueryTimeout("datanniarjezj")
-                .withAdditionalColumns("dataxiqfoqwesqykqfs")
-                .withQuery("dataz");
+        Db2Source model = new Db2Source().withSourceRetryCount("dataplqhbra").withSourceRetryWait("datakdep")
+            .withMaxConcurrentConnections("dataufyqcqfouhyeyxg").withDisableMetricsCollection("datagochpxpswp")
+            .withQueryTimeout("dataioxgsrhxoyrg").withAdditionalColumns("datatcctmzg").withQuery("dataoknvyilhoso");
         model = BinaryData.fromObject(model).toObject(Db2Source.class);
     }
 }

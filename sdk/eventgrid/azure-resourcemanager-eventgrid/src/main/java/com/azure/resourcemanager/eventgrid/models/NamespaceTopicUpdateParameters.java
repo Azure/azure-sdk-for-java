@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceTopicUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the namespace topic update. */
+/**
+ * Properties of the namespace topic update.
+ */
 @Fluent
 public final class NamespaceTopicUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class NamespaceTopicUpdateParameters {
     @JsonProperty(value = "properties")
     private NamespaceTopicUpdateParameterProperties innerProperties;
 
-    /** Creates an instance of NamespaceTopicUpdateParameters class. */
+    /**
+     * Creates an instance of NamespaceTopicUpdateParameters class.
+     */
     public NamespaceTopicUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties of the namespace topic resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamespaceTopicUpdateParameterProperties innerProperties() {
@@ -32,9 +36,9 @@ public final class NamespaceTopicUpdateParameters {
 
     /**
      * Get the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @return the eventRetentionInDays value.
      */
     public Integer eventRetentionInDays() {
@@ -43,9 +47,9 @@ public final class NamespaceTopicUpdateParameters {
 
     /**
      * Set the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @param eventRetentionInDays the eventRetentionInDays value to set.
      * @return the NamespaceTopicUpdateParameters object itself.
      */
@@ -59,7 +63,7 @@ public final class NamespaceTopicUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

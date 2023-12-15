@@ -17,6 +17,15 @@ public final class SocketAddrOperator extends ExpandableStringEnum<SocketAddrOpe
     public static final SocketAddrOperator IPMATCH = fromString("IPMatch");
 
     /**
+     * Creates a new instance of SocketAddrOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SocketAddrOperator() {
+    }
+
+    /**
      * Creates or finds a SocketAddrOperator from its string representation.
      *
      * @param name a name to look for.

@@ -50,6 +50,13 @@ public interface ApplicationGatewayProbe
     /** @return host name to send the probe to */
     String host();
 
+    /**
+     * Whether probe uses the host name from the HTTP settings to which this probe is associated.
+     *
+     * @return Whether probe uses the host name from the HTTP settings.
+     */
+    Boolean isHostNameFromBackendHttpSettings();
+
     /** Grouping of application gateway probe definition stages. */
     interface DefinitionStages {
         /**
@@ -75,6 +82,13 @@ public interface ApplicationGatewayProbe
              * @return the next stage of the definition
              */
             WithPath<ParentT> withHost(String host);
+
+            /**
+             * Specifies using the host name from the HTTP settings to which this probe is associated.
+             *
+             * @return the next stage of the definition
+             */
+            WithPath<ParentT> withHostNameFromBackendHttpSettings();
         }
 
         /**
@@ -267,6 +281,20 @@ public interface ApplicationGatewayProbe
              * @return the next stage of the update
              */
             Update withHost(String host);
+
+            /**
+             * Specifies using the host name from the HTTP settings to which this probe is associated.
+             *
+             * @return the next stage of the definition
+             */
+            Update withHostNameFromBackendHttpSettings();
+
+            /**
+             * Specifies not using the host name from the HTTP settings.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutHostNameFromBackendHttpSettings();
         }
 
         /** Stage of an application gateway probe update allowing to specify the protocol of the probe. */
@@ -435,6 +463,13 @@ public interface ApplicationGatewayProbe
              * @return the next stage of the definition
              */
             WithPath<ParentT> withHost(String host);
+
+            /**
+             * Specifies using the host name from the HTTP settings to which this probe is associated.
+             *
+             * @return the next stage of the definition
+             */
+            WithPath<ParentT> withHostNameFromBackendHttpSettings();
         }
 
         /**

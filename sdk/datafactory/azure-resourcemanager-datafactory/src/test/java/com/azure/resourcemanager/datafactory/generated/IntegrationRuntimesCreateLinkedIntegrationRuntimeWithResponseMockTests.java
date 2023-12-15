@@ -30,48 +30,31 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"name\":\"ngrdu\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"zd\",\"state\":\"Starting\",\"\":{\"huimgdfohaeeuotf\":\"datamgpioxzhpbj\",\"cvwewognpu\":\"datavmdpepl\",\"rqvjwlritsxuxre\":\"datapaqj\"}}}";
+        String responseStr
+            = "{\"name\":\"ngrdu\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"zd\",\"state\":\"Starting\",\"\":{\"huimgdfohaeeuotf\":\"datamgpioxzhpbj\",\"cvwewognpu\":\"datavmdpepl\",\"rqvjwlritsxuxre\":\"datapaqj\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IntegrationRuntimeStatusResponse response =
-            manager
-                .integrationRuntimes()
-                .createLinkedIntegrationRuntimeWithResponse(
-                    "ip",
-                    "szrr",
-                    "q",
-                    new CreateLinkedIntegrationRuntimeRequest()
-                        .withName("xyawtdsnvxhx")
-                        .withSubscriptionId("decryoffglwmkmb")
-                        .withDataFactoryName("snxlqnzxs")
-                        .withDataFactoryLocation("fbkqicehxmzt"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
+            .createLinkedIntegrationRuntimeWithResponse("ip", "szrr", "q",
+                new CreateLinkedIntegrationRuntimeRequest().withName("xyawtdsnvxhx")
+                    .withSubscriptionId("decryoffglwmkmb").withDataFactoryName("snxlqnzxs")
+                    .withDataFactoryLocation("fbkqicehxmzt"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

@@ -24,6 +24,10 @@ public final class SecretProperties extends AfdStateProperties {
     @JsonProperty(value = "parameters")
     private SecretParameters parameters;
 
+    /** Creates an instance of SecretProperties class. */
+    public SecretProperties() {
+    }
+
     /**
      * Get the profileName property: The name of the profile which holds the secret.
      *

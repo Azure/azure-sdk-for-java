@@ -6,18 +6,18 @@ package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Organization resource property. */
+/**
+ * Organization resource property.
+ */
 @Fluent
 public final class OrganizationResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceProperties.class);
-
     /*
      * The creation time of the resource.
      */
@@ -25,7 +25,9 @@ public final class OrganizationResourceProperties {
     private OffsetDateTime createdTime;
 
     /*
-     * ProvisioningState Provision states for confluent RP
+     * ProvisioningState
+     * 
+     * Provision states for confluent RP
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisionState provisioningState;
@@ -54,9 +56,21 @@ public final class OrganizationResourceProperties {
     @JsonProperty(value = "userDetail", required = true)
     private UserDetail userDetail;
 
+    /*
+     * Link an existing Confluent organization
+     */
+    @JsonProperty(value = "linkOrganization")
+    private LinkOrganization linkOrganization;
+
+    /**
+     * Creates an instance of OrganizationResourceProperties class.
+     */
+    public OrganizationResourceProperties() {
+    }
+
     /**
      * Get the createdTime property: The creation time of the resource.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -64,8 +78,10 @@ public final class OrganizationResourceProperties {
     }
 
     /**
-     * Get the provisioningState property: ProvisioningState Provision states for confluent RP.
-     *
+     * Get the provisioningState property: ProvisioningState
+     * 
+     * Provision states for confluent RP.
+     * 
      * @return the provisioningState value.
      */
     public ProvisionState provisioningState() {
@@ -74,7 +90,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Get the organizationId property: Id of the Confluent organization.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -83,7 +99,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Get the ssoUrl property: SSO url for the Confluent organization.
-     *
+     * 
      * @return the ssoUrl value.
      */
     public String ssoUrl() {
@@ -92,7 +108,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Get the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @return the offerDetail value.
      */
     public OfferDetail offerDetail() {
@@ -101,7 +117,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Set the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @param offerDetail the offerDetail value to set.
      * @return the OrganizationResourceProperties object itself.
      */
@@ -112,7 +128,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Get the userDetail property: Subscriber detail.
-     *
+     * 
      * @return the userDetail value.
      */
     public UserDetail userDetail() {
@@ -121,7 +137,7 @@ public final class OrganizationResourceProperties {
 
     /**
      * Set the userDetail property: Subscriber detail.
-     *
+     * 
      * @param userDetail the userDetail value to set.
      * @return the OrganizationResourceProperties object itself.
      */
@@ -131,26 +147,47 @@ public final class OrganizationResourceProperties {
     }
 
     /**
+     * Get the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @return the linkOrganization value.
+     */
+    public LinkOrganization linkOrganization() {
+        return this.linkOrganization;
+    }
+
+    /**
+     * Set the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @param linkOrganization the linkOrganization value to set.
+     * @return the OrganizationResourceProperties object itself.
+     */
+    public OrganizationResourceProperties withLinkOrganization(LinkOrganization linkOrganization) {
+        this.linkOrganization = linkOrganization;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (offerDetail() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property offerDetail in model OrganizationResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property offerDetail in model OrganizationResourceProperties"));
         } else {
             offerDetail().validate();
         }
         if (userDetail() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userDetail in model OrganizationResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userDetail in model OrganizationResourceProperties"));
         } else {
             userDetail().validate();
         }
+        if (linkOrganization() != null) {
+            linkOrganization().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceProperties.class);
 }

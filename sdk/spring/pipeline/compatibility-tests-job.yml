@@ -12,7 +12,7 @@ jobs:
       maxParallel: ${{ parameters.MaxParallel }}
       matrix: $[ ${{ parameters.Matrix }} ]
     variables:
-      - template: ../../eng/pipelines/templates/variables/globals.yml
+      - template: ../../../eng/pipelines/templates/variables/globals.yml
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:

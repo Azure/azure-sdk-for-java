@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Blob storage. */
+/**
+ * The Azure Blob storage.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlob")
 @Fluent
@@ -23,62 +25,78 @@ public final class AzureBlobDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private AzureBlobDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of AzureBlobDataset class. */
+    /**
+     * Creates an instance of AzureBlobDataset class.
+     */
     public AzureBlobDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Blob dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureBlobDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class AzureBlobDataset extends Dataset {
     /**
      * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -98,7 +116,7 @@ public final class AzureBlobDataset extends Dataset {
     /**
      * Set the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -112,7 +130,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Get the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableRootLocation value.
      */
     public Object tableRootLocation() {
@@ -121,7 +139,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Set the tableRootLocation property: The root of blob path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableRootLocation the tableRootLocation value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -135,7 +153,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Get the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object fileName() {
@@ -144,7 +162,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Set the fileName property: The name of the Azure Blob. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -159,7 +177,7 @@ public final class AzureBlobDataset extends Dataset {
     /**
      * Get the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object modifiedDatetimeStart() {
@@ -169,7 +187,7 @@ public final class AzureBlobDataset extends Dataset {
     /**
      * Set the modifiedDatetimeStart property: The start of Azure Blob's modified datetime. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -182,9 +200,9 @@ public final class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
+     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object modifiedDatetimeEnd() {
@@ -192,9 +210,9 @@ public final class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
-     * resultType string).
-     *
+     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -208,7 +226,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Get the format property: The format of the Azure Blob storage.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -217,7 +235,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Set the format property: The format of the Azure Blob storage.
-     *
+     * 
      * @param format the format value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -231,7 +249,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -240,7 +258,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the AzureBlobDataset object itself.
      */
@@ -254,7 +272,7 @@ public final class AzureBlobDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

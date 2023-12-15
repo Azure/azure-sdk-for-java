@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition for App Seen. */
+/**
+ * Definition for App Seen.
+ */
 @Fluent
 public final class AppSeenInfo {
     /*
@@ -53,13 +55,15 @@ public final class AppSeenInfo {
     @JsonProperty(value = "standardPorts", required = true)
     private String standardPorts;
 
-    /** Creates an instance of AppSeenInfo class. */
+    /**
+     * Creates an instance of AppSeenInfo class.
+     */
     public AppSeenInfo() {
     }
 
     /**
      * Get the title property: title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -68,7 +72,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the title property: title.
-     *
+     * 
      * @param title the title value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -79,7 +83,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the category property: category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -88,7 +92,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the category property: category.
-     *
+     * 
      * @param category the category value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -99,7 +103,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the subCategory property: subCategory.
-     *
+     * 
      * @return the subCategory value.
      */
     public String subCategory() {
@@ -108,7 +112,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the subCategory property: subCategory.
-     *
+     * 
      * @param subCategory the subCategory value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -119,7 +123,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the risk property: risk.
-     *
+     * 
      * @return the risk value.
      */
     public String risk() {
@@ -128,7 +132,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the risk property: risk.
-     *
+     * 
      * @param risk the risk value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -139,7 +143,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the tag property: tag.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -148,7 +152,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the tag property: tag.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -159,7 +163,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the technology property: technology.
-     *
+     * 
      * @return the technology value.
      */
     public String technology() {
@@ -168,7 +172,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the technology property: technology.
-     *
+     * 
      * @param technology the technology value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -179,7 +183,7 @@ public final class AppSeenInfo {
 
     /**
      * Get the standardPorts property: standardPorts.
-     *
+     * 
      * @return the standardPorts value.
      */
     public String standardPorts() {
@@ -188,7 +192,7 @@ public final class AppSeenInfo {
 
     /**
      * Set the standardPorts property: standardPorts.
-     *
+     * 
      * @param standardPorts the standardPorts value to set.
      * @return the AppSeenInfo object itself.
      */
@@ -199,44 +203,37 @@ public final class AppSeenInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property title in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property title in model AppSeenInfo"));
         }
         if (category() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property category in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property category in model AppSeenInfo"));
         }
         if (subCategory() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subCategory in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subCategory in model AppSeenInfo"));
         }
         if (risk() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property risk in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property risk in model AppSeenInfo"));
         }
         if (tag() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tag in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tag in model AppSeenInfo"));
         }
         if (technology() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property technology in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property technology in model AppSeenInfo"));
         }
         if (standardPorts() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property standardPorts in model AppSeenInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property standardPorts in model AppSeenInfo"));
         }
     }
 

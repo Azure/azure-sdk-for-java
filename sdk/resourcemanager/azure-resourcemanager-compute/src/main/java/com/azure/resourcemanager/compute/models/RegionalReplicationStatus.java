@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the regional replication status. */
+/**
+ * This is the regional replication status.
+ */
 @Immutable
 public final class RegionalReplicationStatus {
     /*
@@ -34,13 +36,15 @@ public final class RegionalReplicationStatus {
     @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progress;
 
-    /** Creates an instance of RegionalReplicationStatus class. */
+    /**
+     * Creates an instance of RegionalReplicationStatus class.
+     */
     public RegionalReplicationStatus() {
     }
 
     /**
      * Get the region property: The region to which the gallery image version is being replicated to.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -49,7 +53,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the state property: This is the regional replication state.
-     *
+     * 
      * @return the state value.
      */
     public ReplicationState state() {
@@ -58,7 +62,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the details property: The details of the replication status.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -67,7 +71,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the progress property: It indicates progress of the replication job.
-     *
+     * 
      * @return the progress value.
      */
     public Integer progress() {
@@ -76,7 +80,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

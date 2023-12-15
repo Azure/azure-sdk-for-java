@@ -15,16 +15,16 @@ public final class ReadOnlyFollowingDatabasePropertiesTests {
         ReadOnlyFollowingDatabaseProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Failed\",\"softDeletePeriod\":\"PT16H20M50S\",\"hotCachePeriod\":\"PT105H24M9S\",\"statistics\":{\"size\":88.15698},\"leaderClusterResourceId\":\"utr\",\"attachedDatabaseConfigurationName\":\"upauut\",\"principalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"hej\"],\"tablesToExclude\":[\"zpnfqntcypsxj\"],\"externalTablesToInclude\":[\"imwkslircizj\",\"vydfceacvlhvygdy\",\"t\"],\"externalTablesToExclude\":[\"twnawjslbiwkojgc\",\"ztsfmznbaeqp\",\"chqnrnrpxehuwry\"],\"materializedViewsToInclude\":[\"aifmvikl\",\"ydv\"],\"materializedViewsToExclude\":[\"ejd\",\"nxcvds\",\"hnjivo\"],\"functionsToInclude\":[\"novqfzge\",\"jdftuljltd\",\"ceamtm\",\"zuo\"],\"functionsToExclude\":[\"wcw\"]},\"originalDatabaseName\":\"ioknssxmoj\",\"databaseShareOrigin\":\"Direct\",\"suspensionDetails\":{\"suspensionStartDate\":\"2021-02-27T14:03:02Z\"}}")
+                    "{\"provisioningState\":\"Succeeded\",\"softDeletePeriod\":\"PT117H46M54S\",\"hotCachePeriod\":\"PT191H20M49S\",\"statistics\":{\"size\":33.585636},\"leaderClusterResourceId\":\"fku\",\"attachedDatabaseConfigurationName\":\"cxkdmligovi\",\"principalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"loazuruocbgoo\",\"bteoybf\"],\"tablesToExclude\":[\"akvvjgslordi\",\"mywwtkgkxnyed\",\"b\"],\"externalTablesToInclude\":[\"udtjuewbc\",\"hxuuwhcjyxccybvp\",\"yakk\",\"dzpxgwjpl\"],\"externalTablesToExclude\":[\"stcyohpfkyrkdbd\",\"iogsjkmnwq\",\"nobaiyhddviacegf\"],\"materializedViewsToInclude\":[\"tfpmvmemfnczdw\",\"vbalxlllc\",\"podbzevwrdnh\"],\"materializedViewsToExclude\":[\"uvsj\",\"swsmys\",\"uluqypfc\"],\"functionsToInclude\":[\"rchpqbmfpjbabwid\"],\"functionsToExclude\":[\"sspuunnoxyhkx\",\"qddrihpfhoqcaae\",\"dao\",\"djvlpj\"]},\"originalDatabaseName\":\"kzbrmsgeivsiy\",\"databaseShareOrigin\":\"DataShare\",\"suspensionDetails\":{\"suspensionStartDate\":\"2021-08-20T00:02:05Z\"}}")
                 .toObject(ReadOnlyFollowingDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT105H24M9S"), model.hotCachePeriod());
+        Assertions.assertEquals(Duration.parse("PT191H20M49S"), model.hotCachePeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReadOnlyFollowingDatabaseProperties model =
-            new ReadOnlyFollowingDatabaseProperties().withHotCachePeriod(Duration.parse("PT105H24M9S"));
+            new ReadOnlyFollowingDatabaseProperties().withHotCachePeriod(Duration.parse("PT191H20M49S"));
         model = BinaryData.fromObject(model).toObject(ReadOnlyFollowingDatabaseProperties.class);
-        Assertions.assertEquals(Duration.parse("PT105H24M9S"), model.hotCachePeriod());
+        Assertions.assertEquals(Duration.parse("PT191H20M49S"), model.hotCachePeriod());
     }
 }

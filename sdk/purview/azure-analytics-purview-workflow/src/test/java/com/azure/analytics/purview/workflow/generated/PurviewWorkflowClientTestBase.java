@@ -4,40 +4,220 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+// The Java test files under 'generated' package are generated for your reference.
+// If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
+// See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
+
+import com.azure.analytics.purview.workflow.ApprovalClient;
+import com.azure.analytics.purview.workflow.ApprovalClientBuilder;
+import com.azure.analytics.purview.workflow.TaskStatusClient;
+import com.azure.analytics.purview.workflow.TaskStatusClientBuilder;
+import com.azure.analytics.purview.workflow.UserRequestsClient;
+import com.azure.analytics.purview.workflow.UserRequestsClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowClient;
+import com.azure.analytics.purview.workflow.WorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowRunClient;
+import com.azure.analytics.purview.workflow.WorkflowRunClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowRunsClient;
+import com.azure.analytics.purview.workflow.WorkflowRunsClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowTaskClient;
+import com.azure.analytics.purview.workflow.WorkflowTaskClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowTasksClient;
+import com.azure.analytics.purview.workflow.WorkflowTasksClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowsClient;
+import com.azure.analytics.purview.workflow.WorkflowsClientBuilder;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-class PurviewWorkflowClientTestBase extends TestBase {
-    protected PurviewWorkflowClient purviewWorkflowClient;
+class PurviewWorkflowClientTestBase extends TestProxyTestBase {
+    protected WorkflowsClient workflowsClient;
+
+    protected WorkflowClient workflowClient;
+
+    protected UserRequestsClient userRequestsClient;
+
+    protected WorkflowRunsClient workflowRunsClient;
+
+    protected WorkflowRunClient workflowRunClient;
+
+    protected WorkflowTasksClient workflowTasksClient;
+
+    protected WorkflowTaskClient workflowTaskClient;
+
+    protected ApprovalClient approvalClient;
+
+    protected TaskStatusClient taskStatusClient;
 
     @Override
     protected void beforeTest() {
-        PurviewWorkflowClientBuilder purviewWorkflowClientbuilder =
-                new PurviewWorkflowClientBuilder()
+        WorkflowsClientBuilder workflowsClientbuilder =
+                new WorkflowsClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            purviewWorkflowClientbuilder
+            workflowsClientbuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            purviewWorkflowClientbuilder
+            workflowsClientbuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            purviewWorkflowClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+            workflowsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        purviewWorkflowClient = purviewWorkflowClientbuilder.buildClient();
+        workflowsClient = workflowsClientbuilder.buildClient();
+
+        WorkflowClientBuilder workflowClientbuilder =
+                new WorkflowClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            workflowClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            workflowClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            workflowClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        workflowClient = workflowClientbuilder.buildClient();
+
+        UserRequestsClientBuilder userRequestsClientbuilder =
+                new UserRequestsClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            userRequestsClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            userRequestsClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            userRequestsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        userRequestsClient = userRequestsClientbuilder.buildClient();
+
+        WorkflowRunsClientBuilder workflowRunsClientbuilder =
+                new WorkflowRunsClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            workflowRunsClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            workflowRunsClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            workflowRunsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        workflowRunsClient = workflowRunsClientbuilder.buildClient();
+
+        WorkflowRunClientBuilder workflowRunClientbuilder =
+                new WorkflowRunClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            workflowRunClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            workflowRunClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            workflowRunClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        workflowRunClient = workflowRunClientbuilder.buildClient();
+
+        WorkflowTasksClientBuilder workflowTasksClientbuilder =
+                new WorkflowTasksClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            workflowTasksClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            workflowTasksClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            workflowTasksClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        workflowTasksClient = workflowTasksClientbuilder.buildClient();
+
+        WorkflowTaskClientBuilder workflowTaskClientbuilder =
+                new WorkflowTaskClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            workflowTaskClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            workflowTaskClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            workflowTaskClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        workflowTaskClient = workflowTaskClientbuilder.buildClient();
+
+        ApprovalClientBuilder approvalClientbuilder =
+                new ApprovalClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            approvalClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            approvalClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            approvalClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        approvalClient = approvalClientbuilder.buildClient();
+
+        TaskStatusClientBuilder taskStatusClientbuilder =
+                new TaskStatusClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            taskStatusClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            taskStatusClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            taskStatusClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        taskStatusClient = taskStatusClientbuilder.buildClient();
     }
 }

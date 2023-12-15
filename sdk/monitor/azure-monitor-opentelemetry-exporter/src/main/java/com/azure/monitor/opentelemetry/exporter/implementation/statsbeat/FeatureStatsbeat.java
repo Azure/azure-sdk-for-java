@@ -69,11 +69,14 @@ public class FeatureStatsbeat extends BaseStatsbeat {
             featureType = "1";
         }
 
-        StatsbeatTelemetryBuilder telemetryBuilder = createStatsbeatTelemetry(FEATURE_METRIC_NAME, 0);
-        telemetryBuilder.addProperty("feature", featureValue);
-        telemetryBuilder.addProperty("type", featureType);
+        // don't send feature/instrumentation statsbeat when it's empty
+        if (!featureValue.isEmpty()) {
+            StatsbeatTelemetryBuilder telemetryBuilder = createStatsbeatTelemetry(FEATURE_METRIC_NAME, 0);
+            telemetryBuilder.addProperty("feature", featureValue);
+            telemetryBuilder.addProperty("type", featureType);
 
-        telemetryItemExporter.send(Collections.singletonList(telemetryBuilder.build()));
+            telemetryItemExporter.send(Collections.singletonList(telemetryBuilder.build()));
+        }
     }
 
     void trackConfigurationOptions(Set<Feature> featureSet) {

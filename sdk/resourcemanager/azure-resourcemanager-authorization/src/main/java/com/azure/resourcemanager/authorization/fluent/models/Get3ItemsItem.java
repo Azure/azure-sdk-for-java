@@ -195,6 +195,15 @@ public final class Get3ItemsItem extends ExpandableStringEnum<Get3ItemsItem> {
     public static final Get3ItemsItem TODO = fromString("todo");
 
     /**
+     * Creates a new instance of Get3ItemsItem value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Get3ItemsItem() {
+    }
+
+    /**
      * Creates or finds a Get3ItemsItem from its string representation.
      *
      * @param name a name to look for.

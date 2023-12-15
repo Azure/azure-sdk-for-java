@@ -15,22 +15,22 @@ public final class SummaryCollectionTests {
     public void testDeserialize() throws Exception {
         SummaryCollection model =
             BinaryData
-                .fromString("{\"fieldName\":\"x\",\"summary\":[{\"count\":1635783635,\"item\":\"dtocj\"}]}")
+                .fromString("{\"fieldName\":\"nzscxa\",\"summary\":[{\"count\":2024300309,\"item\":\"cbonqvpk\"}]}")
                 .toObject(SummaryCollection.class);
-        Assertions.assertEquals("x", model.fieldName());
-        Assertions.assertEquals(1635783635, model.summary().get(0).count());
-        Assertions.assertEquals("dtocj", model.summary().get(0).item());
+        Assertions.assertEquals("nzscxa", model.fieldName());
+        Assertions.assertEquals(2024300309, model.summary().get(0).count());
+        Assertions.assertEquals("cbonqvpk", model.summary().get(0).item());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SummaryCollection model =
             new SummaryCollection()
-                .withFieldName("x")
-                .withSummary(Arrays.asList(new Summary().withCount(1635783635).withItem("dtocj")));
+                .withFieldName("nzscxa")
+                .withSummary(Arrays.asList(new Summary().withCount(2024300309).withItem("cbonqvpk")));
         model = BinaryData.fromObject(model).toObject(SummaryCollection.class);
-        Assertions.assertEquals("x", model.fieldName());
-        Assertions.assertEquals(1635783635, model.summary().get(0).count());
-        Assertions.assertEquals("dtocj", model.summary().get(0).item());
+        Assertions.assertEquals("nzscxa", model.fieldName());
+        Assertions.assertEquals(2024300309, model.summary().get(0).count());
+        Assertions.assertEquals("cbonqvpk", model.summary().get(0).item());
     }
 }

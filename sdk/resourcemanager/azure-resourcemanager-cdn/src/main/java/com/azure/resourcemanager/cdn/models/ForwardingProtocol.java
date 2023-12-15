@@ -20,6 +20,15 @@ public final class ForwardingProtocol extends ExpandableStringEnum<ForwardingPro
     public static final ForwardingProtocol MATCH_REQUEST = fromString("MatchRequest");
 
     /**
+     * Creates a new instance of ForwardingProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ForwardingProtocol() {
+    }
+
+    /**
      * Creates or finds a ForwardingProtocol from its string representation.
      *
      * @param name a name to look for.

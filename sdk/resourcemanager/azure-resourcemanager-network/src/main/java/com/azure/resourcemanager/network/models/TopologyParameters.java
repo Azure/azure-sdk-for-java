@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the representation of topology. */
+/**
+ * Parameters that define the representation of topology.
+ */
 @Fluent
 public final class TopologyParameters {
     /*
@@ -29,13 +31,15 @@ public final class TopologyParameters {
     @JsonProperty(value = "targetSubnet")
     private SubResource targetSubnet;
 
-    /** Creates an instance of TopologyParameters class. */
+    /**
+     * Creates an instance of TopologyParameters class.
+     */
     public TopologyParameters() {
     }
 
     /**
      * Get the targetResourceGroupName property: The name of the target resource group to perform topology on.
-     *
+     * 
      * @return the targetResourceGroupName value.
      */
     public String targetResourceGroupName() {
@@ -44,7 +48,7 @@ public final class TopologyParameters {
 
     /**
      * Set the targetResourceGroupName property: The name of the target resource group to perform topology on.
-     *
+     * 
      * @param targetResourceGroupName the targetResourceGroupName value to set.
      * @return the TopologyParameters object itself.
      */
@@ -55,7 +59,7 @@ public final class TopologyParameters {
 
     /**
      * Get the targetVirtualNetwork property: The reference to the Virtual Network resource.
-     *
+     * 
      * @return the targetVirtualNetwork value.
      */
     public SubResource targetVirtualNetwork() {
@@ -64,7 +68,7 @@ public final class TopologyParameters {
 
     /**
      * Set the targetVirtualNetwork property: The reference to the Virtual Network resource.
-     *
+     * 
      * @param targetVirtualNetwork the targetVirtualNetwork value to set.
      * @return the TopologyParameters object itself.
      */
@@ -75,7 +79,7 @@ public final class TopologyParameters {
 
     /**
      * Get the targetSubnet property: The reference to the Subnet resource.
-     *
+     * 
      * @return the targetSubnet value.
      */
     public SubResource targetSubnet() {
@@ -84,7 +88,7 @@ public final class TopologyParameters {
 
     /**
      * Set the targetSubnet property: The reference to the Subnet resource.
-     *
+     * 
      * @param targetSubnet the targetSubnet value to set.
      * @return the TopologyParameters object itself.
      */
@@ -95,7 +99,7 @@ public final class TopologyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

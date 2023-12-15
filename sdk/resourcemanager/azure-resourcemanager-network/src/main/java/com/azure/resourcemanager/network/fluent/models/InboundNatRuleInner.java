@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Inbound NAT rule of the load balancer. */
+/**
+ * Inbound NAT rule of the load balancer.
+ */
 @Fluent
 public final class InboundNatRuleInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class InboundNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of InboundNatRuleInner class. */
+    /**
+     * Creates an instance of InboundNatRuleInner class.
+     */
     public InboundNatRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of load balancer inbound NAT rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InboundNatRulePropertiesFormatInner innerProperties() {
@@ -54,7 +58,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
      * load balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
      * load balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -75,7 +79,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -84,14 +88,16 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InboundNatRuleInner withId(String id) {
         super.withId(id);
@@ -100,7 +106,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -109,7 +115,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -124,7 +130,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Get the backendIpConfiguration property: A reference to a private IP address defined on a network interface of a
      * VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
-     *
+     * 
      * @return the backendIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner backendIpConfiguration() {
@@ -133,7 +139,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -142,7 +148,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Set the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -157,7 +163,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Get the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
      * within the Load Balancer. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -167,7 +173,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Set the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
      * within the Load Balancer. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -181,7 +187,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -190,7 +196,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Set the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -205,7 +211,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -215,7 +221,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -231,7 +237,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -242,7 +248,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -257,7 +263,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -267,7 +273,7 @@ public final class InboundNatRuleInner extends SubResource {
     /**
      * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -283,7 +289,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Get the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPortRangeStart value.
      */
     public Integer frontendPortRangeStart() {
@@ -294,7 +300,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Set the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPortRangeStart the frontendPortRangeStart value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -310,7 +316,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Get the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPortRangeEnd value.
      */
     public Integer frontendPortRangeEnd() {
@@ -321,7 +327,7 @@ public final class InboundNatRuleInner extends SubResource {
      * Set the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -335,7 +341,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the backendAddressPool property: A reference to backendAddressPool resource.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -344,7 +350,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Set the backendAddressPool property: A reference to backendAddressPool resource.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the InboundNatRuleInner object itself.
      */
@@ -358,7 +364,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the inbound NAT rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -367,7 +373,7 @@ public final class InboundNatRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -70,7 +70,7 @@ public class IntegrationTests {
             .httpClient(mockedClient)
             .tracer(new NoopTracer());
 
-        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build());
+        TelemetryPipeline telemetryPipeline = new TelemetryPipeline(pipelineBuilder.build(), null);
         telemetryItemExporter =
             new TelemetryItemExporter(
                 telemetryPipeline,

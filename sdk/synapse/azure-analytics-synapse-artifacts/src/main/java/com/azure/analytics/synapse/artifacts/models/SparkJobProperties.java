@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The properties of the Spark job. */
+/**
+ * The properties of the Spark job.
+ */
 @Fluent
 public final class SparkJobProperties {
     /*
@@ -97,14 +99,18 @@ public final class SparkJobProperties {
     /*
      * The properties of the Spark job.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SparkJobProperties class. */
-    public SparkJobProperties() {}
+    /**
+     * Creates an instance of SparkJobProperties class.
+     */
+    public SparkJobProperties() {
+    }
 
     /**
      * Get the name property: The name of the job.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -113,7 +119,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the name property: The name of the job.
-     *
+     * 
      * @param name the name value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -124,7 +130,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the file property: File containing the application to execute.
-     *
+     * 
      * @return the file value.
      */
     public String getFile() {
@@ -133,7 +139,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the file property: File containing the application to execute.
-     *
+     * 
      * @param file the file value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -144,7 +150,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the className property: Main class for Java/Scala application.
-     *
+     * 
      * @return the className value.
      */
     public String getClassName() {
@@ -153,7 +159,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the className property: Main class for Java/Scala application.
-     *
+     * 
      * @param className the className value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -164,7 +170,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the conf property: Spark configuration properties.
-     *
+     * 
      * @return the conf value.
      */
     public Object getConf() {
@@ -173,7 +179,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the conf property: Spark configuration properties.
-     *
+     * 
      * @param conf the conf value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -184,7 +190,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the args property: Command line arguments for the application.
-     *
+     * 
      * @return the args value.
      */
     public List<String> getArgs() {
@@ -193,7 +199,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the args property: Command line arguments for the application.
-     *
+     * 
      * @param args the args value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -204,7 +210,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the jars property: Jars to be used in this job.
-     *
+     * 
      * @return the jars value.
      */
     public List<String> getJars() {
@@ -213,7 +219,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the jars property: Jars to be used in this job.
-     *
+     * 
      * @param jars the jars value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -224,7 +230,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the files property: files to be used in this job.
-     *
+     * 
      * @return the files value.
      */
     public List<String> getFiles() {
@@ -233,7 +239,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the files property: files to be used in this job.
-     *
+     * 
      * @param files the files value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -244,7 +250,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the archives property: Archives to be used in this job.
-     *
+     * 
      * @return the archives value.
      */
     public List<String> getArchives() {
@@ -253,7 +259,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the archives property: Archives to be used in this job.
-     *
+     * 
      * @param archives the archives value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -264,7 +270,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the driverMemory property: Amount of memory to use for the driver process.
-     *
+     * 
      * @return the driverMemory value.
      */
     public String getDriverMemory() {
@@ -273,7 +279,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the driverMemory property: Amount of memory to use for the driver process.
-     *
+     * 
      * @param driverMemory the driverMemory value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -284,7 +290,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the driverCores property: Number of cores to use for the driver.
-     *
+     * 
      * @return the driverCores value.
      */
     public int getDriverCores() {
@@ -293,7 +299,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the driverCores property: Number of cores to use for the driver.
-     *
+     * 
      * @param driverCores the driverCores value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -304,7 +310,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the executorMemory property: Amount of memory to use per executor process.
-     *
+     * 
      * @return the executorMemory value.
      */
     public String getExecutorMemory() {
@@ -313,7 +319,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the executorMemory property: Amount of memory to use per executor process.
-     *
+     * 
      * @param executorMemory the executorMemory value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -324,7 +330,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the executorCores property: Number of cores to use for each executor.
-     *
+     * 
      * @return the executorCores value.
      */
     public int getExecutorCores() {
@@ -333,7 +339,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the executorCores property: Number of cores to use for each executor.
-     *
+     * 
      * @param executorCores the executorCores value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -344,7 +350,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the numExecutors property: Number of executors to launch for this job.
-     *
+     * 
      * @return the numExecutors value.
      */
     public int getNumExecutors() {
@@ -353,7 +359,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the numExecutors property: Number of executors to launch for this job.
-     *
+     * 
      * @param numExecutors the numExecutors value to set.
      * @return the SparkJobProperties object itself.
      */
@@ -364,7 +370,7 @@ public final class SparkJobProperties {
 
     /**
      * Get the additionalProperties property: The properties of the Spark job.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -374,7 +380,7 @@ public final class SparkJobProperties {
 
     /**
      * Set the additionalProperties property: The properties of the Spark job.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SparkJobProperties object itself.
      */

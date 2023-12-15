@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.SquareSource;
 public final class SquareSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SquareSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SquareSource\",\"query\":\"datan\",\"queryTimeout\":\"datanjfvjqvectoo\",\"additionalColumns\":\"datazttalsnmxvsrvk\",\"sourceRetryCount\":\"dataxl\",\"sourceRetryWait\":\"datatmdybxeh\",\"maxConcurrentConnections\":\"dataqogtnfla\",\"disableMetricsCollection\":\"datapghfvkqijmyqo\",\"\":{\"ocrr\":\"dataf\",\"dpyohnmru\":\"datarr\"}}")
-                .toObject(SquareSource.class);
+        SquareSource model = BinaryData.fromString(
+            "{\"type\":\"SquareSource\",\"query\":\"datajkwltnsnhuvmok\",\"queryTimeout\":\"datasclpnbidnlodk\",\"additionalColumns\":\"dataqnkptixa\",\"sourceRetryCount\":\"datay\",\"sourceRetryWait\":\"dataaevry\",\"maxConcurrentConnections\":\"datagccpzmh\",\"disableMetricsCollection\":\"datalqtzgtpsbym\",\"\":{\"rqzbqy\":\"datat\",\"ahbynlbwcnnfp\":\"datagfqqrarolc\"}}")
+            .toObject(SquareSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SquareSource model =
-            new SquareSource()
-                .withSourceRetryCount("dataxl")
-                .withSourceRetryWait("datatmdybxeh")
-                .withMaxConcurrentConnections("dataqogtnfla")
-                .withDisableMetricsCollection("datapghfvkqijmyqo")
-                .withQueryTimeout("datanjfvjqvectoo")
-                .withAdditionalColumns("datazttalsnmxvsrvk")
-                .withQuery("datan");
+        SquareSource model = new SquareSource().withSourceRetryCount("datay").withSourceRetryWait("dataaevry")
+            .withMaxConcurrentConnections("datagccpzmh").withDisableMetricsCollection("datalqtzgtpsbym")
+            .withQueryTimeout("datasclpnbidnlodk").withAdditionalColumns("dataqnkptixa")
+            .withQuery("datajkwltnsnhuvmok");
         model = BinaryData.fromObject(model).toObject(SquareSource.class);
     }
 }

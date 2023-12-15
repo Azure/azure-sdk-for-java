@@ -59,12 +59,12 @@ public final class ItemLevelRecoveryConnectionsRevokeWithResponseMockTests {
         manager
             .itemLevelRecoveryConnections()
             .revokeWithResponse(
-                "mlyotg",
-                "wsxnsrqor",
-                "genmvceb",
-                "eetqujxcxxq",
-                "dcqjkedwqurc",
-                "ojmrvvxwjongzse",
+                "qhnmhk",
+                "ezsdsuxheq",
+                "gcruxspinym",
+                "qgwokmikp",
+                "zfbmjxuv",
+                "ipfdvhaxdvwzaehp",
                 com.azure.core.util.Context.NONE);
     }
 }

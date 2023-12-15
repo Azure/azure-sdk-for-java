@@ -6,14 +6,17 @@ package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.SupportEngineer;
 import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** Describes the properties of a support ticket. */
 @Fluent
@@ -64,6 +67,24 @@ public final class SupportTicketDetailsProperties {
     private Boolean require24X7Response;
 
     /*
+     * Advanced diagnostic consent to be updated on the support ticket.
+     */
+    @JsonProperty(value = "advancedDiagnosticConsent")
+    private Consent advancedDiagnosticConsent;
+
+    /*
+     * Problem scoping questions associated with the support ticket.
+     */
+    @JsonProperty(value = "problemScopingQuestions")
+    private String problemScopingQuestions;
+
+    /*
+     * Support plan id associated with the support ticket.
+     */
+    @JsonProperty(value = "supportPlanId")
+    private String supportPlanId;
+
+    /*
      * Contact information of the user requesting to create a support ticket.
      */
     @JsonProperty(value = "contactDetails", required = true)
@@ -86,6 +107,12 @@ public final class SupportTicketDetailsProperties {
      */
     @JsonProperty(value = "supportPlanType", access = JsonProperty.Access.WRITE_ONLY)
     private String supportPlanType;
+
+    /*
+     * Support plan type associated with the support ticket.
+     */
+    @JsonProperty(value = "supportPlanDisplayName", access = JsonProperty.Access.WRITE_ONLY)
+    private String supportPlanDisplayName;
 
     /*
      * Title of the support ticket.
@@ -130,6 +157,12 @@ public final class SupportTicketDetailsProperties {
     private OffsetDateTime modifiedDate;
 
     /*
+     * File workspace name.
+     */
+    @JsonProperty(value = "fileWorkspaceName")
+    private String fileWorkspaceName;
+
+    /*
      * Additional ticket details associated with a technical support ticket request.
      */
     @JsonProperty(value = "technicalTicketDetails")
@@ -140,6 +173,12 @@ public final class SupportTicketDetailsProperties {
      */
     @JsonProperty(value = "quotaTicketDetails")
     private QuotaTicketDetails quotaTicketDetails;
+
+    /*
+     * This property indicates secondary consents for the support ticket
+     */
+    @JsonProperty(value = "secondaryConsent")
+    private List<SecondaryConsent> secondaryConsent;
 
     /** Creates an instance of SupportTicketDetailsProperties class. */
     public SupportTicketDetailsProperties() {
@@ -272,6 +311,66 @@ public final class SupportTicketDetailsProperties {
     }
 
     /**
+     * Get the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
+     *
+     * @return the advancedDiagnosticConsent value.
+     */
+    public Consent advancedDiagnosticConsent() {
+        return this.advancedDiagnosticConsent;
+    }
+
+    /**
+     * Set the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
+     *
+     * @param advancedDiagnosticConsent the advancedDiagnosticConsent value to set.
+     * @return the SupportTicketDetailsProperties object itself.
+     */
+    public SupportTicketDetailsProperties withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent) {
+        this.advancedDiagnosticConsent = advancedDiagnosticConsent;
+        return this;
+    }
+
+    /**
+     * Get the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
+     *
+     * @return the problemScopingQuestions value.
+     */
+    public String problemScopingQuestions() {
+        return this.problemScopingQuestions;
+    }
+
+    /**
+     * Set the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
+     *
+     * @param problemScopingQuestions the problemScopingQuestions value to set.
+     * @return the SupportTicketDetailsProperties object itself.
+     */
+    public SupportTicketDetailsProperties withProblemScopingQuestions(String problemScopingQuestions) {
+        this.problemScopingQuestions = problemScopingQuestions;
+        return this;
+    }
+
+    /**
+     * Get the supportPlanId property: Support plan id associated with the support ticket.
+     *
+     * @return the supportPlanId value.
+     */
+    public String supportPlanId() {
+        return this.supportPlanId;
+    }
+
+    /**
+     * Set the supportPlanId property: Support plan id associated with the support ticket.
+     *
+     * @param supportPlanId the supportPlanId value to set.
+     * @return the SupportTicketDetailsProperties object itself.
+     */
+    public SupportTicketDetailsProperties withSupportPlanId(String supportPlanId) {
+        this.supportPlanId = supportPlanId;
+        return this;
+    }
+
+    /**
      * Get the contactDetails property: Contact information of the user requesting to create a support ticket.
      *
      * @return the contactDetails value.
@@ -338,6 +437,15 @@ public final class SupportTicketDetailsProperties {
      */
     public String supportPlanType() {
         return this.supportPlanType;
+    }
+
+    /**
+     * Get the supportPlanDisplayName property: Support plan type associated with the support ticket.
+     *
+     * @return the supportPlanDisplayName value.
+     */
+    public String supportPlanDisplayName() {
+        return this.supportPlanDisplayName;
     }
 
     /**
@@ -439,6 +547,26 @@ public final class SupportTicketDetailsProperties {
     }
 
     /**
+     * Get the fileWorkspaceName property: File workspace name.
+     *
+     * @return the fileWorkspaceName value.
+     */
+    public String fileWorkspaceName() {
+        return this.fileWorkspaceName;
+    }
+
+    /**
+     * Set the fileWorkspaceName property: File workspace name.
+     *
+     * @param fileWorkspaceName the fileWorkspaceName value to set.
+     * @return the SupportTicketDetailsProperties object itself.
+     */
+    public SupportTicketDetailsProperties withFileWorkspaceName(String fileWorkspaceName) {
+        this.fileWorkspaceName = fileWorkspaceName;
+        return this;
+    }
+
+    /**
      * Get the technicalTicketDetails property: Additional ticket details associated with a technical support ticket
      * request.
      *
@@ -477,6 +605,26 @@ public final class SupportTicketDetailsProperties {
      */
     public SupportTicketDetailsProperties withQuotaTicketDetails(QuotaTicketDetails quotaTicketDetails) {
         this.quotaTicketDetails = quotaTicketDetails;
+        return this;
+    }
+
+    /**
+     * Get the secondaryConsent property: This property indicates secondary consents for the support ticket.
+     *
+     * @return the secondaryConsent value.
+     */
+    public List<SecondaryConsent> secondaryConsent() {
+        return this.secondaryConsent;
+    }
+
+    /**
+     * Set the secondaryConsent property: This property indicates secondary consents for the support ticket.
+     *
+     * @param secondaryConsent the secondaryConsent value to set.
+     * @return the SupportTicketDetailsProperties object itself.
+     */
+    public SupportTicketDetailsProperties withSecondaryConsent(List<SecondaryConsent> secondaryConsent) {
+        this.secondaryConsent = secondaryConsent;
         return this;
     }
 
@@ -535,6 +683,9 @@ public final class SupportTicketDetailsProperties {
         }
         if (quotaTicketDetails() != null) {
             quotaTicketDetails().validate();
+        }
+        if (secondaryConsent() != null) {
+            secondaryConsent().forEach(e -> e.validate());
         }
     }
 

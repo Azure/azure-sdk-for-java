@@ -21,8 +21,7 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public PrefixListGlobalRulestacksImpl(
-        PrefixListGlobalRulestacksClient innerClient,
+    public PrefixListGlobalRulestacksImpl(PrefixListGlobalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,20 +33,17 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
     }
 
     public PagedIterable<PrefixListGlobalRulestackResource> list(String globalRulestackName, Context context) {
-        PagedIterable<PrefixListGlobalRulestackResourceInner> inner =
-            this.serviceClient().list(globalRulestackName, context);
+        PagedIterable<PrefixListGlobalRulestackResourceInner> inner
+            = this.serviceClient().list(globalRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new PrefixListGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrefixListGlobalRulestackResource> getWithResponse(
-        String globalRulestackName, String name, Context context) {
-        Response<PrefixListGlobalRulestackResourceInner> inner =
-            this.serviceClient().getWithResponse(globalRulestackName, name, context);
+    public Response<PrefixListGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,
+        Context context) {
+        Response<PrefixListGlobalRulestackResourceInner> inner
+            = this.serviceClient().getWithResponse(globalRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrefixListGlobalRulestackResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,10 +59,10 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
         }
     }
 
-    public PrefixListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource) {
-        PrefixListGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
+    public PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource) {
+        PrefixListGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource);
         if (inner != null) {
             return new PrefixListGlobalRulestackResourceImpl(inner, this.manager());
         } else {
@@ -74,10 +70,10 @@ public final class PrefixListGlobalRulestacksImpl implements PrefixListGlobalRul
         }
     }
 
-    public PrefixListGlobalRulestackResource createOrUpdate(
-        String globalRulestackName, String name, PrefixListGlobalRulestackResourceInner resource, Context context) {
-        PrefixListGlobalRulestackResourceInner inner =
-            this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
+    public PrefixListGlobalRulestackResource createOrUpdate(String globalRulestackName, String name,
+        PrefixListGlobalRulestackResourceInner resource, Context context) {
+        PrefixListGlobalRulestackResourceInner inner
+            = this.serviceClient().createOrUpdate(globalRulestackName, name, resource, context);
         if (inner != null) {
             return new PrefixListGlobalRulestackResourceImpl(inner, this.manager());
         } else {

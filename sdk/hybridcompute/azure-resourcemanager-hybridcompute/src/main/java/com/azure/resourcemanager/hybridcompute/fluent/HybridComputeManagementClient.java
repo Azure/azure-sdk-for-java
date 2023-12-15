@@ -45,11 +45,25 @@ public interface HybridComputeManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the LicensesClient object to access its operations.
+     *
+     * @return the LicensesClient object.
+     */
+    LicensesClient getLicenses();
+
+    /**
      * Gets the MachinesClient object to access its operations.
      *
      * @return the MachinesClient object.
      */
     MachinesClient getMachines();
+
+    /**
+     * Gets the LicenseProfilesClient object to access its operations.
+     *
+     * @return the LicenseProfilesClient object.
+     */
+    LicenseProfilesClient getLicenseProfiles();
 
     /**
      * Gets the MachineExtensionsClient object to access its operations.
@@ -59,11 +73,46 @@ public interface HybridComputeManagementClient {
     MachineExtensionsClient getMachineExtensions();
 
     /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
+     * Gets the ExtensionMetadatasClient object to access its operations.
+     *
+     * @return the ExtensionMetadatasClient object.
+     */
+    ExtensionMetadatasClient getExtensionMetadatas();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
+
+    /**
+     * Gets the NetworkProfilesClient object to access its operations.
+     *
+     * @return the NetworkProfilesClient object.
+     */
+    NetworkProfilesClient getNetworkProfiles();
+
+    /**
+     * Gets the HybridIdentityMetadatasClient object to access its operations.
+     *
+     * @return the HybridIdentityMetadatasClient object.
+     */
+    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
+
+    /**
+     * Gets the AgentVersionsClient object to access its operations.
+     *
+     * @return the AgentVersionsClient object.
+     */
+    AgentVersionsClient getAgentVersions();
 
     /**
      * Gets the PrivateLinkScopesClient object to access its operations.

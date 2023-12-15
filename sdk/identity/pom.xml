@@ -13,5 +13,6 @@
       <module>azure-identity</module>
       <module>azure-identity-perf</module>
       <module>azure-identity-extensions</module>
+      <module>azure-identity-broker</module>
   </modules>
 </project>

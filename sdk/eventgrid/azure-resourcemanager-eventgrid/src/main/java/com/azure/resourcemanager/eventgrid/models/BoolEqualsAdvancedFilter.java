@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** BoolEquals Advanced Filter. */
+/**
+ * BoolEquals Advanced Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("BoolEquals")
 @Fluent
@@ -20,13 +22,15 @@ public final class BoolEqualsAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "value")
     private Boolean value;
 
-    /** Creates an instance of BoolEqualsAdvancedFilter class. */
+    /**
+     * Creates an instance of BoolEqualsAdvancedFilter class.
+     */
     public BoolEqualsAdvancedFilter() {
     }
 
     /**
      * Get the value property: The boolean filter value.
-     *
+     * 
      * @return the value value.
      */
     public Boolean value() {
@@ -35,7 +39,7 @@ public final class BoolEqualsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the value property: The boolean filter value.
-     *
+     * 
      * @param value the value value to set.
      * @return the BoolEqualsAdvancedFilter object itself.
      */
@@ -44,7 +48,9 @@ public final class BoolEqualsAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoolEqualsAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -53,7 +59,7 @@ public final class BoolEqualsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

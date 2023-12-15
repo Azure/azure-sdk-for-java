@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request body structure for rename artifact. */
+/**
+ * Request body structure for rename artifact.
+ */
 @Fluent
 public final class ArtifactRenameRequest {
     /*
@@ -16,12 +18,15 @@ public final class ArtifactRenameRequest {
     @JsonProperty(value = "newName")
     private String newName;
 
-    /** Creates an instance of ArtifactRenameRequest class. */
-    public ArtifactRenameRequest() {}
+    /**
+     * Creates an instance of ArtifactRenameRequest class.
+     */
+    public ArtifactRenameRequest() {
+    }
 
     /**
      * Get the newName property: New name of the artifact.
-     *
+     * 
      * @return the newName value.
      */
     public String getNewName() {
@@ -30,7 +35,7 @@ public final class ArtifactRenameRequest {
 
     /**
      * Set the newName property: New name of the artifact.
-     *
+     * 
      * @param newName the newName value to set.
      * @return the ArtifactRenameRequest object itself.
      */

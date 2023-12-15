@@ -8,11 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition of a parameter that can be passed to a custom action of a Gallery Application Version. */
+/**
+ * The definition of a parameter that can be passed to a custom action of a Gallery Application Version.
+ */
 @Fluent
 public final class GalleryApplicationCustomActionParameter {
     /*
-     * The name of the custom action.  Must be unique within the Gallery Application Version.
+     * The name of the custom action. Must be unique within the Gallery Application Version.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -31,7 +33,7 @@ public final class GalleryApplicationCustomActionParameter {
     private GalleryApplicationCustomActionParameterType type;
 
     /*
-     * The default value of the parameter.  Only applies to string types
+     * The default value of the parameter. Only applies to string types
      */
     @JsonProperty(value = "defaultValue")
     private String defaultValue;
@@ -42,13 +44,15 @@ public final class GalleryApplicationCustomActionParameter {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of GalleryApplicationCustomActionParameter class. */
+    /**
+     * Creates an instance of GalleryApplicationCustomActionParameter class.
+     */
     public GalleryApplicationCustomActionParameter() {
     }
 
     /**
      * Get the name property: The name of the custom action. Must be unique within the Gallery Application Version.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Set the name property: The name of the custom action. Must be unique within the Gallery Application Version.
-     *
+     * 
      * @param name the name value to set.
      * @return the GalleryApplicationCustomActionParameter object itself.
      */
@@ -68,7 +72,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Get the required property: Indicates whether this parameter must be passed when running the custom action.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -77,7 +81,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Set the required property: Indicates whether this parameter must be passed when running the custom action.
-     *
+     * 
      * @param required the required value to set.
      * @return the GalleryApplicationCustomActionParameter object itself.
      */
@@ -89,7 +93,7 @@ public final class GalleryApplicationCustomActionParameter {
     /**
      * Get the type property: Specifies the type of the custom action parameter. Possible values are: String,
      * ConfigurationDataBlob or LogOutputBlob.
-     *
+     * 
      * @return the type value.
      */
     public GalleryApplicationCustomActionParameterType type() {
@@ -99,7 +103,7 @@ public final class GalleryApplicationCustomActionParameter {
     /**
      * Set the type property: Specifies the type of the custom action parameter. Possible values are: String,
      * ConfigurationDataBlob or LogOutputBlob.
-     *
+     * 
      * @param type the type value to set.
      * @return the GalleryApplicationCustomActionParameter object itself.
      */
@@ -110,7 +114,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Get the defaultValue property: The default value of the parameter. Only applies to string types.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -119,7 +123,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Set the defaultValue property: The default value of the parameter. Only applies to string types.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the GalleryApplicationCustomActionParameter object itself.
      */
@@ -130,7 +134,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Get the description property: A description to help users understand what this parameter means.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -139,7 +143,7 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Set the description property: A description to help users understand what this parameter means.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryApplicationCustomActionParameter object itself.
      */
@@ -150,15 +154,13 @@ public final class GalleryApplicationCustomActionParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model GalleryApplicationCustomActionParameter"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model GalleryApplicationCustomActionParameter"));
         }
     }
 

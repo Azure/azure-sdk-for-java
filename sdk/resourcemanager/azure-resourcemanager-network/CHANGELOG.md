@@ -1,14 +1,30 @@
 # Release History
 
-## 2.32.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.34.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed class `RoutingConfigurationNfv`. Please used class `RoutingConfiguration`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-06-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.32.0 (2023-10-27)
+
+### Features Added
+
+- Supported `withHostNameFromBackendHttpSettings` for `ApplicationGatewayProbe` under `ApplicationGateway`.
 
 ## 2.31.0 (2023-09-28)
 

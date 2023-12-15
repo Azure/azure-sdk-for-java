@@ -44,7 +44,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,7 +58,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -70,7 +70,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param resourceType The resource type for which the OS options needs to be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +84,7 @@ public interface ManagedClustersClient
     /**
      * Gets supported OS options in the specified subscription.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -99,7 +99,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
      * and details on preview status of the version.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -115,7 +115,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
      * and details on preview status of the version.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -130,7 +130,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
      * and details on preview status of the version.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,7 +146,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
      * and details on preview status of the version.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1971,7 +1971,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1986,7 +1986,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2001,7 +2001,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on each revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2017,7 +2017,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2033,7 +2033,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2049,7 +2049,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2067,7 +2067,7 @@ public interface ManagedClustersClient
      * <p>Contains extra metadata on the revision, including supported revisions, cluster compatibility and available
      * upgrades.
      *
-     * @param location The name of Azure region.
+     * @param location The name of the Azure region.
      * @param mode The mode of the mesh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

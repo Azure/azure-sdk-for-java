@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the AzureFirewallRCAction. */
+/**
+ * Properties of the AzureFirewallRCAction.
+ */
 @Fluent
 public final class AzureFirewallRCAction {
     /*
@@ -16,13 +18,15 @@ public final class AzureFirewallRCAction {
     @JsonProperty(value = "type")
     private AzureFirewallRCActionType type;
 
-    /** Creates an instance of AzureFirewallRCAction class. */
+    /**
+     * Creates an instance of AzureFirewallRCAction class.
+     */
     public AzureFirewallRCAction() {
     }
 
     /**
      * Get the type property: The type of action.
-     *
+     * 
      * @return the type value.
      */
     public AzureFirewallRCActionType type() {
@@ -31,7 +35,7 @@ public final class AzureFirewallRCAction {
 
     /**
      * Set the type property: The type of action.
-     *
+     * 
      * @param type the type value to set.
      * @return the AzureFirewallRCAction object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureFirewallRCAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

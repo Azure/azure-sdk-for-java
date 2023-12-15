@@ -12,6 +12,14 @@ import java.util.Collection;
  */
 public final class MetricAnomalyAlertScopeType extends ExpandableStringEnum<MetricAnomalyAlertScopeType> {
     /**
+     * Constructs a MetricAnomalyAlertScopeType object.
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MetricAnomalyAlertScopeType() {
+    }
+
+    /**
      * Indicate that alert is scoped to the whole time series of a metric.
      */
     public static final MetricAnomalyAlertScopeType WHOLE_SERIES = fromString("WholeSeries");

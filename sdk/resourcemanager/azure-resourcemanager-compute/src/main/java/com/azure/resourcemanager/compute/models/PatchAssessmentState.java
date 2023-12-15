@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the availability of a given patch. */
+/**
+ * Describes the availability of a given patch.
+ */
 public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssessmentState> {
-    /** Static value Unknown for PatchAssessmentState. */
+    /**
+     * Static value Unknown for PatchAssessmentState.
+     */
     public static final PatchAssessmentState UNKNOWN = fromString("Unknown");
 
-    /** Static value Available for PatchAssessmentState. */
+    /**
+     * Static value Available for PatchAssessmentState.
+     */
     public static final PatchAssessmentState AVAILABLE = fromString("Available");
 
     /**
      * Creates a new instance of PatchAssessmentState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssess
 
     /**
      * Creates or finds a PatchAssessmentState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PatchAssessmentState.
      */
@@ -38,7 +44,7 @@ public final class PatchAssessmentState extends ExpandableStringEnum<PatchAssess
 
     /**
      * Gets known PatchAssessmentState values.
-     *
+     * 
      * @return known PatchAssessmentState values.
      */
     public static Collection<PatchAssessmentState> values() {

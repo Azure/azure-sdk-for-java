@@ -50,22 +50,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalRulestacksClient.
+ */
 public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalRulestacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of GlobalRulestacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalRulestacksClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy.create(GlobalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(GlobalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -76,256 +82,184 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface GlobalRulestacksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalRulestackResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GlobalRulestackResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalRulestackResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GlobalRulestackResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @BodyParam("application/json") GlobalRulestackResourceInner resource,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @BodyParam("application/json") GlobalRulestackResourceInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GlobalRulestackResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
+        Mono<Response<GlobalRulestackResourceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
             @BodyParam("application/json") GlobalRulestackResourceUpdate properties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/commit")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> commit(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> commit(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/getChangeLog")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChangelogInner>> getChangeLog(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ChangelogInner>> getChangeLog(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAdvancedSecurityObjects")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAdvancedSecurityObjects")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjects(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @QueryParam("type") AdvSecurityObjectTypeEnum type,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("globalRulestackName") String globalRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @QueryParam("type") AdvSecurityObjectTypeEnum type,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAppIds")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListAppIdResponseInner>> listAppIds(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @QueryParam("appIdVersion") String appIdVersion,
-            @QueryParam("appPrefix") String appPrefix,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ListAppIdResponseInner>> listAppIds(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @QueryParam("appIdVersion") String appIdVersion, @QueryParam("appPrefix") String appPrefix,
+            @QueryParam("skip") String skip, @QueryParam("top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listCountries")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CountriesResponseInner>> listCountries(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CountriesResponseInner>> listCountries(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @QueryParam("skip") String skip, @QueryParam("top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listFirewalls")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListFirewallsResponseInner>> listFirewalls(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ListFirewallsResponseInner>> listFirewalls(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listPredefinedUrlCategories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listPredefinedUrlCategories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategories(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("globalRulestackName") String globalRulestackName, @QueryParam("skip") String skip,
+            @QueryParam("top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listSecurityServices")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityServicesResponseInner>> listSecurityServices(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @QueryParam("skip") String skip,
-            @QueryParam("top") Integer top,
-            @QueryParam("type") SecurityServicesTypeEnum type,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityServicesResponseInner>> listSecurityServices(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @QueryParam("skip") String skip, @QueryParam("top") Integer top,
+            @QueryParam("type") SecurityServicesTypeEnum type, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/revert")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> revert(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> revert(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("globalRulestackName") String globalRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GlobalRulestackResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GlobalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalRulestackResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<GlobalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<GlobalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GlobalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalRulestackResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GlobalRulestackResource list operation as paginated response with {@link PagedFlux}.
@@ -337,7 +271,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -346,17 +280,17 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GlobalRulestackResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a GlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalRulestackResourceInner> list() {
@@ -365,13 +299,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List GlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a GlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a GlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GlobalRulestackResourceInner> list(Context context) {
@@ -380,7 +314,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -390,10 +324,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GlobalRulestackResourceInner>> getWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -401,21 +333,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,13 +349,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return a GlobalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GlobalRulestackResourceInner>> getWithResponseAsync(
-        String globalRulestackName, Context context) {
+    private Mono<Response<GlobalRulestackResourceInner>> getWithResponseAsync(String globalRulestackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -438,13 +361,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept,
+            context);
     }
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,7 +381,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,7 +396,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -487,7 +410,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,13 +419,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName,
+        GlobalRulestackResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -515,22 +436,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -540,13 +453,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName,
+        GlobalRulestackResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -559,14 +470,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, resource, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            resource, accept, context);
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -575,22 +485,17 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the {@link PollerFlux} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdateAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource) {
+    private PollerFlux<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdateAsync(String globalRulestackName, GlobalRulestackResourceInner resource) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(globalRulestackName, resource);
-        return this
-            .client
-            .<GlobalRulestackResourceInner, GlobalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GlobalRulestackResourceInner.class,
-                GlobalRulestackResourceInner.class,
-                this.client.getContext());
+        return this.client.<GlobalRulestackResourceInner, GlobalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GlobalRulestackResourceInner.class, GlobalRulestackResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -600,23 +505,18 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the {@link PollerFlux} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdateAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
+    private PollerFlux<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdateAsync(String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(globalRulestackName, resource, context);
-        return this
-            .client
-            .<GlobalRulestackResourceInner, GlobalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GlobalRulestackResourceInner.class,
-                GlobalRulestackResourceInner.class,
-                context);
+        return this.client.<GlobalRulestackResourceInner, GlobalRulestackResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GlobalRulestackResourceInner.class, GlobalRulestackResourceInner.class,
+            context);
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -625,14 +525,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource) {
+    public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource) {
         return this.beginCreateOrUpdateAsync(globalRulestackName, resource).getSyncPoller();
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -642,14 +542,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the {@link SyncPoller} for polling of paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
+    public SyncPoller<PollResult<GlobalRulestackResourceInner>, GlobalRulestackResourceInner>
+        beginCreateOrUpdate(String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
         return this.beginCreateOrUpdateAsync(globalRulestackName, resource, context).getSyncPoller();
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,16 +558,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalRulestackResourceInner> createOrUpdateAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource) {
-        return beginCreateOrUpdateAsync(globalRulestackName, resource)
-            .last()
+    private Mono<GlobalRulestackResourceInner> createOrUpdateAsync(String globalRulestackName,
+        GlobalRulestackResourceInner resource) {
+        return beginCreateOrUpdateAsync(globalRulestackName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -677,16 +576,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalRulestackResourceInner> createOrUpdateAsync(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(globalRulestackName, resource, context)
-            .last()
+    private Mono<GlobalRulestackResourceInner> createOrUpdateAsync(String globalRulestackName,
+        GlobalRulestackResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(globalRulestackName, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,14 +593,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource) {
+    public GlobalRulestackResourceInner createOrUpdate(String globalRulestackName,
+        GlobalRulestackResourceInner resource) {
         return createOrUpdateAsync(globalRulestackName, resource).block();
     }
 
     /**
      * Create a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -712,14 +610,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, GlobalRulestackResourceInner resource, Context context) {
+    public GlobalRulestackResourceInner createOrUpdate(String globalRulestackName,
+        GlobalRulestackResourceInner resource, Context context) {
         return createOrUpdateAsync(globalRulestackName, resource, context).block();
     }
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -728,13 +626,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GlobalRulestackResourceInner>> updateWithResponseAsync(
-        String globalRulestackName, GlobalRulestackResourceUpdate properties) {
+    private Mono<Response<GlobalRulestackResourceInner>> updateWithResponseAsync(String globalRulestackName,
+        GlobalRulestackResourceUpdate properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -747,22 +643,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            properties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
@@ -772,13 +660,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GlobalRulestackResourceInner>> updateWithResponseAsync(
-        String globalRulestackName, GlobalRulestackResourceUpdate properties, Context context) {
+    private Mono<Response<GlobalRulestackResourceInner>> updateWithResponseAsync(String globalRulestackName,
+        GlobalRulestackResourceUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -791,19 +677,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                properties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, properties,
+            accept, context);
     }
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -812,15 +692,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GlobalRulestackResourceInner> updateAsync(
-        String globalRulestackName, GlobalRulestackResourceUpdate properties) {
+    private Mono<GlobalRulestackResourceInner> updateAsync(String globalRulestackName,
+        GlobalRulestackResourceUpdate properties) {
         return updateWithResponseAsync(globalRulestackName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @param context The context to associate with this operation.
@@ -830,14 +710,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return paloAltoNetworks GlobalRulestack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GlobalRulestackResourceInner> updateWithResponse(
-        String globalRulestackName, GlobalRulestackResourceUpdate properties, Context context) {
+    public Response<GlobalRulestackResourceInner> updateWithResponse(String globalRulestackName,
+        GlobalRulestackResourceUpdate properties, Context context) {
         return updateWithResponseAsync(globalRulestackName, properties, context).block();
     }
 
     /**
      * Update a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param properties The resource properties to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -852,7 +732,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -862,10 +742,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -873,21 +751,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -898,10 +769,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -909,13 +778,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept,
+            context);
     }
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -925,15 +794,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -945,14 +812,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -966,7 +832,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -981,7 +847,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -995,7 +861,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1010,7 +876,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1023,7 +889,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Delete a GlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1037,7 +903,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1047,10 +913,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1058,21 +922,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .commit(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.commit(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1083,10 +940,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> commitWithResponseAsync(String globalRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1094,13 +949,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .commit(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.commit(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept,
+            context);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1110,15 +965,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCommitAsync(String globalRulestackName) {
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(globalRulestackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1130,14 +983,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     private PollerFlux<PollResult<Void>, Void> beginCommitAsync(String globalRulestackName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = commitWithResponseAsync(globalRulestackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1151,7 +1003,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1166,7 +1018,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1180,7 +1032,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1195,7 +1047,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1208,7 +1060,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1222,7 +1074,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1232,10 +1084,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1243,21 +1093,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getChangeLog(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.getChangeLog(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1268,10 +1111,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ChangelogInner>> getChangeLogWithResponseAsync(String globalRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1279,13 +1120,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getChangeLog(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.getChangeLog(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept,
+            context);
     }
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1299,7 +1140,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1314,7 +1155,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get changelog.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1328,7 +1169,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -1336,17 +1177,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of advanced security objects along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjectsWithResponseAsync(
         String globalRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1357,24 +1196,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAdvancedSecurityObjects(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            skip,
-                            top,
-                            type,
-                            accept,
-                            context))
+            .withContext(context -> service.listAdvancedSecurityObjects(this.client.getEndpoint(),
+                this.client.getApiVersion(), globalRulestackName, skip, top, type, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -1383,17 +1212,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of advanced security objects along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of advanced security objects along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AdvSecurityObjectListResponseInner>> listAdvancedSecurityObjectsWithResponseAsync(
         String globalRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1404,21 +1231,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAdvancedSecurityObjects(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                skip,
-                top,
-                type,
-                accept,
-                context);
+        return service.listAdvancedSecurityObjects(this.client.getEndpoint(), this.client.getApiVersion(),
+            globalRulestackName, skip, top, type, accept, context);
     }
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1427,8 +1246,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the list of advanced security objects on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsAsync(
-        String globalRulestackName, AdvSecurityObjectTypeEnum type) {
+    private Mono<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsAsync(String globalRulestackName,
+        AdvSecurityObjectTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listAdvancedSecurityObjectsWithResponseAsync(globalRulestackName, type, skip, top)
@@ -1437,7 +1256,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -1456,7 +1275,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1465,8 +1284,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the list of advanced security objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(
-        String globalRulestackName, AdvSecurityObjectTypeEnum type) {
+    public AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String globalRulestackName,
+        AdvSecurityObjectTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listAdvancedSecurityObjectsWithResponse(globalRulestackName, type, skip, top, Context.NONE).getValue();
@@ -1474,7 +1293,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
      * @param appPrefix The appPrefix parameter.
@@ -1486,13 +1305,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(
-        String globalRulestackName, String appIdVersion, String appPrefix, String skip, Integer top) {
+    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(String globalRulestackName,
+        String appIdVersion, String appPrefix, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1500,25 +1317,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAppIds(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            appIdVersion,
-                            appPrefix,
-                            skip,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.listAppIds(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, appIdVersion, appPrefix, skip, top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
      * @param appPrefix The appPrefix parameter.
@@ -1531,13 +1337,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(
-        String globalRulestackName, String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
+    private Mono<Response<ListAppIdResponseInner>> listAppIdsWithResponseAsync(String globalRulestackName,
+        String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1545,22 +1349,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAppIds(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                appIdVersion,
-                appPrefix,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listAppIds(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            appIdVersion, appPrefix, skip, top, accept, context);
     }
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1579,7 +1374,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
      * @param appPrefix The appPrefix parameter.
@@ -1592,14 +1387,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListAppIdResponseInner> listAppIdsWithResponse(
-        String globalRulestackName, String appIdVersion, String appPrefix, String skip, Integer top, Context context) {
+    public Response<ListAppIdResponseInner> listAppIdsWithResponse(String globalRulestackName, String appIdVersion,
+        String appPrefix, String skip, Integer top, Context context) {
         return listAppIdsWithResponseAsync(globalRulestackName, appIdVersion, appPrefix, skip, top, context).block();
     }
 
     /**
      * List of AppIds for GlobalRulestack ApiVersion.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1617,7 +1412,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1627,13 +1422,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return countries Response Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(
-        String globalRulestackName, String skip, Integer top) {
+    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(String globalRulestackName,
+        String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1641,23 +1434,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCountries(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            skip,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.listCountries(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, skip, top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1668,13 +1452,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return countries Response Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(
-        String globalRulestackName, String skip, Integer top, Context context) {
+    private Mono<Response<CountriesResponseInner>> listCountriesWithResponseAsync(String globalRulestackName,
+        String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1682,20 +1464,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCountries(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listCountries(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, skip,
+            top, accept, context);
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1712,7 +1487,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1723,14 +1498,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return countries Response Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CountriesResponseInner> listCountriesWithResponse(
-        String globalRulestackName, String skip, Integer top, Context context) {
+    public Response<CountriesResponseInner> listCountriesWithResponse(String globalRulestackName, String skip,
+        Integer top, Context context) {
         return listCountriesWithResponseAsync(globalRulestackName, skip, top, context).block();
     }
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1746,7 +1521,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1756,10 +1531,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1767,21 +1540,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listFirewalls(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.listFirewalls(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1790,13 +1556,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return list firewalls response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(
-        String globalRulestackName, Context context) {
+    private Mono<Response<ListFirewallsResponseInner>> listFirewallsWithResponseAsync(String globalRulestackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1804,14 +1568,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listFirewalls(
-                this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.listFirewalls(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            accept, context);
     }
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1825,7 +1588,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1840,7 +1603,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1854,7 +1617,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1864,13 +1627,11 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return predefined url categories response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategoriesWithResponseAsync(
-        String globalRulestackName, String skip, Integer top) {
+    private Mono<Response<PredefinedUrlCategoriesResponseInner>>
+        listPredefinedUrlCategoriesWithResponseAsync(String globalRulestackName, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1878,23 +1639,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPredefinedUrlCategories(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            skip,
-                            top,
-                            accept,
-                            context))
+            .withContext(context -> service.listPredefinedUrlCategories(this.client.getEndpoint(),
+                this.client.getApiVersion(), globalRulestackName, skip, top, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1908,10 +1660,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     private Mono<Response<PredefinedUrlCategoriesResponseInner>> listPredefinedUrlCategoriesWithResponseAsync(
         String globalRulestackName, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -1919,20 +1669,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listPredefinedUrlCategories(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                skip,
-                top,
-                accept,
-                context);
+        return service.listPredefinedUrlCategories(this.client.getEndpoint(), this.client.getApiVersion(),
+            globalRulestackName, skip, top, accept, context);
     }
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1949,7 +1692,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -1960,14 +1703,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return predefined url categories response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(
-        String globalRulestackName, String skip, Integer top, Context context) {
+    public Response<PredefinedUrlCategoriesResponseInner>
+        listPredefinedUrlCategoriesWithResponse(String globalRulestackName, String skip, Integer top, Context context) {
         return listPredefinedUrlCategoriesWithResponseAsync(globalRulestackName, skip, top, context).block();
     }
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1983,7 +1726,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -1997,10 +1740,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     private Mono<Response<SecurityServicesResponseInner>> listSecurityServicesWithResponseAsync(
         String globalRulestackName, SecurityServicesTypeEnum type, String skip, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -2011,24 +1752,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSecurityServices(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            skip,
-                            top,
-                            type,
-                            accept,
-                            context))
+            .withContext(context -> service.listSecurityServices(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, skip, top, type, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -2043,10 +1774,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     private Mono<Response<SecurityServicesResponseInner>> listSecurityServicesWithResponseAsync(
         String globalRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -2057,21 +1786,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSecurityServices(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                skip,
-                top,
-                type,
-                accept,
-                context);
+        return service.listSecurityServices(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName,
+            skip, top, type, accept, context);
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2080,8 +1801,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return security services list response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityServicesResponseInner> listSecurityServicesAsync(
-        String globalRulestackName, SecurityServicesTypeEnum type) {
+    private Mono<SecurityServicesResponseInner> listSecurityServicesAsync(String globalRulestackName,
+        SecurityServicesTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listSecurityServicesWithResponseAsync(globalRulestackName, type, skip, top)
@@ -2090,7 +1811,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @param skip The skip parameter.
@@ -2102,14 +1823,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return security services list response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(
-        String globalRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
+    public Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String globalRulestackName,
+        SecurityServicesTypeEnum type, String skip, Integer top, Context context) {
         return listSecurityServicesWithResponseAsync(globalRulestackName, type, skip, top, context).block();
     }
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2118,8 +1839,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
      * @return security services list response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityServicesResponseInner listSecurityServices(
-        String globalRulestackName, SecurityServicesTypeEnum type) {
+    public SecurityServicesResponseInner listSecurityServices(String globalRulestackName,
+        SecurityServicesTypeEnum type) {
         final String skip = null;
         final Integer top = null;
         return listSecurityServicesWithResponse(globalRulestackName, type, skip, top, Context.NONE).getValue();
@@ -2127,7 +1848,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2137,10 +1858,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revertWithResponseAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -2148,21 +1867,14 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .revert(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
+            .withContext(context -> service.revert(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2173,10 +1885,8 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> revertWithResponseAsync(String globalRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -2184,13 +1894,13 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .revert(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context);
+        return service.revert(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept,
+            context);
     }
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2204,7 +1914,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2219,7 +1929,7 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2232,14 +1942,15 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GlobalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalRulestackResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2247,62 +1958,43 @@ public final class GlobalRulestacksClientImpl implements GlobalRulestacksClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GlobalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GlobalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a GlobalRulestackResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GlobalRulestackResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<GlobalRulestackResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

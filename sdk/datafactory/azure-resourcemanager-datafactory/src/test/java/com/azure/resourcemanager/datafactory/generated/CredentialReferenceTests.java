@@ -14,22 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CredentialReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CredentialReference model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CredentialReference\",\"referenceName\":\"lhdyzmyckzex\",\"\":{\"wymxgaabjk\":\"datakck\",\"ogzvk\":\"datatfohf\"}}")
-                .toObject(CredentialReference.class);
+        CredentialReference model = BinaryData.fromString(
+            "{\"type\":\"CredentialReference\",\"referenceName\":\"lhdyzmyckzex\",\"\":{\"wymxgaabjk\":\"datakck\",\"ogzvk\":\"datatfohf\"}}")
+            .toObject(CredentialReference.class);
         Assertions.assertEquals(CredentialReferenceType.CREDENTIAL_REFERENCE, model.type());
         Assertions.assertEquals("lhdyzmyckzex", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CredentialReference model =
-            new CredentialReference()
-                .withType(CredentialReferenceType.CREDENTIAL_REFERENCE)
-                .withReferenceName("lhdyzmyckzex")
-                .withAdditionalProperties(mapOf());
+        CredentialReference model = new CredentialReference().withType(CredentialReferenceType.CREDENTIAL_REFERENCE)
+            .withReferenceName("lhdyzmyckzex").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(CredentialReference.class);
         Assertions.assertEquals(CredentialReferenceType.CREDENTIAL_REFERENCE, model.type());
         Assertions.assertEquals("lhdyzmyckzex", model.referenceName());

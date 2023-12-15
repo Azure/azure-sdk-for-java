@@ -76,6 +76,9 @@ public final class IdentityClientOptions implements Cloneable {
 
     private boolean isChained;
     private boolean enableUnsafeSupportLogging;
+    private long brokerWindowHandle;
+    private boolean brokerEnabled;
+    private boolean enableMsaPassthrough;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -96,15 +99,15 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * @return the Azure Active Directory endpoint to acquire tokens.
+     * @return the Microsoft Entra endpoint to acquire tokens.
      */
     public String getAuthorityHost() {
         return authorityHost;
     }
 
     /**
-     * Specifies the Azure Active Directory endpoint to acquire tokens.
-     * @param authorityHost the Azure Active Directory endpoint
+     * Specifies the Microsoft Entra endpoint to acquire tokens.
+     * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
@@ -743,6 +746,49 @@ public final class IdentityClientOptions implements Cloneable {
         return this;
     }
 
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public IdentityClientOptions setBrokerWindowHandle(long windowHandle) {
+        this.brokerEnabled = true;
+        this.brokerWindowHandle = windowHandle;
+        return this;
+    }
+
+    /**
+     * Gets the window handle for use with the interactive broker.
+     * @return the window handle for use with the interactive broker.
+     */
+    public long getBrokerWindowHandle() {
+        return this.brokerWindowHandle;
+    }
+
+    /**
+     * Gets the status whether broker is enabled or not.
+     * @return the flag indicating if broker is enabled or not.
+     */
+    public boolean isBrokerEnabled() {
+        return this.brokerEnabled;
+    }
+
+    /**
+     * Enables MSA passthrough.
+     */
+    public IdentityClientOptions setEnableLegacyMsaPassthrough(boolean enableMsaPassthrough) {
+        this.brokerEnabled = true;
+        this.enableMsaPassthrough = enableMsaPassthrough;
+        return this;
+    }
+
+    /**
+     * Gets the status whether MSA passthrough is enabled or not.
+     * @return the flag indicating if MSA passthrough is enabled or not.
+     */
+    public boolean isMsaPassthroughEnabled() {
+        return this.enableMsaPassthrough;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone =  new IdentityClientOptions()
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -772,7 +818,9 @@ public final class IdentityClientOptions implements Cloneable {
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies)
             .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-            .setChained(this.isChained);
+            .setChained(this.isChained)
+            .setBrokerWindowHandle(this.brokerWindowHandle)
+            .setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }

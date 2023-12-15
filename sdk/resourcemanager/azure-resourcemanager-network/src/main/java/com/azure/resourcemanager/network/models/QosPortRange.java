@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Qos Traffic Profiler Port range properties. */
+/**
+ * Qos Traffic Profiler Port range properties.
+ */
 @Fluent
 public final class QosPortRange {
     /*
@@ -22,13 +24,15 @@ public final class QosPortRange {
     @JsonProperty(value = "end")
     private Integer end;
 
-    /** Creates an instance of QosPortRange class. */
+    /**
+     * Creates an instance of QosPortRange class.
+     */
     public QosPortRange() {
     }
 
     /**
      * Get the start property: Qos Port Range start.
-     *
+     * 
      * @return the start value.
      */
     public Integer start() {
@@ -37,7 +41,7 @@ public final class QosPortRange {
 
     /**
      * Set the start property: Qos Port Range start.
-     *
+     * 
      * @param start the start value to set.
      * @return the QosPortRange object itself.
      */
@@ -48,7 +52,7 @@ public final class QosPortRange {
 
     /**
      * Get the end property: Qos Port Range end.
-     *
+     * 
      * @return the end value.
      */
     public Integer end() {
@@ -57,7 +61,7 @@ public final class QosPortRange {
 
     /**
      * Set the end property: Qos Port Range end.
-     *
+     * 
      * @param end the end value to set.
      * @return the QosPortRange object itself.
      */
@@ -68,7 +72,7 @@ public final class QosPortRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

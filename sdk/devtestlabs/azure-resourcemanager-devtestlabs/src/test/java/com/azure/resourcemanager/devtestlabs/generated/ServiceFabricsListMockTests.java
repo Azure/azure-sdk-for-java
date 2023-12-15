@@ -32,7 +32,7 @@ public final class ServiceFabricsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"kcyqhyqqzzd\",\"environmentId\":\"keys\",\"applicableSchedule\":{\"location\":\"wfopazdazg\",\"tags\":{},\"id\":\"qgpewqcfutmdpvoz\",\"name\":\"lq\",\"type\":\"bknlzcl\"},\"provisioningState\":\"zeyowmndcovdwzqa\",\"uniqueIdentifier\":\"zanhmkvfru\"},\"location\":\"kudrbcpftx\",\"tags\":{\"ebunauc\":\"ye\",\"emmjauwcg\":\"cirtn\"},\"id\":\"efnoh\",\"name\":\"itranizerwguda\",\"type\":\"mxubvfbngfcoce\"}]}";
+            "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"dxwhieproqksmfx\",\"environmentId\":\"vprstv\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"b\",\"tags\":{\"qxwetjtd\":\"dyotnplfacqoccq\",\"padkmdzgsszxvct\":\"hutfdoadtxopge\",\"clabv\":\"bbxuharlsirn\"},\"id\":\"yngsuxxcz\",\"name\":\"myqjog\",\"type\":\"dsaidjanormovdxx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ntujmoilunwemhd\",\"tags\":{\"rhrhtsl\":\"jslkyozdsfzjue\",\"j\":\"jtv\",\"bpnjodf\":\"xvgjbfi\"},\"id\":\"bj\",\"name\":\"qwm\",\"type\":\"q\"}},\"location\":\"moxsa\",\"tags\":{\"ywnfyszzaczs\":\"ejgwe\"},\"id\":\"nqbdnddbboz\",\"name\":\"yvrmkjm\",\"type\":\"it\"},\"provisioningState\":\"hwudlxeei\",\"uniqueIdentifier\":\"pmnoejhqlf\"},\"location\":\"sibz\",\"tags\":{\"vmtywhlakxp\":\"fgxkydpmypgf\",\"m\":\"jpewpyjlfx\"},\"id\":\"qcrzgeuqxbpia\",\"name\":\"w\",\"type\":\"aujegqdtadra\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,18 @@ public final class ServiceFabricsListMockTests {
             manager
                 .serviceFabrics()
                 .list(
-                    "s",
-                    "nlrxsmyltrwntfmt",
-                    "g",
-                    "jdxwnazkurrdre",
-                    "zjwhsetwwjwz",
-                    1781407447,
-                    "seuzuu",
+                    "oxudnmckap",
+                    "hknqiijge",
+                    "cdgmoqu",
+                    "qih",
+                    "kyow",
+                    1032764094,
+                    "jouw",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kudrbcpftx", response.iterator().next().location());
-        Assertions.assertEquals("ye", response.iterator().next().tags().get("ebunauc"));
-        Assertions.assertEquals("kcyqhyqqzzd", response.iterator().next().externalServiceFabricId());
-        Assertions.assertEquals("keys", response.iterator().next().environmentId());
+        Assertions.assertEquals("sibz", response.iterator().next().location());
+        Assertions.assertEquals("fgxkydpmypgf", response.iterator().next().tags().get("vmtywhlakxp"));
+        Assertions.assertEquals("dxwhieproqksmfx", response.iterator().next().externalServiceFabricId());
+        Assertions.assertEquals("vprstv", response.iterator().next().environmentId());
     }
 }

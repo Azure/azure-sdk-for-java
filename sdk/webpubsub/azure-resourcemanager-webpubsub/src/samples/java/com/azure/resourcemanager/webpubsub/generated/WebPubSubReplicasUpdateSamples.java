@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for WebPubSubReplicas Update. */
 public final class WebPubSubReplicasUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Update.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Update.json
      */
     /**
      * Sample code: WebPubSubReplicas_Update.
@@ -34,9 +34,11 @@ public final class WebPubSubReplicasUpdateSamples {
             .update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .withResourceStopped("false")
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

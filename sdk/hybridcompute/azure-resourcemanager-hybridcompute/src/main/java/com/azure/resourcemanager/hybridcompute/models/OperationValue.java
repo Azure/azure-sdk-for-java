@@ -30,6 +30,13 @@ public interface OperationValue {
     OperationValueDisplay display();
 
     /**
+     * Gets the isDataAction property: This property indicates if the operation is an action or a data action.
+     *
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.OperationValueInner object.
      *
      * @return the inner object.

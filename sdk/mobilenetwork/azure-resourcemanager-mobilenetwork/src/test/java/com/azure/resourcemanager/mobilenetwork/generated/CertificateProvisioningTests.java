@@ -12,7 +12,7 @@ public final class CertificateProvisioningTests {
     public void testDeserialize() throws Exception {
         CertificateProvisioning model =
             BinaryData
-                .fromString("{\"state\":\"Failed\",\"reason\":\"rpabg\"}")
+                .fromString("{\"state\":\"NotProvisioned\",\"reason\":\"yfjfcnjbkcn\"}")
                 .toObject(CertificateProvisioning.class);
     }
 

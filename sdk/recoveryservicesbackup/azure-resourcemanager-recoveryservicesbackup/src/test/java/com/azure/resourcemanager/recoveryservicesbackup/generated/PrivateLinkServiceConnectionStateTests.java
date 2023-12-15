@@ -15,23 +15,23 @@ public final class PrivateLinkServiceConnectionStateTests {
         PrivateLinkServiceConnectionState model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Approved\",\"description\":\"onlebxetqgtzxdpn\",\"actionRequired\":\"qqwx\"}")
+                    "{\"status\":\"Disconnected\",\"description\":\"bjnpg\",\"actionsRequired\":\"ftadehxnltyfs\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("onlebxetqgtzxdpn", model.description());
-        Assertions.assertEquals("qqwx", model.actionRequired());
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("bjnpg", model.description());
+        Assertions.assertEquals("ftadehxnltyfs", model.actionRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointConnectionStatus.APPROVED)
-                .withDescription("onlebxetqgtzxdpn")
-                .withActionRequired("qqwx");
+                .withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
+                .withDescription("bjnpg")
+                .withActionRequired("ftadehxnltyfs");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointConnectionStatus.APPROVED, model.status());
-        Assertions.assertEquals("onlebxetqgtzxdpn", model.description());
-        Assertions.assertEquals("qqwx", model.actionRequired());
+        Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED, model.status());
+        Assertions.assertEquals("bjnpg", model.description());
+        Assertions.assertEquals("ftadehxnltyfs", model.actionRequired());
     }
 }

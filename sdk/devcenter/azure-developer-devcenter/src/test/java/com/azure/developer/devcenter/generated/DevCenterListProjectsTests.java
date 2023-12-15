@@ -7,6 +7,7 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,11 +17,12 @@ public final class DevCenterListProjectsTests extends DevCenterClientTestBase {
     @Disabled
     public void testDevCenterListProjectsTests() {
         RequestOptions requestOptions = new RequestOptions();
+
         PagedIterable<BinaryData> response = devCenterClient.listProjects(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
-                BinaryData.fromString("{\"name\":\"DevDiv\",\"description\":\"The developer division\"}")
-                        .toObject(Object.class),
+                BinaryData.fromString(String.format("{\"name\":\"%s\"}", projectName))
+                    .toObject(Object.class),
                 response.iterator().next().toObject(Object.class));
     }
 }

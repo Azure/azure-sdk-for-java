@@ -23,17 +23,17 @@ public final class WebPubSubHubInnerTests {
         WebPubSubHubInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"fq\",\"userEventPattern\":\"mtdh\",\"systemEvents\":[\"vypgikdg\",\"zywkb\",\"rryuzhlhkjo\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"atjinrvgoupmfiib\"}}},{\"urlTemplate\":\"ggjioolvr\",\"userEventPattern\":\"kvtkkg\",\"systemEvents\":[\"wjygvjayvblmhvk\",\"uhbxvvy\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"yrqufegxuvwz\"}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"lmctlpd\"},\"id\":\"gitvg\",\"name\":\"mhrixkwmyijejve\",\"type\":\"rh\"}")
+                    "{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"zh\",\"userEventPattern\":\"kj\",\"systemEvents\":[\"vqqaatjinrvgo\",\"pmfi\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"ioolvrwxkvtkkgll\"}}},{\"urlTemplate\":\"wjygvjayvblmhvk\",\"userEventPattern\":\"hbxvvyhgsopbyrqu\",\"systemEvents\":[\"xuvw\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"mctlpdngitv\"}}},{\"urlTemplate\":\"bmhrixkwmyijejv\",\"userEventPattern\":\"rh\",\"systemEvents\":[\"aixexccbdreaxh\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"vqahqkghtpwi\"}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"jsvfycxzbfvoowv\"},\"id\":\"mtg\",\"name\":\"qp\",\"type\":\"y\"}")
                 .toObject(WebPubSubHubInner.class);
-        Assertions.assertEquals("fq", model.properties().eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("mtdh", model.properties().eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("vypgikdg", model.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals("zh", model.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("kj", model.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("vqqaatjinrvgo", model.properties().eventHandlers().get(0).systemEvents().get(0));
         Assertions
             .assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.properties().eventHandlers().get(0).auth().type());
         Assertions
             .assertEquals(
-                "atjinrvgoupmfiib", model.properties().eventHandlers().get(0).auth().managedIdentity().resource());
-        Assertions.assertEquals("lmctlpd", model.properties().anonymousConnectPolicy());
+                "ioolvrwxkvtkkgll", model.properties().eventHandlers().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.properties().anonymousConnectPolicy());
     }
 
     @org.junit.jupiter.api.Test
@@ -46,23 +46,32 @@ public final class WebPubSubHubInnerTests {
                             Arrays
                                 .asList(
                                     new EventHandler()
-                                        .withUrlTemplate("fq")
-                                        .withUserEventPattern("mtdh")
-                                        .withSystemEvents(Arrays.asList("vypgikdg", "zywkb", "rryuzhlhkjo"))
+                                        .withUrlTemplate("zh")
+                                        .withUserEventPattern("kj")
+                                        .withSystemEvents(Arrays.asList("vqqaatjinrvgo", "pmfi"))
                                         .withAuth(
                                             new UpstreamAuthSettings()
                                                 .withType(UpstreamAuthType.MANAGED_IDENTITY)
                                                 .withManagedIdentity(
-                                                    new ManagedIdentitySettings().withResource("atjinrvgoupmfiib"))),
+                                                    new ManagedIdentitySettings().withResource("ioolvrwxkvtkkgll"))),
                                     new EventHandler()
-                                        .withUrlTemplate("ggjioolvr")
-                                        .withUserEventPattern("kvtkkg")
-                                        .withSystemEvents(Arrays.asList("wjygvjayvblmhvk", "uhbxvvy"))
+                                        .withUrlTemplate("wjygvjayvblmhvk")
+                                        .withUserEventPattern("hbxvvyhgsopbyrqu")
+                                        .withSystemEvents(Arrays.asList("xuvw"))
                                         .withAuth(
                                             new UpstreamAuthSettings()
                                                 .withType(UpstreamAuthType.MANAGED_IDENTITY)
                                                 .withManagedIdentity(
-                                                    new ManagedIdentitySettings().withResource("yrqufegxuvwz")))))
+                                                    new ManagedIdentitySettings().withResource("mctlpdngitv"))),
+                                    new EventHandler()
+                                        .withUrlTemplate("bmhrixkwmyijejv")
+                                        .withUserEventPattern("rh")
+                                        .withSystemEvents(Arrays.asList("aixexccbdreaxh"))
+                                        .withAuth(
+                                            new UpstreamAuthSettings()
+                                                .withType(UpstreamAuthType.MANAGED_IDENTITY)
+                                                .withManagedIdentity(
+                                                    new ManagedIdentitySettings().withResource("vqahqkghtpwi")))))
                         .withEventListeners(
                             Arrays
                                 .asList(
@@ -75,16 +84,16 @@ public final class WebPubSubHubInnerTests {
                                     new EventListener()
                                         .withFilter(new EventListenerFilter())
                                         .withEndpoint(new EventListenerEndpoint())))
-                        .withAnonymousConnectPolicy("lmctlpd"));
+                        .withAnonymousConnectPolicy("jsvfycxzbfvoowv"));
         model = BinaryData.fromObject(model).toObject(WebPubSubHubInner.class);
-        Assertions.assertEquals("fq", model.properties().eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("mtdh", model.properties().eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("vypgikdg", model.properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals("zh", model.properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("kj", model.properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("vqqaatjinrvgo", model.properties().eventHandlers().get(0).systemEvents().get(0));
         Assertions
             .assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.properties().eventHandlers().get(0).auth().type());
         Assertions
             .assertEquals(
-                "atjinrvgoupmfiib", model.properties().eventHandlers().get(0).auth().managedIdentity().resource());
-        Assertions.assertEquals("lmctlpd", model.properties().anonymousConnectPolicy());
+                "ioolvrwxkvtkkgll", model.properties().eventHandlers().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("jsvfycxzbfvoowv", model.properties().anonymousConnectPolicy());
     }
 }

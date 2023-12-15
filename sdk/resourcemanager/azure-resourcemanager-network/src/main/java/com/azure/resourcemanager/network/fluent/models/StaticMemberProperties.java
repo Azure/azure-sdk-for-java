@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of static member. */
+/**
+ * Properties of static member.
+ */
 @Fluent
 public final class StaticMemberProperties {
     /*
@@ -29,13 +31,15 @@ public final class StaticMemberProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of StaticMemberProperties class. */
+    /**
+     * Creates an instance of StaticMemberProperties class.
+     */
     public StaticMemberProperties() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -44,7 +48,7 @@ public final class StaticMemberProperties {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the StaticMemberProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class StaticMemberProperties {
 
     /**
      * Get the region property: Resource region.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -64,7 +68,7 @@ public final class StaticMemberProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -73,7 +77,7 @@ public final class StaticMemberProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

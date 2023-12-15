@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Trigger that creates pipeline runs periodically, on schedule. */
+/**
+ * Trigger that creates pipeline runs periodically, on schedule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ScheduleTrigger")
 @Fluent
@@ -23,34 +25,42 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties", required = true)
     private ScheduleTriggerTypeProperties innerTypeProperties = new ScheduleTriggerTypeProperties();
 
-    /** Creates an instance of ScheduleTrigger class. */
+    /**
+     * Creates an instance of ScheduleTrigger class.
+     */
     public ScheduleTrigger() {
     }
 
     /**
      * Get the innerTypeProperties property: Schedule Trigger properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ScheduleTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger withPipelines(List<TriggerPipelineReference> pipelines) {
         super.withPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -59,7 +69,7 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @return the recurrence value.
      */
     public ScheduleTriggerRecurrence recurrence() {
@@ -68,7 +78,7 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the ScheduleTrigger object itself.
      */
@@ -82,17 +92,15 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ScheduleTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model ScheduleTrigger"));
         } else {
             innerTypeProperties().validate();
         }

@@ -31,7 +31,7 @@ public final class OperationsDiscoveriesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"oadsuvar\",\"isDataAction\":true,\"origin\":\"jsjqbjhhyx\",\"properties\":\"datawlycoduhpkxkg\"},{\"name\":\"areqna\",\"isDataAction\":true,\"origin\":\"jhkycub\",\"properties\":\"datadgssofwqmzqal\"}],\"nextLink\":\"mnjijpxacqqudf\"}";
+            "{\"value\":[{\"name\":\"rjaltolmncw\",\"isDataAction\":true,\"display\":{\"provider\":\"csdbnwdcfhuc\",\"resource\":\"pfuvglsbjjca\",\"operation\":\"xbvtvudu\",\"description\":\"cormr\"},\"origin\":\"qtvcofudflvkgj\",\"properties\":\"datagdknnqv\"},{\"name\":\"znqntoru\",\"isDataAction\":true,\"display\":{\"provider\":\"hmk\",\"resource\":\"grauwjuetaebur\",\"operation\":\"dmovsm\",\"description\":\"xwabmqoe\"},\"origin\":\"ifrvtpu\",\"properties\":\"datajmqlgkfb\"},{\"name\":\"doaon\",\"isDataAction\":false,\"display\":{\"provider\":\"tujitcjedft\",\"resource\":\"ae\",\"operation\":\"ojvdcpzfoqo\",\"description\":\"cybxa\"},\"origin\":\"gszufoxciqopid\",\"properties\":\"datamciodhkhazxkhn\"},{\"name\":\"onlwntoeg\",\"isDataAction\":true,\"display\":{\"provider\":\"whkszzcmrvexztvb\",\"resource\":\"gsfraoyzkoow\",\"operation\":\"mnguxawqaldsyu\",\"description\":\"imerqfobwyznk\"},\"origin\":\"kutwpf\",\"properties\":\"dataa\"}],\"nextLink\":\"hrskdsnfd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,13 @@ public final class OperationsDiscoveriesGetWithResponseMockTests {
         OperationsDiscoveryCollection response =
             manager.operationsDiscoveries().getWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("oadsuvar", response.value().get(0).name());
+        Assertions.assertEquals("rjaltolmncw", response.value().get(0).name());
         Assertions.assertEquals(true, response.value().get(0).isDataAction());
-        Assertions.assertEquals("jsjqbjhhyx", response.value().get(0).origin());
-        Assertions.assertEquals("mnjijpxacqqudf", response.nextLink());
+        Assertions.assertEquals("csdbnwdcfhuc", response.value().get(0).display().provider());
+        Assertions.assertEquals("pfuvglsbjjca", response.value().get(0).display().resource());
+        Assertions.assertEquals("xbvtvudu", response.value().get(0).display().operation());
+        Assertions.assertEquals("cormr", response.value().get(0).display().description());
+        Assertions.assertEquals("qtvcofudflvkgj", response.value().get(0).origin());
+        Assertions.assertEquals("hrskdsnfd", response.nextLink());
     }
 }

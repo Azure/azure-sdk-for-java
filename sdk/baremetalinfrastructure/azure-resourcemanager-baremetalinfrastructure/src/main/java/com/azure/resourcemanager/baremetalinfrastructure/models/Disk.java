@@ -7,7 +7,7 @@ package com.azure.resourcemanager.baremetalinfrastructure.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the disk information fo the AzureBareMetal instance. */
+/** Specifies the disk information fo the Azure Bare Metal Instance. */
 @Fluent
 public final class Disk {
     /*
