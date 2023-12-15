@@ -118,7 +118,7 @@ public final class BatchResponseParser {
         int i = 0;
         for (Iterator<JsonNode> it = responseContent.iterator(); it.hasNext(); ) {
             JsonNode arrayItemNode = it.next();
-            objectNodes[i] = (ObjectNode)responseContent.iterator();
+            objectNodes[i] = (ObjectNode)arrayItemNode;
             i++;
         }
 
