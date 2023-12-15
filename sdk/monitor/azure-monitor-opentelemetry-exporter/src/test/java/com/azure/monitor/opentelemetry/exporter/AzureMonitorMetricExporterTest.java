@@ -139,8 +139,8 @@ public class AzureMonitorMetricExporterTest {
         assertThat(metricsData.getMetrics().size()).isEqualTo(1);
         Map<String, String> properties = metricsData.getProperties();
 
-        assertThat(properties.size()).isEqualTo(2);
-        assertThat(properties.get(NET_PEER_NAME.getKey())).isEqualTo("example.io");
+        assertThat(properties.size()).isEqualTo(1);
+        assertThat(properties.get(NET_PEER_NAME.getKey())).isNull();
         assertThat(properties.get("foo")).isEqualTo("bar");
     }
 
