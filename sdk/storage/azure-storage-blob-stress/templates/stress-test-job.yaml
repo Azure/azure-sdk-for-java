@@ -7,11 +7,11 @@ metadata:
 spec:
   containers:
     - name: fault-injector
-      image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-500-on-error
+      image: stresspgs7b6dif73rup6.azurecr.io/stress/httpfaultinjector:dev-streaming
       imagePullPolicy: Always
       resources:
         limits:
-          memory: 3Gi
+          memory: 1500Mi
           cpu: "0.5"
     - name: main
       image:  {{ .Stress.imageTag }}

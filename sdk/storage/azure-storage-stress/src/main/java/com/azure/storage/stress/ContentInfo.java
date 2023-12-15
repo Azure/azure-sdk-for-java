@@ -28,7 +28,7 @@ public class ContentInfo {
                             if (head.hasRemaining())
                             {
                                 ByteBuffer dup = bb.duplicate();
-                                while (head.hasRemaining()) {
+                                while (head.hasRemaining() && dup.hasRemaining()) {
                                     head.put(dup.get());
                                 }
                             }
