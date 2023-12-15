@@ -15,6 +15,7 @@
 #### Bugs Fixed
 * Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
 * Fixed an issue with populating the `azure-spring-data-cosmos` version number in the UserAgent - See [PR 37642](https://github.com/Azure/azure-sdk-for-java/pull/37642).
+* Fixed a bug with annotated queries that contain new lines in the query definition - See [PR 38050](https://github.com/Azure/azure-sdk-for-java/pull/38050).
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.53.1`.
