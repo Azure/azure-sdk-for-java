@@ -55,6 +55,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
+    private final ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange;
 
     public PartitionProcessorImpl(ChangeFeedObserver<T> observer,
                                   ChangeFeedContextClient documentClient,
@@ -76,6 +77,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                 settings.getStartState(),
                 settings.getMaxItemCount(),
                 this.changeFeedMode);
+        this.throughputControlGroupConfigForFeedRange = enableLocalThroughputControlForFeedRangeIfApplicable(settings, lease);
     }
 
     @Override
@@ -84,7 +86,6 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
             this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
-        this.enableLocalThroughputControlIfApplicable();
 
         return Flux.just(this)
             .flatMap(value -> {
@@ -107,10 +108,17 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
                     }).last();
 
             })
-            .flatMap(value ->
-                        this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(), this.options, itemType)
-                        .limitRequest(1)
-            )
+            .flatMap(value -> {
+                if (this.throughputControlGroupConfigForFeedRange != null) {
+                    this.options.setThroughputControlGroupName(this.throughputControlGroupConfigForFeedRange.getGroupName());
+                }
+
+                return this.documentClient.createDocumentChangeFeedQuery(
+                    this.settings.getCollectionSelfLink(),
+                        this.options,
+                        itemType)
+                    .limitRequest(1);
+            })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
@@ -295,32 +303,33 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         return this.observer.processChanges(context, response.getResults());
     }
 
-    private void enableLocalThroughputControlIfApplicable() {
-        ThroughputControlGroupConfig configToBeCloned = this.settings.getFeedPollThroughputControlConfig();
+    private ThroughputControlGroupConfig enableLocalThroughputControlForFeedRangeIfApplicable(ProcessorSettings settings, Lease lease) {
+        ThroughputControlGroupConfig configToBeCloned = settings.getFeedPollThroughputControlConfig();
         if (configToBeCloned != null) {
             // For each feedRange, we create a local throughput control group
             // We choose to start from local throughput control based on the idea that usually each CFP instance will only process a unique subset of partitions
             // NOTE: this method will not work after merge happens. Further changes will need to make to also allow support for merge
-            ThroughputControlGroupConfigBuilder throughputControlGroupConfigForPkRangeBuilder =
+            ThroughputControlGroupConfigBuilder throughputControlGroupConfigForFeedRangeBuilder =
                 new ThroughputControlGroupConfigBuilder()
-                    .groupName(configToBeCloned.getGroupName() + "-" + this.lease.getLeaseToken())
+                    .groupName(configToBeCloned.getGroupName() + "-" + lease.getLeaseToken())
                     .continueOnInitError(configToBeCloned.continueOnInitError());
 
             if (configToBeCloned.getTargetThroughput() != null) {
-                throughputControlGroupConfigForPkRangeBuilder.targetThroughput(configToBeCloned.getTargetThroughput());
+                throughputControlGroupConfigForFeedRangeBuilder.targetThroughput(configToBeCloned.getTargetThroughput());
             }
             if (configToBeCloned.getTargetThroughputThreshold() != null) {
-                throughputControlGroupConfigForPkRangeBuilder.targetThroughputThreshold(configToBeCloned.getTargetThroughputThreshold());
+                throughputControlGroupConfigForFeedRangeBuilder.targetThroughputThreshold(configToBeCloned.getTargetThroughputThreshold());
             }
             if (configToBeCloned.getPriorityLevel() != null) {
-                throughputControlGroupConfigForPkRangeBuilder.priorityLevel(configToBeCloned.getPriorityLevel());
+                throughputControlGroupConfigForFeedRangeBuilder.priorityLevel(configToBeCloned.getPriorityLevel());
             }
 
-            ThroughputControlGroupConfig throughputControlGroupConfigForPkRange = throughputControlGroupConfigForPkRangeBuilder.build();
-            this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForPkRange);
+            ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange = throughputControlGroupConfigForFeedRangeBuilder.build();
+            this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForFeedRange);
 
-            this.options.setThroughputControlGroupName(throughputControlGroupConfigForPkRange.getGroupName()); // this will be used to populate the requests
-            logger.debug("Enable local throughput control for lease " + lease.getLeaseToken());
+            return throughputControlGroupConfigForFeedRange;
         }
+
+        return null;
     }
 }

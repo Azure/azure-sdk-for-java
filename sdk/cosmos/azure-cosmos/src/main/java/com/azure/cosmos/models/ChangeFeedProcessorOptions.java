@@ -379,7 +379,7 @@ public final class ChangeFeedProcessorOptions {
      * Set the feed poll throughput control config.
      * Note: It does not support after-merge container.
      *
-     * @param feedPollThroughputControlGroupConfig
+     * @param feedPollThroughputControlGroupConfig the throughput control for change feed requests for the monitored collection
      * @return the {@link ChangeFeedProcessorOptions}.
      */
     public ChangeFeedProcessorOptions setFeedPollThroughputControlConfig(ThroughputControlGroupConfig feedPollThroughputControlGroupConfig) {
