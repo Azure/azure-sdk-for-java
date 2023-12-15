@@ -22,6 +22,14 @@ class ResponseUtils {
 
         return contentObservable.map(byteArrayContent -> {
             // transforms to Mono<StoreResponse>
+            if (byteArrayContent == null || byteArrayContent.length == 0) {
+                return new StoreResponse(
+                    httpClientResponse.statusCode(),
+                    HttpUtils.unescape(httpResponseHeaders.toMap()),
+                    null,
+                    0);
+            }
+
             return new StoreResponse(
                 httpClientResponse.statusCode(),
                 HttpUtils.unescape(httpResponseHeaders.toMap()),
