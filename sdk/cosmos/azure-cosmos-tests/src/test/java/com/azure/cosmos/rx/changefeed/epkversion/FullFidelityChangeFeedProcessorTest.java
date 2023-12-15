@@ -1300,6 +1300,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
             Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
             ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            int maxItemCount = 100; // force the RU usage per requests > 1
+            int feedCount = maxItemCount * 2; // force to do two fetches
 
             ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                 .options(changeFeedProcessorOptions)
@@ -1307,7 +1309,9 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(
-                    new ChangeFeedProcessorOptions().setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                    new ChangeFeedProcessorOptions()
+                        .setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                        .setMaxItemCount(maxItemCount)
                 );
 
             if (isContextRequired) {
@@ -1331,7 +1335,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
                 logger.info("Finished starting ChangeFeed processor");
 
-                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, feedCount);
                 logger.info("Set up read feed documents");
 
                 // Wait for the feed processor to receive and process the documents.

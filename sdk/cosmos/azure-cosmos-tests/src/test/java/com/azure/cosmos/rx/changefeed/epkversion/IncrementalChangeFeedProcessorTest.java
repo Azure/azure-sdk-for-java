@@ -1788,7 +1788,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         try {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
-            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+
+            int maxItemCount = 100; // force the RU usage per requests > 1
+            int feedCount = maxItemCount * 2; // force to do two fetches
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, feedCount);
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -1802,7 +1805,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setFeedPollDelay(Duration.ofSeconds(2))
                     .setFeedPollThroughputControlConfig(throughputControlGroupConfig)
                     .setLeasePrefix("TEST")
-                    .setMaxItemCount(10)
+                    .setMaxItemCount(maxItemCount)
                     .setStartFromBeginning(true)
                     .setMaxScaleCount(0) // unlimited
                 )

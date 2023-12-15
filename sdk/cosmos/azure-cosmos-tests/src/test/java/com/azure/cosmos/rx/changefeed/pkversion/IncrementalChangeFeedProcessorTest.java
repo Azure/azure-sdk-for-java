@@ -1792,7 +1792,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             List<InternalObjectNode> createdDocuments = new ArrayList<>();
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
-            int maxItemCount = 100;
+            int maxItemCount = 100; // force the RU usage per requests > 1
             int feedCount = maxItemCount * 2; // force to do two fetches
             // using the original client to create the docs to isolate possible throttling
             setupReadFeedDocuments(
