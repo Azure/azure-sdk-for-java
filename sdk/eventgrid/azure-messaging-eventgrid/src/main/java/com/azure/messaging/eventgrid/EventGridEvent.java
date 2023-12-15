@@ -155,11 +155,7 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
             .setEventType(eventType)
             .setDataVersion(dataVersion);
         this.binaryData = data;
-        try (JsonReader jsonReader = JsonProviders.createReader(data.toBytes())) {
-            this.event.setData(jsonReader.readUntyped());
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format", e));
-        }
+        this.event.setData(data.toObject(Object.class));
     }
 
     /**
@@ -378,6 +374,7 @@ public final class EventGridEvent implements JsonSerializable<EventGridEvent> {
             BinaryData data = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
+                reader.nextToken();
                 if ("event".equals(fieldName)) {
                     internalEvent = com.azure.messaging.eventgrid.implementation.models.EventGridEvent.fromJson(reader);
                 } else if ("binaryData".equals(fieldName)) {
