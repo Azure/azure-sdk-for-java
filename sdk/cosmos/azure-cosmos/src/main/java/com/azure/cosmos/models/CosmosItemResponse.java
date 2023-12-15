@@ -12,8 +12,10 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -66,31 +68,58 @@ public class CosmosItemResponse<T> {
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
-        if (item == null && this.itemClassType == InternalObjectNode.class) {
-            Instant serializationStartTime = Instant.now();
-            item =(T) getProperties();
-            Instant serializationEndTime = Instant.now();
-            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                serializationStartTime,
-                serializationEndTime,
-                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-            );
-            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
-            return item;
-        }
 
         if (item == null) {
             synchronized (this) {
                 if (item == null && this.resourceResponse.hasPayload()) {
-                    Instant serializationStartTime = Instant.now();
-                    item = this.resourceResponse.getBody(this.itemClassType);
-                    Instant serializationEndTime = Instant.now();
-                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                        serializationStartTime,
-                        serializationEndTime,
-                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-                    );
-                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                    if (this.itemClassType == Utils.byteArrayClass) {
+                        Instant serializationStartTime = Instant.now();
+                        JsonNode json = this.resourceResponse.getBody();
+                        item = (T) json.toString().getBytes(StandardCharsets.UTF_8);
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else if (this.itemClassType == String.class) {
+                        Instant serializationStartTime = Instant.now();
+                        JsonNode json = this.resourceResponse.getBody();
+                        item = (T) json.toString();
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else if (this.itemClassType == InternalObjectNode.class) {
+                        Instant serializationStartTime = Instant.now();
+                        item = (T) getProperties();
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else {
+                        Instant serializationStartTime = Instant.now();
+                        item = this.resourceResponse.getBody(this.itemClassType);
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                    }
+
+                    return item;
                 }
             }
         }
