@@ -58,7 +58,7 @@
       --add-reads com.azure.storage.blob=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
-    <parallelizeLiveTests>true</parallelizeLiveTests>
+    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>
 
   <dependencies>

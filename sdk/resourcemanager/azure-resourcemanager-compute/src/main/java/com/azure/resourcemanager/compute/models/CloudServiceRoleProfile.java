@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the role profile for the cloud service. */
+/**
+ * Describes the role profile for the cloud service.
+ */
 @Fluent
 public final class CloudServiceRoleProfile {
     /*
@@ -17,13 +19,15 @@ public final class CloudServiceRoleProfile {
     @JsonProperty(value = "roles")
     private List<CloudServiceRoleProfileProperties> roles;
 
-    /** Creates an instance of CloudServiceRoleProfile class. */
+    /**
+     * Creates an instance of CloudServiceRoleProfile class.
+     */
     public CloudServiceRoleProfile() {
     }
 
     /**
      * Get the roles property: List of roles for the cloud service.
-     *
+     * 
      * @return the roles value.
      */
     public List<CloudServiceRoleProfileProperties> roles() {
@@ -32,7 +36,7 @@ public final class CloudServiceRoleProfile {
 
     /**
      * Set the roles property: List of roles for the cloud service.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the CloudServiceRoleProfile object itself.
      */
@@ -43,7 +47,7 @@ public final class CloudServiceRoleProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

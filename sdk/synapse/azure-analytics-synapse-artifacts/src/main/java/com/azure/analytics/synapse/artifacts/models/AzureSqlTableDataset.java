@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure SQL Server database dataset. */
+/**
+ * The Azure SQL Server database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureSqlTable")
 @JsonFlatten
@@ -36,13 +38,16 @@ public class AzureSqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of AzureSqlTableDataset class. */
-    public AzureSqlTableDataset() {}
+    /**
+     * Creates an instance of AzureSqlTableDataset class.
+     */
+    public AzureSqlTableDataset() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +57,7 @@ public class AzureSqlTableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureSqlTableDataset object itself.
      */
@@ -64,7 +69,7 @@ public class AzureSqlTableDataset extends Dataset {
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Azure SQL database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -74,7 +79,7 @@ public class AzureSqlTableDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of the Azure SQL database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the AzureSqlTableDataset object itself.
      */
@@ -86,7 +91,7 @@ public class AzureSqlTableDataset extends Dataset {
     /**
      * Get the table property: The table name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -96,7 +101,7 @@ public class AzureSqlTableDataset extends Dataset {
     /**
      * Set the table property: The table name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlTableDataset object itself.
      */
@@ -105,49 +110,63 @@ public class AzureSqlTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

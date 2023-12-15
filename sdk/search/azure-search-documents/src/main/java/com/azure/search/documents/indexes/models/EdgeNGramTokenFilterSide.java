@@ -6,15 +6,23 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Specifies which side of the input an n-gram should be generated from. */
+/**
+ * Specifies which side of the input an n-gram should be generated from.
+ */
 public enum EdgeNGramTokenFilterSide {
-    /** Specifies that the n-gram should be generated from the front of the input. */
+    /**
+     * Specifies that the n-gram should be generated from the front of the input.
+     */
     FRONT("front"),
 
-    /** Specifies that the n-gram should be generated from the back of the input. */
+    /**
+     * Specifies that the n-gram should be generated from the back of the input.
+     */
     BACK("back");
 
-    /** The actual serialized value for a EdgeNGramTokenFilterSide instance. */
+    /**
+     * The actual serialized value for a EdgeNGramTokenFilterSide instance.
+     */
     private final String value;
 
     EdgeNGramTokenFilterSide(String value) {
@@ -23,7 +31,7 @@ public enum EdgeNGramTokenFilterSide {
 
     /**
      * Parses a serialized value to a EdgeNGramTokenFilterSide instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EdgeNGramTokenFilterSide object, or null if unable to parse.
      */
@@ -40,7 +48,9 @@ public enum EdgeNGramTokenFilterSide {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

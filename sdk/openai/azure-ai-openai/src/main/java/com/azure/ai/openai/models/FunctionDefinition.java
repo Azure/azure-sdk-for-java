@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -30,11 +31,10 @@ public final class FunctionDefinition {
     private String description;
 
     /*
-     * The parameters the functions accepts, described as a JSON Schema object.
+     * The parameters the function accepts, described as a JSON Schema object.
      */
-    @Generated
     @JsonProperty(value = "parameters")
-    private Object parameters;
+    private BinaryData parameters;
 
     /**
      * Creates an instance of FunctionDefinition class.
@@ -84,23 +84,21 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the parameters property: The parameters the functions accepts, described as a JSON Schema object.
+     * Get the parameters property: The parameters the function accepts, described as a JSON Schema object.
      *
      * @return the parameters value.
      */
-    @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
     }
 
     /**
-     * Set the parameters property: The parameters the functions accepts, described as a JSON Schema object.
+     * Set the parameters property: The parameters the function accepts, described as a JSON Schema object.
      *
      * @param parameters the parameters value to set.
      * @return the FunctionDefinition object itself.
      */
-    @Generated
-    public FunctionDefinition setParameters(Object parameters) {
+    public FunctionDefinition setParameters(BinaryData parameters) {
         this.parameters = parameters;
         return this;
     }

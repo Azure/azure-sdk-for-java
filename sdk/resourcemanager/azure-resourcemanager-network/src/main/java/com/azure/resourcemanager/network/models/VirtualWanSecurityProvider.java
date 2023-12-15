@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of SecurityProviders. */
+/**
+ * Collection of SecurityProviders.
+ */
 @Fluent
 public final class VirtualWanSecurityProvider {
     /*
@@ -28,13 +30,15 @@ public final class VirtualWanSecurityProvider {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualWanSecurityProviderType type;
 
-    /** Creates an instance of VirtualWanSecurityProvider class. */
+    /**
+     * Creates an instance of VirtualWanSecurityProvider class.
+     */
     public VirtualWanSecurityProvider() {
     }
 
     /**
      * Get the name property: Name of the security provider.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Set the name property: Name of the security provider.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualWanSecurityProvider object itself.
      */
@@ -54,7 +58,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Get the url property: Url of the security provider.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -63,7 +67,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Set the url property: Url of the security provider.
-     *
+     * 
      * @param url the url value to set.
      * @return the VirtualWanSecurityProvider object itself.
      */
@@ -74,7 +78,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Get the type property: Name of the security provider.
-     *
+     * 
      * @return the type value.
      */
     public VirtualWanSecurityProviderType type() {
@@ -83,7 +87,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

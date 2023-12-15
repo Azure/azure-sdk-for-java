@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Address prefix item. */
+/**
+ * Address prefix item.
+ */
 @Fluent
 public final class AddressPrefixItem {
     /*
@@ -22,13 +24,15 @@ public final class AddressPrefixItem {
     @JsonProperty(value = "addressPrefixType")
     private AddressPrefixType addressPrefixType;
 
-    /** Creates an instance of AddressPrefixItem class. */
+    /**
+     * Creates an instance of AddressPrefixItem class.
+     */
     public AddressPrefixItem() {
     }
 
     /**
      * Get the addressPrefix property: Address prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -37,7 +41,7 @@ public final class AddressPrefixItem {
 
     /**
      * Set the addressPrefix property: Address prefix.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the AddressPrefixItem object itself.
      */
@@ -48,7 +52,7 @@ public final class AddressPrefixItem {
 
     /**
      * Get the addressPrefixType property: Address prefix type.
-     *
+     * 
      * @return the addressPrefixType value.
      */
     public AddressPrefixType addressPrefixType() {
@@ -57,7 +61,7 @@ public final class AddressPrefixItem {
 
     /**
      * Set the addressPrefixType property: Address prefix type.
-     *
+     * 
      * @param addressPrefixType the addressPrefixType value to set.
      * @return the AddressPrefixItem object itself.
      */
@@ -68,7 +72,7 @@ public final class AddressPrefixItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

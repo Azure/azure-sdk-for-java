@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The service endpoint properties. */
+/**
+ * The service endpoint properties.
+ */
 @Fluent
 public final class ServiceEndpointPropertiesFormat {
     /*
@@ -29,13 +31,15 @@ public final class ServiceEndpointPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ServiceEndpointPropertiesFormat class. */
+    /**
+     * Creates an instance of ServiceEndpointPropertiesFormat class.
+     */
     public ServiceEndpointPropertiesFormat() {
     }
 
     /**
      * Get the service property: The type of the endpoint service.
-     *
+     * 
      * @return the service value.
      */
     public String service() {
@@ -44,7 +48,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the service property: The type of the endpoint service.
-     *
+     * 
      * @param service the service value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -55,7 +59,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the locations property: A list of locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -64,7 +68,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the locations property: A list of locations.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the service endpoint resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +88,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

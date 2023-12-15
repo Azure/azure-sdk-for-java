@@ -5,35 +5,42 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The SmartDetectionConditionPatch model. */
+/**
+ * The SmartDetectionConditionPatch model.
+ */
 @Fluent
-public final class SmartDetectionConditionPatch {
+public final class SmartDetectionConditionPatch implements JsonSerializable<SmartDetectionConditionPatch> {
     /*
      * sensitivity, value range : (0, 100]
      */
-    @JsonProperty(value = "sensitivity")
     private Double sensitivity;
 
     /*
      * detection direction
      */
-    @JsonProperty(value = "anomalyDetectorDirection")
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
-    @JsonProperty(value = "suppressCondition")
     private SuppressConditionPatch suppressCondition;
 
-    /** Creates an instance of SmartDetectionConditionPatch class. */
-    public SmartDetectionConditionPatch() {}
+    /**
+     * Creates an instance of SmartDetectionConditionPatch class.
+     */
+    public SmartDetectionConditionPatch() {
+    }
 
     /**
      * Get the sensitivity property: sensitivity, value range : (0, 100].
-     *
+     * 
      * @return the sensitivity value.
      */
     public Double getSensitivity() {
@@ -42,7 +49,7 @@ public final class SmartDetectionConditionPatch {
 
     /**
      * Set the sensitivity property: sensitivity, value range : (0, 100].
-     *
+     * 
      * @param sensitivity the sensitivity value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
@@ -53,7 +60,7 @@ public final class SmartDetectionConditionPatch {
 
     /**
      * Get the anomalyDetectorDirection property: detection direction.
-     *
+     * 
      * @return the anomalyDetectorDirection value.
      */
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
@@ -62,7 +69,7 @@ public final class SmartDetectionConditionPatch {
 
     /**
      * Set the anomalyDetectorDirection property: detection direction.
-     *
+     * 
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
@@ -73,7 +80,7 @@ public final class SmartDetectionConditionPatch {
 
     /**
      * Get the suppressCondition property: The suppressCondition property.
-     *
+     * 
      * @return the suppressCondition value.
      */
     public SuppressConditionPatch getSuppressCondition() {
@@ -82,12 +89,53 @@ public final class SmartDetectionConditionPatch {
 
     /**
      * Set the suppressCondition property: The suppressCondition property.
-     *
+     * 
      * @param suppressCondition the suppressCondition value to set.
      * @return the SmartDetectionConditionPatch object itself.
      */
     public SmartDetectionConditionPatch setSuppressCondition(SuppressConditionPatch suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("sensitivity", this.sensitivity);
+        jsonWriter.writeStringField("anomalyDetectorDirection", Objects.toString(this.anomalyDetectorDirection, null));
+        jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartDetectionConditionPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartDetectionConditionPatch if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SmartDetectionConditionPatch.
+     */
+    public static SmartDetectionConditionPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartDetectionConditionPatch deserializedSmartDetectionConditionPatch = new SmartDetectionConditionPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sensitivity".equals(fieldName)) {
+                    deserializedSmartDetectionConditionPatch.sensitivity = reader.getNullable(JsonReader::getDouble);
+                } else if ("anomalyDetectorDirection".equals(fieldName)) {
+                    deserializedSmartDetectionConditionPatch.anomalyDetectorDirection
+                        = AnomalyDetectorDirection.fromString(reader.getString());
+                } else if ("suppressCondition".equals(fieldName)) {
+                    deserializedSmartDetectionConditionPatch.suppressCondition
+                        = SuppressConditionPatch.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartDetectionConditionPatch;
+        });
     }
 }

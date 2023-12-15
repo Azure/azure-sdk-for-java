@@ -41,7 +41,7 @@
       --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation=ALL-UNNAMED
       --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation.schema=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <parallelizeLiveTests>true</parallelizeLiveTests>
+    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>
 
   <dependencies>

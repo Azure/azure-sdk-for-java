@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Description of fields that were sent to the semantic enrichment process, as well as how they were used. */
+/**
+ * Description of fields that were sent to the semantic enrichment process, as well as how they were used.
+ */
 @Immutable
 public final class QueryResultDocumentSemanticField implements JsonSerializable<QueryResultDocumentSemanticField> {
     /*
@@ -26,12 +28,15 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
      */
     private SemanticFieldState state;
 
-    /** Creates an instance of QueryResultDocumentSemanticField class. */
-    public QueryResultDocumentSemanticField() {}
+    /**
+     * Creates an instance of QueryResultDocumentSemanticField class.
+     */
+    public QueryResultDocumentSemanticField() {
+    }
 
     /**
      * Get the name property: The name of the field that was sent to the semantic enrichment process.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -41,7 +46,7 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
     /**
      * Get the state property: The way the field was used for the semantic enrichment process (fully used, partially
      * used, or unused).
-     *
+     * 
      * @return the state value.
      */
     public SemanticFieldState getState() {
@@ -56,32 +61,31 @@ public final class QueryResultDocumentSemanticField implements JsonSerializable<
 
     /**
      * Reads an instance of QueryResultDocumentSemanticField from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of QueryResultDocumentSemanticField if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResultDocumentSemanticField.
      */
     public static QueryResultDocumentSemanticField fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    QueryResultDocumentSemanticField deserializedQueryResultDocumentSemanticField =
-                            new QueryResultDocumentSemanticField();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            QueryResultDocumentSemanticField deserializedQueryResultDocumentSemanticField
+                = new QueryResultDocumentSemanticField();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            deserializedQueryResultDocumentSemanticField.name = reader.getString();
-                        } else if ("state".equals(fieldName)) {
-                            deserializedQueryResultDocumentSemanticField.state =
-                                    SemanticFieldState.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("name".equals(fieldName)) {
+                    deserializedQueryResultDocumentSemanticField.name = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedQueryResultDocumentSemanticField.state
+                        = SemanticFieldState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedQueryResultDocumentSemanticField;
-                });
+            return deserializedQueryResultDocumentSemanticField;
+        });
     }
 }

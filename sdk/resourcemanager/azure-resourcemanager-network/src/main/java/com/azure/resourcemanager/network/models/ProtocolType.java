@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** RNM supported protocol types. */
+/**
+ * RNM supported protocol types.
+ */
 public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
-    /** Static value DoNotUse for ProtocolType. */
+    /**
+     * Static value DoNotUse for ProtocolType.
+     */
     public static final ProtocolType DO_NOT_USE = fromString("DoNotUse");
 
-    /** Static value Icmp for ProtocolType. */
+    /**
+     * Static value Icmp for ProtocolType.
+     */
     public static final ProtocolType ICMP = fromString("Icmp");
 
-    /** Static value Tcp for ProtocolType. */
+    /**
+     * Static value Tcp for ProtocolType.
+     */
     public static final ProtocolType TCP = fromString("Tcp");
 
-    /** Static value Udp for ProtocolType. */
+    /**
+     * Static value Udp for ProtocolType.
+     */
     public static final ProtocolType UDP = fromString("Udp");
 
-    /** Static value Gre for ProtocolType. */
+    /**
+     * Static value Gre for ProtocolType.
+     */
     public static final ProtocolType GRE = fromString("Gre");
 
-    /** Static value Esp for ProtocolType. */
+    /**
+     * Static value Esp for ProtocolType.
+     */
     public static final ProtocolType ESP = fromString("Esp");
 
-    /** Static value Ah for ProtocolType. */
+    /**
+     * Static value Ah for ProtocolType.
+     */
     public static final ProtocolType AH = fromString("Ah");
 
-    /** Static value Vxlan for ProtocolType. */
+    /**
+     * Static value Vxlan for ProtocolType.
+     */
     public static final ProtocolType VXLAN = fromString("Vxlan");
 
-    /** Static value All for ProtocolType. */
+    /**
+     * Static value All for ProtocolType.
+     */
     public static final ProtocolType ALL = fromString("All");
 
     /**
      * Creates a new instance of ProtocolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
 
     /**
      * Creates or finds a ProtocolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtocolType.
      */
@@ -59,7 +79,7 @@ public final class ProtocolType extends ExpandableStringEnum<ProtocolType> {
 
     /**
      * Gets known ProtocolType values.
-     *
+     * 
      * @return known ProtocolType values.
      */
     public static Collection<ProtocolType> values() {

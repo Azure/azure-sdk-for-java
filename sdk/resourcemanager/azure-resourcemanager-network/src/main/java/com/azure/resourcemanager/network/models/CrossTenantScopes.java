@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cross tenant scopes. */
+/**
+ * Cross tenant scopes.
+ */
 @Immutable
 public final class CrossTenantScopes {
     /*
@@ -29,13 +31,15 @@ public final class CrossTenantScopes {
     @JsonProperty(value = "subscriptions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subscriptions;
 
-    /** Creates an instance of CrossTenantScopes class. */
+    /**
+     * Creates an instance of CrossTenantScopes class.
+     */
     public CrossTenantScopes() {
     }
 
     /**
      * Get the tenantId property: Tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -44,7 +48,7 @@ public final class CrossTenantScopes {
 
     /**
      * Get the managementGroups property: List of management groups.
-     *
+     * 
      * @return the managementGroups value.
      */
     public List<String> managementGroups() {
@@ -53,7 +57,7 @@ public final class CrossTenantScopes {
 
     /**
      * Get the subscriptions property: List of subscriptions.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<String> subscriptions() {
@@ -62,7 +66,7 @@ public final class CrossTenantScopes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

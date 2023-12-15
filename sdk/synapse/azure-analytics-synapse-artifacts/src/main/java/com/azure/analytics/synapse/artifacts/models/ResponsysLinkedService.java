@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Responsys linked service. */
+/**
+ * Responsys linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Responsys")
 @JsonFlatten
@@ -65,12 +67,15 @@ public class ResponsysLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of ResponsysLinkedService class. */
-    public ResponsysLinkedService() {}
+    /**
+     * Creates an instance of ResponsysLinkedService class.
+     */
+    public ResponsysLinkedService() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the Responsys server.
-     *
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -79,7 +84,7 @@ public class ResponsysLinkedService extends LinkedService {
 
     /**
      * Set the endpoint property: The endpoint of the Responsys server.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -91,7 +96,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Get the clientId property: The client ID associated with the Responsys application. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -101,7 +106,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Set the clientId property: The client ID associated with the Responsys application. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -113,7 +118,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Get the clientSecret property: The client secret associated with the Responsys application. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -123,7 +128,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Set the clientSecret property: The client secret associated with the Responsys application. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -135,7 +140,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -145,7 +150,7 @@ public class ResponsysLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -158,7 +163,7 @@ public class ResponsysLinkedService extends LinkedService {
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -169,7 +174,7 @@ public class ResponsysLinkedService extends LinkedService {
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -179,9 +184,9 @@ public class ResponsysLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -189,9 +194,9 @@ public class ResponsysLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -201,9 +206,9 @@ public class ResponsysLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -211,9 +216,9 @@ public class ResponsysLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ResponsysLinkedService object itself.
      */
@@ -222,28 +227,36 @@ public class ResponsysLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponsysLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponsysLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponsysLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResponsysLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

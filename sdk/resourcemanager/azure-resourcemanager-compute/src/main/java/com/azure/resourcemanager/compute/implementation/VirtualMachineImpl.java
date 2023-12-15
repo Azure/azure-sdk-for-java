@@ -2130,7 +2130,7 @@ class VirtualMachineImpl
                         .manager()
                         .serviceClient()
                         .getVirtualMachines()
-                        .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel())
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel(), null, null)
                         .block(),
                 inner ->
                     new VirtualMachineImpl(

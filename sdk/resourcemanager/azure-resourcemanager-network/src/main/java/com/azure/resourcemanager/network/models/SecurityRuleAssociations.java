@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** All security rules associated with the network interface. */
+/**
+ * All security rules associated with the network interface.
+ */
 @Fluent
 public final class SecurityRuleAssociations {
     /*
@@ -36,13 +38,15 @@ public final class SecurityRuleAssociations {
     @JsonProperty(value = "effectiveSecurityRules")
     private List<EffectiveNetworkSecurityRule> effectiveSecurityRules;
 
-    /** Creates an instance of SecurityRuleAssociations class. */
+    /**
+     * Creates an instance of SecurityRuleAssociations class.
+     */
     public SecurityRuleAssociations() {
     }
 
     /**
      * Get the networkInterfaceAssociation property: Network interface and it's custom security rules.
-     *
+     * 
      * @return the networkInterfaceAssociation value.
      */
     public NetworkInterfaceAssociation networkInterfaceAssociation() {
@@ -51,19 +55,19 @@ public final class SecurityRuleAssociations {
 
     /**
      * Set the networkInterfaceAssociation property: Network interface and it's custom security rules.
-     *
+     * 
      * @param networkInterfaceAssociation the networkInterfaceAssociation value to set.
      * @return the SecurityRuleAssociations object itself.
      */
-    public SecurityRuleAssociations withNetworkInterfaceAssociation(
-        NetworkInterfaceAssociation networkInterfaceAssociation) {
+    public SecurityRuleAssociations
+        withNetworkInterfaceAssociation(NetworkInterfaceAssociation networkInterfaceAssociation) {
         this.networkInterfaceAssociation = networkInterfaceAssociation;
         return this;
     }
 
     /**
      * Get the subnetAssociation property: Subnet and it's custom security rules.
-     *
+     * 
      * @return the subnetAssociation value.
      */
     public SubnetAssociation subnetAssociation() {
@@ -72,7 +76,7 @@ public final class SecurityRuleAssociations {
 
     /**
      * Set the subnetAssociation property: Subnet and it's custom security rules.
-     *
+     * 
      * @param subnetAssociation the subnetAssociation value to set.
      * @return the SecurityRuleAssociations object itself.
      */
@@ -83,7 +87,7 @@ public final class SecurityRuleAssociations {
 
     /**
      * Get the defaultSecurityRules property: Collection of default security rules of the network security group.
-     *
+     * 
      * @return the defaultSecurityRules value.
      */
     public List<SecurityRuleInner> defaultSecurityRules() {
@@ -92,7 +96,7 @@ public final class SecurityRuleAssociations {
 
     /**
      * Set the defaultSecurityRules property: Collection of default security rules of the network security group.
-     *
+     * 
      * @param defaultSecurityRules the defaultSecurityRules value to set.
      * @return the SecurityRuleAssociations object itself.
      */
@@ -103,7 +107,7 @@ public final class SecurityRuleAssociations {
 
     /**
      * Get the effectiveSecurityRules property: Collection of effective security rules.
-     *
+     * 
      * @return the effectiveSecurityRules value.
      */
     public List<EffectiveNetworkSecurityRule> effectiveSecurityRules() {
@@ -112,19 +116,19 @@ public final class SecurityRuleAssociations {
 
     /**
      * Set the effectiveSecurityRules property: Collection of effective security rules.
-     *
+     * 
      * @param effectiveSecurityRules the effectiveSecurityRules value to set.
      * @return the SecurityRuleAssociations object itself.
      */
-    public SecurityRuleAssociations withEffectiveSecurityRules(
-        List<EffectiveNetworkSecurityRule> effectiveSecurityRules) {
+    public SecurityRuleAssociations
+        withEffectiveSecurityRules(List<EffectiveNetworkSecurityRule> effectiveSecurityRules) {
         this.effectiveSecurityRules = effectiveSecurityRules;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,6 +4,7 @@ Spring Cloud Azure offers a convenient way to interact with **Azure** provided s
 
  - [Reference doc](https://aka.ms/spring/docs).
  - [Migration guide for 4.0](https://aka.ms/spring/docs#migration-guide-for-4-0).
+ - [Spring Boot Support Status](https://aka.ms/spring/versions)
 
 ## Build from Source
 
@@ -54,7 +55,7 @@ mvn clean install `
 
 ## Modules
 
-There're several modules in Spring Cloud Azure. Here is a quick review:
+There are several modules in Spring Cloud Azure. Here is a quick review:
 
 ### spring-cloud-azure-autoconfigure
 
@@ -71,10 +72,11 @@ The following application starters are provided by Spring Cloud Azure under the 
 | Name                                                 | Description                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------|
 | spring-cloud-azure-starter                           | Core starter, including auto-configuration support                 |
-| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security      |
+| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security          |
 | spring-cloud-azure-starter-active-directory-b2c      | Starter for using Azure Active Directory B2C with Spring Security  |
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
+| spring-cloud-azure-starter-data-cosmos               | Starter for using Azure Cosmos DB and Spring Data Cosmos DB        |
 | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs                                 |
 | spring-cloud-azure-starter-eventgrid                 | Starter for using Azure Event Grid                                 |
 | spring-cloud-azure-starter-integration-eventhubs     | Starter for using Azure Event Hubs and Spring Integration          |

@@ -19,14 +19,16 @@ public final class CloudServiceVaultCertificate {
     @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
-    /** Creates an instance of CloudServiceVaultCertificate class. */
+    /**
+     * Creates an instance of CloudServiceVaultCertificate class.
+     */
     public CloudServiceVaultCertificate() {
     }
 
     /**
      * Get the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -36,7 +38,7 @@ public final class CloudServiceVaultCertificate {
     /**
      * Set the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the CloudServiceVaultCertificate object itself.
      */
@@ -47,7 +49,7 @@ public final class CloudServiceVaultCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,35 +17,35 @@ import com.azure.resourcemanager.network.fluent.models.AvailableDelegationInner;
 public interface AvailableResourceGroupDelegationsClient {
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName);
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName);
 
     /**
      * Gets all of the available subnet delegations for this resource group in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -53,7 +53,7 @@ public interface AvailableResourceGroupDelegationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableDelegationInner> list(String location, String resourceGroupName, Context context);

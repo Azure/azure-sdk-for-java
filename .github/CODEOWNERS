@@ -7,25 +7,25 @@
 
 # BOM
 # PRLabel: %azure-spring
-/sdk/boms/spring-cloud-azure-dependencies/          @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/boms/spring-cloud-azure-dependencies/          @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/identity/azure-identity-extensions/            @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/keyvault/azure-security-keyvault-jca           @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/                                        @chenrujun @netyyyy @saragluna @moarychan
 # PRLabel: %azure-spring
-/sdk/spring-experimental/                           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring-experimental/                           @chenrujun @netyyyy @saragluna @moarychan
 
 /eng/versioning/external_dependencies.txt           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
+/sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @chenrujun @netyyyy @saragluna @xinlian12 @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie

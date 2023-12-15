@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ScopeConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the network manager connection. */
+/**
+ * Information about the network manager connection.
+ */
 @Fluent
 public final class NetworkManagerConnectionProperties {
     /*
@@ -29,13 +31,15 @@ public final class NetworkManagerConnectionProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of NetworkManagerConnectionProperties class. */
+    /**
+     * Creates an instance of NetworkManagerConnectionProperties class.
+     */
     public NetworkManagerConnectionProperties() {
     }
 
     /**
      * Get the networkManagerId property: Network Manager Id.
-     *
+     * 
      * @return the networkManagerId value.
      */
     public String networkManagerId() {
@@ -44,7 +48,7 @@ public final class NetworkManagerConnectionProperties {
 
     /**
      * Set the networkManagerId property: Network Manager Id.
-     *
+     * 
      * @param networkManagerId the networkManagerId value to set.
      * @return the NetworkManagerConnectionProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class NetworkManagerConnectionProperties {
 
     /**
      * Get the connectionState property: Connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ScopeConnectionState connectionState() {
@@ -64,7 +68,7 @@ public final class NetworkManagerConnectionProperties {
 
     /**
      * Get the description property: A description of the network manager connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -73,7 +77,7 @@ public final class NetworkManagerConnectionProperties {
 
     /**
      * Set the description property: A description of the network manager connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the NetworkManagerConnectionProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class NetworkManagerConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

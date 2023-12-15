@@ -27,13 +27,15 @@ public final class ApplicationGatewayPrivateEndpointConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplicationGatewayPrivateEndpointConnectionListResult class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateEndpointConnectionListResult class.
+     */
     public ApplicationGatewayPrivateEndpointConnectionListResult() {
     }
 
     /**
      * Get the value property: List of private endpoint connections on an application gateway.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationGatewayPrivateEndpointConnectionInner> value() {
@@ -42,19 +44,19 @@ public final class ApplicationGatewayPrivateEndpointConnectionListResult {
 
     /**
      * Set the value property: List of private endpoint connections on an application gateway.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationGatewayPrivateEndpointConnectionListResult object itself.
      */
-    public ApplicationGatewayPrivateEndpointConnectionListResult withValue(
-        List<ApplicationGatewayPrivateEndpointConnectionInner> value) {
+    public ApplicationGatewayPrivateEndpointConnectionListResult
+        withValue(List<ApplicationGatewayPrivateEndpointConnectionInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplicationGatewayPrivateEndpointConnectionListResult object itself.
      */
@@ -74,7 +76,7 @@ public final class ApplicationGatewayPrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

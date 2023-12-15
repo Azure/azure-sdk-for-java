@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Dedicated Host Group with resource group response. */
+/**
+ * The List Dedicated Host Group with resource group response.
+ */
 @Fluent
 public final class DedicatedHostGroupListResult {
     /*
@@ -26,13 +28,15 @@ public final class DedicatedHostGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DedicatedHostGroupListResult class. */
+    /**
+     * Creates an instance of DedicatedHostGroupListResult class.
+     */
     public DedicatedHostGroupListResult() {
     }
 
     /**
      * Get the value property: The list of dedicated host groups.
-     *
+     * 
      * @return the value value.
      */
     public List<DedicatedHostGroupInner> value() {
@@ -41,7 +45,7 @@ public final class DedicatedHostGroupListResult {
 
     /**
      * Set the value property: The list of dedicated host groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the DedicatedHostGroupListResult object itself.
      */
@@ -51,9 +55,9 @@ public final class DedicatedHostGroupListResult {
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI
-     * to fetch the next page of Dedicated Host Groups.
-     *
+     * Get the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this
+     * URI to fetch the next page of Dedicated Host Groups.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +65,9 @@ public final class DedicatedHostGroupListResult {
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this URI
-     * to fetch the next page of Dedicated Host Groups.
-     *
+     * Set the nextLink property: The URI to fetch the next page of Dedicated Host Groups. Call ListNext() with this
+     * URI to fetch the next page of Dedicated Host Groups.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DedicatedHostGroupListResult object itself.
      */
@@ -74,15 +78,13 @@ public final class DedicatedHostGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DedicatedHostGroupListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DedicatedHostGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -15,15 +15,19 @@ import java.util.Collection;
  * provisionVMAgent must be true.
  */
 public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPatchAssessmentMode> {
-    /** Static value ImageDefault for LinuxPatchAssessmentMode. */
+    /**
+     * Static value ImageDefault for LinuxPatchAssessmentMode.
+     */
     public static final LinuxPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
-    /** Static value AutomaticByPlatform for LinuxPatchAssessmentMode. */
+    /**
+     * Static value AutomaticByPlatform for LinuxPatchAssessmentMode.
+     */
     public static final LinuxPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
      * Creates a new instance of LinuxPatchAssessmentMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
 
     /**
      * Creates or finds a LinuxPatchAssessmentMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinuxPatchAssessmentMode.
      */
@@ -43,7 +47,7 @@ public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPa
 
     /**
      * Gets known LinuxPatchAssessmentMode values.
-     *
+     * 
      * @return known LinuxPatchAssessmentMode values.
      */
     public static Collection<LinuxPatchAssessmentMode> values() {
