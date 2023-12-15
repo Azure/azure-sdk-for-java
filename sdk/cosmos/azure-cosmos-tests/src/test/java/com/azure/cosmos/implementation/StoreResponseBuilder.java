@@ -94,6 +94,9 @@ public class StoreResponseBuilder {
 
     public StoreResponse build() {
         ByteBuf buffer = getUTF8BytesOrNull(content);
+        if (buffer == null) {
+            return new StoreResponse(status, headers, null, 0);
+        }
         return new StoreResponse(status, headers, new ByteBufInputStream(buffer, true), buffer.readableBytes());
     }
 }
