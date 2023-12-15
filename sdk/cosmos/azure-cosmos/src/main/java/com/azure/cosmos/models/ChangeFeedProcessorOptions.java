@@ -375,6 +375,13 @@ public final class ChangeFeedProcessorOptions {
         return this;
     }
 
+    /***
+     * Set the feed poll throughput control config.
+     * Note: It does not support after-merge container.
+     *
+     * @param feedPollThroughputControlGroupConfig
+     * @return the {@link ChangeFeedProcessorOptions}.
+     */
     public ChangeFeedProcessorOptions setFeedPollThroughputControlConfig(ThroughputControlGroupConfig feedPollThroughputControlGroupConfig) {
         checkNotNull(
             feedPollThroughputControlGroupConfig,
@@ -384,6 +391,10 @@ public final class ChangeFeedProcessorOptions {
         return this;
     }
 
+    /**
+     * Get the feed pool throughput control config.
+     * @return the {@link ThroughputControlGroupConfig}.
+     */
     public ThroughputControlGroupConfig getFeedPollThroughputControlGroupConfig() {
         return this.feedPollThroughputControlGroupConfig;
     }
