@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
@@ -38,7 +38,7 @@ public final class RestProxyUtils {
             return null;
         }
 
-        final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
+        final long expectedLength = Long.parseLong(request.getHeaders().getValue(HeaderName.CONTENT_LENGTH));
 
         if (binaryData instanceof InputStreamBinaryData) {
             InputStream inputStream = binaryData.toStream();

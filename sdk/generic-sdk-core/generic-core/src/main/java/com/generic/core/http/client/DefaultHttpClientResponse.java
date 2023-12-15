@@ -3,7 +3,7 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
@@ -27,7 +27,7 @@ class DefaultHttpClientResponse extends HttpResponse {
     }
 
     @Override
-    public String getHeaderValue(HttpHeaderName name) {
+    public String getHeaderValue(HeaderName name) {
         return headers.getValue(name);
     }
 

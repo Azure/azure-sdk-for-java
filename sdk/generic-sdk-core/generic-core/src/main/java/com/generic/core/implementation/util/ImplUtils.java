@@ -4,7 +4,7 @@
 package com.generic.core.implementation.util;
 
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.policy.RetryPolicy;
 import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.FixedDelay;
@@ -41,8 +41,8 @@ import java.util.regex.Pattern;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
-    private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
+    private static final HeaderName RETRY_AFTER_MS_HEADER = HeaderName.fromString("retry-after-ms");
+    private static final HeaderName X_MS_RETRY_AFTER_MS_HEADER = HeaderName.fromString("x-ms-retry-after-ms");
 
     // future improvement - make this configurable
     public static final int MAX_CACHE_SIZE = 10000;
@@ -86,14 +86,14 @@ public final class ImplUtils {
 
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
+        retryDelay = tryGetRetryDelay(headers, HeaderName.RETRY_AFTER,
             headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
 
         // Either the retry delay will have been found or it'll be null, null indicates no retry after.
         return retryDelay;
     }
 
-    private static Duration tryGetRetryDelay(Headers headers, HttpHeaderName headerName,
+    private static Duration tryGetRetryDelay(Headers headers, HeaderName headerName,
         Function<String, Duration> delayParser) {
         String headerValue = headers.getValue(headerName);
 

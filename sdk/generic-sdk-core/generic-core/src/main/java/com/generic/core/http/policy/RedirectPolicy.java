@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -61,7 +61,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
-        redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+        redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);
 
         HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
 

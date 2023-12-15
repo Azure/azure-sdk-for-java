@@ -4,7 +4,6 @@
 package com.generic.core.models;
 
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.implementation.http.rest.ErrorOptions;
 import com.generic.core.implementation.http.rest.UrlEscapers;
@@ -127,7 +126,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HttpHeaderName header, String value) {
+    public RequestOptions addHeader(HeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
 
         return this;
@@ -143,7 +142,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions setHeader(HttpHeaderName header, String value) {
+    public RequestOptions setHeader(HeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
 
         return this;

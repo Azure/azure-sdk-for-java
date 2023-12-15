@@ -5,6 +5,7 @@ package com.generic.core.http.models;
 
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -113,8 +114,8 @@ public class HttpRequestTests {
     @Test
     public void testClone() throws IOException {
         final Headers headers = new Headers()
-            .set(HttpHeaderName.fromString("my-header"), "my-value")
-            .set(HttpHeaderName.fromString("other-header"), "other-value");
+            .set(HeaderName.fromString("my-header"), "my-value")
+            .set(HeaderName.fromString("other-header"), "other-value");
 
         final HttpRequest request =new HttpRequest(HttpMethod.PUT, createUrl("http://request.url")).setHeaders(headers);
 
@@ -132,7 +133,7 @@ public class HttpRequestTests {
             }
 
             assertEquals(clonedHeader.getValue(),
-                request.getHeaders().getValue(HttpHeaderName.fromString(clonedHeader.getName())));
+                request.getHeaders().getValue(HeaderName.fromString(clonedHeader.getName())));
         }
 
         assertSame(request.getBody(), bufferedRequest.getBody());
@@ -150,7 +151,7 @@ public class HttpRequestTests {
     }
 
     private Long getContentLength(HttpRequest request) {
-        String contentLengthValue = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLengthValue = request.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
         return contentLengthValue == null ? null : Long.parseLong(contentLengthValue);
     }
 }

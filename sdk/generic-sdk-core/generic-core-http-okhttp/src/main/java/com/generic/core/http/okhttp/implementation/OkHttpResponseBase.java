@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import okhttp3.Headers;
@@ -31,7 +31,7 @@ abstract class OkHttpResponseBase extends HttpResponse {
     }
 
 
-    public final String getHeaderValue(HttpHeaderName headerName) {
+    public final String getHeaderValue(HeaderName headerName) {
         return this.headers.getValue(headerName);
     }
 
@@ -64,7 +64,7 @@ abstract class OkHttpResponseBase extends HttpResponse {
         // HttpHeaders add method.
         // Overall, this is much better performing as almost all headers will have a single value.
         okHttpHeaders.forEach(nameValuePair ->
-            httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
+            httpHeaders.add(HeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 
         return httpHeaders;
     }

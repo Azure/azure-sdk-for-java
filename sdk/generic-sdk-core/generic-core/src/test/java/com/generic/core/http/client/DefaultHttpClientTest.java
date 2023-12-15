@@ -3,7 +3,7 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -130,10 +130,10 @@ public class DefaultHttpClientTest {
     public void validateHeadersReturnAsIs() {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
+        HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
 
-        HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
+        HeaderName multiValueHeaderName = HeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
         Headers headers = new Headers()
@@ -183,7 +183,7 @@ public class DefaultHttpClientTest {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
+            .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(contentChunk);
 
         try (HttpResponse response = client.send(request)) {

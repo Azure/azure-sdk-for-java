@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -104,8 +104,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     private static final HttpResponseDecoder RESPONSE_DECODER = new HttpResponseDecoder(SERIALIZER);
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
-    private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
-    private static final HttpHeaderName CUSTOM_HDR = HttpHeaderName.fromString("customHdr");
+    private static final HeaderName HELLO = HeaderName.fromString("hello");
+    private static final HeaderName CUSTOM_HDR = HeaderName.fromString("customHdr");
     private static final Headers RESPONSE_HEADERS = new Headers().set(HELLO, "world");
     private static final Headers RESPONSE_CUSTOM_HEADERS = new Headers()
         .set(HELLO, "world")           // General header

@@ -6,6 +6,7 @@ package com.generic.core.http.models;
 import com.generic.core.annotation.Metadata;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -155,7 +156,7 @@ public class HttpRequest {
      *
      * @return This HttpRequest.
      */
-    public HttpRequest setHeader(HttpHeaderName headerName, String value) {
+    public HttpRequest setHeader(HeaderName headerName, String value) {
         headers.set(headerName, value);
 
         return this;
@@ -219,7 +220,7 @@ public class HttpRequest {
     }
 
     private void setContentLength(long contentLength) {
-        headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+        headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**

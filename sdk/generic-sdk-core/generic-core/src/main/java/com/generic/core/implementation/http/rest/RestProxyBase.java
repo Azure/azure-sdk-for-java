@@ -6,7 +6,7 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
@@ -183,7 +183,7 @@ public abstract class RestProxyBase {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
-            request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+            request.setHeader(HeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -198,13 +198,13 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
+            request.setHeader(HeaderName.CONTENT_TYPE, contentType);
 
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
 
                 if (binaryData.getLength() != null) {
-                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
+                    request.setHeader(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
 
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
@@ -254,10 +254,10 @@ public abstract class RestProxyBase {
             .append(httpResponse.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
+        final String contentType = httpResponse.getHeaderValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+            String contentLength = httpResponse.getHeaderValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {

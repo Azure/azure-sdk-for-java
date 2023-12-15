@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Header;
 import okhttp3.Headers;
 
@@ -35,7 +35,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers add(HttpHeaderName name, String value) {
+    public com.generic.core.models.Headers add(HeaderName name, String value) {
         if (name == null || value == null) {
             return this;
         }
@@ -49,7 +49,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
 
 
     @Override
-    public com.generic.core.models.Headers set(HttpHeaderName name, String value) {
+    public com.generic.core.models.Headers set(HeaderName name, String value) {
         if (name == null) {
             return this;
         }
@@ -62,7 +62,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers set(HttpHeaderName name, List<String> values) {
+    public com.generic.core.models.Headers set(HeaderName name, List<String> values) {
         if (name == null) {
             return this;
         }
@@ -93,28 +93,28 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public Header get(HttpHeaderName name) {
+    public Header get(HeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.get(name);
     }
 
     @Override
-    public Header remove(HttpHeaderName name) {
+    public Header remove(HeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.remove(name);
     }
 
     @Override
-    public String getValue(HttpHeaderName name) {
+    public String getValue(HeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.getValue(name);
     }
 
     @Override
-    public String[] getValues(HttpHeaderName name) {
+    public String[] getValues(HeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.getValues(name);

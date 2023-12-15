@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
-    private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
+    private static final HeaderName X_MS_FOO = HeaderName.fromString("x-ms-foo");
 
     @Test
     public void addQueryParam() throws MalformedURLException {
@@ -40,12 +40,12 @@ public class RequestOptionsTests {
 
         RequestOptions options = new RequestOptions()
             .addHeader(X_MS_FOO, "bar")
-            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            .addHeader(HeaderName.CONTENT_TYPE, "application/json");
         options.getRequestCallback().accept(request);
 
         Headers headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
-        assertEquals("application/json", headers.getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("application/json", headers.getValue(HeaderName.CONTENT_TYPE));
     }
 
     @Test

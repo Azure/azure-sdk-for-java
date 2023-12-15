@@ -3,7 +3,7 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -209,7 +209,7 @@ class DefaultHttpClient implements HttpClient {
             for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
                 if (entry.getKey() != null) {
                     for (String headerValue : entry.getValue()) {
-                        responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), headerValue);
+                        responseHeaders.add(HeaderName.fromString(entry.getKey()), headerValue);
                     }
                 }
             }
@@ -282,9 +282,9 @@ class DefaultHttpClient implements HttpClient {
          */
         @SuppressWarnings("deprecation")
         private static DefaultHttpClientResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
-            httpRequest.setHeader(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
-                httpRequest.setHeader(HttpHeaderName.CONNECTION, "close");
+            httpRequest.setHeader(HeaderName.HOST, httpRequest.getUrl().getHost());
+            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
+                httpRequest.setHeader(HeaderName.CONNECTION, "close");
             }
 
             try (
@@ -365,7 +365,7 @@ class DefaultHttpClient implements HttpClient {
                 String[] kv = line.split(": ", 2);
                 String k = kv[0];
                 String v = kv[1];
-                headers.add(HttpHeaderName.fromString(k), v);
+                headers.add(HeaderName.fromString(k), v);
             }
 
             StringBuilder bodyString = new StringBuilder();

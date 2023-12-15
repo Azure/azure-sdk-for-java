@@ -5,7 +5,7 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -312,7 +312,7 @@ public class RetryPolicyTests {
     @Test
     public void retryAfterDateTime() {
         OffsetDateTime now = OffsetDateTime.now().withNano(0);
-        Headers headers = new Headers().set(HttpHeaderName.RETRY_AFTER,
+        Headers headers = new Headers().set(HeaderName.RETRY_AFTER,
             new DateTimeRfc1123(now.plusSeconds(30)).toString());
         Duration actual = RetryPolicy.getWellKnownRetryDelay(headers, 1, null, () -> now);
 
@@ -377,8 +377,8 @@ public class RetryPolicyTests {
         };
     }
 
-    private static final HttpHeaderName X_MS_RETRY_AFTER_MS = HttpHeaderName.fromString("x-ms-retry-after-ms");
-    private static final HttpHeaderName RETRY_AFTER_MS = HttpHeaderName.fromString("retry-after-ms");
+    private static final HeaderName X_MS_RETRY_AFTER_MS = HeaderName.fromString("x-ms-retry-after-ms");
+    private static final HeaderName RETRY_AFTER_MS = HeaderName.fromString("retry-after-ms");
 
     static Stream<Arguments> getWellKnownRetryDelaySupplier() {
         RetryStrategy retryStrategy = new RetryStrategy() {
@@ -412,17 +412,17 @@ public class RetryPolicyTests {
             Arguments.of(new Headers().set(RETRY_AFTER_MS, "ten"), retryStrategy, Duration.ofSeconds(1)),
 
             // Retry-After should be respected as seconds.
-            Arguments.of(new Headers().set(HttpHeaderName.RETRY_AFTER, "10"), retryStrategy,
+            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "10"), retryStrategy,
                 Duration.ofSeconds(10)),
 
             // Retry-After wasn't a valid number, fallback to the default.
-            Arguments.of(new Headers().set(HttpHeaderName.RETRY_AFTER, "-10"), retryStrategy,
+            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "-10"), retryStrategy,
                 Duration.ofSeconds(1)),
-            Arguments.of(new Headers().set(HttpHeaderName.RETRY_AFTER, "ten"), retryStrategy,
+            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "ten"), retryStrategy,
                 Duration.ofSeconds(1)),
 
             // Retry-After was before the current time, fallback to the default.
-            Arguments.of(new Headers().set(HttpHeaderName.RETRY_AFTER, OffsetDateTime.now().minusMinutes(1)
+            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, OffsetDateTime.now().minusMinutes(1)
                 .atZoneSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.RFC_1123_DATE_TIME)), retryStrategy, Duration.ofSeconds(1))
         );

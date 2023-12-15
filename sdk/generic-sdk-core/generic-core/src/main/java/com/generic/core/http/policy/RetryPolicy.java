@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -35,7 +35,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
-    private final HttpHeaderName retryAfterHeader;
+    private final HeaderName retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
     /**
@@ -79,7 +79,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
-        this.retryAfterHeader = HttpHeaderName.fromString(retryAfterHeader);
+        this.retryAfterHeader = HeaderName.fromString(retryAfterHeader);
         this.retryAfterTimeUnit = retryAfterTimeUnit;
         if (!isNullOrEmpty(retryAfterHeader)) {
             Objects.requireNonNull(retryAfterTimeUnit, "'retryAfterTimeUnit' cannot be null.");
@@ -221,7 +221,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-                                           HttpHeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+                                           HeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (retryAfterHeader == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);

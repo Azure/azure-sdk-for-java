@@ -4,7 +4,7 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
-    private final HttpHeaderName name;
+    private final HeaderName name;
     private final KeyCredential credential;
     private final String prefix;
 
@@ -43,17 +43,17 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
         this(validateName(name), Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
     }
 
-    private static HttpHeaderName validateName(String name) {
+    private static HeaderName validateName(String name) {
         Objects.requireNonNull(name, "'name' cannot be null.");
 
         if (name.isEmpty()) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
-        return HttpHeaderName.fromString(name);
+        return HeaderName.fromString(name);
     }
 
-    KeyCredentialPolicy(HttpHeaderName name, KeyCredential credential, String prefix) {
+    KeyCredentialPolicy(HeaderName name, KeyCredential credential, String prefix) {
         this.name = name;
         this.credential = credential;
         this.prefix = prefix != null ? prefix.trim() : null;

@@ -10,7 +10,7 @@ import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -86,7 +86,7 @@ public class RestProxyImplTests {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
-                success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+                success &= "application/json".equals(request.getHeaders().getValue(HeaderName.CONTENT_TYPE));
             } else {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             }

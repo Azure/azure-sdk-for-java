@@ -3,7 +3,7 @@
 
 package com.generic.core.http;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
@@ -113,7 +113,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public String getHeaderValue(HttpHeaderName headerName) {
+    public String getHeaderValue(HeaderName headerName) {
         return headers.getValue(headerName);
     }
 

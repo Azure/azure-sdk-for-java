@@ -4,7 +4,7 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -104,7 +104,7 @@ class OkHttpHttpClient implements HttpClient {
             return EMPTY_REQUEST_BODY;
         }
 
-        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        String contentType = headers.getValue(HeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         if (bodyContent instanceof InputStreamBinaryData) {
@@ -127,7 +127,7 @@ class OkHttpHttpClient implements HttpClient {
         Long contentLength = content.getLength();
 
         if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+            String contentLengthHeaderValue = headers.getValue(HeaderName.CONTENT_LENGTH);
 
             if (contentLengthHeaderValue != null) {
                 contentLength = Long.parseLong(contentLengthHeaderValue);

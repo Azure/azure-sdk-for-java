@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -32,7 +32,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final String REDIRECT_URLS_KEY = "redirectUrls";
 
     private final int maxAttempts;
-    private final HttpHeaderName locationHeader;
+    private final HeaderName locationHeader;
     private final Set<HttpMethod> allowedRedirectHttpMethods;
 
     /**
@@ -48,7 +48,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         this(maxAttempts, validateLocationHeader(locationHeader), validateAllowedMethods(allowedMethods));
     }
 
-    private DefaultRedirectStrategy(int maxAttempts, HttpHeaderName locationHeader, Set<HttpMethod> allowedMethods) {
+    private DefaultRedirectStrategy(int maxAttempts, HeaderName locationHeader, Set<HttpMethod> allowedMethods) {
         if (maxAttempts < 0) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
@@ -58,14 +58,14 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         this.allowedRedirectHttpMethods = allowedMethods;
     }
 
-    private static HttpHeaderName validateLocationHeader(String locationHeader) {
+    private static HeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
             LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
-                String.format("'locationHeader' provided as null will be defaulted to {%s}", HttpHeaderName.LOCATION));
+                String.format("'locationHeader' provided as null will be defaulted to {%s}", HeaderName.LOCATION));
 
-            return HttpHeaderName.LOCATION;
+            return HeaderName.LOCATION;
         } else {
-            return HttpHeaderName.fromString(locationHeader);
+            return HeaderName.fromString(locationHeader);
         }
     }
 

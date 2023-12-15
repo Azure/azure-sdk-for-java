@@ -14,7 +14,7 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.SimpleResponse;
@@ -190,7 +190,7 @@ public class SwaggerMethodParserTests {
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
         for (Header header : actual) {
-            assertEquals(expectedHeaders.getValue(HttpHeaderName.fromString(header.getName())), header.getValue());
+            assertEquals(expectedHeaders.getValue(HeaderName.fromString(header.getName())), header.getValue());
         }
     }
 
@@ -200,11 +200,11 @@ public class SwaggerMethodParserTests {
             Arguments.of(clazz.getDeclaredMethod("noHeaders"), new Headers()),
             Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new Headers()),
             Arguments.of(clazz.getDeclaredMethod("headers"), new Headers()
-                .set(HttpHeaderName.fromString("name1"), "value1")
-                .set(HttpHeaderName.fromString("name2"), "value2")
-                .set(HttpHeaderName.fromString("name3"), "value3")),
+                .set(HeaderName.fromString("name1"), "value1")
+                .set(HeaderName.fromString("name2"), "value2")
+                .set(HeaderName.fromString("name3"), "value3")),
             Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new Headers()
-                .set(HttpHeaderName.fromString("name"), "value2"))
+                .set(HeaderName.fromString("name"), "value2"))
         );
     }
 
@@ -425,8 +425,8 @@ public class SwaggerMethodParserTests {
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
         Map<String, String> complexHeaderMap = new Headers()
-            .set(HttpHeaderName.fromString("key1"), (String) null)
-            .set(HttpHeaderName.fromString("key2"), "value2")
+            .set(HeaderName.fromString("key1"), (String) null)
+            .set(HeaderName.fromString("key2"), "value2")
             .toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
@@ -549,7 +549,7 @@ public class SwaggerMethodParserTests {
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
         RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader(HttpHeaderName.fromString("x-ms-foo"), "bar")
+            .addHeader(HeaderName.fromString("x-ms-foo"), "bar")
             .addQueryParam("foo", "bar");
 
         RequestOptions urlOptions = new RequestOptions()

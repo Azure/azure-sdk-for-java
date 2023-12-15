@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
@@ -77,7 +77,7 @@ public class RestProxyUtilsTests {
     public void multipleToBytesToCheckBodyLength() {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
             .setBody(EXPECTED)
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
+            .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         BinaryData binaryData = RestProxyUtils.validateLength(httpRequest);
 
@@ -94,22 +94,22 @@ public class RestProxyUtilsTests {
             Arguments.of(
                 Named.of("bytes", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(EXPECTED)
-                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("string", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(SAMPLE)
-                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("stream", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED), (long) EXPECTED.length))
-                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
                 Named.of("file", new HttpRequest(HttpMethod.GET, "http://localhost")
                     .setBody(BinaryData.fromFile(file))
-                    .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
+                    .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             )
         );
     }
@@ -119,7 +119,7 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L))
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
+                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
             IllegalStateException thrown =
                 assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
@@ -134,7 +134,7 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L))
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
+                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
             IllegalStateException thrown =
                 assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
@@ -150,7 +150,7 @@ public class RestProxyUtilsTests {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length))
-                .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
+                .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
             assertArraysEqual(EXPECTED, validateAndCollectRequest(httpRequest));
         }

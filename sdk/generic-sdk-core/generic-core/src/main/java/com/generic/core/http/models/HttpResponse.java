@@ -4,6 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.models.BinaryData;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
@@ -45,13 +46,13 @@ public abstract class HttpResponse implements Closeable {
     public abstract int getStatusCode();
 
     /**
-     * Lookup a response header with the provider {@link HttpHeaderName}.
+     * Lookup a response header with the provider {@link HeaderName}.
      *
      * @param headerName The name of the header to lookup.
      *
      * @return The value of the header, or {@code null} if the header doesn't exist in the response.
      */
-    public String getHeaderValue(HttpHeaderName headerName) {
+    public String getHeaderValue(HeaderName headerName) {
         return getHeaders().getValue(headerName);
     }
 

@@ -13,7 +13,7 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
@@ -142,10 +142,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         if (!headerValue.isEmpty()) {
                             if (headerValue.contains(",")) {
                                 // There are multiple values for this header, so we split them out.
-                                this.requestHeaders.set(HttpHeaderName.fromString(headerName),
+                                this.requestHeaders.set(HeaderName.fromString(headerName),
                                     Arrays.asList(headerValue.split(",")));
                             } else {
-                                this.requestHeaders.set(HttpHeaderName.fromString(headerName), headerValue);
+                                this.requestHeaders.set(HeaderName.fromString(headerName), headerValue);
                             }
                         }
                     }
@@ -393,7 +393,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
 
                         if (headerValue != null) {
-                            headers.set(HttpHeaderName.fromString(headerName), headerValue);
+                            headers.set(HeaderName.fromString(headerName), headerValue);
                         }
                     }
                 } else {

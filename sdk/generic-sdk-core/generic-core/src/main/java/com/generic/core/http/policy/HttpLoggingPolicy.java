@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -150,7 +150,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             //     return;
             // }
 
-            String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+            String contentType = request.getHeaders().getValue(HeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
             // logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -205,7 +205,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void logContentLength(HttpResponse response, ClientLogger.LoggingEventBuilder logBuilder) {
-            String contentLengthString = response.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
+            String contentLengthString = response.getHeaderValue(HeaderName.CONTENT_LENGTH);
 
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
                 // logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
@@ -227,7 +227,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
+                String contentTypeHeader = response.getHeaderValue(HeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
@@ -299,7 +299,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, Headers headers) {
         long contentLength = 0;
 
-        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLengthString = headers.getValue(HeaderName.CONTENT_LENGTH);
 
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
@@ -387,7 +387,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public String getHeaderValue(HttpHeaderName headerName) {
+        public String getHeaderValue(HeaderName headerName) {
             return actualResponse.getHeaderValue(headerName);
         }
 

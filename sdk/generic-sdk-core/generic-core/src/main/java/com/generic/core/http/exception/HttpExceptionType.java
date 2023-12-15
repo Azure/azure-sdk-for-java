@@ -25,7 +25,7 @@ public final class HttpExceptionType implements ExpandableStringEnum<HttpExcepti
     }
 
     /**
-     * Gets known {@link HttpExceptionType} values.
+     * Gets all known {@link HttpExceptionType} values.
      *
      * @return The known {@link HttpExceptionType} values.
      */
@@ -34,7 +34,7 @@ public final class HttpExceptionType implements ExpandableStringEnum<HttpExcepti
     }
 
     /**
-     * Creates or finds a {@link HttpExceptionType} from its string representation.
+     * Creates or finds a {@link HttpExceptionType} for the passed {@code name}.
      *
      * <p>{@code null} will be returned if {@code name} is {@code null}.</p>
      *
@@ -86,12 +86,12 @@ public final class HttpExceptionType implements ExpandableStringEnum<HttpExcepti
      * The exception thrown when failing to authenticate the HTTP request with status code of {@code 4XX}, typically
      * {@code 401 Unauthorized}.
      *
-     * <p>A runtime exception indicating request authorization failure caused by one of the following scenarios:
+     * <p>A runtime exception indicating request authorization failure caused by one of the following scenarios:</p>
      * <ul>
-     * <li>A client did not send the required authorization credentials to access the requested resource, i.e.
-     * Authorization HTTP header is missing in the request</li>
-     * <li>If the request contains the HTTP Authorization header, then the exception indicates that authorization has
-     * been refused for the credentials contained in the request header.</li>
+     *     <li>A client did not send the required authorization credentials to access the requested resource, i.e.
+     *     Authorization HTTP header is missing in the request</li>
+     *     <li>If the request contains the HTTP Authorization header, then the exception indicates that authorization
+     *     has been refused for the credentials contained in the request header.</li>
      * </ul>
      */
     public static final HttpExceptionType CLIENT_AUTHENTICATION = fromString("CLIENT_AUTHENTICATION");

@@ -5,7 +5,7 @@ package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.client.LocalTestServer;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -140,9 +140,9 @@ public class OkHttpHttpClientTests {
     @Test
     public void validateHeadersReturnAsIs() {
         HttpClient client = new OkHttpHttpClientProvider().createInstance();
-        HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
+        HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
-        HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
+        HeaderName multiValueHeaderName = HeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
         Headers headers = new Headers()

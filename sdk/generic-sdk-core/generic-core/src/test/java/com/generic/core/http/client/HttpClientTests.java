@@ -13,7 +13,7 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -658,8 +658,8 @@ public abstract class HttpClientTests {
 
     }
 
-    private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");
-    private static final HttpHeaderName HEADER_B = HttpHeaderName.fromString("B");
+    private static final HeaderName HEADER_A = HeaderName.fromString("A");
+    private static final HeaderName HEADER_B = HeaderName.fromString("B");
 
     @Test
     public void getRequestWithHeaderParametersAndAnythingReturn() {
@@ -877,8 +877,8 @@ public abstract class HttpClientTests {
         HttpBinJSON get(@HostParam("url") String url);
     }
 
-    private static final HttpHeaderName MY_HEADER = HttpHeaderName.fromString("MyHeader");
-    private static final HttpHeaderName MY_OTHER_HEADER = HttpHeaderName.fromString("MyOtherHeader");
+    private static final HeaderName MY_HEADER = HeaderName.fromString("MyHeader");
+    private static final HeaderName MY_OTHER_HEADER = HeaderName.fromString("MyOtherHeader");
 
     @Test
     public void headersRequest() {
@@ -1461,7 +1461,7 @@ public abstract class HttpClientTests {
         byte[] bytes = otherByteArrayOutputStream.toByteArray();
 
         String contentHash = md5(bytes);
-        String eTag = otherResponse.getHeaders().getValue(HttpHeaderName.ETAG);
+        String eTag = otherResponse.getHeaders().getValue(HeaderName.ETAG);
 
         assertEquals(eTag, contentHash);
     }
@@ -1548,8 +1548,8 @@ public abstract class HttpClientTests {
 
         final Headers resultHeaders = new Headers().setAll(result.headers());
 
-        assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
-        assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
+        assertEquals("GHIJ", resultHeaders.getValue(HeaderName.fromString("ABCDEF")));
+        assertEquals("45", resultHeaders.getValue(HeaderName.fromString("ABC123")));
     }
 
     /*@ServiceInterface(name = "Service26", host = "{url}")
@@ -1630,7 +1630,7 @@ public abstract class HttpClientTests {
     public void requestOptionsChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
+            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HeaderName.CONTENT_LENGTH, "4"));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1639,7 +1639,7 @@ public abstract class HttpClientTests {
         assertEquals("4", response.getHeaderValue("Content-Length"));
     }
 
-    private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
+    private static final HeaderName RANDOM_HEADER = HeaderName.fromString("randomHeader");
 
     @Test
     public void requestOptionsAddAHeader() {
