@@ -65,6 +65,152 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  * This class provides a client that contains the operations for querying an index and uploading, merging, or deleting
  * documents in an Azure Cognitive Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     Conceptually, a document is an entity in your index. Mapping this concept to more familiar database equivalents:
+ *     a search index equates to a table, and documents are roughly equivalent to rows in a table. Documents exist only
+ *     in an index, and are retrieved only through queries that target the documents collection (/docs) of an index. All
+ *     operations performed on the collection such as uploading, merging, deleting, or querying documents take place in
+ *     the context of a single index, so the URL format document operations will always include /indexes/[index name]/docs
+ *     for a given index name.
+ * </p>
+ *
+ * <p>
+ *     This client provides an asynchronous API for accessing and performing operations on indexed documents. This client
+ *     assists with searching your indexed documents, autocompleting partially typed search terms based on documents within the index,
+ *     suggesting the most likely matching text in documents as a user types. The client provides operations for adding, updating, and deleting
+ *     documents from an index.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchClientBuilder}. This sample shows
+ *     you how to authenticate and create an instance of the client:
+ * </p>
+ *
+ * TODO: add authentication sample
+ *
+ * <p>
+ *     For more information on authentication and building, see the {@link SearchClientBuilder} documentation.
+ * </p>
+ *
+ * <hr/>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Upload a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample uploads a new document to an index.
+ * </p>
+ *
+ * TODO: add upload sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Merge a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample merges documents in an index.
+ * </p>
+ *
+ * TODO: add merge sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Delete a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a document from an index.
+ * </p>
+ *
+ * TODO: add delete sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Get a Document
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets a document from an index.
+ * </p>
+ *
+ * TODO: add get sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Search Documents
+ * </h3>
+ *
+ * <p>
+ *     The following sample searches for documents within an index.
+ * </p>
+ *
+ * TODO: add search sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Make a Suggestion
+ * </h3>
+ *
+ * <p>
+ *     The following sample suggests the most likely matching text in documents.
+ * </p>
+ *
+ * TODO: add suggest sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
+ * <h3>
+ *     Provide an Autocompletion
+ * </h3>
+ *
+ * <p>
+ *     The following sample provides autocompletion for a partially typed query.
+ * </p>
+ *
+ * TODO: add autocomplete sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchClient}.
+ * </em>
+ *
  * @see SearchClientBuilder
  */
 @ServiceClient(builder = SearchClientBuilder.class, isAsync = true)

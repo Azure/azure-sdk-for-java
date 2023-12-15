@@ -36,15 +36,67 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchIndexClient
- * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}. Call {@link #buildClient()
- * buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired
- * client.
+ * SearchIndexClients} and {@link SearchIndexAsyncClient SearchIndexAsyncClients}.
+ *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
  * <p>
- * The following must be provided to construct a client instance.
+ *     This client allows you to create instances of {@link SearchIndexClient} and {@link SearchIndexAsyncClient} to
+ *     utilize synchronous and asynchronous APIs respectively to interact with Azure AI Search.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <h3>
+ *     Authentication
+ * </h3>
+ *
+ * <p>
+ *     Azure AI Search supports <a href="https://learn.microsoft.com/en-us/azure/search/search-security-rbac?tabs=config-svc-portal%2Croles-portal%2Ctest-portal%2Ccustom-role-portal%2Cdisable-keys-portal">
+ *         Microsoft Entra ID (role-based) authentication </a> and <a href="https://learn.microsoft.com/en-us/azure/search/search-security-api-keys?tabs=portal-use%2Cportal-find%2Cportal-query">API keys</a> for authentication.
+ * </p>
+ *
+ * <p>
+ *     For more information about the scopes of authorization, see the <a href="https://learn.microsoft.com/azure/search/search-security-overview#authentication">Azure AI Search Security Overview</a> documentation.
+ * </p>
+ *
+ * <h4>
+ *     Building and Authenticating a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using API keys
+ * </h4>
+ *
+ * <p>
+ *     To build an instance of {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using API keys, call
+ *     {@link #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively from the
+ *     {@link SearchIndexClientBuilder}.
+ * </p>
+ *
+ * <p>
+ *     The following must be provided to construct a client instance.
+ * </p>
+ *
  * <ul>
- * <li>The Azure Cognitive Search service URL.</li>
- * <li>An {@link AzureKeyCredential} that grants access to the Azure Cognitive Search service.</li>
+ *     <li>
+ *         The Azure Cognitive Search service URL.
+ *     </li>
+ *     <li>
+ *         An {@link AzureKeyCredential API Key} that grants access to the Azure Cognitive Search service.
+ *     </li>
  * </ul>
+ *
+ * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
+ * <pre>
+ * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
  *
  * <p><strong>Instantiating an asynchronous Search Index Client</strong></p>
  *
@@ -57,16 +109,40 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Search Index Client</strong></p>
  *
- * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
- * <pre>
- * SearchIndexClient searchIndexClient = new SearchIndexClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.search.documents.indexes.SearchIndexClient.instantiation -->
+ * <h4>
+ *     Building and Authenticating a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using Azure Active Directory
+ * </h4>
+ *
+ * <p>
+ *   You can also create a {@link SearchIndexClient} or {@link SearchIndexAsyncClient} using Azure Active Directory (AAD)
+ *   authentication. Your user or service principal must be assigned the "Search Index Data Reader" role. Using the
+ *   DefaultAzureCredential you can authenticate a service using Managed Identity or a service principal, authenticate
+ *   as a developer working on an application, and more all without changing code. Please refer the <a href="https://learn.microsoft.com/en-us/azure/search/search-security-rbac?tabs=config-svc-portal,roles-portal,test-portal,custom-role-portal,disable-keys-portal">documentation</a> for
+ *   instructions on how to connect to Azure Cognitive Search using Azure role-based access control (Azure RBAC).
+ * </p>
+ *
+ * <p>
+ *     Before you can use the `DefaultAzureCredential`, or any credential type from Azure.Identity, you'll first need to install the Azure.Identity package.
+ * </p>
+ *
+ * <p>
+ *     To use DefaultAzureCredential with a client ID and secret, you'll need to set the `AZURE_TENANT_ID`, `AZURE_CLIENT_ID`,
+ *     and `AZURE_CLIENT_SECRET` environment variables; alternatively, you can pass those values to the
+ *     `ClientSecretCredential` also in azure-identity.
+ * </p>
+ *
+ * <p>
+ *     Make sure you use the right namespace for DefaultAzureCredential at the top of your source file:
+ * </p>
+ *
+ * TODO: add import sample
+ *
+ * <p>
+ *     Then you can create an instance of DefaultAzureCredential and pass it to a new instance of your client:
+ * </p>
+ *
+ * TODO: add auth with AAD sample
  *
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient

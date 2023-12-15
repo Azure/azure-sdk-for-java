@@ -40,6 +40,227 @@ import static com.azure.core.util.FluxUtil.withContext;
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting data
  * source connections, indexers, or skillsets and running or resetting indexers in an Azure Cognitive Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     Indexers provide indexing automation. An indexer connects to a data source, reads in the data, and passes it to a
+ *     search engine for indexing into a target search index. Indexers read from an external source using connection
+ *     information in a data source, and serialize the incoming data into JSON search documents. In addition to a data
+ *     source, an indexer also requires an index. The index specifies the fields and attributes of the search documents.
+ * </p>
+ *
+ * <p>
+ *     A skillset adds external processing steps to indexer execution, and is usually used to add AI or deep learning
+ *     models to analyze or transform content to make it searchable in an index. The contents of a skillset are one or
+ *     more skills, which can be <a href="https://learn.microsoft.com/azure/search/cognitive-search-predefined-skills">built-in skills</a>
+ *     created by Microsoft, custom skills, or a combination of both. Built-in skills exist for image analysis,
+ *     including OCR, and natural language processing. Other examples of built-in skills include entity recognition,
+ *     key phrase extraction, chunking text into logical pages, among others. A skillset is high-level standalone object
+ *     that exists on a level equivalent to indexes, indexers, and data sources, but it's operational only within indexer
+ *     processing. As a high-level object, you can design a skillset once, and then reference it in multiple indexers.
+ * </p>
+ *
+ * <p>
+ *     This client provides an asynchronous API for accessing indexers and skillsets. This client allows you to create,
+ *     update, list, or delete indexers and skillsets. It can also be used to run or reset indexers.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchIndexerClientBuilder}. This
+ *     sample shows you how to authenticate and build this client:
+ * </p>
+ *
+ * TODO: add authentication sample
+ *
+ * <p>
+ *     For more information on authentication and building, see the {@link SearchIndexerClientBuilder} documentation.
+ * </p>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Create an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates an indexer.
+ * </p>
+ *
+ * TODO: add create indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     List all Indexers
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all indexers.
+ * </p>
+ *
+ * TODO: add list indexers sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Get an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets an indexer.
+ * </p>
+ *
+ * TODO: add get indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Update an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates an indexer.
+ * </p>
+ *
+ * TODO: add update indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Delete an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes an indexer.
+ * </p>
+ *
+ * TODO: add delete indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Run an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample runs an indexer.
+ * </p>
+ *
+ * TODO: add run indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Reset an Indexer
+ * </h3>
+ *
+ * <p>
+ *     The following sample resets an indexer.
+ * </p>
+ *
+ * TODO: add reset indexer sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Create a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates a skillset.
+ * </p>
+ *
+ * TODO: add create skillset sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     List all Skillsets
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all skillsets.
+ * </p>
+ *
+ * TODO: add list skillsets sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Get a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample gets a skillset.
+ * </p>
+ *
+ * TODO: add get skillset sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Update a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates a skillset.
+ * </p>
+ *
+ * TODO: add update skillset sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
+ * <h3>
+ *     Delete a Skillset
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a skillset.
+ * </p>
+ *
+ * TODO: add delete skillset sample
+ *
+ * <em>
+ *     For a synchronous sample, see {@link SearchIndexerClient}.
+ * </em>
+ *
  * @see SearchIndexerClientBuilder
  */
 @ServiceClient(builder = SearchIndexerClientBuilder.class, isAsync = true)

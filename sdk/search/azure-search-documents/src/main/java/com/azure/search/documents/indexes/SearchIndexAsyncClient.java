@@ -46,6 +46,197 @@ import static com.azure.core.util.FluxUtil.withContext;
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
  * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     An index is stored on your search service and populated with JSON documents that are indexed and tokenized for
+ *     information retrieval. The fields collection of an index defines the structure of the search document. Fields
+ *     have a name, data types, and attributes that determine how it's used. For example, searchable fields are used in
+ *     full text search, and thus tokenized during indexing. An index also defines other constructs, such as scoring
+ *     profiles for relevance tuning, suggesters, semantic configurations, and custom analyzers.
+ * </p>
+ *
+ * <p>
+ *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
+ *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ * </p>
+ *
+ * <p>
+ *     This client provides an asynchronous API for accessing indexes. This client allows you to create, delete, update,
+ *     and configure search indexes. The client also allows you to declare custom synonym maps to expand or rewrite
+ *     queries.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchIndexClientBuilder}. This
+ *     sample shows you how to create an instance of the client:
+ * </p>
+ *
+ * TODO: add authentication sample
+ *
+ * <p>
+ *     For more information on authentication and building, see the documentation for {@link SearchIndexClientBuilder}.
+ * </p>
+ *
+ * <hr/>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Create an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates an index.
+ * </p>
+ *
+ * TODO: add create index sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * <h3>
+ *     List indexes
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all indexes.
+ * </p>
+ *
+ * TODO: add list indexes sample
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * <h3>
+ *     Retrieve an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves an index.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add get index sample
+ *
+ * <h3>
+ *     Update an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates an index.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add update index sample
+ *
+ * <h3>
+ *     Delete an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes an index.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add delete index sample
+ *
+ * <h3>
+ *     Create a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates a synonym map.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add create synonym map sample
+ *
+ * <h3>
+ *     List Synonym Maps
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all synonym maps.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add list synonym maps sample
+ *
+ * <h3>
+ *     Retrieve a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves a synonym map.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add get synonym map sample
+ *
+ * <h3>
+ *     Update a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates a synonym map.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add update synonym map sample
+ *
+ * <h3>
+ *     Delete a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a synonym map.
+ * </p>
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient}.
+ * </em>
+ *
+ * TODO: add delete synonym map sample
+ *
  * @see SearchIndexClientBuilder
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)

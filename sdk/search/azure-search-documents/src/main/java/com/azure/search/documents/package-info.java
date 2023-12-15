@@ -2,8 +2,305 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing classes for creating {@link com.azure.search.documents.SearchClient} or
- * {@link com.azure.search.documents.SearchAsyncClient} used to perform document management, autocomplete, search, or
- * suggestion operations using an Azure Cognitive Search service index.
+ * <p><a href="https://learn.microsoft.com/azure/search/">Azure AI Search</a>, formerly known as "Azure Cognitive Search, provides secure information retrieval at scale over
+ * user-owned content in traditional and conversational search applications.</p>
+ *
+ * <p>The Azure AI Search service provides:/p>
+ *
+ * <ul>
+ *     <li>A search engine for vector search, full text, and hybrid search over a search index.</li>
+ *     <li>Rich indexing with integrated data chunking and vectorization (preview), lexical analysis for text, and
+ *     optional AI enrichment for content extraction and transformation.</li>
+ *     <li>Rich query syntax for vector queries, text search, hybrid queries, fuzzy search, autocomplete, geo-search and others.</li>
+ *     <li>Azure scale, security, and reach.</li>
+ *     <li>Azure integration at the data layer, machine learning layer, Azure AI services and Azure OpenAI</li>
+ * </ul>
+ *
+ * <p>The Azure AI Search service is well suited for the following application scenarios:</p>
+ *
+ * <ul>
+ *     <li>Consolidate varied content types into a single searchable index. To populate an index, you can push JSON
+ *     documents that contain your content, or if your data is already in Azure, create an indexer to pull in data
+ *     automatically.</li>
+ *     <li>Attach skillsets to an indexer to create searchable content from images and large text documents. A skillset
+ *     leverages AI from Cognitive Services for built-in OCR, entity recognition, key phrase extraction, language
+ *     detection, text translation, and sentiment analysis. You can also add custom skills to integrate external
+ *     processing of your content during data ingestion.</li>
+ *     <li>In a search client application, implement query logic and user experiences similar to commercial web search engines.</li>
+ * </ul>
+ *
+ * <p>This is the Java client library for Azure AI Search. Azure AI Search service is a search-as-a-service
+ * cloud solution that gives developers APIs and tools for adding a rich search experience over private, heterogeneous
+ * content in web, mobile, and enterprise applications.</p>
+ *
+ * <p>The Azure Search Documents client library allows for Java developers to easily interact with the Azure AI Search
+ * service from their Java applications. This library provides a set of APIs that abstract the low-level details of working
+ * with the Azure AI Search service and allows developers to perform common operations such as:</p>
+ *
+ * <ul>
+ *     <li>Submit queries for simple and advanced query forms that include fuzzy search, wildcard search, regular expressions..</li>
+ *     <li>Implement filtered queries for faceted navigation, geospatial search, or to narrow results based on filter criteria.</li>
+ *     <li>Create and manage search indexes.</li>
+ *     <li>Upload and update documents in the search index.</li>
+ *     <li>Create and manage indexers that pull data from Azure into an index.</li>
+ *     <li>Create and manage skillsets that add AI enrichment to data ingestion.</li>
+ *     <li>Create and manage analyzers for advanced text analysis or multi-lingual content.</li>
+ *     <li>Optimize results through scoring profiles to factor in business logic or freshness.</li>
+ * </ul>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <h3>Prerequisites</h3>
+ *
+ * <p>The client library package requires the following:</p>
+ *
+ * <ul>
+ *     <li>Java Development Kit (JDK) 8 or later</li>
+ *     <li><a href="https://azure.microsoft.com/free/java/">An Azure subscription</a></li>
+ *     <li><a href="https://azure.microsoft.com/products/ai-services/ai-search/">An existing Azure AI Search service</a></li>
+ * </ul>
+ *
+ *<p><em>To create a new Search service, you can use the
+ * <a href="https://learn.microsoft.com/azure/search/search-create-service-portal">Azure portal</a>,
+ * <a href="https://learn.microsoft.com/azure/search/search-manage-powershell#create-or-delete-a-service">Azure Powershell</a>,
+ * or the <a href="https://learn.microsoft.com/cli/azure/search/service?view=azure-cli-latest#az-search-service-create">Azure CLI.</a></em></p>
+ *
+ *
+ * <h3>Authenticate the client</h3>
+ *
+ * <p>To interact with the Search service, you'll need to create an instance of the appropriate client class:
+ * SearchClient for searching indexed documents, SearchIndexClient for managing indexes, or SearchIndexerClient for
+ * crawling data sources and loading search documents into an index. To instantiate a client object, you'll need an
+ * endpoint and API key. You can refer to the documentation for more information on
+ * <a href="https://learn.microsoft.com/azure/search/search-security-overview#authentication">supported authenticating approaches</a>
+ * with the Search service.</p>
+ *
+ * <h4>Get an API Key</h4>
+ *
+ * <p>You can get the endpoint and an API key from the Search service in the <a href="https://ms.portal.azure.com/">Azure Portal.</a>
+ * Please refer <a href="https://learn.microsoft.com/azure/search/search-security-api-keys?tabs=portal-use%2Cportal-find%2Cportal-query">the
+ * documentation</a> for instructions on how to get an API key.</p>
+ *
+ * <p>The SDK provides three clients.</p>
+ *
+ * <ul>
+ *     <li>SearchIndexClient for CRUD operations on indexes and synonym maps.</li>
+ *     <li>SearchIndexerClient for CRUD operations on indexers, data sources, and skillsets.</li>
+ *     <li>SearchClient for all document operations.</li>
+ * </ul>
+ *
+ * <h3>Create a SearchIndexClient</h3>
+ *
+ * <p>To create a SearchIndexClient, you will need the values of the Azure Cognitive Search service URL endpoint and
+ * admin key. The following snippet shows how to create a SearchIndexClient.</p>
+ *
+ * The following sample creates a SearchIndexClient using the endpoint and Azure Key Credential (API Key).
+ *
+ * TODO: add sample
+ *
+ * <h3>Create a SearchIndexerClient</h3>
+ *
+ * <p>To create a SearchIndexerClient, you will need the values of the Azure Cognitive Search
+ * service URL endpoint and admin key. The following snippet shows how to create a SearchIndexerClient.</p>
+ *
+ * <p>The following sample creates SearchIndexerClient using an endpoint and Azure Key Credential (API Key).</p>
+ *
+ * TODO: add sample
+ *
+ * <h3>Create a SearchClient</h3>
+ *
+ * <p>To create a SearchClient, you will need the values of the Azure Cognitive Search
+ * service URL endpoint, admin key, and an index name. The following snippet shows how to create a SearchIndexerClient.</p>
+ *
+ * <p>The following sample creates a SearchClient</p>
+ *
+ * TODO: add sample
+ *
+ * <h2>Key Concepts</h2>
+ *
+ * <p>An Azure Cognitive Search service contains one or more indexes that provide persistent storage of searchable data
+ * in the form of JSON documents. (If you're new to search, you can make a very rough analogy between indexes and
+ * database tables.) The azure-search-documents client library exposes operations on these resources through two main
+ * client types.</p>
+ *
+ * <ul>
+ *     <li>SearchClient helps with:</li>
+ *     <ul>
+ *         <li><a href="https://learn.microsoft.com/azure/search/search-lucene-query-architecture">Searching</a>
+ *         your indexed documents using <a href="https://learn.microsoft.com/azure/search/search-query-overview">rich queries</a>
+ *         and <a href="https://learn.microsoft.com/azure/search/search-filters">powerful data shaping.</a></li>
+ *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/autocomplete">Autocompleting</a> partially typed search terms based on documents in the index.</li>
+ *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/suggestions">Suggesting</a> the most likely matching text in documents as a user types.</li>
+ *         <li><a href="https://learn.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents">Adding, Updating or Deleting</a> documents from an index.</li>
+ *     </ul>
+ *     <li>SearchIndexClient allows you to:</li>
+ *     <ul>
+ *         <li>Create, delete, update, or configure a search index</li>
+ *         <li>Declare custom synonym maps to expand or rewrite queries</li>
+ *         <li>Most of the SearchServiceClient functionality is not yet available in our current preview</li>
+ *     </ul>
+ *     <li>SearchIndexerClient allows you to:</li>
+ *     <ul>
+ *         <li>Start indexers to automatically crawl data sources</li>
+ *         <li>Define AI powered Skillsets to transform and enrich your data</li>
+ *     </ul>
+ * </ul>
+ *
+ * <p>Azure Cognitive Search provides two powerful features:</p>
+ *
+ * <h3>Semantic Search</h3>
+ *
+ * <p>Semantic search enhances the quality of search results for text-based queries. By enabling Semantic Search on
+ * your search service, you can improve the relevance of search results in two ways:</p>
+ *
+ * <ul>
+ *     <li>It applies secondary ranking to the initial result set, promoting the most semantically relevant results to the top.</li>
+ *     <li>It extracts and returns captions and answers in the response, which can be displayed on a search page to enhance the user's search experience.</li>
+ * </ul>
+ *
+ * <p>To learn more about Semantic Search, you can refer to the documentation.</p>
+ *
+ * <h3>Vector Search</h3>
+ *
+ * <p>Vector Search is an information retrieval technique that overcomes the limitations of traditional keyword-based
+ * search. Instead of relying solely on lexical analysis and matching individual query terms, Vector Search utilizes
+ * machine learning models to capture the contextual meaning of words and phrases. It represents documents and queries
+ * as vectors in a high-dimensional space called an embedding. By understanding the intent behind the query,
+ * Vector Search can deliver more relevant results that align with the user's requirements, even if the exact terms are
+ * not present in the document. Moreover, Vector Search can be applied to various types of content, including images
+ * and videos, not just text.</p>
+ *
+ * <p>To learn how to index vector fields and perform vector search, you can refer to the <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java">sample</a>.
+ * This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.</p>
+ *
+ * <p>Additionally, for more comprehensive information about Vector Search, including its concepts and usage, you can
+ * refer to the <a href="https://learn.microsoft.com/azure/search/vector-search-overview">documentation</a>. The documentation provides in-depth explanations and guidance on leveraging the power of
+ * Vector Search in Azure Cognitive Search.</p>
+ *
+ * <h3>Examples</h3>
+ *
+ * <p>The following examples all use a sample<a href="https://github.com/Azure-Samples/azure-search-sample-data"> Hotel data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">import into your own index from the Azure
+ * portal</a>. These are just a few of the basics - please <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/src/samples/README.md">check out our Samples</a> for much more.</p>
+ *
+ * <h4>Querying</h4>
+ *
+ * <p>There are two ways to interact with the data returned from a search query.</p>
+ *
+ * <h5>Use SearchDocument like a dictionary for search results</h5>
+ *
+ * <p>SearchDocument is the default type returned from queries when you don't provide your own. The following sample performs the
+ * search, enumerates over the results, and extracts data using SearchDocument's dictionary indexer.</p>
+ *
+ * TODO: add sample
+ *
+ * <h5>Use Java model class for search results</h5>
+ *
+ * <p>Define a `Hotel` class.</p>
+ *
+ * TODO: add sample
+ *
+ * <p>Use it in place of SearchDocument when querying.</p>
+ *
+ * TODO: add sample
+ *
+ * <h5>Search Options</h5>
+ *
+ * <p>The SearchOptions provide powerful control over the behavior of our queries.</p>
+ *
+ * <p>The following sample uses SearchOptions to search for the top 5 luxury hotel with a good rating (4 or above).</p>
+ *
+ * TODO: add sample
+ *
+ * <h4>Creating an index</h4>
+ *
+ * <p>You can use the SearchIndexClient to create a search index. Indexes can also define suggesters, lexical analyzers,
+ * and more.</p>
+ *
+ * <p>There are multiple ways of preparing search fields for a search index. For basic needs, there is a static helper
+ * method buildSearchFields in SearchIndexClient and SearchIndexAsyncClient, which can convert Java POJO class into
+ * List<SearchField>. There are three annotations SimpleFieldProperty, SearchFieldProperty and FieldBuilderIgnore to
+ * configure the field of model class.</p>
+ *
+ * TODO: add sample
+ *
+ * <p>For advanced scenarios, you can build search fields using SearchField directly. The following sample shows how to
+ * build search fields with SearchField.</p>
+ *
+ * TODO: add sample
+ *
+ * <h4>Retrieving a specific document from your index</h4>
+ *
+ *<p>In addition to querying for documents using keywords and optional filters, you can retrieve a specific document from your index if you already know the key.</p>
+ *
+ * <p>The following example retrieves a document using the document's key.</p>
+ *
+ * TODO: add sample
+ *
+ * <h4>Adding documents to your index</h4>
+ *
+ * <p>You can Upload, Merge, MergeOrUpload, and Delete multiple documents from an index in a single batched request.
+ * There are <a href="https://learn.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions">a few special rules for merging</a> to be aware of.</p>
+ *
+ * <p>The following sample shows using a single batch request to perform a document upload and merge in a single request.</p>
+ *
+ * TODO: add sample
+ *
+ * <h4>Async APIs</h4>
+ *
+ * <p>The examples so far have been using synchronous APIs. For asynchronous support and examples, please see our asynchronous clients:</p>
+ *
+ * <ul>
+ *     <li>SearchIndexAsyncClient</li>
+ *     <li>SearchIndexerAsyncClient</li>
+ *     <li>SearchAsyncClient</li>
+ * </ul>
+ *
+ * <h3>Authenticate in a National Cloud</h3>
+ *
+ * <p>To authenticate a <a href="https://learn.microsoft.com/azure/active-directory/develop/authentication-national-cloud">National Cloud</a>, you will need to make the following additions to your client configuration:</p>
+ *
+ * <ul>
+ *     <li>Set `AuthorityHost` in the credential potions or via the `AZURE_AUTHORITY_HOST` environment variable</li>
+ *     <li>Set the `audience` in SearchClientBuilder, SearchIndexClientBuilder, SearchIndexerClientBuilder</li>
+ * </ul>
+ *
+ * TODO: add sample
+ *
+ * <h3>Troubleshooting</h3>
+ *
+ * <p>See our <a href="https://github.com/Azure/azure-sdk-for-java/blob/azure-search-documents_11.6.0/sdk/search/azure-search-documents/TROUBLESHOOTING.md">troubleshooting guide</a> for details on how to diagnose various failure scenarios.</p>
+ *
+ * <h4>General</h4>
+ *
+ * <p>When you interact with Azure Cognitive Search using this Java client library, errors returned by the service
+ * correspond to the <a href="https://learn.microsoft.com/rest/api/searchservice/http-status-codes">same HTTP status codes returned for REST API requests.</a> For example, the service will return a 404
+ * error if you try to retrieve a document that doesn't exist in your index.</p>
+ *
+ * <h4>Handling Search Error Response</h4>
+ *
+ * <p>Any Search API operation that fails will throw an HttpResponseException with helpful <a href="https://learn.microsoft.com/rest/api/searchservice/http-status-codes">Status codes</a>. Many of these errors are recoverable.</p>
+ *
+ * TODO: add sample
+ *
+ * <p>You can also easily enable console logging if you want to dig deeper into the requests you're making against the service.</p>
+ *
+ * <h4>Enabling Logging</h4>
+ *
+ * <p>Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and
+ * expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal
+ * state to help locate the root issue.</p>
+ *
+ * @see com.azure.search.documents.SearchClient
+ * @see com.azure.search.documents.SearchAsyncClient
+ * @see com.azure.search.documents.SearchClientBuilder
+ * @see com.azure.search.documents.indexes.SearchIndexClient
+ * @see com.azure.search.documents.indexes.SearchIndexAsyncClient
+ * @see com.azure.search.documents.indexes.SearchIndexClientBuilder
+ * @see com.azure.search.documents.indexes.SearchIndexerClient
+ * @see com.azure.search.documents.indexes.SearchIndexerAsyncClient
+ * @see com.azure.search.documents.indexes.SearchIndexerClientBuilder
+ * @see com.azure.search.documents.models.SearchOptions
+ * @see com.azure.search.documents.indexes.models.SearchField
+ *
  */
 package com.azure.search.documents;
