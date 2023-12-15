@@ -4,7 +4,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.test.TestMode;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeRetentionPolicy;
 import com.azure.storage.file.datalake.models.DataLakeServiceProperties;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;

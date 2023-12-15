@@ -10,7 +10,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
