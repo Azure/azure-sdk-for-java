@@ -31,16 +31,7 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         try {
             return Utils.getSimpleObjectMapper().readTree(bufferStream);
         } catch (IOException e) {
-            String json = "n/a";
-            try {
-                bufferStream.reset();
-                byte[] blob = new byte[responsePayloadSize];
-                bufferStream.readFully(blob);
-                json = new String(blob, StandardCharsets.UTF_8);
-            } catch (IOException readFullyError) {
-                LOGGER.warn("Can't extract invalid json because the input stream cannot be reset.", readFullyError);
-            }
-            throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
+            throw new IllegalStateException(String.format("Unable to parse JSON."), e);
         }
     }
 

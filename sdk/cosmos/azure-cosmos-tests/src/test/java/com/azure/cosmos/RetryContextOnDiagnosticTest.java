@@ -105,7 +105,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(response.getResponseBodyAsJson().get("id")).isEqualTo(responseText);
+        assertThat(response.getResponseBodyAsJson().get("id").asText()).isEqualTo(responseText);
         assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
@@ -156,7 +156,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             addressSelector);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(response.getResponseBodyAsJson().get("id")).isEqualTo(responseText);
+        assertThat(response.getResponseBodyAsJson().get("id").asText()).isEqualTo(responseText);
         assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
