@@ -12,7 +12,7 @@ import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.RequestOptions;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 

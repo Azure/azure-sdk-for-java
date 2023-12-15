@@ -8,7 +8,7 @@ import com.generic.core.implementation.http.rest.RestProxyImpl;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
-import com.generic.core.models.RequestOptions;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.lang.reflect.InvocationHandler;

@@ -9,7 +9,7 @@ import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.InputStreamBinaryData;
-import com.generic.core.models.RequestOptions;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
