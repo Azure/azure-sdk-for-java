@@ -5,7 +5,7 @@ package com.generic.core.http.okhttp.implementation;
 
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.util.CoreUtils;
-import com.generic.core.util.AuthorizationChallengeHandler;
+import com.generic.core.implementation.util.AuthorizationChallengeHandler;
 import com.generic.core.util.ClientLogger;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.generic.core.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static com.generic.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static com.generic.core.implementation.util.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static com.generic.core.implementation.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.

@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.util.AuthorizationChallengeHandler;
+import com.generic.core.implementation.util.AuthorizationChallengeHandler;
 import okhttp3.Address;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static com.generic.core.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static com.generic.core.implementation.util.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
