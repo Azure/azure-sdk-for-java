@@ -296,15 +296,27 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
     }
 
     private void enableLocalThroughputControlIfApplicable() {
-        if (this.settings.getFeedPollThroughputControlConfig() != null) {
-            ThroughputControlGroupConfig throughputControlGroupConfigForPkRange =
+        ThroughputControlGroupConfig configToBeCloned = this.settings.getFeedPollThroughputControlConfig();
+        if (configToBeCloned != null) {
+            // For each feedRange, we create a local throughput control group
+            // We do not really need global throughput control for CFP as each instance usually process a unique subset of feedRanges
+            // NOTE: this method will not work after merge happens
+            ThroughputControlGroupConfigBuilder throughputControlGroupConfigForPkRangeBuilder =
                 new ThroughputControlGroupConfigBuilder()
-                    .groupName(this.settings.getFeedPollThroughputControlConfig().getGroupName() + "-" + this.lease.getLeaseToken())
-                    .targetThroughput(this.settings.getFeedPollThroughputControlConfig().getTargetThroughput())
-                    .targetThroughputThreshold(this.settings.getFeedPollThroughputControlConfig().getTargetThroughputThreshold())
-                    .priorityLevel(this.settings.getFeedPollThroughputControlConfig().getPriorityLevel())
-                    .build();
+                    .groupName(configToBeCloned.getGroupName() + "-" + this.lease.getLeaseToken())
+                    .continueOnInitError(configToBeCloned.continueOnInitError());
 
+            if (configToBeCloned.getTargetThroughput() != null) {
+                throughputControlGroupConfigForPkRangeBuilder.targetThroughput(configToBeCloned.getTargetThroughput());
+            }
+            if (configToBeCloned.getTargetThroughputThreshold() != null) {
+                throughputControlGroupConfigForPkRangeBuilder.targetThroughputThreshold(configToBeCloned.getTargetThroughputThreshold());
+            }
+            if (configToBeCloned.getPriorityLevel() != null) {
+                throughputControlGroupConfigForPkRangeBuilder.priorityLevel(configToBeCloned.getPriorityLevel());
+            }
+
+            ThroughputControlGroupConfig throughputControlGroupConfigForPkRange = throughputControlGroupConfigForPkRangeBuilder.build();
             this.settings.getCollectionSelfLink().enableLocalThroughputControlGroup(throughputControlGroupConfigForPkRange);
 
             this.options.setThroughputControlGroupName(throughputControlGroupConfigForPkRange.getGroupName()); // this will be used to populate the requests

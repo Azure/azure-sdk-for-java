@@ -5,11 +5,14 @@ package com.azure.cosmos.rx.changefeed.epkversion;
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
 import com.azure.cosmos.ChangeFeedProcessorContext;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -1273,6 +1276,108 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, dataProvider = "contextTestConfigs", timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorWithThroughputControl(boolean isContextRequired) throws InterruptedException {
+        // Create a separate client as throughput control group will be applied to it
+        CosmosAsyncClient clientWithThroughputControl =
+            getClientBuilder()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+        CosmosAsyncDatabase database = clientWithThroughputControl.getDatabase(this.createdDatabase.getId());
+
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(database, FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(database, LEASE_COLLECTION_THROUGHPUT);
+
+        ThroughputControlGroupConfig throughputControlGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("changeFeedProcessor")
+                .targetThroughput(1)
+                .build();
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            Set<String> receivedLeaseTokensFromContext = ConcurrentHashMap.newKeySet();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+
+            ChangeFeedProcessorBuilder changeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(
+                    new ChangeFeedProcessorOptions().setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                );
+
+            if (isContextRequired) {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandlerWithContext(receivedDocuments, receivedLeaseTokensFromContext));
+            } else {
+                changeFeedProcessorBuilder = changeFeedProcessorBuilder
+                    .handleAllVersionsAndDeletesChanges(changeFeedProcessorHandler(receivedDocuments));
+            }
+
+            ChangeFeedProcessor changeFeedProcessor = changeFeedProcessorBuilder.buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+                logger.info("Starting ChangeFeed processor");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                logger.info("Finished starting ChangeFeed processor");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                logger.info("Validating changes now");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                // query for leases from the createdLeaseCollection
+                String leaseQuery = "select * from c where not contains(c.id, \"info\")";
+                List<JsonNode> leaseDocuments =
+                    createdLeaseCollection
+                        .queryItems(leaseQuery, JsonNode.class)
+                        .byPage()
+                        .blockFirst()
+                        .getResults();
+
+                List<String> leaseTokensCollectedFromLeaseCollection =
+                    leaseDocuments.stream().map(lease -> lease.get("LeaseToken").asText()).collect(Collectors.toList());
+
+                if (isContextRequired) {
+                    assertThat(leaseTokensCollectedFromLeaseCollection).isNotNull();
+                    assertThat(receivedLeaseTokensFromContext.size()).isEqualTo(leaseTokensCollectedFromLeaseCollection.size());
+
+                    assertThat(receivedLeaseTokensFromContext.containsAll(leaseTokensCollectedFromLeaseCollection)).isTrue();
+                }
+
+                // Wait for the feed processor to shut down.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            safeClose(clientWithThroughputControl);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     private Consumer<List<ChangeFeedProcessorItem>> changeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
         return docs -> {
             logger.info("START processing from thread in test {}", Thread.currentThread().getId());
@@ -1399,16 +1504,24 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private CosmosAsyncContainer createFeedCollection(int provisionedThroughput) {
+        return createFeedCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createFeedCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
-        return createCollection(createdDatabase, getCollectionDefinitionWithFullFidelity(), optionsFeedCollection, provisionedThroughput);
+        return createCollection(database, getCollectionDefinitionWithFullFidelity(), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {
+        return createLeaseCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createLeaseCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
             "leases_" + UUID.randomUUID(),
             "/id");
-        return createCollection(createdDatabase, collectionDefinition, options, provisionedThroughput);
+        return createCollection(database, collectionDefinition, options, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseMonitorCollection(int provisionedThroughput) {

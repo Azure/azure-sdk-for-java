@@ -4,11 +4,14 @@ package com.azure.cosmos.rx.changefeed.pkversion;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ChangeFeedProcessorBuilder;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.ThroughputControlGroupConfig;
+import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
@@ -1766,6 +1769,88 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
+        // Create a separate client as throughput control group will be applied to it
+        CosmosAsyncClient clientWithThroughputControl =
+            getClientBuilder()
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .buildAsyncClient();
+
+        CosmosAsyncDatabase database = clientWithThroughputControl.getDatabase(this.createdDatabase.getId());
+
+        CosmosAsyncContainer createdFeedCollection = createFeedCollection(database, FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(database, LEASE_COLLECTION_THROUGHPUT);
+
+        ThroughputControlGroupConfig throughputControlGroupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("changeFeedProcessor")
+                .targetThroughput(1)
+                .build();
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            int maxItemCount = 100;
+            int feedCount = maxItemCount * 2; // force to do two fetches
+            // using the original client to create the docs to isolate possible throttling
+            setupReadFeedDocuments(
+                createdDocuments,
+                receivedDocuments,
+                this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                feedCount);
+
+            changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .hostName(hostName)
+                .handleChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeaseRenewInterval(Duration.ofSeconds(20))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(10))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(30))
+                    .setFeedPollDelay(Duration.ofSeconds(2))
+                    .setFeedPollThroughputControlConfig(throughputControlGroupConfig)
+                    .setLeasePrefix("TEST")
+                    .setMaxItemCount(maxItemCount)
+                    .setStartFromBeginning(true)
+                    .setMaxScaleCount(0) // unlimited
+                )
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start in the expected time", ex);
+                throw ex;
+            }
+
+            // Wait for the feed processor to receive and process the documents.
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
+            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+            for (InternalObjectNode item : createdDocuments) {
+                assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
+            }
+
+            // Wait for the feed processor to shutdown.
+            Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            safeClose(clientWithThroughputControl);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
     void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, JsonNode> receivedDocuments, int sleepTime) throws InterruptedException {
         try {
             changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
@@ -1967,16 +2052,24 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private CosmosAsyncContainer createFeedCollection(int provisionedThroughput) {
+        return createFeedCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createFeedCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
-        return createCollection(createdDatabase, getCollectionDefinition(), optionsFeedCollection, provisionedThroughput);
+        return createCollection(database, getCollectionDefinition(), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {
+        return createLeaseCollection(createdDatabase, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createLeaseCollection(CosmosAsyncDatabase database, int provisionedThroughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
             "leases_" + UUID.randomUUID(),
             "/id");
-        return createCollection(createdDatabase, collectionDefinition, options, provisionedThroughput);
+        return createCollection(database, collectionDefinition, options, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseMonitorCollection(int provisionedThroughput) {
