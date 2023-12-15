@@ -91,8 +91,7 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             }
         }
 
-        String formattedQuery = expandedQuery.replaceAll("\\s+{1,}", " ");
-        SqlQuerySpec querySpec = new SqlQuerySpec(formattedQuery, sqlParameters);
+        SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isPageQuery()) {
             return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
                                                       processor.getReturnedType().getReturnedType());
@@ -109,6 +108,10 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                             processor.getReturnedType().getReturnedType());
         }
+    }
+
+    private String stripExtraWhitespaceFromString(String input) {
+        return input.replaceAll("\\s+{1,}", " ").trim();
     }
 
     @Override
