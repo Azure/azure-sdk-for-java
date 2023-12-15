@@ -21,7 +21,6 @@ import io.netty.util.ReferenceCounted;
 import io.netty.util.ResourceLeakDetector;
 
 import java.io.IOException;
-import java.io.Serial;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Map;
@@ -375,7 +374,6 @@ public final class RntbdResponse implements ReferenceCounted {
 
     private static class PayloadSerializer extends StdSerializer<ByteBuf> {
 
-        @Serial
         private static final long serialVersionUID = 1717212953958644366L;
 
         PayloadSerializer() {

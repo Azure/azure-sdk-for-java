@@ -166,7 +166,12 @@ public class Utils {
         if (inputString == null || inputString.isEmpty()) {
             return inputString;
         }
-        return URLDecoder.decode(inputString, StandardCharsets.UTF_8);
+        try {
+            return URLDecoder.decode(inputString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            logger.warn("Error while decoding input string", e);
+            return inputString;
+        }
     }
 
     public static String encodeUrlBase64String(byte[] binaryData) {
