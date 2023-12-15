@@ -309,11 +309,11 @@ public abstract class TestBase implements BeforeEachCallback {
                 httpClientProvider = iterator.next();
                 simpleName = httpClientProvider.getClass().getSimpleName();
             } catch (UnsupportedClassVersionError exception) {
-                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and
-                // higher.
+                // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and higher.
+                int javaVersion = Integer.parseInt(System.getProperty("java.version").split("\\.")[0]);
                 if (exception.getMessage().contains(
                     "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                    && !isJavaVersionMinimumRequired(12)) {
+                        && !(javaVersion > 11)) {
                     continue;
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(exception));
@@ -327,20 +327,6 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         return httpClientsToTest.stream();
-    }
-
-    private static boolean isJavaVersionMinimumRequired(int minimumVersion) {
-        String version = System.getProperty("java.version");
-        if (version.startsWith("1.")) {
-            version = version.substring(2, 3);
-        } else {
-            int dot = version.indexOf(".");
-            if (dot != -1) {
-                version = version.substring(0, dot);
-            }
-        }
-        int javaVersion = Integer.parseInt(version);
-        return javaVersion >= minimumVersion;
     }
 
     /**

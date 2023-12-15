@@ -65,9 +65,10 @@ public final class Providers<TProvider, TInstance> {
             } catch (final UnsupportedClassVersionError exception) {
                 // The JDK HttpClient in combination with the Azure SDK for Java is only supported with JDK 12 and
                 // higher.
+                int javaVersion = Integer.parseInt(System.getProperty("java.version").split("\\.")[0]);
                 if (exception.getMessage().contains(
                     "JdkHttpClientProvider has been compiled by a more recent version of the Java Runtime")
-                    && !isJavaVersionMinimumRequired(12)) {
+                    && !(javaVersion > 11)) {
                     continue;
                 } else {
                     throw LOGGER.logExceptionAsError(new RuntimeException(exception));
@@ -90,20 +91,6 @@ public final class Providers<TProvider, TInstance> {
                 + "specific implementation ensure that the %s service it supplies is being included in the "
                 + "'META-INF/services' file '%s'. The requested provider was: %s.",
                 providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
-    }
-
-    private static boolean isJavaVersionMinimumRequired(int minimumVersion) {
-        String version = System.getProperty("java.version");
-        if (version.startsWith("1.")) {
-            version = version.substring(2, 3);
-        } else {
-            int dot = version.indexOf(".");
-            if (dot != -1) {
-                version = version.substring(0, dot);
-            }
-        }
-        int javaVersion = Integer.parseInt(version);
-        return javaVersion >= minimumVersion;
     }
 
     /**
