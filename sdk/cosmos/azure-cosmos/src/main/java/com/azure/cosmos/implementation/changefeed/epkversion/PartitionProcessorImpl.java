@@ -299,8 +299,8 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         ThroughputControlGroupConfig configToBeCloned = this.settings.getFeedPollThroughputControlConfig();
         if (configToBeCloned != null) {
             // For each feedRange, we create a local throughput control group
-            // We do not really need global throughput control for CFP as each instance usually process a unique subset of feedRanges
-            // NOTE: this method will not work after merge happens
+            // We choose to start from local throughput control based on the idea that usually each CFP instance will only process a unique subset of partitions
+            // NOTE: this method will not work after merge happens. Further changes will need to make to also allow support for merge
             ThroughputControlGroupConfigBuilder throughputControlGroupConfigForPkRangeBuilder =
                 new ThroughputControlGroupConfigBuilder()
                     .groupName(configToBeCloned.getGroupName() + "-" + this.lease.getLeaseToken())
