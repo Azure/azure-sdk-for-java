@@ -9,25 +9,25 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.netty.buffer.ByteBufInputStream;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+
 /**
  * Used internally to represents a response from the store.
  */
 public class StoreResponse {
-    final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
-    final private byte[] content;
     private int requestPayloadLength;
-    private int responsePayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
@@ -35,14 +35,48 @@ public class StoreResponse {
     private int rntbdRequestLength;
     private int rntbdResponseLength;
     private final List<String> replicaStatusList;
-
     private String faultInjectionRuleId;
     private List<String> faultInjectionRuleEvaluationResults;
+
+    private final JsonNodeStorePayload responsePayload;
 
     public StoreResponse(
             int status,
             Map<String, String> headerMap,
-            byte[] content) {
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
+
+        this.status = status;
+        replicaStatusList = new ArrayList<>();
+        if (contentStream != null) {
+            this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+            try {
+                contentStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            this.responsePayload = null;
+        }
+    }
+
+    private StoreResponse(
+        int status,
+        Map<String, String> headerMap,
+        JsonNodeStorePayload responsePayload) {
 
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
@@ -56,12 +90,8 @@ public class StoreResponse {
         }
 
         this.status = status;
-        this.content = content;
-        if (this.content != null) {
-            this.responsePayloadLength = this.content.length;
-        }
-
         replicaStatusList = new ArrayList<>();
+        this.responsePayload = responsePayload;
     }
 
     public int getStatus() {
@@ -100,12 +130,20 @@ public class StoreResponse {
         this.requestPayloadLength = requestPayloadLength;
     }
 
-    public byte[] getResponseBody() {
-        return this.content;
+    public JsonNode getResponseBodyAsJson() {
+        if (this.responsePayload == null) {
+            return null;
+        }
+
+        return this.responsePayload.getPayload();
     }
 
     public int getResponseBodyLength() {
-        return this.responsePayloadLength;
+        if (this.responsePayload == null) {
+            return 0;
+        }
+
+        return this.responsePayload.getResponsePayloadSize();
     }
 
     public long getLSN() {
@@ -237,6 +275,6 @@ public class StoreResponse {
         return new StoreResponse(
             newStatusCode,
             headers,
-            this.content);
+            this.responsePayload);
     }
 }

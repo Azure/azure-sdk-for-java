@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -28,26 +29,29 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
     private final ItemDeserializer itemDeserializer;
-    byte[] responseBodyAsByteArray;
+
     //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
     //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
     private volatile T item;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
-    private AtomicBoolean hasTrackingIdCalculated = new AtomicBoolean(false);
+    private final AtomicBoolean hasTrackingIdCalculated = new AtomicBoolean(false);
 
     private boolean hasTrackingId;
 
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
-        this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
-    }
-
-    CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
-        this.responseBodyAsByteArray = responseBodyAsByteArray;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
+        this.item = null;
+    }
+
+    CosmosItemResponse(ResourceResponse<Document> response, T item, Class<T> classType, ItemDeserializer itemDeserializer) {
+        this.itemClassType = classType;
+        this.resourceResponse = response;
+        this.itemDeserializer = itemDeserializer;
+        this.item = item;
     }
 
     /**
@@ -77,9 +81,9 @@ public class CosmosItemResponse<T> {
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
+                if (item == null && this.resourceResponse.hasPayload()) {
                     Instant serializationStartTime = Instant.now();
-                    item = Utils.parse(responseBodyAsByteArray, itemClassType, itemDeserializer);
+                    item = this.resourceResponse.getBody(this.itemClassType);
                     Instant serializationEndTime = Instant.now();
                     SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                         serializationStartTime,
@@ -104,12 +108,16 @@ public class CosmosItemResponse<T> {
         return props;
     }
 
+    int getResponsePayloadLength() {
+        return this.resourceResponse.getResponsePayloadLength();
+    }
+
     private void ensureInternalObjectNodeInitialized() {
         synchronized (this) {
-            if (Utils.isEmpty(responseBodyAsByteArray)) {
+            if (!this.resourceResponse.hasPayload()) {
                 props = null;
             } else {
-                props = new InternalObjectNode(responseBodyAsByteArray);
+                props = new InternalObjectNode((ObjectNode)this.resourceResponse.getBody());
             }
 
         }
@@ -220,9 +228,9 @@ public class CosmosItemResponse<T> {
         ResourceResponse<Document> mappedResourceResponse =
             this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
 
-        byte[] payload = null;
+        T payload = null;
         if (isContentResponseOnWriteEnabled) {
-            payload = this.responseBodyAsByteArray;
+            payload = this.item;
         }
 
         return new CosmosItemResponse<>(
@@ -260,7 +268,7 @@ public class CosmosItemResponse<T> {
                                                                           byte[] contentAsByteArray,
                                                                           Class<T> classType,
                                                                           ItemDeserializer itemDeserializer) {
-                    return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+                    return new CosmosItemResponse<>(response, Utils.parse(contentAsByteArray, classType), classType, itemDeserializer);
                 }
 
                 @Override
@@ -269,17 +277,16 @@ public class CosmosItemResponse<T> {
                                                                         double additionalRequestCharge,
                                                                         boolean isContentResponseOnWriteEnabled) {
 
-                    CosmosItemResponse<T> mappedItemResponse = originalResponse
+                    return originalResponse
                         .withRemappedStatusCode(newStatusCode, additionalRequestCharge, isContentResponseOnWriteEnabled);
-                    return mappedItemResponse;
                 }
 
                 public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
-                    return response.responseBodyAsByteArray;
+                    return response.getItem();
                 }
 
                 public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
-                    response.responseBodyAsByteArray = content;
+                    response.item = content;
                 }
 
                 public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {

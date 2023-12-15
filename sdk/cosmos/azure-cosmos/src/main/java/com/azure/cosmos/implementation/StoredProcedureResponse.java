@@ -114,7 +114,8 @@ public final class StoredProcedureResponse {
      * @return the response as a string.
      */
     public String getResponseAsString() {
-        return this.response.getResponseBodyAsString();
+        Document responseAsDoc =  getResponseAsDocument();
+        return responseAsDoc.toJson();
     }
 
     /**

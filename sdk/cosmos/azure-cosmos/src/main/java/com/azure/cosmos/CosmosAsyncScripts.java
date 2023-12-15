@@ -644,8 +644,7 @@ public class CosmosAsyncScripts {
     }
 
     private Mono<CosmosTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(
-            ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getResource(properties)));
+        Trigger trigger = new Trigger(ModelBridgeInternal.getResource(properties).getPropertyBag());
         return database.getDocClientWrapper()
             .createTrigger(container.getLink(), trigger, null)
             .map(ModelBridgeInternal::createCosmosTriggerResponse)

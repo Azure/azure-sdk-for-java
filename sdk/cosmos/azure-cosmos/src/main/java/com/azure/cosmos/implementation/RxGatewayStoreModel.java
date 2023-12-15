@@ -26,6 +26,9 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -364,9 +367,21 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     // If there is any error in the header response this throws exception
                     validateOrThrow(request, HttpResponseStatus.valueOf(httpResponseStatus), httpResponseHeaders, content);
 
-                    StoreResponse rsp = new StoreResponse(httpResponseStatus,
-                        HttpUtils.unescape(httpResponseHeaders.toMap()),
-                        content);
+                    StoreResponse rsp;
+
+                    if (content != null && content.length > 0) {
+                        final ByteBuf buffer = Unpooled.wrappedBuffer(content);
+
+                        rsp = new StoreResponse(httpResponseStatus,
+                            HttpUtils.unescape(httpResponseHeaders.toMap()),
+                            new ByteBufInputStream(buffer, true),
+                            content.length);
+                    } else {
+                        rsp = new StoreResponse(httpResponseStatus,
+                            HttpUtils.unescape(httpResponseHeaders.toMap()),
+                            null,
+                            0);
+                    }
 
                     if (reactorNettyRequestRecord != null) {
                         rsp.setRequestTimeline(reactorNettyRequestRecord.takeTimelineSnapshot());

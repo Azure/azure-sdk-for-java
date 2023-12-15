@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufInputStream;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -91,6 +93,7 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponse build() {
-        return new StoreResponse(status, headers, getUTF8BytesOrNull(content));
+        ByteBuf buffer = getUTF8BytesOrNull(content);
+        return new StoreResponse(status, headers, new ByteBufInputStream(buffer, true), buffer.readableBytes());
     }
 }
