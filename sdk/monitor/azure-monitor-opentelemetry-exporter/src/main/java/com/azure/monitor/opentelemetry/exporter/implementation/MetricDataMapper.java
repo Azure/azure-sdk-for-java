@@ -26,14 +26,12 @@ import reactor.util.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.AiSemanticAttributes.IS_SYNTHETIC;
-import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.EMPTY_MAPPINGS;
 import static io.opentelemetry.api.internal.Utils.checkArgument;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
@@ -165,10 +163,7 @@ public class MetricDataMapper {
 
         metricTelemetryBuilder.setMetricPoint(pointBuilder);
 
-        // remove any attributes that start with "applicationinsights.internal."
         Attributes attributes = pointData.getAttributes();
-        attributes.asMap().keySet().removeIf(it -> it.getKey().startsWith("applicationinsights.internal."));
-
         if (isPreAggregatedStandardMetric) {
             Long statusCode = attributes.get(SemanticAttributes.HTTP_STATUS_CODE);
             boolean success = isSuccess(statusCode, captureHttpServer4xxAsError);
@@ -200,7 +195,8 @@ public class MetricDataMapper {
                     metricTelemetryBuilder, statusCode, success, dependencyType, target, isSynthetic);
             }
         } else {
-            EMPTY_MAPPINGS.map(attributes, metricTelemetryBuilder);
+            MappingsBuilder mappingsBuilder = new MappingsBuilder();
+            mappingsBuilder.build().map(attributes, metricTelemetryBuilder);
         }
     }
 
