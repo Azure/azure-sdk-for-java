@@ -361,7 +361,7 @@ public final class BlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
+            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 

@@ -39,6 +39,7 @@ import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import reactor.core.publisher.Mono;
 
+import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -1297,11 +1298,12 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      */
     SpecializedBlobClientBuilder prepareBuilderAppendPath(String pathName) {
         String blobUrl = DataLakeImplUtils.endpointToDesiredEndpoint(getPathUrl(), "blob", "dfs");
+        URL url = StorageImplUtils.appendToUrlPath(blobUrl, pathName);
 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
-            .endpoint(blobUrl)
-            .blobName(pathName);
+            .endpoint(blobUrl);
+            //.blobName(pathName);
     }
 }
