@@ -552,7 +552,7 @@ public class Utils {
             return getSimpleObjectMapper().readValue(item, itemClassType);
         } catch (IOException e) {
             throw new IllegalStateException(
-                String.format("Failed to parse byte-array %s to POJO.", Arrays.toString(item)), e);
+                String.format("Failed to parse byte-array %s to POJO.", new String(item, StandardCharsets.UTF_8)), e);
         }
     }
 

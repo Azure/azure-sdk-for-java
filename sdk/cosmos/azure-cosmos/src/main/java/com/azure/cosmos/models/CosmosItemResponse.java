@@ -68,6 +68,21 @@ public class CosmosItemResponse<T> {
      * @return the resource
      */
     @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of InternalObjectNode.
+    public byte[] getItemAsByteArray() {
+        if (item != null && this.itemClassType == Utils.byteArrayClass) {
+            return (byte[])item;
+        }
+
+        JsonNode json = this.resourceResponse.getBody();
+        return json.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Gets the resource.
+     *
+     * @return the resource
+     */
+    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of InternalObjectNode.
     public T getItem() {
         if (item != null) {
             return item;
@@ -317,7 +332,7 @@ public class CosmosItemResponse<T> {
                 }
 
                 public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
-                    return response.getItem();
+                    return response.getItemAsByteArray();
                 }
 
                 public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
