@@ -365,11 +365,6 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
 
-        // TODO @fabianm REMOVE THIS!!!!!!!!!!!!!!
-        if (isContentResponseOnWriteEnabled != true || suppressServiceRequests == null || suppressServiceRequests != false) {
-            throw new SkipException("fabinamDummy");
-        }
-
         CosmosAsyncContainer container = createClientAndGetContainer(clientWideWriteRetryPolicy);
         CosmosItemRequestOptions options = createRequestOptions(requestOptionsWriteRetryPolicy);
         if (options != null) {

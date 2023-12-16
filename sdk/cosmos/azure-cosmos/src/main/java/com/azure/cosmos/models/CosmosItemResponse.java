@@ -265,7 +265,7 @@ public class CosmosItemResponse<T> {
 
         T payload = null;
         if (isContentResponseOnWriteEnabled) {
-            payload = this.item;
+            payload = this.getItem();
         }
 
         return new CosmosItemResponse<>(
