@@ -721,12 +721,15 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
         long actualTransitTime = Duration.between(rntbdRequestRecord.timeCreated(), Instant.now()).toNanos();
         if (actualTransitTime + delay.toNanos() > this.tcpNetworkRequestTimeoutInNanos) {
+            // TODO @fabianm REMOVE THIS!!!!!!!!!!!!!
+            logger.info("FABIANM - TIMEOUT ALREADY REACHED {} <-> {} <-> {}", actualTransitTime, tcpNetworkRequestTimeoutInNanos, delay);
             return;
         }
 
         context.executor().schedule(
             () -> {
-
+                // TODO @fabianm REMOVE THIS!!!!!!!!!!!!!
+                logger.info("FABIANM - TIMEOUT NOT REACHED - SETTING RESPONSE");
                 rntbdRequestRecord.complete(storeResponse);
             },
             delay.toNanos(),

@@ -20,6 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -42,11 +43,14 @@ public class CosmosItemResponse<T> {
 
     private boolean hasTrackingId;
 
+    private final Supplier<Boolean> hasPayload;
+
     CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
         this.item = null;
+        this.hasPayload = () -> response.hasPayload();
     }
 
     CosmosItemResponse(ResourceResponse<Document> response, T item, Class<T> classType, ItemDeserializer itemDeserializer) {
@@ -54,6 +58,8 @@ public class CosmosItemResponse<T> {
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
         this.item = item;
+        boolean hasPayloadStaticValue = item != null;
+        this.hasPayload = () -> hasPayloadStaticValue;
     }
 
     /**
@@ -71,7 +77,7 @@ public class CosmosItemResponse<T> {
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && this.resourceResponse.hasPayload()) {
+                if (item == null && hasPayload.get()) {
                     if (this.itemClassType == Utils.byteArrayClass) {
                         Instant serializationStartTime = Instant.now();
                         JsonNode json = this.resourceResponse.getBody();
