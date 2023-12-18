@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DataStoreInfoBase
- *
- * <p>DataStoreInfo base.
+ * 
+ * DataStoreInfo base.
  */
 @Fluent
 public final class DataStoreInfoBase {
@@ -27,13 +27,15 @@ public final class DataStoreInfoBase {
     @JsonProperty(value = "objectType", required = true)
     private String objectType;
 
-    /** Creates an instance of DataStoreInfoBase class. */
+    /**
+     * Creates an instance of DataStoreInfoBase class.
+     */
     public DataStoreInfoBase() {
     }
 
     /**
      * Get the dataStoreType property: type of datastore; Operational/Vault/Archive.
-     *
+     * 
      * @return the dataStoreType value.
      */
     public DataStoreTypes dataStoreType() {
@@ -42,7 +44,7 @@ public final class DataStoreInfoBase {
 
     /**
      * Set the dataStoreType property: type of datastore; Operational/Vault/Archive.
-     *
+     * 
      * @param dataStoreType the dataStoreType value to set.
      * @return the DataStoreInfoBase object itself.
      */
@@ -53,7 +55,7 @@ public final class DataStoreInfoBase {
 
     /**
      * Get the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -62,7 +64,7 @@ public final class DataStoreInfoBase {
 
     /**
      * Set the objectType property: Type of Datasource object, used to initialize the right inherited type.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the DataStoreInfoBase object itself.
      */
@@ -73,19 +75,17 @@ public final class DataStoreInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataStoreType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataStoreType in model DataStoreInfoBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataStoreType in model DataStoreInfoBase"));
         }
         if (objectType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objectType in model DataStoreInfoBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property objectType in model DataStoreInfoBase"));
         }
     }
 

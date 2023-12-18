@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB Cassandra table schema. */
+/**
+ * Cosmos DB Cassandra table schema.
+ */
 @Fluent
 public final class CassandraSchema {
     /*
@@ -29,13 +31,15 @@ public final class CassandraSchema {
     @JsonProperty(value = "clusterKeys")
     private List<ClusterKey> clusterKeys;
 
-    /** Creates an instance of CassandraSchema class. */
+    /**
+     * Creates an instance of CassandraSchema class.
+     */
     public CassandraSchema() {
     }
 
     /**
      * Get the columns property: List of Cassandra table columns.
-     *
+     * 
      * @return the columns value.
      */
     public List<Column> columns() {
@@ -44,7 +48,7 @@ public final class CassandraSchema {
 
     /**
      * Set the columns property: List of Cassandra table columns.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the CassandraSchema object itself.
      */
@@ -55,7 +59,7 @@ public final class CassandraSchema {
 
     /**
      * Get the partitionKeys property: List of partition key.
-     *
+     * 
      * @return the partitionKeys value.
      */
     public List<CassandraPartitionKey> partitionKeys() {
@@ -64,7 +68,7 @@ public final class CassandraSchema {
 
     /**
      * Set the partitionKeys property: List of partition key.
-     *
+     * 
      * @param partitionKeys the partitionKeys value to set.
      * @return the CassandraSchema object itself.
      */
@@ -75,7 +79,7 @@ public final class CassandraSchema {
 
     /**
      * Get the clusterKeys property: List of cluster key.
-     *
+     * 
      * @return the clusterKeys value.
      */
     public List<ClusterKey> clusterKeys() {
@@ -84,7 +88,7 @@ public final class CassandraSchema {
 
     /**
      * Set the clusterKeys property: List of cluster key.
-     *
+     * 
      * @param clusterKeys the clusterKeys value to set.
      * @return the CassandraSchema object itself.
      */
@@ -95,7 +99,7 @@ public final class CassandraSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
