@@ -555,7 +555,7 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         if (hasLocationEndpointToRoute) {
             request.requestContext.locationEndpointToRoute
-                = URI.create("https://account-name-east-us.documents.azure.com:443");
+                = URI.create("https://account-name-some-region.documents.azure.com:443");
         }
 
         if (isAddressRefresh) {
