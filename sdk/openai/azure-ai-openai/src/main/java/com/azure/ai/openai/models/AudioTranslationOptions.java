@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,9 +18,8 @@ public final class AudioTranslationOptions {
      * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @Generated
     @JsonProperty(value = "file")
-    private BinaryData file;
+    private byte[] file;
 
     /*
      * The requested format of the translation response data, which will influence the content and detail of the
@@ -64,8 +62,7 @@ public final class AudioTranslationOptions {
      *
      * @return the file value.
      */
-    @Generated
-    public BinaryData getFile() {
+    public byte[] getFile() {
         return this.file;
     }
 
@@ -214,9 +211,8 @@ public final class AudioTranslationOptions {
      *
      * @param file the file value to set.
      */
-    @Generated
     @JsonCreator
-    public AudioTranslationOptions(@JsonProperty(value = "file") BinaryData file) {
+    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
         this.file = file;
     }
 
@@ -225,8 +221,7 @@ public final class AudioTranslationOptions {
      *
      * @return the fileFilename value.
      */
-    @Generated
-    public String getFileFilename() {
+    String getFileFilename() {
         return this.fileFilename;
     }
 
@@ -236,8 +231,7 @@ public final class AudioTranslationOptions {
      * @param fileFilename the fileFilename value to set.
      * @return the AudioTranslationOptions object itself.
      */
-    @Generated
-    public AudioTranslationOptions setFileFilename(String fileFilename) {
+    AudioTranslationOptions setFileFilename(String fileFilename) {
         this.fileFilename = fileFilename;
         return this;
     }

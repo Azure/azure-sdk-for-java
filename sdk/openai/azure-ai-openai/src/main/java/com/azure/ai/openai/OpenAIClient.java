@@ -11,7 +11,6 @@ import static com.azure.ai.openai.implementation.AudioTranslationValidator.valid
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
 import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
-import com.azure.ai.openai.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
@@ -43,7 +42,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
-import java.util.Objects;
 import reactor.core.publisher.Flux;
 
 /**
@@ -1406,23 +1404,12 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        // Generated convenience method for getAudioTranscriptionAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("file", audioTranscriptionOptions.getFile(),
-                    audioTranscriptionOptions.getFileFilename())
-                .serializeTextField("filename", audioTranscriptionOptions.getFilename())
-                .serializeTextField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
-                .serializeTextField("language", audioTranscriptionOptions.getLanguage())
-                .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
-                .serializeTextField("temperature", Objects.toString(audioTranscriptionOptions.getTemperature()))
-                .serializeTextField("model", audioTranscriptionOptions.getModel()).end().getRequestBody(),
-            requestOptions).getValue().toObject(String.class);
+            BinaryData.fromObject(audioTranscriptionOptions), requestOptions).getValue().toObject(String.class);
     }
 
     /**
@@ -1439,22 +1426,12 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
-        // Generated convenience method for getAudioTranslationAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("file", audioTranslationOptions.getFile(),
-                    audioTranslationOptions.getFileFilename())
-                .serializeTextField("filename", audioTranslationOptions.getFilename())
-                .serializeTextField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
-                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
-                .serializeTextField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
-                .serializeTextField("model", audioTranslationOptions.getModel()).end().getRequestBody(),
-            requestOptions).getValue().toObject(String.class);
+            BinaryData.fromObject(audioTranslationOptions), requestOptions).getValue().toObject(String.class);
     }
 
     /**
@@ -1600,23 +1577,10 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranscription getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
+    AudioTranscription getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        // Generated convenience method for getAudioTranscriptionAsResponseObjectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("file", audioTranscriptionOptions.getFile(),
-                    audioTranscriptionOptions.getFileFilename())
-                .serializeTextField("filename", audioTranscriptionOptions.getFilename())
-                .serializeTextField("response_format", Objects.toString(audioTranscriptionOptions.getResponseFormat()))
-                .serializeTextField("language", audioTranscriptionOptions.getLanguage())
-                .serializeTextField("prompt", audioTranscriptionOptions.getPrompt())
-                .serializeTextField("temperature", Objects.toString(audioTranscriptionOptions.getTemperature()))
-                .serializeTextField("model", audioTranscriptionOptions.getModel()).end().getRequestBody(),
-            requestOptions).getValue().toObject(AudioTranscription.class);
+        return getAudioTranscription(deploymentOrModelName, "filename", audioTranscriptionOptions);
     }
 
     /**
@@ -1633,21 +1597,9 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioTranslation getAudioTranslationAsResponseObject(String deploymentOrModelName,
+    AudioTranslation getAudioTranslationAsResponseObject(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
-        // Generated convenience method for getAudioTranslationAsResponseObjectWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("file", audioTranslationOptions.getFile(),
-                    audioTranslationOptions.getFileFilename())
-                .serializeTextField("filename", audioTranslationOptions.getFilename())
-                .serializeTextField("response_format", Objects.toString(audioTranslationOptions.getResponseFormat()))
-                .serializeTextField("prompt", audioTranslationOptions.getPrompt())
-                .serializeTextField("temperature", Objects.toString(audioTranslationOptions.getTemperature()))
-                .serializeTextField("model", audioTranslationOptions.getModel()).end().getRequestBody(),
-            requestOptions).getValue().toObject(AudioTranslation.class);
+        return getAudioTranslation(deploymentOrModelName, "filename", audioTranslationOptions);
     }
 }

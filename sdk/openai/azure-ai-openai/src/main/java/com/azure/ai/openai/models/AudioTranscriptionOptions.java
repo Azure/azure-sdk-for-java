@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,9 +18,8 @@ public final class AudioTranscriptionOptions {
      * The audio data to transcribe. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @Generated
     @JsonProperty(value = "file")
-    private BinaryData file;
+    private byte[] file;
 
     /*
      * The requested format of the transcription response data, which will influence the content and detail of the
@@ -74,8 +72,7 @@ public final class AudioTranscriptionOptions {
      *
      * @return the file value.
      */
-    @Generated
-    public BinaryData getFile() {
+    public byte[] getFile() {
         return this.file;
     }
 
@@ -252,9 +249,8 @@ public final class AudioTranscriptionOptions {
      *
      * @param file the file value to set.
      */
-    @Generated
     @JsonCreator
-    public AudioTranscriptionOptions(@JsonProperty(value = "file") BinaryData file) {
+    public AudioTranscriptionOptions(@JsonProperty(value = "file") byte[] file) {
         this.file = file;
     }
 
@@ -263,8 +259,7 @@ public final class AudioTranscriptionOptions {
      *
      * @return the fileFilename value.
      */
-    @Generated
-    public String getFileFilename() {
+    String getFileFilename() {
         return this.fileFilename;
     }
 
@@ -274,8 +269,7 @@ public final class AudioTranscriptionOptions {
      * @param fileFilename the fileFilename value to set.
      * @return the AudioTranscriptionOptions object itself.
      */
-    @Generated
-    public AudioTranscriptionOptions setFileFilename(String fileFilename) {
+    AudioTranscriptionOptions setFileFilename(String fileFilename) {
         this.fileFilename = fileFilename;
         return this;
     }
