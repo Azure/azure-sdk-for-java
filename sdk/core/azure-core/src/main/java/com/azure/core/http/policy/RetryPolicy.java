@@ -16,10 +16,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
@@ -109,35 +107,43 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return attemptAsync(context, next, context.getHttpRequest(), 0, null);
+        // Create a buffered version of the request that will be used each retry.
+        // The buffering is done here as once the request body has been buffered once it doesn't need to be buffered
+        // again as it will be buffered as a read-only buffer.
+        HttpRequest originalHttpRequest = context.getHttpRequest();
+        BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
+        if (retryStrategy.getMaxRetries() > 0 && originalRequestBody != null && !originalRequestBody.isReplayable()) {
+            return originalRequestBody.toReplayableBinaryDataAsync().flatMap(bufferedBody -> {
+                context.getHttpRequest().setBody(bufferedBody);
+                return attemptAsync(context, next, originalHttpRequest, 0, null);
+            });
+        }
+
+        return attemptAsync(context, next, originalHttpRequest, 0, null);
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        return attemptSync(context, next, context.getHttpRequest(), 0, null);
+        // Create a buffered version of the request that will be used each retry.
+        // The buffering is done here as once the request body has been buffered once it doesn't need to be buffered
+        // again as it will be buffered as a read-only buffer.
+        HttpRequest originalHttpRequest = context.getHttpRequest();
+        BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
+        if (retryStrategy.getMaxRetries() > 0 && originalRequestBody != null && !originalRequestBody.isReplayable()) {
+            context.getHttpRequest().setBody(context.getHttpRequest().getBodyAsBinaryData().toReplayableBinaryData());
+        }
+
+        return attemptSync(context, next, originalHttpRequest, 0, null);
     }
 
 
     private Mono<HttpResponse> attemptAsync(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
         HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
         Mono<HttpResponse> request;
-        if (retryStrategy.getMaxRetries() > 0) {
-            /*
-             * Clone the original request to ensure that each try starts with the original (unmutated) request. We
-             * cannot simply call httpRequest.copy() because although the body will start emitting from the beginning of
-             * the stream, the buffers that were emitted will have already been consumed (their position set to their
-             * limit), so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-             * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-             * duplicates the ByteBuffer object, not the underlying data.
-             */
+        context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+        if (retryStrategy.getMaxRetries() > 0 && tryCount < retryStrategy.getMaxRetries()) {
+            // Clone the original request to ensure that each try starts with the original (unmutated) request.
             context.setHttpRequest(originalHttpRequest.copy());
-            context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
-            BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
-            if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-                Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
-                context.getHttpRequest().setBody(bufferedBody);
-            }
-
             request = next.clone().process();
         } else {
             request = next.process();
@@ -159,44 +165,32 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 }
                 return Mono.just(httpResponse);
             }
-        })
-            .onErrorResume(Exception.class, err -> {
-                if (shouldRetryException(retryStrategy, err, tryCount)) {
-                    logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
-                    List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
-                    suppressedLocal.add(err);
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
-                        .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
-                } else {
-                    logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
-                    if (suppressed != null) {
-                        suppressed.forEach(err::addSuppressed);
-                    }
-                    return Mono.error(err);
+        }).onErrorResume(Exception.class, err -> {
+            if (shouldRetryException(retryStrategy, err, tryCount)) {
+                logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
+                List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                suppressedLocal.add(err);
+                return attemptAsync(context, next, originalHttpRequest, tryCount + 1,
+                    suppressedLocal).delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
+            } else {
+                logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
+                if (suppressed != null) {
+                    suppressed.forEach(err::addSuppressed);
                 }
-            });
+                return Mono.error(err);
+            }
+        });
     }
 
     private HttpResponse attemptSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next,
         HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
         HttpResponse httpResponse;
         try {
-            if (retryStrategy.getMaxRetries() > 0) {
-                /*
-                 * Clone the original request to ensure that each try starts with the original (unmutated) request. We
-                 * cannot simply call httpRequest.copy() because although the body will start emitting from the beginning of
-                 * the stream, the buffers that were emitted will have already been consumed (their position set to their
-                 * limit), so it is not a true reset. By adding the map function, we ensure that anything which consumes the
-                 * ByteBuffers downstream will only actually consume a duplicate so the original is preserved. This only
-                 * duplicates the ByteBuffer object, not the underlying data.
-                 */
+            context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
+            // Only buffer the request body if a retry may happen.
+            if (retryStrategy.getMaxRetries() > 0 && tryCount < retryStrategy.getMaxRetries()) {
+                // Clone the original request to ensure that each try starts with the original (unmutated) request.
                 context.setHttpRequest(originalHttpRequest.copy());
-                context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
-                BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
-                if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
-                    context.getHttpRequest().setBody(originalRequestBody.toReplayableBinaryData());
-                }
-
                 httpResponse = next.clone().processSync();
             } else {
                 httpResponse = next.processSync();

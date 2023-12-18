@@ -96,7 +96,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // Select the correct host and delay.
         long delayMs = getDelayMs(primaryTry, tryingPrimary);
 
-        if (requestRetryOptions.getMaxTries() > 1) {
+        boolean mayTryAgain = requestRetryOptions.getMaxTries() > 1 && attempt < requestRetryOptions.getMaxTries();
+        if (mayTryAgain) {
             context.setHttpRequest(originalRequest.copy());
         }
 
@@ -112,7 +113,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // We want to send the request with a given timeout, but we don't want to kick off that timeout-bound operation
         // until after the retry backoff delay, so we call delaySubscription.
         Mono<HttpResponse> responseMono;
-        if (requestRetryOptions.getMaxTries() > 1) {
+        if (mayTryAgain) {
             /*
              * Clone the original request to ensure that each try starts with the original (unmutated) request. We
              * cannot simply call httpRequest.copy() because although the body will start emitting from the beginning of
@@ -234,7 +235,8 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         // Select the correct host and delay.
         long delayMs = getDelayMs(primaryTry, tryingPrimary);
 
-        if (requestRetryOptions.getMaxTries() > 1) {
+        boolean mayTryAgain = requestRetryOptions.getMaxTries() > 1 && attempt < requestRetryOptions.getMaxTries();
+        if (mayTryAgain) {
             /*
              * Clone the original request to ensure that each try starts with the original (unmutated) request. We cannot
              * simply call httpRequest.buffer() because although the body will start emitting from the beginning of the
@@ -268,8 +270,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound
              * operation until after the retry backoff delay, so we call delaySubscription.
              */
-            HttpResponse response = (requestRetryOptions.getMaxTries() > 1)
-                ? next.clone().processSync() : next.processSync();
+            HttpResponse response = mayTryAgain ? next.clone().processSync() : next.processSync();
 
             // Default try timeout is Integer.MAX_VALUE seconds, if it's that don't set a timeout as that's about 68 years
             // and would likely never complete.
