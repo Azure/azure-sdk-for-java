@@ -137,50 +137,40 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
     @DataProvider(name = "metadataRetryPolicyTestContext")
     public Object[][] metadataRetryPolicyTestContext() {
 
-        RxDocumentServiceRequest createRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
-
-        createRequest.setAddressRefresh(true, true);
-
-        RxDocumentServiceRequest readRequest = RxDocumentServiceRequest.create(
-            mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
-
-        readRequest.setAddressRefresh(true, true);
-
-        return new Object[][]{
+        return new Object[][] {
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                createRequest,
+                createRequest(OperationType.Create, ResourceType.Document, true, true),
                 true /* isNetworkFailure */
             },
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                createRequest,
+                createRequest(OperationType.Read, ResourceType.Document, true, true),
                 true /* isNetworkFailure */
             },
             {
                 new SocketException("Socket has been closed"),
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
-                readRequest,
+                createRequest(OperationType.Read, ResourceType.DatabaseAccount, false, true),
                 true /* isNetworkFailure */
             },
             {
                 new NotFoundException(),
                 HttpConstants.StatusCodes.NOTFOUND,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                readRequest,
+                createRequest(OperationType.Read, ResourceType.Document, true, true),
                 false /* isNetworkFailure */
             },
             {
                 new NotFoundException(),
                 HttpConstants.StatusCodes.NOTFOUND,
                 HttpConstants.SubStatusCodes.UNKNOWN,
-                createRequest,
+                createRequest(OperationType.Create, ResourceType.Document, true, true),
                 false /* isNetworkFailure */
             }
         };
@@ -357,13 +347,15 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                         .withException(cosmosException)
                         .build());
 
+                    int desiredInvocationCount = request.requestContext.locationEndpointToRoute == null ? 0 : 1;
+
                     if (request.isReadOnlyRequest()) {
                         Mockito
-                            .verify(globalEndpointManagerMock, Mockito.times(1))
+                            .verify(globalEndpointManagerMock, Mockito.times(desiredInvocationCount))
                             .markEndpointUnavailableForRead(Mockito.any());
                     } else {
                         Mockito
-                            .verify(globalEndpointManagerMock, Mockito.times(1))
+                            .verify(globalEndpointManagerMock, Mockito.times(desiredInvocationCount))
                             .markEndpointUnavailableForWrite(Mockito.any());
                     }
                 }
@@ -381,7 +373,6 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
                 .verify(globalEndpointManagerMock, Mockito.times(0))
                 .markEndpointUnavailableForWrite(Mockito.any());
         }
-
     }
 
     private void performDocumentOperation(
@@ -549,5 +540,28 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
         testSubscriber.assertNoErrors();
         testSubscriber.assertValueCount(1);
         validator.validate(testSubscriber.values().get(0));
+    }
+
+    private static RxDocumentServiceRequest createRequest(
+        OperationType operationType,
+        ResourceType resourceType,
+        boolean hasLocationEndpointToRoute,
+        boolean isAddressRefresh) {
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(), operationType, resourceType);
+
+        assert request.requestContext != null;
+
+        if (hasLocationEndpointToRoute) {
+            request.requestContext.locationEndpointToRoute
+                = URI.create("https://account-name-east-us.documents.azure.com:443");
+        }
+
+        if (isAddressRefresh) {
+            request.setAddressRefresh(true, true);
+        }
+
+        return request;
     }
 }
