@@ -28,6 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -662,11 +663,12 @@ public class RetryPolicyTests {
 
     @Test
     public void nothingIsClonedIfThereIsNoRetryAsync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1))))
-            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 400 : 200)))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 400 : 200)))
             .build();
 
         StepVerifier.create(pipeline.send(request))
@@ -676,11 +678,12 @@ public class RetryPolicyTests {
 
     @Test
     public void nothingIsClonedIfThereIsNoRetrySync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1))))
-            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 400 : 200)))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 400 : 200)))
             .build();
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
@@ -690,11 +693,12 @@ public class RetryPolicyTests {
 
     @Test
     public void requestIsClonedIfThereIsRetryAsync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(1, Duration.ofMillis(1))))
-            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 200 : 400)))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 200 : 400)))
             .build();
 
         StepVerifier.create(pipeline.send(request))
@@ -704,11 +708,12 @@ public class RetryPolicyTests {
 
     @Test
     public void requestIsClonedIfThereIsRetrySync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(new FixedDelay(1, Duration.ofMillis(1))))
-            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r != request) ? 200 : 400)))
+            .httpClient(r -> Mono.just(new MockHttpResponse(r, (r.getBodyAsBinaryData() != body) ? 200 : 400)))
             .build();
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
@@ -718,7 +723,8 @@ public class RetryPolicyTests {
 
     @Test
     public void requestBodyIsOnlyClonedOnceAsync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
         Map<BinaryData, Boolean> set = new IdentityHashMap<>();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -740,7 +746,8 @@ public class RetryPolicyTests {
 
     @Test
     public void requestBodyIsOnlyClonedOnceSync() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        BinaryData body = BinaryData.fromStream(new ByteArrayInputStream(new byte[4096]));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/").setBody(body);
         Map<BinaryData, Boolean> set = new IdentityHashMap<>();
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
