@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.implementation.test.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
@@ -33,23 +32,6 @@ public class DefaultHttpClientSingletonTests {
         HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance();
         HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance();
         assertNotEquals(client1, client2);
-    }
-
-    @Test
-    public void testCustomizedClientInstanceCreationNotShared() {
-        Configuration configuration = getConfiguration(false);
-        HttpClientOptions clientOptions = new HttpClientOptions().setMaximumConnectionPoolSize(500);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance(clientOptions);
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance(clientOptions);
-        assertNotEquals(client1, client2);
-    }
-
-    @Test
-    public void testNullHttpClientOptionsInstanceCreation() {
-        Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance(null);
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance(null);
-        assertEquals(client1, client2);
     }
 
     private static Configuration getConfiguration(boolean enableSharing) {

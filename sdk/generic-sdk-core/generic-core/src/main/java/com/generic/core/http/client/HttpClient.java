@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 
@@ -26,17 +25,6 @@ public interface HttpClient {
      * @return A new {@link HttpClient} instance.
      */
     static HttpClient createDefault() {
-        return createDefault(null);
-    }
-
-    /**
-     * Creates a new {@link HttpClient} instance.
-     *
-     * @param clientOptions Configuration options applied to the created {@link HttpClient}.
-     *
-     * @return A new {@link HttpClient} instance.
-     */
-    static HttpClient createDefault(HttpClientOptions clientOptions) {
-        return HttpClientProviders.createInstance(clientOptions);
+        return HttpClientProviders.createInstance();
     }
 }

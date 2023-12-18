@@ -4,6 +4,7 @@
 package com.generic.core.http.client;
 
 import com.generic.core.http.models.ProxyOptions;
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
 import java.net.Authenticator;
@@ -15,14 +16,16 @@ import java.time.Duration;
  * HttpURLConnection, first introduced in JDK 1.1.
  */
 public class DefaultHttpClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClientBuilder.class);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_READ_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
+
+    private HttpClientProvider httpClientProvider;
+    private Configuration configuration;
     private Duration connectionTimeout;
     private Duration readTimeout;
     private ProxyOptions proxyOptions;
-    private Configuration configuration;
 
     /**
      * Creates a new instance of the builder with no set configuration.
@@ -134,11 +137,33 @@ public class DefaultHttpClientBuilder {
     }
 
     /**
-     * Build an {@link HttpClient} with the current configuration.
+     * Sets the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * {@link HttpClient}.
+     *
+     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
+     * {@link HttpClient}.
+     *
+     * @return The updated {@link DefaultHttpClientBuilder} object.
+     */
+    public DefaultHttpClientBuilder setHttpClientProvider(HttpClientProvider httpClientProvider) {
+        this.httpClientProvider = httpClientProvider;
+
+        return this;
+    }
+
+    /**
+     * Build an {@link HttpClient} with the current configuration. If an {@link HttpClientProvider} was set using
+     * {@link DefaultHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise,
+     * a new {@link HttpClient} will be created using the configuration set in this
+     * {@link DefaultHttpClientBuilder builder}.
      *
      * @return An {@link HttpClient}.
      */
     public HttpClient build() {
+        if (httpClientProvider != null) {
+            return httpClientProvider.createInstance();
+        }
+
         Configuration buildConfiguration =
             (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
@@ -154,7 +179,8 @@ public class DefaultHttpClientBuilder {
             && buildProxyOptions.getType() != ProxyOptions.Type.HTTP
             && buildProxyOptions.getType() != null) {
 
-            throw new IllegalArgumentException("Invalid proxy");
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Invalid proxy type. Only HTTP proxies are supported."));
         }
 
         return new DefaultHttpClient(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),

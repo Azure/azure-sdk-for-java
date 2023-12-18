@@ -3,7 +3,8 @@
 
 package com.generic.core.http.okhttp;
 
-import com.generic.core.http.models.HttpClientOptions;
+import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.util.configuration.Configuration;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
  */
 public class OkHttpHttpClientProviderTests {
     @Test
-    public void nullOptionsReturnsBaseClient() {
+    public void getBaseClient() {
         OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .createInstance(null);
+            .createInstance();
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
 
@@ -33,24 +34,6 @@ public class OkHttpHttpClientProviderTests {
             // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
             ProxySelector proxySelector = httpClient.httpClient.proxySelector();
 
-            assertNotNull(proxySelector);
-            assertEquals(environmentProxy.getAddress(), proxySelector.select(null).get(0).address());
-        }
-    }
-
-    @Test
-    public void defaultOptionsReturnsBaseClient() {
-        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .createInstance(new HttpClientOptions());
-
-        ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-
-        if (environmentProxy == null) {
-            assertNull(httpClient.httpClient.proxy());
-        } else {
-            // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
-
-            ProxySelector proxySelector = httpClient.httpClient.proxySelector();
             assertNotNull(proxySelector);
             assertEquals(environmentProxy.getAddress(), proxySelector.select(null).get(0).address());
         }
@@ -59,9 +42,8 @@ public class OkHttpHttpClientProviderTests {
     @Test
     public void optionsWithAProxy() {
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));
-        HttpClientOptions clientOptions = new HttpClientOptions().setProxyOptions(proxyOptions);
-        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .createInstance(clientOptions);
+        OkHttpHttpClient httpClient = (OkHttpHttpClient) new AnotherOkHttpHttpClientProvider()
+            .createInstance(proxyOptions);
 
         // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
         ProxySelector proxySelector = httpClient.httpClient.proxySelector();
@@ -74,16 +56,31 @@ public class OkHttpHttpClientProviderTests {
     public void optionsWithTimeouts() {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
-        HttpClientOptions clientOptions = new HttpClientOptions()
-            .setConnectTimeout(timeout)
-            .setWriteTimeout(timeout)
-            .setResponseTimeout(timeout)
-            .setReadTimeout(timeout);
-        OkHttpHttpClient httpClient = (OkHttpHttpClient) new OkHttpHttpClientProvider()
-            .createInstance(clientOptions);
+        OkHttpHttpClient httpClient = (OkHttpHttpClient) new AnotherOkHttpHttpClientProvider()
+            .createInstance(timeout);
 
         assertEquals(expectedTimeout, httpClient.httpClient.connectTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.writeTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.readTimeoutMillis());
+    }
+
+    class AnotherOkHttpHttpClientProvider implements HttpClientProvider {
+        @Override
+        public HttpClient createInstance() {
+            return new OkHttpHttpClientBuilder().build();
+        }
+
+        public HttpClient createInstance(ProxyOptions proxyOptions) {
+            return new OkHttpHttpClientBuilder().proxy(proxyOptions).build();
+        }
+
+        public HttpClient createInstance(Duration timeout) {
+            return new OkHttpHttpClientBuilder()
+                .connectionTimeout(timeout)
+                .writeTimeout(timeout)
+                .readTimeout(timeout)
+                .callTimeout(timeout)
+                .build();
+        }
     }
 }

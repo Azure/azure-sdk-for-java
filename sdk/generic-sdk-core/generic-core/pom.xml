@@ -42,6 +42,8 @@
     <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.generic.core/com.generic.core.implementation=org.junit.platform.commons
+      --add-exports com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED
+      --add-exports com.generic.core/com.generic.core.implementation.serializer=ALL-UNNAMED
       --add-exports com.generic.core/com.generic.core.implementation.util=org.junit.platform.commons
       --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
       --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
@@ -62,6 +64,7 @@
       --add-opens com.generic.core/com.generic.core.implementation.http.policy=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.http.rest=ALL-UNNAMED,org.junit.platform.commons
       --add-opens com.generic.core/com.generic.core.implementation.http.serializer=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.implementation.http.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.serializer=ALL-UNNAMED,org.junit.platform.commons
       --add-opens com.generic.core/com.generic.core.implementation.test=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.util=ALL-UNNAMED

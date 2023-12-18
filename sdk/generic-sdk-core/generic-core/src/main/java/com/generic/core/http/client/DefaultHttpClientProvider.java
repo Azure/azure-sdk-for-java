@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.util.configuration.Configuration;
 
 /**
@@ -30,7 +29,7 @@ class DefaultHttpClientProvider implements HttpClientProvider {
     }
 
     /**
-     * For testing purpose only, assigning 'AZURE_ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
+     * For testing purpose only, assigning 'ENABLE_HTTP_CLIENT_SHARING' to 'enableHttpClientSharing' for
      * 'final' modifier.
      */
     public DefaultHttpClientProvider() {
@@ -47,19 +46,5 @@ class DefaultHttpClientProvider implements HttpClientProvider {
             return GlobalHttpUrlConnectionHttpClient.HTTP_CLIENT.getHttpClient();
         }
         return new DefaultHttpClientBuilder().build();
-    }
-
-    @Override
-    public HttpClient createInstance(HttpClientOptions clientOptions) {
-        if (clientOptions == null) {
-            return createInstance();
-        }
-
-        DefaultHttpClientBuilder builder = new DefaultHttpClientBuilder();
-        builder = builder.proxy(clientOptions.getProxyOptions())
-            .connectionTimeout(clientOptions.getConnectTimeout())
-            .readTimeout(clientOptions.getReadTimeout());
-
-        return builder.build();
     }
 }

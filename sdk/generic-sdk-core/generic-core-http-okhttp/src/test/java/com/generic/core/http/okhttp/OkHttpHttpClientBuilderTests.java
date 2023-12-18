@@ -382,7 +382,7 @@ public class OkHttpHttpClientBuilderTests {
             .proxy(proxyOptions)
             .build();
 
-        assertThrows(Throwable.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),
+        assertThrows(RuntimeException.class, () -> client.send(new HttpRequest(HttpMethod.GET, requestUrl)),
             TestEventListenerValidator.EXPECTED_EXCEPTION_MESSAGE);
     }
 

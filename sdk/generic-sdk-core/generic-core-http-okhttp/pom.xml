@@ -54,9 +54,10 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-    <javadoc.excludePackageNames>com.generic.json,com.generic.core.implementation*,com.generic.core.util,com.generic.core.util*,
-      com.generic.core.models,com.generic.core.http,com.generic.core.http*,com.generic.core.exception, com.generic.core.credential,
-      com.generic.core.annotation</javadoc.excludePackageNames>
+    <javadoc.excludePackageNames>
+      com.generic.core.annotation,com.generic.core.credential,com.generic.core.http,com.generic.core.http*,com.generic.core.implementation,
+      com.generic.core.implementation*,com.generic.core.models,com.generic.core.util,com.generic.core.util*,com.generic.json
+    </javadoc.excludePackageNames>
   </properties>
 
   <dependencies>

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpClientOptions;
 import com.generic.core.implementation.util.Providers;
 import com.generic.core.util.configuration.Configuration;
 
@@ -26,17 +25,7 @@ public final class HttpClientProviders {
     }
 
     public static HttpClient createInstance() {
-        return createInstance(null);
-    }
-
-    public static HttpClient createInstance(HttpClientOptions httpClientOptions) {
-        Class<? extends HttpClientProvider> selectedImplementation = null;
-
-        if (httpClientOptions != null) {
-            selectedImplementation = httpClientOptions.getHttpClientProvider();
-        }
-
-        return HTTP_CLIENT_PROVIDERS.create(p -> p.createInstance(httpClientOptions),
-            new DefaultHttpClientBuilder().build(), selectedImplementation);
+        return HTTP_CLIENT_PROVIDERS.create(HttpClientProvider::createInstance, new DefaultHttpClientBuilder().build(),
+            null);
     }
 }

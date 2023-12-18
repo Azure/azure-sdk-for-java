@@ -4,11 +4,12 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.okhttp.implementation.ProxyAuthenticator;
+import com.generic.core.http.client.HttpClientProvider;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.okhttp.implementation.OkHttpProxySelector;
-import com.generic.core.util.configuration.Configuration;
+import com.generic.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.configuration.Configuration;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
@@ -32,6 +33,7 @@ public class OkHttpHttpClientBuilder {
     private final okhttp3.OkHttpClient okHttpClient;
 
     private boolean followRedirects;
+    private HttpClientProvider httpClientProvider;
     private Configuration configuration;
     private ConnectionPool connectionPool;
     private Dispatcher dispatcher;
@@ -66,7 +68,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param followRedirects The followRedirects value to use.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder followRedirects(boolean followRedirects) {
         this.followRedirects = followRedirects;
@@ -82,7 +84,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param configuration The configuration store.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -95,7 +97,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param connectionPool The OkHttp connection pool to use.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#connectionPool(ConnectionPool)
      */
@@ -111,7 +113,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param dispatcher The dispatcher to use.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#dispatcher(Dispatcher)
      */
@@ -137,7 +139,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param connectionTimeout Connect timeout duration.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#connectTimeout(Duration)
      */
@@ -161,7 +163,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param callTimeout Call timeout duration.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#callTimeout(Duration)
      */
@@ -190,7 +192,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param readTimeout Read timeout duration.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#readTimeout(Duration)
      */
@@ -216,7 +218,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param writeTimeout Write operation timeout duration.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      *
      * @see OkHttpClient.Builder#writeTimeout(Duration)
      */
@@ -231,7 +233,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param networkInterceptor the interceptor to add
      *
-     * @return The updated OkHttpHttpClientBuilder object
+     * @return The updated {@link OkHttpHttpClientBuilder} object
      */
     public OkHttpHttpClientBuilder addNetworkInterceptor(Interceptor networkInterceptor) {
         Objects.requireNonNull(networkInterceptor, "'networkInterceptor' cannot be null.");
@@ -247,7 +249,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param networkInterceptors The interceptors to add.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder networkInterceptors(List<Interceptor> networkInterceptors) {
         this.networkInterceptors = Objects.requireNonNull(networkInterceptors, "'networkInterceptors' cannot be null.");
@@ -260,7 +262,7 @@ public class OkHttpHttpClientBuilder {
      *
      * @param proxyOptions The proxy configuration to use.
      *
-     * @return The updated OkHttpHttpClientBuilder object.
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
      */
     public OkHttpHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         // proxyOptions can be null
@@ -270,12 +272,39 @@ public class OkHttpHttpClientBuilder {
     }
 
     /**
-     * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in the
-     * builder at the time of the build method call.
+     * Sets the type of the {@link HttpClientProvider} implementation that should be used to construct an instance of
+     * {@link HttpClient}.
+     *
+     * <p>If the value isn't set or is an empty string the first {@link HttpClientProvider} resolved by
+     * {@link java.util.ServiceLoader} will be used to create an instance of {@link HttpClient}. If the value is set and
+     * doesn't match any {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an
+     * {@link IllegalStateException} will be thrown when attempting to create an instance of {@link HttpClient}.</p>
+     *
+     * @param httpClientProvider The {@link HttpClientProvider} implementation used to create an instance of
+     * {@link HttpClient}.
+     *
+     * @return The updated {@link OkHttpHttpClientBuilder} object.
+     */
+    public OkHttpHttpClientBuilder setHttpClientProvider(HttpClientProvider httpClientProvider) {
+        this.httpClientProvider = httpClientProvider;
+
+        return this;
+    }
+
+    /**
+     * Creates a new OkHttp-backed {@link HttpClient} instance on every call, using the configuration set in the builder
+     * at the time of the build method call. If an {@link HttpClientProvider} was set using
+     * {@link OkHttpHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise, a
+     * new {@link HttpClient} will be created using the configuration set in this
+     * {@link OkHttpHttpClientBuilder builder}.
      *
      * @return A new OkHttp-backed {@link HttpClient} instance.
      */
     public HttpClient build() {
+        if (this.httpClientProvider != null) {
+            return this.httpClientProvider.createInstance();
+        }
+
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null
             ? new OkHttpClient.Builder()
             : this.okHttpClient.newBuilder();

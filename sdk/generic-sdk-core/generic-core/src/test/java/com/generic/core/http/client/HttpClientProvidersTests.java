@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.HttpClientOptions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -19,17 +18,17 @@ public class HttpClientProvidersTests {
 
     @Test
     public void testIncorrectExplicitProvider() {
-        HttpClientOptions options = new HttpClientOptions();
+        DefaultHttpClientBuilder builder = new DefaultHttpClientBuilder();
 
-        options.setHttpClientProvider(AnotherHttpClientProvider.class);
+        builder.setHttpClientProvider(new AnotherHttpClientProvider());
 
-        assertThrows(IllegalStateException.class, () -> HttpClient.createDefault(options));
+        assertThrows(IllegalStateException.class, builder::build);
     }
 
     class AnotherHttpClientProvider implements HttpClientProvider {
         @Override
         public HttpClient createInstance() {
-            throw new IllegalStateException("should never be called");
+            throw new IllegalStateException("Should never be called.");
         }
     }
 }
