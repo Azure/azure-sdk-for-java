@@ -1,33 +1,41 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
-- Support AAD Authentication
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-12-13)
+
+### Features Added
+- Support Microsoft Entra ID Authentication
 - Support 8 severity level for AnalyzeText
 ### Breaking Changes
 Contract change for AnalyzeText, AnalyzeImage, Blocklist management related methods
 #### AnalyzeText
 - AnalyzeTextOptions
-  - Renamed breakByBlocklists to haltOnBlocklistHit
-  - Add AnalyzeTextOutputType
+  - Renamed `breakByBlocklists` to `haltOnBlocklistHit`
+  - Added `AnalyzeTextOutputType`
 - AnalyzeTextResult
-  - Renamed blocklistsMatchResults to blocklistsMatch
-  - Replaced TextAnalyzeSeverityResult by TextCategoriesAnalysis
+  - Renamed `blocklistsMatchResults` to `blocklistsMatch`
+  - Replaced `TextAnalyzeSeverityResult` by `TextCategoriesAnalysis`
 #### AnalyzeImage
 - AnalyzeImageOptions
-    - Replaced ImageData by ContentSafetyImageData
-    - Add AnalyzeImageOutputType
+    - Replaced `ImageData` by `ContentSafetyImageData`
+    - Added `AnalyzeImageOutputType`
 - AnalyzeImageResult
-    - Replaced ImageAnalyzeSeverityResult by ImageCategoriesAnalysis
+    - Replaced `ImageAnalyzeSeverityResult` by `ImageCategoriesAnalysis`
 #### Blocklist management
-- Added BlocklistAsyncClient
-- Renamed AddBlockItemsOptions to AddOrUpdateTextBlocklistItemsOptions
-- Renamed AddBlockItemsResult to AddOrUpdateTextBlocklistItemsResult
-- Renamed RemoveBlockItemsOptions to RemoveTextBlocklistItemsOptions
-- Renamed TextBlockItemInfo to TextBlocklistItem
-
-### Bugs Fixed
+- Added `BlocklistAsyncClient`
+- Renamed `AddBlockItemsOptions` to `AddOrUpdateTextBlocklistItemsOptions`
+- Renamed `AddBlockItemsResult` to `AddOrUpdateTextBlocklistItemsResult`
+- Renamed `RemoveBlockItemsOptions` to `RemoveTextBlocklistItemsOptions`
+- Renamed `TextBlockItemInfo` to `TextBlocklistItem`
 
 ### Other Changes
 #### Dependency Updates

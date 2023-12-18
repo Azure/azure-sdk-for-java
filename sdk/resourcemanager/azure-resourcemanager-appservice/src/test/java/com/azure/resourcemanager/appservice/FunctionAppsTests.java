@@ -495,9 +495,13 @@ public class FunctionAppsTests extends AppServiceTest {
             .define(rgName1)
             .withRegion(region)
             .create();
-        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
         webappName1 = generateRandomResourceName("java-function-", 20);
-        FunctionApp functionApp = appServiceManager
+        // function app not created, get will throw exception
+        Assertions.assertThrows(ManagementException.class, () -> appServiceManager
+            .serviceClient().getWebApps().getByResourceGroup(rgName1, webappName1));
+
+        String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
+        appServiceManager
             .functionApps()
             .define(webappName1)
             .withRegion(region)
@@ -508,15 +512,25 @@ public class FunctionAppsTests extends AppServiceTest {
             .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
             .create();
 
+        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
+
         Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
 
         functionApp.update()
             .withMaxReplicas(15)
+            .apply();
+
+        // only changed max, min not changed
+        Assertions.assertEquals(15, functionApp.maxReplicas());
+        Assertions.assertEquals(3, functionApp.minReplicas());
+
+        functionApp.update()
             .withMinReplicas(5)
             .apply();
 
+        // only changed min, max not changed
         Assertions.assertEquals(15, functionApp.maxReplicas());
         Assertions.assertEquals(5, functionApp.minReplicas());
     }

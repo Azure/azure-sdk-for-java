@@ -14,7 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Decomposes compound words found in many Germanic languages. This token filter is implemented using Apache Lucene. */
+/**
+ * Decomposes compound words found in many Germanic languages. This token filter is implemented using Apache Lucene.
+ */
 @Fluent
 public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /*
@@ -44,7 +46,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of DictionaryDecompounderTokenFilter class.
-     *
+     * 
      * @param name the name value to set.
      * @param wordList the wordList value to set.
      */
@@ -55,7 +57,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
 
     /**
      * Get the wordList property: The list of words to match against.
-     *
+     * 
      * @return the wordList value.
      */
     public List<String> getWordList() {
@@ -65,7 +67,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Get the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
      * Maximum is 300.
-     *
+     * 
      * @return the minWordSize value.
      */
     public Integer getMinWordSize() {
@@ -75,7 +77,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Set the minWordSize property: The minimum word size. Only words longer than this get processed. Default is 5.
      * Maximum is 300.
-     *
+     * 
      * @param minWordSize the minWordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
@@ -87,7 +89,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Get the minSubwordSize property: The minimum subword size. Only subwords longer than this are outputted. Default
      * is 2. Maximum is 300.
-     *
+     * 
      * @return the minSubwordSize value.
      */
     public Integer getMinSubwordSize() {
@@ -97,7 +99,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Set the minSubwordSize property: The minimum subword size. Only subwords longer than this are outputted. Default
      * is 2. Maximum is 300.
-     *
+     * 
      * @param minSubwordSize the minSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
@@ -107,9 +109,9 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Get the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted. Default
-     * is 15. Maximum is 300.
-     *
+     * Get the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted.
+     * Default is 15. Maximum is 300.
+     * 
      * @return the maxSubwordSize value.
      */
     public Integer getMaxSubwordSize() {
@@ -117,9 +119,9 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted. Default
-     * is 15. Maximum is 300.
-     *
+     * Set the maxSubwordSize property: The maximum subword size. Only subwords shorter than this are outputted.
+     * Default is 15. Maximum is 300.
+     * 
      * @param maxSubwordSize the maxSubwordSize value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
@@ -131,7 +133,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Get the onlyLongestMatched property: A value indicating whether to add only the longest matching subword to the
      * output. Default is false.
-     *
+     * 
      * @return the onlyLongestMatched value.
      */
     public Boolean isOnlyLongestMatched() {
@@ -141,7 +143,7 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
     /**
      * Set the onlyLongestMatched property: A value indicating whether to add only the longest matching subword to the
      * output. Default is false.
-     *
+     * 
      * @param onlyLongestMatched the onlyLongestMatched value to set.
      * @return the DictionaryDecompounderTokenFilter object itself.
      */
@@ -165,75 +167,73 @@ public final class DictionaryDecompounderTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of DictionaryDecompounderTokenFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DictionaryDecompounderTokenFilter if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the DictionaryDecompounderTokenFilter.
      */
     public static DictionaryDecompounderTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean wordListFound = false;
-                    List<String> wordList = null;
-                    Integer minWordSize = null;
-                    Integer minSubwordSize = null;
-                    Integer maxSubwordSize = null;
-                    Boolean onlyLongestMatched = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean wordListFound = false;
+            List<String> wordList = null;
+            Integer minWordSize = null;
+            Integer minSubwordSize = null;
+            Integer maxSubwordSize = null;
+            Boolean onlyLongestMatched = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter".equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("wordList".equals(fieldName)) {
-                            wordList = reader.readArray(reader1 -> reader1.getString());
-                            wordListFound = true;
-                        } else if ("minWordSize".equals(fieldName)) {
-                            minWordSize = reader.getNullable(JsonReader::getInt);
-                        } else if ("minSubwordSize".equals(fieldName)) {
-                            minSubwordSize = reader.getNullable(JsonReader::getInt);
-                        } else if ("maxSubwordSize".equals(fieldName)) {
-                            maxSubwordSize = reader.getNullable(JsonReader::getInt);
-                        } else if ("onlyLongestMatch".equals(fieldName)) {
-                            onlyLongestMatched = reader.getNullable(JsonReader::getBoolean);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.DictionaryDecompounderTokenFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound && wordListFound) {
-                        DictionaryDecompounderTokenFilter deserializedDictionaryDecompounderTokenFilter =
-                                new DictionaryDecompounderTokenFilter(name, wordList);
-                        deserializedDictionaryDecompounderTokenFilter.minWordSize = minWordSize;
-                        deserializedDictionaryDecompounderTokenFilter.minSubwordSize = minSubwordSize;
-                        deserializedDictionaryDecompounderTokenFilter.maxSubwordSize = maxSubwordSize;
-                        deserializedDictionaryDecompounderTokenFilter.onlyLongestMatched = onlyLongestMatched;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("wordList".equals(fieldName)) {
+                    wordList = reader.readArray(reader1 -> reader1.getString());
+                    wordListFound = true;
+                } else if ("minWordSize".equals(fieldName)) {
+                    minWordSize = reader.getNullable(JsonReader::getInt);
+                } else if ("minSubwordSize".equals(fieldName)) {
+                    minSubwordSize = reader.getNullable(JsonReader::getInt);
+                } else if ("maxSubwordSize".equals(fieldName)) {
+                    maxSubwordSize = reader.getNullable(JsonReader::getInt);
+                } else if ("onlyLongestMatch".equals(fieldName)) {
+                    onlyLongestMatched = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && wordListFound) {
+                DictionaryDecompounderTokenFilter deserializedDictionaryDecompounderTokenFilter
+                    = new DictionaryDecompounderTokenFilter(name, wordList);
+                deserializedDictionaryDecompounderTokenFilter.minWordSize = minWordSize;
+                deserializedDictionaryDecompounderTokenFilter.minSubwordSize = minSubwordSize;
+                deserializedDictionaryDecompounderTokenFilter.maxSubwordSize = maxSubwordSize;
+                deserializedDictionaryDecompounderTokenFilter.onlyLongestMatched = onlyLongestMatched;
 
-                        return deserializedDictionaryDecompounderTokenFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!wordListFound) {
-                        missingProperties.add("wordList");
-                    }
+                return deserializedDictionaryDecompounderTokenFilter;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!wordListFound) {
+                missingProperties.add("wordList");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

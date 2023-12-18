@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure reachability report details for a given provider location. */
+/**
+ * Azure reachability report details for a given provider location.
+ */
 @Fluent
 public final class AzureReachabilityReportItem {
     /*
@@ -29,13 +31,15 @@ public final class AzureReachabilityReportItem {
     @JsonProperty(value = "latencies")
     private List<AzureReachabilityReportLatencyInfo> latencies;
 
-    /** Creates an instance of AzureReachabilityReportItem class. */
+    /**
+     * Creates an instance of AzureReachabilityReportItem class.
+     */
     public AzureReachabilityReportItem() {
     }
 
     /**
      * Get the provider property: The Internet service provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -44,7 +48,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the provider property: The Internet service provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -55,7 +59,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the azureLocation property: The Azure region.
-     *
+     * 
      * @return the azureLocation value.
      */
     public String azureLocation() {
@@ -64,7 +68,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the azureLocation property: The Azure region.
-     *
+     * 
      * @param azureLocation the azureLocation value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -75,7 +79,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Get the latencies property: List of latency details for each of the time series.
-     *
+     * 
      * @return the latencies value.
      */
     public List<AzureReachabilityReportLatencyInfo> latencies() {
@@ -84,7 +88,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Set the latencies property: List of latency details for each of the time series.
-     *
+     * 
      * @param latencies the latencies value to set.
      * @return the AzureReachabilityReportItem object itself.
      */
@@ -95,7 +99,7 @@ public final class AzureReachabilityReportItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

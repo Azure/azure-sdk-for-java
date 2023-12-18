@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Troubleshooting information gained from specified resource. */
+/**
+ * Troubleshooting information gained from specified resource.
+ */
 @Fluent
 public final class TroubleshootingResultInner {
     /*
@@ -37,13 +39,15 @@ public final class TroubleshootingResultInner {
     @JsonProperty(value = "results")
     private List<TroubleshootingDetails> results;
 
-    /** Creates an instance of TroubleshootingResultInner class. */
+    /**
+     * Creates an instance of TroubleshootingResultInner class.
+     */
     public TroubleshootingResultInner() {
     }
 
     /**
      * Get the startTime property: The start time of the troubleshooting.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -52,7 +56,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the startTime property: The start time of the troubleshooting.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -63,7 +67,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the endTime property: The end time of the troubleshooting.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -72,7 +76,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the endTime property: The end time of the troubleshooting.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -83,7 +87,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the code property: The result code of the troubleshooting.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -92,7 +96,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the code property: The result code of the troubleshooting.
-     *
+     * 
      * @param code the code value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -103,7 +107,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Get the results property: Information from troubleshooting.
-     *
+     * 
      * @return the results value.
      */
     public List<TroubleshootingDetails> results() {
@@ -112,7 +116,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Set the results property: Information from troubleshooting.
-     *
+     * 
      * @param results the results value to set.
      * @return the TroubleshootingResultInner object itself.
      */
@@ -123,7 +127,7 @@ public final class TroubleshootingResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

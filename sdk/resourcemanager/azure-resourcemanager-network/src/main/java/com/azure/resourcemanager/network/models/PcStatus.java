@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the packet capture session. */
+/**
+ * The status of the packet capture session.
+ */
 public final class PcStatus extends ExpandableStringEnum<PcStatus> {
-    /** Static value NotStarted for PcStatus. */
+    /**
+     * Static value NotStarted for PcStatus.
+     */
     public static final PcStatus NOT_STARTED = fromString("NotStarted");
 
-    /** Static value Running for PcStatus. */
+    /**
+     * Static value Running for PcStatus.
+     */
     public static final PcStatus RUNNING = fromString("Running");
 
-    /** Static value Stopped for PcStatus. */
+    /**
+     * Static value Stopped for PcStatus.
+     */
     public static final PcStatus STOPPED = fromString("Stopped");
 
-    /** Static value Error for PcStatus. */
+    /**
+     * Static value Error for PcStatus.
+     */
     public static final PcStatus ERROR = fromString("Error");
 
-    /** Static value Unknown for PcStatus. */
+    /**
+     * Static value Unknown for PcStatus.
+     */
     public static final PcStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of PcStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class PcStatus extends ExpandableStringEnum<PcStatus> {
 
     /**
      * Creates or finds a PcStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PcStatus.
      */
@@ -47,7 +59,7 @@ public final class PcStatus extends ExpandableStringEnum<PcStatus> {
 
     /**
      * Gets known PcStatus values.
-     *
+     * 
      * @return known PcStatus values.
      */
     public static Collection<PcStatus> values() {

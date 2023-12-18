@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Netezza source. */
+/**
+ * A copy activity Netezza source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NetezzaSource")
 @Fluent
@@ -32,13 +34,16 @@ public final class NetezzaSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private NetezzaPartitionSettings partitionSettings;
 
-    /** Creates an instance of NetezzaSource class. */
-    public NetezzaSource() {}
+    /**
+     * Creates an instance of NetezzaSource class.
+     */
+    public NetezzaSource() {
+    }
 
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -48,7 +53,7 @@ public final class NetezzaSource extends TabularSource {
     /**
      * Set the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param query the query value to set.
      * @return the NetezzaSource object itself.
      */
@@ -59,7 +64,7 @@ public final class NetezzaSource extends TabularSource {
 
     /**
      * Get the partitionOption property: The partition mechanism that will be used for Netezza read in parallel.
-     *
+     * 
      * @return the partitionOption value.
      */
     public NetezzaPartitionOption getPartitionOption() {
@@ -68,7 +73,7 @@ public final class NetezzaSource extends TabularSource {
 
     /**
      * Set the partitionOption property: The partition mechanism that will be used for Netezza read in parallel.
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the NetezzaSource object itself.
      */
@@ -79,7 +84,7 @@ public final class NetezzaSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for Netezza source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public NetezzaPartitionSettings getPartitionSettings() {
@@ -88,7 +93,7 @@ public final class NetezzaSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for Netezza source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the NetezzaSource object itself.
      */
@@ -97,35 +102,45 @@ public final class NetezzaSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

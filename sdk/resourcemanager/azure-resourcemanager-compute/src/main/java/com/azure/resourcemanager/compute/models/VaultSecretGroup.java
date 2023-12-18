@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a set of certificates which are all in the same Key Vault. */
+/**
+ * Describes a set of certificates which are all in the same Key Vault.
+ */
 @Fluent
 public final class VaultSecretGroup {
     /*
@@ -24,14 +26,16 @@ public final class VaultSecretGroup {
     @JsonProperty(value = "vaultCertificates")
     private List<VaultCertificate> vaultCertificates;
 
-    /** Creates an instance of VaultSecretGroup class. */
+    /**
+     * Creates an instance of VaultSecretGroup class.
+     */
     public VaultSecretGroup() {
     }
 
     /**
      * Get the sourceVault property: The relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.
-     *
+     * 
      * @return the sourceVault value.
      */
     public SubResource sourceVault() {
@@ -41,7 +45,7 @@ public final class VaultSecretGroup {
     /**
      * Set the sourceVault property: The relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.
-     *
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the VaultSecretGroup object itself.
      */
@@ -52,7 +56,7 @@ public final class VaultSecretGroup {
 
     /**
      * Get the vaultCertificates property: The list of key vault references in SourceVault which contain certificates.
-     *
+     * 
      * @return the vaultCertificates value.
      */
     public List<VaultCertificate> vaultCertificates() {
@@ -61,7 +65,7 @@ public final class VaultSecretGroup {
 
     /**
      * Set the vaultCertificates property: The list of key vault references in SourceVault which contain certificates.
-     *
+     * 
      * @param vaultCertificates the vaultCertificates value to set.
      * @return the VaultSecretGroup object itself.
      */
@@ -72,7 +76,7 @@ public final class VaultSecretGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

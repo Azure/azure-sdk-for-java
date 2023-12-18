@@ -17,11 +17,11 @@ import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-/** Specifies some text and analysis components used to break that text into tokens. */
+/**
+ * Specifies some text and analysis components used to break that text into tokens.
+ */
 @Fluent
 public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     /*
@@ -56,7 +56,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Creates an instance of AnalyzeRequest class.
-     *
+     * 
      * @param text the text value to set.
      */
     public AnalyzeRequest(String text) {
@@ -65,7 +65,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the text property: The text to break into tokens.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -74,7 +74,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the analyzer property: The name of the analyzer to use to break the given text.
-     *
+     * 
      * @return the analyzer value.
      */
     public LexicalAnalyzerName getAnalyzer() {
@@ -83,7 +83,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Set the analyzer property: The name of the analyzer to use to break the given text.
-     *
+     * 
      * @param analyzer the analyzer value to set.
      * @return the AnalyzeRequest object itself.
      */
@@ -94,7 +94,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the tokenizer property: The name of the tokenizer to use to break the given text.
-     *
+     * 
      * @return the tokenizer value.
      */
     public LexicalTokenizerName getTokenizer() {
@@ -103,7 +103,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Set the tokenizer property: The name of the tokenizer to use to break the given text.
-     *
+     * 
      * @param tokenizer the tokenizer value to set.
      * @return the AnalyzeRequest object itself.
      */
@@ -114,7 +114,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the normalizer property: The name of the normalizer to use to normalize the given text.
-     *
+     * 
      * @return the normalizer value.
      */
     public LexicalNormalizerName getNormalizer() {
@@ -123,7 +123,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Set the normalizer property: The name of the normalizer to use to normalize the given text.
-     *
+     * 
      * @param normalizer the normalizer value to set.
      * @return the AnalyzeRequest object itself.
      */
@@ -134,7 +134,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.
-     *
+     * 
      * @return the tokenFilters value.
      */
     public List<TokenFilterName> getTokenFilters() {
@@ -143,7 +143,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Set the tokenFilters property: An optional list of token filters to use when breaking the given text.
-     *
+     * 
      * @param tokenFilters the tokenFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
@@ -154,7 +154,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Get the charFilters property: An optional list of character filters to use when breaking the given text.
-     *
+     * 
      * @return the charFilters value.
      */
     public List<CharFilterName> getCharFilters() {
@@ -163,7 +163,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
 
     /**
      * Set the charFilters property: An optional list of character filters to use when breaking the given text.
-     *
+     * 
      * @param charFilters the charFilters value to set.
      * @return the AnalyzeRequest object itself.
      */
@@ -176,77 +176,66 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("analyzer", Objects.toString(this.analyzer, null));
-        jsonWriter.writeStringField("tokenizer", Objects.toString(this.tokenizer, null));
-        jsonWriter.writeStringField("normalizer", Objects.toString(this.normalizer, null));
-        jsonWriter.writeArrayField(
-                "tokenFilters",
-                this.tokenFilters,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        jsonWriter.writeArrayField(
-                "charFilters",
-                this.charFilters,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeStringField("analyzer", this.analyzer == null ? null : this.analyzer.toString());
+        jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString());
+        jsonWriter.writeStringField("normalizer", this.normalizer == null ? null : this.normalizer.toString());
+        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("charFilters", this.charFilters,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AnalyzeRequest from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeRequest if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeRequest.
      */
     public static AnalyzeRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean textFound = false;
-                    String text = null;
-                    LexicalAnalyzerName analyzer = null;
-                    LexicalTokenizerName tokenizer = null;
-                    LexicalNormalizerName normalizer = null;
-                    List<TokenFilterName> tokenFilters = null;
-                    List<CharFilterName> charFilters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean textFound = false;
+            String text = null;
+            LexicalAnalyzerName analyzer = null;
+            LexicalTokenizerName tokenizer = null;
+            LexicalNormalizerName normalizer = null;
+            List<TokenFilterName> tokenFilters = null;
+            List<CharFilterName> charFilters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("text".equals(fieldName)) {
-                            text = reader.getString();
-                            textFound = true;
-                        } else if ("analyzer".equals(fieldName)) {
-                            analyzer = LexicalAnalyzerName.fromString(reader.getString());
-                        } else if ("tokenizer".equals(fieldName)) {
-                            tokenizer = LexicalTokenizerName.fromString(reader.getString());
-                        } else if ("normalizer".equals(fieldName)) {
-                            normalizer = LexicalNormalizerName.fromString(reader.getString());
-                        } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
-                        } else if ("charFilters".equals(fieldName)) {
-                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (textFound) {
-                        AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(text);
-                        deserializedAnalyzeRequest.analyzer = analyzer;
-                        deserializedAnalyzeRequest.tokenizer = tokenizer;
-                        deserializedAnalyzeRequest.normalizer = normalizer;
-                        deserializedAnalyzeRequest.tokenFilters = tokenFilters;
-                        deserializedAnalyzeRequest.charFilters = charFilters;
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                    textFound = true;
+                } else if ("analyzer".equals(fieldName)) {
+                    analyzer = LexicalAnalyzerName.fromString(reader.getString());
+                } else if ("tokenizer".equals(fieldName)) {
+                    tokenizer = LexicalTokenizerName.fromString(reader.getString());
+                } else if ("normalizer".equals(fieldName)) {
+                    normalizer = LexicalNormalizerName.fromString(reader.getString());
+                } else if ("tokenFilters".equals(fieldName)) {
+                    tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
+                } else if ("charFilters".equals(fieldName)) {
+                    charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (textFound) {
+                AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(text);
+                deserializedAnalyzeRequest.analyzer = analyzer;
+                deserializedAnalyzeRequest.tokenizer = tokenizer;
+                deserializedAnalyzeRequest.normalizer = normalizer;
+                deserializedAnalyzeRequest.tokenFilters = tokenFilters;
+                deserializedAnalyzeRequest.charFilters = charFilters;
 
-                        return deserializedAnalyzeRequest;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!textFound) {
-                        missingProperties.add("text");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedAnalyzeRequest;
+            }
+            throw new IllegalStateException("Missing required property: text");
+        });
     }
 }

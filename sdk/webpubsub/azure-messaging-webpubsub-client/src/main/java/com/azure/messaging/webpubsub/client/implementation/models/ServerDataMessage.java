@@ -5,7 +5,7 @@ package com.azure.messaging.webpubsub.client.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
 /**
  * The message of server.
@@ -13,7 +13,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 @Immutable
 public final class ServerDataMessage {
 
-    private final WebPubSubDataType dataType;
+    private final WebPubSubDataFormat dataType;
     private final BinaryData data;
     private final Long sequenceId;
 
@@ -24,7 +24,7 @@ public final class ServerDataMessage {
      * @param data the data.
      * @param sequenceId the sequenceId.
      */
-    public ServerDataMessage(WebPubSubDataType dataType, BinaryData data, Long sequenceId) {
+    public ServerDataMessage(WebPubSubDataFormat dataType, BinaryData data, Long sequenceId) {
         this.data = data;
         this.dataType = dataType;
         this.sequenceId = sequenceId;
@@ -44,7 +44,7 @@ public final class ServerDataMessage {
      *
      * @return the data type.
      */
-    public WebPubSubDataType getDataType() {
+    public WebPubSubDataFormat getDataType() {
         return dataType;
     }
 

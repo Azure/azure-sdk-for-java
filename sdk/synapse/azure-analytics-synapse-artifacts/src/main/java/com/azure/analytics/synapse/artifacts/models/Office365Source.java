@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for an Office 365 service. */
+/**
+ * A copy activity source for an Office 365 service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Office365Source")
 @Fluent
@@ -47,18 +49,21 @@ public final class Office365Source extends CopySource {
 
     /*
      * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType
-     * array of objects). itemType: OutputColumn.  Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     @JsonProperty(value = "outputColumns")
     private Object outputColumns;
 
-    /** Creates an instance of Office365Source class. */
-    public Office365Source() {}
+    /**
+     * Creates an instance of Office365Source class.
+     */
+    public Office365Source() {
+    }
 
     /**
      * Get the allowedGroups property: The groups containing all the users. Type: array of strings (or Expression with
      * resultType array of strings).
-     *
+     * 
      * @return the allowedGroups value.
      */
     public Object getAllowedGroups() {
@@ -68,7 +73,7 @@ public final class Office365Source extends CopySource {
     /**
      * Set the allowedGroups property: The groups containing all the users. Type: array of strings (or Expression with
      * resultType array of strings).
-     *
+     * 
      * @param allowedGroups the allowedGroups value to set.
      * @return the Office365Source object itself.
      */
@@ -79,7 +84,7 @@ public final class Office365Source extends CopySource {
 
     /**
      * Get the userScopeFilterUri property: The user scope uri. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userScopeFilterUri value.
      */
     public Object getUserScopeFilterUri() {
@@ -88,7 +93,7 @@ public final class Office365Source extends CopySource {
 
     /**
      * Set the userScopeFilterUri property: The user scope uri. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userScopeFilterUri the userScopeFilterUri value to set.
      * @return the Office365Source object itself.
      */
@@ -100,7 +105,7 @@ public final class Office365Source extends CopySource {
     /**
      * Get the dateFilterColumn property: The Column to apply the &lt;paramref name="StartTime"/&gt; and &lt;paramref
      * name="EndTime"/&gt;. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the dateFilterColumn value.
      */
     public Object getDateFilterColumn() {
@@ -110,7 +115,7 @@ public final class Office365Source extends CopySource {
     /**
      * Set the dateFilterColumn property: The Column to apply the &lt;paramref name="StartTime"/&gt; and &lt;paramref
      * name="EndTime"/&gt;. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param dateFilterColumn the dateFilterColumn value to set.
      * @return the Office365Source object itself.
      */
@@ -122,7 +127,7 @@ public final class Office365Source extends CopySource {
     /**
      * Get the startTime property: Start time of the requested range for this dataset. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the startTime value.
      */
     public Object getStartTime() {
@@ -132,7 +137,7 @@ public final class Office365Source extends CopySource {
     /**
      * Set the startTime property: Start time of the requested range for this dataset. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Office365Source object itself.
      */
@@ -144,7 +149,7 @@ public final class Office365Source extends CopySource {
     /**
      * Get the endTime property: End time of the requested range for this dataset. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the endTime value.
      */
     public Object getEndTime() {
@@ -154,7 +159,7 @@ public final class Office365Source extends CopySource {
     /**
      * Set the endTime property: End time of the requested range for this dataset. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the Office365Source object itself.
      */
@@ -167,7 +172,7 @@ public final class Office365Source extends CopySource {
      * Get the outputColumns property: The columns to be read out from the Office 365 table. Type: array of objects (or
      * Expression with resultType array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name":
      * "CreatedDateTime" } ].
-     *
+     * 
      * @return the outputColumns value.
      */
     public Object getOutputColumns() {
@@ -178,7 +183,7 @@ public final class Office365Source extends CopySource {
      * Set the outputColumns property: The columns to be read out from the Office 365 table. Type: array of objects (or
      * Expression with resultType array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name":
      * "CreatedDateTime" } ].
-     *
+     * 
      * @param outputColumns the outputColumns value to set.
      * @return the Office365Source object itself.
      */
@@ -187,21 +192,27 @@ public final class Office365Source extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Source setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Source setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

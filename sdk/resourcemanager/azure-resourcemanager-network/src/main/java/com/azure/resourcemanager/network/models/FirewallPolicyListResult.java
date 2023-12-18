@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.FirewallPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListFirewallPolicies API service call. */
+/**
+ * Response for ListFirewallPolicies API service call.
+ */
 @Fluent
 public final class FirewallPolicyListResult {
     /*
@@ -24,13 +26,15 @@ public final class FirewallPolicyListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FirewallPolicyListResult class. */
+    /**
+     * Creates an instance of FirewallPolicyListResult class.
+     */
     public FirewallPolicyListResult() {
     }
 
     /**
      * Get the value property: List of Firewall Policies in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<FirewallPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class FirewallPolicyListResult {
 
     /**
      * Set the value property: List of Firewall Policies in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the FirewallPolicyListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class FirewallPolicyListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class FirewallPolicyListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FirewallPolicyListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class FirewallPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

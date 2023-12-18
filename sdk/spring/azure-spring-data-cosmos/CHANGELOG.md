@@ -1,10 +1,16 @@
 ## Release History
 
-### 5.8.0-beta.1 (Unreleased)
+### 5.9.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 5.8.0 (2023-12-14)
 
 #### Bugs Fixed
 * Fixed an issue with optional query parameters being used for annotated queries - See [PR 37558](https://github.com/Azure/azure-sdk-for-java/pull/37558).
@@ -12,6 +18,8 @@
 
 #### Other Changes
 * Implemented a custom scheduler for `azure-spring-data-cosmos` - See [PR 38029](https://github.com/Azure/azure-sdk-for-java/pull/38029).
+* Updated `azure-cosmos` to version `4.53.1`.
+* Updated `Spring Data Commons` to version `3.2.0`.
 
 ### 5.7.0 (2023-11-07)
 

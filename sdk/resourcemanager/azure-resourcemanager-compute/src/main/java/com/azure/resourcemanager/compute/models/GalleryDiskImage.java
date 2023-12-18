@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the disk image base class. */
+/**
+ * This is the disk image base class.
+ */
 @Fluent
 public class GalleryDiskImage {
     /*
@@ -28,13 +30,15 @@ public class GalleryDiskImage {
     @JsonProperty(value = "source")
     private GalleryDiskImageSource source;
 
-    /** Creates an instance of GalleryDiskImage class. */
+    /**
+     * Creates an instance of GalleryDiskImage class.
+     */
     public GalleryDiskImage() {
     }
 
     /**
      * Get the sizeInGB property: This property indicates the size of the VHD to be created.
-     *
+     * 
      * @return the sizeInGB value.
      */
     public Integer sizeInGB() {
@@ -42,8 +46,9 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Get the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
+     * 'ReadWrite'.
+     * 
      * @return the hostCaching value.
      */
     public HostCaching hostCaching() {
@@ -51,8 +56,9 @@ public class GalleryDiskImage {
     }
 
     /**
-     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'.
-     *
+     * Set the hostCaching property: The host caching of the disk. Valid values are 'None', 'ReadOnly', and
+     * 'ReadWrite'.
+     * 
      * @param hostCaching the hostCaching value to set.
      * @return the GalleryDiskImage object itself.
      */
@@ -63,7 +69,7 @@ public class GalleryDiskImage {
 
     /**
      * Get the source property: The source for the disk image.
-     *
+     * 
      * @return the source value.
      */
     public GalleryDiskImageSource source() {
@@ -72,7 +78,7 @@ public class GalleryDiskImage {
 
     /**
      * Set the source property: The source for the disk image.
-     *
+     * 
      * @param source the source value to set.
      * @return the GalleryDiskImage object itself.
      */
@@ -83,7 +89,7 @@ public class GalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

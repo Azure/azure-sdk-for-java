@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VirtualNetworkGatewayConnection properties. */
+/**
+ * VirtualNetworkGatewayConnection properties.
+ */
 @Immutable
 public final class TunnelConnectionHealth {
     /*
@@ -40,13 +42,15 @@ public final class TunnelConnectionHealth {
     @JsonProperty(value = "lastConnectionEstablishedUtcTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastConnectionEstablishedUtcTime;
 
-    /** Creates an instance of TunnelConnectionHealth class. */
+    /**
+     * Creates an instance of TunnelConnectionHealth class.
+     */
     public TunnelConnectionHealth() {
     }
 
     /**
      * Get the tunnel property: Tunnel name.
-     *
+     * 
      * @return the tunnel value.
      */
     public String tunnel() {
@@ -55,7 +59,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Get the connectionStatus property: Virtual Network Gateway connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public VirtualNetworkGatewayConnectionStatus connectionStatus() {
@@ -64,7 +68,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Get the ingressBytesTransferred property: The Ingress Bytes Transferred in this connection.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -73,7 +77,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Get the egressBytesTransferred property: The Egress Bytes Transferred in this connection.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -82,7 +86,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Get the lastConnectionEstablishedUtcTime property: The time at which connection was established in Utc format.
-     *
+     * 
      * @return the lastConnectionEstablishedUtcTime value.
      */
     public String lastConnectionEstablishedUtcTime() {
@@ -91,7 +95,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

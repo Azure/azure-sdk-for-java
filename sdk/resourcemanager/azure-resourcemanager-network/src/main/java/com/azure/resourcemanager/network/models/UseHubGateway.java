@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Flag if need to use hub gateway. */
+/**
+ * Flag if need to use hub gateway.
+ */
 public final class UseHubGateway extends ExpandableStringEnum<UseHubGateway> {
-    /** Static value False for UseHubGateway. */
+    /**
+     * Static value False for UseHubGateway.
+     */
     public static final UseHubGateway FALSE = fromString("False");
 
-    /** Static value True for UseHubGateway. */
+    /**
+     * Static value True for UseHubGateway.
+     */
     public static final UseHubGateway TRUE = fromString("True");
 
     /**
      * Creates a new instance of UseHubGateway value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UseHubGateway extends ExpandableStringEnum<UseHubGateway> {
 
     /**
      * Creates or finds a UseHubGateway from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UseHubGateway.
      */
@@ -38,7 +44,7 @@ public final class UseHubGateway extends ExpandableStringEnum<UseHubGateway> {
 
     /**
      * Gets known UseHubGateway values.
-     *
+     * 
      * @return known UseHubGateway values.
      */
     public static Collection<UseHubGateway> values() {

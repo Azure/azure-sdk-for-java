@@ -6,21 +6,29 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** This is the OS disk image. */
+/**
+ * This is the OS disk image.
+ */
 @Fluent
 public final class GalleryOSDiskImage extends GalleryDiskImage {
-    /** Creates an instance of GalleryOSDiskImage class. */
+    /**
+     * Creates an instance of GalleryOSDiskImage class.
+     */
     public GalleryOSDiskImage() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryOSDiskImage withHostCaching(HostCaching hostCaching) {
         super.withHostCaching(hostCaching);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryOSDiskImage withSource(GalleryDiskImageSource source) {
         super.withSource(source);
@@ -29,7 +37,7 @@ public final class GalleryOSDiskImage extends GalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

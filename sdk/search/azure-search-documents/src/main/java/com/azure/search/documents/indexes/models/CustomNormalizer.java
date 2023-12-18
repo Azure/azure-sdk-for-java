@@ -10,9 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Allows you to configure normalization for filterable, sortable, and facetable fields, which by default operate with
@@ -44,9 +42,9 @@ public final class CustomNormalizer extends LexicalNormalizer {
     }
 
     /**
-     * Get the tokenFilters property: A list of token filters used to filter out or modify the input token. For example,
-     * you can specify a lowercase filter that converts all characters to lowercase. The filters are run in the order in
-     * which they are listed.
+     * Get the tokenFilters property: A list of token filters used to filter out or modify the input token. For
+     * example, you can specify a lowercase filter that converts all characters to lowercase. The filters are run in
+     * the order in which they are listed.
      *
      * @return the tokenFilters value.
      */
@@ -55,9 +53,9 @@ public final class CustomNormalizer extends LexicalNormalizer {
     }
 
     /**
-     * Set the tokenFilters property: A list of token filters used to filter out or modify the input token. For example,
-     * you can specify a lowercase filter that converts all characters to lowercase. The filters are run in the order in
-     * which they are listed.
+     * Set the tokenFilters property: A list of token filters used to filter out or modify the input token. For
+     * example, you can specify a lowercase filter that converts all characters to lowercase. The filters are run in
+     * the order in which they are listed.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomNormalizer object itself.
@@ -96,14 +94,10 @@ public final class CustomNormalizer extends LexicalNormalizer {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.CustomNormalizer");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeArrayField(
-                "tokenFilters",
-                this.tokenFilters,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        jsonWriter.writeArrayField(
-                "charFilters",
-                this.charFilters,
-                (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("charFilters", this.charFilters,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -112,59 +106,52 @@ public final class CustomNormalizer extends LexicalNormalizer {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomNormalizer if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the CustomNormalizer.
      */
     public static CustomNormalizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    List<TokenFilterName> tokenFilters = null;
-                    List<CharFilterName> charFilters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!"#Microsoft.Azure.Search.CustomNormalizer".equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomNormalizer'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("tokenFilters".equals(fieldName)) {
-                            tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
-                        } else if ("charFilters".equals(fieldName)) {
-                            charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            List<TokenFilterName> tokenFilters = null;
+            List<CharFilterName> charFilters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.CustomNormalizer".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.CustomNormalizer'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound) {
-                        CustomNormalizer deserializedCustomNormalizer = new CustomNormalizer(name);
-                        deserializedCustomNormalizer.tokenFilters = tokenFilters;
-                        deserializedCustomNormalizer.charFilters = charFilters;
-                        return deserializedCustomNormalizer;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("tokenFilters".equals(fieldName)) {
+                    tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
+                } else if ("charFilters".equals(fieldName)) {
+                    charFilters = reader.readArray(reader1 -> CharFilterName.fromString(reader1.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                CustomNormalizer deserializedCustomNormalizer = new CustomNormalizer(name);
+                deserializedCustomNormalizer.tokenFilters = tokenFilters;
+                deserializedCustomNormalizer.charFilters = charFilters;
+                return deserializedCustomNormalizer;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 
     /**
-     * Set the tokenFilters property: A list of token filters used to filter out or modify the input token. For example,
-     * you can specify a lowercase filter that converts all characters to lowercase. The filters are run in the order in
-     * which they are listed.
+     * Set the tokenFilters property: A list of token filters used to filter out or modify the input token. For
+     * example, you can specify a lowercase filter that converts all characters to lowercase. The filters are run in
+     * the order in which they are listed.
      *
      * @param tokenFilters the tokenFilters value to set.
      * @return the CustomNormalizer object itself.

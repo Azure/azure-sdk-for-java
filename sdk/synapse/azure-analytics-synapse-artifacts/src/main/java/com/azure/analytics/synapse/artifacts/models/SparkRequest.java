@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The SparkRequest model. */
+/**
+ * The SparkRequest model.
+ */
 @Fluent
 public final class SparkRequest {
     /*
@@ -96,12 +98,15 @@ public final class SparkRequest {
     @JsonProperty(value = "numExecutors")
     private Integer executorCount;
 
-    /** Creates an instance of SparkRequest class. */
-    public SparkRequest() {}
+    /**
+     * Creates an instance of SparkRequest class.
+     */
+    public SparkRequest() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -110,7 +115,7 @@ public final class SparkRequest {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the SparkRequest object itself.
      */
@@ -121,7 +126,7 @@ public final class SparkRequest {
 
     /**
      * Get the file property: The file property.
-     *
+     * 
      * @return the file value.
      */
     public String getFile() {
@@ -130,7 +135,7 @@ public final class SparkRequest {
 
     /**
      * Set the file property: The file property.
-     *
+     * 
      * @param file the file value to set.
      * @return the SparkRequest object itself.
      */
@@ -141,7 +146,7 @@ public final class SparkRequest {
 
     /**
      * Get the className property: The className property.
-     *
+     * 
      * @return the className value.
      */
     public String getClassName() {
@@ -150,7 +155,7 @@ public final class SparkRequest {
 
     /**
      * Set the className property: The className property.
-     *
+     * 
      * @param className the className value to set.
      * @return the SparkRequest object itself.
      */
@@ -161,7 +166,7 @@ public final class SparkRequest {
 
     /**
      * Get the arguments property: The args property.
-     *
+     * 
      * @return the arguments value.
      */
     public List<String> getArguments() {
@@ -170,7 +175,7 @@ public final class SparkRequest {
 
     /**
      * Set the arguments property: The args property.
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the SparkRequest object itself.
      */
@@ -181,7 +186,7 @@ public final class SparkRequest {
 
     /**
      * Get the jars property: The jars property.
-     *
+     * 
      * @return the jars value.
      */
     public List<String> getJars() {
@@ -190,7 +195,7 @@ public final class SparkRequest {
 
     /**
      * Set the jars property: The jars property.
-     *
+     * 
      * @param jars the jars value to set.
      * @return the SparkRequest object itself.
      */
@@ -201,7 +206,7 @@ public final class SparkRequest {
 
     /**
      * Get the pythonFiles property: The pyFiles property.
-     *
+     * 
      * @return the pythonFiles value.
      */
     public List<String> getPythonFiles() {
@@ -210,7 +215,7 @@ public final class SparkRequest {
 
     /**
      * Set the pythonFiles property: The pyFiles property.
-     *
+     * 
      * @param pythonFiles the pythonFiles value to set.
      * @return the SparkRequest object itself.
      */
@@ -221,7 +226,7 @@ public final class SparkRequest {
 
     /**
      * Get the files property: The files property.
-     *
+     * 
      * @return the files value.
      */
     public List<String> getFiles() {
@@ -230,7 +235,7 @@ public final class SparkRequest {
 
     /**
      * Set the files property: The files property.
-     *
+     * 
      * @param files the files value to set.
      * @return the SparkRequest object itself.
      */
@@ -241,7 +246,7 @@ public final class SparkRequest {
 
     /**
      * Get the archives property: The archives property.
-     *
+     * 
      * @return the archives value.
      */
     public List<String> getArchives() {
@@ -250,7 +255,7 @@ public final class SparkRequest {
 
     /**
      * Set the archives property: The archives property.
-     *
+     * 
      * @param archives the archives value to set.
      * @return the SparkRequest object itself.
      */
@@ -261,7 +266,7 @@ public final class SparkRequest {
 
     /**
      * Get the configuration property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the configuration value.
      */
     public Map<String, String> getConfiguration() {
@@ -270,7 +275,7 @@ public final class SparkRequest {
 
     /**
      * Set the configuration property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the SparkRequest object itself.
      */
@@ -281,7 +286,7 @@ public final class SparkRequest {
 
     /**
      * Get the driverMemory property: The driverMemory property.
-     *
+     * 
      * @return the driverMemory value.
      */
     public String getDriverMemory() {
@@ -290,7 +295,7 @@ public final class SparkRequest {
 
     /**
      * Set the driverMemory property: The driverMemory property.
-     *
+     * 
      * @param driverMemory the driverMemory value to set.
      * @return the SparkRequest object itself.
      */
@@ -301,7 +306,7 @@ public final class SparkRequest {
 
     /**
      * Get the driverCores property: The driverCores property.
-     *
+     * 
      * @return the driverCores value.
      */
     public Integer getDriverCores() {
@@ -310,7 +315,7 @@ public final class SparkRequest {
 
     /**
      * Set the driverCores property: The driverCores property.
-     *
+     * 
      * @param driverCores the driverCores value to set.
      * @return the SparkRequest object itself.
      */
@@ -321,7 +326,7 @@ public final class SparkRequest {
 
     /**
      * Get the executorMemory property: The executorMemory property.
-     *
+     * 
      * @return the executorMemory value.
      */
     public String getExecutorMemory() {
@@ -330,7 +335,7 @@ public final class SparkRequest {
 
     /**
      * Set the executorMemory property: The executorMemory property.
-     *
+     * 
      * @param executorMemory the executorMemory value to set.
      * @return the SparkRequest object itself.
      */
@@ -341,7 +346,7 @@ public final class SparkRequest {
 
     /**
      * Get the executorCores property: The executorCores property.
-     *
+     * 
      * @return the executorCores value.
      */
     public Integer getExecutorCores() {
@@ -350,7 +355,7 @@ public final class SparkRequest {
 
     /**
      * Set the executorCores property: The executorCores property.
-     *
+     * 
      * @param executorCores the executorCores value to set.
      * @return the SparkRequest object itself.
      */
@@ -361,7 +366,7 @@ public final class SparkRequest {
 
     /**
      * Get the executorCount property: The numExecutors property.
-     *
+     * 
      * @return the executorCount value.
      */
     public Integer getExecutorCount() {
@@ -370,7 +375,7 @@ public final class SparkRequest {
 
     /**
      * Set the executorCount property: The numExecutors property.
-     *
+     * 
      * @param executorCount the executorCount value to set.
      * @return the SparkRequest object itself.
      */

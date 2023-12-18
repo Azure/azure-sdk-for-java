@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The source for the disk image. */
+/**
+ * The source for the disk image.
+ */
 @Fluent
 public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
     /*
@@ -22,13 +24,15 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
-    /** Creates an instance of GalleryDiskImageSource class. */
+    /**
+     * Creates an instance of GalleryDiskImageSource class.
+     */
     public GalleryDiskImageSource() {
     }
 
     /**
      * Get the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -37,7 +41,7 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
 
     /**
      * Set the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GalleryDiskImageSource object itself.
      */
@@ -49,7 +53,7 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
     /**
      * Get the storageAccountId property: The Storage Account Id that contains the vhd blob being used as a source for
      * this artifact version.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -59,7 +63,7 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
     /**
      * Set the storageAccountId property: The Storage Account Id that contains the vhd blob being used as a source for
      * this artifact version.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the GalleryDiskImageSource object itself.
      */
@@ -68,7 +72,9 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryDiskImageSource withId(String id) {
         super.withId(id);
@@ -77,7 +83,7 @@ public final class GalleryDiskImageSource extends GalleryArtifactVersionSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
