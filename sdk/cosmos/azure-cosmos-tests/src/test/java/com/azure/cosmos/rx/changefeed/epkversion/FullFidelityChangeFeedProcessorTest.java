@@ -137,7 +137,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 logger.info("Validating changes now");
 
-                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -222,7 +222,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 logger.info("Validating changes now");
 
-                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -898,7 +898,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments,2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments,FEED_COUNT, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
 
@@ -936,7 +936,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // Wait for the feed processor to shutdown.
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1000,7 +1000,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 logger.info("Validating changes now");
 
-                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -1015,6 +1015,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         } finally {
             safeDeleteCollection(createdFeedCollection);
             safeDeleteCollection(createdLeaseCollection);
+            // reset the endToEnd config
+            this.getClientBuilder().endToEndOperationLatencyPolicyConfig(null);
             safeClose(clientWithE2ETimeoutConfig);
             // Allow some time for the collections to be deleted before exiting.
             Thread.sleep(500);
@@ -1123,7 +1125,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             // query for leases from the createdLeaseCollection
             String leaseQuery = "select * from c where not contains(c.id, \"info\")";
@@ -1342,7 +1344,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                 logger.info("Validating changes now");
 
-                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, feedCount, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -1405,7 +1407,12 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    void validateChangeFeedProcessing(ChangeFeedProcessor changeFeedProcessor, List<InternalObjectNode> createdDocuments, Map<String, ChangeFeedProcessorItem> receivedDocuments, int sleepTime) throws InterruptedException {
+    void validateChangeFeedProcessing(
+        ChangeFeedProcessor changeFeedProcessor,
+        List<InternalObjectNode> createdDocuments,
+        Map<String, ChangeFeedProcessorItem> receivedDocuments,
+        int expectedFeedCount,
+        int sleepTime) throws InterruptedException {
         assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessor
@@ -1427,7 +1434,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         // Added this validation for now to verify received list has something - easy way to see size not being 10
-        assertThat(receivedDocuments.size()).isEqualTo(FEED_COUNT);
+        assertThat(receivedDocuments.size()).isEqualTo(expectedFeedCount);
 
         for (InternalObjectNode item : createdDocuments) {
             assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
