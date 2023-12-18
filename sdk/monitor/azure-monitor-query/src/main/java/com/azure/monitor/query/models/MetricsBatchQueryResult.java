@@ -8,14 +8,14 @@ import java.util.List;
 /**
  * The result of a metrics query batch. It contains the results of individual queries.
  */
-public final class MetricsBatchResult {
+public final class MetricsBatchQueryResult {
     private final List<MetricsQueryResult> metricsQueryResults;
 
     /**
      * Creates an instance of MetricsBatchResult.
      * @param metricsQueryResults the metrics results for individual queries
      */
-    public MetricsBatchResult(List<MetricsQueryResult> metricsQueryResults) {
+    public MetricsBatchQueryResult(List<MetricsQueryResult> metricsQueryResults) {
         this.metricsQueryResults = metricsQueryResults;
     }
 
