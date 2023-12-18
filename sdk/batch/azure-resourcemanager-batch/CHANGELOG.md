@@ -1,14 +1,183 @@
 # Release History
 
-## 1.1.0-beta.3 (Unreleased)
+## 1.1.0 (2023-12-18)
 
-### Features Added
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.PrivateEndpointConnectionsUpdateHeaders` was removed
 
-### Other Changes
+* `models.BatchAccountsCreateResponse` was removed
+
+* `models.PoolsDeleteHeaders` was removed
+
+* `models.BatchAccountsDeleteHeaders` was removed
+
+* `models.CertificatesDeleteResponse` was removed
+
+* `models.BatchAccountsDeleteResponse` was removed
+
+* `models.CertificatesDeleteHeaders` was removed
+
+* `models.BatchAccountsCreateHeaders` was removed
+
+* `models.PrivateEndpointConnectionsUpdateResponse` was removed
+
+* `models.PoolsDeleteResponse` was removed
+
+#### `models.NetworkConfiguration` was modified
+
+* `withDynamicVNetAssignmentScope(models.DynamicVNetAssignmentScope)` was removed
+* `dynamicVNetAssignmentScope()` was removed
+
+#### `models.ContainerConfiguration` was modified
+
+* `java.lang.String type()` -> `models.ContainerType type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionRequired()` was removed
+
+#### `models.Certificate$Definition` was modified
+
+* `withData(java.lang.String)` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,java.lang.String)` was removed
+
+### Features Added
+
+* `models.SecurityTypes` was added
+
+* `models.SecurityProfile` was added
+
+* `models.ContainerType` was added
+
+* `models.UefiSettings` was added
+
+* `models.ManagedDisk` was added
+
+* `models.NetworkProfile` was added
+
+* `models.EndpointAccessProfile` was added
+
+* `models.ServiceArtifactReference` was added
+
+* `models.NodeCommunicationMode` was added
+
+* `models.EndpointAccessDefaultAction` was added
+
+* `models.IpRule` was added
+
+#### `models.NetworkConfiguration` was modified
+
+* `withEnableAcceleratedNetworking(java.lang.Boolean)` was added
+* `withDynamicVnetAssignmentScope(models.DynamicVNetAssignmentScope)` was added
+* `enableAcceleratedNetworking()` was added
+* `dynamicVnetAssignmentScope()` was added
+
+#### `BatchManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.Application` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.BatchAccount` was modified
+
+* `resourceGroupName()` was added
+* `networkProfile()` was added
+* `nodeManagementEndpoint()` was added
+
+#### `models.BatchAccountUpdateParameters` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+* `networkProfile()` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.Certificate` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `groupIds()` was added
+
+#### `models.ContainerConfiguration` was modified
+
+* `withType(models.ContainerType)` was added
+
+#### `BatchManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.VMExtension` was modified
+
+* `enableAutomaticUpgrade()` was added
+* `withEnableAutomaticUpgrade(java.lang.Boolean)` was added
+
+#### `models.VirtualMachineConfiguration` was modified
+
+* `withServiceArtifactReference(models.ServiceArtifactReference)` was added
+* `securityProfile()` was added
+* `serviceArtifactReference()` was added
+* `withSecurityProfile(models.SecurityProfile)` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionsRequired()` was added
+
+#### `models.BatchAccount$Definition` was modified
+
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.OSDisk` was modified
+
+* `managedDisk()` was added
+* `writeAcceleratorEnabled()` was added
+* `withCaching(models.CachingType)` was added
+* `withWriteAcceleratorEnabled(java.lang.Boolean)` was added
+* `caching()` was added
+* `withManagedDisk(models.ManagedDisk)` was added
+* `diskSizeGB()` was added
+* `withDiskSizeGB(java.lang.Integer)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withResourceTags(java.util.Map)` was added
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
+
+#### `models.BatchAccount$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.BatchAccountCreateParameters` was modified
+
+* `networkProfile()` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.Pool` was modified
+
+* `targetNodeCommunicationMode()` was added
+* `resourceGroupName()` was added
+* `currentNodeCommunicationMode()` was added
+* `resourceTags()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withResourceTags(java.util.Map)` was added
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
 
 ## 1.1.0-beta.2 (2023-07-26)
 

@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The container settings for a task. */
+/**
+ * The container settings for a task.
+ */
 @Fluent
 public final class TaskContainerSettings {
     /*
      * Additional options to the container create command.
-     *
+     * 
      * These additional options are supplied as arguments to the "docker create" command, in addition to those
      * controlled by the Batch Service.
      */
@@ -22,7 +24,7 @@ public final class TaskContainerSettings {
 
     /*
      * The image to use to create the container in which the task will run.
-     *
+     * 
      * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
      * image name, the tag ":latest" is used as a default.
      */
@@ -31,7 +33,7 @@ public final class TaskContainerSettings {
 
     /*
      * A private container registry.
-     *
+     * 
      * This setting can be omitted if was already provided at pool creation.
      */
     @JsonProperty(value = "registry")
@@ -43,16 +45,18 @@ public final class TaskContainerSettings {
     @JsonProperty(value = "workingDirectory")
     private ContainerWorkingDirectory workingDirectory;
 
-    /** Creates an instance of TaskContainerSettings class. */
+    /**
+     * Creates an instance of TaskContainerSettings class.
+     */
     public TaskContainerSettings() {
     }
 
     /**
      * Get the containerRunOptions property: Additional options to the container create command.
-     *
-     * <p>These additional options are supplied as arguments to the "docker create" command, in addition to those
+     * 
+     * These additional options are supplied as arguments to the "docker create" command, in addition to those
      * controlled by the Batch Service.
-     *
+     * 
      * @return the containerRunOptions value.
      */
     public String containerRunOptions() {
@@ -61,10 +65,10 @@ public final class TaskContainerSettings {
 
     /**
      * Set the containerRunOptions property: Additional options to the container create command.
-     *
-     * <p>These additional options are supplied as arguments to the "docker create" command, in addition to those
+     * 
+     * These additional options are supplied as arguments to the "docker create" command, in addition to those
      * controlled by the Batch Service.
-     *
+     * 
      * @param containerRunOptions the containerRunOptions value to set.
      * @return the TaskContainerSettings object itself.
      */
@@ -75,10 +79,10 @@ public final class TaskContainerSettings {
 
     /**
      * Get the imageName property: The image to use to create the container in which the task will run.
-     *
-     * <p>This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
+     * 
+     * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
      * image name, the tag ":latest" is used as a default.
-     *
+     * 
      * @return the imageName value.
      */
     public String imageName() {
@@ -87,10 +91,10 @@ public final class TaskContainerSettings {
 
     /**
      * Set the imageName property: The image to use to create the container in which the task will run.
-     *
-     * <p>This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
+     * 
+     * This is the full image reference, as would be specified to "docker pull". If no tag is provided as part of the
      * image name, the tag ":latest" is used as a default.
-     *
+     * 
      * @param imageName the imageName value to set.
      * @return the TaskContainerSettings object itself.
      */
@@ -101,9 +105,9 @@ public final class TaskContainerSettings {
 
     /**
      * Get the registry property: A private container registry.
-     *
-     * <p>This setting can be omitted if was already provided at pool creation.
-     *
+     * 
+     * This setting can be omitted if was already provided at pool creation.
+     * 
      * @return the registry value.
      */
     public ContainerRegistry registry() {
@@ -112,9 +116,9 @@ public final class TaskContainerSettings {
 
     /**
      * Set the registry property: A private container registry.
-     *
-     * <p>This setting can be omitted if was already provided at pool creation.
-     *
+     * 
+     * This setting can be omitted if was already provided at pool creation.
+     * 
      * @param registry the registry value to set.
      * @return the TaskContainerSettings object itself.
      */
@@ -126,7 +130,7 @@ public final class TaskContainerSettings {
     /**
      * Get the workingDirectory property: A flag to indicate where the container task working directory is. The default
      * is 'taskWorkingDirectory'.
-     *
+     * 
      * @return the workingDirectory value.
      */
     public ContainerWorkingDirectory workingDirectory() {
@@ -136,7 +140,7 @@ public final class TaskContainerSettings {
     /**
      * Set the workingDirectory property: A flag to indicate where the container task working directory is. The default
      * is 'taskWorkingDirectory'.
-     *
+     * 
      * @param workingDirectory the workingDirectory value to set.
      * @return the TaskContainerSettings object itself.
      */
@@ -147,14 +151,13 @@ public final class TaskContainerSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (imageName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property imageName in model TaskContainerSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property imageName in model TaskContainerSettings"));
         }
         if (registry() != null) {
             registry().validate();

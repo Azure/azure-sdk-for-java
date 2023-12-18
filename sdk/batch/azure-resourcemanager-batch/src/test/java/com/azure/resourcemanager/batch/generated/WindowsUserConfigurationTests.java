@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowsUserConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsUserConfiguration model =
-            BinaryData.fromString("{\"loginMode\":\"Batch\"}").toObject(WindowsUserConfiguration.class);
-        Assertions.assertEquals(LoginMode.BATCH, model.loginMode());
+        WindowsUserConfiguration model
+            = BinaryData.fromString("{\"loginMode\":\"Interactive\"}").toObject(WindowsUserConfiguration.class);
+        Assertions.assertEquals(LoginMode.INTERACTIVE, model.loginMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WindowsUserConfiguration model = new WindowsUserConfiguration().withLoginMode(LoginMode.BATCH);
+        WindowsUserConfiguration model = new WindowsUserConfiguration().withLoginMode(LoginMode.INTERACTIVE);
         model = BinaryData.fromObject(model).toObject(WindowsUserConfiguration.class);
-        Assertions.assertEquals(LoginMode.BATCH, model.loginMode());
+        Assertions.assertEquals(LoginMode.INTERACTIVE, model.loginMode());
     }
 }
