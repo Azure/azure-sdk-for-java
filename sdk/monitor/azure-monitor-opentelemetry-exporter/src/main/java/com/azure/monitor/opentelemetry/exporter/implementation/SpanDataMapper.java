@@ -33,6 +33,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.MappingsBuilder.MappingType.SPAN;
 import static java.util.Arrays.asList;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -67,7 +68,7 @@ public final class SpanDataMapper {
 
     static {
         MappingsBuilder mappingsBuilder =
-            new MappingsBuilder()
+            new MappingsBuilder(SPAN)
                 // these are from azure SDK (AZURE_SDK_PEER_ADDRESS gets filtered out automatically
                 // since it uses the otel "peer." prefix)
                 .ignoreExact(AiSemanticAttributes.AZURE_SDK_NAMESPACE.getKey())
