@@ -4,9 +4,9 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.HttpClientTests;
-import com.generic.core.http.client.HttpClientTestsServer;
-import com.generic.core.http.client.LocalTestServer;
+import com.generic.core.implementation.test.HttpClientTests;
+import com.generic.core.implementation.test.HttpClientTestsServer;
+import com.generic.core.implementation.test.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;

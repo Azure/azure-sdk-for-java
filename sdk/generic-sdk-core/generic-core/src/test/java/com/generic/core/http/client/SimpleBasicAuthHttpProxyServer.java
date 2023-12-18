@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.implementation.test.LocalTestServer;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 

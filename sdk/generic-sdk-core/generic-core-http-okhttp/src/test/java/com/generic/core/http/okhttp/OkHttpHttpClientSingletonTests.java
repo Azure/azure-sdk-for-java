@@ -5,7 +5,7 @@ package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpClientOptions;
-import com.generic.core.util.TestConfigurationSource;
+import com.generic.core.implementation.test.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import com.generic.core.util.configuration.ConfigurationSource;

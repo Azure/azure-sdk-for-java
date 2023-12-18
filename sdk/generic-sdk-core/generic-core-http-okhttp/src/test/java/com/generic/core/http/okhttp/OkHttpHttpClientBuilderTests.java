@@ -4,12 +4,12 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.LocalTestServer;
+import com.generic.core.implementation.test.LocalTestServer;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
-import com.generic.core.util.TestConfigurationSource;
+import com.generic.core.implementation.test.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import com.generic.core.util.configuration.ConfigurationSource;

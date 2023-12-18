@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client;
+package com.generic.core.implementation.test;
 
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.Response;
@@ -12,11 +12,12 @@ import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
+import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
@@ -27,9 +28,8 @@ import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.models.HttpBinJSON;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -66,7 +66,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.generic.core.http.client.HttpClientTestsServer.md5;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1460,7 +1459,7 @@ public abstract class HttpClientTests {
 
         byte[] bytes = otherByteArrayOutputStream.toByteArray();
 
-        String contentHash = md5(bytes);
+        String contentHash = HttpClientTestsServer.md5(bytes);
         String eTag = otherResponse.getHeaders().getValue(HeaderName.ETAG);
 
         assertEquals(eTag, contentHash);
@@ -1753,7 +1752,7 @@ public abstract class HttpClientTests {
         fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
 
-    static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
+    public static void inputStreamToOutputStream(InputStream source, OutputStream target) throws IOException {
         byte[] buf = new byte[8192];
         int length;
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client;
+package com.generic.core.implementation.test;
 
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static com.generic.core.http.client.HttpClientTests.inputStreamToOutputStream;
 
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
@@ -188,7 +186,7 @@ public class LocalTestServer {
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        inputStreamToOutputStream(requestBody, outputStream);
+        HttpClientTests.inputStreamToOutputStream(requestBody, outputStream);
 
         return outputStream.toByteArray();
     }

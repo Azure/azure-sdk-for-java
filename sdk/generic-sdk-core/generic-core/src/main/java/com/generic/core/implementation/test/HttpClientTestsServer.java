@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client;
+package com.generic.core.implementation.test;
 
+import com.generic.core.http.client.HttpClient;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.HttpBinJSON;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.parallel.Execution;
@@ -212,7 +212,7 @@ public class HttpClientTestsServer {
      *
      * @throws RuntimeException If md5 is not found.
      */
-    static String md5(byte[] bytes) {
+    public static String md5(byte[] bytes) {
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(bytes);

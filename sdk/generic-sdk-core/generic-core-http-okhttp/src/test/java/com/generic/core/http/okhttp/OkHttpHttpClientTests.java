@@ -4,7 +4,7 @@
 package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.client.LocalTestServer;
+import com.generic.core.implementation.test.LocalTestServer;
 import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;

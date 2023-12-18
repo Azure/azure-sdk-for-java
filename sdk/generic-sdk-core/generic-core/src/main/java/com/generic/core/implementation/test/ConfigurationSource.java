@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package util;
+package com.generic.core.implementation.test;
 
 import java.util.Map;
 
