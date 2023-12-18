@@ -71,9 +71,13 @@ docker run -e APPLICATIONINSIGHTS_CONNECTION_STRING="{CONNECTION_STRING}" {image
 ```
 where you have to replace `{CONNECTION_STRING}` and `{image-name}` by your connection string and the native image name.
 
+### Disable the monitoring
+
+You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
+
 ### Troubleshooting
 
-### Debug
+#### Debug
 
 If something does not work as expected, you can enable self-diagnostics features at DEBUG level to get some insights.
 
@@ -88,7 +92,7 @@ docker run -e APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL=DEBUG {image-name}
 
 You have to replace `{image-name}` by your docker image name.
 
-### OpenTelemetry version issue
+#### OpenTelemetry version issue
 
 You may notice the following message during the application start-up:
 ```
@@ -98,9 +102,6 @@ WARN  c.a.m.a.s.Ope
 In this case, you have to import the OpenTelemetry Bills of Materials
 by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
 
-### Disable the monitoring
-
-You can disable the monitoring by setting the `otel.sdk.disabled` property or the `OTEL_SDK_DISABLED` environment variable to true.
 
 ## Contributing
 
