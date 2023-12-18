@@ -115,43 +115,6 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- Fix CVE-2023-34062  -->
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-buffer</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-buffer;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-common</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-handler</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport-native-kqueue</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-codec-http</artifactId>
-      <version>4.1.101.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
-    </dependency>
-
     <!--Spring JMS-->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -163,6 +126,7 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <optional>true</optional>
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -443,13 +407,6 @@
             <bannedDependencies>
               <includes>
                 <include>com.microsoft.azure:azure-servicebus-jms:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-                <include>io.netty:netty-transport-native-kqueue:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
-                <include>io.netty:netty-codec-http:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
-                <include>io.netty:netty-transport:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport;external_dependency} -->
-                <include>io.netty:netty-buffer:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-buffer;external_dependency} -->
-                <include>io.netty:netty-transport-native-epoll:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.netty:netty-common:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-common;external_dependency} -->
-                <include>io.netty:netty-handler:[4.1.101.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
                 <include>org.messaginghub:pooled-jms:[1.2.6]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
