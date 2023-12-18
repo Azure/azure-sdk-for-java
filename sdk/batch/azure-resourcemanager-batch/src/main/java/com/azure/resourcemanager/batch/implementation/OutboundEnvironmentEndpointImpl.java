@@ -15,8 +15,8 @@ public final class OutboundEnvironmentEndpointImpl implements OutboundEnvironmen
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    OutboundEnvironmentEndpointImpl(
-        OutboundEnvironmentEndpointInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    OutboundEnvironmentEndpointImpl(OutboundEnvironmentEndpointInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
