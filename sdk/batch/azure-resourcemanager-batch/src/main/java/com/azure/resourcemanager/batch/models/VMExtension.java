@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration for virtual machine extensions. */
+/**
+ * The configuration for virtual machine extensions.
+ */
 @Fluent
 public final class VMExtension {
     /*
@@ -66,19 +68,21 @@ public final class VMExtension {
 
     /*
      * The collection of extension names.
-     *
+     * 
      * Collection of extension names after which this extension needs to be provisioned.
      */
     @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
-    /** Creates an instance of VMExtension class. */
+    /**
+     * Creates an instance of VMExtension class.
+     */
     public VMExtension() {
     }
 
     /**
      * Get the name property: The name of the virtual machine extension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +91,7 @@ public final class VMExtension {
 
     /**
      * Set the name property: The name of the virtual machine extension.
-     *
+     * 
      * @param name the name value to set.
      * @return the VMExtension object itself.
      */
@@ -98,7 +102,7 @@ public final class VMExtension {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -107,7 +111,7 @@ public final class VMExtension {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the VMExtension object itself.
      */
@@ -118,7 +122,7 @@ public final class VMExtension {
 
     /**
      * Get the type property: The type of the extensions.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -127,7 +131,7 @@ public final class VMExtension {
 
     /**
      * Set the type property: The type of the extensions.
-     *
+     * 
      * @param type the type value to set.
      * @return the VMExtension object itself.
      */
@@ -138,7 +142,7 @@ public final class VMExtension {
 
     /**
      * Get the typeHandlerVersion property: The version of script handler.
-     *
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -147,7 +151,7 @@ public final class VMExtension {
 
     /**
      * Set the typeHandlerVersion property: The version of script handler.
-     *
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VMExtension object itself.
      */
@@ -157,10 +161,10 @@ public final class VMExtension {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
-     *
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
+     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
+     * unless redeployed, even with this property set to true.
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -168,10 +172,10 @@ public final class VMExtension {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
-     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
-     * redeployed, even with this property set to true.
-     *
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
+     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
+     * unless redeployed, even with this property set to true.
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VMExtension object itself.
      */
@@ -183,7 +187,7 @@ public final class VMExtension {
     /**
      * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -193,7 +197,7 @@ public final class VMExtension {
     /**
      * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
      * platform if there is a newer version of the extension available.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the VMExtension object itself.
      */
@@ -204,7 +208,7 @@ public final class VMExtension {
 
     /**
      * Get the settings property: JSON formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -213,7 +217,7 @@ public final class VMExtension {
 
     /**
      * Set the settings property: JSON formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the VMExtension object itself.
      */
@@ -225,7 +229,7 @@ public final class VMExtension {
     /**
      * Get the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -235,7 +239,7 @@ public final class VMExtension {
     /**
      * Set the protectedSettings property: The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the VMExtension object itself.
      */
@@ -246,9 +250,9 @@ public final class VMExtension {
 
     /**
      * Get the provisionAfterExtensions property: The collection of extension names.
-     *
-     * <p>Collection of extension names after which this extension needs to be provisioned.
-     *
+     * 
+     * Collection of extension names after which this extension needs to be provisioned.
+     * 
      * @return the provisionAfterExtensions value.
      */
     public List<String> provisionAfterExtensions() {
@@ -257,9 +261,9 @@ public final class VMExtension {
 
     /**
      * Set the provisionAfterExtensions property: The collection of extension names.
-     *
-     * <p>Collection of extension names after which this extension needs to be provisioned.
-     *
+     * 
+     * Collection of extension names after which this extension needs to be provisioned.
+     * 
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.
      */
@@ -270,24 +274,21 @@ public final class VMExtension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model VMExtension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model VMExtension"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisher in model VMExtension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property publisher in model VMExtension"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model VMExtension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model VMExtension"));
         }
     }
 
