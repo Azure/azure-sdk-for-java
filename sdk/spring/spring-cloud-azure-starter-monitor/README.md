@@ -21,7 +21,7 @@ For more information, please read [introduction to Application Insights][applica
 
 #### OpenTelemetry configuration
 
-Import the OpenTelemetry Bills of Materials
+Import the OpenTelemetry Bills of Materials (BOM)
 by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/#dependency-management).
 
 #### Add monitoring dependency
