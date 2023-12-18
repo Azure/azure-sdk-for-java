@@ -9,17 +9,23 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The default action when there is no IPRule matched.
- *
- * <p>Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+ * 
+ * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
  */
 public enum EndpointAccessDefaultAction {
-    /** Enum value Allow. */
+    /**
+     * Enum value Allow.
+     */
     ALLOW("Allow"),
 
-    /** Enum value Deny. */
+    /**
+     * Enum value Deny.
+     */
     DENY("Deny");
 
-    /** The actual serialized value for a EndpointAccessDefaultAction instance. */
+    /**
+     * The actual serialized value for a EndpointAccessDefaultAction instance.
+     */
     private final String value;
 
     EndpointAccessDefaultAction(String value) {
@@ -28,7 +34,7 @@ public enum EndpointAccessDefaultAction {
 
     /**
      * Parses a serialized value to a EndpointAccessDefaultAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EndpointAccessDefaultAction object, or null if unable to parse.
      */
@@ -46,7 +52,9 @@ public enum EndpointAccessDefaultAction {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

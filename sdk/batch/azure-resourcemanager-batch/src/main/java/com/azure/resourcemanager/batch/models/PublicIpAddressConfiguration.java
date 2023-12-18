@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The public IP Address configuration of the networking configuration of a Pool. */
+/**
+ * The public IP Address configuration of the networking configuration of a Pool.
+ */
 @Fluent
 public final class PublicIpAddressConfiguration {
     /*
      * The provisioning type for Public IP Addresses for the Batch Pool.
-     *
+     * 
      * The default value is BatchManaged
      */
     @JsonProperty(value = "provision")
@@ -21,7 +23,7 @@ public final class PublicIpAddressConfiguration {
 
     /*
      * The list of public IPs which the Batch service will use when provisioning Compute Nodes.
-     *
+     * 
      * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
      * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
      * need at least 3 public IPs specified. Each element of this collection is of the form:
@@ -30,15 +32,17 @@ public final class PublicIpAddressConfiguration {
     @JsonProperty(value = "ipAddressIds")
     private List<String> ipAddressIds;
 
-    /** Creates an instance of PublicIpAddressConfiguration class. */
+    /**
+     * Creates an instance of PublicIpAddressConfiguration class.
+     */
     public PublicIpAddressConfiguration() {
     }
 
     /**
      * Get the provision property: The provisioning type for Public IP Addresses for the Batch Pool.
-     *
-     * <p>The default value is BatchManaged.
-     *
+     * 
+     * The default value is BatchManaged.
+     * 
      * @return the provision value.
      */
     public IpAddressProvisioningType provision() {
@@ -47,9 +51,9 @@ public final class PublicIpAddressConfiguration {
 
     /**
      * Set the provision property: The provisioning type for Public IP Addresses for the Batch Pool.
-     *
-     * <p>The default value is BatchManaged.
-     *
+     * 
+     * The default value is BatchManaged.
+     * 
      * @param provision the provision value to set.
      * @return the PublicIpAddressConfiguration object itself.
      */
@@ -61,12 +65,12 @@ public final class PublicIpAddressConfiguration {
     /**
      * Get the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
      * Nodes.
-     *
-     * <p>The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
+     * 
+     * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
      * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
      * need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
-     *
+     * 
      * @return the ipAddressIds value.
      */
     public List<String> ipAddressIds() {
@@ -76,12 +80,12 @@ public final class PublicIpAddressConfiguration {
     /**
      * Set the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
      * Nodes.
-     *
-     * <p>The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
+     * 
+     * The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
      * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
      * need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
-     *
+     * 
      * @param ipAddressIds the ipAddressIds value to set.
      * @return the PublicIpAddressConfiguration object itself.
      */
@@ -92,7 +96,7 @@ public final class PublicIpAddressConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
