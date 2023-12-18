@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -36,6 +37,7 @@ public class CosmosItemResponse<T> {
     //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
     //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
     private volatile T item;
+    private volatile JsonNode itemBodyOverride;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
@@ -51,15 +53,18 @@ public class CosmosItemResponse<T> {
         this.itemDeserializer = itemDeserializer;
         this.item = null;
         this.hasPayload = () -> response.hasPayload();
+        this.itemBodyOverride = null;
     }
 
-    CosmosItemResponse(ResourceResponse<Document> response, T item, Class<T> classType, ItemDeserializer itemDeserializer) {
+    private CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
         this.itemDeserializer = itemDeserializer;
         this.item = item;
+        this.itemBodyOverride = itemBodyOverride;
         boolean hasPayloadStaticValue = item != null;
         this.hasPayload = () -> hasPayloadStaticValue;
+        this.itemBodyOverride = null;
     }
 
     /**
@@ -73,8 +78,10 @@ public class CosmosItemResponse<T> {
             return (byte[])item;
         }
 
-        JsonNode json = this.resourceResponse.getBody();
-        return json.toString().getBytes(StandardCharsets.UTF_8);
+        JsonNode effectiveJson = this.itemBodyOverride != null
+            ? this.itemBodyOverride
+            : this.resourceResponse.getBody();
+        return effectiveJson.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -279,12 +286,14 @@ public class CosmosItemResponse<T> {
             this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
 
         T payload = null;
+        JsonNode itemBodyOverride = null;
         if (isContentResponseOnWriteEnabled) {
             payload = this.getItem();
+            itemBodyOverride = this.itemBodyOverride;
         }
 
         return new CosmosItemResponse<>(
-            mappedResourceResponse, payload, this.itemClassType, this.itemDeserializer);
+            mappedResourceResponse, payload, itemBodyOverride, this.itemClassType, this.itemDeserializer);
     }
 
     boolean hasTrackingId(String candidate) {
@@ -314,11 +323,14 @@ public class CosmosItemResponse<T> {
     static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
-                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                                          byte[] contentAsByteArray,
+                public <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
                                                                           Class<T> classType,
                                                                           ItemDeserializer itemDeserializer) {
-                    return new CosmosItemResponse<>(response, Utils.parse(contentAsByteArray, classType), classType, itemDeserializer);
+                    return new CosmosItemResponse<>(
+                        response.resourceResponse,
+                        Utils.parse(response.getItemAsByteArray(), classType),
+                        response.itemBodyOverride,
+                        classType, itemDeserializer);
                 }
 
                 @Override
@@ -335,8 +347,9 @@ public class CosmosItemResponse<T> {
                     return response.getItemAsByteArray();
                 }
 
-                public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
-                    response.item = content;
+                public void setByteArrayContent(CosmosItemResponse<byte[]> response, Pair<byte[], JsonNode> content) {
+                    response.item = content.getLeft();
+                    response.itemBodyOverride = content.getRight();
                 }
 
                 public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
