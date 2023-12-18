@@ -534,7 +534,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -574,7 +574,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -613,7 +613,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -658,7 +658,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -703,7 +703,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -749,7 +749,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -791,7 +791,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -827,7 +827,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -862,7 +862,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -903,7 +903,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -944,7 +944,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -986,7 +986,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         }
      *     ]
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1024,7 +1024,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     modelId: String (Required)
      *     description: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1070,7 +1070,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     modelId: String (Required)
      *     description: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      * }
      * }</pre>
@@ -1338,7 +1338,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1350,7 +1350,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1360,12 +1360,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1400,7 +1400,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1412,7 +1412,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1422,12 +1422,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1462,7 +1462,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1474,7 +1474,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1484,12 +1484,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1527,7 +1527,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1539,7 +1539,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1549,12 +1549,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1590,7 +1590,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1602,7 +1602,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1612,12 +1612,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1653,7 +1653,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -1665,7 +1665,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -1675,12 +1675,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -1821,7 +1821,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -1869,7 +1869,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -1917,7 +1917,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -1968,7 +1968,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -2017,7 +2017,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -2066,7 +2066,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -2682,7 +2682,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -2694,7 +2694,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -2704,12 +2704,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -2751,7 +2751,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     buildMode: String(template/neural) (Optional)
      *     azureBlobSource (Optional): {
@@ -2763,7 +2763,7 @@ public final class DocumentModelAdministrationClientImpl {
      *         fileList: String (Required)
      *     }
      *     docTypes (Optional): {
-     *         String (Required): {
+     *         String (Optional): {
      *             description: String (Optional)
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
@@ -2773,12 +2773,12 @@ public final class DocumentModelAdministrationClientImpl {
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
      *                     properties (Optional): {
-     *                         String (Required): (recursive schema, see String above)
+     *                         String (Optional): (recursive schema, see String above)
      *                     }
      *                 }
      *             }
      *             fieldConfidence (Optional): {
-     *                 String: double (Required)
+     *                 String: double (Optional)
      *             }
      *         }
      *     }
@@ -2819,7 +2819,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
@@ -2874,7 +2874,7 @@ public final class DocumentModelAdministrationClientImpl {
      *     resourceLocation: String (Required)
      *     apiVersion: String (Optional)
      *     tags (Optional): {
-     *         String: String (Required)
+     *         String: String (Optional)
      *     }
      *     error (Optional): {
      *         code: String (Required)
