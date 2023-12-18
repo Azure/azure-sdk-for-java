@@ -11,8 +11,8 @@ import java.util.Map;
 
 /**
  * PatchResourceGuardInput
- *
- * <p>Patch Request content for Microsoft.DataProtection Resource Guard resources.
+ * 
+ * Patch Request content for Microsoft.DataProtection Resource Guard resources.
  */
 @Fluent
 public final class PatchResourceGuardInput {
@@ -23,13 +23,15 @@ public final class PatchResourceGuardInput {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PatchResourceGuardInput class. */
+    /**
+     * Creates an instance of PatchResourceGuardInput class.
+     */
     public PatchResourceGuardInput() {
     }
 
     /**
      * Get the tags property: Resource Guard tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -38,7 +40,7 @@ public final class PatchResourceGuardInput {
 
     /**
      * Set the tags property: Resource Guard tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchResourceGuardInput object itself.
      */
@@ -49,7 +51,7 @@ public final class PatchResourceGuardInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

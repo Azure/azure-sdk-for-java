@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Feature Validation Response. */
+/**
+ * Feature Validation Response.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("FeatureValidationResponse")
 @Fluent
@@ -28,13 +30,15 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
     @JsonProperty(value = "features")
     private List<SupportedFeature> features;
 
-    /** Creates an instance of FeatureValidationResponse class. */
+    /**
+     * Creates an instance of FeatureValidationResponse class.
+     */
     public FeatureValidationResponse() {
     }
 
     /**
      * Get the featureType property: backup support feature type.
-     *
+     * 
      * @return the featureType value.
      */
     public FeatureType featureType() {
@@ -43,7 +47,7 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
 
     /**
      * Set the featureType property: backup support feature type.
-     *
+     * 
      * @param featureType the featureType value to set.
      * @return the FeatureValidationResponse object itself.
      */
@@ -54,7 +58,7 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
 
     /**
      * Get the features property: Response features.
-     *
+     * 
      * @return the features value.
      */
     public List<SupportedFeature> features() {
@@ -63,7 +67,7 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
 
     /**
      * Set the features property: Response features.
-     *
+     * 
      * @param features the features value to set.
      * @return the FeatureValidationResponse object itself.
      */
@@ -74,7 +78,7 @@ public final class FeatureValidationResponse extends FeatureValidationResponseBa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

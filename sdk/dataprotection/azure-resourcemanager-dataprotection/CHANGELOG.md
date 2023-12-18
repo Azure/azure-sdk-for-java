@@ -1,14 +1,65 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2023-12-18)
+
+- Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.CrossRegionRestoreJobRequest` was added
 
-### Bugs Fixed
+* `models.RecoveryPointCompletionState` was added
 
-### Other Changes
+* `models.FetchSecondaryRecoveryPoints` was added
+
+* `models.DefaultResourceProperties` was added
+
+* `models.FetchCrossRegionRestoreJobsOperations` was added
+
+* `models.FetchCrossRegionRestoreJobs` was added
+
+* `models.UserFacingWarningDetail` was added
+
+* `models.ValidateCrossRegionRestoreRequestObject` was added
+
+* `models.CrossRegionRestoreJobsRequest` was added
+
+* `models.ResourcePropertiesObjectType` was added
+
+* `models.CrossRegionRestoreDetails` was added
+
+* `models.KubernetesClusterVaultTierRestoreCriteria` was added
+
+* `models.FetchSecondaryRPsRequestParameters` was added
+
+* `models.CrossRegionRestoreRequestObject` was added
+
+#### `models.JobExtendedInfo` was modified
+
+* `warningDetails()` was added
+
+#### `DataProtectionManager` was modified
+
+* `fetchCrossRegionRestoreJobsOperations()` was added
+* `fetchSecondaryRecoveryPoints()` was added
+* `fetchCrossRegionRestoreJobs()` was added
+
+#### `models.BackupVault` was modified
+
+* `withReplicatedRegions(java.util.List)` was added
+* `replicatedRegions()` was added
+
+#### `models.BackupInstances` was modified
+
+* `triggerCrossRegionRestore(java.lang.String,java.lang.String,models.CrossRegionRestoreRequestObject)` was added
+* `validateCrossRegionRestore(java.lang.String,java.lang.String,models.ValidateCrossRegionRestoreRequestObject,com.azure.core.util.Context)` was added
+* `triggerCrossRegionRestore(java.lang.String,java.lang.String,models.CrossRegionRestoreRequestObject,com.azure.core.util.Context)` was added
+* `validateCrossRegionRestore(java.lang.String,java.lang.String,models.ValidateCrossRegionRestoreRequestObject)` was added
+
+#### `models.AzureBackupDiscreteRecoveryPoint` was modified
+
+* `withRecoveryPointState(models.RecoveryPointCompletionState)` was added
+* `recoveryPointState()` was added
 
 ## 1.1.0 (2023-07-21)
 
