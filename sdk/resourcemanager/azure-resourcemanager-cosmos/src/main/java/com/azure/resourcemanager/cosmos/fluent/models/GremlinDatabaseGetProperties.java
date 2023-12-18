@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesOptio
 import com.azure.resourcemanager.cosmos.models.GremlinDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB SQL database. */
+/**
+ * The properties of an Azure Cosmos DB SQL database.
+ */
 @Fluent
 public final class GremlinDatabaseGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class GremlinDatabaseGetProperties {
     @JsonProperty(value = "options")
     private GremlinDatabaseGetPropertiesOptions options;
 
-    /** Creates an instance of GremlinDatabaseGetProperties class. */
+    /**
+     * Creates an instance of GremlinDatabaseGetProperties class.
+     */
     public GremlinDatabaseGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public GremlinDatabaseGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class GremlinDatabaseGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the GremlinDatabaseGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class GremlinDatabaseGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public GremlinDatabaseGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class GremlinDatabaseGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the GremlinDatabaseGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class GremlinDatabaseGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

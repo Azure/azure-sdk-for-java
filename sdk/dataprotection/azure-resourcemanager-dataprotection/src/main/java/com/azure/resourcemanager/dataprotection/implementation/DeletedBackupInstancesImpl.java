@@ -21,35 +21,31 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public DeletedBackupInstancesImpl(
-        DeletedBackupInstancesClient innerClient,
+    public DeletedBackupInstancesImpl(DeletedBackupInstancesClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName) {
-        PagedIterable<DeletedBackupInstanceResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName);
+        PagedIterable<DeletedBackupInstanceResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName);
         return Utils.mapPage(inner, inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DeletedBackupInstanceResource> list(
-        String resourceGroupName, String vaultName, Context context) {
-        PagedIterable<DeletedBackupInstanceResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, context);
+    public PagedIterable<DeletedBackupInstanceResource> list(String resourceGroupName, String vaultName,
+        Context context) {
+        PagedIterable<DeletedBackupInstanceResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
         return Utils.mapPage(inner, inner1 -> new DeletedBackupInstanceResourceImpl(inner1, this.manager()));
     }
 
-    public Response<DeletedBackupInstanceResource> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        Response<DeletedBackupInstanceResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
+    public Response<DeletedBackupInstanceResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
+        Response<DeletedBackupInstanceResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeletedBackupInstanceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -57,8 +53,8 @@ public final class DeletedBackupInstancesImpl implements DeletedBackupInstances 
     }
 
     public DeletedBackupInstanceResource get(String resourceGroupName, String vaultName, String backupInstanceName) {
-        DeletedBackupInstanceResourceInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, backupInstanceName);
+        DeletedBackupInstanceResourceInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, backupInstanceName);
         if (inner != null) {
             return new DeletedBackupInstanceResourceImpl(inner, this.manager());
         } else {

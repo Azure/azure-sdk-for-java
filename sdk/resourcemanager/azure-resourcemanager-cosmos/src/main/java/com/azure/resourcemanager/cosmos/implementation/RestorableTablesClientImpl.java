@@ -30,22 +30,28 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableTableGetResultIn
 import com.azure.resourcemanager.cosmos.models.RestorableTablesListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableTablesClient.
+ */
 public final class RestorableTablesClientImpl implements RestorableTablesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableTablesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of RestorableTablesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableTablesClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RestorableTablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RestorableTablesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,28 +62,22 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface RestorableTablesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableTables")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableTables")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableTablesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("instanceId") String instanceId,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RestorableTablesListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("instanceId") String instanceId,
+            @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param startTime Restorable Tables event feed start time.
@@ -85,23 +85,19 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table events and their properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the Table events and their properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableTableGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String startTime, String endTime) {
+    private Mono<PagedResponse<RestorableTableGetResultInner>> listSinglePageAsync(String location, String instanceId,
+        String startTime, String endTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -111,23 +107,10 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            instanceId,
-                            startTime,
-                            endTime,
-                            accept,
-                            context))
-            .<PagedResponse<RestorableTableGetResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, instanceId, startTime, endTime, accept, context))
+            .<PagedResponse<RestorableTableGetResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -135,7 +118,7 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param startTime Restorable Tables event feed start time.
@@ -144,23 +127,19 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the Table events and their properties along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the List operation response, that contains the Table events and their properties along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableTableGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String startTime, String endTime, Context context) {
+    private Mono<PagedResponse<RestorableTableGetResultInner>> listSinglePageAsync(String location, String instanceId,
+        String startTime, String endTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -171,27 +150,17 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                instanceId,
-                startTime,
-                endTime,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
+                instanceId, startTime, endTime, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param startTime Restorable Tables event feed start time.
@@ -200,11 +169,11 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Table events and their properties as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RestorableTableGetResultInner> listAsync(
-        String location, String instanceId, String startTime, String endTime) {
+    public PagedFlux<RestorableTableGetResultInner> listAsync(String location, String instanceId, String startTime,
+        String endTime) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, startTime, endTime));
     }
 
@@ -212,14 +181,14 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Table events and their properties as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableTableGetResultInner> listAsync(String location, String instanceId) {
@@ -232,7 +201,7 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param startTime Restorable Tables event feed start time.
@@ -242,11 +211,11 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Table events and their properties as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableTableGetResultInner> listAsync(
-        String location, String instanceId, String startTime, String endTime, Context context) {
+    private PagedFlux<RestorableTableGetResultInner> listAsync(String location, String instanceId, String startTime,
+        String endTime, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, startTime, endTime, context));
     }
 
@@ -254,14 +223,14 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Table events and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableTableGetResultInner> list(String location, String instanceId) {
@@ -274,7 +243,7 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * Show the event feed of all mutations done on all the Azure Cosmos DB Tables. This helps in scenario where table
      * was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
      * permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param startTime Restorable Tables event feed start time.
@@ -284,11 +253,11 @@ public final class RestorableTablesClientImpl implements RestorableTablesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Table events and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableTableGetResultInner> list(
-        String location, String instanceId, String startTime, String endTime, Context context) {
+    public PagedIterable<RestorableTableGetResultInner> list(String location, String instanceId, String startTime,
+        String endTime, Context context) {
         return new PagedIterable<>(listAsync(location, instanceId, startTime, endTime, context));
     }
 }

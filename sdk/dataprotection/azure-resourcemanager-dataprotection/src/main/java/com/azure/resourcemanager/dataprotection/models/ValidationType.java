@@ -13,15 +13,19 @@ import java.util.Collection;
  * again.
  */
 public final class ValidationType extends ExpandableStringEnum<ValidationType> {
-    /** Static value ShallowValidation for ValidationType. */
+    /**
+     * Static value ShallowValidation for ValidationType.
+     */
     public static final ValidationType SHALLOW_VALIDATION = fromString("ShallowValidation");
 
-    /** Static value DeepValidation for ValidationType. */
+    /**
+     * Static value DeepValidation for ValidationType.
+     */
     public static final ValidationType DEEP_VALIDATION = fromString("DeepValidation");
 
     /**
      * Creates a new instance of ValidationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ValidationType extends ExpandableStringEnum<ValidationType> {
 
     /**
      * Creates or finds a ValidationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValidationType.
      */
@@ -41,7 +45,7 @@ public final class ValidationType extends ExpandableStringEnum<ValidationType> {
 
     /**
      * Gets known ValidationType values.
-     *
+     * 
      * @return known ValidationType values.
      */
     public static Collection<ValidationType> values() {

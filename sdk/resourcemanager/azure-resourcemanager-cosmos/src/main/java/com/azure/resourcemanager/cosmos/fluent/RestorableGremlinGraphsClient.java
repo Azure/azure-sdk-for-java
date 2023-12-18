@@ -11,13 +11,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableGremlinGraphGetResultInner;
 
-/** An instance of this class provides access to all the operations defined in RestorableGremlinGraphsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableGremlinGraphsClient.
+ */
 public interface RestorableGremlinGraphsClient {
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -27,24 +29,24 @@ public interface RestorableGremlinGraphsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(
-        String location, String instanceId, String restorableGremlinDatabaseRid, String startTime, String endTime);
+    PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(String location, String instanceId,
+        String restorableGremlinDatabaseRid, String startTime, String endTime);
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(String location, String instanceId);
@@ -53,14 +55,14 @@ public interface RestorableGremlinGraphsClient {
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableGremlinGraphGetResultInner> list(String location, String instanceId);
@@ -69,7 +71,7 @@ public interface RestorableGremlinGraphsClient {
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -80,14 +82,9 @@ public interface RestorableGremlinGraphsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableGremlinGraphGetResultInner> list(
-        String location,
-        String instanceId,
-        String restorableGremlinDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context);
+    PagedIterable<RestorableGremlinGraphGetResultInner> list(String location, String instanceId,
+        String restorableGremlinDatabaseRid, String startTime, String endTime, Context context);
 }

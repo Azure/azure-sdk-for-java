@@ -16,7 +16,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Services response resource. */
+/**
+ * Services response resource.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -29,8 +31,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "GraphAPICompute", value = GraphApiComputeServiceResourceProperties.class),
     @JsonSubTypes.Type(
         name = "MaterializedViewsBuilder",
-        value = MaterializedViewsBuilderServiceResourceProperties.class)
-})
+        value = MaterializedViewsBuilderServiceResourceProperties.class) })
 @Fluent
 public class ServiceResourceProperties {
     /*
@@ -60,15 +61,18 @@ public class ServiceResourceProperties {
     /*
      * Services response resource.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ServiceResourceProperties class. */
+    /**
+     * Creates an instance of ServiceResourceProperties class.
+     */
     public ServiceResourceProperties() {
     }
 
     /**
      * Get the creationTime property: Time of the last state change (ISO-8601 format).
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -77,7 +81,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the instanceSize property: Instance type for the service.
-     *
+     * 
      * @return the instanceSize value.
      */
     public ServiceSize instanceSize() {
@@ -86,7 +90,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the instanceSize property: Instance type for the service.
-     *
+     * 
      * @param instanceSize the instanceSize value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -97,7 +101,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the instanceCount property: Instance count for the service.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -106,7 +110,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the instanceCount property: Instance count for the service.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -117,7 +121,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the status property: Describes the status of a service.
-     *
+     * 
      * @return the status value.
      */
     public ServiceStatus status() {
@@ -126,7 +130,7 @@ public class ServiceResourceProperties {
 
     /**
      * Get the additionalProperties property: Services response resource.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -136,7 +140,7 @@ public class ServiceResourceProperties {
 
     /**
      * Set the additionalProperties property: Services response resource.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -155,7 +159,7 @@ public class ServiceResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
