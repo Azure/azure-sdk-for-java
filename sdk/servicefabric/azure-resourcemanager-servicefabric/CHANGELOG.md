@@ -1,14 +1,116 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0 (2023-12-18)
 
-### Features Added
+- Azure Resource Manager ServiceFabric client library for Java. This package contains Microsoft Azure SDK for ServiceFabric Management SDK. Service Fabric Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ServiceResourceList` was modified
 
-### Other Changes
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `innerModel()` was removed
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.ClusterListResult` was modified
+
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `java.util.List value()` -> `java.util.List value()`
+* `innerModel()` was removed
+
+#### `models.Applications` was modified
+
+* `models.ApplicationResourceList list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ApplicationTypeResourceList` was modified
+
+* `innerModel()` was removed
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.ApplicationTypeVersionResourceList` was modified
+
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `innerModel()` was removed
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.Clusters` was modified
+
+* `models.ClusterListResult list()` -> `com.azure.core.http.rest.PagedIterable list()`
+* `listWithResponse(com.azure.core.util.Context)` was removed
+* `models.ClusterListResult listByResourceGroup(java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listByResourceGroup(java.lang.String)`
+* `listByResourceGroupWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ApplicationResourceList` was modified
+
+* `innerModel()` was removed
+* `java.util.List value()` -> `java.util.List value()`
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+
+#### `models.ApplicationTypeVersions` was modified
+
+* `models.ApplicationTypeVersionResourceList list(java.lang.String,java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.ApplicationTypes` was modified
+
+* `models.ApplicationTypeResourceList list(java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Services` was modified
+
+* `models.ServiceResourceList list(java.lang.String,java.lang.String,java.lang.String)` -> `com.azure.core.http.rest.PagedIterable list(java.lang.String,java.lang.String,java.lang.String)`
+* `listWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.ServiceResourceList` was modified
+
+* `validate()` was added
+* `withValue(java.util.List)` was added
+
+#### `models.ClusterListResult` was modified
+
+* `withValue(java.util.List)` was added
+* `withNextLink(java.lang.String)` was added
+* `validate()` was added
+
+#### `models.Applications` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ApplicationTypeResourceList` was modified
+
+* `withValue(java.util.List)` was added
+* `validate()` was added
+
+#### `models.ApplicationTypeVersionResourceList` was modified
+
+* `validate()` was added
+* `withValue(java.util.List)` was added
+
+#### `models.Clusters` was modified
+
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was added
+* `list(com.azure.core.util.Context)` was added
+
+#### `models.ApplicationResourceList` was modified
+
+* `validate()` was added
+* `withValue(java.util.List)` was added
+
+#### `models.ApplicationTypeVersions` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ApplicationTypes` was modified
+
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Services` was modified
+
+* `list(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.3 (2023-01-19)
 
