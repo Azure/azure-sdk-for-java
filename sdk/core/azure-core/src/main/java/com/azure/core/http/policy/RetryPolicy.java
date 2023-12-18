@@ -113,8 +113,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         HttpRequest originalHttpRequest = context.getHttpRequest();
         BinaryData originalRequestBody = originalHttpRequest.getBodyAsBinaryData();
         if (retryStrategy.getMaxRetries() > 0 && originalRequestBody != null && !originalRequestBody.isReplayable()) {
-            return originalRequestBody.toReplayableBinaryDataAsync().flatMap(bufferedBody -> {
-                context.getHttpRequest().setBody(bufferedBody);
+            return originalRequestBody.toReplayableBinaryDataAsync().flatMap(replayableBody -> {
+                context.getHttpRequest().setBody(replayableBody);
                 return attemptAsync(context, next, originalHttpRequest, 0, null);
             });
         }
@@ -139,17 +139,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private Mono<HttpResponse> attemptAsync(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
         HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
-        Mono<HttpResponse> request;
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
-        if (retryStrategy.getMaxRetries() > 0 && tryCount < retryStrategy.getMaxRetries()) {
-            // Clone the original request to ensure that each try starts with the original (unmutated) request.
-            context.setHttpRequest(originalHttpRequest.copy());
-            request = next.clone().process();
-        } else {
-            request = next.process();
-        }
+        // Clone the original request to ensure that each try starts with the original (unmutated) request.
+        context.setHttpRequest(originalHttpRequest.copy());
 
-        return request.flatMap(httpResponse -> {
+        return next.clone().process().flatMap(httpResponse -> {
             if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
                 final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                     retryAfterHeader, retryAfterTimeUnit);
@@ -187,14 +181,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
         HttpResponse httpResponse;
         try {
             context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
-            // Only buffer the request body if a retry may happen.
-            if (retryStrategy.getMaxRetries() > 0 && tryCount < retryStrategy.getMaxRetries()) {
-                // Clone the original request to ensure that each try starts with the original (unmutated) request.
-                context.setHttpRequest(originalHttpRequest.copy());
-                httpResponse = next.clone().processSync();
-            } else {
-                httpResponse = next.processSync();
-            }
+            // Clone the original request to ensure that each try starts with the original (unmutated) request.
+            context.setHttpRequest(originalHttpRequest.copy());
+
+            httpResponse = next.clone().processSync();
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
