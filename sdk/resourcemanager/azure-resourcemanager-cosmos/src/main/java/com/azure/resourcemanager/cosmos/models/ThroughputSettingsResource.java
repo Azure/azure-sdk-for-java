@@ -50,14 +50,16 @@ public class ThroughputSettingsResource {
     @JsonProperty(value = "softAllowedMaximumThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private String softAllowedMaximumThroughput;
 
-    /** Creates an instance of ThroughputSettingsResource class. */
+    /**
+     * Creates an instance of ThroughputSettingsResource class.
+     */
     public ThroughputSettingsResource() {
     }
 
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @return the throughput value.
      */
     public Integer throughput() {
@@ -67,7 +69,7 @@ public class ThroughputSettingsResource {
     /**
      * Set the throughput property: Value of the Cosmos DB resource throughput. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @param throughput the throughput value to set.
      * @return the ThroughputSettingsResource object itself.
      */
@@ -79,7 +81,7 @@ public class ThroughputSettingsResource {
     /**
      * Get the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @return the autoscaleSettings value.
      */
     public AutoscaleSettingsResource autoscaleSettings() {
@@ -89,7 +91,7 @@ public class ThroughputSettingsResource {
     /**
      * Set the autoscaleSettings property: Cosmos DB resource for autoscale settings. Either throughput is required or
      * autoscaleSettings is required, but not both.
-     *
+     * 
      * @param autoscaleSettings the autoscaleSettings value to set.
      * @return the ThroughputSettingsResource object itself.
      */
@@ -100,7 +102,7 @@ public class ThroughputSettingsResource {
 
     /**
      * Get the minimumThroughput property: The minimum throughput of the resource.
-     *
+     * 
      * @return the minimumThroughput value.
      */
     public String minimumThroughput() {
@@ -109,7 +111,7 @@ public class ThroughputSettingsResource {
 
     /**
      * Get the offerReplacePending property: The throughput replace is pending.
-     *
+     * 
      * @return the offerReplacePending value.
      */
     public String offerReplacePending() {
@@ -119,7 +121,7 @@ public class ThroughputSettingsResource {
     /**
      * Get the instantMaximumThroughput property: The offer throughput value to instantly scale up without triggering
      * splits.
-     *
+     * 
      * @return the instantMaximumThroughput value.
      */
     public String instantMaximumThroughput() {
@@ -129,7 +131,7 @@ public class ThroughputSettingsResource {
     /**
      * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
      * (for autoscale) that can be specified.
-     *
+     * 
      * @return the softAllowedMaximumThroughput value.
      */
     public String softAllowedMaximumThroughput() {
@@ -138,7 +140,7 @@ public class ThroughputSettingsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

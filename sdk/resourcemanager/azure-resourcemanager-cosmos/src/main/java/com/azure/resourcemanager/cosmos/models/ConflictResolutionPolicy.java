@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The conflict resolution policy for the container. */
+/**
+ * The conflict resolution policy for the container.
+ */
 @Fluent
 public final class ConflictResolutionPolicy {
     /*
@@ -28,13 +30,15 @@ public final class ConflictResolutionPolicy {
     @JsonProperty(value = "conflictResolutionProcedure")
     private String conflictResolutionProcedure;
 
-    /** Creates an instance of ConflictResolutionPolicy class. */
+    /**
+     * Creates an instance of ConflictResolutionPolicy class.
+     */
     public ConflictResolutionPolicy() {
     }
 
     /**
      * Get the mode property: Indicates the conflict resolution mode.
-     *
+     * 
      * @return the mode value.
      */
     public ConflictResolutionMode mode() {
@@ -43,7 +47,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Set the mode property: Indicates the conflict resolution mode.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the ConflictResolutionPolicy object itself.
      */
@@ -54,7 +58,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Get the conflictResolutionPath property: The conflict resolution path in the case of LastWriterWins mode.
-     *
+     * 
      * @return the conflictResolutionPath value.
      */
     public String conflictResolutionPath() {
@@ -63,7 +67,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Set the conflictResolutionPath property: The conflict resolution path in the case of LastWriterWins mode.
-     *
+     * 
      * @param conflictResolutionPath the conflictResolutionPath value to set.
      * @return the ConflictResolutionPolicy object itself.
      */
@@ -74,7 +78,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Get the conflictResolutionProcedure property: The procedure to resolve conflicts in the case of custom mode.
-     *
+     * 
      * @return the conflictResolutionProcedure value.
      */
     public String conflictResolutionProcedure() {
@@ -83,7 +87,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Set the conflictResolutionProcedure property: The procedure to resolve conflicts in the case of custom mode.
-     *
+     * 
      * @param conflictResolutionProcedure the conflictResolutionProcedure value to set.
      * @return the ConflictResolutionPolicy object itself.
      */
@@ -94,7 +98,7 @@ public final class ConflictResolutionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

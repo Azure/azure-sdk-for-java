@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB userDefinedFunction. */
+/**
+ * The properties of an Azure Cosmos DB userDefinedFunction.
+ */
 @Fluent
 public final class SqlUserDefinedFunctionGetProperties {
     /*
@@ -17,13 +19,15 @@ public final class SqlUserDefinedFunctionGetProperties {
     @JsonProperty(value = "resource")
     private SqlUserDefinedFunctionGetPropertiesResource resource;
 
-    /** Creates an instance of SqlUserDefinedFunctionGetProperties class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionGetProperties class.
+     */
     public SqlUserDefinedFunctionGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlUserDefinedFunctionGetPropertiesResource resource() {
@@ -32,7 +36,7 @@ public final class SqlUserDefinedFunctionGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlUserDefinedFunctionGetProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class SqlUserDefinedFunctionGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

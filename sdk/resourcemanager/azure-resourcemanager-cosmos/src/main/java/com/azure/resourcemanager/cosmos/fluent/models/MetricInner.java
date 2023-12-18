@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Metric data. */
+/**
+ * Metric data.
+ */
 @Immutable
 public class MetricInner {
     /*
@@ -51,13 +53,15 @@ public class MetricInner {
     @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricValue> metricValues;
 
-    /** Creates an instance of MetricInner class. */
+    /**
+     * Creates an instance of MetricInner class.
+     */
     public MetricInner() {
     }
 
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -66,7 +70,7 @@ public class MetricInner {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -75,7 +79,7 @@ public class MetricInner {
 
     /**
      * Get the timeGrain property: The time grain to be used to summarize the metric values.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -84,7 +88,7 @@ public class MetricInner {
 
     /**
      * Get the unit property: The unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public UnitType unit() {
@@ -93,7 +97,7 @@ public class MetricInner {
 
     /**
      * Get the name property: The name information for the metric.
-     *
+     * 
      * @return the name value.
      */
     public MetricName name() {
@@ -102,7 +106,7 @@ public class MetricInner {
 
     /**
      * Get the metricValues property: The metric values for the specified time window and timestep.
-     *
+     * 
      * @return the metricValues value.
      */
     public List<MetricValue> metricValues() {
@@ -111,7 +115,7 @@ public class MetricInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinDatabasePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Gremlin database event. */
+/**
+ * The properties of an Azure Cosmos DB Gremlin database event.
+ */
 @Fluent
 public final class RestorableGremlinDatabaseProperties {
     /*
@@ -17,13 +19,15 @@ public final class RestorableGremlinDatabaseProperties {
     @JsonProperty(value = "resource")
     private RestorableGremlinDatabasePropertiesResource resource;
 
-    /** Creates an instance of RestorableGremlinDatabaseProperties class. */
+    /**
+     * Creates an instance of RestorableGremlinDatabaseProperties class.
+     */
     public RestorableGremlinDatabaseProperties() {
     }
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB Gremlin database event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableGremlinDatabasePropertiesResource resource() {
@@ -32,7 +36,7 @@ public final class RestorableGremlinDatabaseProperties {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB Gremlin database event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableGremlinDatabaseProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class RestorableGremlinDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

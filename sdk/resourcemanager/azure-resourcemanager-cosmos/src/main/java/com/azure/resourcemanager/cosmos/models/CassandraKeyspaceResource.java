@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB Cassandra keyspace resource object. */
+/**
+ * Cosmos DB Cassandra keyspace resource object.
+ */
 @Fluent
 public class CassandraKeyspaceResource {
     /*
@@ -17,13 +19,15 @@ public class CassandraKeyspaceResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of CassandraKeyspaceResource class. */
+    /**
+     * Creates an instance of CassandraKeyspaceResource class.
+     */
     public CassandraKeyspaceResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB Cassandra keyspace.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public class CassandraKeyspaceResource {
 
     /**
      * Set the id property: Name of the Cosmos DB Cassandra keyspace.
-     *
+     * 
      * @param id the id value to set.
      * @return the CassandraKeyspaceResource object itself.
      */
@@ -43,14 +47,13 @@ public class CassandraKeyspaceResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model CassandraKeyspaceResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model CassandraKeyspaceResource"));
         }
     }
 
