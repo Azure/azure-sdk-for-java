@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2023-12-13)
+## 1.2.0 (2023-12-18)
 
 - Azure Resource Manager DataProtection client library for Java. This package contains Microsoft Azure SDK for DataProtection Management SDK. Open API 2.0 Specs for Azure Data Protection service. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
