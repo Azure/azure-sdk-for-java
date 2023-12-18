@@ -81,6 +81,11 @@ public class CosmosItemResponse<T> {
         JsonNode effectiveJson = this.itemBodyOverride != null
             ? this.itemBodyOverride
             : this.resourceResponse.getBody();
+
+        if (effectiveJson == null) {
+            return null;
+        }
+
         return effectiveJson.toString().getBytes(StandardCharsets.UTF_8);
     }
 
