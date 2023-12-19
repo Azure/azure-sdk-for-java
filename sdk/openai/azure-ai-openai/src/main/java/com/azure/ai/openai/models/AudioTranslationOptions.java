@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -63,7 +64,7 @@ public final class AudioTranslationOptions {
      * @return the file value.
      */
     public byte[] getFile() {
-        return this.file;
+        return CoreUtils.clone(this.file);
     }
 
     /**
