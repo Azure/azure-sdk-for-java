@@ -27,6 +27,22 @@
  * </pre>
  * <!-- end com.azure.messaging.eventgrid.EventGridPublisherClient#CreateEventGridEventClient -->
  * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent -->
+ * <pre>
+ * &#47;&#47; Create an EventGridEvent
+ * User user = new User&#40;&quot;John&quot;, &quot;James&quot;&#41;;
+ * EventGridEvent eventGridEvent = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;user&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; Send a single EventGridEvent
+ * eventGridEventPublisherClient.sendEvent&#40;eventGridEvent&#41;.block&#40;&#41;;
+ *
+ * &#47;&#47; Send a list of EventGridEvents to the EventGrid service altogether.
+ * &#47;&#47; This has better performance than sending one by one.
+ * eventGridEventPublisherClient.sendEvents&#40;Arrays.asList&#40;
+ *     eventGridEvent
+ *     &#47;&#47; add more EventGridEvents objects
+ * &#41;&#41;.block&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent -->
  *
  * <h2>Send a Cloud Event</h2>
