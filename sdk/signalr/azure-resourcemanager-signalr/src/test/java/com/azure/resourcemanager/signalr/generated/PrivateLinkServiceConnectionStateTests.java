@@ -14,24 +14,23 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             BinaryData
-                .fromString(
-                    "{\"status\":\"Rejected\",\"description\":\"tlhflsjcdhszf\",\"actionsRequired\":\"fbgofeljagrqmqh\"}")
+                .fromString("{\"status\":\"Approved\",\"description\":\"tsgumhj\",\"actionsRequired\":\"ikkx\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("tlhflsjcdhszf", model.description());
-        Assertions.assertEquals("fbgofeljagrqmqh", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("tsgumhj", model.description());
+        Assertions.assertEquals("ikkx", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model =
             new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                .withDescription("tlhflsjcdhszf")
-                .withActionsRequired("fbgofeljagrqmqh");
+                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                .withDescription("tsgumhj")
+                .withActionsRequired("ikkx");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("tlhflsjcdhszf", model.description());
-        Assertions.assertEquals("fbgofeljagrqmqh", model.actionsRequired());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("tsgumhj", model.description());
+        Assertions.assertEquals("ikkx", model.actionsRequired());
     }
 }

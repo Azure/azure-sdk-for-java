@@ -1,14 +1,46 @@
 # Release History
 
-## 2.31.0-beta.1 (Unreleased)
+## 2.34.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Supported Function App in Azure Container Apps environment.
+  - Supported `withManagedEnvironmentId` for `FunctionApp`.
+  - Supported `withMaxReplica` and `withMinReplica` for `FunctionApp`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.33.0 (2023-11-24)
+
+### Bugs Fixed
+
+- Deprecated `RuntimeStack.TOMCAT_10_0_JRE11`. Please use `RuntimeStack.TOMCAT_10_0_JAVA11`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-01-01`.
+
+## 2.32.0 (2023-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.31.0 (2023-09-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.30.0 (2023-08-25)
 

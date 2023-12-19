@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
+import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.CreationData;
@@ -1109,6 +1110,35 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * <p>AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @return the capacityReservationGroupId value.
+     */
+    public String capacityReservationGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityReservationGroupId();
+    }
+
+    /**
+     * Set the capacityReservationGroupId property: The fully qualified resource ID of the Capacity Reservation Group to
+     * provide virtual machines from a reserved group of Virtual Machines.
+     *
+     * <p>AKS will associate the specified agent pool with the Capacity Reservation Group.
+     *
+     * @param capacityReservationGroupId the capacityReservationGroupId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withCapacityReservationGroupId(String capacityReservationGroupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withCapacityReservationGroupId(capacityReservationGroupId);
+        return this;
+    }
+
+    /**
      * Get the hostGroupId property: The fully qualified resource ID of the Dedicated Host Group to provision virtual
      * machines from, used only in creation scenario and not allowed to changed once set.
      *
@@ -1140,6 +1170,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withHostGroupId(hostGroupId);
+        return this;
+    }
+
+    /**
+     * Get the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @return the networkProfile value.
+     */
+    public AgentPoolNetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: Network-related settings of an agent pool.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withNetworkProfile(AgentPoolNetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
         return this;
     }
 

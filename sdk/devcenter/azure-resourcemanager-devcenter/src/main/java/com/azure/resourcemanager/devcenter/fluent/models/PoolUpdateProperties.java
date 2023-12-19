@@ -7,8 +7,11 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
+import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of a Pool. These properties can be updated after the resource has been created. */
 @Fluent
@@ -43,6 +46,31 @@ public class PoolUpdateProperties {
      */
     @JsonProperty(value = "stopOnDisconnect")
     private StopOnDisconnectConfiguration stopOnDisconnect;
+
+    /*
+     * Indicates whether Dev Boxes in this pool are created with single sign on enabled. The also requires that single
+     * sign on be enabled on the tenant.
+     */
+    @JsonProperty(value = "singleSignOnStatus")
+    private SingleSignOnStatus singleSignOnStatus;
+
+    /*
+     * The display name of the pool.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
+
+    /*
+     * Indicates whether the pool uses a Virtual Network managed by Microsoft or a customer provided network.
+     */
+    @JsonProperty(value = "virtualNetworkType")
+    private VirtualNetworkType virtualNetworkType;
+
+    /*
+     * The regions of the managed virtual network (required when managedNetworkType is Managed).
+     */
+    @JsonProperty(value = "managedVirtualNetworkRegions")
+    private List<String> managedVirtualNetworkRegions;
 
     /** Creates an instance of PoolUpdateProperties class. */
     public PoolUpdateProperties() {
@@ -149,6 +177,92 @@ public class PoolUpdateProperties {
      */
     public PoolUpdateProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
         this.stopOnDisconnect = stopOnDisconnect;
+        return this;
+    }
+
+    /**
+     * Get the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
+     * enabled. The also requires that single sign on be enabled on the tenant.
+     *
+     * @return the singleSignOnStatus value.
+     */
+    public SingleSignOnStatus singleSignOnStatus() {
+        return this.singleSignOnStatus;
+    }
+
+    /**
+     * Set the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
+     * enabled. The also requires that single sign on be enabled on the tenant.
+     *
+     * @param singleSignOnStatus the singleSignOnStatus value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
+        this.singleSignOnStatus = singleSignOnStatus;
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the pool.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The display name of the pool.
+     *
+     * @param displayName the displayName value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+     * customer provided network.
+     *
+     * @return the virtualNetworkType value.
+     */
+    public VirtualNetworkType virtualNetworkType() {
+        return this.virtualNetworkType;
+    }
+
+    /**
+     * Set the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+     * customer provided network.
+     *
+     * @param virtualNetworkType the virtualNetworkType value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
+        this.virtualNetworkType = virtualNetworkType;
+        return this;
+    }
+
+    /**
+     * Get the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
+     * managedNetworkType is Managed).
+     *
+     * @return the managedVirtualNetworkRegions value.
+     */
+    public List<String> managedVirtualNetworkRegions() {
+        return this.managedVirtualNetworkRegions;
+    }
+
+    /**
+     * Set the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
+     * managedNetworkType is Managed).
+     *
+     * @param managedVirtualNetworkRegions the managedVirtualNetworkRegions value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
+        this.managedVirtualNetworkRegions = managedVirtualNetworkRegions;
         return this;
     }
 

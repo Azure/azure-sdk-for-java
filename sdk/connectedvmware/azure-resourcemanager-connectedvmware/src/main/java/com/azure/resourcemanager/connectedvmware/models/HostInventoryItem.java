@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,6 +19,10 @@ public final class HostInventoryItem extends InventoryItemProperties {
      */
     @JsonProperty(value = "parent")
     private InventoryItemDetails parent;
+
+    /** Creates an instance of HostInventoryItem class. */
+    public HostInventoryItem() {
+    }
 
     /**
      * Get the parent property: Parent host inventory resource details.

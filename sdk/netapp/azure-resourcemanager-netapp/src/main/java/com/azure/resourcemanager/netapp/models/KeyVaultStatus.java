@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the KeyVault connection. */
+/**
+ * Status of the KeyVault connection.
+ */
 public final class KeyVaultStatus extends ExpandableStringEnum<KeyVaultStatus> {
-    /** Static value Created for KeyVaultStatus. */
+    /**
+     * Static value Created for KeyVaultStatus.
+     */
     public static final KeyVaultStatus CREATED = fromString("Created");
 
-    /** Static value InUse for KeyVaultStatus. */
+    /**
+     * Static value InUse for KeyVaultStatus.
+     */
     public static final KeyVaultStatus IN_USE = fromString("InUse");
 
-    /** Static value Deleted for KeyVaultStatus. */
+    /**
+     * Static value Deleted for KeyVaultStatus.
+     */
     public static final KeyVaultStatus DELETED = fromString("Deleted");
 
-    /** Static value Error for KeyVaultStatus. */
+    /**
+     * Static value Error for KeyVaultStatus.
+     */
     public static final KeyVaultStatus ERROR = fromString("Error");
 
-    /** Static value Updating for KeyVaultStatus. */
+    /**
+     * Static value Updating for KeyVaultStatus.
+     */
     public static final KeyVaultStatus UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of KeyVaultStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class KeyVaultStatus extends ExpandableStringEnum<KeyVaultStatus> {
 
     /**
      * Creates or finds a KeyVaultStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyVaultStatus.
      */
@@ -47,7 +59,7 @@ public final class KeyVaultStatus extends ExpandableStringEnum<KeyVaultStatus> {
 
     /**
      * Gets known KeyVaultStatus values.
-     *
+     * 
      * @return known KeyVaultStatus values.
      */
     public static Collection<KeyVaultStatus> values() {

@@ -4,28 +4,32 @@
 
 package com.azure.resourcemanager.hybridnetwork.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunction;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkFunctions UpdateTags. */
+/**
+ * Samples for NetworkFunctions UpdateTags.
+ */
 public final class NetworkFunctionsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionUpdateTags.json
+     * x-ms-original-file:
+     * specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/
+     * NetworkFunctionUpdateTags.json
      */
     /**
      * Sample code: Update tags for network function resource.
-     *
+     * 
      * @param manager Entry point to HybridNetworkManager.
      */
-    public static void updateTagsForNetworkFunctionResource(
-        com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        NetworkFunction resource =
-            manager.networkFunctions().getByResourceGroupWithResponse("rg", "testNf", Context.NONE).getValue();
+    public static void
+        updateTagsForNetworkFunctionResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+        NetworkFunction resource = manager.networkFunctions()
+            .getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

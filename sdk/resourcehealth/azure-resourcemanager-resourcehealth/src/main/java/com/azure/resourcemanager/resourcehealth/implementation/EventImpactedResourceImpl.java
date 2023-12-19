@@ -51,6 +51,26 @@ public final class EventImpactedResourceImpl implements EventImpactedResource {
         return this.innerModel().targetRegion();
     }
 
+    public String resourceName() {
+        return this.innerModel().resourceName();
+    }
+
+    public String resourceGroup() {
+        return this.innerModel().resourceGroup();
+    }
+
+    public String status() {
+        return this.innerModel().status();
+    }
+
+    public String maintenanceStartTime() {
+        return this.innerModel().maintenanceStartTime();
+    }
+
+    public String maintenanceEndTime() {
+        return this.innerModel().maintenanceEndTime();
+    }
+
     public List<KeyValueItem> info() {
         List<KeyValueItem> inner = this.innerModel().info();
         if (inner != null) {

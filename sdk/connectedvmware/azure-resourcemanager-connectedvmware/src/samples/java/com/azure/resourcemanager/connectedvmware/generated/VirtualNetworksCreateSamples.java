@@ -9,7 +9,7 @@ import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
 /** Samples for VirtualNetworks Create. */
 public final class VirtualNetworksCreateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/CreateVirtualNetwork.json
+     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/CreateVirtualNetwork.json
      */
     /**
      * Sample code: CreateVirtualNetwork.

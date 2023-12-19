@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.connectedvmware.implementation;
 
 import com.azure.core.management.SystemData;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.GuestAgentInner;
 import com.azure.resourcemanager.connectedvmware.models.GuestAgent;
 import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import java.util.Collections;
 import java.util.List;
 
-public final class GuestAgentImpl implements GuestAgent, GuestAgent.Definition {
+public final class GuestAgentImpl implements GuestAgent {
     private GuestAgentInner innerObject;
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
@@ -50,6 +50,10 @@ public final class GuestAgentImpl implements GuestAgent, GuestAgent.Definition {
         return this.innerModel().credentials();
     }
 
+    public String privateLinkScopeResourceId() {
+        return this.innerModel().privateLinkScopeResourceId();
+    }
+
     public HttpProxyConfiguration httpProxyConfig() {
         return this.innerModel().httpProxyConfig();
     }
@@ -75,7 +79,7 @@ public final class GuestAgentImpl implements GuestAgent, GuestAgent.Definition {
         }
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
@@ -85,76 +89,5 @@ public final class GuestAgentImpl implements GuestAgent, GuestAgent.Definition {
 
     private com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager() {
         return this.serviceManager;
-    }
-
-    private String resourceGroupName;
-
-    private String virtualMachineName;
-
-    private String name;
-
-    public GuestAgentImpl withExistingVirtualMachine(String resourceGroupName, String virtualMachineName) {
-        this.resourceGroupName = resourceGroupName;
-        this.virtualMachineName = virtualMachineName;
-        return this;
-    }
-
-    public GuestAgent create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestAgents()
-                .create(resourceGroupName, virtualMachineName, name, this.innerModel(), Context.NONE);
-        return this;
-    }
-
-    public GuestAgent create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestAgents()
-                .create(resourceGroupName, virtualMachineName, name, this.innerModel(), context);
-        return this;
-    }
-
-    GuestAgentImpl(String name, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
-        this.innerObject = new GuestAgentInner();
-        this.serviceManager = serviceManager;
-        this.name = name;
-    }
-
-    public GuestAgent refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestAgents()
-                .getWithResponse(resourceGroupName, virtualMachineName, name, Context.NONE)
-                .getValue();
-        return this;
-    }
-
-    public GuestAgent refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGuestAgents()
-                .getWithResponse(resourceGroupName, virtualMachineName, name, context)
-                .getValue();
-        return this;
-    }
-
-    public GuestAgentImpl withCredentials(GuestCredential credentials) {
-        this.innerModel().withCredentials(credentials);
-        return this;
-    }
-
-    public GuestAgentImpl withHttpProxyConfig(HttpProxyConfiguration httpProxyConfig) {
-        this.innerModel().withHttpProxyConfig(httpProxyConfig);
-        return this;
-    }
-
-    public GuestAgentImpl withProvisioningAction(ProvisioningAction provisioningAction) {
-        this.innerModel().withProvisioningAction(provisioningAction);
-        return this;
     }
 }

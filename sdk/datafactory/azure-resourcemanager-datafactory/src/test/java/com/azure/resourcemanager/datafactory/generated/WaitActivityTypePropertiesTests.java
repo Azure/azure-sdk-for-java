@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.WaitActivityTypePrope
 public final class WaitActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WaitActivityTypeProperties model =
-            BinaryData.fromString("{\"waitTimeInSeconds\":\"datard\"}").toObject(WaitActivityTypeProperties.class);
+        WaitActivityTypeProperties model
+            = BinaryData.fromString("{\"waitTimeInSeconds\":\"datard\"}").toObject(WaitActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

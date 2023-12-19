@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FactoryVstsConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FactoryVstsConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FactoryVSTSConfiguration\",\"projectName\":\"yeofltfnnxrkad\",\"tenantId\":\"ynnfmuiii\",\"accountName\":\"ipfohykfkx\",\"repositoryName\":\"bcbrwjiutgnjizbe\",\"collaborationBranch\":\"woiymrvz\",\"rootFolder\":\"juyrsrziuctixg\",\"lastCommitId\":\"suif\",\"disablePublish\":false}")
-                .toObject(FactoryVstsConfiguration.class);
+        FactoryVstsConfiguration model = BinaryData.fromString(
+            "{\"type\":\"FactoryVSTSConfiguration\",\"projectName\":\"yeofltfnnxrkad\",\"tenantId\":\"ynnfmuiii\",\"accountName\":\"ipfohykfkx\",\"repositoryName\":\"bcbrwjiutgnjizbe\",\"collaborationBranch\":\"woiymrvz\",\"rootFolder\":\"juyrsrziuctixg\",\"lastCommitId\":\"suif\",\"disablePublish\":false}")
+            .toObject(FactoryVstsConfiguration.class);
         Assertions.assertEquals("ipfohykfkx", model.accountName());
         Assertions.assertEquals("bcbrwjiutgnjizbe", model.repositoryName());
         Assertions.assertEquals("woiymrvz", model.collaborationBranch());
@@ -28,16 +26,10 @@ public final class FactoryVstsConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryVstsConfiguration model =
-            new FactoryVstsConfiguration()
-                .withAccountName("ipfohykfkx")
-                .withRepositoryName("bcbrwjiutgnjizbe")
-                .withCollaborationBranch("woiymrvz")
-                .withRootFolder("juyrsrziuctixg")
-                .withLastCommitId("suif")
-                .withDisablePublish(false)
-                .withProjectName("yeofltfnnxrkad")
-                .withTenantId("ynnfmuiii");
+        FactoryVstsConfiguration model
+            = new FactoryVstsConfiguration().withAccountName("ipfohykfkx").withRepositoryName("bcbrwjiutgnjizbe")
+                .withCollaborationBranch("woiymrvz").withRootFolder("juyrsrziuctixg").withLastCommitId("suif")
+                .withDisablePublish(false).withProjectName("yeofltfnnxrkad").withTenantId("ynnfmuiii");
         model = BinaryData.fromObject(model).toObject(FactoryVstsConfiguration.class);
         Assertions.assertEquals("ipfohykfkx", model.accountName());
         Assertions.assertEquals("bcbrwjiutgnjizbe", model.repositoryName());

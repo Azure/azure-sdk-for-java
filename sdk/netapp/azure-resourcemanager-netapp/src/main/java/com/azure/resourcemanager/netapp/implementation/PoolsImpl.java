@@ -36,15 +36,12 @@ public final class PoolsImpl implements Pools {
         return Utils.mapPage(inner, inner1 -> new CapacityPoolImpl(inner1, this.manager()));
     }
 
-    public Response<CapacityPool> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, Context context) {
-        Response<CapacityPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, context);
+    public Response<CapacityPool> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        Context context) {
+        Response<CapacityPoolInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CapacityPoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -71,26 +68,18 @@ public final class PoolsImpl implements Pools {
     public CapacityPool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
     }
@@ -98,26 +87,18 @@ public final class PoolsImpl implements Pools {
     public Response<CapacityPool> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, context);
     }
@@ -125,26 +106,18 @@ public final class PoolsImpl implements Pools {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, Context.NONE);
     }
@@ -152,26 +125,18 @@ public final class PoolsImpl implements Pools {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, context);
     }

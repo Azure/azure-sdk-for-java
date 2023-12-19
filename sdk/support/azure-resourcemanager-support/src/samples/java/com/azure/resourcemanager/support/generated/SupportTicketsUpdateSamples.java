@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.support.generated;
 
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.PreferredContactMethod;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.Status;
@@ -14,7 +15,22 @@ import java.util.Arrays;
 /** Samples for SupportTickets Update. */
 public final class SupportTicketsUpdateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateSeverityOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+     */
+    /**
+     * Sample code: Update advanced diagnostic consent of a support ticket.
+     *
+     * @param manager Entry point to SupportManager.
+     */
+    public static void updateAdvancedDiagnosticConsentOfASupportTicket(
+        com.azure.resourcemanager.support.SupportManager manager) {
+        SupportTicketDetails resource =
+            manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withAdvancedDiagnosticConsent(Consent.YES).apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateSeverityOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update severity of a support ticket.
@@ -28,7 +44,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateStatusOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update status of a support ticket.
@@ -42,7 +58,7 @@ public final class SupportTicketsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
      */
     /**
      * Sample code: Update contact details of a support ticket.

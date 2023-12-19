@@ -7,18 +7,28 @@ package com.azure.resourcemanager.network.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny. */
+/**
+ * The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
+ */
 public enum FirewallPolicyIdpsSignatureMode {
-    /** Enum value 0. */
+    /**
+     * Enum value 0.
+     */
     ZERO(0),
 
-    /** Enum value 1. */
+    /**
+     * Enum value 1.
+     */
     ONE(1),
 
-    /** Enum value 2. */
+    /**
+     * Enum value 2.
+     */
     TWO(2);
 
-    /** The actual serialized value for a FirewallPolicyIdpsSignatureMode instance. */
+    /**
+     * The actual serialized value for a FirewallPolicyIdpsSignatureMode instance.
+     */
     private final int value;
 
     FirewallPolicyIdpsSignatureMode(int value) {
@@ -27,7 +37,7 @@ public enum FirewallPolicyIdpsSignatureMode {
 
     /**
      * Parses a serialized value to a FirewallPolicyIdpsSignatureMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FirewallPolicyIdpsSignatureMode object, or null if unable to parse.
      */
@@ -44,7 +54,7 @@ public enum FirewallPolicyIdpsSignatureMode {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
     @JsonValue

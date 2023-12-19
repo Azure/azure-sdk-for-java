@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkItemConfigurations GetItem. */
 public final class WorkItemConfigurationsGetItemSamples {
     /*
@@ -20,6 +18,7 @@ public final class WorkItemConfigurationsGetItemSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workItemConfigurations()
-            .getItemWithResponse("my-resource-group", "my-component", "Visual Studio Team Services", Context.NONE);
+            .getItemWithResponse(
+                "my-resource-group", "my-component", "Visual Studio Team Services", com.azure.core.util.Context.NONE);
     }
 }

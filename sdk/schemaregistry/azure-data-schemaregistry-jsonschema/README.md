@@ -5,7 +5,7 @@ Azure Schema Registry hosted in Azure Event Hubs, providing schema storage, vers
 provides a serializer capable of serializing and deserializing payloads containing Schema Registry schema
 identifiers and JSON encoded data.
 
-[Source code][source_code] | (Package yet to release) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
+[Source code][source_code] | [Package (Maven)][package_maven] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
 ## Getting started
 
@@ -50,7 +50,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.1</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 
@@ -141,7 +141,7 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-<!-- [package_maven]: https://central.sonatype.com/artifact/com.azure/azure-data-schemaregistry-jsonschema -->
+[package_maven]: https://central.sonatype.com/artifact/com.azure/azure-data-schemaregistry-jsonschema 
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/samples/java/com/azure/data/schemaregistry/jsonschema
 [address_type]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/schemaregistry/azure-data-schemaregistry-jsonschema/src/test/java/com/azure/data/schemaregistry/jsonschema/Address.java

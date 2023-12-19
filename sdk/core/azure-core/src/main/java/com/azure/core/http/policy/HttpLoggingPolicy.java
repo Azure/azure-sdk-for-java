@@ -41,7 +41,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -90,9 +89,15 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
-            this.httpLogDetailLevel = HttpLogDetailLevel.NONE;
-            this.allowedHeaderNames = Collections.emptySet();
-            this.allowedQueryParameterNames = Collections.emptySet();
+            this.httpLogDetailLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
+            this.allowedHeaderNames = HttpLogOptions.DEFAULT_HEADERS_ALLOWLIST
+                .stream()
+                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
+            this.allowedQueryParameterNames = HttpLogOptions.DEFAULT_QUERY_PARAMS_ALLOWLIST
+                .stream()
+                .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
+                .collect(Collectors.toSet());
             this.prettyPrintBody = false;
 
             this.requestLogger = new DefaultHttpRequestLogger();
@@ -246,16 +251,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         } else {
             // Add non-mutating operators to the data stream.
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
-            request.setBody(
-                content.toFluxByteBuffer()
-                    .doOnNext(byteBuffer -> {
-                        try {
-                            ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
-                        } catch (IOException ex) {
-                            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
-                        }
-                    })
-                    .doFinally(ignored -> logBody(logBuilder, logger, contentType, stream.toString(StandardCharsets.UTF_8))));
+            request.setBody(Flux.using(() -> stream, s -> content.toFluxByteBuffer()
+                .doOnNext(byteBuffer -> {
+                    try {
+                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), s);
+                    } catch (IOException ex) {
+                        throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+                    }
+                }), s -> logBody(logBuilder, logger, contentType, s.toString(StandardCharsets.UTF_8))));
         }
     }
 
@@ -548,15 +551,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         public Flux<ByteBuffer> getBody() {
             AccessibleByteArrayOutputStream stream = new AccessibleByteArrayOutputStream(contentLength);
 
-            return actualResponse.getBody()
+            return Flux.using(() -> stream, s -> actualResponse.getBody()
                 .doOnNext(byteBuffer -> {
                     try {
-                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), stream);
+                        ImplUtils.writeByteBufferToStream(byteBuffer.duplicate(), s);
                     } catch (IOException ex) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
                     }
-                })
-                .doFinally(ignored -> doLog(stream.toString(StandardCharsets.UTF_8)));
+                }), s -> doLog(s.toString(StandardCharsets.UTF_8)));
         }
 
         @Override

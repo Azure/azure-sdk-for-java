@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"eozphv\",\"display\":{\"provider\":\"y\",\"resource\":\"c\",\"operation\":\"upkvipmdsc\",\"description\":\"qupevzh\"},\"isDataAction\":true,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}]}";
+            "{\"value\":[{\"name\":\"vuzhyr\",\"display\":{\"provider\":\"ipmve\",\"resource\":\"xukuqgsj\",\"operation\":\"undxgketw\",\"description\":\"hzjhf\"},\"isDataAction\":true,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"gpmuneqsxvmhfbuz\",\"displayName\":\"ihsasb\",\"blobDuration\":\"dyp\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,37 @@ public final class OperationsListMockTests {
 
         PagedIterable<ResourceProviderOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eozphv", response.iterator().next().name());
-        Assertions.assertEquals("y", response.iterator().next().display().provider());
-        Assertions.assertEquals("c", response.iterator().next().display().resource());
-        Assertions.assertEquals("upkvipmdsc", response.iterator().next().display().operation());
-        Assertions.assertEquals("qupevzh", response.iterator().next().display().description());
+        Assertions.assertEquals("vuzhyr", response.iterator().next().name());
+        Assertions.assertEquals("ipmve", response.iterator().next().display().provider());
+        Assertions.assertEquals("xukuqgsj", response.iterator().next().display().resource());
+        Assertions.assertEquals("undxgketw", response.iterator().next().display().operation());
+        Assertions.assertEquals("hzjhf", response.iterator().next().display().description());
         Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions
+            .assertEquals(
+                "gpmuneqsxvmhfbuz",
+                response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "ihsasb",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .serviceSpecification()
+                    .logSpecifications()
+                    .get(0)
+                    .displayName());
+        Assertions
+            .assertEquals(
+                "dyp",
+                response
+                    .iterator()
+                    .next()
+                    .properties()
+                    .serviceSpecification()
+                    .logSpecifications()
+                    .get(0)
+                    .blobDuration());
     }
 }

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Delete activity. */
+/**
+ * Delete activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Delete")
 @Fluent
@@ -23,69 +25,87 @@ public final class DeleteActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private DeleteActivityTypeProperties innerTypeProperties = new DeleteActivityTypeProperties();
 
-    /** Creates an instance of DeleteActivity class. */
+    /**
+     * Creates an instance of DeleteActivity class.
+     */
     public DeleteActivity() {
     }
 
     /**
      * Get the innerTypeProperties property: Delete activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DeleteActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withState(ActivityState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.withOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -95,7 +115,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object recursive() {
@@ -105,7 +125,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the DeleteActivity object itself.
      */
@@ -120,7 +140,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Integer maxConcurrentConnections() {
@@ -130,7 +150,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the DeleteActivity object itself.
      */
@@ -145,7 +165,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableLogging value.
      */
     public Object enableLogging() {
@@ -155,7 +175,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the DeleteActivity object itself.
      */
@@ -169,7 +189,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @return the logStorageSettings value.
      */
     public LogStorageSettings logStorageSettings() {
@@ -178,7 +198,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -192,7 +212,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -201,7 +221,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DeleteActivity object itself.
      */
@@ -215,7 +235,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings storeSettings() {
@@ -224,7 +244,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -238,17 +258,15 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DeleteActivity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model DeleteActivity"));
         } else {
             innerTypeProperties().validate();
         }

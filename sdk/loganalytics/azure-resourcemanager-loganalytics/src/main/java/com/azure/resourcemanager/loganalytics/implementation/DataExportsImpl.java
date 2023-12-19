@@ -38,15 +38,6 @@ public final class DataExportsImpl implements DataExports {
         return Utils.mapPage(inner, inner1 -> new DataExportImpl(inner1, this.manager()));
     }
 
-    public DataExport get(String resourceGroupName, String workspaceName, String dataExportName) {
-        DataExportInner inner = this.serviceClient().get(resourceGroupName, workspaceName, dataExportName);
-        if (inner != null) {
-            return new DataExportImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataExport> getWithResponse(
         String resourceGroupName, String workspaceName, String dataExportName, Context context) {
         Response<DataExportInner> inner =
@@ -62,13 +53,22 @@ public final class DataExportsImpl implements DataExports {
         }
     }
 
-    public void delete(String resourceGroupName, String workspaceName, String dataExportName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, dataExportName);
+    public DataExport get(String resourceGroupName, String workspaceName, String dataExportName) {
+        DataExportInner inner = this.serviceClient().get(resourceGroupName, workspaceName, dataExportName);
+        if (inner != null) {
+            return new DataExportImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String dataExportName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, dataExportName, context);
+    }
+
+    public void delete(String resourceGroupName, String workspaceName, String dataExportName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, dataExportName);
     }
 
     public DataExport getById(String id) {

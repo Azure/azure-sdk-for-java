@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SystemTopics. */
+/**
+ * Resource collection API of SystemTopics.
+ */
 public interface SystemTopics {
     /**
      * Get a system topic.
-     *
-     * <p>Get properties of a system topic.
-     *
+     * 
+     * Get properties of a system topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface SystemTopics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of a system topic along with {@link Response}.
      */
-    Response<SystemTopic> getByResourceGroupWithResponse(
-        String resourceGroupName, String systemTopicName, Context context);
+    Response<SystemTopic> getByResourceGroupWithResponse(String resourceGroupName, String systemTopicName,
+        Context context);
 
     /**
      * Get a system topic.
-     *
-     * <p>Get properties of a system topic.
-     *
+     * 
+     * Get properties of a system topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface SystemTopics {
 
     /**
      * Delete a system topic.
-     *
-     * <p>Delete existing system topic.
-     *
+     * 
+     * Delete existing system topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface SystemTopics {
 
     /**
      * Delete a system topic.
-     *
-     * <p>Delete existing system topic.
-     *
+     * 
+     * Delete existing system topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param systemTopicName Name of the system topic.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface SystemTopics {
 
     /**
      * List system topics under an Azure subscription.
-     *
-     * <p>List all the system topics under an Azure subscription.
-     *
+     * 
+     * List all the system topics under an Azure subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List System topics operation as paginated response with {@link PagedIterable}.
@@ -80,17 +82,16 @@ public interface SystemTopics {
 
     /**
      * List system topics under an Azure subscription.
-     *
-     * <p>List all the system topics under an Azure subscription.
-     *
+     * 
+     * List all the system topics under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,9 +102,9 @@ public interface SystemTopics {
 
     /**
      * List system topics under a resource group.
-     *
-     * <p>List all the system topics under a resource group.
-     *
+     * 
+     * List all the system topics under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,32 +115,31 @@ public interface SystemTopics {
 
     /**
      * List system topics under a resource group.
-     *
-     * <p>List all the system topics under a resource group.
-     *
+     * 
+     * List all the system topics under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List System topics operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SystemTopic> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context);
+    PagedIterable<SystemTopic> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context);
 
     /**
      * Get a system topic.
-     *
-     * <p>Get properties of a system topic.
-     *
+     * 
+     * Get properties of a system topic.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,9 +150,9 @@ public interface SystemTopics {
 
     /**
      * Get a system topic.
-     *
-     * <p>Get properties of a system topic.
-     *
+     * 
+     * Get properties of a system topic.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,9 +164,9 @@ public interface SystemTopics {
 
     /**
      * Delete a system topic.
-     *
-     * <p>Delete existing system topic.
-     *
+     * 
+     * Delete existing system topic.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,9 +176,9 @@ public interface SystemTopics {
 
     /**
      * Delete a system topic.
-     *
-     * <p>Delete existing system topic.
-     *
+     * 
+     * Delete existing system topic.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public interface SystemTopics {
 
     /**
      * Begins definition for a new SystemTopic resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SystemTopic definition.
      */

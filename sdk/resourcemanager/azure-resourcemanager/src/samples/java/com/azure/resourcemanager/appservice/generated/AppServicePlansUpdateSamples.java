@@ -6,26 +6,21 @@ package com.azure.resourcemanager.appservice.generated;
 
 import com.azure.resourcemanager.appservice.models.AppServicePlanPatchResource;
 
-/** Samples for AppServicePlans Update. */
+/**
+ * Samples for AppServicePlans Update.
+ */
 public final class AppServicePlansUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/PatchAppServicePlan.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/PatchAppServicePlan.json
      */
     /**
      * Sample code: Patch Service plan.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void patchServicePlan(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getAppServicePlans()
-            .updateWithResponse(
-                "testrg123",
-                "testsf6141",
-                new AppServicePlanPatchResource().withKind("app"),
-                com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getAppServicePlans().updateWithResponse("testrg123", "testsf6141",
+            new AppServicePlanPatchResource().withKind("app"), com.azure.core.util.Context.NONE);
     }
 }

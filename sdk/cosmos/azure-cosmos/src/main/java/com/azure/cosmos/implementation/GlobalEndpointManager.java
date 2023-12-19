@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -44,18 +45,22 @@ public class GlobalEndpointManager implements AutoCloseable {
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
 
+    private volatile Throwable latestDatabaseRefreshError;
+
+    public void setLatestDatabaseRefreshError(Throwable latestDatabaseRefreshError) {
+        this.latestDatabaseRefreshError = latestDatabaseRefreshError;
+    }
+    public Throwable getLatestDatabaseRefreshError() {
+        return latestDatabaseRefreshError;
+    }
+
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
         try {
             this.locationCache = new LocationCache(
-                    new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
-                            connectionPolicy.getPreferredRegions():
-                            Collections.emptyList()
-                    ),
+                    connectionPolicy,
                     owner.getServiceEndpoint(),
-                    connectionPolicy.isEndpointDiscoveryEnabled(),
-                    connectionPolicy.isMultipleWriteRegionsEnabled(),
                     configs);
 
             this.owner = owner;
@@ -304,6 +309,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             });
                         }).onErrorResume(ex -> {
                     logger.error("startRefreshLocationTimerAsync() - Unable to refresh database account from any location. Exception: {}", ex.toString(), ex);
+                    this.setLatestDatabaseRefreshError(ex);
 
                     this.startRefreshLocationTimerAsync();
                     return Mono.empty();
@@ -315,6 +321,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             .doOnNext(databaseAccount -> {
                 if(databaseAccount != null) {
                     this.latestDatabaseAccount = databaseAccount;
+                    this.setLatestDatabaseRefreshError(null);
                 }
 
                 logger.debug("account retrieved: {}", databaseAccount);

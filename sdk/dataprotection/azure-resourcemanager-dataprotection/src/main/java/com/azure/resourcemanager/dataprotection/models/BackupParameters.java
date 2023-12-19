@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * BackupParameters
- *
- * <p>BackupParameters base.
+ * 
+ * BackupParameters base.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -20,16 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "objectType",
     defaultImpl = BackupParameters.class)
 @JsonTypeName("BackupParameters")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureBackupParams", value = AzureBackupParams.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureBackupParams", value = AzureBackupParams.class) })
 @Immutable
 public class BackupParameters {
-    /** Creates an instance of BackupParameters class. */
+    /**
+     * Creates an instance of BackupParameters class.
+     */
     public BackupParameters() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

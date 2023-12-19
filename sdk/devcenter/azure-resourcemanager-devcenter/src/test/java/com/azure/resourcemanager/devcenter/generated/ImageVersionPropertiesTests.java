@@ -13,7 +13,7 @@ public final class ImageVersionPropertiesTests {
         ImageVersionProperties model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ltyfsop\",\"publishedDate\":\"2021-06-11T02:49:44Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":2130063245,\"provisioningState\":\"Accepted\"}")
+                    "{\"name\":\"umasxazjpq\",\"publishedDate\":\"2021-10-08T22:25:54Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":285130790,\"provisioningState\":\"Succeeded\"}")
                 .toObject(ImageVersionProperties.class);
     }
 

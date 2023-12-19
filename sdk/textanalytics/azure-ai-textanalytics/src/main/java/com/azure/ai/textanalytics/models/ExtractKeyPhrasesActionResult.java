@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ExtractKeyPhrasesActionResult} model.
+ * The {@code ExtractKeyPhrasesActionResult} model.
  */
 @Immutable
 public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResult {
@@ -18,6 +18,12 @@ public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResu
     static {
         ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code ExtractKeyPhrasesActionResult} model.
+     */
+    public ExtractKeyPhrasesActionResult() {
     }
 
     /**

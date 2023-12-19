@@ -12,6 +12,8 @@ import com.azure.resourcemanager.applicationinsights.models.WebTest;
 import com.azure.resourcemanager.applicationinsights.models.WebTestGeolocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestKind;
 import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesConfiguration;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesRequest;
+import com.azure.resourcemanager.applicationinsights.models.WebTestPropertiesValidationRules;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +99,14 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
 
     public String provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public WebTestPropertiesRequest request() {
+        return this.innerModel().request();
+    }
+
+    public WebTestPropertiesValidationRules validationRules() {
+        return this.innerModel().validationRules();
     }
 
     public Region region() {
@@ -282,6 +292,16 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
 
     public WebTestImpl withConfiguration(WebTestPropertiesConfiguration configuration) {
         this.innerModel().withConfiguration(configuration);
+        return this;
+    }
+
+    public WebTestImpl withRequest(WebTestPropertiesRequest request) {
+        this.innerModel().withRequest(request);
+        return this;
+    }
+
+    public WebTestImpl withValidationRules(WebTestPropertiesValidationRules validationRules) {
+        this.innerModel().withValidationRules(validationRules);
         return this;
     }
 

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ControlPlaneEndpointProfileControlPlaneEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ControlPlaneEndpointProfileControlPlaneEndpoint model =
-            BinaryData
-                .fromString("{\"hostIP\":\"ghmewuam\",\"port\":\"hrzayvvtpgvdf\"}")
+        ControlPlaneEndpointProfileControlPlaneEndpoint model
+            = BinaryData.fromString("{\"hostIP\":\"yurkdtmlxhekuksj\",\"port\":1983903346}")
                 .toObject(ControlPlaneEndpointProfileControlPlaneEndpoint.class);
-        Assertions.assertEquals("ghmewuam", model.hostIp());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.port());
+        Assertions.assertEquals("yurkdtmlxhekuksj", model.hostIp());
+        Assertions.assertEquals(1983903346, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ControlPlaneEndpointProfileControlPlaneEndpoint model =
-            new ControlPlaneEndpointProfileControlPlaneEndpoint().withHostIp("ghmewuam").withPort("hrzayvvtpgvdf");
+        ControlPlaneEndpointProfileControlPlaneEndpoint model
+            = new ControlPlaneEndpointProfileControlPlaneEndpoint().withHostIp("yurkdtmlxhekuksj").withPort(1983903346);
         model = BinaryData.fromObject(model).toObject(ControlPlaneEndpointProfileControlPlaneEndpoint.class);
-        Assertions.assertEquals("ghmewuam", model.hostIp());
-        Assertions.assertEquals("hrzayvvtpgvdf", model.port());
+        Assertions.assertEquals("yurkdtmlxhekuksj", model.hostIp());
+        Assertions.assertEquals(1983903346, model.port());
     }
 }

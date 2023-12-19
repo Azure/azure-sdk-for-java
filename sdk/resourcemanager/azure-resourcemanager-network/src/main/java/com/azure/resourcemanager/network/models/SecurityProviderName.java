@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Security Providers. */
+/**
+ * The Security Providers.
+ */
 public final class SecurityProviderName extends ExpandableStringEnum<SecurityProviderName> {
-    /** Static value ZScaler for SecurityProviderName. */
+    /**
+     * Static value ZScaler for SecurityProviderName.
+     */
     public static final SecurityProviderName ZSCALER = fromString("ZScaler");
 
-    /** Static value IBoss for SecurityProviderName. */
+    /**
+     * Static value IBoss for SecurityProviderName.
+     */
     public static final SecurityProviderName IBOSS = fromString("IBoss");
 
-    /** Static value Checkpoint for SecurityProviderName. */
+    /**
+     * Static value Checkpoint for SecurityProviderName.
+     */
     public static final SecurityProviderName CHECKPOINT = fromString("Checkpoint");
 
     /**
      * Creates a new instance of SecurityProviderName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SecurityProviderName extends ExpandableStringEnum<SecurityPro
 
     /**
      * Creates or finds a SecurityProviderName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityProviderName.
      */
@@ -41,7 +49,7 @@ public final class SecurityProviderName extends ExpandableStringEnum<SecurityPro
 
     /**
      * Gets known SecurityProviderName values.
-     *
+     * 
      * @return known SecurityProviderName values.
      */
     public static Collection<SecurityProviderName> values() {

@@ -26,7 +26,7 @@ final class JdkHttpResponseAsync extends JdkHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return this.contentFlux.doFinally(signalType -> disposed = true);
+        return Flux.using(() -> this, ignored -> contentFlux, ignored -> disposed = true);
     }
 
     @Override

@@ -15,15 +15,15 @@ public final class InstallationTests {
         Installation model =
             BinaryData
                 .fromString(
-                    "{\"desiredState\":\"Uninstalled\",\"state\":\"Failed\",\"reinstallRequired\":\"Required\",\"reasons\":[\"NoSlices\",\"NoAttachedDataNetworks\"],\"operation\":{\"id\":\"dwzbaiue\"}}")
+                    "{\"desiredState\":\"Installed\",\"state\":\"RollingBack\",\"reinstallRequired\":\"Required\",\"reasons\":[\"UserPlaneAccessVirtualIpv4AddressesHasChanged\"],\"operation\":{\"id\":\"lbbovplw\"}}")
                 .toObject(Installation.class);
-        Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
+        Assertions.assertEquals(DesiredInstallationState.INSTALLED, model.desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Installation model = new Installation().withDesiredState(DesiredInstallationState.UNINSTALLED);
+        Installation model = new Installation().withDesiredState(DesiredInstallationState.INSTALLED);
         model = BinaryData.fromObject(model).toObject(Installation.class);
-        Assertions.assertEquals(DesiredInstallationState.UNINSTALLED, model.desiredState());
+        Assertions.assertEquals(DesiredInstallationState.INSTALLED, model.desiredState());
     }
 }

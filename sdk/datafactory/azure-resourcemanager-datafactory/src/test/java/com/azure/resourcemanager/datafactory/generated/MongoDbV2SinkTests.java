@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.MongoDbV2Sink;
 public final class MongoDbV2SinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoDbV2Sink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MongoDbV2Sink\",\"writeBehavior\":\"datassncghgid\",\"writeBatchSize\":\"dataotx\",\"writeBatchTimeout\":\"databxzhad\",\"sinkRetryCount\":\"datajnnoot\",\"sinkRetryWait\":\"datayupaqdoodhnzkmj\",\"maxConcurrentConnections\":\"databyogwjr\",\"disableMetricsCollection\":\"datanrykkh\",\"\":{\"zv\":\"dataohsjewxphnlwe\",\"cjgjuopvkr\":\"dataixcveserltl\"}}")
-                .toObject(MongoDbV2Sink.class);
+        MongoDbV2Sink model = BinaryData.fromString(
+            "{\"type\":\"MongoDbV2Sink\",\"writeBehavior\":\"datain\",\"writeBatchSize\":\"datavcvnmgqlshglympe\",\"writeBatchTimeout\":\"datazvcfh\",\"sinkRetryCount\":\"datayropxeezlqwbg\",\"sinkRetryWait\":\"datatwz\",\"maxConcurrentConnections\":\"datakhyrwdsnpuo\",\"disableMetricsCollection\":\"datar\",\"\":{\"wrbmxw\":\"datazybpjypqatkzghwc\",\"ffwf\":\"datask\"}}")
+            .toObject(MongoDbV2Sink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2Sink model =
-            new MongoDbV2Sink()
-                .withWriteBatchSize("dataotx")
-                .withWriteBatchTimeout("databxzhad")
-                .withSinkRetryCount("datajnnoot")
-                .withSinkRetryWait("datayupaqdoodhnzkmj")
-                .withMaxConcurrentConnections("databyogwjr")
-                .withDisableMetricsCollection("datanrykkh")
-                .withWriteBehavior("datassncghgid");
+        MongoDbV2Sink model = new MongoDbV2Sink().withWriteBatchSize("datavcvnmgqlshglympe")
+            .withWriteBatchTimeout("datazvcfh").withSinkRetryCount("datayropxeezlqwbg").withSinkRetryWait("datatwz")
+            .withMaxConcurrentConnections("datakhyrwdsnpuo").withDisableMetricsCollection("datar")
+            .withWriteBehavior("datain");
         model = BinaryData.fromObject(model).toObject(MongoDbV2Sink.class);
     }
 }

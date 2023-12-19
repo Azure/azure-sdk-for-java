@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Endpoint service. */
+/**
+ * Endpoint service.
+ */
 @Fluent
 public final class EndpointServiceResultInner extends SubResource {
     /*
@@ -23,13 +25,15 @@ public final class EndpointServiceResultInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of EndpointServiceResultInner class. */
+    /**
+     * Creates an instance of EndpointServiceResultInner class.
+     */
     public EndpointServiceResultInner() {
     }
 
     /**
      * Get the name property: Name of the endpoint service.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,14 +42,16 @@ public final class EndpointServiceResultInner extends SubResource {
 
     /**
      * Get the type property: Type of the endpoint service.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EndpointServiceResultInner withId(String id) {
         super.withId(id);
@@ -54,7 +60,7 @@ public final class EndpointServiceResultInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

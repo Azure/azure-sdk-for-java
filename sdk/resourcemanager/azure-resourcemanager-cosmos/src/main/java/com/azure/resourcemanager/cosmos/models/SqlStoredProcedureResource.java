@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB SQL storedProcedure resource object. */
+/**
+ * Cosmos DB SQL storedProcedure resource object.
+ */
 @Fluent
 public class SqlStoredProcedureResource {
     /*
@@ -23,13 +25,15 @@ public class SqlStoredProcedureResource {
     @JsonProperty(value = "body")
     private String body;
 
-    /** Creates an instance of SqlStoredProcedureResource class. */
+    /**
+     * Creates an instance of SqlStoredProcedureResource class.
+     */
     public SqlStoredProcedureResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB SQL storedProcedure.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +42,7 @@ public class SqlStoredProcedureResource {
 
     /**
      * Set the id property: Name of the Cosmos DB SQL storedProcedure.
-     *
+     * 
      * @param id the id value to set.
      * @return the SqlStoredProcedureResource object itself.
      */
@@ -49,7 +53,7 @@ public class SqlStoredProcedureResource {
 
     /**
      * Get the body property: Body of the Stored Procedure.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -58,7 +62,7 @@ public class SqlStoredProcedureResource {
 
     /**
      * Set the body property: Body of the Stored Procedure.
-     *
+     * 
      * @param body the body value to set.
      * @return the SqlStoredProcedureResource object itself.
      */
@@ -69,14 +73,13 @@ public class SqlStoredProcedureResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SqlStoredProcedureResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model SqlStoredProcedureResource"));
         }
     }
 

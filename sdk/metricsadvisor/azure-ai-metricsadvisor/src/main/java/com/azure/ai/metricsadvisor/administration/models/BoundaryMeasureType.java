@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.administration.models;
 
 import com.azure.ai.metricsadvisor.implementation.models.ValueType;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -19,10 +18,20 @@ public final class BoundaryMeasureType extends ExpandableStringEnum<BoundaryMeas
      * Static value Value indicating that detector should use raw value of data points.
      */
     public static final BoundaryMeasureType VALUE = fromString(ValueType.VALUE.toString());
+
     /**
      * Static value Value indicating that detector should use mean value of data points over a period.
      */
     public static final BoundaryMeasureType MEAN = fromString(ValueType.MEAN.toString());
+
+    /**
+     * Constructs a BoundaryMeasureType object.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BoundaryMeasureType() {
+    }
 
     /**
      * Creates or finds a BoundaryMeasureType from its string representation.
@@ -30,12 +39,15 @@ public final class BoundaryMeasureType extends ExpandableStringEnum<BoundaryMeas
      * @param name a name to look for.
      * @return the corresponding BoundaryMeasureType.
      */
-    @JsonCreator
     public static BoundaryMeasureType fromString(String name) {
         return fromString(name, BoundaryMeasureType.class);
     }
 
-    /** @return known BoundaryMeasureType values. */
+    /**
+     * Returns the known BoundaryMeasureType values.
+     *
+     * @return known BoundaryMeasureType values.
+     */
     public static Collection<BoundaryMeasureType> values() {
         return values(BoundaryMeasureType.class);
     }

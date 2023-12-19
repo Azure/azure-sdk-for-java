@@ -26,6 +26,15 @@ public final class OriginGroupProvisioningState extends ExpandableStringEnum<Ori
     public static final OriginGroupProvisioningState CREATING = fromString("Creating");
 
     /**
+     * Creates a new instance of OriginGroupProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OriginGroupProvisioningState() {
+    }
+
+    /**
      * Creates or finds a OriginGroupProvisioningState from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Used for getting PHP error logging flag. */
+/**
+ * Used for getting PHP error logging flag.
+ */
 @Fluent
 public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SitePhpErrorLogFlagProperties innerProperties;
 
-    /** Creates an instance of SitePhpErrorLogFlagInner class. */
+    /**
+     * Creates an instance of SitePhpErrorLogFlagInner class.
+     */
     public SitePhpErrorLogFlagInner() {
     }
 
     /**
      * Get the innerProperties property: SitePhpErrorLogFlag resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SitePhpErrorLogFlagProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SitePhpErrorLogFlagInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Get the localLogErrors property: Local log_errors setting.
-     *
+     * 
      * @return the localLogErrors value.
      */
     public String localLogErrors() {
@@ -48,7 +54,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Set the localLogErrors property: Local log_errors setting.
-     *
+     * 
      * @param localLogErrors the localLogErrors value to set.
      * @return the SitePhpErrorLogFlagInner object itself.
      */
@@ -62,7 +68,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Get the masterLogErrors property: Master log_errors setting.
-     *
+     * 
      * @return the masterLogErrors value.
      */
     public String masterLogErrors() {
@@ -71,7 +77,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Set the masterLogErrors property: Master log_errors setting.
-     *
+     * 
      * @param masterLogErrors the masterLogErrors value to set.
      * @return the SitePhpErrorLogFlagInner object itself.
      */
@@ -85,7 +91,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Get the localLogErrorsMaxLength property: Local log_errors_max_len setting.
-     *
+     * 
      * @return the localLogErrorsMaxLength value.
      */
     public String localLogErrorsMaxLength() {
@@ -94,7 +100,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Set the localLogErrorsMaxLength property: Local log_errors_max_len setting.
-     *
+     * 
      * @param localLogErrorsMaxLength the localLogErrorsMaxLength value to set.
      * @return the SitePhpErrorLogFlagInner object itself.
      */
@@ -108,7 +114,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Get the masterLogErrorsMaxLength property: Master log_errors_max_len setting.
-     *
+     * 
      * @return the masterLogErrorsMaxLength value.
      */
     public String masterLogErrorsMaxLength() {
@@ -117,7 +123,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Set the masterLogErrorsMaxLength property: Master log_errors_max_len setting.
-     *
+     * 
      * @param masterLogErrorsMaxLength the masterLogErrorsMaxLength value to set.
      * @return the SitePhpErrorLogFlagInner object itself.
      */
@@ -131,7 +137,7 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

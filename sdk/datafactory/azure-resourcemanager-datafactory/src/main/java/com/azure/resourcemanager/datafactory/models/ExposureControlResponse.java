@@ -6,25 +6,27 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.resourcemanager.datafactory.fluent.models.ExposureControlResponseInner;
 
-/** An immutable client-side representation of ExposureControlResponse. */
+/**
+ * An immutable client-side representation of ExposureControlResponse.
+ */
 public interface ExposureControlResponse {
     /**
      * Gets the featureName property: The feature name.
-     *
+     * 
      * @return the featureName value.
      */
     String featureName();
 
     /**
      * Gets the value property: The feature value.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.ExposureControlResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExposureControlResponseInner innerModel();

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint details. */
+/**
+ * Private endpoint details.
+ */
 @Immutable
 public final class PrivateEndpoint {
     /*
@@ -16,12 +18,15 @@ public final class PrivateEndpoint {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of PrivateEndpoint class. */
-    public PrivateEndpoint() {}
+    /**
+     * Creates an instance of PrivateEndpoint class.
+     */
+    public PrivateEndpoint() {
+    }
 
     /**
      * Get the id property: Resource id of the private endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {

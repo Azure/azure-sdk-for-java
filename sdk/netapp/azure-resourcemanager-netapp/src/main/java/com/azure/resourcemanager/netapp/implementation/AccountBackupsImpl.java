@@ -21,31 +21,30 @@ public final class AccountBackupsImpl implements AccountBackups {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public AccountBackupsImpl(
-        AccountBackupsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public AccountBackupsImpl(AccountBackupsClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Backup> list(String resourceGroupName, String accountName) {
-        PagedIterable<BackupInner> inner = this.serviceClient().list(resourceGroupName, accountName);
+    public PagedIterable<Backup> listByNetAppAccount(String resourceGroupName, String accountName) {
+        PagedIterable<BackupInner> inner = this.serviceClient().listByNetAppAccount(resourceGroupName, accountName);
         return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Backup> list(String resourceGroupName, String accountName, Context context) {
-        PagedIterable<BackupInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
+    public PagedIterable<Backup> listByNetAppAccount(String resourceGroupName, String accountName,
+        String includeOnlyBackupsFromDeletedVolumes, Context context) {
+        PagedIterable<BackupInner> inner = this.serviceClient().listByNetAppAccount(resourceGroupName, accountName,
+            includeOnlyBackupsFromDeletedVolumes, context);
         return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
     }
 
-    public Response<Backup> getWithResponse(
-        String resourceGroupName, String accountName, String backupName, Context context) {
-        Response<BackupInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, backupName, context);
+    public Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupName,
+        Context context) {
+        Response<BackupInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, backupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupImpl(inner.getValue(), this.manager()));
         } else {
             return null;

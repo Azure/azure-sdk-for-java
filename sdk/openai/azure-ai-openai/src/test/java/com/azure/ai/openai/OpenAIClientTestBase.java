@@ -4,20 +4,37 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.functions.FutureTemperatureArguments;
+import com.azure.ai.openai.functions.FutureTemperatureParameters;
 import com.azure.ai.openai.functions.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
+import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
+import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatMessage;
+import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
+import com.azure.ai.openai.models.ChatMessageImageContentItem;
+import com.azure.ai.openai.models.ChatMessageImageUrl;
+import com.azure.ai.openai.models.ChatMessageTextContentItem;
+import com.azure.ai.openai.models.ChatRequestAssistantMessage;
+import com.azure.ai.openai.models.ChatRequestMessage;
+import com.azure.ai.openai.models.ChatRequestSystemMessage;
+import com.azure.ai.openai.models.ChatRequestToolMessage;
+import com.azure.ai.openai.models.ChatRequestUserMessage;
+import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.ContentFilterResults;
+import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
+import com.azure.ai.openai.models.ContentFilterResultsForChoice;
+import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
@@ -25,7 +42,8 @@ import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.StopFinishDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -34,6 +52,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
@@ -46,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -68,6 +86,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
+            addCustomMatchers();
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -93,6 +112,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
+            addCustomMatchers();
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -112,8 +132,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private void addTestRecordCustomSanitizers() {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY)
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
         ));
+    }
+
+    private void addCustomMatchers() {
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     protected String getAzureCognitiveSearchKey() {
@@ -160,18 +186,18 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
-    void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-35-turbo", getChatMessages());
     }
 
-    void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
     }
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-            Arrays.asList(new ChatMessage(ChatRole.USER, "What does PR complete mean?")));
-        testRunner.accept("gpt-4-0613", chatCompletionsOptions);
+            Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
+        testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
@@ -181,10 +207,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
-
-    void getImageGenerationRunner(Consumer<ImageGenerationOptions> testRunner) {
-        testRunner.accept(
-            new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
+    void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
+        testRunner.accept("dall-e-3",
+                new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
         );
     }
 
@@ -196,7 +221,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-4-0613", getChatMessagesWithFunction());
     }
 
-    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsContentFilterRunner(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-4", getChatMessages());
     }
 
@@ -204,7 +229,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-davinci-003", "What is 3 times 4?");
     }
 
-    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatMessage>> testRunner) {
+    void getChatCompletionsContentFilterRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo-0613", getChatMessages());
     }
 
@@ -212,43 +237,140 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("text-davinci-002", "What is 3 times 4?");
     }
 
-    void getAudioTranscriptionRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-deployment", "batman.wav");
+    void getAudioTranscriptionRunner(BiConsumer<String, AudioTranscriptionOptions> testRunner) {
+        testRunner.accept("whisper", getAudioTranscriptionOptions("batman.wav"));
     }
 
-    void getAudioTranslationRunner(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-deployment", "JP_it_is_rainy_today.wav");
+    void getAudioTranslationRunner(BiConsumer<String, AudioTranslationOptions> testRunner) {
+        testRunner.accept("whisper", getAudioTranslationOptions("JP_it_is_rainy_today.wav"));
     }
 
-    void getAudioTranscriptionRunnerForNonAzure(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-1", "batman.wav");
+    void getAudioTranscriptionRunnerForNonAzure(BiConsumer<String, AudioTranscriptionOptions> testRunner) {
+        testRunner.accept("whisper-1", getAudioTranscriptionOptions("batman.wav"));
     }
 
-    void getAudioTranslationRunnerForNonAzure(BiConsumer<String, String> testRunner) {
-        testRunner.accept("whisper-1", "JP_it_is_rainy_today.wav");
+    void getAudioTranslationRunnerForNonAzure(BiConsumer<String, AudioTranslationOptions> testRunner) {
+        testRunner.accept("whisper-1", getAudioTranslationOptions("JP_it_is_rainy_today.wav"));
     }
 
-    private List<ChatMessage> getChatMessages() {
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.SYSTEM, "You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "Can you help me?"));
-        chatMessages.add(new ChatMessage(ChatRole.ASSISTANT, "Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the best way to train a parrot?"));
+    void getChatWithVisionRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
+        testRunner.accept("gpt-4-vision-preview", getChatRequestMessagesWithVision());
+    }
+
+    void getChatWithToolCallRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-3.5-turbo-1106", getChatCompletionsOptionWithToolCall());
+    }
+
+    // openai-sdk-test-automation-account-sweden-central
+    void getChatWithToolCallRunnerForAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4-1106-preview", getChatCompletionsOptionWithToolCall());
+    }
+
+    private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
+        byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+        AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
+        translationOptions.setFilename(fileName);
+        return translationOptions;
+    }
+
+    private static AudioTranscriptionOptions getAudioTranscriptionOptions(String fileName) {
+        byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
+        AudioTranscriptionOptions audioTranscriptionOptions = new AudioTranscriptionOptions(file);
+        audioTranscriptionOptions.setFilename(fileName);
+        return audioTranscriptionOptions;
+    }
+
+    private List<ChatRequestMessage> getChatRequestMessagesForToolCall() {
+        List<ChatRequestMessage> chatRequestMessages = new ArrayList<>();
+
+        chatRequestMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatRequestMessages.add(new ChatRequestUserMessage("What should I wear in Honolulu next Thursday?"));
+
+        return chatRequestMessages;
+    }
+
+    private ChatCompletionsOptions getChatCompletionsOptionWithToolCall() {
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
+    }
+
+    // Preparation for follow-up with the service
+    // we add:
+    // - All the messages we sent
+    // - The ChatCompletionsFunctionToolCall from the service
+    // - The result of function tool
+    protected ChatCompletionsOptions getChatCompletionsOptionWithToolCallFollowUp(
+            ChatCompletionsFunctionToolCall functionToolCall, String responseMessageContent) {
+        // original messages
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        // function tool call
+        ChatRequestAssistantMessage assistantMessage = new ChatRequestAssistantMessage(responseMessageContent);
+        assistantMessage.setToolCalls(Arrays.asList(functionToolCall));
+        chatRequestMessages.add(assistantMessage);
+
+        // tool call result, we pass our function call result as the `content` of the message
+        ChatRequestToolMessage toolMessage = new ChatRequestToolMessage("36 C", functionToolCall.getId());
+        chatRequestMessages.add(toolMessage);
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+                getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
+    }
+
+    private List<ChatRequestMessage> getChatMessages() {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        return chatMessages;
+    }
+
+    private List<ChatRequestMessage> getChatRequestMessagesWithVision() {
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
+        chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
+                new ChatMessageTextContentItem("Please describe this image"),
+                new ChatMessageImageContentItem(
+                        new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
+        )));
         return chatMessages;
     }
 
     private ChatCompletionsOptions getChatMessagesWithFunction() {
-        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
-        Parameters parameters = new Parameters();
-        functionDefinition.setParameters(parameters);
+        FunctionDefinition functionDefinition = getFunctionDefinition();
         List<FunctionDefinition> functions = Arrays.asList(functionDefinition);
 
-        List<ChatMessage> chatMessages = new ArrayList<>();
-        chatMessages.add(new ChatMessage(ChatRole.USER, "What's the weather like in San Francisco in Celsius?"));
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestUserMessage("What's the weather like in San Francisco in Celsius?"));
 
         ChatCompletionsOptions chatCompletionOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionOptions.setFunctions(functions);
         return chatCompletionOptions;
+    }
+
+    private FunctionDefinition getFunctionDefinition() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("MyFunction");
+        Parameters parameters = new Parameters();
+        functionDefinition.setParameters(BinaryData.fromObject(parameters));
+        return functionDefinition;
+    }
+
+    private FunctionDefinition getFutureTemperatureFunctionDefinition() {
+        FunctionDefinition functionDefinition = new FunctionDefinition("FutureTemperature");
+        FutureTemperatureParameters parameters = new FutureTemperatureParameters();
+        functionDefinition.setParameters(BinaryData.fromObject(parameters));
+        return functionDefinition;
     }
 
     static Path openTestResourceFile(String fileName) {
@@ -341,6 +463,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
+    static void assertVisionChatCompletions(ChatCompletions chatCompletions) {
+        assertNotNull(chatCompletions.getUsage());
+
+        List<ChatChoice> choices = chatCompletions.getChoices();
+        assertNotNull(choices);
+        assertFalse(choices.isEmpty());
+        assertEquals(1, choices.size());
+
+        ChatChoice actual = choices.get(0);
+        assertEquals(0, actual.getIndex());
+        assertEquals(ChatRole.ASSISTANT, actual.getMessage().getRole());
+        assertNotNull(actual.getMessage().getContent());
+        assertFalse(actual.getMessage().getContent().isEmpty());
+        assertTrue(actual.getFinishDetails() instanceof StopFinishDetails);
+    }
+
     static void assertEmbeddings(Embeddings actual) {
         List<EmbeddingItem> data = actual.getData();
         assertNotNull(data);
@@ -354,7 +492,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    static void assertImageResponse(ImageResponse actual) {
+    static void assertImageGenerations(ImageGenerations actual) {
         assertNotNull(actual.getData());
         assertFalse(actual.getData().isEmpty());
     }
@@ -368,7 +506,21 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return argumentJson.toObject(myPropertiesClazz);
     }
 
-    static void assertSafeContentFilterResults(ContentFilterResults contentFilterResults) {
+    static void assertSafePromptContentFilterResults(ContentFilterResultsForPrompt contentFilterResults) {
+        assertNotNull(contentFilterResults);
+        ContentFilterResultDetailsForPrompt promptFilterDetails = contentFilterResults.getContentFilterResults();
+        assertNotNull(promptFilterDetails);
+        assertFalse(promptFilterDetails.getHate().isFiltered());
+        assertEquals(promptFilterDetails.getHate().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getSexual().isFiltered());
+        assertEquals(promptFilterDetails.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getSelfHarm().isFiltered());
+        assertEquals(promptFilterDetails.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
+        assertFalse(promptFilterDetails.getViolence().isFiltered());
+        assertEquals(promptFilterDetails.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+    }
+
+    static void assertSafeChoiceContentFilterResults(ContentFilterResultsForChoice contentFilterResults) {
         assertNotNull(contentFilterResults);
         assertFalse(contentFilterResults.getHate().isFiltered());
         assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
@@ -380,14 +532,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
     }
 
-    static void assertEmptyContentFilterResults(ContentFilterResults contentFilterResults) {
-        assertNotNull(contentFilterResults);
-        assertNull(contentFilterResults.getHate());
-        assertNull(contentFilterResults.getSexual());
-        assertNull(contentFilterResults.getViolence());
-        assertNull(contentFilterResults.getSelfHarm());
-    }
-
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
         List<ChatChoice> choices = chatCompletions.getChoices();
         assertNotNull(choices);
@@ -397,7 +541,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         AzureChatExtensionsMessageContext messageContext = choices.get(0).getMessage().getContext();
         assertNotNull(messageContext);
         assertNotNull(messageContext.getMessages());
-        ChatMessage firstMessage = messageContext.getMessages().get(0);
+        ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
         assertNotNull(firstMessage);
         assertEquals(ChatRole.TOOL, firstMessage.getRole());
         assertFalse(firstMessage.getContent().isEmpty());
@@ -424,7 +568,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 AzureChatExtensionsMessageContext messageContext = choices.get(0).getDelta().getContext();
                 assertNotNull(messageContext);
                 assertNotNull(messageContext.getMessages());
-                ChatMessage firstMessage = messageContext.getMessages().get(0);
+                ChatResponseMessage firstMessage = messageContext.getMessages().get(0);
                 assertNotNull(firstMessage);
                 assertEquals(ChatRole.TOOL, firstMessage.getRole());
                 assertFalse(firstMessage.getContent().isEmpty());
@@ -476,6 +620,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(audioTaskLabel, translation.getTask());
         assertNotNull(translation.getSegments());
         assertFalse(translation.getSegments().isEmpty());
+    }
+
+    static void assertFunctionToolCallArgs(String argumentJson) {
+        FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
+        assertNotNull(functionArguments);
     }
 
     protected static final String BATMAN_TRANSCRIPTION =

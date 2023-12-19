@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The SearchIndexerCache model. */
+/**
+ * The SearchIndexerCache model.
+ */
 @Fluent
 public final class SearchIndexerCache implements JsonSerializable<SearchIndexerCache> {
     /*
@@ -27,20 +29,23 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     private Boolean enableReprocessing;
 
     /*
-     * The user-assigned managed identity used for connections to the enrichment cache.  If the connection string
+     * The user-assigned managed identity used for connections to the enrichment cache. If the connection string
      * indicates an identity (ResourceId) and it's not specified, the system-assigned managed identity is used. On
      * updates to the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value
      * of this property is cleared.
      */
     private SearchIndexerDataIdentity identity;
 
-    /** Creates an instance of SearchIndexerCache class. */
-    public SearchIndexerCache() {}
+    /**
+     * Creates an instance of SearchIndexerCache class.
+     */
+    public SearchIndexerCache() {
+    }
 
     /**
      * Get the storageConnectionString property: The connection string to the storage account where the cache data will
      * be persisted.
-     *
+     * 
      * @return the storageConnectionString value.
      */
     public String getStorageConnectionString() {
@@ -50,7 +55,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     /**
      * Set the storageConnectionString property: The connection string to the storage account where the cache data will
      * be persisted.
-     *
+     * 
      * @param storageConnectionString the storageConnectionString value to set.
      * @return the SearchIndexerCache object itself.
      */
@@ -61,7 +66,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
 
     /**
      * Get the enableReprocessing property: Specifies whether incremental reprocessing is enabled.
-     *
+     * 
      * @return the enableReprocessing value.
      */
     public Boolean isEnableReprocessing() {
@@ -70,7 +75,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
 
     /**
      * Set the enableReprocessing property: Specifies whether incremental reprocessing is enabled.
-     *
+     * 
      * @param enableReprocessing the enableReprocessing value to set.
      * @return the SearchIndexerCache object itself.
      */
@@ -84,7 +89,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * the connection string indicates an identity (ResourceId) and it's not specified, the system-assigned managed
      * identity is used. On updates to the indexer, if the identity is unspecified, the value remains unchanged. If set
      * to "none", the value of this property is cleared.
-     *
+     * 
      * @return the identity value.
      */
     public SearchIndexerDataIdentity getIdentity() {
@@ -96,7 +101,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * the connection string indicates an identity (ResourceId) and it's not specified, the system-assigned managed
      * identity is used. On updates to the indexer, if the identity is unspecified, the value remains unchanged. If set
      * to "none", the value of this property is cleared.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SearchIndexerCache object itself.
      */
@@ -116,33 +121,31 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
 
     /**
      * Reads an instance of SearchIndexerCache from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerCache if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerCache.
      */
     public static SearchIndexerCache fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SearchIndexerCache deserializedSearchIndexerCache = new SearchIndexerCache();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SearchIndexerCache deserializedSearchIndexerCache = new SearchIndexerCache();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("storageConnectionString".equals(fieldName)) {
-                            deserializedSearchIndexerCache.storageConnectionString = reader.getString();
-                        } else if ("enableReprocessing".equals(fieldName)) {
-                            deserializedSearchIndexerCache.enableReprocessing =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else if ("identity".equals(fieldName)) {
-                            deserializedSearchIndexerCache.identity = SearchIndexerDataIdentity.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("storageConnectionString".equals(fieldName)) {
+                    deserializedSearchIndexerCache.storageConnectionString = reader.getString();
+                } else if ("enableReprocessing".equals(fieldName)) {
+                    deserializedSearchIndexerCache.enableReprocessing = reader.getNullable(JsonReader::getBoolean);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSearchIndexerCache.identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSearchIndexerCache;
-                });
+            return deserializedSearchIndexerCache;
+        });
     }
 }

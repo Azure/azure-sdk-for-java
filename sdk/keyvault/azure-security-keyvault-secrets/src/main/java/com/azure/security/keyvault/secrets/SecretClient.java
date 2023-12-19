@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -261,11 +260,11 @@ public final class SecretClient {
             SecretProperties secretProperties = secret.getProperties();
             if (secretProperties == null) {
                 Response<SecretBundle> response = implClient.setSecretWithResponse(vaultUrl, secret.getName(),
-                    secret.getValue(), null, ContentType.APPLICATION_JSON, null, context);
+                    secret.getValue(), null, null, null, context);
                 return new SimpleResponse<>(response, createKeyVaultSecret(response.getValue()));
             } else {
                 Response<SecretBundle> response = implClient.setSecretWithResponse(vaultUrl, secret.getName(),
-                    secret.getValue(), secretProperties.getTags(), ContentType.APPLICATION_JSON,
+                    secret.getValue(), secretProperties.getTags(), secretProperties.getContentType(),
                     createSecretAttributes(secretProperties), context);
                 return new SimpleResponse<>(response, createKeyVaultSecret(response.getValue()));
             }
@@ -435,7 +434,7 @@ public final class SecretClient {
     public Response<SecretProperties> updateSecretPropertiesWithResponse(SecretProperties secretProperties,
                                                                          Context context) {
         Response<SecretBundle> response = implClient.updateSecretWithResponse(vaultUrl, secretProperties.getName(),
-            secretProperties.getVersion(), ContentType.APPLICATION_JSON, createSecretAttributes(secretProperties),
+            secretProperties.getVersion(), secretProperties.getContentType(), createSecretAttributes(secretProperties),
             secretProperties.getTags(), context);
         return new SimpleResponse<>(response, createSecretProperties(response.getValue()));
     }

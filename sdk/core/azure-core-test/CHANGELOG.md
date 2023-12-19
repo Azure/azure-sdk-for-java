@@ -1,6 +1,6 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
+## 1.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,56 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0 (2023-11-03)
+
+### Features Added
+
+- Added request retry to Test Proxy. ([#36656](https://github.com/Azure/azure-sdk-for-java/pull/36656))
+
+### Breaking Changes
+
+- Made `TextProxyManager` `final`, removed constructor, made `startProxy` static, and hid `stopProxy`. ([#36656](https://github.com/Azure/azure-sdk-for-java/pull/36656))
+
+### Bugs Fixed
+
+- Fixed a bug where Test Proxy could deadlock during test runs as the error stream wasn't consumed. ([#37140](https://github.com/Azure/azure-sdk-for-java/pull/37140))
+- Fixed a bug where `aarch64` didn't match to `arm64`. ([#37137](https://github.com/Azure/azure-sdk-for-java/pull/37137))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 1.21.1 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+- Upgraded `reactor-test` from `3.4.31` to `3.4.32`.
+- Upgraded `reactor-netty-http` from `1.0.34` to `1.0.38`.
+- Upgraded `jetty-server` from `9.4.51.v20230217` to `9.4.53.v20231009`.
+- Upgraded `jetty-servlet` from `9.4.51.v20230217` to `9.4.53.v20231009`.
+- Upgraded `commons-compress` from `1.22` to `1.24.0`.
+
+## 1.21.0 (2023-10-06)
+
+### Features Added
+
+- Added support for bulk `AddSanitizers` in Test Proxy. ([#36694](https://github.com/Azure/azure-sdk-for-java/pull/36694))
+
+### Bugs Fixed
+
+- Aligned XML redactions for Test Proxy with previous recording framework. ([#37043](https://github.com/Azure/azure-sdk-for-java/pull/37043))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
 
 ## 1.20.0 (2023-09-07)
 

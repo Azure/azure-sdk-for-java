@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkItemConfigurations Delete. */
 public final class WorkItemConfigurationsDeleteSamples {
     /*
@@ -20,6 +18,7 @@ public final class WorkItemConfigurationsDeleteSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .workItemConfigurations()
-            .deleteWithResponse("my-resource-group", "my-component", "Visual Studio Team Services", Context.NONE);
+            .deleteWithResponse(
+                "my-resource-group", "my-component", "Visual Studio Team Services", com.azure.core.util.Context.NONE);
     }
 }

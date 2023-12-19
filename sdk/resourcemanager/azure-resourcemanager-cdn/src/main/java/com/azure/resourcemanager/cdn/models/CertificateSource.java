@@ -17,6 +17,15 @@ public final class CertificateSource extends ExpandableStringEnum<CertificateSou
     public static final CertificateSource CDN = fromString("Cdn");
 
     /**
+     * Creates a new instance of CertificateSource value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CertificateSource() {
+    }
+
+    /**
      * Creates or finds a CertificateSource from its string representation.
      *
      * @param name a name to look for.

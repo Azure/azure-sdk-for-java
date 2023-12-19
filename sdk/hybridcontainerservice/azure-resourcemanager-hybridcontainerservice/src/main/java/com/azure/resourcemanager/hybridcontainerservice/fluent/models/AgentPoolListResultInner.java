@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AgentPoolListResult model. */
+/**
+ * A list of agent pool resources.
+ */
 @Fluent
 public final class AgentPoolListResultInner {
     /*
@@ -23,13 +25,15 @@ public final class AgentPoolListResultInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AgentPoolListResultInner class. */
+    /**
+     * Creates an instance of AgentPoolListResultInner class.
+     */
     public AgentPoolListResultInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<AgentPoolInner> value() {
@@ -38,7 +42,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the AgentPoolListResultInner object itself.
      */
@@ -49,7 +53,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Get the nextLink property: The nextLink property.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,7 +62,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Set the nextLink property: The nextLink property.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AgentPoolListResultInner object itself.
      */
@@ -69,7 +73,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

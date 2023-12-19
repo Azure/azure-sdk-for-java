@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.30.0</version>
+  <version>2.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -93,14 +93,14 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 `azure-identity` package and `azure-core-http-netty` package provide the default implementation.
 
-[Azure Identity][azure_identity] provides Azure Active Directory token authentication support across the Azure SDK.
+[Azure Identity][azure_identity] provides Microsoft Entra ID token authentication support across the Azure SDK.
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.10.1</version>
+  <version>1.11.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -112,7 +112,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.13.6</version>
+  <version>1.13.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +121,7 @@ Alternatively, [Azure Core OkHttp HTTP client][azure_core_http_okhttp] is anothe
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Microsoft Entra ID token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -303,7 +303,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.30.0</version>
+  <version>2.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -448,13 +448,13 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core
-[logging]: https://docs.microsoft.com/azure/developer/java/sdk/logging-overview
+[logging]: https://learn.microsoft.com/azure/developer/java/sdk/logging-overview
 [single_service_packages]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SINGLE_SERVICE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md

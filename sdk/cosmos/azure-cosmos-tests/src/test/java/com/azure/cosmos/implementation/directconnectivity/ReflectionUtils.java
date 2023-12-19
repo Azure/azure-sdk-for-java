@@ -412,6 +412,10 @@ public class ReflectionUtils {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
     }
 
+    public static ConnectionPolicy getConnectionPolicy(LocationCache locationCache) {
+        return get(ConnectionPolicy.class, locationCache, "connectionPolicy");
+    }
+
     public static HttpClient getClientTelemetryHttpClint(ClientTelemetry clientTelemetry) {
         return get(HttpClient.class, clientTelemetry, "httpClient");
     }

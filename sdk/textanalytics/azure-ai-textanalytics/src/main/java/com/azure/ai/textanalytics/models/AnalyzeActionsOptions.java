@@ -6,11 +6,17 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * The {@link AnalyzeActionsOptions} model.
+ * The {@code AnalyzeActionsOptions} model.
  */
 @Fluent
 public final class AnalyzeActionsOptions {
     private boolean includeStatistics;
+
+    /**
+     * Constructs a {@code AnalyzeActionsOptions} model.
+     */
+    public AnalyzeActionsOptions() {
+    }
 
     /**
      * Gets the value of {@code includeStatistics}.
@@ -29,7 +35,7 @@ public final class AnalyzeActionsOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return the {@link AnalyzeActionsOptions} object itself.
+     * @return the {@code AnalyzeActionsOptions} object itself.
      */
     public AnalyzeActionsOptions setIncludeStatistics(boolean includeStatistics) {
         this.includeStatistics = includeStatistics;

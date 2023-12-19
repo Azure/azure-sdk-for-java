@@ -14,17 +14,18 @@ public final class UpdateTests {
     public void testDeserialize() throws Exception {
         Update model =
             BinaryData
-                .fromString("{\"summary\":\"dw\",\"updateDateTime\":\"2021-08-04T11:26:15Z\"}")
+                .fromString("{\"summary\":\"qqtch\",\"updateDateTime\":\"2021-06-10T11:36:20Z\"}")
                 .toObject(Update.class);
-        Assertions.assertEquals("dw", model.summary());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T11:26:15Z"), model.updateDateTime());
+        Assertions.assertEquals("qqtch", model.summary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:36:20Z"), model.updateDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Update model = new Update().withSummary("dw").withUpdateDateTime(OffsetDateTime.parse("2021-08-04T11:26:15Z"));
+        Update model =
+            new Update().withSummary("qqtch").withUpdateDateTime(OffsetDateTime.parse("2021-06-10T11:36:20Z"));
         model = BinaryData.fromObject(model).toObject(Update.class);
-        Assertions.assertEquals("dw", model.summary());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T11:26:15Z"), model.updateDateTime());
+        Assertions.assertEquals("qqtch", model.summary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:36:20Z"), model.updateDateTime());
     }
 }

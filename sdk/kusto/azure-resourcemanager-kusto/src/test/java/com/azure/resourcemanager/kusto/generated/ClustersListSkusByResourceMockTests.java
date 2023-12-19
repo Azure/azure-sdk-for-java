@@ -35,7 +35,7 @@ public final class ClustersListSkusByResourceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"kylkdghrj\",\"sku\":{\"name\":\"Standard_EC16as_v5+3TB_PS\",\"capacity\":1782916526,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":102339077,\"maximum\":234998658,\"default\":442898580}}]}";
+            "{\"value\":[{\"resourceType\":\"pvpbdbzqgqqiheds\",\"sku\":{\"name\":\"Standard_E8as_v4+1TB_PS\",\"capacity\":1770973346,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":649222469,\"maximum\":1468707412,\"default\":1456487398}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class ClustersListSkusByResourceMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureResourceSku> response =
-            manager.clusters().listSkusByResource("rphkmcrjdqnsdfz", "bg", com.azure.core.util.Context.NONE);
+            manager.clusters().listSkusByResource("zfjltfvnzcyjto", "p", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kylkdghrj", response.iterator().next().resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_EC16AS_V5_3TB_PS, response.iterator().next().sku().name());
-        Assertions.assertEquals(1782916526, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("pvpbdbzqgqqiheds", response.iterator().next().resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_E8AS_V4_1TB_PS, response.iterator().next().sku().name());
+        Assertions.assertEquals(1770973346, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.BASIC, response.iterator().next().sku().tier());
         Assertions.assertEquals(AzureScaleType.MANUAL, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals(102339077, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(234998658, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(442898580, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(649222469, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(1468707412, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1456487398, response.iterator().next().capacity().defaultProperty());
     }
 }

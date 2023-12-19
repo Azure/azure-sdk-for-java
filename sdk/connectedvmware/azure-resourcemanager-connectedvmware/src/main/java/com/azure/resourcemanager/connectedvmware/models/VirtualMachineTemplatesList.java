@@ -25,6 +25,10 @@ public final class VirtualMachineTemplatesList {
     @JsonProperty(value = "value", required = true)
     private List<VirtualMachineTemplateInner> value;
 
+    /** Creates an instance of VirtualMachineTemplatesList class. */
+    public VirtualMachineTemplatesList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of VirtualMachineTemplates.
      *

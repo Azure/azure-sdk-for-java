@@ -1,6 +1,6 @@
 # Release History
 
-## 4.19.0-beta.1 (Unreleased)
+## 4.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,38 @@
 
 ### Other Changes
 
+## 4.20.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+## 4.20.0 (2023-11-13)
+
+### Features Added
+- New SystemEvents for Resource Notification
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 4.19.0 (2023-10-23)
+
+### Features Added
+- new ACS Router system events.
+- New Resource Notification system events.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
 ## 4.18.0 (2023-09-13)
 
 ### Features Added
@@ -18,7 +50,7 @@
 ### Other Changes
 
 #### Dependency Updates
-- 
+ 
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
 
@@ -417,3 +449,5 @@ set of libraries that are consistent across multiple services as well as differe
     Event Grid, Cloud Event, or a custom schema.
 + Parsing and deserialization of system and user-defined events from JSON payload
     at an event destination in EventGrid or Cloud Event schema.
+
+

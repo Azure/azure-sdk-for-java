@@ -15,31 +15,31 @@ public final class LBFrontendIpConfigurationResourceSettingsTests {
         LBFrontendIpConfigurationResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"cmgyud\",\"privateIpAddress\":\"tlmoyrx\",\"privateIpAllocationMethod\":\"fudwpznt\",\"subnet\":{\"name\":\"zhlrqjb\",\"sourceArmResourceId\":\"ck\"},\"zones\":\"lhrxsbkyvpyc\"}")
+                    "{\"name\":\"loayqcgw\",\"privateIpAddress\":\"zjuzgwyz\",\"privateIpAllocationMethod\":\"txon\",\"subnet\":{\"name\":\"savjcbpwxqps\",\"sourceArmResourceId\":\"knftguvriuh\"},\"zones\":\"wmdyvxqtay\"}")
                 .toObject(LBFrontendIpConfigurationResourceSettings.class);
-        Assertions.assertEquals("cmgyud", model.name());
-        Assertions.assertEquals("tlmoyrx", model.privateIpAddress());
-        Assertions.assertEquals("fudwpznt", model.privateIpAllocationMethod());
-        Assertions.assertEquals("ck", model.subnet().sourceArmResourceId());
-        Assertions.assertEquals("zhlrqjb", model.subnet().name());
-        Assertions.assertEquals("lhrxsbkyvpyc", model.zones());
+        Assertions.assertEquals("loayqcgw", model.name());
+        Assertions.assertEquals("zjuzgwyz", model.privateIpAddress());
+        Assertions.assertEquals("txon", model.privateIpAllocationMethod());
+        Assertions.assertEquals("knftguvriuh", model.subnet().sourceArmResourceId());
+        Assertions.assertEquals("savjcbpwxqps", model.subnet().name());
+        Assertions.assertEquals("wmdyvxqtay", model.zones());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LBFrontendIpConfigurationResourceSettings model =
             new LBFrontendIpConfigurationResourceSettings()
-                .withName("cmgyud")
-                .withPrivateIpAddress("tlmoyrx")
-                .withPrivateIpAllocationMethod("fudwpznt")
-                .withSubnet(new SubnetReference().withSourceArmResourceId("ck").withName("zhlrqjb"))
-                .withZones("lhrxsbkyvpyc");
+                .withName("loayqcgw")
+                .withPrivateIpAddress("zjuzgwyz")
+                .withPrivateIpAllocationMethod("txon")
+                .withSubnet(new SubnetReference().withSourceArmResourceId("knftguvriuh").withName("savjcbpwxqps"))
+                .withZones("wmdyvxqtay");
         model = BinaryData.fromObject(model).toObject(LBFrontendIpConfigurationResourceSettings.class);
-        Assertions.assertEquals("cmgyud", model.name());
-        Assertions.assertEquals("tlmoyrx", model.privateIpAddress());
-        Assertions.assertEquals("fudwpznt", model.privateIpAllocationMethod());
-        Assertions.assertEquals("ck", model.subnet().sourceArmResourceId());
-        Assertions.assertEquals("zhlrqjb", model.subnet().name());
-        Assertions.assertEquals("lhrxsbkyvpyc", model.zones());
+        Assertions.assertEquals("loayqcgw", model.name());
+        Assertions.assertEquals("zjuzgwyz", model.privateIpAddress());
+        Assertions.assertEquals("txon", model.privateIpAllocationMethod());
+        Assertions.assertEquals("knftguvriuh", model.subnet().sourceArmResourceId());
+        Assertions.assertEquals("savjcbpwxqps", model.subnet().name());
+        Assertions.assertEquals("wmdyvxqtay", model.zones());
     }
 }

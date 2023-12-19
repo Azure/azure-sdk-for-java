@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -66,13 +66,13 @@
     <dependency>
       <groupId>com.github.spotbugs</groupId>
       <artifactId>spotbugs-annotations</artifactId>
-      <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <version>4.8.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -182,7 +182,7 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.9</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+        <version>0.8.11</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>default-prepare-agent</id>

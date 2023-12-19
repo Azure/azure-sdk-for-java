@@ -13,13 +13,15 @@ import com.azure.core.management.ProxyResource;
  */
 @Immutable
 public class ArmProxyResource extends ProxyResource {
-    /** Creates an instance of ArmProxyResource class. */
+    /**
+     * Creates an instance of ArmProxyResource class.
+     */
     public ArmProxyResource() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

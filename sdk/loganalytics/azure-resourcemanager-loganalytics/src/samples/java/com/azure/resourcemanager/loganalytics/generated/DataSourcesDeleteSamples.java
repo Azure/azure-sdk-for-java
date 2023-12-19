@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataSources Delete. */
 public final class DataSourcesDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class DataSourcesDeleteSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataSources().deleteWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", Context.NONE);
+        manager
+            .dataSources()
+            .deleteWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }

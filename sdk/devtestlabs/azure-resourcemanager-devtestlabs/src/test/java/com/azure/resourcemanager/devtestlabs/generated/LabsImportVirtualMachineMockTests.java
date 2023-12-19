@@ -60,11 +60,11 @@ public final class LabsImportVirtualMachineMockTests {
         manager
             .labs()
             .importVirtualMachine(
-                "fdmmcpug",
-                "ehqepvufhbzehe",
+                "nqkhych",
+                "c",
                 new ImportLabVirtualMachineRequest()
-                    .withSourceVirtualMachineResourceId("oqhnlb")
-                    .withDestinationVirtualMachineName("bldxeaclgscho"),
+                    .withSourceVirtualMachineResourceId("ulehurqlr")
+                    .withDestinationVirtualMachineName("fawey"),
                 com.azure.core.util.Context.NONE);
     }
 }

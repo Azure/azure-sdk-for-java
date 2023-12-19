@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the express route circuit connection. */
+/**
+ * Properties of the express route circuit connection.
+ */
 @Fluent
 public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /*
@@ -56,14 +58,16 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class.
+     */
     public ExpressRouteCircuitConnectionPropertiesFormat() {
     }
 
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
@@ -73,12 +77,12 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withExpressRouteCircuitPeering(
-        SubResource expressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering) {
         this.expressRouteCircuitPeering = expressRouteCircuitPeering;
         return this;
     }
@@ -86,7 +90,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Get the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
@@ -96,19 +100,19 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withPeerExpressRouteCircuitPeering(
-        SubResource peerExpressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering) {
         this.peerExpressRouteCircuitPeering = peerExpressRouteCircuitPeering;
         return this;
     }
 
     /**
      * Get the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -117,7 +121,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Set the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
@@ -128,7 +132,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -137,7 +141,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
@@ -149,7 +153,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Get the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @return the ipv6CircuitConnectionConfig value.
      */
     public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
@@ -159,19 +163,19 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @param ipv6CircuitConnectionConfig the ipv6CircuitConnectionConfig value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withIpv6CircuitConnectionConfig(
-        Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withIpv6CircuitConnectionConfig(Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
         this.ipv6CircuitConnectionConfig = ipv6CircuitConnectionConfig;
         return this;
     }
 
     /**
      * Get the circuitConnectionStatus property: Express Route Circuit connection state.
-     *
+     * 
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
@@ -180,7 +184,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route circuit connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -189,7 +193,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,13 +12,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 'Specialized'.
  */
 public enum OperatingSystemStateTypes {
-    /** Enum value Generalized. */
+    /**
+     * Enum value Generalized.
+     */
     GENERALIZED("Generalized"),
 
-    /** Enum value Specialized. */
+    /**
+     * Enum value Specialized.
+     */
     SPECIALIZED("Specialized");
 
-    /** The actual serialized value for a OperatingSystemStateTypes instance. */
+    /**
+     * The actual serialized value for a OperatingSystemStateTypes instance.
+     */
     private final String value;
 
     OperatingSystemStateTypes(String value) {
@@ -27,7 +33,7 @@ public enum OperatingSystemStateTypes {
 
     /**
      * Parses a serialized value to a OperatingSystemStateTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemStateTypes object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum OperatingSystemStateTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

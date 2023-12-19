@@ -10,7 +10,6 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -225,9 +224,17 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
+
+            QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+                ResourceType.Document,
+                OperationType.ReadFeed,
+                cosmosQueryRequestOptions,
+                readSecondaryClient
+            );
+
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(
-                parentResource.getSelfLink(), cosmosQueryRequestOptions, Document.class);
+                parentResource.getSelfLink(), dummyState, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -283,11 +290,15 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono<Void> task2 = ParallelAsync.forEachAsync(Range.between(0, 1000), 5, index -> {
                 try {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
-                    ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(cosmosQueryRequestOptions, true);
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .setAllowEmptyPages(cosmosQueryRequestOptions, true);
+
                     FeedResponse<Document> queryResponse = client.queryDocuments(
                         createdCollection.getSelfLink(),
                         "SELECT * FROM c WHERE c.Id = 'foo'",
-                        cosmosQueryRequestOptions,
+                        TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, cosmosQueryRequestOptions, client),
                         Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);

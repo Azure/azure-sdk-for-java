@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** GatewayCustomBgpIpAddressIpConfiguration for a virtual network gateway connection. */
+/**
+ * GatewayCustomBgpIpAddressIpConfiguration for a virtual network gateway connection.
+ */
 @Fluent
 public final class GatewayCustomBgpIpAddressIpConfiguration {
     /*
@@ -23,13 +25,15 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
     @JsonProperty(value = "customBgpIpAddress", required = true)
     private String customBgpIpAddress;
 
-    /** Creates an instance of GatewayCustomBgpIpAddressIpConfiguration class. */
+    /**
+     * Creates an instance of GatewayCustomBgpIpAddressIpConfiguration class.
+     */
     public GatewayCustomBgpIpAddressIpConfiguration() {
     }
 
     /**
      * Get the ipConfigurationId property: The IpconfigurationId of ipconfiguration which belongs to gateway.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -38,7 +42,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Set the ipConfigurationId property: The IpconfigurationId of ipconfiguration which belongs to gateway.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the GatewayCustomBgpIpAddressIpConfiguration object itself.
      */
@@ -49,7 +53,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Get the customBgpIpAddress property: The custom BgpPeeringAddress which belongs to IpconfigurationId.
-     *
+     * 
      * @return the customBgpIpAddress value.
      */
     public String customBgpIpAddress() {
@@ -58,7 +62,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Set the customBgpIpAddress property: The custom BgpPeeringAddress which belongs to IpconfigurationId.
-     *
+     * 
      * @param customBgpIpAddress the customBgpIpAddress value to set.
      * @return the GatewayCustomBgpIpAddressIpConfiguration object itself.
      */
@@ -69,23 +73,17 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigurationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipConfigurationId in model"
-                            + " GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ipConfigurationId in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
         if (customBgpIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customBgpIpAddress in model"
-                            + " GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customBgpIpAddress in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
     }
 

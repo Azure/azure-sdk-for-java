@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Microsoft Azure Document Database Collection dataset. */
+/**
+ * Microsoft Azure Document Database Collection dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DocumentDbCollection")
 @Fluent
@@ -22,65 +24,81 @@ public final class DocumentDbCollectionDataset extends Dataset {
      * DocumentDB Collection dataset properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private DocumentDbCollectionDatasetTypeProperties innerTypeProperties =
-        new DocumentDbCollectionDatasetTypeProperties();
+    private DocumentDbCollectionDatasetTypeProperties innerTypeProperties
+        = new DocumentDbCollectionDatasetTypeProperties();
 
-    /** Creates an instance of DocumentDbCollectionDataset class. */
+    /**
+     * Creates an instance of DocumentDbCollectionDataset class.
+     */
     public DocumentDbCollectionDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: DocumentDB Collection dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DocumentDbCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -90,7 +108,7 @@ public final class DocumentDbCollectionDataset extends Dataset {
     /**
      * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object collectionName() {
@@ -100,7 +118,7 @@ public final class DocumentDbCollectionDataset extends Dataset {
     /**
      * Set the collectionName property: Document Database collection name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the DocumentDbCollectionDataset object itself.
      */
@@ -114,17 +132,15 @@ public final class DocumentDbCollectionDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DocumentDbCollectionDataset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model DocumentDbCollectionDataset"));
         } else {
             innerTypeProperties().validate();
         }

@@ -1179,7 +1179,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1303,7 +1303,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Flux.just(1).subscribeOn(Schedulers.boundedElastic())
                 .flatMap(value -> {
                     log.warn("Reading current throughput change.");
-                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
+                    return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, (CosmosQueryRequestOptions) null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {
                     int count = partitionKeyRangeFeedResponse.getResults().size();
@@ -1388,7 +1388,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -1884,11 +1884,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
-    @BeforeMethod(groups = { "emulator", "split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeMethod(groups = { "emulator", "cfp-split" }, timeOut = 2 * SETUP_TIMEOUT, alwaysRun = true)
      public void beforeMethod() {
      }
 
-    @BeforeClass(groups = { "emulator", "split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator", "cfp-split" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -1915,11 +1915,11 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 //        createdDatabase = createDatabase(client, databaseId);
     }
 
-    @AfterMethod(groups = { "emulator", "split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "emulator", "cfp-split" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterMethod() {
     }
 
-    @AfterClass(groups = { "emulator", "split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "cfp-split" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
 //        try {
 //            client.readAllDatabases()

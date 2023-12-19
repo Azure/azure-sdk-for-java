@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdOrigins Get. */
 public final class AfdOriginsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDOrigins_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDOrigins_Get.json
      */
     /**
      * Sample code: AFDOrigins_Get.
@@ -22,6 +20,6 @@ public final class AfdOriginsGetSamples {
             .manager()
             .serviceClient()
             .getAfdOrigins()
-            .getWithResponse("RG", "profile1", "origingroup1", "origin1", Context.NONE);
+            .getWithResponse("RG", "profile1", "origingroup1", "origin1", com.azure.core.util.Context.NONE);
     }
 }

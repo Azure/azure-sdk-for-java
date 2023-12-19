@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
+import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
 import java.nio.ByteBuffer;
@@ -33,7 +34,7 @@ public final class ElasticSansGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"uwsyrsndsytgadg\",\"r\",\"ea\"],\"provisioningState\":\"Invalid\",\"baseSizeTiB\":8790170709983104417,\"extendedCapacitySizeTiB\":2560405099971295143,\"totalVolumeSizeGiB\":5418047259495493586,\"volumeGroupCount\":1125965714665499028,\"totalIops\":6720110805650369040,\"totalMBps\":8598185540275371348,\"totalSizeTiB\":1710903714386145180,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"bjibwwiftohq\",\"vpuvks\"]},\"id\":\"lsa\",\"name\":\"nynfsynljphuo\",\"type\":\"xodlqiyntorzih\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"w\",\"rmslyzrpzbchckqq\"]},\"id\":\"ioxiysuiizyn\",\"name\":\"edyatrwyhqmibzyh\",\"type\":\"itsmypyyn\"}]},\"location\":\"dpumnzgmw\",\"tags\":{\"rgjhxb\":\"abikns\",\"tncvokot\":\"dtlwwrlkd\",\"gsyocogj\":\"lxdy\",\"kvci\":\"tdtbnnhadooc\"},\"id\":\"hnvpamqgxq\",\"name\":\"u\",\"type\":\"zikywgg\"}";
+            "{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"pomgkopkwhojvp\",\"jqg\",\"ysmocmbqfqvmkcxo\"],\"provisioningState\":\"Pending\",\"baseSizeTiB\":5899001695027882086,\"extendedCapacitySizeTiB\":5939290521556195540,\"totalVolumeSizeGiB\":6359402383631764014,\"volumeGroupCount\":2576017949192235258,\"totalIops\":7257891717234420847,\"totalMBps\":3729632374595732416,\"totalSizeTiB\":2336439907780223059,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ciqibrhosx\",\"dqrhzoymib\"]},\"id\":\"qyib\",\"name\":\"hwflu\",\"type\":\"zdtmhrkwofy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"piexpbtgiw\"]},\"id\":\"oenwashr\",\"name\":\"dtkcnqxwbpokulp\",\"type\":\"ujw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"i\",\"obyu\",\"erpqlpqwcciuqg\"]},\"id\":\"butauvfb\",\"name\":\"kuwhh\",\"type\":\"hykojoxafnndlpic\"},{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cdyhbpkkpwdreqn\",\"vvqfovljxyws\"]},\"id\":\"syrsndsytgadgvra\",\"name\":\"aeneqnzarrwl\",\"type\":\"uu\"}],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"kacewiipfp\",\"tags\":{\"uvksgplsaknynfsy\":\"ibwwiftohqkv\"},\"id\":\"ljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +65,16 @@ public final class ElasticSansGetByResourceGroupWithResponseMockTests {
         ElasticSan response =
             manager
                 .elasticSans()
-                .getByResourceGroupWithResponse("pkkpw", "reqnovvqfov", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("nubexk", "zksmondj", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("dpumnzgmw", response.location());
-        Assertions.assertEquals("abikns", response.tags().get("rgjhxb"));
-        Assertions.assertEquals(SkuName.PREMIUM_LRS, response.sku().name());
+        Assertions.assertEquals("kacewiipfp", response.location());
+        Assertions.assertEquals("ibwwiftohqkv", response.tags().get("uvksgplsaknynfsy"));
+        Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
-        Assertions.assertEquals("uwsyrsndsytgadg", response.availabilityZones().get(0));
-        Assertions.assertEquals(8790170709983104417L, response.baseSizeTiB());
-        Assertions.assertEquals(2560405099971295143L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals("pomgkopkwhojvp", response.availabilityZones().get(0));
+        Assertions.assertEquals(5899001695027882086L, response.baseSizeTiB());
+        Assertions.assertEquals(5939290521556195540L, response.extendedCapacitySizeTiB());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
     }
 }

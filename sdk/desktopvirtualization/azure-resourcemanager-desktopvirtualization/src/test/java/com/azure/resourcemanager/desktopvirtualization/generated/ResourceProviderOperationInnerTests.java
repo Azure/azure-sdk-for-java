@@ -6,6 +6,7 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ResourceProviderOperationInner;
+import com.azure.resourcemanager.desktopvirtualization.models.LogSpecification;
 import com.azure.resourcemanager.desktopvirtualization.models.OperationProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceProviderOperationDisplay;
 import com.azure.resourcemanager.desktopvirtualization.models.ServiceSpecification;
@@ -18,7 +19,7 @@ public final class ResourceProviderOperationInnerTests {
         ResourceProviderOperationInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[]}}}")
+                    "{\"name\":\"jddeqsrdeupewnw\",\"display\":{\"provider\":\"tjzyflus\",\"resource\":\"hmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"mparcryuanzw\",\"displayName\":\"zdxtayrlhmwhf\",\"blobDuration\":\"rqobmtuk\"}]}}}")
                 .toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("jddeqsrdeupewnw", model.name());
         Assertions.assertEquals("tjzyflus", model.display().provider());
@@ -26,6 +27,14 @@ public final class ResourceProviderOperationInnerTests {
         Assertions.assertEquals("smy", model.display().operation());
         Assertions.assertEquals("kdtmlxhekuk", model.display().description());
         Assertions.assertEquals(false, model.isDataAction());
+        Assertions
+            .assertEquals("mparcryuanzw", model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "zdxtayrlhmwhf", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "rqobmtuk", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
@@ -42,7 +51,15 @@ public final class ResourceProviderOperationInnerTests {
                 .withIsDataAction(false)
                 .withProperties(
                     new OperationProperties()
-                        .withServiceSpecification(new ServiceSpecification().withLogSpecifications(Arrays.asList())));
+                        .withServiceSpecification(
+                            new ServiceSpecification()
+                                .withLogSpecifications(
+                                    Arrays
+                                        .asList(
+                                            new LogSpecification()
+                                                .withName("mparcryuanzw")
+                                                .withDisplayName("zdxtayrlhmwhf")
+                                                .withBlobDuration("rqobmtuk")))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationInner.class);
         Assertions.assertEquals("jddeqsrdeupewnw", model.name());
         Assertions.assertEquals("tjzyflus", model.display().provider());
@@ -50,5 +67,13 @@ public final class ResourceProviderOperationInnerTests {
         Assertions.assertEquals("smy", model.display().operation());
         Assertions.assertEquals("kdtmlxhekuk", model.display().description());
         Assertions.assertEquals(false, model.isDataAction());
+        Assertions
+            .assertEquals("mparcryuanzw", model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions
+            .assertEquals(
+                "zdxtayrlhmwhf", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions
+            .assertEquals(
+                "rqobmtuk", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DayOfWeek. */
+/**
+ * Defines values for DayOfWeek.
+ */
 public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
-    /** Static value Friday for DayOfWeek. */
+    /**
+     * Static value Friday for DayOfWeek.
+     */
     public static final DayOfWeek FRIDAY = fromString("Friday");
 
-    /** Static value Monday for DayOfWeek. */
+    /**
+     * Static value Monday for DayOfWeek.
+     */
     public static final DayOfWeek MONDAY = fromString("Monday");
 
-    /** Static value Saturday for DayOfWeek. */
+    /**
+     * Static value Saturday for DayOfWeek.
+     */
     public static final DayOfWeek SATURDAY = fromString("Saturday");
 
-    /** Static value Sunday for DayOfWeek. */
+    /**
+     * Static value Sunday for DayOfWeek.
+     */
     public static final DayOfWeek SUNDAY = fromString("Sunday");
 
-    /** Static value Thursday for DayOfWeek. */
+    /**
+     * Static value Thursday for DayOfWeek.
+     */
     public static final DayOfWeek THURSDAY = fromString("Thursday");
 
-    /** Static value Tuesday for DayOfWeek. */
+    /**
+     * Static value Tuesday for DayOfWeek.
+     */
     public static final DayOfWeek TUESDAY = fromString("Tuesday");
 
-    /** Static value Wednesday for DayOfWeek. */
+    /**
+     * Static value Wednesday for DayOfWeek.
+     */
     public static final DayOfWeek WEDNESDAY = fromString("Wednesday");
 
     /**
      * Creates a new instance of DayOfWeek value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
 
     /**
      * Creates or finds a DayOfWeek from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DayOfWeek.
      */
@@ -53,7 +69,7 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
 
     /**
      * Gets known DayOfWeek values.
-     *
+     * 
      * @return known DayOfWeek values.
      */
     public static Collection<DayOfWeek> values() {

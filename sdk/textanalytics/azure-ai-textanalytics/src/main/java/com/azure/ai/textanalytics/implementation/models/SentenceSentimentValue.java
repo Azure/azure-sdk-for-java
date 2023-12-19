@@ -4,9 +4,6 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /** The predicted Sentiment for the sentence. */
 public enum SentenceSentimentValue {
     /** Enum value positive. */
@@ -31,7 +28,6 @@ public enum SentenceSentimentValue {
      * @param value the serialized value to parse.
      * @return the parsed SentenceSentimentValue object, or null if unable to parse.
      */
-    @JsonCreator
     public static SentenceSentimentValue fromString(String value) {
         if (value == null) {
             return null;
@@ -46,7 +42,6 @@ public enum SentenceSentimentValue {
     }
 
     /** {@inheritDoc} */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

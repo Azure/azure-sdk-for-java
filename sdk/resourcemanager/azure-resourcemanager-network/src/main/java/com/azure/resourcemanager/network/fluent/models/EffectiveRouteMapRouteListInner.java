@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.EffectiveRouteMapRoute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** EffectiveRouteMapRoute List. */
+/**
+ * EffectiveRouteMapRoute List.
+ */
 @Fluent
 public final class EffectiveRouteMapRouteListInner {
     /*
@@ -18,13 +20,15 @@ public final class EffectiveRouteMapRouteListInner {
     @JsonProperty(value = "value")
     private List<EffectiveRouteMapRoute> value;
 
-    /** Creates an instance of EffectiveRouteMapRouteListInner class. */
+    /**
+     * Creates an instance of EffectiveRouteMapRouteListInner class.
+     */
     public EffectiveRouteMapRouteListInner() {
     }
 
     /**
      * Get the value property: The list of Effective RouteMap Routes configured on the connection resource.
-     *
+     * 
      * @return the value value.
      */
     public List<EffectiveRouteMapRoute> value() {
@@ -33,7 +37,7 @@ public final class EffectiveRouteMapRouteListInner {
 
     /**
      * Set the value property: The list of Effective RouteMap Routes configured on the connection resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the EffectiveRouteMapRouteListInner object itself.
      */
@@ -44,7 +48,7 @@ public final class EffectiveRouteMapRouteListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

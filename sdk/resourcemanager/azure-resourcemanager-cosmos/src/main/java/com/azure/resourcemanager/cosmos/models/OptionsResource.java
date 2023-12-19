@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB options resource object. */
+/**
+ * Cosmos DB options resource object.
+ */
 @Fluent
 public class OptionsResource {
     /*
@@ -23,14 +25,16 @@ public class OptionsResource {
     @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
-    /** Creates an instance of OptionsResource class. */
+    /**
+     * Creates an instance of OptionsResource class.
+     */
     public OptionsResource() {
     }
 
     /**
      * Get the throughput property: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
      * ThroughputSetting resource when retrieving offer details.
-     *
+     * 
      * @return the throughput value.
      */
     public Integer throughput() {
@@ -40,7 +44,7 @@ public class OptionsResource {
     /**
      * Set the throughput property: Value of the Cosmos DB resource throughput or autoscaleSettings. Use the
      * ThroughputSetting resource when retrieving offer details.
-     *
+     * 
      * @param throughput the throughput value to set.
      * @return the OptionsResource object itself.
      */
@@ -51,7 +55,7 @@ public class OptionsResource {
 
     /**
      * Get the autoscaleSettings property: Specifies the Autoscale settings.
-     *
+     * 
      * @return the autoscaleSettings value.
      */
     public AutoscaleSettings autoscaleSettings() {
@@ -60,7 +64,7 @@ public class OptionsResource {
 
     /**
      * Set the autoscaleSettings property: Specifies the Autoscale settings.
-     *
+     * 
      * @param autoscaleSettings the autoscaleSettings value to set.
      * @return the OptionsResource object itself.
      */
@@ -71,7 +75,7 @@ public class OptionsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

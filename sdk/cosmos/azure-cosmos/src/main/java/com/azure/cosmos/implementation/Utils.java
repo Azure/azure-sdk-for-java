@@ -579,23 +579,6 @@ public class Utils {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static void setContinuationTokenAndMaxItemCount(CosmosPagedFluxOptions pagedFluxOptions, CosmosQueryRequestOptions cosmosQueryRequestOptions) {
-        if (pagedFluxOptions == null) {
-            return;
-        }
-        if (pagedFluxOptions.getRequestContinuation() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsContinuationToken(cosmosQueryRequestOptions, pagedFluxOptions.getRequestContinuation());
-        }
-        if (pagedFluxOptions.getMaxItemCount() != null) {
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
-        } else {
-            // if query request options also don't have maxItemCount set, apply defaults
-            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(
-                cosmosQueryRequestOptions, Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-            pagedFluxOptions.setMaxItemCount(Constants.Properties.DEFAULT_MAX_PAGE_SIZE);
-        }
-    }
-
     public static CosmosChangeFeedRequestOptions getEffectiveCosmosChangeFeedRequestOptions(
         CosmosPagedFluxOptions pagedFluxOptions,
         CosmosChangeFeedRequestOptions cosmosChangeFeedRequestRequestOptions) {

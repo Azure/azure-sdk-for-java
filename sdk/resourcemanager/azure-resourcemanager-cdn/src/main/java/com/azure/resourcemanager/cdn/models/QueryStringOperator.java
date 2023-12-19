@@ -41,6 +41,15 @@ public final class QueryStringOperator extends ExpandableStringEnum<QueryStringO
     public static final QueryStringOperator REG_EX = fromString("RegEx");
 
     /**
+     * Creates a new instance of QueryStringOperator value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryStringOperator() {
+    }
+
+    /**
      * Creates or finds a QueryStringOperator from its string representation.
      *
      * @param name a name to look for.

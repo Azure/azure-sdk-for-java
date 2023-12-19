@@ -33,7 +33,7 @@ public final class WebPubSubReplicasListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"iwfbrkwpzdqtvhcs\",\"tier\":\"Basic\",\"size\":\"qaxsipietgbebjf\",\"family\":\"bmoichd\",\"capacity\":816539003},\"properties\":{\"provisioningState\":\"Moving\"},\"location\":\"nt\",\"tags\":{\"cjuhplrvkm\":\"tzviqsowsaaelcat\",\"ggcvk\":\"cwmjvlg\",\"izrzb\":\"y\",\"ztlvtmvagbwidqlv\":\"psfxsf\"},\"id\":\"ukoveofi\",\"name\":\"rvjfnmjmvlw\",\"type\":\"z\"}]}";
+            "{\"value\":[{\"sku\":{\"name\":\"b\",\"tier\":\"Basic\",\"size\":\"fs\",\"family\":\"wlkjxn\",\"capacity\":979302562},\"properties\":{\"provisioningState\":\"Deleting\",\"regionEndpointEnabled\":\"tmhqykiz\",\"resourceStopped\":\"ksaoafcluqvox\"},\"location\":\"cjimryvwgcwwpbmz\",\"tags\":{\"bvopwndyqle\":\"sydsxwefohe\",\"lowkxxpvb\":\"llklmtk\"},\"id\":\"dfjmzsyzfhotlh\",\"name\":\"k\",\"type\":\"yych\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,14 @@ public final class WebPubSubReplicasListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Replica> response =
-            manager.webPubSubReplicas().list("hqo", "oihiqak", com.azure.core.util.Context.NONE);
+            manager.webPubSubReplicas().list("abeolhbhlvbm", "uqibsxtkcu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nt", response.iterator().next().location());
-        Assertions.assertEquals("tzviqsowsaaelcat", response.iterator().next().tags().get("cjuhplrvkm"));
-        Assertions.assertEquals("iwfbrkwpzdqtvhcs", response.iterator().next().sku().name());
+        Assertions.assertEquals("cjimryvwgcwwpbmz", response.iterator().next().location());
+        Assertions.assertEquals("sydsxwefohe", response.iterator().next().tags().get("bvopwndyqle"));
+        Assertions.assertEquals("b", response.iterator().next().sku().name());
         Assertions.assertEquals(WebPubSubSkuTier.BASIC, response.iterator().next().sku().tier());
-        Assertions.assertEquals(816539003, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(979302562, response.iterator().next().sku().capacity());
+        Assertions.assertEquals("tmhqykiz", response.iterator().next().regionEndpointEnabled());
+        Assertions.assertEquals("ksaoafcluqvox", response.iterator().next().resourceStopped());
     }
 }

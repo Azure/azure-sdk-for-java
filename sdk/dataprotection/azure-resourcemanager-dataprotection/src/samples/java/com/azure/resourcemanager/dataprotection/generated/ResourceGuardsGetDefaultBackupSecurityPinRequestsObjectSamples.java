@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for ResourceGuards GetDefaultBackupSecurityPinRequestsObject. */
+/**
+ * Samples for ResourceGuards GetDefaultBackupSecurityPinRequestsObject.
+ */
 public final class ResourceGuardsGetDefaultBackupSecurityPinRequestsObjectSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * ResourceGuardCRUD/GetDefaultBackupSecurityPINRequests.json
      */
     /**
      * Sample code: Get DefaultOperationsRequestObject.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getDefaultOperationsRequestObject(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .resourceGuards()
-            .getDefaultBackupSecurityPinRequestsObjectWithResponse(
-                "SampleResourceGroup", "swaggerExample", "default", com.azure.core.util.Context.NONE);
+    public static void
+        getDefaultOperationsRequestObject(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().getDefaultBackupSecurityPinRequestsObjectWithResponse("SampleResourceGroup",
+            "swaggerExample", "default", com.azure.core.util.Context.NONE);
     }
 }

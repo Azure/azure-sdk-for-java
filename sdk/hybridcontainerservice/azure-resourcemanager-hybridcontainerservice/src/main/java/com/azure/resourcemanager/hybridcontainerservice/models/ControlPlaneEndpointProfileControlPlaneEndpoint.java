@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** API server endpoint for the control plane. */
+/**
+ * API server endpoint for the control plane.
+ */
 @Fluent
 public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
     /*
@@ -20,15 +22,17 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
      * Port for the API server
      */
     @JsonProperty(value = "port")
-    private String port;
+    private Integer port;
 
-    /** Creates an instance of ControlPlaneEndpointProfileControlPlaneEndpoint class. */
+    /**
+     * Creates an instance of ControlPlaneEndpointProfileControlPlaneEndpoint class.
+     */
     public ControlPlaneEndpointProfileControlPlaneEndpoint() {
     }
 
     /**
      * Get the hostIp property: Host IP address for API server.
-     *
+     * 
      * @return the hostIp value.
      */
     public String hostIp() {
@@ -37,7 +41,7 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
 
     /**
      * Set the hostIp property: Host IP address for API server.
-     *
+     * 
      * @param hostIp the hostIp value to set.
      * @return the ControlPlaneEndpointProfileControlPlaneEndpoint object itself.
      */
@@ -48,27 +52,27 @@ public final class ControlPlaneEndpointProfileControlPlaneEndpoint {
 
     /**
      * Get the port property: Port for the API server.
-     *
+     * 
      * @return the port value.
      */
-    public String port() {
+    public Integer port() {
         return this.port;
     }
 
     /**
      * Set the port property: Port for the API server.
-     *
+     * 
      * @param port the port value to set.
      * @return the ControlPlaneEndpointProfileControlPlaneEndpoint object itself.
      */
-    public ControlPlaneEndpointProfileControlPlaneEndpoint withPort(String port) {
+    public ControlPlaneEndpointProfileControlPlaneEndpoint withPort(Integer port) {
         this.port = port;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

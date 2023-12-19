@@ -4,6 +4,7 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -21,7 +22,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.TimeUnit;
 
@@ -55,9 +55,9 @@ public class ResponseConstructorsCacheBenchMark {
             Class<? extends Response<?>> responseClass =
                 (Class<? extends Response<?>>) TypeUtil.getRawClass(inputs[i].returnType());
             // Step1: Locate Constructor using Reflection.
-            MethodHandle handle = defaultCache.get(responseClass);
+            ReflectiveInvoker reflectiveInvoker = defaultCache.get(responseClass);
             // Step2: Invoke Constructor using Reflection.
-            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
+            Response<?> response = defaultCache.invoke(reflectiveInvoker, inputs[i].decodedResponse(),
                 inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response);

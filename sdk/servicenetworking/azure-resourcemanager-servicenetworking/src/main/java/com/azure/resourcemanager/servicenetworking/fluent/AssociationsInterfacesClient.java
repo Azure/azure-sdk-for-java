@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
 
-/** An instance of this class provides access to all the operations defined in AssociationsInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssociationsInterfacesClient.
+ */
 public interface AssociationsInterfacesClient {
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface AssociationsInterfacesClient {
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -41,12 +43,12 @@ public interface AssociationsInterfacesClient {
      * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AssociationInner> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context);
+    PagedIterable<AssociationInner> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -57,12 +59,12 @@ public interface AssociationsInterfacesClient {
      * @return a Association along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssociationInner> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context);
+    Response<AssociationInner> getWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context);
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -76,7 +78,7 @@ public interface AssociationsInterfacesClient {
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -87,12 +89,12 @@ public interface AssociationsInterfacesClient {
      * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource);
+    SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource);
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -104,16 +106,12 @@ public interface AssociationsInterfacesClient {
      * @return the {@link SyncPoller} for polling of association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context);
+    SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(String resourceGroupName,
+        String trafficControllerName, String associationName, AssociationInner resource, Context context);
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -124,12 +122,12 @@ public interface AssociationsInterfacesClient {
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssociationInner createOrUpdate(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource);
+    AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName, String associationName,
+        AssociationInner resource);
 
     /**
      * Create a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -141,16 +139,12 @@ public interface AssociationsInterfacesClient {
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssociationInner createOrUpdate(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationInner resource,
-        Context context);
+    AssociationInner createOrUpdate(String resourceGroupName, String trafficControllerName, String associationName,
+        AssociationInner resource, Context context);
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -162,16 +156,12 @@ public interface AssociationsInterfacesClient {
      * @return association Subresource of Traffic Controller along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssociationInner> updateWithResponse(
-        String resourceGroupName,
-        String trafficControllerName,
-        String associationName,
-        AssociationUpdate properties,
-        Context context);
+    Response<AssociationInner> updateWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, AssociationUpdate properties, Context context);
 
     /**
      * Update a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -182,12 +172,12 @@ public interface AssociationsInterfacesClient {
      * @return association Subresource of Traffic Controller.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssociationInner update(
-        String resourceGroupName, String trafficControllerName, String associationName, AssociationUpdate properties);
+    AssociationInner update(String resourceGroupName, String trafficControllerName, String associationName,
+        AssociationUpdate properties);
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -197,12 +187,12 @@ public interface AssociationsInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String associationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String associationName);
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -213,12 +203,12 @@ public interface AssociationsInterfacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context);
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -231,7 +221,7 @@ public interface AssociationsInterfacesClient {
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.

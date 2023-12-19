@@ -281,6 +281,7 @@ public class ClientCertificateCredentialTest {
             when(identitySyncClient.authenticateWithConfidentialClientCache(any())).thenThrow(new IllegalStateException("Test"));
             when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
         })) {
+            pemCert.reset();
             // test
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemCert).build();
@@ -324,6 +325,7 @@ public class ClientCertificateCredentialTest {
             when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
         })) {
             // test
+            pfxCert.reset();
             ClientCertificateCredential credential =
                 new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID)
                     .pfxCertificate(pfxCert).clientCertificatePassword(pfxPassword).build();

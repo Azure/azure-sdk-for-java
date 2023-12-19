@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a column to sort. */
+/**
+ * Describes a column to sort.
+ */
 @Fluent
 public final class OrderBy {
     /*
@@ -22,13 +24,15 @@ public final class OrderBy {
     @JsonProperty(value = "order")
     private FirewallPolicyIdpsQuerySortOrder order;
 
-    /** Creates an instance of OrderBy class. */
+    /**
+     * Creates an instance of OrderBy class.
+     */
     public OrderBy() {
     }
 
     /**
      * Get the field property: Describes the actual column name to sort by.
-     *
+     * 
      * @return the field value.
      */
     public String field() {
@@ -37,7 +41,7 @@ public final class OrderBy {
 
     /**
      * Set the field property: Describes the actual column name to sort by.
-     *
+     * 
      * @param field the field value to set.
      * @return the OrderBy object itself.
      */
@@ -48,7 +52,7 @@ public final class OrderBy {
 
     /**
      * Get the order property: Describes if results should be in ascending/descending order.
-     *
+     * 
      * @return the order value.
      */
     public FirewallPolicyIdpsQuerySortOrder order() {
@@ -57,7 +61,7 @@ public final class OrderBy {
 
     /**
      * Set the order property: Describes if results should be in ascending/descending order.
-     *
+     * 
      * @param order the order value to set.
      * @return the OrderBy object itself.
      */
@@ -68,7 +72,7 @@ public final class OrderBy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

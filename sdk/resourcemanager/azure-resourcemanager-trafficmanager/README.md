@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-trafficmanager</artifactId>
-    <version>2.30.0</version>
+    <version>2.33.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -31,7 +31,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+By default, Microsoft Entra ID token authentication depends on correct configure of following environment variables.
 
 - `AZURE_CLIENT_ID` for Azure client ID.
 - `AZURE_TENANT_ID` for Azure tenant ID.
@@ -77,7 +77,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty

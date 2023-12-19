@@ -28,8 +28,7 @@ public enum Feature {
     SPRING_SCHEDULING_DISABLED(14),
     AZURE_SDK_DISABLED(15),
     RABBITMQ_DISABLED(16),
-    SPRING_INTEGRATION_DISABLED(
-        17), // preview instrumentation, spring-integration is ON by default in OTEL
+    SPRING_INTEGRATION_DISABLED(17), // preview instrumentation, spring-integration is ON by default in OTEL
     LEGACY_PROPAGATION_ENABLED(18), // legacy propagation is disabled by default
     GRIZZLY_ENABLED(19), // preview instrumentation, grizzly is OFF by default in OTEL
     STATSBEAT_DISABLED(20), // disable non-essential statsbeat
@@ -43,13 +42,32 @@ public enum Feature {
     CAPTURE_HTTP_CLIENT_HEADERS(28),
     VERTX_DISABLED(29), // preview instrumentation, vertx is ON by default in OTEL
     CUSTOM_DIMENSIONS_ENABLED(30), // enable customDimensions
-    JAXRS_ANNOTATIONS_DISABLED(
-        31), // can cause startup slowness, jaxrs-annotations is ON by default in OTEL
+    JAXRS_ANNOTATIONS_DISABLED(31), // can cause startup slowness, jaxrs-annotations is ON by default in OTEL
     LOGGING_LEVEL_CUSTOM_PROPERTY_ENABLED(32), // preview opt-in to include LoggingLevel
     TELEMETRY_PROCESSOR_ENABLED(33),
     SDK_2X_BRIDGE_VIA_3X_AGENT(34), // track 2.x bridge usage via 3.x codeless agent
     PROFILER_ENABLED(35),
-    BROWSER_SDK_LOADER(36); // track javascript snippet
+    BROWSER_SDK_LOADER(36), // track javascript snippet
+    PREVIEW_SAMPLING(37), // track preview sampling feature
+    PREVIEW_CAPTURE_CONTROLLER_SPANS(38), // track captureControllerSpans
+    PREVIEW_LIVE_METRICS(39), // track liveMetrics
+    PREVIEW_LEGACY_REQUEST_ID_PROPAGATION(40), // track legacyRequestIdPropagation
+    PREVIEW_DISABLE_PROPAGATION(41), // track disablePropagation
+    PREVIEW_CAPTURE_LOGGING_LEVEL_AS_CUSTOM_DIMENSION(42), // track captureLoggingLevelAsCustomDimension
+    PREVIEW_CAPTURE_LOGBACK_CODE_ATTRIBUTES(43), // track captureLogbackCodeAttributes
+    PREVIEW_CAPTURE_LOGBACK_MARKER(44), // track captureLogbackMarker
+    PREVIEW_CAPTURE_LOG4J_MARKER(45), // track captureLog4jMarker
+    PREVIEW_INHERITED_ATTRIBUTES(46), // track inheritedAttributes
+    PREVIEW_GC_EVENTS(47), // track gcEvents
+    PREVIEW_CONNECTION_STRING_OVERRIDES(48), // track connectionStringOverrides
+    PREVIEW_ROLE_NAME_OVERRIDES(49), // track roleNameOverrides
+    PREVIEW_INSTRUMENTATION_OVERRIDES(50), // track instrumentationKeyOverrides
+    PREVIEW_GENERAL_EXPORT_QUEUE_CAPACITY(51), // track generalExportQueueCapacity
+    PREVIEW_METRICS_EXPORT_QUEUE_CAPACITY(52), // track metricsExportQueueCapacity
+    PREVIEW_DISK_PERSISTENCE_MAX_SIZE_MB(53), // track diskPersistenceMaxSizeMb
+    PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
+    PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
+    PREVIEW_ADDITIONAL_PROPAGATORS(56); // track additionalPropagators
 
     private static final Map<String, Feature> javaVendorFeatureMap;
 

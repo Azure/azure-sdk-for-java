@@ -10,22 +10,16 @@ import com.azure.resourcemanager.datafactory.models.SftpWriteSettings;
 public final class SftpWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SftpWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SftpWriteSettings\",\"operationTimeout\":\"dataxzzhldaxvir\",\"useTempFileRename\":\"datawacfqnw\",\"maxConcurrentConnections\":\"datab\",\"disableMetricsCollection\":\"datagi\",\"copyBehavior\":\"datazrpqe\",\"\":{\"a\":\"dataldvxcjjhjnpa\"}}")
-                .toObject(SftpWriteSettings.class);
+        SftpWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"SftpWriteSettings\",\"operationTimeout\":\"datazbvsjuths\",\"useTempFileRename\":\"dataefilncyqnkp\",\"maxConcurrentConnections\":\"datafmpz\",\"disableMetricsCollection\":\"dataerjckzxdlupgt\",\"copyBehavior\":\"datamndzbfoia\",\"\":{\"zgrr\":\"datalntnsiuxyitjwsdx\",\"mhenqn\":\"datalzxxg\",\"kobxvexusjfjuphj\":\"datavt\",\"atl\":\"dataueksvjtgpy\"}}")
+            .toObject(SftpWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SftpWriteSettings model =
-            new SftpWriteSettings()
-                .withMaxConcurrentConnections("datab")
-                .withDisableMetricsCollection("datagi")
-                .withCopyBehavior("datazrpqe")
-                .withOperationTimeout("dataxzzhldaxvir")
-                .withUseTempFileRename("datawacfqnw");
+        SftpWriteSettings model = new SftpWriteSettings().withMaxConcurrentConnections("datafmpz")
+            .withDisableMetricsCollection("dataerjckzxdlupgt").withCopyBehavior("datamndzbfoia")
+            .withOperationTimeout("datazbvsjuths").withUseTempFileRename("dataefilncyqnkp");
         model = BinaryData.fromObject(model).toObject(SftpWriteSettings.class);
     }
 }

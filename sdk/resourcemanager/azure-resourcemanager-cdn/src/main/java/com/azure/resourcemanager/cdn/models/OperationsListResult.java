@@ -27,6 +27,10 @@ public final class OperationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of OperationsListResult class. */
+    public OperationsListResult() {
+    }
+
     /**
      * Get the value property: List of CDN operations supported by the CDN resource provider.
      *

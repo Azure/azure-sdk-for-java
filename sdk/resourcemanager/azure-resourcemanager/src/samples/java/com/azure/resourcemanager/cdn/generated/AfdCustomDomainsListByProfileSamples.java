@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AfdCustomDomains ListByProfile. */
 public final class AfdCustomDomainsListByProfileSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/AFDCustomDomains_ListByProfile.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/AFDCustomDomains_ListByProfile.json
      */
     /**
      * Sample code: AFDCustomDomains_ListByProfile.
@@ -22,6 +20,6 @@ public final class AfdCustomDomainsListByProfileSamples {
             .manager()
             .serviceClient()
             .getAfdCustomDomains()
-            .listByProfile("RG", "profile1", Context.NONE);
+            .listByProfile("RG", "profile1", com.azure.core.util.Context.NONE);
     }
 }

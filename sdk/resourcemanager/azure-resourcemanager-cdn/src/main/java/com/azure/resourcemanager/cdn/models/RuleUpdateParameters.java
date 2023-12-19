@@ -18,6 +18,10 @@ public final class RuleUpdateParameters {
     @JsonProperty(value = "properties")
     private RuleUpdatePropertiesParameters innerProperties;
 
+    /** Creates an instance of RuleUpdateParameters class. */
+    public RuleUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the rule to update.
      *

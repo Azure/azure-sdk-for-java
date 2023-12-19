@@ -24,6 +24,10 @@ public final class EndpointPropertiesUpdateParametersDeliveryPolicy {
     @JsonProperty(value = "rules", required = true)
     private List<DeliveryRule> rules;
 
+    /** Creates an instance of EndpointPropertiesUpdateParametersDeliveryPolicy class. */
+    public EndpointPropertiesUpdateParametersDeliveryPolicy() {
+    }
+
     /**
      * Get the description property: User-friendly description of the policy.
      *

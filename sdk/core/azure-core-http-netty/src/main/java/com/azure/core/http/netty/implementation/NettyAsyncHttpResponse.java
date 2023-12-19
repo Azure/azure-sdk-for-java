@@ -38,14 +38,15 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Flux<ByteBuffer> getBody() {
-        return bodyIntern()
-            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf))
-            .doFinally(ignored -> close());
+        return Flux.using(() -> this, response -> response.bodyIntern()
+            .map(byteBuf -> this.disableBufferCopy ? byteBuf.nioBuffer() : deepCopyBuffer(byteBuf)),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return bodyIntern().aggregate().asByteArray().doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asByteArray(),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
@@ -56,12 +57,14 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return bodyIntern().aggregate().asString(charset).doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asString(charset),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        return bodyIntern().aggregate().asInputStream().doFinally(ignored -> close());
+        return Mono.using(() -> this, response -> response.bodyIntern().aggregate().asInputStream(),
+            NettyAsyncHttpResponse::close);
     }
 
     @Override
@@ -89,10 +92,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.<Void>create(sink -> bodyIntern().subscribe(
+        Mono.using(() -> this, response -> Mono.<Void>create(sink -> response.bodyIntern().subscribe(
             new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
-            .subscribeOn(Schedulers.boundedElastic())
-            .doFinally(ignored -> close())
+            .subscribeOn(Schedulers.boundedElastic()), NettyAsyncHttpResponse::close)
             .block();
     }
 

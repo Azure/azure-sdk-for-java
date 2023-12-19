@@ -7,9 +7,11 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
+import com.azure.resourcemanager.appservice.models.DaprConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
+import com.azure.resourcemanager.appservice.models.ResourceConfig;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
@@ -18,7 +20,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/** Site resource specific properties. */
+/**
+ * Site resource specific properties.
+ */
 @Fluent
 public final class SitePropertiesInner {
     /*
@@ -126,6 +130,24 @@ public final class SitePropertiesInner {
      */
     @JsonProperty(value = "siteConfig")
     private SiteConfigInner siteConfig;
+
+    /*
+     * Dapr configuration of the app.
+     */
+    @JsonProperty(value = "daprConfig")
+    private DaprConfig daprConfig;
+
+    /*
+     * Workload profile name for function app to execute on.
+     */
+    @JsonProperty(value = "workloadProfileName")
+    private String workloadProfileName;
+
+    /*
+     * Function app resource requirements.
+     */
+    @JsonProperty(value = "resourceConfig")
+    private ResourceConfig resourceConfig;
 
     /*
      * Azure Traffic Manager hostnames associated with the app. Read-only.
@@ -304,7 +326,8 @@ public final class SitePropertiesInner {
     /*
      * Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration.
      * This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
+     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/
+     * {vnetName}/subnets/{subnetName}
      */
     @JsonProperty(value = "virtualNetworkSubnetId")
     private String virtualNetworkSubnetId;
@@ -312,18 +335,21 @@ public final class SitePropertiesInner {
     /*
      * Azure Resource Manager ID of the customer's selected Managed Environment on which to host this app. This must be
      * of the form
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{
+     * managedEnvironmentName}
      */
     @JsonProperty(value = "managedEnvironmentId")
     private String managedEnvironmentId;
 
-    /** Creates an instance of SitePropertiesInner class. */
+    /**
+     * Creates an instance of SitePropertiesInner class.
+     */
     public SitePropertiesInner() {
     }
 
     /**
      * Get the state property: Current state of the app.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -332,7 +358,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the hostNames property: Hostnames associated with the app.
-     *
+     * 
      * @return the hostNames value.
      */
     public List<String> hostNames() {
@@ -341,7 +367,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the repositorySiteName property: Name of the repository site.
-     *
+     * 
      * @return the repositorySiteName value.
      */
     public String repositorySiteName() {
@@ -350,7 +376,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the usageState property: State indicating whether the app has exceeded its quota usage. Read-only.
-     *
+     * 
      * @return the usageState value.
      */
     public UsageState usageState() {
@@ -360,7 +386,7 @@ public final class SitePropertiesInner {
     /**
      * Get the enabled property: &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -370,7 +396,7 @@ public final class SitePropertiesInner {
     /**
      * Set the enabled property: &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline).
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -381,8 +407,9 @@ public final class SitePropertiesInner {
 
     /**
      * Get the enabledHostNames property: Enabled hostnames for the app.Hostnames need to be assigned (see HostNames)
-     * AND enabled. Otherwise, the app is not served on those hostnames.
-     *
+     * AND enabled. Otherwise,
+     * the app is not served on those hostnames.
+     * 
      * @return the enabledHostNames value.
      */
     public List<String> enabledHostNames() {
@@ -391,7 +418,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the availabilityState property: Management information availability state for the app.
-     *
+     * 
      * @return the availabilityState value.
      */
     public SiteAvailabilityState availabilityState() {
@@ -400,7 +427,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-     *
+     * 
      * @return the hostnameSslStates value.
      */
     public List<HostnameSslState> hostnameSslStates() {
@@ -409,7 +436,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-     *
+     * 
      * @param hostnameSslStates the hostnameSslStates value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -421,7 +448,7 @@ public final class SitePropertiesInner {
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
      * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-     *
+     * 
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
@@ -431,7 +458,7 @@ public final class SitePropertiesInner {
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
      * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-     *
+     * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -442,7 +469,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the reserved property: &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the reserved value.
      */
     public Boolean reserved() {
@@ -451,7 +478,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the reserved property: &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param reserved the reserved value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -462,7 +489,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the isXenon property: Obsolete: Hyper-V sandbox.
-     *
+     * 
      * @return the isXenon value.
      */
     public Boolean isXenon() {
@@ -471,7 +498,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the isXenon property: Obsolete: Hyper-V sandbox.
-     *
+     * 
      * @param isXenon the isXenon value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -482,7 +509,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the hyperV property: Hyper-V sandbox.
-     *
+     * 
      * @return the hyperV value.
      */
     public Boolean hyperV() {
@@ -491,7 +518,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the hyperV property: Hyper-V sandbox.
-     *
+     * 
      * @param hyperV the hyperV value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -502,7 +529,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the lastModifiedTimeUtc property: Last time the app was modified, in UTC. Read-only.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -510,9 +537,9 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
+     * have Virtual Network Security Groups and User Defined Routes applied.
+     * 
      * @return the vnetRouteAllEnabled value.
      */
     public Boolean vnetRouteAllEnabled() {
@@ -520,9 +547,9 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
-     * Virtual Network Security Groups and User Defined Routes applied.
-     *
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
+     * have Virtual Network Security Groups and User Defined Routes applied.
+     * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -533,7 +560,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     *
+     * 
      * @return the vnetImagePullEnabled value.
      */
     public Boolean vnetImagePullEnabled() {
@@ -542,7 +569,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
-     *
+     * 
      * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -553,7 +580,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     *
+     * 
      * @return the vnetContentShareEnabled value.
      */
     public Boolean vnetContentShareEnabled() {
@@ -562,7 +589,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
-     *
+     * 
      * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -573,7 +600,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the siteConfig property: Configuration of the app.
-     *
+     * 
      * @return the siteConfig value.
      */
     public SiteConfigInner siteConfig() {
@@ -582,7 +609,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the siteConfig property: Configuration of the app.
-     *
+     * 
      * @param siteConfig the siteConfig value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -592,8 +619,68 @@ public final class SitePropertiesInner {
     }
 
     /**
+     * Get the daprConfig property: Dapr configuration of the app.
+     * 
+     * @return the daprConfig value.
+     */
+    public DaprConfig daprConfig() {
+        return this.daprConfig;
+    }
+
+    /**
+     * Set the daprConfig property: Dapr configuration of the app.
+     * 
+     * @param daprConfig the daprConfig value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withDaprConfig(DaprConfig daprConfig) {
+        this.daprConfig = daprConfig;
+        return this;
+    }
+
+    /**
+     * Get the workloadProfileName property: Workload profile name for function app to execute on.
+     * 
+     * @return the workloadProfileName value.
+     */
+    public String workloadProfileName() {
+        return this.workloadProfileName;
+    }
+
+    /**
+     * Set the workloadProfileName property: Workload profile name for function app to execute on.
+     * 
+     * @param workloadProfileName the workloadProfileName value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withWorkloadProfileName(String workloadProfileName) {
+        this.workloadProfileName = workloadProfileName;
+        return this;
+    }
+
+    /**
+     * Get the resourceConfig property: Function app resource requirements.
+     * 
+     * @return the resourceConfig value.
+     */
+    public ResourceConfig resourceConfig() {
+        return this.resourceConfig;
+    }
+
+    /**
+     * Set the resourceConfig property: Function app resource requirements.
+     * 
+     * @param resourceConfig the resourceConfig value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withResourceConfig(ResourceConfig resourceConfig) {
+        this.resourceConfig = resourceConfig;
+        return this;
+    }
+
+    /**
      * Get the trafficManagerHostNames property: Azure Traffic Manager hostnames associated with the app. Read-only.
-     *
+     * 
      * @return the trafficManagerHostNames value.
      */
     public List<String> trafficManagerHostNames() {
@@ -603,7 +690,7 @@ public final class SitePropertiesInner {
     /**
      * Get the scmSiteAlsoStopped property: &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is
      * stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the scmSiteAlsoStopped value.
      */
     public Boolean scmSiteAlsoStopped() {
@@ -613,7 +700,7 @@ public final class SitePropertiesInner {
     /**
      * Set the scmSiteAlsoStopped property: &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is
      * stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param scmSiteAlsoStopped the scmSiteAlsoStopped value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -624,7 +711,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the targetSwapSlot property: Specifies which deployment slot this app will swap into. Read-only.
-     *
+     * 
      * @return the targetSwapSlot value.
      */
     public String targetSwapSlot() {
@@ -633,7 +720,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the hostingEnvironmentProfile property: App Service Environment to use for the app.
-     *
+     * 
      * @return the hostingEnvironmentProfile value.
      */
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
@@ -642,7 +729,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the hostingEnvironmentProfile property: App Service Environment to use for the app.
-     *
+     * 
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -655,7 +742,7 @@ public final class SitePropertiesInner {
      * Get the clientAffinityEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity;
      * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same
      * session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @return the clientAffinityEnabled value.
      */
     public Boolean clientAffinityEnabled() {
@@ -666,7 +753,7 @@ public final class SitePropertiesInner {
      * Set the clientAffinityEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client affinity;
      * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same
      * session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;.
-     *
+     * 
      * @param clientAffinityEnabled the clientAffinityEnabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -679,7 +766,7 @@ public final class SitePropertiesInner {
      * Get the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the clientCertEnabled value.
      */
     public Boolean clientCertEnabled() {
@@ -690,7 +777,7 @@ public final class SitePropertiesInner {
      * Set the clientCertEnabled property: &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication
      * (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param clientCertEnabled the clientCertEnabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -700,10 +787,11 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Get the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
+     * Get the clientCertMode property: This composes with ClientCertEnabled setting.
+     * - ClientCertEnabled: false means ClientCert is ignored.
+     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     * 
      * @return the clientCertMode value.
      */
     public ClientCertMode clientCertMode() {
@@ -711,10 +799,11 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Set the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
+     * Set the clientCertMode property: This composes with ClientCertEnabled setting.
+     * - ClientCertEnabled: false means ClientCert is ignored.
+     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
+     * 
      * @param clientCertMode the clientCertMode value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -725,7 +814,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
-     *
+     * 
      * @return the clientCertExclusionPaths value.
      */
     public String clientCertExclusionPaths() {
@@ -734,7 +823,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
-     *
+     * 
      * @param clientCertExclusionPaths the clientCertExclusionPaths value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -745,9 +834,9 @@ public final class SitePropertiesInner {
 
     /**
      * Get the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;. If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
-     * management process.
-     *
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * 
      * @return the hostNamesDisabled value.
      */
     public Boolean hostNamesDisabled() {
@@ -756,9 +845,9 @@ public final class SitePropertiesInner {
 
     /**
      * Set the hostNamesDisabled property: &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;. If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
-     * management process.
-     *
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
+     * 
      * @param hostNamesDisabled the hostNamesDisabled value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -770,7 +859,7 @@ public final class SitePropertiesInner {
     /**
      * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
      * app. Customer will add this id to a txt record for verification.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -780,7 +869,7 @@ public final class SitePropertiesInner {
     /**
      * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
      * app. Customer will add this id to a txt record for verification.
-     *
+     * 
      * @param customDomainVerificationId the customDomainVerificationId value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -792,7 +881,7 @@ public final class SitePropertiesInner {
     /**
      * Get the outboundIpAddresses property: List of IP addresses that the app uses for outbound connections (e.g.
      * database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public String outboundIpAddresses() {
@@ -802,7 +891,7 @@ public final class SitePropertiesInner {
     /**
      * Get the possibleOutboundIpAddresses property: List of IP addresses that the app uses for outbound connections
      * (e.g. database access). Includes VIPs from all tenants except dataComponent. Read-only.
-     *
+     * 
      * @return the possibleOutboundIpAddresses value.
      */
     public String possibleOutboundIpAddresses() {
@@ -811,7 +900,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the containerSize property: Size of the function container.
-     *
+     * 
      * @return the containerSize value.
      */
     public Integer containerSize() {
@@ -820,7 +909,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the containerSize property: Size of the function container.
-     *
+     * 
      * @param containerSize the containerSize value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -830,8 +919,9 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-     *
+     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
+     * only).
+     * 
      * @return the dailyMemoryTimeQuota value.
      */
     public Integer dailyMemoryTimeQuota() {
@@ -839,8 +929,9 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-     *
+     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
+     * only).
+     * 
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -851,7 +942,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the suspendedTill property: App suspended till in case memory-time quota is exceeded.
-     *
+     * 
      * @return the suspendedTill value.
      */
     public OffsetDateTime suspendedTill() {
@@ -859,8 +950,9 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Get the maxNumberOfWorkers property: Maximum number of workers. This only applies to Functions container.
-     *
+     * Get the maxNumberOfWorkers property: Maximum number of workers.
+     * This only applies to Functions container.
+     * 
      * @return the maxNumberOfWorkers value.
      */
     public Integer maxNumberOfWorkers() {
@@ -869,7 +961,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the cloningInfo property: If specified during app creation, the app is cloned from a source app.
-     *
+     * 
      * @return the cloningInfo value.
      */
     public CloningInfo cloningInfo() {
@@ -878,7 +970,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the cloningInfo property: If specified during app creation, the app is cloned from a source app.
-     *
+     * 
      * @param cloningInfo the cloningInfo value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -889,7 +981,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the resourceGroup property: Name of the resource group the app belongs to. Read-only.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -899,7 +991,7 @@ public final class SitePropertiesInner {
     /**
      * Get the isDefaultContainer property: &lt;code&gt;true&lt;/code&gt; if the app is a default container; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDefaultContainer value.
      */
     public Boolean isDefaultContainer() {
@@ -908,7 +1000,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the defaultHostname property: Default hostname of the app. Read-only.
-     *
+     * 
      * @return the defaultHostname value.
      */
     public String defaultHostname() {
@@ -917,7 +1009,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the slotSwapStatus property: Status of the last deployment slot swap operation.
-     *
+     * 
      * @return the slotSwapStatus value.
      */
     public SlotSwapStatus slotSwapStatus() {
@@ -927,7 +1019,7 @@ public final class SitePropertiesInner {
     /**
      * Get the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -937,7 +1029,7 @@ public final class SitePropertiesInner {
     /**
      * Set the httpsOnly property: HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -948,7 +1040,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the redundancyMode property: Site redundancy mode.
-     *
+     * 
      * @return the redundancyMode value.
      */
     public RedundancyMode redundancyMode() {
@@ -957,7 +1049,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the redundancyMode property: Site redundancy mode.
-     *
+     * 
      * @param redundancyMode the redundancyMode value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -968,7 +1060,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the inProgressOperationId property: Specifies an operation id if this site has a pending operation.
-     *
+     * 
      * @return the inProgressOperationId value.
      */
     public UUID inProgressOperationId() {
@@ -978,7 +1070,7 @@ public final class SitePropertiesInner {
     /**
      * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
      * 'Disabled' or an empty string.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public String publicNetworkAccess() {
@@ -988,7 +1080,7 @@ public final class SitePropertiesInner {
     /**
      * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
      * 'Disabled' or an empty string.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -999,7 +1091,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
-     *
+     * 
      * @return the storageAccountRequired value.
      */
     public Boolean storageAccountRequired() {
@@ -1008,7 +1100,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
-     *
+     * 
      * @param storageAccountRequired the storageAccountRequired value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -1019,7 +1111,7 @@ public final class SitePropertiesInner {
 
     /**
      * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -1028,7 +1120,7 @@ public final class SitePropertiesInner {
 
     /**
      * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -1038,10 +1130,11 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
+     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
+     * joined by Regional VNET Integration.
+     * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
+     * 
      * @return the virtualNetworkSubnetId value.
      */
     public String virtualNetworkSubnetId() {
@@ -1049,10 +1142,11 @@ public final class SitePropertiesInner {
     }
 
     /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
+     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
+     * joined by Regional VNET Integration.
+     * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
+     * 
      * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -1065,7 +1159,7 @@ public final class SitePropertiesInner {
      * Get the managedEnvironmentId property: Azure Resource Manager ID of the customer's selected Managed Environment
      * on which to host this app. This must be of the form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}.
-     *
+     * 
      * @return the managedEnvironmentId value.
      */
     public String managedEnvironmentId() {
@@ -1076,7 +1170,7 @@ public final class SitePropertiesInner {
      * Set the managedEnvironmentId property: Azure Resource Manager ID of the customer's selected Managed Environment
      * on which to host this app. This must be of the form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}.
-     *
+     * 
      * @param managedEnvironmentId the managedEnvironmentId value to set.
      * @return the SitePropertiesInner object itself.
      */
@@ -1087,7 +1181,7 @@ public final class SitePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -1096,6 +1190,12 @@ public final class SitePropertiesInner {
         }
         if (siteConfig() != null) {
             siteConfig().validate();
+        }
+        if (daprConfig() != null) {
+            daprConfig().validate();
+        }
+        if (resourceConfig() != null) {
+            resourceConfig().validate();
         }
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();

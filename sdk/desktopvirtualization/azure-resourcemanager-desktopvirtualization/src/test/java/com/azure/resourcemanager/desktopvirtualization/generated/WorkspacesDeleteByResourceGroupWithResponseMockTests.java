@@ -56,6 +56,6 @@ public final class WorkspacesDeleteByResourceGroupWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspaces().deleteByResourceGroupWithResponse("thrrgh", "jbdhqxvc", com.azure.core.util.Context.NONE);
+        manager.workspaces().deleteByResourceGroupWithResponse("ecuijpxtxs", "wprtu", com.azure.core.util.Context.NONE);
     }
 }

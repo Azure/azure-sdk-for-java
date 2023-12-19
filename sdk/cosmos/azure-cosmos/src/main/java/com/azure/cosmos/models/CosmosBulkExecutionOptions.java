@@ -6,10 +6,10 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
+import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +23,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 public final class CosmosBulkExecutionOptions {
     private int initialMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private int maxMicroBatchConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_CONCURRENCY;
+
+    private int maxMicroBatchSize = BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
     private double maxMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
     private int maxMicroBatchPayloadSizeInBytes = BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-    private Duration maxMicroBatchInterval = Duration.ofMillis(
+    private final Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
     private final CosmosBulkExecutionThresholdsState thresholds;
@@ -36,6 +38,8 @@ public final class CosmosBulkExecutionOptions {
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
     private List<String> excludeRegions;
+
+    private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
 
     /**
      * Constructor
@@ -120,6 +124,15 @@ public final class CosmosBulkExecutionOptions {
      */
     CosmosBulkExecutionOptions setMaxMicroBatchPayloadSizeInBytes(int maxMicroBatchPayloadSizeInBytes) {
         this.maxMicroBatchPayloadSizeInBytes = maxMicroBatchPayloadSizeInBytes;
+        return this;
+    }
+
+    int getMaxMicroBatchSize() {
+        return maxMicroBatchSize;
+    }
+
+    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+        this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
@@ -314,6 +327,14 @@ public final class CosmosBulkExecutionOptions {
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
+    void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {
+        this.diagnosticsTracker = tracker;
+    }
+
+    BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
+        return this.diagnosticsTracker;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -412,6 +433,29 @@ public final class CosmosBulkExecutionOptions {
                     return cosmosBulkExecutionOptions.excludeRegions;
                 }
 
+                @Override
+                public int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    if (cosmosBulkExecutionOptions == null) {
+                        return BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+                    }
+
+                    return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
+                }
+
+                @Override
+                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
+                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
+                }
+
+                @Override
+                public void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker) {
+                    cosmosBulkExecutionOptions.setDiagnosticsTracker(tracker);
+                }
+
+                @Override
+                public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.getDiagnosticsTracker();
+                }
             });
     }
 

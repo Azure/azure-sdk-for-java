@@ -137,7 +137,7 @@ import java.util.Arrays;
 /** Samples for AttachedDataNetworks CreateOrUpdate. */
 public final class AttachedDataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkCreate.json
      */
     /**
      * Sample code: Create attached data network.
@@ -172,7 +172,7 @@ public final class AttachedDataNetworksCreateOrUpdateSamples {
 /** Samples for AttachedDataNetworks Delete. */
 public final class AttachedDataNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkDelete.json
      */
     /**
      * Sample code: Delete attached data network resource.
@@ -199,7 +199,7 @@ public final class AttachedDataNetworksDeleteSamples {
 /** Samples for AttachedDataNetworks Get. */
 public final class AttachedDataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkGet.json
      */
     /**
      * Sample code: Get attached data network.
@@ -225,7 +225,7 @@ public final class AttachedDataNetworksGetSamples {
 /** Samples for AttachedDataNetworks ListByPacketCoreDataPlane. */
 public final class AttachedDataNetworksListByPacketCoreDataPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkListByPacketCoreDataPlane.json
      */
     /**
      * Sample code: List attached data networks in a data plane.
@@ -251,7 +251,7 @@ import java.util.Map;
 /** Samples for AttachedDataNetworks UpdateTags. */
 public final class AttachedDataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/AttachedDataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/AttachedDataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update attached data network tags.
@@ -273,6 +273,7 @@ public final class AttachedDataNetworksUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -292,7 +293,7 @@ public final class AttachedDataNetworksUpdateTagsSamples {
 /** Samples for DataNetworks CreateOrUpdate. */
 public final class DataNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DataNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkCreate.json
      */
     /**
      * Sample code: Create data network.
@@ -317,7 +318,7 @@ public final class DataNetworksCreateOrUpdateSamples {
 /** Samples for DataNetworks Delete. */
 public final class DataNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DataNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkDelete.json
      */
     /**
      * Sample code: Delete data network.
@@ -336,7 +337,7 @@ public final class DataNetworksDeleteSamples {
 /** Samples for DataNetworks Get. */
 public final class DataNetworksGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DataNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkGet.json
      */
     /**
      * Sample code: Get data network.
@@ -357,7 +358,7 @@ public final class DataNetworksGetSamples {
 /** Samples for DataNetworks ListByMobileNetwork. */
 public final class DataNetworksListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DataNetworkListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkListByMobileNetwork.json
      */
     /**
      * Sample code: List data networks in a mobile network.
@@ -381,7 +382,7 @@ import java.util.Map;
 /** Samples for DataNetworks UpdateTags. */
 public final class DataNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DataNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DataNetworkUpdateTags.json
      */
     /**
      * Sample code: Update data network tags.
@@ -397,6 +398,7 @@ public final class DataNetworksUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -416,7 +418,7 @@ public final class DataNetworksUpdateTagsSamples {
 /** Samples for DiagnosticsPackages CreateOrUpdate. */
 public final class DiagnosticsPackagesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DiagnosticsPackageCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageCreate.json
      */
     /**
      * Sample code: Create diagnostics package.
@@ -437,7 +439,7 @@ public final class DiagnosticsPackagesCreateOrUpdateSamples {
 /** Samples for DiagnosticsPackages Delete. */
 public final class DiagnosticsPackagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DiagnosticsPackageDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageDelete.json
      */
     /**
      * Sample code: Delete diagnostics package.
@@ -456,7 +458,7 @@ public final class DiagnosticsPackagesDeleteSamples {
 /** Samples for DiagnosticsPackages Get. */
 public final class DiagnosticsPackagesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DiagnosticsPackageGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageGet.json
      */
     /**
      * Sample code: Get diagnostics package.
@@ -477,7 +479,7 @@ public final class DiagnosticsPackagesGetSamples {
 /** Samples for DiagnosticsPackages ListByPacketCoreControlPlane. */
 public final class DiagnosticsPackagesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/DiagnosticsPackageListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List diagnostics packages under a packet core control plane.
@@ -501,7 +503,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 /** Samples for MobileNetworks CreateOrUpdate. */
 public final class MobileNetworksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkCreate.json
      */
     /**
      * Sample code: Create mobile network.
@@ -526,7 +528,7 @@ public final class MobileNetworksCreateOrUpdateSamples {
 /** Samples for MobileNetworks Delete. */
 public final class MobileNetworksDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkDelete.json
      */
     /**
      * Sample code: Delete mobile network.
@@ -545,7 +547,7 @@ public final class MobileNetworksDeleteSamples {
 /** Samples for MobileNetworks GetByResourceGroup. */
 public final class MobileNetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkGet.json
      */
     /**
      * Sample code: Get mobile network.
@@ -566,7 +568,7 @@ public final class MobileNetworksGetByResourceGroupSamples {
 /** Samples for MobileNetworks List. */
 public final class MobileNetworksListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListBySubscription.json
      */
     /**
      * Sample code: List mobile networks in a subscription.
@@ -586,7 +588,7 @@ public final class MobileNetworksListSamples {
 /** Samples for MobileNetworks ListByResourceGroup. */
 public final class MobileNetworksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkListByResourceGroup.json
      */
     /**
      * Sample code: List mobile networks in resource group.
@@ -610,7 +612,7 @@ import java.util.Map;
 /** Samples for MobileNetworks UpdateTags. */
 public final class MobileNetworksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/MobileNetworkUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/MobileNetworkUpdateTags.json
      */
     /**
      * Sample code: Update mobile network tags.
@@ -626,6 +628,7 @@ public final class MobileNetworksUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -645,7 +648,7 @@ public final class MobileNetworksUpdateTagsSamples {
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/OperationList.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/OperationList.json
      */
     /**
      * Sample code: Get Registration Operations.
@@ -666,7 +669,7 @@ import java.util.Arrays;
 /** Samples for PacketCaptures CreateOrUpdate. */
 public final class PacketCapturesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureCreate.json
      */
     /**
      * Sample code: Create packet capture.
@@ -698,7 +701,7 @@ public final class PacketCapturesCreateOrUpdateSamples {
 /** Samples for PacketCaptures Delete. */
 public final class PacketCapturesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureDelete.json
      */
     /**
      * Sample code: Delete packet capture.
@@ -717,7 +720,7 @@ public final class PacketCapturesDeleteSamples {
 /** Samples for PacketCaptures Get. */
 public final class PacketCapturesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureGet.json
      */
     /**
      * Sample code: Get packet capture session.
@@ -736,7 +739,7 @@ public final class PacketCapturesGetSamples {
 /** Samples for PacketCaptures ListByPacketCoreControlPlane. */
 public final class PacketCapturesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet capture sessions under a packet core control plane.
@@ -758,7 +761,7 @@ public final class PacketCapturesListByPacketCoreControlPlaneSamples {
 /** Samples for PacketCaptures Stop. */
 public final class PacketCapturesStopSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCaptureStop.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCaptureStop.json
      */
     /**
      * Sample code: Stop packet capture session.
@@ -777,7 +780,7 @@ public final class PacketCapturesStopSamples {
 /** Samples for PacketCoreControlPlaneVersions Get. */
 public final class PacketCoreControlPlaneVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionGet.json
      */
     /**
      * Sample code: Get packet core control plane version.
@@ -797,7 +800,7 @@ public final class PacketCoreControlPlaneVersionsGetSamples {
 /** Samples for PacketCoreControlPlaneVersions GetBySubscription. */
 public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionGetBySubscription.json
      */
     /**
      * Sample code: Get packet core control plane version by subscription.
@@ -819,7 +822,7 @@ public final class PacketCoreControlPlaneVersionsGetBySubscriptionSamples {
 /** Samples for PacketCoreControlPlaneVersions List. */
 public final class PacketCoreControlPlaneVersionsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionList.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionList.json
      */
     /**
      * Sample code: Get supported packet core control plane versions.
@@ -839,7 +842,7 @@ public final class PacketCoreControlPlaneVersionsListSamples {
 /** Samples for PacketCoreControlPlaneVersions ListBySubscription. */
 public final class PacketCoreControlPlaneVersionsListBySubscriptionSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneVersionListBySubscription.json
      */
     /**
      * Sample code: Get supported packet core control plane versions by subscription.
@@ -861,7 +864,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneColl
 /** Samples for PacketCoreControlPlanes CollectDiagnosticsPackage. */
 public final class PacketCoreControlPlanesCollectDiagnosticsPackageSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneCollectDiagnosticsPackage.json
      */
     /**
      * Sample code: Collect diagnostics package from packet core control plane.
@@ -893,19 +896,22 @@ import com.azure.resourcemanager.mobilenetwork.models.ConnectedClusterResourceId
 import com.azure.resourcemanager.mobilenetwork.models.CoreNetworkType;
 import com.azure.resourcemanager.mobilenetwork.models.CustomLocationResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.DesiredInstallationState;
+import com.azure.resourcemanager.mobilenetwork.models.EventHubConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.HttpsServerCertificate;
 import com.azure.resourcemanager.mobilenetwork.models.Installation;
 import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 import com.azure.resourcemanager.mobilenetwork.models.LocalDiagnosticsAccessConfiguration;
+import com.azure.resourcemanager.mobilenetwork.models.NasRerouteConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.PlatformType;
+import com.azure.resourcemanager.mobilenetwork.models.SignalingConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SiteResourceId;
 import java.util.Arrays;
 
 /** Samples for PacketCoreControlPlanes CreateOrUpdate. */
 public final class PacketCoreControlPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneCreate.json
      */
     /**
      * Sample code: Create packet core control plane.
@@ -952,6 +958,13 @@ public final class PacketCoreControlPlanesCreateOrUpdateSamples {
             .withCoreNetworkTechnology(CoreNetworkType.FIVE_GC)
             .withVersion("0.2.0")
             .withUeMtu(1600)
+            .withEventHub(
+                new EventHubConfiguration()
+                    .withId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.EventHub/namespaces/contosoNamespace/eventHubs/contosoHub")
+                    .withReportingInterval(60))
+            .withSignaling(
+                new SignalingConfiguration().withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1024)))
             .create();
     }
 }
@@ -963,7 +976,7 @@ public final class PacketCoreControlPlanesCreateOrUpdateSamples {
 /** Samples for PacketCoreControlPlanes Delete. */
 public final class PacketCoreControlPlanesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneDelete.json
      */
     /**
      * Sample code: Delete packet core control plane.
@@ -983,7 +996,7 @@ public final class PacketCoreControlPlanesDeleteSamples {
 /** Samples for PacketCoreControlPlanes GetByResourceGroup. */
 public final class PacketCoreControlPlanesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneGet.json
      */
     /**
      * Sample code: Get packet core control plane.
@@ -1004,7 +1017,7 @@ public final class PacketCoreControlPlanesGetByResourceGroupSamples {
 /** Samples for PacketCoreControlPlanes List. */
 public final class PacketCoreControlPlanesListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneListBySubscription.json
      */
     /**
      * Sample code: List packet core control planes in a subscription.
@@ -1024,7 +1037,7 @@ public final class PacketCoreControlPlanesListSamples {
 /** Samples for PacketCoreControlPlanes ListByResourceGroup. */
 public final class PacketCoreControlPlanesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneListByResourceGroup.json
      */
     /**
      * Sample code: List packet core control planes in resource group.
@@ -1044,7 +1057,7 @@ public final class PacketCoreControlPlanesListByResourceGroupSamples {
 /** Samples for PacketCoreControlPlanes Reinstall. */
 public final class PacketCoreControlPlanesReinstallSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneReinstall.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneReinstall.json
      */
     /**
      * Sample code: Reinstall packet core control plane.
@@ -1064,7 +1077,7 @@ public final class PacketCoreControlPlanesReinstallSamples {
 /** Samples for PacketCoreControlPlanes Rollback. */
 public final class PacketCoreControlPlanesRollbackSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlaneRollback.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlaneRollback.json
      */
     /**
      * Sample code: Rollback packet core control plane.
@@ -1091,7 +1104,7 @@ import java.util.Map;
 /** Samples for PacketCoreControlPlanes UpdateTags. */
 public final class PacketCoreControlPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreControlPlanePatch.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreControlPlanePatch.json
      */
     /**
      * Sample code: Patch packet core control plane.
@@ -1118,6 +1131,7 @@ public final class PacketCoreControlPlanesUpdateTagsSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1139,7 +1153,7 @@ import com.azure.resourcemanager.mobilenetwork.models.InterfaceProperties;
 /** Samples for PacketCoreDataPlanes CreateOrUpdate. */
 public final class PacketCoreDataPlanesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneCreate.json
      */
     /**
      * Sample code: Create packet core data plane.
@@ -1164,7 +1178,7 @@ public final class PacketCoreDataPlanesCreateOrUpdateSamples {
 /** Samples for PacketCoreDataPlanes Delete. */
 public final class PacketCoreDataPlanesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneDelete.json
      */
     /**
      * Sample code: Delete packet core data plane.
@@ -1185,7 +1199,7 @@ public final class PacketCoreDataPlanesDeleteSamples {
 /** Samples for PacketCoreDataPlanes Get. */
 public final class PacketCoreDataPlanesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneGet.json
      */
     /**
      * Sample code: Get packet core data plane.
@@ -1206,7 +1220,7 @@ public final class PacketCoreDataPlanesGetSamples {
 /** Samples for PacketCoreDataPlanes ListByPacketCoreControlPlane. */
 public final class PacketCoreDataPlanesListByPacketCoreControlPlaneSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneListByPacketCoreControlPlane.json
      */
     /**
      * Sample code: List packet core data planes in a control plane.
@@ -1232,7 +1246,7 @@ import java.util.Map;
 /** Samples for PacketCoreDataPlanes UpdateTags. */
 public final class PacketCoreDataPlanesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/PacketCoreDataPlaneUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/PacketCoreDataPlaneUpdateTags.json
      */
     /**
      * Sample code: Update packet core data plane tags.
@@ -1249,6 +1263,7 @@ public final class PacketCoreDataPlanesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1279,7 +1294,7 @@ import java.util.Arrays;
 /** Samples for Services CreateOrUpdate. */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/ServiceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceCreate.json
      */
     /**
      * Sample code: Create service.
@@ -1334,7 +1349,7 @@ public final class ServicesCreateOrUpdateSamples {
 /** Samples for Services Delete. */
 public final class ServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/ServiceDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceDelete.json
      */
     /**
      * Sample code: Delete service.
@@ -1353,7 +1368,7 @@ public final class ServicesDeleteSamples {
 /** Samples for Services Get. */
 public final class ServicesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/ServiceGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceGet.json
      */
     /**
      * Sample code: Get service.
@@ -1372,7 +1387,7 @@ public final class ServicesGetSamples {
 /** Samples for Services ListByMobileNetwork. */
 public final class ServicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/ServiceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceListByMobileNetwork.json
      */
     /**
      * Sample code: List services in a mobile network.
@@ -1398,7 +1413,7 @@ import java.util.Map;
 /** Samples for Services UpdateTags. */
 public final class ServicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/ServiceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/ServiceUpdateTags.json
      */
     /**
      * Sample code: Update service tags.
@@ -1414,6 +1429,7 @@ public final class ServicesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1441,7 +1457,7 @@ import java.util.Map;
 /** Samples for SimGroups CreateOrUpdate. */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupCreate.json
      */
     /**
      * Sample code: Create SIM group.
@@ -1469,6 +1485,7 @@ public final class SimGroupsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1488,7 +1505,7 @@ public final class SimGroupsCreateOrUpdateSamples {
 /** Samples for SimGroups Delete. */
 public final class SimGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupDelete.json
      */
     /**
      * Sample code: Delete SIM group.
@@ -1507,7 +1524,7 @@ public final class SimGroupsDeleteSamples {
 /** Samples for SimGroups GetByResourceGroup. */
 public final class SimGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupGet.json
      */
     /**
      * Sample code: Get SIM group.
@@ -1529,7 +1546,7 @@ public final class SimGroupsGetByResourceGroupSamples {
 /** Samples for SimGroups List. */
 public final class SimGroupsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupListBySubscription.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupListBySubscription.json
      */
     /**
      * Sample code: List SIM groups in a subscription.
@@ -1549,7 +1566,7 @@ public final class SimGroupsListSamples {
 /** Samples for SimGroups ListByResourceGroup. */
 public final class SimGroupsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupListByResourceGroup.json
      */
     /**
      * Sample code: List SIM groups in a resource group.
@@ -1576,7 +1593,7 @@ import java.util.Map;
 /** Samples for SimGroups UpdateTags. */
 public final class SimGroupsUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGroupPatch.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGroupPatch.json
      */
     /**
      * Sample code: Patch SIM group.
@@ -1602,6 +1619,7 @@ public final class SimGroupsUpdateTagsSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1632,7 +1650,7 @@ import java.util.Arrays;
 /** Samples for SimPolicies CreateOrUpdate. */
 public final class SimPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyCreate.json
      */
     /**
      * Sample code: Create SIM policy.
@@ -1696,7 +1714,7 @@ public final class SimPoliciesCreateOrUpdateSamples {
 /** Samples for SimPolicies Delete. */
 public final class SimPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyDelete.json
      */
     /**
      * Sample code: Delete SIM policy.
@@ -1715,7 +1733,7 @@ public final class SimPoliciesDeleteSamples {
 /** Samples for SimPolicies Get. */
 public final class SimPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyGet.json
      */
     /**
      * Sample code: Get SIM policy.
@@ -1736,7 +1754,7 @@ public final class SimPoliciesGetSamples {
 /** Samples for SimPolicies ListByMobileNetwork. */
 public final class SimPoliciesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyListByMobileNetwork.json
      */
     /**
      * Sample code: List SIM policies in a mobile network.
@@ -1762,7 +1780,7 @@ import java.util.Map;
 /** Samples for SimPolicies UpdateTags. */
 public final class SimPoliciesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimPolicyUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimPolicyUpdateTags.json
      */
     /**
      * Sample code: Update SIM policy tags.
@@ -1778,6 +1796,7 @@ public final class SimPoliciesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1800,7 +1819,7 @@ import java.util.Arrays;
 /** Samples for Sims BulkDelete. */
 public final class SimsBulkDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkDelete.json
      */
     /**
      * Sample code: Bulk delete SIMs from a SIM group.
@@ -1835,7 +1854,7 @@ import java.util.Arrays;
 /** Samples for Sims BulkUpload. */
 public final class SimsBulkUploadSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkUpload.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUpload.json
      */
     /**
      * Sample code: Bulk upload SIMs in a SIM group.
@@ -1924,7 +1943,7 @@ import java.util.Arrays;
 /** Samples for Sims BulkUploadEncrypted. */
 public final class SimsBulkUploadEncryptedSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimBulkUploadEncrypted.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimBulkUploadEncrypted.json
      */
     /**
      * Sample code: Bulk upload encrypted SIMs to a SIM group.
@@ -2015,7 +2034,7 @@ import java.util.Arrays;
 /** Samples for Sims CreateOrUpdate. */
 public final class SimsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimCreate.json
      */
     /**
      * Sample code: Create SIM.
@@ -2060,7 +2079,7 @@ public final class SimsCreateOrUpdateSamples {
 /** Samples for Sims Delete. */
 public final class SimsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimDelete.json
      */
     /**
      * Sample code: Delete SIM.
@@ -2079,7 +2098,7 @@ public final class SimsDeleteSamples {
 /** Samples for Sims Get. */
 public final class SimsGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimGet.json
      */
     /**
      * Sample code: Get SIM.
@@ -2100,7 +2119,7 @@ public final class SimsGetSamples {
 /** Samples for Sims ListByGroup. */
 public final class SimsListByGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SimListBySimGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SimListBySimGroup.json
      */
     /**
      * Sample code: List SIMs in a SIM group.
@@ -2119,7 +2138,7 @@ public final class SimsListByGroupSamples {
 /** Samples for Sites CreateOrUpdate. */
 public final class SitesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteCreate.json
      */
     /**
      * Sample code: Create mobile network site.
@@ -2143,7 +2162,7 @@ public final class SitesCreateOrUpdateSamples {
 /** Samples for Sites Delete. */
 public final class SitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDelete.json
      */
     /**
      * Sample code: Delete mobile network site.
@@ -2165,7 +2184,7 @@ import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 /** Samples for Sites DeletePacketCore. */
 public final class SitesDeletePacketCoreSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteDeletePacketCore.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteDeletePacketCore.json
      */
     /**
      * Sample code: Delete packet core in mobile network site.
@@ -2196,7 +2215,7 @@ public final class SitesDeletePacketCoreSamples {
 /** Samples for Sites Get. */
 public final class SitesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteGet.json
      */
     /**
      * Sample code: Get mobile network site.
@@ -2215,7 +2234,7 @@ public final class SitesGetSamples {
 /** Samples for Sites ListByMobileNetwork. */
 public final class SitesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteListByMobileNetwork.json
      */
     /**
      * Sample code: List mobile network sites in a mobile network.
@@ -2239,7 +2258,7 @@ import java.util.Map;
 /** Samples for Sites UpdateTags. */
 public final class SitesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SiteUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SiteUpdateTags.json
      */
     /**
      * Sample code: Update mobile network site tags.
@@ -2256,6 +2275,7 @@ public final class SitesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -2277,7 +2297,7 @@ import com.azure.resourcemanager.mobilenetwork.models.Snssai;
 /** Samples for Slices CreateOrUpdate. */
 public final class SlicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceCreate.json
      */
     /**
      * Sample code: Create network slice.
@@ -2303,7 +2323,7 @@ public final class SlicesCreateOrUpdateSamples {
 /** Samples for Slices Delete. */
 public final class SlicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceDelete.json
      */
     /**
      * Sample code: Delete network slice.
@@ -2322,7 +2342,7 @@ public final class SlicesDeleteSamples {
 /** Samples for Slices Get. */
 public final class SlicesGetSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceGet.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceGet.json
      */
     /**
      * Sample code: Get network slice.
@@ -2341,7 +2361,7 @@ public final class SlicesGetSamples {
 /** Samples for Slices ListByMobileNetwork. */
 public final class SlicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceListByMobileNetwork.json
      */
     /**
      * Sample code: List network slices in a mobile network.
@@ -2365,7 +2385,7 @@ import java.util.Map;
 /** Samples for Slices UpdateTags. */
 public final class SlicesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-06-01/examples/SliceUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceUpdateTags.json
      */
     /**
      * Sample code: Update network slice tags.
@@ -2381,6 +2401,7 @@ public final class SlicesUpdateTagsSamples {
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

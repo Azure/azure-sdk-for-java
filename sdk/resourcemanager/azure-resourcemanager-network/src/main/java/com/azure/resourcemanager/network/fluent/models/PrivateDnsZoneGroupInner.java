@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private dns zone group resource. */
+/**
+ * Private dns zone group resource.
+ */
 @Fluent
 public final class PrivateDnsZoneGroupInner extends SubResource {
     /*
@@ -32,14 +34,16 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
     @JsonProperty(value = "properties")
     private PrivateDnsZoneGroupPropertiesFormat innerProperties;
 
-    /** Creates an instance of PrivateDnsZoneGroupInner class. */
+    /**
+     * Creates an instance of PrivateDnsZoneGroupInner class.
+     */
     public PrivateDnsZoneGroupInner() {
     }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
     /**
      * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateDnsZoneGroupInner object itself.
      */
@@ -60,7 +64,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -69,14 +73,16 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of the private dns zone group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateDnsZoneGroupPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateDnsZoneGroupInner withId(String id) {
         super.withId(id);
@@ -85,7 +91,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private dns zone group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -95,7 +101,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
     /**
      * Get the privateDnsZoneConfigs property: A collection of private dns zone configurations of the private dns zone
      * group.
-     *
+     * 
      * @return the privateDnsZoneConfigs value.
      */
     public List<PrivateDnsZoneConfig> privateDnsZoneConfigs() {
@@ -105,7 +111,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
     /**
      * Set the privateDnsZoneConfigs property: A collection of private dns zone configurations of the private dns zone
      * group.
-     *
+     * 
      * @param privateDnsZoneConfigs the privateDnsZoneConfigs value to set.
      * @return the PrivateDnsZoneGroupInner object itself.
      */
@@ -119,7 +125,7 @@ public final class PrivateDnsZoneGroupInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -31,7 +31,7 @@ public final class SlicesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":836172134,\"sd\":\"qzdkfn\"},\"description\":\"ixh\"},\"location\":\"ratqxmbjro\",\"tags\":{\"l\":\"znv\",\"on\":\"jrhuzgf\"},\"id\":\"tpusllywp\",\"name\":\"tiotzb\",\"type\":\"d\"}";
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"snssai\":{\"sst\":704277704,\"sd\":\"llizhce\"},\"description\":\"oqodkadpp\"},\"location\":\"bngqladywrx\",\"tags\":{\"yemlowuowhlxln\":\"dtluvvadswzsn\"},\"id\":\"y\",\"name\":\"mouvbl\",\"type\":\"mo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class SlicesGetWithResponseMockTests {
         Slice response =
             manager
                 .slices()
-                .getWithResponse("ih", "vjdrqcrjidhftuk", "hdxlw", com.azure.core.util.Context.NONE)
+                .getWithResponse("ixqcahyhxalybxaw", "ijpodtblxpkkwj", "jodqhykincn", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ratqxmbjro", response.location());
-        Assertions.assertEquals("znv", response.tags().get("l"));
-        Assertions.assertEquals(836172134, response.snssai().sst());
-        Assertions.assertEquals("qzdkfn", response.snssai().sd());
-        Assertions.assertEquals("ixh", response.description());
+        Assertions.assertEquals("bngqladywrx", response.location());
+        Assertions.assertEquals("dtluvvadswzsn", response.tags().get("yemlowuowhlxln"));
+        Assertions.assertEquals(704277704, response.snssai().sst());
+        Assertions.assertEquals("llizhce", response.snssai().sd());
+        Assertions.assertEquals("oqodkadpp", response.description());
     }
 }

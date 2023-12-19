@@ -24,12 +24,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.AgentPoolsClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridContainerService;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridContainerServicesClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.HybridIdentityMetadatasClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.KubernetesVersionsClient;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.OperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClustersOperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.StorageSpacesOperationsClient;
-import com.azure.resourcemanager.hybridcontainerservice.fluent.VirtualNetworksOperationsClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.ProvisionedClusterInstancesClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.VMSkusClient;
+import com.azure.resourcemanager.hybridcontainerservice.fluent.VirtualNetworksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -39,200 +40,238 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the HybridContainerServiceImpl type. */
+/**
+ * Initializes a new instance of the HybridContainerServiceImpl type.
+ */
 @ServiceClient(builder = HybridContainerServiceBuilder.class)
 public final class HybridContainerServiceImpl implements HybridContainerService {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
-     *
+     * Gets The ID of the target subscription. The value must be an UUID.
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ProvisionedClustersOperationsClient object to access its operations. */
-    private final ProvisionedClustersOperationsClient provisionedClustersOperations;
+    /**
+     * The ProvisionedClusterInstancesClient object to access its operations.
+     */
+    private final ProvisionedClusterInstancesClient provisionedClusterInstances;
 
     /**
-     * Gets the ProvisionedClustersOperationsClient object to access its operations.
-     *
-     * @return the ProvisionedClustersOperationsClient object.
+     * Gets the ProvisionedClusterInstancesClient object to access its operations.
+     * 
+     * @return the ProvisionedClusterInstancesClient object.
      */
-    public ProvisionedClustersOperationsClient getProvisionedClustersOperations() {
-        return this.provisionedClustersOperations;
+    public ProvisionedClusterInstancesClient getProvisionedClusterInstances() {
+        return this.provisionedClusterInstances;
     }
 
-    /** The HybridIdentityMetadatasClient object to access its operations. */
+    /**
+     * The HybridIdentityMetadatasClient object to access its operations.
+     */
     private final HybridIdentityMetadatasClient hybridIdentityMetadatas;
 
     /**
      * Gets the HybridIdentityMetadatasClient object to access its operations.
-     *
+     * 
      * @return the HybridIdentityMetadatasClient object.
      */
     public HybridIdentityMetadatasClient getHybridIdentityMetadatas() {
         return this.hybridIdentityMetadatas;
     }
 
-    /** The AgentPoolsClient object to access its operations. */
+    /**
+     * The AgentPoolsClient object to access its operations.
+     */
     private final AgentPoolsClient agentPools;
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
-     *
+     * 
      * @return the AgentPoolsClient object.
      */
     public AgentPoolsClient getAgentPools() {
         return this.agentPools;
     }
 
-    /** The HybridContainerServicesClient object to access its operations. */
-    private final HybridContainerServicesClient hybridContainerServices;
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
+    private final ResourceProvidersClient resourceProviders;
 
     /**
-     * Gets the HybridContainerServicesClient object to access its operations.
-     *
-     * @return the HybridContainerServicesClient object.
+     * Gets the ResourceProvidersClient object to access its operations.
+     * 
+     * @return the ResourceProvidersClient object.
      */
-    public HybridContainerServicesClient getHybridContainerServices() {
-        return this.hybridContainerServices;
+    public ResourceProvidersClient getResourceProviders() {
+        return this.resourceProviders;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The KubernetesVersionsClient object to access its operations.
+     */
+    private final KubernetesVersionsClient kubernetesVersions;
+
+    /**
+     * Gets the KubernetesVersionsClient object to access its operations.
+     * 
+     * @return the KubernetesVersionsClient object.
+     */
+    public KubernetesVersionsClient getKubernetesVersions() {
+        return this.kubernetesVersions;
+    }
+
+    /**
+     * The VMSkusClient object to access its operations.
+     */
+    private final VMSkusClient vMSkus;
+
+    /**
+     * Gets the VMSkusClient object to access its operations.
+     * 
+     * @return the VMSkusClient object.
+     */
+    public VMSkusClient getVMSkus() {
+        return this.vMSkus;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The StorageSpacesOperationsClient object to access its operations. */
-    private final StorageSpacesOperationsClient storageSpacesOperations;
+    /**
+     * The VirtualNetworksClient object to access its operations.
+     */
+    private final VirtualNetworksClient virtualNetworks;
 
     /**
-     * Gets the StorageSpacesOperationsClient object to access its operations.
-     *
-     * @return the StorageSpacesOperationsClient object.
+     * Gets the VirtualNetworksClient object to access its operations.
+     * 
+     * @return the VirtualNetworksClient object.
      */
-    public StorageSpacesOperationsClient getStorageSpacesOperations() {
-        return this.storageSpacesOperations;
-    }
-
-    /** The VirtualNetworksOperationsClient object to access its operations. */
-    private final VirtualNetworksOperationsClient virtualNetworksOperations;
-
-    /**
-     * Gets the VirtualNetworksOperationsClient object to access its operations.
-     *
-     * @return the VirtualNetworksOperationsClient object.
-     */
-    public VirtualNetworksOperationsClient getVirtualNetworksOperations() {
-        return this.virtualNetworksOperations;
+    public VirtualNetworksClient getVirtualNetworks() {
+        return this.virtualNetworks;
     }
 
     /**
      * Initializes an instance of HybridContainerService client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    HybridContainerServiceImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    HybridContainerServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-09-01-preview";
-        this.provisionedClustersOperations = new ProvisionedClustersOperationsClientImpl(this);
+        this.apiVersion = "2023-11-15-preview";
+        this.provisionedClusterInstances = new ProvisionedClusterInstancesClientImpl(this);
         this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
-        this.hybridContainerServices = new HybridContainerServicesClientImpl(this);
+        this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.kubernetesVersions = new KubernetesVersionsClientImpl(this);
+        this.vMSkus = new VMSkusClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.storageSpacesOperations = new StorageSpacesOperationsClientImpl(this);
-        this.virtualNetworksOperations = new VirtualNetworksOperationsClientImpl(this);
+        this.virtualNetworks = new VirtualNetworksClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -241,7 +280,7 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -251,7 +290,7 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -261,26 +300,15 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -293,19 +321,16 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

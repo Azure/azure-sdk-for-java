@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.paloaltonetworks.ngfw.generated;
 
-/** Samples for PrefixListLocalRulestack Delete. */
+/**
+ * Samples for PrefixListLocalRulestack Delete.
+ */
 public final class PrefixListLocalRulestackDeleteSamples {
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PrefixListLocalRulestack_Delete_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * PrefixListLocalRulestack_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackDeleteMinimumSetGen(
@@ -20,11 +24,13 @@ public final class PrefixListLocalRulestackDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2022-08-29/examples/PrefixListLocalRulestack_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/paloaltonetworks/resource-manager/PaloAltoNetworks.Cloudngfw/stable/2023-09-01/examples/
+     * PrefixListLocalRulestack_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrefixListLocalRulestack_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to PaloAltoNetworksNgfwManager.
      */
     public static void prefixListLocalRulestackDeleteMaximumSetGen(

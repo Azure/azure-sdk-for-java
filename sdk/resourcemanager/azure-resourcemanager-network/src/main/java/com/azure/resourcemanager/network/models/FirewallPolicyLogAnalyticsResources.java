@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Log Analytics Resources for Firewall Policy Insights. */
+/**
+ * Log Analytics Resources for Firewall Policy Insights.
+ */
 @Fluent
 public final class FirewallPolicyLogAnalyticsResources {
     /*
@@ -24,13 +26,15 @@ public final class FirewallPolicyLogAnalyticsResources {
     @JsonProperty(value = "defaultWorkspaceId")
     private SubResource defaultWorkspaceId;
 
-    /** Creates an instance of FirewallPolicyLogAnalyticsResources class. */
+    /**
+     * Creates an instance of FirewallPolicyLogAnalyticsResources class.
+     */
     public FirewallPolicyLogAnalyticsResources() {
     }
 
     /**
      * Get the workspaces property: List of workspaces for Firewall Policy Insights.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<FirewallPolicyLogAnalyticsWorkspace> workspaces() {
@@ -39,7 +43,7 @@ public final class FirewallPolicyLogAnalyticsResources {
 
     /**
      * Set the workspaces property: List of workspaces for Firewall Policy Insights.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the FirewallPolicyLogAnalyticsResources object itself.
      */
@@ -50,7 +54,7 @@ public final class FirewallPolicyLogAnalyticsResources {
 
     /**
      * Get the defaultWorkspaceId property: The default workspace Id for Firewall Policy Insights.
-     *
+     * 
      * @return the defaultWorkspaceId value.
      */
     public SubResource defaultWorkspaceId() {
@@ -59,7 +63,7 @@ public final class FirewallPolicyLogAnalyticsResources {
 
     /**
      * Set the defaultWorkspaceId property: The default workspace Id for Firewall Policy Insights.
-     *
+     * 
      * @param defaultWorkspaceId the defaultWorkspaceId value to set.
      * @return the FirewallPolicyLogAnalyticsResources object itself.
      */
@@ -70,7 +74,7 @@ public final class FirewallPolicyLogAnalyticsResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

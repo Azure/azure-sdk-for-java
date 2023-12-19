@@ -17,6 +17,10 @@ public final class ProfilePropertiesUpdateParameters {
     @JsonProperty(value = "originResponseTimeoutSeconds")
     private Integer originResponseTimeoutSeconds;
 
+    /** Creates an instance of ProfilePropertiesUpdateParameters class. */
+    public ProfilePropertiesUpdateParameters() {
+    }
+
     /**
      * Get the originResponseTimeoutSeconds property: Send and receive timeout on forwarding request to the origin. When
      * timeout is reached, the request fails and returns.

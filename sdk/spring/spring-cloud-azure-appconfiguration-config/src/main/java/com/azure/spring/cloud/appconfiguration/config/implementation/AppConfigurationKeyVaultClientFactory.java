@@ -23,16 +23,19 @@ public class AppConfigurationKeyVaultClientFactory {
     private final boolean credentialsConfigured;
 
     private final boolean isConfigured;
+    
+    private final int timeout;
 
     public AppConfigurationKeyVaultClientFactory(SecretClientCustomizer keyVaultClientProvider,
         KeyVaultSecretProvider keyVaultSecretProvider, SecretClientBuilderFactory secretClientFactory,
-        boolean credentialsConfigured) {
+        boolean credentialsConfigured, int timeout) {
         this.keyVaultClientProvider = keyVaultClientProvider;
         this.keyVaultSecretProvider = keyVaultSecretProvider;
         this.secretClientFactory = secretClientFactory;
         keyVaultClients = new HashMap<>();
         this.credentialsConfigured = credentialsConfigured;
         isConfigured = keyVaultClientProvider != null || credentialsConfigured;
+        this.timeout = timeout;
     }
 
     public AppConfigurationSecretClientManager getClient(String host) {
@@ -40,7 +43,7 @@ public class AppConfigurationKeyVaultClientFactory {
         // one
         if (!keyVaultClients.containsKey(host)) {
             AppConfigurationSecretClientManager client = new AppConfigurationSecretClientManager(host,
-                keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured);
+                keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured, timeout);
             keyVaultClients.put(host, client);
         }
         return keyVaultClients.get(host);

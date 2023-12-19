@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.PartnerConfigurationInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the List partner configurations operation. */
+/**
+ * Result of the List partner configurations operation.
+ */
 @Fluent
 public final class PartnerConfigurationsListResult {
     /*
@@ -24,13 +26,15 @@ public final class PartnerConfigurationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PartnerConfigurationsListResult class. */
+    /**
+     * Creates an instance of PartnerConfigurationsListResult class.
+     */
     public PartnerConfigurationsListResult() {
     }
 
     /**
      * Get the value property: A collection of partner configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<PartnerConfigurationInner> value() {
@@ -39,7 +43,7 @@ public final class PartnerConfigurationsListResult {
 
     /**
      * Set the value property: A collection of partner configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the PartnerConfigurationsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PartnerConfigurationsListResult {
 
     /**
      * Get the nextLink property: A link for the next page of partner configurations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PartnerConfigurationsListResult {
 
     /**
      * Set the nextLink property: A link for the next page of partner configurations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PartnerConfigurationsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class PartnerConfigurationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

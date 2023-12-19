@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cdn.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CustomDomains Get. */
 public final class CustomDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2021-06-01/examples/CustomDomains_Get.json
+     * x-ms-original-file: specification/cdn/resource-manager/Microsoft.Cdn/stable/2023-05-01/examples/CustomDomains_Get.json
      */
     /**
      * Sample code: CustomDomains_Get.
@@ -22,6 +20,6 @@ public final class CustomDomainsGetSamples {
             .manager()
             .serviceClient()
             .getCustomDomains()
-            .getWithResponse("RG", "profile1", "endpoint1", "www-someDomain-net", Context.NONE);
+            .getWithResponse("RG", "profile1", "endpoint1", "www-someDomain-net", com.azure.core.util.Context.NONE);
     }
 }

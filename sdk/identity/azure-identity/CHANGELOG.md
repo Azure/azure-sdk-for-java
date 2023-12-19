@@ -1,6 +1,6 @@
 # Release History
 
-## 1.11.0-beta.2 (Unreleased)
+## 1.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,65 @@
 
 ### Other Changes
 
+## 1.11.1 (2023-12-01)
+
+### Bugs Fixed
+- Fixed Azure Arc Managed Identity token retrieval issue.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`
+
+## 1.11.0 (2023-11-07)
+
+### Features added
+- GA release of Web Account Manager (WAM) support for Azure Identity.
+
+### Bugs fixed
+- Cache streams used for client certificates [#37502](https://github.com/Azure/azure-sdk-for-java/pull/37502)
+- Fix incorrect use of organizations tenant for sync calls on `AzureCliCredential` and `AzureDeveloperCliCredential` [#37457](https://github.com/Azure/azure-sdk-for-java/pull/37457)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`
+
+## 1.11.0-beta.2 (2023-10-27)
+
+### Features Added
+- Initial release of Web Account Manager (WAM) support for Azure Identity. This is a Windows-only auithentication broker.
+
+### Other Changes
+- Upgraded 'msal4j' from '1.13.9' to version '1.14.0'.
+
+## 1.10.4 (2023-10-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.8` to version `1.13.9`.
+
+## 1.10.3 (2023-10-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+
+## 1.10.2 (2023-10-10)
+
+### Bugs Fixed
+- Bug fixes for developer credentials
+
 ## 1.11.0-beta.1 (2023-09-20)
 
 ### Features Added
@@ -18,9 +77,6 @@
 ### Bugs fixed
 - Fixed flowing `HttpClientOptions` through credentials [#36382](https://github.com/Azure/azure-sdk-for-java/pull/36382)
 - Fixed edge case in Docker where 403s erronously caused CredentialUnavailableExceptions [#36747](https://github.com/Azure/azure-sdk-for-java/pull/36747)
-
-
-
 
 ## 1.10.1 (2023-09-10)
 
@@ -140,7 +196,7 @@
 
 ### Features Added
 - [[#32527]](https://github.com/Azure/azure-sdk-for-java/pull/32527) Added Azure Developer CLI Credential.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 - `WorkloadIdentityCredential` and `DefaultAzureCredential` support Workload Identity Federation on Kubernetes. `DefaultAzureCredential` support requires environment variable configuration as set by the Workload Identity webhook.
 
 ## 1.8.0 (2023-02-03)
@@ -161,7 +217,7 @@
 
 ### Features Added
 - Added support to configure `clientOptions`, `httpLogOptions`, `retryPolicy`, `retryOptions` and `addPolicy` on Identity credentials.
-- Added support to disable instance discovery on AAD credentials.
+- Added support to disable instance discovery on Microsoft Entra ID credentials.
 
 ## 1.7.3 (2023-01-06)
 
@@ -664,7 +720,7 @@ The `getToken(String... scopes)` methods on all the credentials are changed to `
 ## 1.0.0-preview.3 (2019-09-09)
 **New features**
 
-A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Azure Active Directory if you are logged in in Visual Studio 2019.
+A new credential `SharedTokenCacheCredential` is added. It's currently only supported on Windows. This credential is capable of authenticating to Microsoft Entra ID if you are logged in in Visual Studio 2019.
 
 ## 1.0.0-preview.2 (2019-08-05)
 **Breaking changes**
@@ -708,5 +764,5 @@ See the [documentation](https://github.com/Azure/azure-sdk-for-java/blob/main/sd
 for more details. User authentication will be added in an upcoming preview
 release.
 
-This release supports only global Azure Active Directory tenants, i.e. those
+This release supports only global Microsoft Entra tenants, i.e. those
 using the https://login.microsoftonline.com authentication endpoint.

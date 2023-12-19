@@ -27,13 +27,15 @@ public final class ExpressRouteCircuitConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRouteCircuitConnectionListResult class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitConnectionListResult class.
+     */
     public ExpressRouteCircuitConnectionListResult() {
     }
 
     /**
      * Get the value property: The global reach connection associated with Private Peering in an ExpressRoute Circuit.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitConnectionInner> value() {
@@ -42,7 +44,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Set the value property: The global reach connection associated with Private Peering in an ExpressRoute Circuit.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCircuitConnectionListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteCircuitConnectionListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

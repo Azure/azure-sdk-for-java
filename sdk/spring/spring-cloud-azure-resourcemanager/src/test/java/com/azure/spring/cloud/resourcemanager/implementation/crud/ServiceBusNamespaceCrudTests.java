@@ -10,12 +10,12 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<ServiceBusNamespace, String> {
+public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<ServiceBusNamespace, String, Object> {
 
     private static final String NAMESPACE = "namespace";
 
     @Override
-    AbstractResourceCrud<ServiceBusNamespace, String> getResourceCrud() {
+    AbstractResourceCrud<ServiceBusNamespace, String, Object> getResourceCrud() {
         return new ServiceBusNamespaceCrud(resourceManager, resourceMetadata);
     }
 

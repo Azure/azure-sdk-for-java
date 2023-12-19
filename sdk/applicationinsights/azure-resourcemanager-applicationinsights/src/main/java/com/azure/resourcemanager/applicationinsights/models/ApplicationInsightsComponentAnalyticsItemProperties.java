@@ -19,6 +19,10 @@ public final class ApplicationInsightsComponentAnalyticsItemProperties {
     @JsonProperty(value = "functionAlias")
     private String functionAlias;
 
+    /** Creates an instance of ApplicationInsightsComponentAnalyticsItemProperties class. */
+    public ApplicationInsightsComponentAnalyticsItemProperties() {
+    }
+
     /**
      * Get the functionAlias property: A function alias, used when the type of the item is Function.
      *

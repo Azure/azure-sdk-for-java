@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Quota availability request content. */
+/**
+ * Quota availability request content.
+ */
 @Fluent
 public final class QuotaAvailabilityRequest {
     /*
@@ -29,13 +31,15 @@ public final class QuotaAvailabilityRequest {
     @JsonProperty(value = "resourceGroup", required = true)
     private String resourceGroup;
 
-    /** Creates an instance of QuotaAvailabilityRequest class. */
+    /**
+     * Creates an instance of QuotaAvailabilityRequest class.
+     */
     public QuotaAvailabilityRequest() {
     }
 
     /**
      * Get the name property: Name of the resource to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the name property: Name of the resource to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -55,7 +59,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Get the type property: Resource type used for verification.
-     *
+     * 
      * @return the type value.
      */
     public CheckQuotaNameResourceTypes type() {
@@ -64,7 +68,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the type property: Resource type used for verification.
-     *
+     * 
      * @param type the type value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -75,7 +79,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Get the resourceGroup property: Resource group name.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -84,7 +88,7 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Set the resourceGroup property: Resource group name.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the QuotaAvailabilityRequest object itself.
      */
@@ -95,25 +99,21 @@ public final class QuotaAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
         }
         if (resourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
         }
     }
 

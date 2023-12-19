@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-/** Samples for Triggers Start. */
+/**
+ * Samples for Triggers Start.
+ */
 public final class TriggersStartSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_Start.json
      */
     /**
      * Sample code: Triggers_Start.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersStart(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .triggers()
-            .start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger", com.azure.core.util.Context.NONE);
+        manager.triggers().start("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+            com.azure.core.util.Context.NONE);
     }
 }

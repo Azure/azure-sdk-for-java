@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Country Description. */
+/**
+ * Country Description.
+ */
 @Fluent
 public final class Country {
     /*
@@ -23,13 +25,15 @@ public final class Country {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of Country class. */
+    /**
+     * Creates an instance of Country class.
+     */
     public Country() {
     }
 
     /**
      * Get the code property: country code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -38,7 +42,7 @@ public final class Country {
 
     /**
      * Set the code property: country code.
-     *
+     * 
      * @param code the code value to set.
      * @return the Country object itself.
      */
@@ -49,7 +53,7 @@ public final class Country {
 
     /**
      * Get the description property: code description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +62,7 @@ public final class Country {
 
     /**
      * Set the description property: code description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Country object itself.
      */
@@ -69,7 +73,7 @@ public final class Country {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

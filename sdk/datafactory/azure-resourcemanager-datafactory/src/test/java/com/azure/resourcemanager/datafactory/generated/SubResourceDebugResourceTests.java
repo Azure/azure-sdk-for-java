@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SubResourceDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubResourceDebugResource model =
-            BinaryData.fromString("{\"name\":\"wvz\"}").toObject(SubResourceDebugResource.class);
+        SubResourceDebugResource model
+            = BinaryData.fromString("{\"name\":\"wvz\"}").toObject(SubResourceDebugResource.class);
         Assertions.assertEquals("wvz", model.name());
     }
 

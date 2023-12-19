@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayLoadDistributionTargetPropertiesFormat model. */
+/**
+ * The ApplicationGatewayLoadDistributionTargetPropertiesFormat model.
+ */
 @Fluent
 public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
     @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
-    /** Creates an instance of ApplicationGatewayLoadDistributionTargetPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayLoadDistributionTargetPropertiesFormat class.
+     */
     public ApplicationGatewayLoadDistributionTargetPropertiesFormat() {
     }
 
     /**
      * Get the weightPerServer property: Weight per server. Range between 1 and 100.
-     *
+     * 
      * @return the weightPerServer value.
      */
     public Integer weightPerServer() {
@@ -38,7 +42,7 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
 
     /**
      * Set the weightPerServer property: Weight per server. Range between 1 and 100.
-     *
+     * 
      * @param weightPerServer the weightPerServer value to set.
      * @return the ApplicationGatewayLoadDistributionTargetPropertiesFormat object itself.
      */
@@ -49,7 +53,7 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -58,19 +62,19 @@ public final class ApplicationGatewayLoadDistributionTargetPropertiesFormat {
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayLoadDistributionTargetPropertiesFormat object itself.
      */
-    public ApplicationGatewayLoadDistributionTargetPropertiesFormat withBackendAddressPool(
-        SubResource backendAddressPool) {
+    public ApplicationGatewayLoadDistributionTargetPropertiesFormat
+        withBackendAddressPool(SubResource backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -31,52 +31,53 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GallerySharingProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GallerySharingProfilesClient.
+ */
 public final class GallerySharingProfilesClientImpl implements GallerySharingProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GallerySharingProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of GallerySharingProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GallerySharingProfilesClientImpl(ComputeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(GallerySharingProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GallerySharingProfilesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientGallerySharingProfiles to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ComputeManagementClientGallerySharingProfiles to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     public interface GallerySharingProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SharingUpdateInner sharingUpdate,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SharingUpdateInner sharingUpdate, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -84,22 +85,18 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery sharing profile update along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
+        SharingUpdateInner sharingUpdate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,27 +110,17 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            galleryName,
-                            apiVersion,
-                            sharingUpdate,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, galleryName, apiVersion, sharingUpdate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -142,22 +129,18 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery sharing profile update along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String galleryName,
+        SharingUpdateInner sharingUpdate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,24 +154,16 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
         } else {
             sharingUpdate.validate();
         }
-        final String apiVersion = "2022-03-03";
+        final String apiVersion = "2022-08-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                galleryName,
-                apiVersion,
-                sharingUpdate,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            galleryName, apiVersion, sharingUpdate, accept, context);
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -198,22 +173,16 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return the {@link PollerFlux} for polling of specifies information about the gallery sharing profile update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
+    public PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(String resourceGroupName,
+        String galleryName, SharingUpdateInner sharingUpdate) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, galleryName, sharingUpdate);
-        return this
-            .client
-            .<SharingUpdateInner, SharingUpdateInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SharingUpdateInner.class,
-                SharingUpdateInner.class,
-                this.client.getContext());
+        return this.client.<SharingUpdateInner, SharingUpdateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SharingUpdateInner.class, SharingUpdateInner.class, this.client.getContext());
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -224,20 +193,18 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return the {@link PollerFlux} for polling of specifies information about the gallery sharing profile update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
+    private PollerFlux<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdateAsync(String resourceGroupName,
+        String galleryName, SharingUpdateInner sharingUpdate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, galleryName, sharingUpdate, context);
-        return this
-            .client
-            .<SharingUpdateInner, SharingUpdateInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SharingUpdateInner.class, SharingUpdateInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, galleryName, sharingUpdate, context);
+        return this.client.<SharingUpdateInner, SharingUpdateInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SharingUpdateInner.class, SharingUpdateInner.class, context);
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -247,14 +214,14 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return the {@link SyncPoller} for polling of specifies information about the gallery sharing profile update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
+    public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(String resourceGroupName,
+        String galleryName, SharingUpdateInner sharingUpdate) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).getSyncPoller();
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -265,14 +232,14 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return the {@link SyncPoller} for polling of specifies information about the gallery sharing profile update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
+    public SyncPoller<PollResult<SharingUpdateInner>, SharingUpdateInner> beginUpdate(String resourceGroupName,
+        String galleryName, SharingUpdateInner sharingUpdate, Context context) {
         return this.beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).getSyncPoller();
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -282,16 +249,15 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return specifies information about the gallery sharing profile update on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharingUpdateInner> updateAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate)
-            .last()
+    public Mono<SharingUpdateInner> updateAsync(String resourceGroupName, String galleryName,
+        SharingUpdateInner sharingUpdate) {
+        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -302,16 +268,15 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return specifies information about the gallery sharing profile update on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharingUpdateInner> updateAsync(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
-        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context)
-            .last()
+    private Mono<SharingUpdateInner> updateAsync(String resourceGroupName, String galleryName,
+        SharingUpdateInner sharingUpdate, Context context) {
+        return beginUpdateAsync(resourceGroupName, galleryName, sharingUpdate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -327,7 +292,7 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
 
     /**
      * Update sharing profile of a gallery.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param sharingUpdate Parameters supplied to the update gallery sharing profile.
@@ -338,8 +303,8 @@ public final class GallerySharingProfilesClientImpl implements GallerySharingPro
      * @return specifies information about the gallery sharing profile update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharingUpdateInner update(
-        String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate, Context context) {
+    public SharingUpdateInner update(String resourceGroupName, String galleryName, SharingUpdateInner sharingUpdate,
+        Context context) {
         return updateAsync(resourceGroupName, galleryName, sharingUpdate, context).block();
     }
 }

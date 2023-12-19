@@ -4,22 +4,23 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for OperationResult Get. */
+/**
+ * Samples for OperationResult Get.
+ */
 public final class OperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/GetOperationResult.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * GetOperationResult.json
      */
     /**
      * Sample code: Get OperationResult.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .operationResults()
-            .getWithResponse(
-                "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
-                "WestUS",
-                com.azure.core.util.Context.NONE);
+        manager.operationResults().getWithResponse(
+            "MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA==",
+            "WestUS", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The metadata related to each access key for the given Cosmos DB database account. */
+/**
+ * The metadata related to each access key for the given Cosmos DB database account.
+ */
 @Immutable
 public final class DatabaseAccountKeysMetadata {
     /*
@@ -34,14 +36,16 @@ public final class DatabaseAccountKeysMetadata {
     @JsonProperty(value = "secondaryReadonlyMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private AccountKeyMetadata secondaryReadonlyMasterKey;
 
-    /** Creates an instance of DatabaseAccountKeysMetadata class. */
+    /**
+     * Creates an instance of DatabaseAccountKeysMetadata class.
+     */
     public DatabaseAccountKeysMetadata() {
     }
 
     /**
      * Get the primaryMasterKey property: The metadata related to the Primary Read-Write Key for the given Cosmos DB
      * database account.
-     *
+     * 
      * @return the primaryMasterKey value.
      */
     public AccountKeyMetadata primaryMasterKey() {
@@ -49,9 +53,9 @@ public final class DatabaseAccountKeysMetadata {
     }
 
     /**
-     * Get the secondaryMasterKey property: The metadata related to the Secondary Read-Write Key for the given Cosmos DB
-     * database account.
-     *
+     * Get the secondaryMasterKey property: The metadata related to the Secondary Read-Write Key for the given Cosmos
+     * DB database account.
+     * 
      * @return the secondaryMasterKey value.
      */
     public AccountKeyMetadata secondaryMasterKey() {
@@ -59,9 +63,9 @@ public final class DatabaseAccountKeysMetadata {
     }
 
     /**
-     * Get the primaryReadonlyMasterKey property: The metadata related to the Primary Read-Only Key for the given Cosmos
-     * DB database account.
-     *
+     * Get the primaryReadonlyMasterKey property: The metadata related to the Primary Read-Only Key for the given
+     * Cosmos DB database account.
+     * 
      * @return the primaryReadonlyMasterKey value.
      */
     public AccountKeyMetadata primaryReadonlyMasterKey() {
@@ -71,7 +75,7 @@ public final class DatabaseAccountKeysMetadata {
     /**
      * Get the secondaryReadonlyMasterKey property: The metadata related to the Secondary Read-Only Key for the given
      * Cosmos DB database account.
-     *
+     * 
      * @return the secondaryReadonlyMasterKey value.
      */
     public AccountKeyMetadata secondaryReadonlyMasterKey() {
@@ -80,7 +84,7 @@ public final class DatabaseAccountKeysMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

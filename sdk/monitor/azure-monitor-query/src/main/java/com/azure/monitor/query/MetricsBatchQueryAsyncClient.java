@@ -120,9 +120,9 @@ public final class MetricsBatchQueryAsyncClient {
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetrics()
+        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
             .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter);
+                endTime, granularity, aggregations, top, orderBy, filter, null);
 
 
         return responseMono.map(response -> {

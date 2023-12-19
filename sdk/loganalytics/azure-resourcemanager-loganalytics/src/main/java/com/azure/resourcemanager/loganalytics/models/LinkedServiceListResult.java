@@ -18,6 +18,10 @@ public final class LinkedServiceListResult {
     @JsonProperty(value = "value")
     private List<LinkedServiceInner> value;
 
+    /** Creates an instance of LinkedServiceListResult class. */
+    public LinkedServiceListResult() {
+    }
+
     /**
      * Get the value property: The list of linked service instances.
      *

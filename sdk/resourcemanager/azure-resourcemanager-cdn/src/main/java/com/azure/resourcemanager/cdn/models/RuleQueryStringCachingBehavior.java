@@ -28,6 +28,15 @@ public final class RuleQueryStringCachingBehavior extends ExpandableStringEnum<R
         fromString("IncludeSpecifiedQueryStrings");
 
     /**
+     * Creates a new instance of RuleQueryStringCachingBehavior value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RuleQueryStringCachingBehavior() {
+    }
+
+    /**
      * Creates or finds a RuleQueryStringCachingBehavior from its string representation.
      *
      * @param name a name to look for.

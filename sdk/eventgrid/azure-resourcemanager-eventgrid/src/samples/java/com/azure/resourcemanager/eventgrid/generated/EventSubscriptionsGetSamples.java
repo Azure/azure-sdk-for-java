@@ -4,202 +4,192 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for EventSubscriptions Get. */
+/**
+ * Samples for EventSubscriptions Get.
+ */
 public final class EventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicHybridConnectionDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicServiceBusTopicDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForResourceGroup.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResourceGroup.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetForResourceGroup(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg",
-                "examplesubscription2",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetForResourceGroup(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_EventHubDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_EventHubDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicEventHubDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForSubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetForSubscription.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetForSubscription(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
-                "examplesubscription3",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetForSubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getWithResponse("subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
+            "examplesubscription3", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_WebhookDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_WebhookDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicWebhookDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicAzureFunctionDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetForCustomTopic(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetForCustomTopic(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_StorageQueueDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicStorageQueueDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForResource.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResource.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForResource(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void eventSubscriptionsGetForCustomTopicServiceBusQueueDestination(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+        manager.eventSubscriptions().getWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

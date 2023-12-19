@@ -7,46 +7,48 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.dataprotection.fluent.models.DeletedBackupInstanceResourceInner;
 
-/** An immutable client-side representation of DeletedBackupInstanceResource. */
+/**
+ * An immutable client-side representation of DeletedBackupInstanceResource.
+ */
 public interface DeletedBackupInstanceResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the properties property: DeletedBackupInstanceResource properties.
-     *
+     * 
      * @return the properties value.
      */
     DeletedBackupInstance properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.DeletedBackupInstanceResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeletedBackupInstanceResourceInner innerModel();

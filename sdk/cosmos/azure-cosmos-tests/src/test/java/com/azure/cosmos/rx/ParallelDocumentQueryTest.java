@@ -226,7 +226,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         int sum = 0;
 
         for (String partitionKeyRangeId :
-            CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), null)
+            CosmosBridgeInternal.getAsyncDocumentClient(client).readPartitionKeyRanges(getCollectionLink(), (CosmosQueryRequestOptions) null)
                 .flatMap(p -> Flux.fromIterable(p.getResults()))
                 .map(Resource::getId).collectList().single().block()) {
             String query = "SELECT * from root";

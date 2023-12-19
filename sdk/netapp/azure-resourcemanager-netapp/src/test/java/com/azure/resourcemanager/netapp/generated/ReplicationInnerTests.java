@@ -13,29 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationInner model =
-            BinaryData
-                .fromString(
-                    "{\"endpointType\":\"dst\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"nzbtbhj\",\"remoteVolumeRegion\":\"lkfg\"}")
-                .toObject(ReplicationInner.class);
-        Assertions.assertEquals(EndpointType.DST, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
-        Assertions.assertEquals("nzbtbhj", model.remoteVolumeResourceId());
-        Assertions.assertEquals("lkfg", model.remoteVolumeRegion());
+        ReplicationInner model = BinaryData.fromString(
+            "{\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"rwlqu\",\"remoteVolumeRegion\":\"jfqka\"}")
+            .toObject(ReplicationInner.class);
+        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
+        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
+        Assertions.assertEquals("rwlqu", model.remoteVolumeResourceId());
+        Assertions.assertEquals("jfqka", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationInner model =
-            new ReplicationInner()
-                .withEndpointType(EndpointType.DST)
-                .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
-                .withRemoteVolumeResourceId("nzbtbhj")
-                .withRemoteVolumeRegion("lkfg");
+        ReplicationInner model = new ReplicationInner().withEndpointType(EndpointType.SRC)
+            .withReplicationSchedule(ReplicationSchedule.HOURLY).withRemoteVolumeResourceId("rwlqu")
+            .withRemoteVolumeRegion("jfqka");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
-        Assertions.assertEquals(EndpointType.DST, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
-        Assertions.assertEquals("nzbtbhj", model.remoteVolumeResourceId());
-        Assertions.assertEquals("lkfg", model.remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.SRC, model.endpointType());
+        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
+        Assertions.assertEquals("rwlqu", model.remoteVolumeResourceId());
+        Assertions.assertEquals("jfqka", model.remoteVolumeRegion());
     }
 }

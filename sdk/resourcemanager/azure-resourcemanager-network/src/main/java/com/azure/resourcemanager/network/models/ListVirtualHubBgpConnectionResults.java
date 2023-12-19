@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BgpConnectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHubBgpConnections list. */
+/**
+ * VirtualHubBgpConnections list.
+ */
 @Fluent
 public final class ListVirtualHubBgpConnectionResults {
     /*
@@ -24,13 +26,15 @@ public final class ListVirtualHubBgpConnectionResults {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVirtualHubBgpConnectionResults class. */
+    /**
+     * Creates an instance of ListVirtualHubBgpConnectionResults class.
+     */
     public ListVirtualHubBgpConnectionResults() {
     }
 
     /**
      * Get the value property: The list of VirtualHubBgpConnections.
-     *
+     * 
      * @return the value value.
      */
     public List<BgpConnectionInner> value() {
@@ -39,7 +43,7 @@ public final class ListVirtualHubBgpConnectionResults {
 
     /**
      * Set the value property: The list of VirtualHubBgpConnections.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualHubBgpConnectionResults object itself.
      */
@@ -50,7 +54,7 @@ public final class ListVirtualHubBgpConnectionResults {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListVirtualHubBgpConnectionResults {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualHubBgpConnectionResults object itself.
      */
@@ -70,7 +74,7 @@ public final class ListVirtualHubBgpConnectionResults {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -123,14 +123,18 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         };
     }
 
-    @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderQueryOptions", groups = { "simple" }, timeOut =
+    @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderQueryOptions", groups = { "fast" }, timeOut =
         TIMEOUT)
     public void queryWithMaxIntegratedCacheStaleness(CosmosQueryRequestOptions options, String query) {
         String collectionLink = getDocumentCollectionLink();
 
         client.clearCapturedRequests();
 
-        client.queryDocuments(collectionLink, query, options, Document.class).blockLast();
+        client.queryDocuments(
+            collectionLink,
+            query,
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
+            Document.class).blockLast();
 
         List<HttpRequest> requests = client.getCapturedRequests();
         for (HttpRequest httpRequest : requests) {
@@ -138,7 +142,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryWithMaxIntegratedCacheStalenessInNanoseconds() {
         DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
         dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofNanos(100));
@@ -150,14 +154,21 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            cosmosQueryRequestOptions,
+            client
+        );
+
         assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class)
+            .queryDocuments(collectionLink, query, state, Document.class)
             .blockLast())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryWithMaxIntegratedCacheStalenessInNegative() {
         DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
         dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofSeconds(-10));
@@ -167,16 +178,23 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         String collectionLink = getDocumentCollectionLink();
 
+        QueryFeedOperationState state = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            cosmosQueryRequestOptions,
+            client
+        );
+
         client.clearCapturedRequests();
 
         assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, cosmosQueryRequestOptions, Document.class)
+            .queryDocuments(collectionLink, query, state, Document.class)
             .blockLast())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
     }
 
-    @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderItemOptions", groups = { "simple" }, timeOut =
+    @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderItemOptions", groups = { "fast" }, timeOut =
         TIMEOUT)
     public void readItemWithMaxIntegratedCacheStaleness(CosmosItemRequestOptions cosmosItemRequestOptions) {
         String documentLink = getDocumentLink();
@@ -194,7 +212,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItemWithMaxIntegratedCacheStalenessInNanoseconds() {
         DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
         dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofNanos(100));
@@ -212,7 +230,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void readItemWithMaxIntegratedCacheStalenessInNegative() {
         DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
         dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(-500));
@@ -231,7 +249,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     }
 
     @Ignore // This test has to be run against sqlx endpoint
-    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "cacheBypassValues")
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, dataProvider = "cacheBypassValues")
     public void readItemWithCacheBypass(boolean cacheBypass) {
         DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions();
         dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness((Duration.ofMillis(500)));
@@ -277,7 +295,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         }
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "fast" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentQuerySpyWireContentTest() throws Exception {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
@@ -290,7 +308,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             getDocumentDefinition(), null, false).block();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "fast" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

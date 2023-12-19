@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SettingsParameterDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsParameterDescription model =
-            BinaryData
-                .fromString("{\"name\":\"xzdxtayrlhmwh\",\"value\":\"pmrqobm\"}")
-                .toObject(SettingsParameterDescription.class);
+        SettingsParameterDescription model = BinaryData.fromString("{\"name\":\"xzdxtayrlhmwh\",\"value\":\"pmrqobm\"}")
+            .toObject(SettingsParameterDescription.class);
         Assertions.assertEquals("xzdxtayrlhmwh", model.name());
         Assertions.assertEquals("pmrqobm", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsParameterDescription model =
-            new SettingsParameterDescription().withName("xzdxtayrlhmwh").withValue("pmrqobm");
+        SettingsParameterDescription model
+            = new SettingsParameterDescription().withName("xzdxtayrlhmwh").withValue("pmrqobm");
         model = BinaryData.fromObject(model).toObject(SettingsParameterDescription.class);
         Assertions.assertEquals("xzdxtayrlhmwh", model.name());
         Assertions.assertEquals("pmrqobm", model.value());

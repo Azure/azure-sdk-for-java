@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Sybase table dataset. */
+/**
+ * The Sybase table dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SybaseTable")
 @JsonFlatten
@@ -24,12 +26,15 @@ public class SybaseTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
-    /** Creates an instance of SybaseTableDataset class. */
-    public SybaseTableDataset() {}
+    /**
+     * Creates an instance of SybaseTableDataset class.
+     */
+    public SybaseTableDataset() {
+    }
 
     /**
      * Get the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -38,7 +43,7 @@ public class SybaseTableDataset extends Dataset {
 
     /**
      * Set the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SybaseTableDataset object itself.
      */
@@ -47,49 +52,63 @@ public class SybaseTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SybaseTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

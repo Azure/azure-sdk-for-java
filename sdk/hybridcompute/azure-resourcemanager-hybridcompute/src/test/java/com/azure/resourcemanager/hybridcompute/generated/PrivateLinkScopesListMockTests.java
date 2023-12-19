@@ -33,7 +33,7 @@ public final class PrivateLinkScopesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"riofzpyqse\",\"privateLinkScopeId\":\"abnetshh\"},\"location\":\"h\",\"tags\":{\"nkww\":\"lvwiwubmwmbesl\",\"flcxoga\":\"pp\",\"mkqzeqqkdltfzxmh\":\"konzmnsik\",\"gureodkwobdag\":\"v\"},\"id\":\"tibqdxbxwakb\",\"name\":\"gqxndlkzgxhuripl\",\"type\":\"podxunkb\"}]}";
+            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"ccknfnwmbtmvp\",\"privateLinkScopeId\":\"jdhttzaefedxi\",\"privateEndpointConnections\":[{\"id\":\"phkmcrjdqnsdfz\",\"name\":\"gtgkylkdghr\",\"type\":\"uutlwxezwzhok\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"hh\",\"description\":\"qlgehg\"},\"provisioningState\":\"ipifhpfeoajvg\",\"groupIds\":[\"xjcsheafidltu\",\"sr\",\"smkss\",\"h\"]}},{\"id\":\"ftxfkf\",\"name\":\"gpr\",\"type\":\"tillucbiqtg\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"mcwsldrizetpwb\",\"description\":\"a\"},\"provisioningState\":\"libph\",\"groupIds\":[\"mizak\",\"kan\",\"jpdn\"]}},{\"id\":\"ha\",\"name\":\"ylhjlm\",\"type\":\"y\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"mrsopte\",\"description\":\"cjmeislstvasy\"},\"provisioningState\":\"xdza\",\"groupIds\":[\"eoohguufuzboyj\",\"thwtzol\",\"a\",\"mwmdxmebwjscjpa\"]}}]},\"location\":\"xveabf\",\"tags\":{\"ijddtvqc\":\"mwmqtibx\",\"jaeukmrsieekpn\":\"tad\",\"pibudqwyxebeybpm\":\"zaapmudqmeqwi\"},\"id\":\"znrtffyaqit\",\"name\":\"hheioqaqhvseuf\",\"type\":\"qyrxp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,8 +64,8 @@ public final class PrivateLinkScopesListMockTests {
         PagedIterable<HybridComputePrivateLinkScope> response =
             manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("h", response.iterator().next().location());
-        Assertions.assertEquals("lvwiwubmwmbesl", response.iterator().next().tags().get("nkww"));
+        Assertions.assertEquals("xveabf", response.iterator().next().location());
+        Assertions.assertEquals("mwmqtibx", response.iterator().next().tags().get("ijddtvqc"));
         Assertions
             .assertEquals(
                 PublicNetworkAccessType.DISABLED, response.iterator().next().properties().publicNetworkAccess());

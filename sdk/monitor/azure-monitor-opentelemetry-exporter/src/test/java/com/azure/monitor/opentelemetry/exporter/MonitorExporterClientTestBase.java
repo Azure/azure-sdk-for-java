@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
+import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
@@ -35,8 +36,7 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
         return new AzureMonitorExporterBuilder().httpPipeline(getHttpPipeline(null));
     }
 
-    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
-        HttpClient httpClient = HttpClient.createDefault();
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (policy != null) {
             policies.add(policy);
@@ -53,7 +53,12 @@ public class MonitorExporterClientTestBase extends TestProxyTestBase {
         return new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(new NoopTracer())
             .build();
+    }
+
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
+        return getHttpPipeline(policy, HttpClient.createDefault());
     }
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {

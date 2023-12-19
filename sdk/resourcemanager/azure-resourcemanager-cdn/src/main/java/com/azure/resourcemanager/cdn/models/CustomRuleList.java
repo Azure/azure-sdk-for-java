@@ -17,6 +17,10 @@ public final class CustomRuleList {
     @JsonProperty(value = "rules")
     private List<CustomRule> rules;
 
+    /** Creates an instance of CustomRuleList class. */
+    public CustomRuleList() {
+    }
+
     /**
      * Get the rules property: List of rules.
      *
