@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceupdate.fluent.models.GroupInformationInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * List all private link resources in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -42,7 +44,24 @@ public interface PrivateLinkResourcesClient {
 
     /**
      * Get the specified private link resource associated with the device update account.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param groupId The group ID of the private link resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private link resource associated with the device update account along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GroupInformationInner> getWithResponse(String resourceGroupName, String accountName, String groupId,
+        Context context);
+
+    /**
+     * Get the specified private link resource associated with the device update account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param groupId The group ID of the private link resource.
@@ -53,21 +72,4 @@ public interface PrivateLinkResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     GroupInformationInner get(String resourceGroupName, String accountName, String groupId);
-
-    /**
-     * Get the specified private link resource associated with the device update account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param groupId The group ID of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private link resource associated with the device update account along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GroupInformationInner> getWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context);
 }
