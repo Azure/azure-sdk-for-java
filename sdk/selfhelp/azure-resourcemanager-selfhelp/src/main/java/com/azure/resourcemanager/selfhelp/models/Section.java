@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Part of the solution and are dividers in the solution rendering. */
+/**
+ * Part of the solution and are dividers in the solution rendering.
+ */
 @Fluent
 public final class Section {
     /*
@@ -28,13 +30,15 @@ public final class Section {
     @JsonProperty(value = "replacementMaps")
     private ReplacementMaps replacementMaps;
 
-    /** Creates an instance of Section class. */
+    /**
+     * Creates an instance of Section class.
+     */
     public Section() {
     }
 
     /**
      * Get the title property: Solution sections title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -43,7 +47,7 @@ public final class Section {
 
     /**
      * Set the title property: Solution sections title.
-     *
+     * 
      * @param title the title value to set.
      * @return the Section object itself.
      */
@@ -54,7 +58,7 @@ public final class Section {
 
     /**
      * Get the content property: Solution sections content.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -63,7 +67,7 @@ public final class Section {
 
     /**
      * Set the content property: Solution sections content.
-     *
+     * 
      * @param content the content value to set.
      * @return the Section object itself.
      */
@@ -74,7 +78,7 @@ public final class Section {
 
     /**
      * Get the replacementMaps property: Solution replacement maps.
-     *
+     * 
      * @return the replacementMaps value.
      */
     public ReplacementMaps replacementMaps() {
@@ -83,7 +87,7 @@ public final class Section {
 
     /**
      * Set the replacementMaps property: Solution replacement maps.
-     *
+     * 
      * @param replacementMaps the replacementMaps value to set.
      * @return the Section object itself.
      */
@@ -94,7 +98,7 @@ public final class Section {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
