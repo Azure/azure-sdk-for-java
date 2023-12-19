@@ -9,8 +9,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-applicationinsights-query-sample</artifactId>
-    <version>1.0.0-Preview-1</version>
-    <packaging>jar</packaging>
+    <version>1.0.0-Preview-1</version> <!-- {x-version-update;com.microsoft.azure:azure-applicationinsights-query-sample;current} -->
+  <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Application Insights Query Sample</name>
     <description>This package contains Microsoft Application Insights Query SDK Sample.</description>
     <parent>
@@ -35,7 +35,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-        <runtime.version>1.6.3</runtime.version>
         <checkstyle.skip>true</checkstyle.skip>
         <spotbugs.skip>true</spotbugs.skip>
     </properties>
@@ -49,12 +48,12 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-applicationinsights-query</artifactId>
-            <version>${version}</version>
+            <version>1.0.0-Preview-2</version> <!-- {x-version-update;com.microsoft.azure:azure-applicationinsights-query;current} -->
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>${runtime.version}</version>
+            <version>1.7.14</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
         </dependency>
     </dependencies>
     <build>

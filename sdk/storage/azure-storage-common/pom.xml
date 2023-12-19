@@ -129,7 +129,7 @@
     <dependency>
       <groupId>org.apache.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>4.0.15</version> <!-- {x-version-update;org.codehaus.groovy:groovy;external_dependency} -->
+      <version>4.0.15</version> <!-- {x-version-update;org.apache.groovy:groovy;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
