@@ -2938,7 +2938,7 @@ public class BlobApiTests extends BlobTestBase {
         BlockBlobClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobClient();
         assertEquals(blockBlobClient.getBlobName(), originalBlobName);
 
-        // now try uploading to the portal and see if the blob name will be properly encoded in the url
+        // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
         assertTrue(cc.getBlobClient(originalBlobName).getBlobUrl().contains(encodedName));
     }
