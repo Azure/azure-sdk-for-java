@@ -44,6 +44,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -92,6 +93,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosAsyncClient client;
 
     private ChangeFeedProcessor changeFeedProcessor;
+
+    @DataProvider(name = "throughputControlConfigArgProvider")
+    public static Object[][] throughputControlConfigArgProvider() {
+        return new Object[][]{
+            // throughput control config enabled
+            { true },
+            { false }
+        };
+    }
 
     @Factory(dataProvider = "clientBuilders")
     public IncrementalChangeFeedProcessorTest(CosmosClientBuilder clientBuilder) {
@@ -1182,8 +1192,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void readFeedDocumentsAfterSplit() throws InterruptedException {
+    @Test(groups = { "cfp-split" }, dataProvider = "throughputControlConfigArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsAfterSplit(boolean throughputControlConfigEnabled) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -1206,24 +1216,34 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
                     .setStartFromBeginning(true)
                     .setMaxItemCount(100)
                     .setLeaseExpirationInterval(Duration.ofMillis(10 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                    .setFeedPollDelay(Duration.ofMillis(200))
-                )
+                    .setFeedPollDelay(Duration.ofMillis(200)))
                 .buildChangeFeedProcessor();
 
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            ChangeFeedProcessorOptions options =
+                new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseRenewInterval(Duration.ofSeconds(2));
+
+            if (throughputControlConfigEnabled) {
+                options.setFeedPollThroughputControlConfig(
+                    new ThroughputControlGroupConfigBuilder()
+                        .groupName("splitTest-" + UUID.randomUUID())
+                        .targetThroughputThreshold(1.0) // just to make sure enabling throughput control config will not cause exceptions/errors
+                        .build()
+                );
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeasePrefix("TEST")
-                    .setStartFromBeginning(true)
-                    .setMaxItemCount(10)
-                    .setLeaseRenewInterval(Duration.ofSeconds(2))
-                )
+                .options(options)
                 .buildChangeFeedProcessor();
 
             leaseMonitoringChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())

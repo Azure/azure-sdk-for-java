@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.FeedRangeGoneExcept
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -301,7 +302,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
         }
 
         return this.feedRangeThroughputControlConfigManager
-            .getThroughputControlConfigForLeaseFeedRange(lease)
+            .getThroughputControlConfigForFeedRange((FeedRangeEpkImpl) lease.getFeedRange())
             .map(config -> new Utils.ValueHolder<>(config));
     }
 

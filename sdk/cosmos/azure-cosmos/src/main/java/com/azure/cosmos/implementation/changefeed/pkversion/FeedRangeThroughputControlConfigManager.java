@@ -29,14 +29,14 @@ public class FeedRangeThroughputControlConfigManager {
         this.documentClient = documentClient;
     }
 
-    public ThroughputControlGroupConfig getThroughputControlConfigForLeaseFeedRange(Lease lease) {
-        checkNotNull(lease, "Argument 'lease' can not be null");
+    public ThroughputControlGroupConfig getThroughputControlConfigForFeedRange(FeedRange feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
 
         // for pkRange leases, it has only been used to support for split
         // the lease feed range and partition key range is always a 1:1 mapping
         // based on the thought that usually each CFP instance will only process a unique subset of partition key ranges
         // we create a local throughput control group for each partition key range
-        return this.getThroughputControlGroupConfigInternal(lease.getFeedRange());
+        return this.getThroughputControlGroupConfigInternal(feedRange);
     }
 
     private ThroughputControlGroupConfig getThroughputControlGroupConfigInternal(FeedRange feedRange) {

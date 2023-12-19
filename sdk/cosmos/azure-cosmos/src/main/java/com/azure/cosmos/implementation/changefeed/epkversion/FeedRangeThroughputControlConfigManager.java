@@ -61,16 +61,16 @@ public class FeedRangeThroughputControlConfigManager {
             .then();
     }
 
-    public Mono<ThroughputControlGroupConfig> getThroughputControlConfigForLeaseFeedRange(Lease lease) {
-        checkNotNull(lease, "Argument 'lease' can not be null");
+    public Mono<ThroughputControlGroupConfig> getThroughputControlConfigForFeedRange(FeedRangeEpkImpl feedRange) {
+        checkNotNull(feedRange, "Argument 'feedRange' can not be null");
 
         // for epk leases, it is used to support both split and merge
         // when merge happens, the current lease will be reused, so it can happen for the same partition key range, there are multiple leases map to it
         // for cases like this, we are going to find all leases mapped to the same partition key range, and then equally divide the RU allocation among the instances
-        return this.documentClient.getOverlappingRanges(((FeedRangeEpkImpl)lease.getFeedRange()).getRange(), false)
+        return this.documentClient.getOverlappingRanges(feedRange.getRange(), false)
             .flatMap(partitionKeyRanges -> {
                 if (partitionKeyRanges.isEmpty()) {
-                    return Mono.error(new IllegalStateException("Failed to get overlapping partition key range for range " + lease.getFeedRange()));
+                    return Mono.error(new IllegalStateException("Failed to get overlapping partition key range for range " + feedRange));
                 }
 
                 if (partitionKeyRanges.size() > 1) {
@@ -84,12 +84,12 @@ public class FeedRangeThroughputControlConfigManager {
                         .stream()
                         .filter(leaseToken ->
                             leaseToken.getRange().getMin().compareTo(partitionKeyRanges.get(0).getMinInclusive()) >= 0
-                            && leaseToken.getRange().getMax().compareTo(partitionKeyRanges.get(0).getMaxExclusive()) < 0)
+                            && leaseToken.getRange().getMax().compareTo(partitionKeyRanges.get(0).getMaxExclusive()) <= 0)
                         .count();
 
                 return Mono.just(
                     getThroughputControlGroupConfigInternal(
-                        lease.getFeedRange(),
+                        feedRange,
                         leasesBelongToSamePartitionKeyRange));
             })
             .onErrorResume(throwable -> {
@@ -97,7 +97,7 @@ public class FeedRangeThroughputControlConfigManager {
                 // we will capture all exceptions and fall back to use partition divider factor 1
                 logger.warn("getThroughputControlConfigForLeaseFeedRange failed, using divide factor 1", throwable);
                 return Mono.just(
-                    getThroughputControlGroupConfigInternal(lease.getFeedRange(), 1));
+                    getThroughputControlGroupConfigInternal(feedRange, 1));
             });
     }
 

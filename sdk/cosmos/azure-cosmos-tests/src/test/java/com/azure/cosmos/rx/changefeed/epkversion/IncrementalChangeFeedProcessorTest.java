@@ -123,6 +123,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "throughputControlArgProvider")
+    public static Object[][] throughputControlArgProvider() {
+        return new Object[][]{
+            // throughput control enabled
+            { true },
+            { false }
+        };
+    }
+
     @Test(groups = {"query" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginning() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
@@ -1074,8 +1083,8 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "cfp-split" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
-    public void readFeedDocumentsAfterSplit() throws InterruptedException {
+    @Test(groups = { "cfp-split" }, dataProvider = "throughputControlArgProvider", timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsAfterSplit(boolean throughputControlEnabled) throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseMonitorCollection = createLeaseMonitorCollection(LEASE_COLLECTION_THROUGHPUT);
@@ -1134,17 +1143,26 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             // generate a first batch of documents
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
 
+            ChangeFeedProcessorOptions changeFeedProcessorOptions =
+                new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseRenewInterval(Duration.ofSeconds(2));
+            if (throughputControlEnabled) {
+                changeFeedProcessorOptions.setFeedPollThroughputControlConfig(
+                    new ThroughputControlGroupConfigBuilder()
+                        .groupName("splitTest-" + UUID.randomUUID())
+                        .targetThroughputThreshold(1.0)
+                        .build()
+                );
+            }
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
                 .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
                 .feedContainer(createdFeedCollectionForSplit)
                 .leaseContainer(createdLeaseCollection)
-                .options(new ChangeFeedProcessorOptions()
-                    .setLeasePrefix("TEST")
-                    .setStartFromBeginning(true)
-                    .setMaxItemCount(10)
-                    .setLeaseRenewInterval(Duration.ofSeconds(2))
-                )
+                .options(changeFeedProcessorOptions)
                 .buildChangeFeedProcessor();
 
             leaseMonitoringChangeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())

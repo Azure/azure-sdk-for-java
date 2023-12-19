@@ -284,7 +284,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
             return null;
         }
 
-        return this.feedRangeThroughputControlConfigManager.getThroughputControlConfigForLeaseFeedRange(lease);
+        return this.feedRangeThroughputControlConfigManager.getThroughputControlConfigForFeedRange(lease.getFeedRange());
     }
 
     @Override
