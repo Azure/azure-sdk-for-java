@@ -15,7 +15,7 @@
  *     <li><strong>Event Subscriptions</strong> - the endpoint or built-in mechanism for routing events.</li>
  * </ul>
  * <p>For more information see the <a href="https://learn.microsoft.com/en-us/azure/event-grid/concepts">concepts overview.</a></p>
- * <h2Send an EventGridEvent</h2>
+ * <h2>Send an EventGridEvent</h2>
  * <p>In order to interact with the Azure Event Grid service, you will need to create an instance of the {@link com.azure.messaging.eventgrid.EventGridPublisherClient} class:</p>
  * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherClient#CreateEventGridEventClient -->
  * <pre>
