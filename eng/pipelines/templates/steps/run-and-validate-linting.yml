@@ -2,6 +2,9 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
+  - name: JavadocSafeJavaVersion
+    type: string
+    default: $(JavadocSafeJavaVersion)
   - name: AdditionalLintingOptions
     type: string
     default: ''
@@ -87,7 +90,7 @@ steps:
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
       mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkVersionOption: ${{ parameters.JavadocSafeJavaVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       ${{ if ne(parameters.SDKType, 'client') }}:
