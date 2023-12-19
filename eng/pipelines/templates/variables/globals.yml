@@ -1,12 +1,12 @@
 variables:
   DocWardenVersion: '0.7.2'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
-  JavaBuildVersion: '1.17'
+  JavaBuildVersion: '1.21'
   # This is the default Java test version. It's the version used when running tests.
-  JavaTestVersion: '1.17'
+  JavaTestVersion: '1.21'
   # This is the latest Java version released. It's used to run a non-failing job to validate the latest Java version.
-  LatestNonLtsJavaVersion: '1.20'
-  LatestNonLtsJdkFeatureVersion: '20'
+  LatestNonLtsJavaVersion: '1.21'
+  LatestNonLtsJdkFeatureVersion: '21'
   # This is the version of Python used by various tools in the Java build/release processes
   PythonVersion: '3.9'
 
