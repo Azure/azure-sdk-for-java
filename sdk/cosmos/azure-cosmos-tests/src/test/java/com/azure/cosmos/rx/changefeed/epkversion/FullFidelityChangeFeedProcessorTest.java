@@ -898,7 +898,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
-            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments,FEED_COUNT, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+            validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, FEED_COUNT, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT);
 

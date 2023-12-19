@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 // Only used in CFP when customer configure throughput control config
-// The main purpose of this class is to monitor the feedRange -> partition mapping changes, and create corresponding throughput control group
+// The main purpose of this class is to monitor the lease feedRange -> partitionKeyRange mapping changes, and create corresponding throughput control group
 public class FeedRangeThroughputControlConfigManager {
     private static final Logger logger = LoggerFactory.getLogger(FeedRangeThroughputControlConfigManager.class);
 
     private final ThroughputControlGroupConfig throughputControlGroupConfig;
     private final ChangeFeedContextClient documentClient;
-    private final AtomicReference<List<FeedRangeEpkImpl>> leaseTokens;
+    private final AtomicReference<List<FeedRangeEpkImpl>> leaseTokens; // epk leases
 
     public FeedRangeThroughputControlConfigManager(
         ThroughputControlGroupConfig throughputControlGroupConfig,
@@ -42,7 +42,7 @@ public class FeedRangeThroughputControlConfigManager {
     }
 
     /**
-     * This method will be called during the lease load balancing time from {@link com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy}.
+     * This method will be called during the leases load balancing time from {@link com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy}.
      * We are going to track the up to date all leases and refresh the partitionKeyRangesCache
      *
      * @param leases all the current leases in lease container.
@@ -93,7 +93,9 @@ public class FeedRangeThroughputControlConfigManager {
                         leasesBelongToSamePartitionKeyRange));
             })
             .onErrorResume(throwable -> {
-                logger.warn("getThroughputControlConfigForLeaseFeedRange failed, using divide facor 1", throwable);
+                // Throughput control flow should not break the normal request flow
+                // we will capture all exceptions and fall back to use partition divider factor 1
+                logger.warn("getThroughputControlConfigForLeaseFeedRange failed, using divide factor 1", throwable);
                 return Mono.just(
                     getThroughputControlGroupConfigInternal(lease.getFeedRange(), 1));
             });

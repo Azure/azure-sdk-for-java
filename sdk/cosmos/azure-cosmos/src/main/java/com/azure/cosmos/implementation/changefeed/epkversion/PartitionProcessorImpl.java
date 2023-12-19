@@ -90,7 +90,7 @@ class PartitionProcessorImpl<T> implements PartitionProcessor {
 
         // We only calculate/get the throughput control group config for the feed range at the beginning
         // Only split/merge will impact the leases <-> partitionKeyRange mapping
-        // When split/merge happens, the current processor will be closed
+        // When split/merge happens, the processor for the current lease will be closed
         // and a new processor will be created during load balancing stage
         return this.tryGetThroughputControlConfigForFeedRange(this.lease)
             .flatMap(configValueHolder -> processFeedRange(cancellationToken, configValueHolder.v));
