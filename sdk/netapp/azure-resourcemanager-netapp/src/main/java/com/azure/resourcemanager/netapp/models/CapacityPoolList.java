@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.CapacityPoolInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of capacity pool resources. */
+/**
+ * List of capacity pool resources.
+ */
 @Fluent
 public final class CapacityPoolList {
     /*
@@ -24,13 +26,15 @@ public final class CapacityPoolList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CapacityPoolList class. */
+    /**
+     * Creates an instance of CapacityPoolList class.
+     */
     public CapacityPoolList() {
     }
 
     /**
      * Get the value property: List of Capacity pools.
-     *
+     * 
      * @return the value value.
      */
     public List<CapacityPoolInner> value() {
@@ -39,7 +43,7 @@ public final class CapacityPoolList {
 
     /**
      * Set the value property: List of Capacity pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the CapacityPoolList object itself.
      */
@@ -50,7 +54,7 @@ public final class CapacityPoolList {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class CapacityPoolList {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CapacityPoolList object itself.
      */
@@ -70,7 +74,7 @@ public final class CapacityPoolList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

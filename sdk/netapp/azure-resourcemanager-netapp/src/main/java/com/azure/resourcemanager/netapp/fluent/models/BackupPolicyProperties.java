@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.models.VolumeBackups;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Backup policy properties. */
+/**
+ * Backup policy properties.
+ */
 @Fluent
 public final class BackupPolicyProperties {
     /*
@@ -60,13 +62,15 @@ public final class BackupPolicyProperties {
     @JsonProperty(value = "volumeBackups", access = JsonProperty.Access.WRITE_ONLY)
     private List<VolumeBackups> volumeBackups;
 
-    /** Creates an instance of BackupPolicyProperties class. */
+    /**
+     * Creates an instance of BackupPolicyProperties class.
+     */
     public BackupPolicyProperties() {
     }
 
     /**
      * Get the backupPolicyId property: Backup Policy Resource ID.
-     *
+     * 
      * @return the backupPolicyId value.
      */
     public String backupPolicyId() {
@@ -75,7 +79,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -84,7 +88,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @return the dailyBackupsToKeep value.
      */
     public Integer dailyBackupsToKeep() {
@@ -93,7 +97,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Set the dailyBackupsToKeep property: Daily backups count to keep.
-     *
+     * 
      * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
      * @return the BackupPolicyProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @return the weeklyBackupsToKeep value.
      */
     public Integer weeklyBackupsToKeep() {
@@ -113,7 +117,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
+     * 
      * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
      * @return the BackupPolicyProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @return the monthlyBackupsToKeep value.
      */
     public Integer monthlyBackupsToKeep() {
@@ -133,7 +137,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
+     * 
      * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
      * @return the BackupPolicyProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the volumesAssigned property: Volumes using current backup policy.
-     *
+     * 
      * @return the volumesAssigned value.
      */
     public Integer volumesAssigned() {
@@ -153,7 +157,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -162,7 +166,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the BackupPolicyProperties object itself.
      */
@@ -173,7 +177,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Get the volumeBackups property: A list of volumes assigned to this policy.
-     *
+     * 
      * @return the volumeBackups value.
      */
     public List<VolumeBackups> volumeBackups() {
@@ -182,7 +186,7 @@ public final class BackupPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

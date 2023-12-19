@@ -7,18 +7,20 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner;
 import java.util.List;
 
-/** An immutable client-side representation of SnapshotPolicyVolumeList. */
+/**
+ * An immutable client-side representation of SnapshotPolicyVolumeList.
+ */
 public interface SnapshotPolicyVolumeList {
     /**
      * Gets the value property: List of volumes.
-     *
+     * 
      * @return the value value.
      */
     List<Volume> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyVolumeListInner object.
-     *
+     * 
      * @return the inner object.
      */
     SnapshotPolicyVolumeListInner innerModel();
