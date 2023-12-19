@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -3113,6 +3114,28 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         // Note : Here I use Path because there is a test that tests the use of a /
         assertEquals(originalDirectoryName, client.getDirectoryPath());
+    }
+
+    @Test
+    public void subdirectoryAndFilePaths() {
+        // testing to see if the subdirectory and file paths are created correctly
+        DataLakeDirectoryClient directoryClient = dataLakeFileSystemClient.getDirectoryClient("topdir");
+        directoryClient.createIfNotExists();
+        DataLakeDirectoryClient subDir = directoryClient.createSubdirectory("subdir");
+        DataLakeDirectoryClient subSubDir = subDir.createSubdirectory("subsubdir");
+        assertEquals(subDir.getDirectoryPath(), "topdir/subdir");
+
+        // ensuring the blob and dfs endpoints are the same while creating the subdirectory
+        assertEquals(subSubDir.getBlockBlobClient().getBlobUrl(),
+            DataLakeImplUtils.endpointToDesiredEndpoint(subSubDir.getPathUrl(), "blob", "dfs"));
+        assertEquals(subSubDir.getBlockBlobClient().getBlobName(), subSubDir.getDirectoryPath());
+        assertEquals("topdir/subdir/subsubdir", subSubDir.getDirectoryPath());
+        DataLakeFileClient fileClient = subSubDir.createFile("file");
+        assertEquals("topdir/subdir/subsubdir/file", fileClient.getFilePath());
+
+        // ensuring the blob and dfs endpoints are the same while creating the file
+        assertEquals(fileClient.getBlockBlobClient().getBlobUrl(),
+            DataLakeImplUtils.endpointToDesiredEndpoint(fileClient.getPathUrl(), "blob", "dfs"));
     }
 
     @ParameterizedTest
