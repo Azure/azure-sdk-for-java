@@ -69,10 +69,12 @@ public interface SyncPoller<T, U> {
     /**
      * Wait for the given {@link LongRunningOperationStatus} to receive.
      * <p>
-     * This operation will wait indefinitely until the {@code statusToWaitFor} is received.
+     * This operation will wait indefinitely until the {@code statusToWaitFor} is received or a
+     * {@link LongRunningOperationStatus#isComplete()} state is reached.
      *
      * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
-     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}.
+     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor} or is
+     * {@link LongRunningOperationStatus#isComplete()}.
      * @throws NullPointerException if {@code statusToWaitFor} is {@code null}.
      */
     PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor);
@@ -81,20 +83,25 @@ public interface SyncPoller<T, U> {
      * Wait for the given {@link LongRunningOperationStatus} with a timeout.
      * <p>
      * Polling will continue until a response is returned with a {@link LongRunningOperationStatus} matching
-     * {@code statusToWaitFor} or the timeout expires.
+     * {@code statusToWaitFor}, a {@link LongRunningOperationStatus#isComplete()} state is reached, or the timeout
+     * expires.
      * <p>
-     * The {@code timeout} is applied in two ways, first it's used during each poll operation to time it out if the
-     * polling operation takes too long. Second, it's used to determine when the wait for should stop. If polling
-     * doesn't reach {@code statusToWaitFor} state before the {@code timeout} elapses a {@link RuntimeException}
-     * wrapping a {@link TimeoutException} will be thrown.
+     * Unlike {@link #waitForCompletion(Duration)} or {@link #getFinalResult(Duration)}, when the timeout elapses a
+     * {@link RuntimeException} wrapping a {@link TimeoutException} will not be thrown. Instead, the last poll response
+     * will be returned. This is because unlike a completion state, a wait for state may be skipped if the state
+     * is reached and completed before a poll operation is executed. For example, if a long-running operation has the
+     * flow {@code A -> B -> C -> D} and the {@code statusToWaitFor} is {@code B} and the first poll request returns
+     * state {@code A} but in the time between polls state {@code B} completes, then the next poll request will return
+     * state {@code C} and the {@code statusToWaitFor} will never be returned.
+     * <p>
+     * This may return null if no poll operation completes within the timeout.
      *
      * @param timeout the duration to wait for the polling.
      * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
-     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}.
+     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}, or null if
+     * no response was returned within the timeout.
      * @throws NullPointerException if {@code statusToWaitFor} or {@code timeout} is {@code null}.
      * @throws IllegalArgumentException if {@code timeout} is zero or negative.
-     * @throws RuntimeException If polling doesn't reach {@code statusToWaitFor} before the {@code timeout} elapses.
-     * ({@link RuntimeException#getCause()} should be a {@link TimeoutException}).
      */
     PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor);
 
@@ -120,8 +127,8 @@ public interface SyncPoller<T, U> {
      * doesn't reach a completion state before the {@code timeout} elapses a {@link RuntimeException} wrapping a
      * {@link TimeoutException} will be thrown.
      * <p>
-     * If this method isn't overridden by the implementation then this method is effectively equivalent to
-     * {@link #getFinalResult()}.
+     * If this method isn't overridden by the implementation then this method is effectively equivalent to calling
+     * {@link #waitForCompletion(Duration)} then {@link #getFinalResult()}.
      *
      * @param timeout the duration to wait for polling completion.
      * @return the final result of the long-running operation if there is one.

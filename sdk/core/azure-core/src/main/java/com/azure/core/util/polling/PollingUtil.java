@@ -16,8 +16,8 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
@@ -33,55 +33,65 @@ class PollingUtil {
 
     static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
         LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        Duration pollInterval) {
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        Duration pollInterval, boolean isWaitForStatus) {
         boolean timeBound = timeout != null;
         long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
-
         long startTime = System.currentTimeMillis();
-        pollingContext.setLatestResponse(pollOperation.apply(pollingContext));
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
+
         Runnable pollOpRunnable = () -> {
             PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
             pollingContext.setLatestResponse(pollResponse1);
         };
 
-        while (!intermediatePollResponse.getStatus().isComplete()) {
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            if (timeBound && elapsedTime >= timeoutInMillis) {
-                scheduler.shutdown();
+        boolean firstPoll = true;
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        try {
+            while (!intermediatePollResponse.getStatus().isComplete()) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                if (timeBound && elapsedTime >= timeoutInMillis) {
+                    if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
+                        return intermediatePollResponse;
+                    } else {
+                        throw LOGGER.logExceptionAsError(new RuntimeException(
+                            new TimeoutException("Polling didn't complete before the timeout period.")));
+                    }
+                }
+
                 if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
                     return intermediatePollResponse;
-                } else {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        new TimeoutException("Polling didn't complete before the timeout period.")));
                 }
-            }
 
-            if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
-                scheduler.shutdown();
-                return intermediatePollResponse;
-            }
-
-            final ScheduledFuture<?> pollOp = scheduler.schedule(pollOpRunnable,
-                getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
-
-            try {
-                if (timeBound) {
-                    pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
+                final Future<?> pollOp;
+                if (firstPoll) {
+                    firstPoll = false;
+                    pollOp = scheduler.submit(pollOpRunnable);
                 } else {
-                    pollOp.get();
+                    pollOp = scheduler.schedule(pollOpRunnable,
+                        getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
                 }
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                scheduler.shutdown();
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+
+                try {
+                    if (timeBound) {
+                        pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
+                    } else {
+                        pollOp.get();
+                    }
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    // waitUntil should not throw when timeout is reached.
+                    if (isWaitForStatus) {
+                        return intermediatePollResponse;
+                    }
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                }
+
+                intermediatePollResponse = pollingContext.getLatestResponse();
             }
 
-            intermediatePollResponse = pollingContext.getLatestResponse();
+            return intermediatePollResponse;
+        } finally {
+            scheduler.shutdown();
         }
-
-        scheduler.shutdown();
-        return intermediatePollResponse;
     }
 
     static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(PollingContext<T> pollingContext,

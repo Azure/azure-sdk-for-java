@@ -16,6 +16,7 @@ import java.util.function.Function;
 import static com.azure.core.util.polling.LongRunningOperationStatus.IN_PROGRESS;
 import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 import static com.azure.core.util.polling.PollerFlux.error;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -439,8 +440,7 @@ public class SimpleSyncPollerTests {
     @Test
     public void waitUntilSinglePollTimesOut() {
         final Response activationResponse = new Response("Activated");
-        Function<PollingContext<SimpleSyncPollerTests.Response>, SimpleSyncPollerTests.Response> activationOperation
-            = ignored -> activationResponse;
+        Function<PollingContext<Response>, Response> activationOperation = ignored -> activationResponse;
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
@@ -448,7 +448,7 @@ public class SimpleSyncPollerTests {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -462,9 +462,8 @@ public class SimpleSyncPollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt)),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        PollResponse<Response> pollResponse = poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED);
+        assertEquals(activationResponse.getResponse(), pollResponse.getValue().getResponse());
     }
 
     /**
@@ -479,10 +478,11 @@ public class SimpleSyncPollerTests {
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
+        PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
         Function<PollingContext<Response>, PollResponse<Response>> pollOperation = ignored -> {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
-                return new PollResponse<>(IN_PROGRESS, new Response("0"), TEN_MILLIS);
+                return expected;
             } else if (invocationCount[0] == 1) {
                 try {
                     Thread.sleep(1000);
@@ -500,9 +500,9 @@ public class SimpleSyncPollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt)),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause());
+        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(100),
+            SUCCESSFULLY_COMPLETED));
+        assertEquals("0", pollResponse.getValue().getResponse());
     }
 
     /**

@@ -10,8 +10,8 @@
 
 ### Breaking Changes
 
-- `SyncPoller.waitForCompletion(Duration)` and `SyncPoller.waitUntil(Duration, LongRunningOperationStatus)` now
-  throw an exception if the polling operation doesn't complete or reach the status within the give duration.
+- `SyncPoller.waitForCompletion(Duration)` now throws an exception if the polling operation doesn't complete or reach 
+  the status within the give duration.
 
 ### Bugs Fixed
 

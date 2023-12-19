@@ -27,6 +27,7 @@ import static com.azure.core.util.polling.LongRunningOperationStatus.IN_PROGRESS
 import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -834,30 +835,29 @@ public class PollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        PollResponse<Response> pollResponse = poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED);
+        assertEquals(activationResponse.getResponse(), pollResponse.getValue().getResponse());
     }
 
     /**
-     * Tests that a {@link RuntimeException} wrapping a {@link TimeoutException} is thrown if the polling operation
-     * doesn't reach the {@code statusToWaitFor} within the timeout period.
+     * Tests that the last received PollResponse is used when waitUtil times out.
      */
     @Test
-    public void waitUntilOperationTimesOut() {
+    public void waitUntilOperationWithTimeout() {
         final Response activationResponse = new Response("Activated");
         Function<PollingContext<Response>, Mono<Response>> activationOperation
             = ignored -> Mono.just(activationResponse);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
+        PollResponse<Response> expected = new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10));
         Function<PollingContext<Response>, Mono<PollResponse<Response>>> pollOperation = ignored -> {
             invocationCount[0]++;
             if (invocationCount[0] == 0) {
-                return Mono.just(new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                return Mono.just(expected);
             } else {
                 return Mono.delay(Duration.ofSeconds(2))
-                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("0"), Duration.ofMillis(10)));
+                    .map(ignored2 -> new PollResponse<>(IN_PROGRESS, new Response("1"), Duration.ofMillis(10)));
             }
         };
 
@@ -865,9 +865,9 @@ public class PollerTests {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block()),
             pollOperation, (ignored1, ignored2) -> null, ignored -> null);
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> poller.waitUntil(Duration.ofMillis(100), SUCCESSFULLY_COMPLETED));
-        assertInstanceOf(TimeoutException.class, exception.getCause(), () -> printException(exception));
+        PollResponse<Response> pollResponse = assertDoesNotThrow(() -> poller.waitUntil(Duration.ofMillis(100),
+            SUCCESSFULLY_COMPLETED));
+        assertEquals("0", pollResponse.getValue().getResponse());
     }
 
     /**

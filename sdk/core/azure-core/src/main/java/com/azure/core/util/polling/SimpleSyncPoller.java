@@ -120,13 +120,14 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
 
     private PollResponse<T> waitUntilHelper(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            // Don't attempt to waitUntil status as it will never happen.
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
             PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation,
-                pollInterval);
+                pollInterval, true);
 
             if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
@@ -138,38 +139,36 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private PollResponse<T> waitForCompletionHelper(Duration timeout) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval);
-            this.terminalPollContext = context;
-            return pollResponse;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval,
+            false);
+        this.terminalPollContext = context;
+        return pollResponse;
     }
 
     @Override
     public U getFinalResult() {
-        PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null) {
-            return this.fetchResultOperation.apply(currentTerminalPollContext);
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            PollingUtil.pollingLoop(context, null, null, pollOperation, pollInterval);
-            this.terminalPollContext = context;
-            return getFinalResult();
-        }
+        return getFinalResultHelper(null);
     }
 
     @Override
     public U getFinalResult(Duration timeout) {
         validateTimeout(timeout, LOGGER);
+        return getFinalResultHelper(timeout);
+    }
 
+    private U getFinalResultHelper(Duration timeout) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return this.fetchResultOperation.apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval);
+            PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
             this.terminalPollContext = context;
             return getFinalResult();
         }
@@ -185,7 +184,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                 this.cancelOperation.apply(null, this.activationResponse);
             } catch (PollContextRequiredException crp) {
                 PollingContext<T> context2 = this.pollingContext.copy();
-                PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);
+                PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval, false);
                 this.cancelOperation.apply(context2, this.activationResponse);
             }
         }

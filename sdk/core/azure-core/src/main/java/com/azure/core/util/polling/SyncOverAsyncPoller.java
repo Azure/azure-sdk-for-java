@@ -95,6 +95,7 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitForCompletion() {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return currentTerminalPollContext.getLatestResponse();
         }
 
@@ -114,6 +115,7 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
 
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return currentTerminalPollContext.getLatestResponse();
         }
 
@@ -137,8 +139,9 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-            && statusToWaitFor.equals(currentTerminalPollContext.getLatestResponse().getStatus())) {
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            // Don't attempt to waitUntil status as it will never happen.
             return currentTerminalPollContext.getLatestResponse();
         }
 
@@ -161,34 +164,32 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
 
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-            && statusToWaitFor.equals(currentTerminalPollContext.getLatestResponse().getStatus())) {
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            // Don't attempt to waitUntil status as it will never happen.
             return currentTerminalPollContext.getLatestResponse();
         }
 
         PollingContext<T> context = this.pollingContext.copy();
         return PollingUtil.pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
-            .take(timeout) // take with a timeout to halt the loop once the timeout period elapses
+            .take(timeout) // take until the timeout happens
             .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor)) // take until terminal status
-            .switchIfEmpty(Mono.error(() -> new TimeoutException("Polling didn't complete before the timeout period.")))
-            .last()
+            .takeLast(1)
             .flatMap(response -> {
-                if (PollingUtil.matchStatus(response, statusToWaitFor)) {
-                    if (response.getStatus().isComplete()) {
-                        this.terminalPollContext = context;
-                    }
-                    return Mono.just(PollingUtil.toPollResponse(response));
-                } else {
-                    return Mono.error(new TimeoutException("Polling didn't complete before the timeout period."));
+                if (response.getStatus().isComplete()) {
+                    this.terminalPollContext = context;
                 }
+                return Mono.just(PollingUtil.toPollResponse(response));
             })
-            .block();
+            .switchIfEmpty(Mono.fromCallable(this.pollingContext::getLatestResponse))
+            .blockLast();
     }
 
     @Override
     public U getFinalResult() {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return this.fetchResultOperation.apply(currentTerminalPollContext).block();
         }
 
@@ -206,6 +207,7 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public U getFinalResult(Duration timeout) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return this.fetchResultOperation.apply(currentTerminalPollContext).block();
         }
 
