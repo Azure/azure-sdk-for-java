@@ -4,7 +4,6 @@
 package com.generic.core.http.pipeline;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.models.HttpClientOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +33,6 @@ import java.util.List;
 public class HttpPipelineBuilder {
     private HttpClient httpClient;
     private List<HttpPipelinePolicy> pipelinePolicies;
-    private HttpClientOptions clientOptions;
 
     /**
      * Creates a new instance of HttpPipelineBuilder that can configure options for the {@link HttpPipeline} before
@@ -91,19 +89,6 @@ public class HttpPipelineBuilder {
         }
 
         this.pipelinePolicies.addAll(Arrays.asList(policies));
-
-        return this;
-    }
-
-    /**
-     * Sets the ClientOptions that will configure the pipeline.
-     *
-     * @param clientOptions The ClientOptions that will configure the pipeline.
-     *
-     * @return The updated HttpPipelineBuilder object.
-     */
-    public HttpPipelineBuilder clientOptions(HttpClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
 
         return this;
     }
