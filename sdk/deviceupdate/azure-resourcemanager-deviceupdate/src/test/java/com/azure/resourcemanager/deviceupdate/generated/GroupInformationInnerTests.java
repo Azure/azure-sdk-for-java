@@ -8,24 +8,20 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.GroupInformationInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GroupInformationInnerTests {
-    @Test
-    public void testDeserialize() {
-        GroupInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"groupId\":\"rhcffcydd\",\"requiredMembers\":[\"jthjqkwpyei\",\"xmqci\",\"q\"],\"requiredZoneNames\":[\"hix\",\"igdtopbob\",\"og\",\"m\"]},\"id\":\"w\",\"name\":\"a\",\"type\":\"a\"}")
-                .toObject(GroupInformationInner.class);
-        Assertions.assertEquals("hix", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GroupInformationInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\",\"groupId\":\"dkcglhsl\",\"requiredMembers\":[\"dyggdtjixhbku\",\"fqweykhmene\",\"fyexfwhy\"],\"requiredZoneNames\":[\"bvyvdcsity\"]},\"id\":\"aamdect\",\"name\":\"hfiqscjeypvhe\",\"type\":\"rkgqhcjrefo\"}")
+            .toObject(GroupInformationInner.class);
+        Assertions.assertEquals("bvyvdcsity", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        GroupInformationInner model =
-            new GroupInformationInner().withRequiredZoneNames(Arrays.asList("hix", "igdtopbob", "og", "m"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GroupInformationInner model = new GroupInformationInner().withRequiredZoneNames(Arrays.asList("bvyvdcsity"));
         model = BinaryData.fromObject(model).toObject(GroupInformationInner.class);
-        Assertions.assertEquals("hix", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("bvyvdcsity", model.requiredZoneNames().get(0));
     }
 }

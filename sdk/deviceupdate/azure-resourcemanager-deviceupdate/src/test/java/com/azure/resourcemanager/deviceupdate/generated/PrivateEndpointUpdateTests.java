@@ -7,37 +7,30 @@ package com.azure.resourcemanager.deviceupdate.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointUpdate;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointUpdateTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ts\",\"location\":\"jcbpwxqpsrknft\",\"immutableSubscriptionId\":\"vriuhprwmdyvx\",\"immutableResourceId\":\"ayriwwroyqbexrm\",\"vnetTrafficTag\":\"ibycno\"}")
-                .toObject(PrivateEndpointUpdate.class);
-        Assertions.assertEquals("ts", model.id());
-        Assertions.assertEquals("jcbpwxqpsrknft", model.location());
-        Assertions.assertEquals("vriuhprwmdyvx", model.immutableSubscriptionId());
-        Assertions.assertEquals("ayriwwroyqbexrm", model.immutableResourceId());
-        Assertions.assertEquals("ibycno", model.vnetTrafficTag());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointUpdate model = BinaryData.fromString(
+            "{\"id\":\"gdknnqv\",\"location\":\"znqntoru\",\"immutableSubscriptionId\":\"gsahmkycgrauw\",\"immutableResourceId\":\"etaebu\",\"vnetTrafficTag\":\"vdmovsmzlxwabm\"}")
+            .toObject(PrivateEndpointUpdate.class);
+        Assertions.assertEquals("gdknnqv", model.id());
+        Assertions.assertEquals("znqntoru", model.location());
+        Assertions.assertEquals("gsahmkycgrauw", model.immutableSubscriptionId());
+        Assertions.assertEquals("etaebu", model.immutableResourceId());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.vnetTrafficTag());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointUpdate model =
-            new PrivateEndpointUpdate()
-                .withId("ts")
-                .withLocation("jcbpwxqpsrknft")
-                .withImmutableSubscriptionId("vriuhprwmdyvx")
-                .withImmutableResourceId("ayriwwroyqbexrm")
-                .withVnetTrafficTag("ibycno");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointUpdate model = new PrivateEndpointUpdate().withId("gdknnqv").withLocation("znqntoru")
+            .withImmutableSubscriptionId("gsahmkycgrauw").withImmutableResourceId("etaebu")
+            .withVnetTrafficTag("vdmovsmzlxwabm");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointUpdate.class);
-        Assertions.assertEquals("ts", model.id());
-        Assertions.assertEquals("jcbpwxqpsrknft", model.location());
-        Assertions.assertEquals("vriuhprwmdyvx", model.immutableSubscriptionId());
-        Assertions.assertEquals("ayriwwroyqbexrm", model.immutableResourceId());
-        Assertions.assertEquals("ibycno", model.vnetTrafficTag());
+        Assertions.assertEquals("gdknnqv", model.id());
+        Assertions.assertEquals("znqntoru", model.location());
+        Assertions.assertEquals("gsahmkycgrauw", model.immutableSubscriptionId());
+        Assertions.assertEquals("etaebu", model.immutableResourceId());
+        Assertions.assertEquals("vdmovsmzlxwabm", model.vnetTrafficTag());
     }
 }

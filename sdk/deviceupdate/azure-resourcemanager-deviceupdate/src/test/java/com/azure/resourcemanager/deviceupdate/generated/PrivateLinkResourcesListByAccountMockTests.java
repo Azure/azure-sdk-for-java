@@ -12,54 +12,46 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.deviceupdate.DeviceUpdateManager;
-import com.azure.resourcemanager.deviceupdate.models.Operation;
+import com.azure.resourcemanager.deviceupdate.models.GroupInformation;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListTests {
+public final class PrivateLinkResourcesListByAccountMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testListByAccount() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"fcnihgwq\",\"isDataAction\":false,\"display\":{\"provider\":\"gfbcvkcv\",\"resource\":\"pkeqdcvdrhvoo\",\"operation\":\"otbobzdopcj\",\"description\":\"nhdldwmgxcx\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"groupId\":\"ebqaaysjkixqtnq\",\"requiredMembers\":[\"zlwfffiakp\"],\"requiredZoneNames\":[\"qmt\",\"d\",\"tmmjihyeozph\"]},\"id\":\"auyqncygupkv\",\"name\":\"p\",\"type\":\"dscwxqupevzhf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeviceUpdateManager manager =
-            DeviceUpdateManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Operation> response = manager.operations().list(Context.NONE);
+        PagedIterable<GroupInformation> response
+            = manager.privateLinkResources().listByAccount("jlwuenvrkp", "ou", com.azure.core.util.Context.NONE);
+
+        Assertions.assertEquals("qmt", response.iterator().next().requiredZoneNames().get(0));
     }
 }

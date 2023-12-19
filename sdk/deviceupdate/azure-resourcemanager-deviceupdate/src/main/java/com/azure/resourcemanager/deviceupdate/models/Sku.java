@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Device Update Sku. */
+/**
+ * Device Update Sku.
+ */
 public final class Sku extends ExpandableStringEnum<Sku> {
-    /** Static value Free for Sku. */
+    /**
+     * Static value Free for Sku.
+     */
     public static final Sku FREE = fromString("Free");
 
-    /** Static value Standard for Sku. */
+    /**
+     * Static value Standard for Sku.
+     */
     public static final Sku STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of Sku value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Sku() {
+    }
+
+    /**
      * Creates or finds a Sku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Sku.
      */
@@ -29,7 +44,7 @@ public final class Sku extends ExpandableStringEnum<Sku> {
 
     /**
      * Gets known Sku values.
-     *
+     * 
      * @return known Sku values.
      */
     public static Collection<Sku> values() {
