@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The qos type of the pool. */
+/**
+ * The qos type of the pool.
+ */
 public final class QosType extends ExpandableStringEnum<QosType> {
-    /** Static value Auto for QosType. */
+    /**
+     * Static value Auto for QosType.
+     */
     public static final QosType AUTO = fromString("Auto");
 
-    /** Static value Manual for QosType. */
+    /**
+     * Static value Manual for QosType.
+     */
     public static final QosType MANUAL = fromString("Manual");
 
     /**
      * Creates a new instance of QosType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class QosType extends ExpandableStringEnum<QosType> {
 
     /**
      * Creates or finds a QosType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QosType.
      */
@@ -38,7 +44,7 @@ public final class QosType extends ExpandableStringEnum<QosType> {
 
     /**
      * Gets known QosType values.
-     *
+     * 
      * @return known QosType values.
      */
     public static Collection<QosType> values() {

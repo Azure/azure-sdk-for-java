@@ -23,52 +23,42 @@ public final class SubvolumesImpl implements Subvolumes {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public SubvolumesImpl(
-        SubvolumesClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public SubvolumesImpl(SubvolumesClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<SubvolumeInfo> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        PagedIterable<SubvolumeInfoInner> inner =
-            this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName);
+    public PagedIterable<SubvolumeInfo> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        PagedIterable<SubvolumeInfoInner> inner
+            = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName);
         return Utils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SubvolumeInfo> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        PagedIterable<SubvolumeInfoInner> inner =
-            this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName, context);
+    public PagedIterable<SubvolumeInfo> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        PagedIterable<SubvolumeInfoInner> inner
+            = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName, context);
         return Utils.mapPage(inner, inner1 -> new SubvolumeInfoImpl(inner1, this.manager()));
     }
 
-    public Response<SubvolumeInfo> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
-        Response<SubvolumeInfoInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+    public Response<SubvolumeInfo> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context) {
+        Response<SubvolumeInfoInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubvolumeInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SubvolumeInfo get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        SubvolumeInfoInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+    public SubvolumeInfo get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
+        SubvolumeInfoInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
         if (inner != null) {
             return new SubvolumeInfoImpl(inner, this.manager());
         } else {
@@ -76,25 +66,20 @@ public final class SubvolumesImpl implements Subvolumes {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
     }
 
-    public SubvolumeModel getMetadata(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName) {
-        SubvolumeModelInner inner =
-            this.serviceClient().getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+    public SubvolumeModel getMetadata(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName) {
+        SubvolumeModelInner inner
+            = this.serviceClient().getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
         if (inner != null) {
             return new SubvolumeModelImpl(inner, this.manager());
         } else {
@@ -102,17 +87,10 @@ public final class SubvolumesImpl implements Subvolumes {
         }
     }
 
-    public SubvolumeModel getMetadata(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context) {
-        SubvolumeModelInner inner =
-            this
-                .serviceClient()
-                .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+    public SubvolumeModel getMetadata(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, Context context) {
+        SubvolumeModelInner inner = this.serviceClient().getMetadata(resourceGroupName, accountName, poolName,
+            volumeName, subvolumeName, context);
         if (inner != null) {
             return new SubvolumeModelImpl(inner, this.manager());
         } else {
@@ -123,83 +101,58 @@ public final class SubvolumesImpl implements Subvolumes {
     public SubvolumeInfo getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
             .getValue();
     }
 
     public Response<SubvolumeInfo> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
     }
@@ -207,40 +160,28 @@ public final class SubvolumesImpl implements Subvolumes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE);
     }
@@ -248,40 +189,28 @@ public final class SubvolumesImpl implements Subvolumes {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String subvolumeName = Utils.getValueFromIdByName(id, "subvolumes");
         if (subvolumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'subvolumes'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
     }

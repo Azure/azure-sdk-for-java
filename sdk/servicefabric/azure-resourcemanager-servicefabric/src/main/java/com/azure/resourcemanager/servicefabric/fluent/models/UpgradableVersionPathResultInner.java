@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The list of intermediate cluster code versions for an upgrade or downgrade. Or minimum and maximum upgradable version
- * if no target was given.
+ * The list of intermediate cluster code versions for an upgrade or downgrade. Or minimum and maximum upgradable
+ * version if no target was given.
  */
 @Fluent
 public final class UpgradableVersionPathResultInner {
@@ -20,13 +20,15 @@ public final class UpgradableVersionPathResultInner {
     @JsonProperty(value = "supportedPath")
     private List<String> supportedPath;
 
-    /** Creates an instance of UpgradableVersionPathResultInner class. */
+    /**
+     * Creates an instance of UpgradableVersionPathResultInner class.
+     */
     public UpgradableVersionPathResultInner() {
     }
 
     /**
      * Get the supportedPath property: The supportedPath property.
-     *
+     * 
      * @return the supportedPath value.
      */
     public List<String> supportedPath() {
@@ -35,7 +37,7 @@ public final class UpgradableVersionPathResultInner {
 
     /**
      * Set the supportedPath property: The supportedPath property.
-     *
+     * 
      * @param supportedPath the supportedPath value to set.
      * @return the UpgradableVersionPathResultInner object itself.
      */
@@ -46,7 +48,7 @@ public final class UpgradableVersionPathResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

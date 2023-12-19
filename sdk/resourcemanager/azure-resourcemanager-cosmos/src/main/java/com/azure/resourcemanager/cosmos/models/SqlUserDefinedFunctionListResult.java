@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlUserDefinedFunctionGetR
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the userDefinedFunctions and their properties. */
+/**
+ * The List operation response, that contains the userDefinedFunctions and their properties.
+ */
 @Immutable
 public final class SqlUserDefinedFunctionListResult {
     /*
@@ -18,13 +20,15 @@ public final class SqlUserDefinedFunctionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlUserDefinedFunctionGetResultsInner> value;
 
-    /** Creates an instance of SqlUserDefinedFunctionListResult class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionListResult class.
+     */
     public SqlUserDefinedFunctionListResult() {
     }
 
     /**
      * Get the value property: List of userDefinedFunctions and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<SqlUserDefinedFunctionGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class SqlUserDefinedFunctionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

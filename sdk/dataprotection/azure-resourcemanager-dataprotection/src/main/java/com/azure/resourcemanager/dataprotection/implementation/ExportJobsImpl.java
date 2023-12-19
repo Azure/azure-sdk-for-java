@@ -16,8 +16,8 @@ public final class ExportJobsImpl implements ExportJobs {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public ExportJobsImpl(
-        ExportJobsClient innerClient, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    public ExportJobsImpl(ExportJobsClient innerClient,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

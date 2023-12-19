@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB resource throughput policy. */
+/**
+ * Cosmos DB resource throughput policy.
+ */
 @Fluent
 public final class ThroughputPolicyResource {
     /*
@@ -22,13 +24,15 @@ public final class ThroughputPolicyResource {
     @JsonProperty(value = "incrementPercent")
     private Integer incrementPercent;
 
-    /** Creates an instance of ThroughputPolicyResource class. */
+    /**
+     * Creates an instance of ThroughputPolicyResource class.
+     */
     public ThroughputPolicyResource() {
     }
 
     /**
      * Get the isEnabled property: Determines whether the ThroughputPolicy is active or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -37,7 +41,7 @@ public final class ThroughputPolicyResource {
 
     /**
      * Set the isEnabled property: Determines whether the ThroughputPolicy is active or not.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the ThroughputPolicyResource object itself.
      */
@@ -49,7 +53,7 @@ public final class ThroughputPolicyResource {
     /**
      * Get the incrementPercent property: Represents the percentage by which throughput can increase every time
      * throughput policy kicks in.
-     *
+     * 
      * @return the incrementPercent value.
      */
     public Integer incrementPercent() {
@@ -59,7 +63,7 @@ public final class ThroughputPolicyResource {
     /**
      * Set the incrementPercent property: Represents the percentage by which throughput can increase every time
      * throughput policy kicks in.
-     *
+     * 
      * @param incrementPercent the incrementPercent value to set.
      * @return the ThroughputPolicyResource object itself.
      */
@@ -70,7 +74,7 @@ public final class ThroughputPolicyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

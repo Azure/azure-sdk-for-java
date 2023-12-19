@@ -22,98 +22,68 @@ public final class PrivateEndpointConnectionProxiesImpl implements PrivateEndpoi
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
 
-    public PrivateEndpointConnectionProxiesImpl(
-        PrivateEndpointConnectionProxiesClient innerClient,
+    public PrivateEndpointConnectionProxiesImpl(PrivateEndpointConnectionProxiesClient innerClient,
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateEndpointConnectionProxy> listByAccount(String resourceGroupName, String accountName) {
-        PagedIterable<PrivateEndpointConnectionProxyInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName);
+        PagedIterable<PrivateEndpointConnectionProxyInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName);
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionProxyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateEndpointConnectionProxy> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
-        PagedIterable<PrivateEndpointConnectionProxyInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName, context);
+    public PagedIterable<PrivateEndpointConnectionProxy> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
+        PagedIterable<PrivateEndpointConnectionProxyInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionProxyImpl(inner1, this.manager()));
     }
 
-    public void validate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
+    public Response<Void> validateWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+        Context context) {
+        return this.serviceClient().validateWithResponse(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointConnectionProxy, context);
+    }
+
+    public void validate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
         PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        this
-            .serviceClient()
-            .validate(resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
+        this.serviceClient().validate(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy);
     }
 
-    public Response<Void> validateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-        Context context) {
-        return this
-            .serviceClient()
-            .validateWithResponse(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context);
+    public Response<Void> updatePrivateEndpointPropertiesWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate, Context context) {
+        return this.serviceClient().updatePrivateEndpointPropertiesWithResponse(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointUpdate, context);
     }
 
-    public void updatePrivateEndpointProperties(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate) {
-        this
-            .serviceClient()
-            .updatePrivateEndpointProperties(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate);
+    public void updatePrivateEndpointProperties(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate) {
+        this.serviceClient().updatePrivateEndpointProperties(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointUpdate);
     }
 
-    public Response<Void> updatePrivateEndpointPropertiesWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate,
-        Context context) {
-        return this
-            .serviceClient()
-            .updatePrivateEndpointPropertiesWithResponse(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate, context);
-    }
-
-    public PrivateEndpointConnectionProxy get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
-        PrivateEndpointConnectionProxyInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, privateEndpointConnectionProxyId);
+    public Response<PrivateEndpointConnectionProxy> getWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
+        Response<PrivateEndpointConnectionProxyInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            accountName, privateEndpointConnectionProxyId, context);
         if (inner != null) {
-            return new PrivateEndpointConnectionProxyImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<PrivateEndpointConnectionProxy> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
-        Response<PrivateEndpointConnectionProxyInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
+    public PrivateEndpointConnectionProxy get(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
+        PrivateEndpointConnectionProxyInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, privateEndpointConnectionProxyId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));
+            return new PrivateEndpointConnectionProxyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -123,69 +93,46 @@ public final class PrivateEndpointConnectionProxiesImpl implements PrivateEndpoi
         this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionProxyId);
     }
 
-    public void delete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
     }
 
     public PrivateEndpointConnectionProxy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String privateEndpointConnectionProxyId = Utils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
         if (privateEndpointConnectionProxyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'privateEndpointConnectionProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE)
+        return this.getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE)
             .getValue();
     }
 
     public Response<PrivateEndpointConnectionProxy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String privateEndpointConnectionProxyId = Utils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
         if (privateEndpointConnectionProxyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'privateEndpointConnectionProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
     }
@@ -193,29 +140,18 @@ public final class PrivateEndpointConnectionProxiesImpl implements PrivateEndpoi
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String privateEndpointConnectionProxyId = Utils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
         if (privateEndpointConnectionProxyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'privateEndpointConnectionProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
         }
         this.delete(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE);
     }
@@ -223,29 +159,18 @@ public final class PrivateEndpointConnectionProxiesImpl implements PrivateEndpoi
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         String privateEndpointConnectionProxyId = Utils.getValueFromIdByName(id, "privateEndpointConnectionProxies");
         if (privateEndpointConnectionProxyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'privateEndpointConnectionProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'privateEndpointConnectionProxies'.", id)));
         }
         this.delete(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
     }

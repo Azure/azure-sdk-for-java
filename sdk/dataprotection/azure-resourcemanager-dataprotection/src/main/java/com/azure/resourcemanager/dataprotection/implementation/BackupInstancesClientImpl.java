@@ -38,30 +38,38 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationRequest;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResourceList;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupInstancesClient.
+ */
 public final class BackupInstancesClientImpl implements BackupInstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupInstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of BackupInstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupInstancesClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy.create(BackupInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(BackupInstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,273 +80,211 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface BackupInstancesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupInstanceResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<BackupInstanceResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupInstanceResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupInstanceResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BackupInstanceResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> adhocBackup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
-            @BodyParam("application/json") BackupInstanceResourceInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TriggerBackupRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/validateForBackup")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> validateForBackup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @BodyParam("application/json") ValidateForBackupRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/backup")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> adhocBackup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @BodyParam("application/json") TriggerBackupRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/validateForBackup")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateForBackup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @BodyParam("application/json") ValidateForBackupRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupInstanceResourceInner>> getBackupInstanceOperationResult(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/rehydrate")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/crossRegionRestore")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> triggerRehydrate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> triggerCrossRegionRestore(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @BodyParam("application/json") CrossRegionRestoreRequestObject parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/locations/{location}/validateCrossRegionRestore")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateCrossRegionRestore(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("location") String location,
+            @BodyParam("application/json") ValidateCrossRegionRestoreRequestObject parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/rehydrate")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> triggerRehydrate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
             @BodyParam("application/json") AzureBackupRehydrationRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/restore")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/restore")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> triggerRestore(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> triggerRestore(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
-            @BodyParam("application/json") AzureBackupRestoreRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AzureBackupRestoreRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeBackups")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeBackups")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resumeBackups(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> resumeBackups(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> resumeProtection(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stopProtection(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> suspendBackups(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> syncBackupInstance(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SyncBackupInstanceRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/resumeProtection")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateRestore")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resumeProtection(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/stopProtection")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stopProtection(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/suspendBackups")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> suspendBackups(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/sync")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> syncBackupInstance(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SyncBackupInstanceRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/validateRestore")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validateForRestore(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> validateForRestore(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
             @BodyParam("application/json") ValidateRestoreRequestObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BackupInstanceResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instances belonging to a backup vault along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupInstanceResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<PagedResponse<BackupInstanceResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,32 +295,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            accept,
-                            context))
-            .<PagedResponse<BackupInstanceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context))
+            .<PagedResponse<BackupInstanceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -382,22 +312,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instances belonging to a backup vault along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupInstanceResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<BackupInstanceResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -409,28 +335,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,13 +353,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BackupInstanceResourceInner> listAsync(String resourceGroupName, String vaultName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -456,16 +369,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return a backup instances belonging to a backup vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupInstanceResourceInner> listAsync(
-        String resourceGroupName, String vaultName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, context),
+    private PagedFlux<BackupInstanceResourceInner> listAsync(String resourceGroupName, String vaultName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,7 +392,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -490,14 +402,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return a backup instances belonging to a backup vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BackupInstanceResourceInner> list(
-        String resourceGroupName, String vaultName, Context context) {
+    public PagedIterable<BackupInstanceResourceInner> list(String resourceGroupName, String vaultName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, context));
     }
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -505,22 +417,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instance with name in a backup vault along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupInstanceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<BackupInstanceResourceInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,24 +443,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -561,22 +459,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instance with name in a backup vault along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupInstanceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<BackupInstanceResourceInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -591,21 +485,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, backupInstanceName, accept, context);
     }
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -615,15 +501,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return a backup instance with name in a backup vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupInstanceResourceInner> getAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<BackupInstanceResourceInner> getAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return getWithResponseAsync(resourceGroupName, vaultName, backupInstanceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -634,14 +520,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return a backup instance with name in a backup vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupInstanceResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public Response<BackupInstanceResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context).block();
     }
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -657,7 +543,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -668,19 +554,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -700,25 +582,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -730,23 +602,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        BackupInstanceResourceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -766,22 +630,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+            context);
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -794,21 +650,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupInstanceResourceInner.class,
-                BackupInstanceResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupInstanceResourceInner.class, BackupInstanceResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -821,27 +672,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        BackupInstanceResourceInner parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BackupInstanceResourceInner.class,
-                BackupInstanceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        return this.client.<BackupInstanceResourceInner, BackupInstanceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BackupInstanceResourceInner.class, BackupInstanceResourceInner.class,
+            context);
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -854,14 +697,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -874,19 +716,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackupInstanceResourceInner>, BackupInstanceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        BackupInstanceResourceInner parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -897,16 +735,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupInstanceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+    private Mono<BackupInstanceResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -918,20 +755,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupInstanceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        BackupInstanceResourceInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
+    private Mono<BackupInstanceResourceInner> createOrUpdateAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -942,14 +774,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInstanceResourceInner createOrUpdate(
-        String resourceGroupName, String vaultName, String backupInstanceName, BackupInstanceResourceInner parameters) {
+    public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
      * Create or update a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -961,18 +793,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return backupInstanceResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInstanceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        BackupInstanceResourceInner parameters,
-        Context context) {
+    public BackupInstanceResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        String backupInstanceName, BackupInstanceResourceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -982,19 +810,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1009,24 +833,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1037,19 +851,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1064,21 +874,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, backupInstanceName, accept, context);
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1088,19 +890,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1111,19 +911,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1133,14 +932,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1151,14 +950,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1169,14 +968,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1187,16 +985,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1211,7 +1008,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1227,7 +1024,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1238,19 +1035,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> adhocBackupWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> adhocBackupWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1270,25 +1063,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .adhocBackup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.adhocBackup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1300,23 +1083,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> adhocBackupWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> adhocBackupWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1336,22 +1111,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .adhocBackup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.adhocBackup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+            context);
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1364,21 +1131,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginAdhocBackupAsync(
         String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            adhocBackupWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = adhocBackupWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1391,27 +1153,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginAdhocBackupAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            adhocBackupWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = adhocBackupWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1429,7 +1183,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1442,19 +1196,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginAdhocBackup(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters,
         Context context) {
-        return this
-            .beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        return this.beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1465,16 +1215,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> adhocBackupAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters) {
-        return beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> adhocBackupAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters) {
+        return beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1486,20 +1235,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> adhocBackupAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
-        Context context) {
-        return beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> adhocBackupAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters, Context context) {
+        return beginAdhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1510,14 +1254,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner adhocBackup(
-        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters) {
+    public OperationJobExtendedInfoInner adhocBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters) {
         return adhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1529,18 +1273,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner adhocBackup(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
-        Context context) {
+    public OperationJobExtendedInfoInner adhocBackup(String resourceGroupName, String vaultName,
+        String backupInstanceName, TriggerBackupRequest parameters, Context context) {
         return adhocBackupAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1550,19 +1290,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateForBackupWithResponseAsync(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> validateForBackupWithResponseAsync(String resourceGroupName,
+        String vaultName, ValidateForBackupRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1578,24 +1314,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateForBackup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.validateForBackup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1606,19 +1332,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateForBackupWithResponseAsync(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateForBackupWithResponseAsync(String resourceGroupName,
+        String vaultName, ValidateForBackupRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1634,21 +1356,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateForBackup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                parameters,
-                accept,
-                context);
+        return service.validateForBackup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, parameters, accept, context);
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1660,21 +1374,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
         beginValidateForBackupAsync(String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateForBackupWithResponseAsync(resourceGroupName, vaultName, parameters);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateForBackupWithResponseAsync(resourceGroupName, vaultName, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1686,24 +1395,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
-        beginValidateForBackupAsync(
-            String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context) {
+        beginValidateForBackupAsync(String resourceGroupName, String vaultName, ValidateForBackupRequest parameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateForBackupWithResponseAsync(resourceGroupName, vaultName, parameters, context);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateForBackupWithResponseAsync(resourceGroupName, vaultName, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1713,14 +1417,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForBackup(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
+    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginValidateForBackup(String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
         return this.beginValidateForBackupAsync(resourceGroupName, vaultName, parameters).getSyncPoller();
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1738,7 +1442,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1748,16 +1452,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> validateForBackupAsync(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
-        return beginValidateForBackupAsync(resourceGroupName, vaultName, parameters)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> validateForBackupAsync(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters) {
+        return beginValidateForBackupAsync(resourceGroupName, vaultName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1768,16 +1471,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> validateForBackupAsync(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context) {
-        return beginValidateForBackupAsync(resourceGroupName, vaultName, parameters, context)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> validateForBackupAsync(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters, Context context) {
+        return beginValidateForBackupAsync(resourceGroupName, vaultName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1787,14 +1489,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner validateForBackup(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters) {
+    public OperationJobExtendedInfoInner validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters) {
         return validateForBackupAsync(resourceGroupName, vaultName, parameters).block();
     }
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -1805,14 +1507,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner validateForBackup(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context) {
+    public OperationJobExtendedInfoInner validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters, Context context) {
         return validateForBackupAsync(resourceGroupName, vaultName, parameters, context).block();
     }
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1821,22 +1523,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of backup instance creation operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInstanceResourceInner>> getBackupInstanceOperationResultWithResponseAsync(
         String resourceGroupName, String vaultName, String backupInstanceName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1854,25 +1552,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getBackupInstanceOperationResult(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getBackupInstanceOperationResult(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, operationId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1882,22 +1570,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of backup instance creation operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupInstanceResourceInner>> getBackupInstanceOperationResultWithResponseAsync(
         String resourceGroupName, String vaultName, String backupInstanceName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1915,22 +1599,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getBackupInstanceOperationResult(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getBackupInstanceOperationResult(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, backupInstanceName, operationId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1941,16 +1617,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return result of backup instance creation operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupInstanceResourceInner> getBackupInstanceOperationResultAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, String operationId) {
-        return getBackupInstanceOperationResultWithResponseAsync(
-                resourceGroupName, vaultName, backupInstanceName, operationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<BackupInstanceResourceInner> getBackupInstanceOperationResultAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, String operationId) {
+        return getBackupInstanceOperationResultWithResponseAsync(resourceGroupName, vaultName, backupInstanceName,
+            operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1962,16 +1637,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return result of backup instance creation operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupInstanceResourceInner> getBackupInstanceOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, String operationId, Context context) {
-        return getBackupInstanceOperationResultWithResponseAsync(
-                resourceGroupName, vaultName, backupInstanceName, operationId, context)
-            .block();
+    public Response<BackupInstanceResourceInner> getBackupInstanceOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, String operationId, Context context) {
+        return getBackupInstanceOperationResultWithResponseAsync(resourceGroupName, vaultName, backupInstanceName,
+            operationId, context).block();
     }
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -1982,16 +1656,493 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return result of backup instance creation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupInstanceResourceInner getBackupInstanceOperationResult(
-        String resourceGroupName, String vaultName, String backupInstanceName, String operationId) {
-        return getBackupInstanceOperationResultWithResponse(
-                resourceGroupName, vaultName, backupInstanceName, operationId, Context.NONE)
-            .getValue();
+    public BackupInstanceResourceInner getBackupInstanceOperationResult(String resourceGroupName, String vaultName,
+        String backupInstanceName, String operationId) {
+        return getBackupInstanceOperationResultWithResponse(resourceGroupName, vaultName, backupInstanceName,
+            operationId, Context.NONE).getValue();
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> triggerCrossRegionRestoreWithResponseAsync(String resourceGroupName,
+        String location, CrossRegionRestoreRequestObject parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.triggerCrossRegionRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, location, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> triggerCrossRegionRestoreWithResponseAsync(String resourceGroupName,
+        String location, CrossRegionRestoreRequestObject parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.triggerCrossRegionRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, parameters, accept, context);
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginTriggerCrossRegionRestoreAsync(String resourceGroupName, String location,
+            CrossRegionRestoreRequestObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerCrossRegionRestoreWithResponseAsync(resourceGroupName, location, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginTriggerCrossRegionRestoreAsync(String resourceGroupName, String location,
+            CrossRegionRestoreRequestObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerCrossRegionRestoreWithResponseAsync(resourceGroupName, location, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginTriggerCrossRegionRestore(String resourceGroupName, String location,
+            CrossRegionRestoreRequestObject parameters) {
+        return this.beginTriggerCrossRegionRestoreAsync(resourceGroupName, location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginTriggerCrossRegionRestore(String resourceGroupName, String location,
+            CrossRegionRestoreRequestObject parameters, Context context) {
+        return this.beginTriggerCrossRegionRestoreAsync(resourceGroupName, location, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationJobExtendedInfoInner> triggerCrossRegionRestoreAsync(String resourceGroupName,
+        String location, CrossRegionRestoreRequestObject parameters) {
+        return beginTriggerCrossRegionRestoreAsync(resourceGroupName, location, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationJobExtendedInfoInner> triggerCrossRegionRestoreAsync(String resourceGroupName,
+        String location, CrossRegionRestoreRequestObject parameters, Context context) {
+        return beginTriggerCrossRegionRestoreAsync(resourceGroupName, location, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationJobExtendedInfoInner triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters) {
+        return triggerCrossRegionRestoreAsync(resourceGroupName, location, parameters).block();
+    }
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationJobExtendedInfoInner triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters, Context context) {
+        return triggerCrossRegionRestoreAsync(resourceGroupName, location, parameters, context).block();
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateCrossRegionRestoreWithResponseAsync(String resourceGroupName,
+        String location, ValidateCrossRegionRestoreRequestObject parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.validateCrossRegionRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, location, parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateCrossRegionRestoreWithResponseAsync(String resourceGroupName,
+        String location, ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.validateCrossRegionRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, location, parameters, accept, context);
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginValidateCrossRegionRestoreAsync(String resourceGroupName, String location,
+            ValidateCrossRegionRestoreRequestObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateCrossRegionRestoreWithResponseAsync(resourceGroupName, location, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginValidateCrossRegionRestoreAsync(String resourceGroupName, String location,
+            ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateCrossRegionRestoreWithResponseAsync(resourceGroupName, location, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginValidateCrossRegionRestore(String resourceGroupName, String location,
+            ValidateCrossRegionRestoreRequestObject parameters) {
+        return this.beginValidateCrossRegionRestoreAsync(resourceGroupName, location, parameters).getSyncPoller();
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
+        beginValidateCrossRegionRestore(String resourceGroupName, String location,
+            ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        return this.beginValidateCrossRegionRestoreAsync(resourceGroupName, location, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationJobExtendedInfoInner> validateCrossRegionRestoreAsync(String resourceGroupName,
+        String location, ValidateCrossRegionRestoreRequestObject parameters) {
+        return beginValidateCrossRegionRestoreAsync(resourceGroupName, location, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationJobExtendedInfoInner> validateCrossRegionRestoreAsync(String resourceGroupName,
+        String location, ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        return beginValidateCrossRegionRestoreAsync(resourceGroupName, location, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationJobExtendedInfoInner validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters) {
+        return validateCrossRegionRestoreAsync(resourceGroupName, location, parameters).block();
+    }
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationJobExtendedInfoInner validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        return validateCrossRegionRestoreAsync(resourceGroupName, location, parameters, context).block();
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2002,26 +2153,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerRehydrateWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerRehydrateWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupRehydrationRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -2037,25 +2181,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .triggerRehydrate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.triggerRehydrate(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2067,27 +2201,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerRehydrateWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerRehydrateWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupRehydrationRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -2103,22 +2229,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .triggerRehydrate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.triggerRehydrate(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), vaultName, backupInstanceName, parameters, accept, context);
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2129,22 +2246,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerRehydrateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerRehydrateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginTriggerRehydrateAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRehydrationRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerRehydrateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2156,23 +2268,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerRehydrateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginTriggerRehydrateAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRehydrationRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerRehydrateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerRehydrateWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2183,19 +2290,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters) {
-        return this
-            .beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+    public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRehydrationRequest parameters) {
+        return this.beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2207,20 +2310,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
-        return this
-            .beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+    public SyncPoller<PollResult<Void>, Void> beginTriggerRehydrate(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRehydrationRequest parameters, Context context) {
+        return this.beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2231,19 +2329,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerRehydrateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+    private Mono<Void> triggerRehydrateAsync(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters) {
-        return beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+        return beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2255,20 +2349,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerRehydrateAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
-        return beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
+    private Mono<Void> triggerRehydrateAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRehydrationRequest parameters, Context context) {
+        return beginTriggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2278,17 +2367,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+    public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters) {
         triggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2299,18 +2385,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
+    public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRehydrationRequest parameters, Context context) {
         triggerRehydrateAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2321,19 +2403,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2353,25 +2431,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .triggerRestore(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.triggerRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2383,23 +2451,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerRestoreWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2419,22 +2479,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .triggerRestore(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.triggerRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+            context);
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2446,26 +2498,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
-        beginTriggerRestoreAsync(
-            String resourceGroupName,
-            String vaultName,
-            String backupInstanceName,
+        beginTriggerRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
             AzureBackupRestoreRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2478,28 +2522,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
-        beginTriggerRestoreAsync(
-            String resourceGroupName,
-            String vaultName,
-            String backupInstanceName,
-            AzureBackupRestoreRequest parameters,
-            Context context) {
+        beginTriggerRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+            AzureBackupRestoreRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = triggerRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2512,14 +2547,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
         String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return this
-            .beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+        return this.beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2532,19 +2566,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginTriggerRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters,
         Context context) {
-        return this
-            .beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        return this.beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2555,16 +2585,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters) {
+        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2576,20 +2605,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
-        Context context) {
-        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> triggerRestoreAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
+        return beginTriggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2600,14 +2624,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner triggerRestore(
-        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
+    public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters) {
         return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2619,18 +2643,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner triggerRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
-        Context context) {
+    public OperationJobExtendedInfoInner triggerRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
         return triggerRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2640,19 +2660,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeBackupsWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeBackupsWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2667,24 +2683,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resumeBackups(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.resumeBackups(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2695,19 +2701,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeBackupsWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeBackupsWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2722,21 +2724,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resumeBackups(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.resumeBackups(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2746,19 +2740,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginResumeBackupsAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2769,19 +2761,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginResumeBackupsAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2791,14 +2782,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResumeBackups(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginResumeBackups(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return this.beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2809,14 +2800,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResumeBackups(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginResumeBackups(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         return this.beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2827,14 +2818,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName)
-            .last()
+        return beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2845,16 +2835,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resumeBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context)
-            .last()
+    private Mono<Void> resumeBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
+        return beginResumeBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2869,7 +2858,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2885,7 +2874,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2895,19 +2884,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeProtectionWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeProtectionWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2922,24 +2907,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resumeProtection(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.resumeProtection(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -2950,19 +2925,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeProtectionWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeProtectionWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2977,21 +2948,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resumeProtection(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.resumeProtection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3001,19 +2964,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3024,19 +2985,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginResumeProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3046,14 +3006,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResumeProtection(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return this.beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3064,16 +3024,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginResumeProtection(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return this
-            .beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context)
+    public SyncPoller<PollResult<Void>, Void> beginResumeProtection(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
+        return this.beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context)
             .getSyncPoller();
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3084,14 +3043,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> resumeProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName)
-            .last()
+        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3102,16 +3060,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resumeProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context)
-            .last()
+    private Mono<Void> resumeProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
+        return beginResumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3126,7 +3083,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3136,14 +3093,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resumeProtection(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
         resumeProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).block();
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3153,19 +3110,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3180,24 +3133,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .stopProtection(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.stopProtection(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3208,19 +3151,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopProtectionWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3235,21 +3174,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .stopProtection(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.stopProtection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3259,19 +3190,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3282,19 +3211,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopProtectionAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopProtectionWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3304,14 +3232,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopProtection(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return this.beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3322,14 +3250,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStopProtection(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStopProtection(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         return this.beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3340,14 +3268,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName)
-            .last()
+        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3358,16 +3285,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> stopProtectionAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context)
-            .last()
+    private Mono<Void> stopProtectionAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
+        return beginStopProtectionAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3382,7 +3308,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3399,7 +3325,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3409,19 +3335,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3436,25 +3358,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .suspendBackups(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.suspendBackups(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, backupInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3465,19 +3377,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> suspendBackupsWithResponseAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3492,22 +3400,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .suspendBackups(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.suspendBackups(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, backupInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3517,20 +3417,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3541,20 +3439,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginSuspendBackupsAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = suspendBackupsWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3564,15 +3461,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
+    public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         return this.beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName).getSyncPoller();
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3583,15 +3480,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginSuspendBackups(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
         return this.beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).getSyncPoller();
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3602,15 +3499,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> suspendBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName) {
-        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName)
-            .last()
+        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3621,17 +3517,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> suspendBackupsAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
-        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context)
-            .last()
+    private Mono<Void> suspendBackupsAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        Context context) {
+        return beginSuspendBackupsAsync(resourceGroupName, vaultName, backupInstanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3647,7 +3542,7 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3662,9 +3557,9 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3675,19 +3570,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> syncBackupInstanceWithResponseAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> syncBackupInstanceWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3707,26 +3598,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .syncBackupInstance(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.syncBackupInstance(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName,
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3738,23 +3619,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> syncBackupInstanceWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> syncBackupInstanceWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -3774,23 +3647,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .syncBackupInstance(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.syncBackupInstance(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            vaultName, backupInstanceName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3801,20 +3665,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSyncBackupInstanceAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            syncBackupInstanceWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginSyncBackupInstanceAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, SyncBackupInstanceRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = syncBackupInstanceWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3826,24 +3688,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginSyncBackupInstanceAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginSyncBackupInstanceAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, SyncBackupInstanceRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            syncBackupInstanceWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = syncBackupInstanceWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3854,17 +3711,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
-        return this
-            .beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+    public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(String resourceGroupName, String vaultName,
+        String backupInstanceName, SyncBackupInstanceRequest parameters) {
+        return this.beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3876,21 +3732,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context) {
-        return this
-            .beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+    public SyncPoller<PollResult<Void>, Void> beginSyncBackupInstance(String resourceGroupName, String vaultName,
+        String backupInstanceName, SyncBackupInstanceRequest parameters, Context context) {
+        return this.beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3901,17 +3752,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> syncBackupInstanceAsync(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
-        return beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+    private Mono<Void> syncBackupInstanceAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters) {
+        return beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3923,21 +3773,16 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> syncBackupInstanceAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context) {
+    private Mono<Void> syncBackupInstanceAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters, Context context) {
         return beginSyncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3947,15 +3792,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void syncBackupInstance(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters) {
+    public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters) {
         syncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3966,18 +3811,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void syncBackupInstance(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context) {
+    public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters, Context context) {
         syncBackupInstanceAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -3988,22 +3829,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateForRestoreWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> validateForRestoreWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4023,25 +3857,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validateForRestore(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            backupInstanceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.validateForRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4053,23 +3877,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateForRestoreWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateForRestoreWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -4089,22 +3905,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validateForRestore(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                backupInstanceName,
-                parameters,
-                accept,
-                context);
+        return service.validateForRestore(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, parameters, accept,
+            context);
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4116,26 +3924,18 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
-        beginValidateForRestoreAsync(
-            String resourceGroupName,
-            String vaultName,
-            String backupInstanceName,
+        beginValidateForRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
             ValidateRestoreRequestObject parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateForRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateForRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            this.client.getContext());
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4148,28 +3948,19 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner>
-        beginValidateForRestoreAsync(
-            String resourceGroupName,
-            String vaultName,
-            String backupInstanceName,
-            ValidateRestoreRequestObject parameters,
-            Context context) {
+        beginValidateForRestoreAsync(String resourceGroupName, String vaultName, String backupInstanceName,
+            ValidateRestoreRequestObject parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateForRestoreWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context);
-        return this
-            .client
-            .<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationJobExtendedInfoInner.class,
-                OperationJobExtendedInfoInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = validateForRestoreWithResponseAsync(resourceGroupName, vaultName,
+            backupInstanceName, parameters, context);
+        return this.client.<OperationJobExtendedInfoInner, OperationJobExtendedInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationJobExtendedInfoInner.class, OperationJobExtendedInfoInner.class,
+            context);
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4181,18 +3972,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+        String resourceGroupName, String vaultName, String backupInstanceName,
         ValidateRestoreRequestObject parameters) {
-        return this
-            .beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
+        return this.beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4205,19 +3993,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationJobExtendedInfoInner>, OperationJobExtendedInfoInner> beginValidateForRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
+        String resourceGroupName, String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters,
         Context context) {
-        return this
-            .beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
+        return this.beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4228,19 +4012,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> validateForRestoreAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters) {
-        return beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters)
-            .last()
+    private Mono<OperationJobExtendedInfoInner> validateForRestoreAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters) {
+        return beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4252,20 +4032,15 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationJobExtendedInfoInner> validateForRestoreAsync(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
-        Context context) {
+    private Mono<OperationJobExtendedInfoInner> validateForRestoreAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
         return beginValidateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4276,17 +4051,14 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner validateForRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters) {
+    public OperationJobExtendedInfoInner validateForRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters) {
         return validateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters).block();
     }
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -4298,20 +4070,17 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
      * @return operationJobExtendedInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationJobExtendedInfoInner validateForRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
-        Context context) {
+    public OperationJobExtendedInfoInner validateForRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
         return validateForRestoreAsync(resourceGroupName, vaultName, backupInstanceName, parameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4323,31 +4092,22 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BackupInstanceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BackupInstanceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4360,23 +4120,13 @@ public final class BackupInstancesClientImpl implements BackupInstancesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
