@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume group properties. */
+/**
+ * Volume group properties.
+ */
 @Fluent
 public final class VolumeGroupListProperties {
     /*
@@ -23,13 +25,15 @@ public final class VolumeGroupListProperties {
     @JsonProperty(value = "groupMetaData")
     private VolumeGroupMetadata groupMetadata;
 
-    /** Creates an instance of VolumeGroupListProperties class. */
+    /**
+     * Creates an instance of VolumeGroupListProperties class.
+     */
     public VolumeGroupListProperties() {
     }
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -38,7 +42,7 @@ public final class VolumeGroupListProperties {
 
     /**
      * Get the groupMetadata property: Volume group details.
-     *
+     * 
      * @return the groupMetadata value.
      */
     public VolumeGroupMetadata groupMetadata() {
@@ -47,7 +51,7 @@ public final class VolumeGroupListProperties {
 
     /**
      * Set the groupMetadata property: Volume group details.
-     *
+     * 
      * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupListProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class VolumeGroupListProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

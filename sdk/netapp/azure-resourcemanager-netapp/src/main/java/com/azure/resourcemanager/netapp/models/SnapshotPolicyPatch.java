@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Snapshot policy Details for create and update. */
+/**
+ * Snapshot policy Details for create and update.
+ */
 @Fluent
 public final class SnapshotPolicyPatch {
     /*
@@ -50,13 +52,15 @@ public final class SnapshotPolicyPatch {
     @JsonProperty(value = "properties")
     private SnapshotPolicyProperties innerProperties;
 
-    /** Creates an instance of SnapshotPolicyPatch class. */
+    /**
+     * Creates an instance of SnapshotPolicyPatch class.
+     */
     public SnapshotPolicyPatch() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -65,7 +69,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -76,7 +80,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -85,7 +89,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -94,7 +98,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -103,7 +107,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -112,7 +116,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -123,7 +127,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the innerProperties property: Snapshot Policy properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotPolicyProperties innerProperties() {
@@ -132,7 +136,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @return the hourlySchedule value.
      */
     public HourlySchedule hourlySchedule() {
@@ -141,7 +145,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the hourlySchedule property: Schedule for hourly snapshots.
-     *
+     * 
      * @param hourlySchedule the hourlySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -155,7 +159,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @return the dailySchedule value.
      */
     public DailySchedule dailySchedule() {
@@ -164,7 +168,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the dailySchedule property: Schedule for daily snapshots.
-     *
+     * 
      * @param dailySchedule the dailySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -178,7 +182,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @return the weeklySchedule value.
      */
     public WeeklySchedule weeklySchedule() {
@@ -187,7 +191,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the weeklySchedule property: Schedule for weekly snapshots.
-     *
+     * 
      * @param weeklySchedule the weeklySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -201,7 +205,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @return the monthlySchedule value.
      */
     public MonthlySchedule monthlySchedule() {
@@ -210,7 +214,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the monthlySchedule property: Schedule for monthly snapshots.
-     *
+     * 
      * @param monthlySchedule the monthlySchedule value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -224,7 +228,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -233,7 +237,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Set the enabled property: The property to decide policy is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SnapshotPolicyPatch object itself.
      */
@@ -247,7 +251,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -256,7 +260,7 @@ public final class SnapshotPolicyPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
