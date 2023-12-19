@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Solutions Diagnostic. */
+/**
+ * Solutions Diagnostic.
+ */
 @Fluent
 public final class SolutionsDiagnostic {
     /*
@@ -47,13 +49,15 @@ public final class SolutionsDiagnostic {
     @JsonProperty(value = "insights")
     private List<Insight> insights;
 
-    /** Creates an instance of SolutionsDiagnostic class. */
+    /**
+     * Creates an instance of SolutionsDiagnostic class.
+     */
     public SolutionsDiagnostic() {
     }
 
     /**
      * Get the solutionId property: Solution Id to identify single Solutions Diagnostic.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -62,7 +66,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the solutionId property: Solution Id to identify single Solutions Diagnostic.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -73,7 +77,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Get the status property: Denotes the status of the diagnostic resource.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -82,7 +86,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the status property: Denotes the status of the diagnostic resource.
-     *
+     * 
      * @param status the status value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -93,7 +97,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Get the statusDetails property: Details of the status.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -102,7 +106,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the statusDetails property: Details of the status.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -113,7 +117,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Get the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @return the replacementKey value.
      */
     public String replacementKey() {
@@ -122,7 +126,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @param replacementKey the replacementKey value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -133,7 +137,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Get the requiredParameters property: Required parameters of this item.
-     *
+     * 
      * @return the requiredParameters value.
      */
     public List<String> requiredParameters() {
@@ -142,7 +146,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the requiredParameters property: Required parameters of this item.
-     *
+     * 
      * @param requiredParameters the requiredParameters value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -153,7 +157,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Get the insights property: Diagnostic insights.
-     *
+     * 
      * @return the insights value.
      */
     public List<Insight> insights() {
@@ -162,7 +166,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Set the insights property: Diagnostic insights.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the SolutionsDiagnostic object itself.
      */
@@ -173,7 +177,7 @@ public final class SolutionsDiagnostic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

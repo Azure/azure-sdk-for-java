@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Filter criterion. */
+/**
+ * Filter criterion.
+ */
 @Fluent
 public final class Filter {
     /*
@@ -28,13 +30,15 @@ public final class Filter {
     @JsonProperty(value = "operator")
     private String operator;
 
-    /** Creates an instance of Filter class. */
+    /**
+     * Creates an instance of Filter class.
+     */
     public Filter() {
     }
 
     /**
      * Get the name property: Filter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class Filter {
 
     /**
      * Set the name property: Filter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Filter object itself.
      */
@@ -54,7 +58,7 @@ public final class Filter {
 
     /**
      * Get the values property: Filter values.
-     *
+     * 
      * @return the values value.
      */
     public String values() {
@@ -63,7 +67,7 @@ public final class Filter {
 
     /**
      * Set the values property: Filter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the Filter object itself.
      */
@@ -74,7 +78,7 @@ public final class Filter {
 
     /**
      * Get the operator property: Filter operator.
-     *
+     * 
      * @return the operator value.
      */
     public String operator() {
@@ -83,7 +87,7 @@ public final class Filter {
 
     /**
      * Set the operator property: Filter operator.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the Filter object itself.
      */
@@ -94,7 +98,7 @@ public final class Filter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

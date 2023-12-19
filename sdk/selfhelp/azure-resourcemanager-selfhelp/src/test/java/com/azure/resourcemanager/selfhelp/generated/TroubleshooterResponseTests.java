@@ -12,25 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TroubleshooterResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TroubleshooterResponse model =
-            BinaryData
-                .fromString("{\"questionId\":\"tkcnqxwb\",\"questionType\":\"TextInput\",\"response\":\"lpiujwaa\"}")
-                .toObject(TroubleshooterResponse.class);
-        Assertions.assertEquals("tkcnqxwb", model.questionId());
-        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.questionType());
-        Assertions.assertEquals("lpiujwaa", model.response());
+        TroubleshooterResponse model = BinaryData
+            .fromString("{\"questionId\":\"umiekkezzi\",\"questionType\":\"RadioButton\",\"response\":\"fjhdg\"}")
+            .toObject(TroubleshooterResponse.class);
+        Assertions.assertEquals("umiekkezzi", model.questionId());
+        Assertions.assertEquals(QuestionType.RADIO_BUTTON, model.questionType());
+        Assertions.assertEquals("fjhdg", model.response());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TroubleshooterResponse model =
-            new TroubleshooterResponse()
-                .withQuestionId("tkcnqxwb")
-                .withQuestionType(QuestionType.TEXT_INPUT)
-                .withResponse("lpiujwaa");
+        TroubleshooterResponse model = new TroubleshooterResponse().withQuestionId("umiekkezzi")
+            .withQuestionType(QuestionType.RADIO_BUTTON).withResponse("fjhdg");
         model = BinaryData.fromObject(model).toObject(TroubleshooterResponse.class);
-        Assertions.assertEquals("tkcnqxwb", model.questionId());
-        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.questionType());
-        Assertions.assertEquals("lpiujwaa", model.response());
+        Assertions.assertEquals("umiekkezzi", model.questionId());
+        Assertions.assertEquals(QuestionType.RADIO_BUTTON, model.questionType());
+        Assertions.assertEquals("fjhdg", model.response());
     }
 }

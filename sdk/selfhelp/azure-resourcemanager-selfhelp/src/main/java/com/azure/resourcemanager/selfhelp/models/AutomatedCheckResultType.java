@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of Result. */
+/**
+ * Type of Result.
+ */
 public final class AutomatedCheckResultType extends ExpandableStringEnum<AutomatedCheckResultType> {
-    /** Static value Success for AutomatedCheckResultType. */
+    /**
+     * Static value Success for AutomatedCheckResultType.
+     */
     public static final AutomatedCheckResultType SUCCESS = fromString("Success");
 
-    /** Static value Warning for AutomatedCheckResultType. */
+    /**
+     * Static value Warning for AutomatedCheckResultType.
+     */
     public static final AutomatedCheckResultType WARNING = fromString("Warning");
 
-    /** Static value Error for AutomatedCheckResultType. */
+    /**
+     * Static value Error for AutomatedCheckResultType.
+     */
     public static final AutomatedCheckResultType ERROR = fromString("Error");
 
-    /** Static value Information for AutomatedCheckResultType. */
+    /**
+     * Static value Information for AutomatedCheckResultType.
+     */
     public static final AutomatedCheckResultType INFORMATION = fromString("Information");
 
     /**
      * Creates a new instance of AutomatedCheckResultType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class AutomatedCheckResultType extends ExpandableStringEnum<Automat
 
     /**
      * Creates or finds a AutomatedCheckResultType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutomatedCheckResultType.
      */
@@ -44,7 +54,7 @@ public final class AutomatedCheckResultType extends ExpandableStringEnum<Automat
 
     /**
      * Gets known AutomatedCheckResultType values.
-     *
+     * 
      * @return known AutomatedCheckResultType values.
      */
     public static Collection<AutomatedCheckResultType> values() {

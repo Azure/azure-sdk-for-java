@@ -10,10 +10,6 @@ module com.azure.resourcemanager.selfhelp {
     exports com.azure.resourcemanager.selfhelp.fluent.models;
     exports com.azure.resourcemanager.selfhelp.models;
 
-    opens com.azure.resourcemanager.selfhelp.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.selfhelp.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.selfhelp.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.selfhelp.models to com.azure.core, com.fasterxml.jackson.databind;
 }

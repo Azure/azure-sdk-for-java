@@ -10,7 +10,9 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateLinkResourceProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties for a group information object. */
+/**
+ * The properties for a group information object.
+ */
 @Fluent
 public final class GroupInformationProperties extends PrivateLinkResourceProperties {
     /*
@@ -20,15 +22,23 @@ public final class GroupInformationProperties extends PrivateLinkResourcePropert
     private GroupIdProvisioningState provisioningState;
 
     /**
+     * Creates an instance of GroupInformationProperties class.
+     */
+    public GroupInformationProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of private link group ID.
-     *
+     * 
      * @return the provisioningState value.
      */
     public GroupIdProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GroupInformationProperties withRequiredZoneNames(List<String> requiredZoneNames) {
         super.withRequiredZoneNames(requiredZoneNames);
@@ -37,7 +47,7 @@ public final class GroupInformationProperties extends PrivateLinkResourcePropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
