@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of Troubleshooting step. */
+/**
+ * Type of Troubleshooting step.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value Decision for Type. */
+    /**
+     * Static value Decision for Type.
+     */
     public static final Type DECISION = fromString("Decision");
 
-    /** Static value Solution for Type. */
+    /**
+     * Static value Solution for Type.
+     */
     public static final Type SOLUTION = fromString("Solution");
 
-    /** Static value Insight for Type. */
+    /**
+     * Static value Insight for Type.
+     */
     public static final Type INSIGHT = fromString("Insight");
 
-    /** Static value AutomatedCheck for Type. */
+    /**
+     * Static value AutomatedCheck for Type.
+     */
     public static final Type AUTOMATED_CHECK = fromString("AutomatedCheck");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
@@ -44,7 +54,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

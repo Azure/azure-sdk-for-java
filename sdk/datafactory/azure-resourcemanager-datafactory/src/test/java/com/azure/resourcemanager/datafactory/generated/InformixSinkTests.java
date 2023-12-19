@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.InformixSink;
 public final class InformixSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InformixSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"InformixSink\",\"preCopyScript\":\"dataoiumuxna\",\"writeBatchSize\":\"datavgmckxh\",\"writeBatchTimeout\":\"datazsmpoiu\",\"sinkRetryCount\":\"dataatv\",\"sinkRetryWait\":\"dataiojncgjogmvoyk\",\"maxConcurrentConnections\":\"datamg\",\"disableMetricsCollection\":\"dataeas\",\"\":{\"h\":\"datap\",\"f\":\"dataxwdo\"}}")
-                .toObject(InformixSink.class);
+        InformixSink model = BinaryData.fromString(
+            "{\"type\":\"InformixSink\",\"preCopyScript\":\"datapypxg\",\"writeBatchSize\":\"datapokooyyfysnozj\",\"writeBatchTimeout\":\"datafucmhonoje\",\"sinkRetryCount\":\"datauqxelmmxwm\",\"sinkRetryWait\":\"dataiyc\",\"maxConcurrentConnections\":\"datajswedkfofyfwpu\",\"disableMetricsCollection\":\"datapcutzlvxkolvedz\",\"\":{\"zrdglk\":\"datarpormvddwg\",\"gvyuusexenywwkd\":\"datagcxmkrldfoidyhcw\",\"sxpaapmthdqv\":\"dataqqg\",\"tvxrtocadt\":\"dataifwknl\"}}")
+            .toObject(InformixSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixSink model =
-            new InformixSink()
-                .withWriteBatchSize("datavgmckxh")
-                .withWriteBatchTimeout("datazsmpoiu")
-                .withSinkRetryCount("dataatv")
-                .withSinkRetryWait("dataiojncgjogmvoyk")
-                .withMaxConcurrentConnections("datamg")
-                .withDisableMetricsCollection("dataeas")
-                .withPreCopyScript("dataoiumuxna");
+        InformixSink model = new InformixSink().withWriteBatchSize("datapokooyyfysnozj")
+            .withWriteBatchTimeout("datafucmhonoje").withSinkRetryCount("datauqxelmmxwm").withSinkRetryWait("dataiyc")
+            .withMaxConcurrentConnections("datajswedkfofyfwpu").withDisableMetricsCollection("datapcutzlvxkolvedz")
+            .withPreCopyScript("datapypxg");
         model = BinaryData.fromObject(model).toObject(InformixSink.class);
     }
 }

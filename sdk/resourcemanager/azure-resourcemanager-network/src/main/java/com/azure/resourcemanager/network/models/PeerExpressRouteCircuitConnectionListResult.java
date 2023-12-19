@@ -27,14 +27,16 @@ public final class PeerExpressRouteCircuitConnectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeerExpressRouteCircuitConnectionListResult class. */
+    /**
+     * Creates an instance of PeerExpressRouteCircuitConnectionListResult class.
+     */
     public PeerExpressRouteCircuitConnectionListResult() {
     }
 
     /**
      * Get the value property: The global reach peer circuit connection associated with Private Peering in an
      * ExpressRoute Circuit.
-     *
+     * 
      * @return the value value.
      */
     public List<PeerExpressRouteCircuitConnectionInner> value() {
@@ -44,7 +46,7 @@ public final class PeerExpressRouteCircuitConnectionListResult {
     /**
      * Set the value property: The global reach peer circuit connection associated with Private Peering in an
      * ExpressRoute Circuit.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeerExpressRouteCircuitConnectionListResult object itself.
      */
@@ -55,7 +57,7 @@ public final class PeerExpressRouteCircuitConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +66,7 @@ public final class PeerExpressRouteCircuitConnectionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeerExpressRouteCircuitConnectionListResult object itself.
      */
@@ -75,7 +77,7 @@ public final class PeerExpressRouteCircuitConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Provides entity name and id that started the pipeline run. */
+/**
+ * Provides entity name and id that started the pipeline run.
+ */
 @Immutable
 public final class PipelineRunInvokedBy {
     /*
@@ -40,13 +42,15 @@ public final class PipelineRunInvokedBy {
     @JsonProperty(value = "pipelineRunId", access = JsonProperty.Access.WRITE_ONLY)
     private String pipelineRunId;
 
-    /** Creates an instance of PipelineRunInvokedBy class. */
+    /**
+     * Creates an instance of PipelineRunInvokedBy class.
+     */
     public PipelineRunInvokedBy() {
     }
 
     /**
      * Get the name property: Name of the entity that started the pipeline run.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the id property: The ID of the entity that started the run.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the invokedByType property: The type of the entity that started the run.
-     *
+     * 
      * @return the invokedByType value.
      */
     public String invokedByType() {
@@ -73,7 +77,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the pipelineName property: The name of the pipeline that triggered the run, if any.
-     *
+     * 
      * @return the pipelineName value.
      */
     public String pipelineName() {
@@ -82,7 +86,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Get the pipelineRunId property: The run id of the pipeline that triggered the run, if any.
-     *
+     * 
      * @return the pipelineRunId value.
      */
     public String pipelineRunId() {
@@ -91,7 +95,7 @@ public final class PipelineRunInvokedBy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

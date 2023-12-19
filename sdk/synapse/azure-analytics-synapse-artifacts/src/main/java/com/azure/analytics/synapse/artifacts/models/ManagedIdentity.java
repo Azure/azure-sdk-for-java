@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The workspace managed identity. */
+/**
+ * The workspace managed identity.
+ */
 @Fluent
 public final class ManagedIdentity {
     /*
@@ -29,12 +31,15 @@ public final class ManagedIdentity {
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
-    /** Creates an instance of ManagedIdentity class. */
-    public ManagedIdentity() {}
+    /**
+     * Creates an instance of ManagedIdentity class.
+     */
+    public ManagedIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID of the workspace managed identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String getPrincipalId() {
@@ -43,7 +48,7 @@ public final class ManagedIdentity {
 
     /**
      * Get the tenantId property: The tenant ID of the workspace managed identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID getTenantId() {
@@ -52,7 +57,7 @@ public final class ManagedIdentity {
 
     /**
      * Get the type property: The type of managed identity for the workspace.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType getType() {
@@ -61,7 +66,7 @@ public final class ManagedIdentity {
 
     /**
      * Set the type property: The type of managed identity for the workspace.
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedIdentity object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hybrid Connection for an App Service app. */
+/**
+ * Hybrid Connection for an App Service app.
+ */
 @Fluent
 public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RelayServiceConnectionEntityProperties innerProperties;
 
-    /** Creates an instance of RelayServiceConnectionEntityInner class. */
+    /**
+     * Creates an instance of RelayServiceConnectionEntityInner class.
+     */
     public RelayServiceConnectionEntityInner() {
     }
 
     /**
      * Get the innerProperties property: RelayServiceConnectionEntity resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RelayServiceConnectionEntityProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RelayServiceConnectionEntityInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the entityName property: The entityName property.
-     *
+     * 
      * @return the entityName value.
      */
     public String entityName() {
@@ -48,7 +54,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the entityName property: The entityName property.
-     *
+     * 
      * @param entityName the entityName value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -62,7 +68,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the entityConnectionString property: The entityConnectionString property.
-     *
+     * 
      * @return the entityConnectionString value.
      */
     public String entityConnectionString() {
@@ -71,7 +77,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the entityConnectionString property: The entityConnectionString property.
-     *
+     * 
      * @param entityConnectionString the entityConnectionString value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -85,7 +91,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceType property: The resourceType property.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -94,7 +100,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the resourceType property: The resourceType property.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -108,7 +114,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceConnectionString property: The resourceConnectionString property.
-     *
+     * 
      * @return the resourceConnectionString value.
      */
     public String resourceConnectionString() {
@@ -117,7 +123,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the resourceConnectionString property: The resourceConnectionString property.
-     *
+     * 
      * @param resourceConnectionString the resourceConnectionString value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -131,7 +137,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the hostname property: The hostname property.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -140,7 +146,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the hostname property: The hostname property.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -154,7 +160,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the port property: The port property.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -163,7 +169,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the port property: The port property.
-     *
+     * 
      * @param port the port value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -177,7 +183,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Get the biztalkUri property: The biztalkUri property.
-     *
+     * 
      * @return the biztalkUri value.
      */
     public String biztalkUri() {
@@ -186,7 +192,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Set the biztalkUri property: The biztalkUri property.
-     *
+     * 
      * @param biztalkUri the biztalkUri value to set.
      * @return the RelayServiceConnectionEntityInner object itself.
      */
@@ -200,7 +206,7 @@ public final class RelayServiceConnectionEntityInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

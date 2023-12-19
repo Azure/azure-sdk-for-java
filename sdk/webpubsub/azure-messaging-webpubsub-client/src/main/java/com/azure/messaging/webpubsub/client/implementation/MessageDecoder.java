@@ -11,7 +11,7 @@ import com.azure.messaging.webpubsub.client.models.AckResponseError;
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +51,7 @@ public final class MessageDecoder {
 
     private static Object parseMessage(JsonNode jsonNode) throws IOException {
         Object msg = null;
-        WebPubSubDataType type = WebPubSubDataType.fromString(jsonNode.get("dataType").asText());
+        WebPubSubDataFormat type = WebPubSubDataFormat.fromString(jsonNode.get("dataType").asText());
         BinaryData data = parseData(jsonNode, type);
         switch (jsonNode.get("from").asText()) {
             case "group":
@@ -116,11 +116,11 @@ public final class MessageDecoder {
         return ackMessage;
     }
 
-    private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataType type) throws IOException {
+    private static BinaryData parseData(JsonNode jsonNode, WebPubSubDataFormat type) throws IOException {
         BinaryData data = null;
-        if (type == WebPubSubDataType.TEXT) {
+        if (type == WebPubSubDataFormat.TEXT) {
             data = BinaryData.fromString(jsonNode.get("data").asText());
-        } else if (type == WebPubSubDataType.BINARY || type == WebPubSubDataType.PROTOBUF) {
+        } else if (type == WebPubSubDataFormat.BINARY || type == WebPubSubDataFormat.PROTOBUF) {
             data = BinaryData.fromBytes(jsonNode.get("data").binaryValue());
         } else {
             // WebPubSubDataType.JSON

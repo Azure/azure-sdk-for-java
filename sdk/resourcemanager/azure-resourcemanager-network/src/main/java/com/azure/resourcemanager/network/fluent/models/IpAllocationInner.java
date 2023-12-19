@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.IpVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** IpAllocation resource. */
+/**
+ * IpAllocation resource.
+ */
 @Fluent
 public final class IpAllocationInner extends Resource {
     /*
@@ -33,13 +35,15 @@ public final class IpAllocationInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of IpAllocationInner class. */
+    /**
+     * Creates an instance of IpAllocationInner class.
+     */
     public IpAllocationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the IpAllocation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IpAllocationPropertiesFormat innerProperties() {
@@ -48,7 +52,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -57,7 +61,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -66,7 +70,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -75,14 +79,18 @@ public final class IpAllocationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpAllocationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpAllocationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +99,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the subnet property: The Subnet that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -100,7 +108,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the virtualNetwork property: The VirtualNetwork that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -109,7 +117,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the type property: The type for the IpAllocation.
-     *
+     * 
      * @return the type value.
      */
     public IpAllocationType typePropertiesType() {
@@ -118,7 +126,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the type property: The type for the IpAllocation.
-     *
+     * 
      * @param type the type value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -132,7 +140,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -141,7 +149,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -155,7 +163,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -164,7 +172,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @param prefixLength the prefixLength value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -178,7 +186,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @return the prefixType value.
      */
     public IpVersion prefixType() {
@@ -187,7 +195,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @param prefixType the prefixType value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -201,7 +209,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @return the ipamAllocationId value.
      */
     public String ipamAllocationId() {
@@ -210,7 +218,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @param ipamAllocationId the ipamAllocationId value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -224,7 +232,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Get the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @return the allocationTags value.
      */
     public Map<String, String> allocationTags() {
@@ -233,7 +241,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Set the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @param allocationTags the allocationTags value to set.
      * @return the IpAllocationInner object itself.
      */
@@ -247,7 +255,7 @@ public final class IpAllocationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

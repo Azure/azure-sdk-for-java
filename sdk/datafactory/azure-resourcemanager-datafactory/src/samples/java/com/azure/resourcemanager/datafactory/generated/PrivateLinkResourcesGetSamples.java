@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-/** Samples for PrivateLinkResources Get. */
+/**
+ * Samples for PrivateLinkResources Get.
+ */
 public final class PrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/GetPrivateLinkResources.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
+     * GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
-    public static void getPrivateLinkResourcesOfASite(
-        com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager
-            .privateLinkResources()
-            .getWithResponse("exampleResourceGroup", "exampleFactoryName", com.azure.core.util.Context.NONE);
+    public static void
+        getPrivateLinkResourcesOfASite(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
+        manager.privateLinkResources().getWithResponse("exampleResourceGroup", "exampleFactoryName",
+            com.azure.core.util.Context.NONE);
     }
 }

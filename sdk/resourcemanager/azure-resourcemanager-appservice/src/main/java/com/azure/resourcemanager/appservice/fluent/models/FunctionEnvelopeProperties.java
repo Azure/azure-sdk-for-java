@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** FunctionEnvelope resource specific properties. */
+/**
+ * FunctionEnvelope resource specific properties.
+ */
 @Fluent
 public final class FunctionEnvelopeProperties {
     /*
@@ -91,13 +93,15 @@ public final class FunctionEnvelopeProperties {
     @JsonProperty(value = "isDisabled")
     private Boolean isDisabled;
 
-    /** Creates an instance of FunctionEnvelopeProperties class. */
+    /**
+     * Creates an instance of FunctionEnvelopeProperties class.
+     */
     public FunctionEnvelopeProperties() {
     }
 
     /**
      * Get the functionAppId property: Function App ID.
-     *
+     * 
      * @return the functionAppId value.
      */
     public String functionAppId() {
@@ -106,7 +110,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the functionAppId property: Function App ID.
-     *
+     * 
      * @param functionAppId the functionAppId value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -117,7 +121,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @return the scriptRootPathHref value.
      */
     public String scriptRootPathHref() {
@@ -126,7 +130,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @param scriptRootPathHref the scriptRootPathHref value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -137,7 +141,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the scriptHref property: Script URI.
-     *
+     * 
      * @return the scriptHref value.
      */
     public String scriptHref() {
@@ -146,7 +150,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the scriptHref property: Script URI.
-     *
+     * 
      * @param scriptHref the scriptHref value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -157,7 +161,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the configHref property: Config URI.
-     *
+     * 
      * @return the configHref value.
      */
     public String configHref() {
@@ -166,7 +170,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the configHref property: Config URI.
-     *
+     * 
      * @param configHref the configHref value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -177,7 +181,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the testDataHref property: Test data URI.
-     *
+     * 
      * @return the testDataHref value.
      */
     public String testDataHref() {
@@ -186,7 +190,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the testDataHref property: Test data URI.
-     *
+     * 
      * @param testDataHref the testDataHref value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -197,7 +201,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @return the secretsFileHref value.
      */
     public String secretsFileHref() {
@@ -206,7 +210,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @param secretsFileHref the secretsFileHref value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -217,7 +221,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the href property: Function URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -226,7 +230,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the href property: Function URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -237,7 +241,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the config property: Config information.
-     *
+     * 
      * @return the config value.
      */
     public Object config() {
@@ -246,7 +250,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the config property: Config information.
-     *
+     * 
      * @param config the config value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -257,7 +261,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the files property: File list.
-     *
+     * 
      * @return the files value.
      */
     public Map<String, String> files() {
@@ -266,7 +270,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the files property: File list.
-     *
+     * 
      * @param files the files value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -277,7 +281,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @return the testData value.
      */
     public String testData() {
@@ -286,7 +290,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @param testData the testData value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -297,7 +301,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @return the invokeUrlTemplate value.
      */
     public String invokeUrlTemplate() {
@@ -306,7 +310,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @param invokeUrlTemplate the invokeUrlTemplate value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -317,7 +321,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the language property: The function language.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -326,7 +330,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the language property: The function language.
-     *
+     * 
      * @param language the language value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -337,7 +341,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Get the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -346,7 +350,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Set the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @param isDisabled the isDisabled value to set.
      * @return the FunctionEnvelopeProperties object itself.
      */
@@ -357,7 +361,7 @@ public final class FunctionEnvelopeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

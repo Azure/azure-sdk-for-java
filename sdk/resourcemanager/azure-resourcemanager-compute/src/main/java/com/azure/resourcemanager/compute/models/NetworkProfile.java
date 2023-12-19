@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies the network interfaces or the networking configuration of the virtual machine. */
+/**
+ * Specifies the network interfaces or the networking configuration of the virtual machine.
+ */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -30,14 +32,16 @@ public final class NetworkProfile {
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
 
-    /** Creates an instance of NetworkProfile class. */
+    /**
+     * Creates an instance of NetworkProfile class.
+     */
     public NetworkProfile() {
     }
 
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the virtual machine.
-     *
+     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
+     * with the virtual machine.
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceReference> networkInterfaces() {
@@ -45,9 +49,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the virtual machine.
-     *
+     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
+     * with the virtual machine.
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
@@ -59,7 +63,7 @@ public final class NetworkProfile {
     /**
      * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations.
-     *
+     * 
      * @return the networkApiVersion value.
      */
     public NetworkApiVersion networkApiVersion() {
@@ -69,7 +73,7 @@ public final class NetworkProfile {
     /**
      * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations.
-     *
+     * 
      * @param networkApiVersion the networkApiVersion value to set.
      * @return the NetworkProfile object itself.
      */
@@ -81,7 +85,7 @@ public final class NetworkProfile {
     /**
      * Get the networkInterfaceConfigurations property: Specifies the networking configurations that will be used to
      * create the virtual machine networking resources.
-     *
+     * 
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations() {
@@ -91,7 +95,7 @@ public final class NetworkProfile {
     /**
      * Set the networkInterfaceConfigurations property: Specifies the networking configurations that will be used to
      * create the virtual machine networking resources.
-     *
+     * 
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
      * @return the NetworkProfile object itself.
      */
@@ -103,7 +107,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,10 +4,13 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration of live transcription. */
+/**
+ * Configuration of live transcription.
+ */
 @Fluent
 public final class TranscriptionConfiguration {
     /*
@@ -29,15 +32,20 @@ public final class TranscriptionConfiguration {
     private String locale;
 
     /*
-     * Determines if the transcription should be started immediately after call
-     * is answered or not.
+     * Determines if the transcription should be started immediately after call is answered or not.
      */
     @JsonProperty(value = "startTranscription", required = true)
     private boolean startTranscription;
 
     /**
+     * Creates an instance of TranscriptionConfiguration class.
+     */
+    public TranscriptionConfiguration() {
+    }
+
+    /**
      * Get the transportUrl property: Transport URL for live transcription.
-     *
+     * 
      * @return the transportUrl value.
      */
     public String getTransportUrl() {
@@ -46,7 +54,7 @@ public final class TranscriptionConfiguration {
 
     /**
      * Set the transportUrl property: Transport URL for live transcription.
-     *
+     * 
      * @param transportUrl the transportUrl value to set.
      * @return the TranscriptionConfiguration object itself.
      */
@@ -57,7 +65,7 @@ public final class TranscriptionConfiguration {
 
     /**
      * Get the transportType property: The type of transport to be used for live transcription, eg. Websocket.
-     *
+     * 
      * @return the transportType value.
      */
     public TranscriptionTransportType getTransportType() {
@@ -66,7 +74,7 @@ public final class TranscriptionConfiguration {
 
     /**
      * Set the transportType property: The type of transport to be used for live transcription, eg. Websocket.
-     *
+     * 
      * @param transportType the transportType value to set.
      * @return the TranscriptionConfiguration object itself.
      */
@@ -77,7 +85,7 @@ public final class TranscriptionConfiguration {
 
     /**
      * Get the locale property: Defines the locale for the data e.g en-CA, en-AU.
-     *
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -86,7 +94,7 @@ public final class TranscriptionConfiguration {
 
     /**
      * Set the locale property: Defines the locale for the data e.g en-CA, en-AU.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the TranscriptionConfiguration object itself.
      */
@@ -98,7 +106,7 @@ public final class TranscriptionConfiguration {
     /**
      * Get the startTranscription property: Determines if the transcription should be started immediately after call is
      * answered or not.
-     *
+     * 
      * @return the startTranscription value.
      */
     public boolean isStartTranscription() {
@@ -108,7 +116,7 @@ public final class TranscriptionConfiguration {
     /**
      * Set the startTranscription property: Determines if the transcription should be started immediately after call is
      * answered or not.
-     *
+     * 
      * @param startTranscription the startTranscription value to set.
      * @return the TranscriptionConfiguration object itself.
      */

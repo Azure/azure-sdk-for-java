@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk Restore Point details. */
+/**
+ * Disk Restore Point details.
+ */
 @Fluent
 public final class DiskRestorePointAttributes extends SubResourceReadOnly {
     /*
@@ -23,14 +25,16 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
     @JsonProperty(value = "sourceDiskRestorePoint")
     private ApiEntityReference sourceDiskRestorePoint;
 
-    /** Creates an instance of DiskRestorePointAttributes class. */
+    /**
+     * Creates an instance of DiskRestorePointAttributes class.
+     */
     public DiskRestorePointAttributes() {
     }
 
     /**
      * Get the encryption property: Encryption at rest settings for disk restore point. It is an optional property that
      * can be specified in the input while creating a restore point.
-     *
+     * 
      * @return the encryption value.
      */
     public RestorePointEncryption encryption() {
@@ -40,7 +44,7 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
     /**
      * Set the encryption property: Encryption at rest settings for disk restore point. It is an optional property that
      * can be specified in the input while creating a restore point.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the DiskRestorePointAttributes object itself.
      */
@@ -51,7 +55,7 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
 
     /**
      * Get the sourceDiskRestorePoint property: Resource Id of the source disk restore point.
-     *
+     * 
      * @return the sourceDiskRestorePoint value.
      */
     public ApiEntityReference sourceDiskRestorePoint() {
@@ -60,7 +64,7 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
 
     /**
      * Set the sourceDiskRestorePoint property: Resource Id of the source disk restore point.
-     *
+     * 
      * @param sourceDiskRestorePoint the sourceDiskRestorePoint value to set.
      * @return the DiskRestorePointAttributes object itself.
      */
@@ -71,7 +75,7 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

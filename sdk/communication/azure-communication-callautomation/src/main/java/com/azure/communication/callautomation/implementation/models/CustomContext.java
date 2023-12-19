@@ -23,6 +23,9 @@ public final class CustomContext {
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
+    /** Creates an instance of CustomContext class. */
+    public CustomContext() {}
+
     /**
      * Get the voipHeaders property: Dictionary of &lt;string&gt;.
      *

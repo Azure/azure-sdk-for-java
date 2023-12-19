@@ -1,8 +1,16 @@
 # Release History
 
-## 1.0.0
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-12-05)
 
 ### Breaking Changes
 
@@ -94,17 +102,14 @@
 
 #### ClassificationPolicy
 - Add `ETag`
-- Added constructor `ClassificationPolicy(string classificationPolicyId)`
 - Added setters to `FallbackQueueId`, `Name`, and `PrioritizationRule`
 
 #### DistributionPolicy
 - Add `ETag`
-- Added constructor `DistributionPolicy(string distributionPolicyId)`
 - Added setters to `Mode` and `Name`
 
 #### ExceptionPolicy
 - Added `ETag`
-- Added constructor `ExceptionPolicy(string exceptionPolicyId)`
 - Added setter to `Name`
 
 ##### ExceptionRule
@@ -121,33 +126,17 @@
 
 #### RouterJob
 - Added `ETag`
-- Added constructor `RouterJob(string jobId)`
 - Added setters for `ChannelId`, `ChannelReference`, `ClassificationPolicyId`, `DispositionCode`, `MatchingMode`, `Priority`, `QueueId`
 
 #### RouterQueue
 - Added `ETag`
-- Added constructor `RouterQueue(string queueId)`
 - Added setters for `DistributionPolicyId`, `ExceptionPolicyId` and `Name`
 
 #### RouterWorker
 - Added `ETag`
-- Added constructor `RouterWorker(string workerId)`
 
 #### BestWorkerMode
 - Added setters to `ScoringRule` and `ScoringRuleOptions`
-
-#### OAuth2WebhookClientCredential
-- Added constructor `OAuth2WebhookClientCredential(string clientId, string clientSecret)`
-
-## 1.0.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.0.0-beta.1 (2023-07-27)
 This is the beta release of Azure Communication Service JobRouter Java SDK. For more information, please see the [README][read_me].

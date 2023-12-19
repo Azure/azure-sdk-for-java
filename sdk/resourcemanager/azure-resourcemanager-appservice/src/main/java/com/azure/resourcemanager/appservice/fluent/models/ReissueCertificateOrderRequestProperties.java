@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ReissueCertificateOrderRequest resource specific properties. */
+/**
+ * ReissueCertificateOrderRequest resource specific properties.
+ */
 @Fluent
 public final class ReissueCertificateOrderRequestProperties {
     /*
@@ -34,13 +36,15 @@ public final class ReissueCertificateOrderRequestProperties {
     @JsonProperty(value = "isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
 
-    /** Creates an instance of ReissueCertificateOrderRequestProperties class. */
+    /**
+     * Creates an instance of ReissueCertificateOrderRequestProperties class.
+     */
     public ReissueCertificateOrderRequestProperties() {
     }
 
     /**
      * Get the keySize property: Certificate Key Size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -49,7 +53,7 @@ public final class ReissueCertificateOrderRequestProperties {
 
     /**
      * Set the keySize property: Certificate Key Size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the ReissueCertificateOrderRequestProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class ReissueCertificateOrderRequestProperties {
     /**
      * Get the delayExistingRevokeInHours property: Delay in hours to revoke existing certificate after the new
      * certificate is issued.
-     *
+     * 
      * @return the delayExistingRevokeInHours value.
      */
     public Integer delayExistingRevokeInHours() {
@@ -71,7 +75,7 @@ public final class ReissueCertificateOrderRequestProperties {
     /**
      * Set the delayExistingRevokeInHours property: Delay in hours to revoke existing certificate after the new
      * certificate is issued.
-     *
+     * 
      * @param delayExistingRevokeInHours the delayExistingRevokeInHours value to set.
      * @return the ReissueCertificateOrderRequestProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class ReissueCertificateOrderRequestProperties {
 
     /**
      * Get the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -91,7 +95,7 @@ public final class ReissueCertificateOrderRequestProperties {
 
     /**
      * Set the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the ReissueCertificateOrderRequestProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class ReissueCertificateOrderRequestProperties {
     /**
      * Get the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -113,7 +117,7 @@ public final class ReissueCertificateOrderRequestProperties {
     /**
      * Set the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @param isPrivateKeyExternal the isPrivateKeyExternal value to set.
      * @return the ReissueCertificateOrderRequestProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class ReissueCertificateOrderRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

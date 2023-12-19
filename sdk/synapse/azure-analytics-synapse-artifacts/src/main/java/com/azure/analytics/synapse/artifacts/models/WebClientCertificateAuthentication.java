@@ -29,12 +29,15 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of WebClientCertificateAuthentication class. */
-    public WebClientCertificateAuthentication() {}
+    /**
+     * Creates an instance of WebClientCertificateAuthentication class.
+     */
+    public WebClientCertificateAuthentication() {
+    }
 
     /**
      * Get the pfx property: Base64-encoded contents of a PFX file.
-     *
+     * 
      * @return the pfx value.
      */
     public SecretBase getPfx() {
@@ -43,7 +46,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
 
     /**
      * Set the pfx property: Base64-encoded contents of a PFX file.
-     *
+     * 
      * @param pfx the pfx value to set.
      * @return the WebClientCertificateAuthentication object itself.
      */
@@ -54,7 +57,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
 
     /**
      * Get the password property: Password for the PFX file.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -63,7 +66,7 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
 
     /**
      * Set the password property: Password for the PFX file.
-     *
+     * 
      * @param password the password value to set.
      * @return the WebClientCertificateAuthentication object itself.
      */
@@ -72,7 +75,9 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebClientCertificateAuthentication setUrl(Object url) {
         super.setUrl(url);

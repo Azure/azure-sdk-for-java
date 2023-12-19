@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapCloudForCustomerResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapCloudForCustomerResourceDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SapCloudForCustomerResource\",\"typeProperties\":{\"path\":\"datamy\"},\"description\":\"dzyyrwnmwtqil\",\"structure\":\"datannkynkstd\",\"schema\":\"datawhjfp\",\"linkedServiceName\":{\"referenceName\":\"fxaqjyihjcwwv\",\"parameters\":{\"spwweifdyfa\":\"datackfavhkh\",\"a\":\"dataexnguwnrdpuz\"}},\"parameters\":{\"bszam\":{\"type\":\"Array\",\"defaultValue\":\"datatgg\"},\"lrnhhjtvhqsz\":{\"type\":\"SecureString\",\"defaultValue\":\"dataejpdcliqwzutiy\"}},\"annotations\":[\"dataovqmqcudptoqwr\",\"datafckjthlokmx\",\"dataawfubkngejjxu\",\"dataowynj\"],\"folder\":{\"name\":\"zmxuktdrsjtmnk\"},\"\":{\"nuhcfhepisq\":\"datauwfzcfdtstiaxty\"}}")
-                .toObject(SapCloudForCustomerResourceDataset.class);
+        SapCloudForCustomerResourceDataset model = BinaryData.fromString(
+            "{\"type\":\"SapCloudForCustomerResource\",\"typeProperties\":{\"path\":\"datamy\"},\"description\":\"dzyyrwnmwtqil\",\"structure\":\"datannkynkstd\",\"schema\":\"datawhjfp\",\"linkedServiceName\":{\"referenceName\":\"fxaqjyihjcwwv\",\"parameters\":{\"spwweifdyfa\":\"datackfavhkh\",\"a\":\"dataexnguwnrdpuz\"}},\"parameters\":{\"bszam\":{\"type\":\"Array\",\"defaultValue\":\"datatgg\"},\"lrnhhjtvhqsz\":{\"type\":\"SecureString\",\"defaultValue\":\"dataejpdcliqwzutiy\"}},\"annotations\":[\"dataovqmqcudptoqwr\",\"datafckjthlokmx\",\"dataawfubkngejjxu\",\"dataowynj\"],\"folder\":{\"name\":\"zmxuktdrsjtmnk\"},\"\":{\"nuhcfhepisq\":\"datauwfzcfdtstiaxty\"}}")
+            .toObject(SapCloudForCustomerResourceDataset.class);
         Assertions.assertEquals("dzyyrwnmwtqil", model.description());
         Assertions.assertEquals("fxaqjyihjcwwv", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("bszam").type());
@@ -31,27 +29,16 @@ public final class SapCloudForCustomerResourceDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerResourceDataset model =
-            new SapCloudForCustomerResourceDataset()
-                .withDescription("dzyyrwnmwtqil")
-                .withStructure("datannkynkstd")
-                .withSchema("datawhjfp")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("fxaqjyihjcwwv")
-                        .withParameters(mapOf("spwweifdyfa", "datackfavhkh", "a", "dataexnguwnrdpuz")))
-                .withParameters(
-                    mapOf(
-                        "bszam",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datatgg"),
-                        "lrnhhjtvhqsz",
-                        new ParameterSpecification()
-                            .withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("dataejpdcliqwzutiy")))
-                .withAnnotations(
-                    Arrays.asList("dataovqmqcudptoqwr", "datafckjthlokmx", "dataawfubkngejjxu", "dataowynj"))
-                .withFolder(new DatasetFolder().withName("zmxuktdrsjtmnk"))
-                .withPath("datamy");
+        SapCloudForCustomerResourceDataset model = new SapCloudForCustomerResourceDataset()
+            .withDescription("dzyyrwnmwtqil").withStructure("datannkynkstd").withSchema("datawhjfp")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fxaqjyihjcwwv")
+                .withParameters(mapOf("spwweifdyfa", "datackfavhkh", "a", "dataexnguwnrdpuz")))
+            .withParameters(mapOf("bszam",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datatgg"), "lrnhhjtvhqsz",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("dataejpdcliqwzutiy")))
+            .withAnnotations(Arrays.asList("dataovqmqcudptoqwr", "datafckjthlokmx", "dataawfubkngejjxu", "dataowynj"))
+            .withFolder(new DatasetFolder().withName("zmxuktdrsjtmnk")).withPath("datamy");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerResourceDataset.class);
         Assertions.assertEquals("dzyyrwnmwtqil", model.description());
         Assertions.assertEquals("fxaqjyihjcwwv", model.linkedServiceName().referenceName());

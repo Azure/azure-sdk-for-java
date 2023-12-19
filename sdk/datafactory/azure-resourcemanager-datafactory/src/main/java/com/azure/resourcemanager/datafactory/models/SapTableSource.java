@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for SAP Table source. */
+/**
+ * A copy activity source for SAP Table source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapTableSource")
 @Fluent
@@ -75,14 +77,16 @@ public final class SapTableSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SapTablePartitionSettings partitionSettings;
 
-    /** Creates an instance of SapTableSource class. */
+    /**
+     * Creates an instance of SapTableSource class.
+     */
     public SapTableSource() {
     }
 
     /**
      * Get the rowCount property: The number of rows to be retrieved. Type: integer(or Expression with resultType
      * integer).
-     *
+     * 
      * @return the rowCount value.
      */
     public Object rowCount() {
@@ -92,7 +96,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Set the rowCount property: The number of rows to be retrieved. Type: integer(or Expression with resultType
      * integer).
-     *
+     * 
      * @param rowCount the rowCount value to set.
      * @return the SapTableSource object itself.
      */
@@ -104,7 +108,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Get the rowSkips property: The number of rows that will be skipped. Type: integer (or Expression with resultType
      * integer).
-     *
+     * 
      * @return the rowSkips value.
      */
     public Object rowSkips() {
@@ -114,7 +118,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Set the rowSkips property: The number of rows that will be skipped. Type: integer (or Expression with resultType
      * integer).
-     *
+     * 
      * @param rowSkips the rowSkips value to set.
      * @return the SapTableSource object itself.
      */
@@ -126,7 +130,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Get the rfcTableFields property: The fields of the SAP table that will be retrieved. For example, column0,
      * column1. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the rfcTableFields value.
      */
     public Object rfcTableFields() {
@@ -136,7 +140,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Set the rfcTableFields property: The fields of the SAP table that will be retrieved. For example, column0,
      * column1. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param rfcTableFields the rfcTableFields value to set.
      * @return the SapTableSource object itself.
      */
@@ -148,7 +152,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Get the rfcTableOptions property: The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME
      * VALUE. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the rfcTableOptions value.
      */
     public Object rfcTableOptions() {
@@ -158,7 +162,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Set the rfcTableOptions property: The options for the filtering of the SAP Table. For example, COLUMN0 EQ SOME
      * VALUE. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param rfcTableOptions the rfcTableOptions value to set.
      * @return the SapTableSource object itself.
      */
@@ -168,9 +172,9 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
-     * data from SAP Table. Type: integer (or Expression with resultType integer).
-     *
+     * Get the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
+     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * 
      * @return the batchSize value.
      */
     public Object batchSize() {
@@ -178,9 +182,9 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when retrieving
-     * data from SAP Table. Type: integer (or Expression with resultType integer).
-     *
+     * Set the batchSize property: Specifies the maximum number of rows that will be retrieved at a time when
+     * retrieving data from SAP Table. Type: integer (or Expression with resultType integer).
+     * 
      * @param batchSize the batchSize value to set.
      * @return the SapTableSource object itself.
      */
@@ -192,7 +196,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Get the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
      * read data from SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the customRfcReadTableFunctionModule value.
      */
     public Object customRfcReadTableFunctionModule() {
@@ -202,7 +206,7 @@ public final class SapTableSource extends TabularSource {
     /**
      * Set the customRfcReadTableFunctionModule property: Specifies the custom RFC function module that will be used to
      * read data from SAP Table. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param customRfcReadTableFunctionModule the customRfcReadTableFunctionModule value to set.
      * @return the SapTableSource object itself.
      */
@@ -212,9 +216,9 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
-     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
-     *
+     * Get the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
+     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * 
      * @return the sapDataColumnDelimiter value.
      */
     public Object sapDataColumnDelimiter() {
@@ -222,9 +226,9 @@ public final class SapTableSource extends TabularSource {
     }
 
     /**
-     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC as
-     * well as splitting the output data retrieved. Type: string (or Expression with resultType string).
-     *
+     * Set the sapDataColumnDelimiter property: The single character that will be used as delimiter passed to SAP RFC
+     * as well as splitting the output data retrieved. Type: string (or Expression with resultType string).
+     * 
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapTableSource object itself.
      */
@@ -237,7 +241,7 @@ public final class SapTableSource extends TabularSource {
      * Get the partitionOption property: The partition mechanism that will be used for SAP table read in parallel.
      * Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
      * "PartitionOnCalendarDate", "PartitionOnTime".
-     *
+     * 
      * @return the partitionOption value.
      */
     public Object partitionOption() {
@@ -248,7 +252,7 @@ public final class SapTableSource extends TabularSource {
      * Set the partitionOption property: The partition mechanism that will be used for SAP table read in parallel.
      * Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
      * "PartitionOnCalendarDate", "PartitionOnTime".
-     *
+     * 
      * @param partitionOption the partitionOption value to set.
      * @return the SapTableSource object itself.
      */
@@ -259,7 +263,7 @@ public final class SapTableSource extends TabularSource {
 
     /**
      * Get the partitionSettings property: The settings that will be leveraged for SAP table source partitioning.
-     *
+     * 
      * @return the partitionSettings value.
      */
     public SapTablePartitionSettings partitionSettings() {
@@ -268,7 +272,7 @@ public final class SapTableSource extends TabularSource {
 
     /**
      * Set the partitionSettings property: The settings that will be leveraged for SAP table source partitioning.
-     *
+     * 
      * @param partitionSettings the partitionSettings value to set.
      * @return the SapTableSource object itself.
      */
@@ -277,42 +281,54 @@ public final class SapTableSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withQueryTimeout(Object queryTimeout) {
         super.withQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapTableSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -321,7 +337,7 @@ public final class SapTableSource extends TabularSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

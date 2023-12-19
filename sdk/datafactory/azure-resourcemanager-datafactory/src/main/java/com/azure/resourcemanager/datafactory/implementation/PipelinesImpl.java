@@ -24,8 +24,8 @@ public final class PipelinesImpl implements Pipelines {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    public PipelinesImpl(
-        PipelinesClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
+    public PipelinesImpl(PipelinesClient innerClient,
+        com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,22 +35,19 @@ public final class PipelinesImpl implements Pipelines {
         return Utils.mapPage(inner, inner1 -> new PipelineResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PipelineResource> listByFactory(
-        String resourceGroupName, String factoryName, Context context) {
-        PagedIterable<PipelineResourceInner> inner =
-            this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
+    public PagedIterable<PipelineResource> listByFactory(String resourceGroupName, String factoryName,
+        Context context) {
+        PagedIterable<PipelineResourceInner> inner
+            = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
         return Utils.mapPage(inner, inner1 -> new PipelineResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PipelineResource> getWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context) {
-        Response<PipelineResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, factoryName, pipelineName, ifNoneMatch, context);
+    public Response<PipelineResource> getWithResponse(String resourceGroupName, String factoryName, String pipelineName,
+        String ifNoneMatch, Context context) {
+        Response<PipelineResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, factoryName, pipelineName, ifNoneMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PipelineResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -66,8 +63,8 @@ public final class PipelinesImpl implements Pipelines {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String pipelineName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String pipelineName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, pipelineName, context);
     }
 
@@ -75,34 +72,14 @@ public final class PipelinesImpl implements Pipelines {
         this.serviceClient().delete(resourceGroupName, factoryName, pipelineName);
     }
 
-    public Response<CreateRunResponse> createRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String pipelineName,
-        String referencePipelineRunId,
-        Boolean isRecovery,
-        String startActivityName,
-        Boolean startFromFailure,
-        Map<String, Object> parameters,
-        Context context) {
-        Response<CreateRunResponseInner> inner =
-            this
-                .serviceClient()
-                .createRunWithResponse(
-                    resourceGroupName,
-                    factoryName,
-                    pipelineName,
-                    referencePipelineRunId,
-                    isRecovery,
-                    startActivityName,
-                    startFromFailure,
-                    parameters,
-                    context);
+    public Response<CreateRunResponse> createRunWithResponse(String resourceGroupName, String factoryName,
+        String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName,
+        Boolean startFromFailure, Map<String, Object> parameters, Context context) {
+        Response<CreateRunResponseInner> inner
+            = this.serviceClient().createRunWithResponse(resourceGroupName, factoryName, pipelineName,
+                referencePipelineRunId, isRecovery, startActivityName, startFromFailure, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CreateRunResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -121,54 +98,39 @@ public final class PipelinesImpl implements Pipelines {
     public PipelineResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String pipelineName = Utils.getValueFromIdByName(id, "pipelines");
         if (pipelineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
         }
         String localIfNoneMatch = null;
-        return this
-            .getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE)
+        return this.getWithResponse(resourceGroupName, factoryName, pipelineName, localIfNoneMatch, Context.NONE)
             .getValue();
     }
 
     public Response<PipelineResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String pipelineName = Utils.getValueFromIdByName(id, "pipelines");
         if (pipelineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
         }
         return this.getWithResponse(resourceGroupName, factoryName, pipelineName, ifNoneMatch, context);
     }
@@ -176,25 +138,18 @@ public final class PipelinesImpl implements Pipelines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String pipelineName = Utils.getValueFromIdByName(id, "pipelines");
         if (pipelineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, factoryName, pipelineName, Context.NONE);
     }
@@ -202,25 +157,18 @@ public final class PipelinesImpl implements Pipelines {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String pipelineName = Utils.getValueFromIdByName(id, "pipelines");
         if (pipelineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, factoryName, pipelineName, context);
     }

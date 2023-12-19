@@ -10,25 +10,33 @@ import java.util.Collection;
 
 /**
  * The sharing state of the gallery.
- *
- * <p>The sharing state of the gallery, which only appears in the response.
+ * 
+ * The sharing state of the gallery, which only appears in the response.
  */
 public final class SharingState extends ExpandableStringEnum<SharingState> {
-    /** Static value Succeeded for SharingState. */
+    /**
+     * Static value Succeeded for SharingState.
+     */
     public static final SharingState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value InProgress for SharingState. */
+    /**
+     * Static value InProgress for SharingState.
+     */
     public static final SharingState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Failed for SharingState. */
+    /**
+     * Static value Failed for SharingState.
+     */
     public static final SharingState FAILED = fromString("Failed");
 
-    /** Static value Unknown for SharingState. */
+    /**
+     * Static value Unknown for SharingState.
+     */
     public static final SharingState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of SharingState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +45,7 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
 
     /**
      * Creates or finds a SharingState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharingState.
      */
@@ -48,7 +56,7 @@ public final class SharingState extends ExpandableStringEnum<SharingState> {
 
     /**
      * Gets known SharingState values.
-     *
+     * 
      * @return known SharingState values.
      */
     public static Collection<SharingState> values() {

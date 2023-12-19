@@ -18,10 +18,11 @@ import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Closeable;
 import java.util.function.Consumer;
 
 /**
@@ -56,7 +57,7 @@ import java.util.function.Consumer;
  * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient -->
  */
 @ServiceClient(builder = WebPubSubClientBuilder.class)
-public class WebPubSubClient {
+public final class WebPubSubClient implements Closeable {
 
     private final WebPubSubAsyncClient asyncClient;
 
@@ -121,6 +122,17 @@ public class WebPubSubClient {
      */
     public synchronized void stop() {
         asyncClient.stop().block();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @exception ConnectFailedException thrown if failed to disconnect from server, or other failure.
+     */
+    @Override
+    public void close() {
+        this.stop();
     }
 
     /**
@@ -337,7 +349,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, String content) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT);
     }
 
     /**
@@ -352,7 +364,7 @@ public class WebPubSubClient {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, String content, SendToGroupOptions options) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT, options);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT, options);
     }
 
     /**
@@ -368,18 +380,18 @@ public class WebPubSubClient {
      * &#47;&#47; it can be any class instance that can be serialized to JSON
      * Map&lt;String, String&gt; jsonObject = new HashMap&lt;&gt;&#40;&#41;;
      * jsonObject.put&#40;&quot;name&quot;, &quot;john&quot;&#41;;
-     * client.sendToGroup&#40;&quot;message-group&quot;, BinaryData.fromObject&#40;jsonObject&#41;, WebPubSubDataType.BINARY&#41;;
+     * client.sendToGroup&#40;&quot;message-group&quot;, BinaryData.fromObject&#40;jsonObject&#41;, WebPubSubDataFormat.BINARY&#41;;
      * </pre>
      * <!-- end com.azure.messaging.webpubsub.client.WebPubSubClient.sendToGroup.json -->
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return asyncClient.sendToGroup(group, content, dataType).block();
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return asyncClient.sendToGroup(group, content, dataFormat).block();
     }
 
     /**
@@ -389,14 +401,14 @@ public class WebPubSubClient {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
                                        SendToGroupOptions options) {
-        return asyncClient.sendToGroup(group, content, dataType, options).block();
+        return asyncClient.sendToGroup(group, content, dataFormat, options).block();
     }
 
     /**
@@ -406,12 +418,12 @@ public class WebPubSubClient {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
-        return asyncClient.sendEvent(eventName, content, dataType).block();
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return asyncClient.sendEvent(eventName, content, dataFormat).block();
     }
 
     /**
@@ -421,14 +433,14 @@ public class WebPubSubClient {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @exception SendMessageFailedException thrown if client not connected, or send group message failed.
      * @return the result.
      */
-    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
-                                           SendEventOptions options) {
-        return asyncClient.sendEvent(eventName, content, dataType, options).block();
+    public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
+                                     SendEventOptions options) {
+        return asyncClient.sendEvent(eventName, content, dataFormat, options).block();
     }
 
     // following API is for testing

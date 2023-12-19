@@ -21,21 +21,18 @@ public final class DomainTopicsImpl implements DomainTopics {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public DomainTopicsImpl(
-        DomainTopicsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public DomainTopicsImpl(DomainTopicsClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DomainTopic> getWithResponse(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        Response<DomainTopicInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, domainName, domainTopicName, context);
+    public Response<DomainTopic> getWithResponse(String resourceGroupName, String domainName, String domainTopicName,
+        Context context) {
+        Response<DomainTopicInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, domainName, domainTopicName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DomainTopicImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,10 +57,10 @@ public final class DomainTopicsImpl implements DomainTopics {
         }
     }
 
-    public DomainTopic createOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        DomainTopicInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, domainName, domainTopicName, context);
+    public DomainTopic createOrUpdate(String resourceGroupName, String domainName, String domainTopicName,
+        Context context) {
+        DomainTopicInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, domainName, domainTopicName, context);
         if (inner != null) {
             return new DomainTopicImpl(inner, this.manager());
         } else {
@@ -84,10 +81,10 @@ public final class DomainTopicsImpl implements DomainTopics {
         return Utils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DomainTopic> listByDomain(
-        String resourceGroupName, String domainName, String filter, Integer top, Context context) {
-        PagedIterable<DomainTopicInner> inner =
-            this.serviceClient().listByDomain(resourceGroupName, domainName, filter, top, context);
+    public PagedIterable<DomainTopic> listByDomain(String resourceGroupName, String domainName, String filter,
+        Integer top, Context context) {
+        PagedIterable<DomainTopicInner> inner
+            = this.serviceClient().listByDomain(resourceGroupName, domainName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new DomainTopicImpl(inner1, this.manager()));
     }
 

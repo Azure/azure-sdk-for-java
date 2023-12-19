@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to be used to connect to the FTP server. */
+/**
+ * The authentication type to be used to connect to the FTP server.
+ */
 public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthenticationType> {
-    /** Static value Basic for SftpAuthenticationType. */
+    /**
+     * Static value Basic for SftpAuthenticationType.
+     */
     public static final SftpAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value SshPublicKey for SftpAuthenticationType. */
+    /**
+     * Static value SshPublicKey for SftpAuthenticationType.
+     */
     public static final SftpAuthenticationType SSH_PUBLIC_KEY = fromString("SshPublicKey");
 
-    /** Static value MultiFactor for SftpAuthenticationType. */
+    /**
+     * Static value MultiFactor for SftpAuthenticationType.
+     */
     public static final SftpAuthenticationType MULTI_FACTOR = fromString("MultiFactor");
 
     /**
      * Creates a new instance of SftpAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
 
     /**
      * Creates or finds a SftpAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SftpAuthenticationType.
      */
@@ -41,7 +49,7 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
 
     /**
      * Gets known SftpAuthenticationType values.
-     *
+     * 
      * @return known SftpAuthenticationType values.
      */
     public static Collection<SftpAuthenticationType> values() {

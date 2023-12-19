@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.fluent.models.PrivateLinkResourceProper
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResource {
     /*
@@ -36,13 +38,15 @@ public final class PrivateLinkResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of PrivateLinkResource class. */
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
     public PrivateLinkResource() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the id property: private link resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -60,7 +64,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the name property: private link resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the type property: private link resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -78,7 +82,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -87,7 +91,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -96,7 +100,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -105,7 +109,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -119,7 +123,7 @@ public final class PrivateLinkResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

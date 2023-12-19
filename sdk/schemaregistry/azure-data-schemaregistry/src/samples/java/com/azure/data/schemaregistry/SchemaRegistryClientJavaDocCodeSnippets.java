@@ -170,8 +170,7 @@ public class SchemaRegistryClientJavaDocCodeSnippets {
         SchemaRegistryAsyncClient client = buildAsyncClient();
 
         // BEGIN: com.azure.data.schemaregistry.schemaregistryasyncclient.getschemawithresponse
-        client.getSchemaWithResponse("{group-name}",
-                "{schema-name}", 1, Context.NONE)
+        client.getSchemaWithResponse("{group-name}", "{schema-name}", 1)
             .subscribe(response -> {
                 System.out.println("Headers in HTTP response: ");
 

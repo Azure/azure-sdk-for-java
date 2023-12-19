@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.GremlinDatabaseCreateUpdat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB Gremlin database. */
+/**
+ * Parameters to create and update Cosmos DB Gremlin database.
+ */
 @Fluent
 public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private GremlinDatabaseCreateUpdateProperties innerProperties = new GremlinDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of GremlinDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of GremlinDatabaseCreateUpdateParameters class.
+     */
     public GremlinDatabaseCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GremlinDatabaseCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Get the resource property: The standard JSON format of a Gremlin database.
-     *
+     * 
      * @return the resource value.
      */
     public GremlinDatabaseResource resource() {
@@ -57,7 +65,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Set the resource property: The standard JSON format of a Gremlin database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the GremlinDatabaseCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the GremlinDatabaseCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class GremlinDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model GremlinDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

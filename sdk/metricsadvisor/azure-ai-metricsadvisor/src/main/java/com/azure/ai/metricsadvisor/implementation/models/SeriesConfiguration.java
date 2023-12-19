@@ -5,49 +5,54 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The SeriesConfiguration model. */
+/**
+ * The SeriesConfiguration model.
+ */
 @Fluent
-public final class SeriesConfiguration {
+public final class SeriesConfiguration implements JsonSerializable<SeriesConfiguration> {
     /*
      * The series property.
      */
-    @JsonProperty(value = "series", required = true)
     private SeriesIdentity series;
 
     /*
      * condition operator
-     *
+     * 
      * should be specified when combining multiple detection conditions
      */
-    @JsonProperty(value = "conditionOperator")
     private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
      */
-    @JsonProperty(value = "smartDetectionCondition")
     private SmartDetectionCondition smartDetectionCondition;
 
     /*
      * The hardThresholdCondition property.
      */
-    @JsonProperty(value = "hardThresholdCondition")
     private HardThresholdCondition hardThresholdCondition;
 
     /*
      * The changeThresholdCondition property.
      */
-    @JsonProperty(value = "changeThresholdCondition")
     private ChangeThresholdCondition changeThresholdCondition;
 
-    /** Creates an instance of SeriesConfiguration class. */
-    public SeriesConfiguration() {}
+    /**
+     * Creates an instance of SeriesConfiguration class.
+     */
+    public SeriesConfiguration() {
+    }
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public SeriesIdentity getSeries() {
@@ -56,7 +61,7 @@ public final class SeriesConfiguration {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the SeriesConfiguration object itself.
      */
@@ -67,9 +72,9 @@ public final class SeriesConfiguration {
 
     /**
      * Get the conditionOperator property: condition operator
-     *
-     * <p>should be specified when combining multiple detection conditions.
-     *
+     * 
+     * should be specified when combining multiple detection conditions.
+     * 
      * @return the conditionOperator value.
      */
     public AnomalyDetectionConfigurationLogicType getConditionOperator() {
@@ -78,9 +83,9 @@ public final class SeriesConfiguration {
 
     /**
      * Set the conditionOperator property: condition operator
-     *
-     * <p>should be specified when combining multiple detection conditions.
-     *
+     * 
+     * should be specified when combining multiple detection conditions.
+     * 
      * @param conditionOperator the conditionOperator value to set.
      * @return the SeriesConfiguration object itself.
      */
@@ -91,7 +96,7 @@ public final class SeriesConfiguration {
 
     /**
      * Get the smartDetectionCondition property: The smartDetectionCondition property.
-     *
+     * 
      * @return the smartDetectionCondition value.
      */
     public SmartDetectionCondition getSmartDetectionCondition() {
@@ -100,7 +105,7 @@ public final class SeriesConfiguration {
 
     /**
      * Set the smartDetectionCondition property: The smartDetectionCondition property.
-     *
+     * 
      * @param smartDetectionCondition the smartDetectionCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
@@ -111,7 +116,7 @@ public final class SeriesConfiguration {
 
     /**
      * Get the hardThresholdCondition property: The hardThresholdCondition property.
-     *
+     * 
      * @return the hardThresholdCondition value.
      */
     public HardThresholdCondition getHardThresholdCondition() {
@@ -120,7 +125,7 @@ public final class SeriesConfiguration {
 
     /**
      * Set the hardThresholdCondition property: The hardThresholdCondition property.
-     *
+     * 
      * @param hardThresholdCondition the hardThresholdCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
@@ -131,7 +136,7 @@ public final class SeriesConfiguration {
 
     /**
      * Get the changeThresholdCondition property: The changeThresholdCondition property.
-     *
+     * 
      * @return the changeThresholdCondition value.
      */
     public ChangeThresholdCondition getChangeThresholdCondition() {
@@ -140,12 +145,60 @@ public final class SeriesConfiguration {
 
     /**
      * Set the changeThresholdCondition property: The changeThresholdCondition property.
-     *
+     * 
      * @param changeThresholdCondition the changeThresholdCondition value to set.
      * @return the SeriesConfiguration object itself.
      */
     public SeriesConfiguration setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("series", this.series);
+        jsonWriter.writeStringField("conditionOperator", Objects.toString(this.conditionOperator, null));
+        jsonWriter.writeJsonField("smartDetectionCondition", this.smartDetectionCondition);
+        jsonWriter.writeJsonField("hardThresholdCondition", this.hardThresholdCondition);
+        jsonWriter.writeJsonField("changeThresholdCondition", this.changeThresholdCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SeriesConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SeriesConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SeriesConfiguration.
+     */
+    public static SeriesConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SeriesConfiguration deserializedSeriesConfiguration = new SeriesConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("series".equals(fieldName)) {
+                    deserializedSeriesConfiguration.series = SeriesIdentity.fromJson(reader);
+                } else if ("conditionOperator".equals(fieldName)) {
+                    deserializedSeriesConfiguration.conditionOperator
+                        = AnomalyDetectionConfigurationLogicType.fromString(reader.getString());
+                } else if ("smartDetectionCondition".equals(fieldName)) {
+                    deserializedSeriesConfiguration.smartDetectionCondition = SmartDetectionCondition.fromJson(reader);
+                } else if ("hardThresholdCondition".equals(fieldName)) {
+                    deserializedSeriesConfiguration.hardThresholdCondition = HardThresholdCondition.fromJson(reader);
+                } else if ("changeThresholdCondition".equals(fieldName)) {
+                    deserializedSeriesConfiguration.changeThresholdCondition
+                        = ChangeThresholdCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSeriesConfiguration;
+        });
     }
 }

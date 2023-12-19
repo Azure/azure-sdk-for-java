@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceCorrelationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceCorrelationDescription model =
-            BinaryData
-                .fromString("{\"scheme\":\"Affinity\",\"serviceName\":\"yftaakcpw\"}")
+        ServiceCorrelationDescription model
+            = BinaryData.fromString("{\"scheme\":\"Invalid\",\"serviceName\":\"pofncck\"}")
                 .toObject(ServiceCorrelationDescription.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.scheme());
-        Assertions.assertEquals("yftaakcpw", model.serviceName());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.scheme());
+        Assertions.assertEquals("pofncck", model.serviceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceCorrelationDescription model =
-            new ServiceCorrelationDescription()
-                .withScheme(ServiceCorrelationScheme.AFFINITY)
-                .withServiceName("yftaakcpw");
+        ServiceCorrelationDescription model = new ServiceCorrelationDescription()
+            .withScheme(ServiceCorrelationScheme.INVALID).withServiceName("pofncck");
         model = BinaryData.fromObject(model).toObject(ServiceCorrelationDescription.class);
-        Assertions.assertEquals(ServiceCorrelationScheme.AFFINITY, model.scheme());
-        Assertions.assertEquals("yftaakcpw", model.serviceName());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.scheme());
+        Assertions.assertEquals("pofncck", model.serviceName());
     }
 }

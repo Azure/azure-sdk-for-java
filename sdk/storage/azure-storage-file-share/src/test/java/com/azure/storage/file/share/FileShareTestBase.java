@@ -394,6 +394,39 @@ public class FileShareTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return setOauthCredentials(builder).buildAsyncClient();
+    }
+
+    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
+        if (builder == null) {
+            builder = new ShareServiceClientBuilder();
+        }
+        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
+
+        instrument(builder);
+
+        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
+    }
+
     protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -670,6 +703,10 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static boolean olderThan20230103ServiceVersion() {
         return olderThan(ShareServiceVersion.V2023_01_03);
+    }
+
+    protected static boolean olderThan20240204ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2024_02_04);
     }
 
     protected static boolean olderThan(ShareServiceVersion targetVersion) {

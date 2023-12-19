@@ -10,4 +10,10 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class StoppedEvent {
+
+    /**
+     * Creates a new instance of StoppedEvent.
+     */
+    public StoppedEvent() {
+    }
 }

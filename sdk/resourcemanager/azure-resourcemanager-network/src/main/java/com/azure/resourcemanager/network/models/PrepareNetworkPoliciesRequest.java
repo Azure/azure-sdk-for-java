@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of PrepareNetworkPolicies for Subnet. */
+/**
+ * Details of PrepareNetworkPolicies for Subnet.
+ */
 @Fluent
 public final class PrepareNetworkPoliciesRequest {
     /*
@@ -23,13 +25,15 @@ public final class PrepareNetworkPoliciesRequest {
     @JsonProperty(value = "networkIntentPolicyConfigurations")
     private List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations;
 
-    /** Creates an instance of PrepareNetworkPoliciesRequest class. */
+    /**
+     * Creates an instance of PrepareNetworkPoliciesRequest class.
+     */
     public PrepareNetworkPoliciesRequest() {
     }
 
     /**
      * Get the serviceName property: The name of the service for which subnet is being prepared for.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -38,7 +42,7 @@ public final class PrepareNetworkPoliciesRequest {
 
     /**
      * Set the serviceName property: The name of the service for which subnet is being prepared for.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the PrepareNetworkPoliciesRequest object itself.
      */
@@ -49,7 +53,7 @@ public final class PrepareNetworkPoliciesRequest {
 
     /**
      * Get the networkIntentPolicyConfigurations property: A list of NetworkIntentPolicyConfiguration.
-     *
+     * 
      * @return the networkIntentPolicyConfigurations value.
      */
     public List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations() {
@@ -58,7 +62,7 @@ public final class PrepareNetworkPoliciesRequest {
 
     /**
      * Set the networkIntentPolicyConfigurations property: A list of NetworkIntentPolicyConfiguration.
-     *
+     * 
      * @param networkIntentPolicyConfigurations the networkIntentPolicyConfigurations value to set.
      * @return the PrepareNetworkPoliciesRequest object itself.
      */
@@ -70,7 +74,7 @@ public final class PrepareNetworkPoliciesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

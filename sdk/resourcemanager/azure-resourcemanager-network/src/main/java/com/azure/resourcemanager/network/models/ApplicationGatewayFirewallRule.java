@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A web application firewall rule. */
+/**
+ * A web application firewall rule.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallRule {
     /*
@@ -40,13 +42,15 @@ public final class ApplicationGatewayFirewallRule {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of ApplicationGatewayFirewallRule class. */
+    /**
+     * Creates an instance of ApplicationGatewayFirewallRule class.
+     */
     public ApplicationGatewayFirewallRule() {
     }
 
     /**
      * Get the ruleId property: The identifier of the web application firewall rule.
-     *
+     * 
      * @return the ruleId value.
      */
     public int ruleId() {
@@ -55,7 +59,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Set the ruleId property: The identifier of the web application firewall rule.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -66,7 +70,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Get the ruleIdString property: The string representation of the web application firewall rule identifier.
-     *
+     * 
      * @return the ruleIdString value.
      */
     public String ruleIdString() {
@@ -75,7 +79,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Set the ruleIdString property: The string representation of the web application firewall rule identifier.
-     *
+     * 
      * @param ruleIdString the ruleIdString value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -86,7 +90,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Get the state property: The string representation of the web application firewall rule state.
-     *
+     * 
      * @return the state value.
      */
     public ApplicationGatewayWafRuleStateTypes state() {
@@ -95,7 +99,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Set the state property: The string representation of the web application firewall rule state.
-     *
+     * 
      * @param state the state value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -106,7 +110,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Get the action property: The string representation of the web application firewall rule action.
-     *
+     * 
      * @return the action value.
      */
     public ApplicationGatewayWafRuleActionTypes action() {
@@ -115,7 +119,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Set the action property: The string representation of the web application firewall rule action.
-     *
+     * 
      * @param action the action value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -126,7 +130,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Get the description property: The description of the web application firewall rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -135,7 +139,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Set the description property: The description of the web application firewall rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -146,7 +150,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

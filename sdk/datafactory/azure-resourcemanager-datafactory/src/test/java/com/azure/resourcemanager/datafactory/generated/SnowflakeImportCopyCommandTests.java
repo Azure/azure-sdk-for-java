@@ -12,28 +12,16 @@ import java.util.Map;
 public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeImportCopyCommand model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"wpsxygrni\":\"datavllbbdfulvh\"},\"additionalFormatOptions\":{\"tyrj\":\"datapsebaz\",\"t\":\"dataoqgnsfzrrapi\",\"yymyy\":\"dataojqz\",\"dhz\":\"datahfdkjykvezsozt\"},\"\":{\"ljrnveqleoz\":\"datazldplamcc\"}}")
-                .toObject(SnowflakeImportCopyCommand.class);
+        SnowflakeImportCopyCommand model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"cklqrunqwcrkkaby\":\"dataq\"},\"additionalFormatOptions\":{\"sfsvayge\":\"datafnipywgjgf\"},\"\":{\"wymfy\":\"dataokkiptnwpwskck\",\"ebwarljplkp\":\"datapgvqioq\",\"earwtkrbscwb\":\"datamxcdreqaqvspsy\",\"s\":\"datawvwmcrhyo\"}}")
+            .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeImportCopyCommand model =
-            new SnowflakeImportCopyCommand()
-                .withAdditionalCopyOptions(mapOf("wpsxygrni", "datavllbbdfulvh"))
-                .withAdditionalFormatOptions(
-                    mapOf(
-                        "tyrj",
-                        "datapsebaz",
-                        "t",
-                        "dataoqgnsfzrrapi",
-                        "yymyy",
-                        "dataojqz",
-                        "dhz",
-                        "datahfdkjykvezsozt"));
+        SnowflakeImportCopyCommand model
+            = new SnowflakeImportCopyCommand().withAdditionalCopyOptions(mapOf("cklqrunqwcrkkaby", "dataq"))
+                .withAdditionalFormatOptions(mapOf("sfsvayge", "datafnipywgjgf"));
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

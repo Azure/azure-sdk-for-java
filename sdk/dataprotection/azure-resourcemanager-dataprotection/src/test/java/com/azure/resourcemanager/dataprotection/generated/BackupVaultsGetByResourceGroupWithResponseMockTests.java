@@ -37,71 +37,47 @@ public final class BackupVaultsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Failed\",\"resourceMoveState\":\"CommitFailed\",\"resourceMoveDetails\":{\"operationId\":\"bunzozudh\",\"startTimeUtc\":\"gkmoyxcdyuibhmfd\",\"completionTimeUtc\":\"zydvfvf\",\"sourceResourcePath\":\"naeo\",\"targetResourcePath\":\"rvhmgor\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"On\",\"retentionDurationInDays\":71.74888692263151},\"immutabilitySettings\":{\"state\":\"Unlocked\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"VaultStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"ArchiveStore\",\"type\":\"GeoRedundant\"}],\"isVaultProtectedByResourceGuard\":false,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"Adequate\"},\"identity\":{\"principalId\":\"jfzqlqhycavodgg\",\"tenantId\":\"beesmieknlra\",\"type\":\"aawiuagydwqfb\",\"userAssignedIdentities\":{\"giagtcojo\":{\"principalId\":\"4c1b70df-e96d-4ef6-8c3e-2c9f8b042761\",\"clientId\":\"d69abbb5-dfe3-4eb5-a402-a6c2fb14a9f5\"}}},\"eTag\":\"wogfnzjvu\",\"location\":\"zldmozuxy\",\"tags\":{\"grjqctojcmi\":\"btkadpysownbtgkb\",\"eypefojyqd\":\"of\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\",\"teyowclu\":\"cjhfgmvecactxmw\"},\"id\":\"ovekqvgqouwi\",\"name\":\"zmpjwyiv\",\"type\":\"ikf\"}";
+        String responseStr
+            = "{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Succeeded\",\"resourceMoveState\":\"CommitFailed\",\"resourceMoveDetails\":{\"operationId\":\"wafqroud\",\"startTimeUtc\":\"pavehhr\",\"completionTimeUtc\":\"bunzozudh\",\"sourceResourcePath\":\"gkmoyxcdyuibhmfd\",\"targetResourcePath\":\"zydvfvf\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":36.76075011838522},\"immutabilitySettings\":{\"state\":\"Locked\"}},\"storageSettings\":[{\"datastoreType\":\"ArchiveStore\",\"type\":\"LocallyRedundant\"},{\"datastoreType\":\"OperationalStore\",\"type\":\"LocallyRedundant\"},{\"datastoreType\":\"OperationalStore\",\"type\":\"GeoRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Disabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Disabled\"}},\"secureScore\":\"None\",\"replicatedRegions\":[\"l\",\"btgn\",\"nzeyqxtjj\",\"zqlqhyc\"]},\"identity\":{\"principalId\":\"dggxdbeesmi\",\"tenantId\":\"nlrariaawiuagy\",\"type\":\"qfby\",\"userAssignedIdentities\":{\"iagtc\":{\"principalId\":\"a8e09e4f-4730-4ddf-a7d1-5f08ede19489\",\"clientId\":\"4643c6cc-b942-4d14-8109-37004d2b19d5\"}}},\"eTag\":\"ocqwogfnzjvus\",\"location\":\"ld\",\"tags\":{\"own\":\"uxylfsbtkadpy\",\"isofieypefojyqd\":\"tgkbugrjqctojc\",\"hlhzdsqtzbsrgno\":\"cuplcplcwkhih\",\"teyowclu\":\"cjhfgmvecactxmw\"},\"id\":\"ovekqvgqouwi\",\"name\":\"zmpjwyiv\",\"type\":\"ikf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataProtectionManager manager =
-            DataProtectionManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataProtectionManager manager = DataProtectionManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BackupVaultResource response =
-            manager
-                .backupVaults()
-                .getByResourceGroupWithResponse("khocxvdfffwaf", "roud", com.azure.core.util.Context.NONE)
-                .getValue();
+        BackupVaultResource response = manager.backupVaults()
+            .getByResourceGroupWithResponse("ymbrnysuxmpraf", "g", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("zldmozuxy", response.location());
-        Assertions.assertEquals("btkadpysownbtgkb", response.tags().get("grjqctojcmi"));
-        Assertions.assertEquals("wogfnzjvu", response.etag());
-        Assertions.assertEquals("aawiuagydwqfb", response.identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                response.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions
-            .assertEquals(SoftDeleteState.ON, response.properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                71.74888692263151D,
-                response.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.UNLOCKED, response.properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                StorageSettingStoreTypes.OPERATIONAL_STORE,
-                response.properties().storageSettings().get(0).datastoreType());
-        Assertions
-            .assertEquals(StorageSettingTypes.ZONE_REDUNDANT, response.properties().storageSettings().get(0).type());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
-                response.properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.ENABLED,
-                response.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("ld", response.location());
+        Assertions.assertEquals("uxylfsbtkadpy", response.tags().get("own"));
+        Assertions.assertEquals("ocqwogfnzjvus", response.etag());
+        Assertions.assertEquals("qfby", response.identity().type());
+        Assertions.assertEquals(AlertsState.DISABLED,
+            response.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON,
+            response.properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(36.76075011838522D,
+            response.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.LOCKED,
+            response.properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(StorageSettingStoreTypes.ARCHIVE_STORE,
+            response.properties().storageSettings().get(0).datastoreType());
+        Assertions.assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT,
+            response.properties().storageSettings().get(0).type());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.DISABLED,
+            response.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.DISABLED,
+            response.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("l", response.properties().replicatedRegions().get(0));
     }
 }

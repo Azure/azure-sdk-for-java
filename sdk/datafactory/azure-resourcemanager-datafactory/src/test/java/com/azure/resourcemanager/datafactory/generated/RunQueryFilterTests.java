@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RunQueryFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunQueryFilter model =
-            BinaryData
-                .fromString(
-                    "{\"operand\":\"TriggerName\",\"operator\":\"Equals\",\"values\":[\"vewzcj\",\"nmwcpmgu\",\"adraufactkahzo\",\"ajjziuxxpshne\"]}")
-                .toObject(RunQueryFilter.class);
+        RunQueryFilter model = BinaryData.fromString(
+            "{\"operand\":\"TriggerName\",\"operator\":\"Equals\",\"values\":[\"vewzcj\",\"nmwcpmgu\",\"adraufactkahzo\",\"ajjziuxxpshne\"]}")
+            .toObject(RunQueryFilter.class);
         Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_NAME, model.operand());
         Assertions.assertEquals(RunQueryFilterOperator.EQUALS, model.operator());
         Assertions.assertEquals("vewzcj", model.values().get(0));
@@ -26,11 +24,9 @@ public final class RunQueryFilterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunQueryFilter model =
-            new RunQueryFilter()
-                .withOperand(RunQueryFilterOperand.TRIGGER_NAME)
-                .withOperator(RunQueryFilterOperator.EQUALS)
-                .withValues(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne"));
+        RunQueryFilter model = new RunQueryFilter().withOperand(RunQueryFilterOperand.TRIGGER_NAME)
+            .withOperator(RunQueryFilterOperator.EQUALS)
+            .withValues(Arrays.asList("vewzcj", "nmwcpmgu", "adraufactkahzo", "ajjziuxxpshne"));
         model = BinaryData.fromObject(model).toObject(RunQueryFilter.class);
         Assertions.assertEquals(RunQueryFilterOperand.TRIGGER_NAME, model.operand());
         Assertions.assertEquals(RunQueryFilterOperator.EQUALS, model.operator());

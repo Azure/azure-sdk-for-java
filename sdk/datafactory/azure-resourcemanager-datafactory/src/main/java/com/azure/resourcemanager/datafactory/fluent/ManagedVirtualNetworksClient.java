@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedVirtualNetworkResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ManagedVirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedVirtualNetworksClient.
+ */
 public interface ManagedVirtualNetworksClient {
     /**
      * Lists managed Virtual Networks.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface ManagedVirtualNetworksClient {
 
     /**
      * Lists managed Virtual Networks.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -38,18 +40,18 @@ public interface ManagedVirtualNetworksClient {
      * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Creates or updates a managed Virtual Network.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param managedVirtualNetwork Managed Virtual Network resource definition.
      * @param ifMatch ETag of the managed Virtual Network entity. Should only be specified for update, for which it
-     *     should match existing entity or can be * for unconditional update.
+     * should match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,17 +59,13 @@ public interface ManagedVirtualNetworksClient {
      * @return managed Virtual Network resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedVirtualNetworkResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork,
-        String ifMatch,
-        Context context);
+    Response<ManagedVirtualNetworkResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String factoryName, String managedVirtualNetworkName, ManagedVirtualNetworkResourceInner managedVirtualNetwork,
+        String ifMatch, Context context);
 
     /**
      * Creates or updates a managed Virtual Network.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
@@ -78,20 +76,17 @@ public interface ManagedVirtualNetworksClient {
      * @return managed Virtual Network resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedVirtualNetworkResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork);
+    ManagedVirtualNetworkResourceInner createOrUpdate(String resourceGroupName, String factoryName,
+        String managedVirtualNetworkName, ManagedVirtualNetworkResourceInner managedVirtualNetwork);
 
     /**
      * Gets a managed Virtual Network.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
      * @param ifNoneMatch ETag of the managed Virtual Network entity. Should only be specified for get. If the ETag
-     *     matches the existing entity tag, or if * was provided, then no content will be returned.
+     * matches the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,16 +94,12 @@ public interface ManagedVirtualNetworksClient {
      * @return a managed Virtual Network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedVirtualNetworkResourceInner> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String ifNoneMatch,
-        Context context);
+    Response<ManagedVirtualNetworkResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String managedVirtualNetworkName, String ifNoneMatch, Context context);
 
     /**
      * Gets a managed Virtual Network.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
@@ -118,6 +109,6 @@ public interface ManagedVirtualNetworksClient {
      * @return a managed Virtual Network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedVirtualNetworkResourceInner get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName);
+    ManagedVirtualNetworkResourceInner get(String resourceGroupName, String factoryName,
+        String managedVirtualNetworkName);
 }

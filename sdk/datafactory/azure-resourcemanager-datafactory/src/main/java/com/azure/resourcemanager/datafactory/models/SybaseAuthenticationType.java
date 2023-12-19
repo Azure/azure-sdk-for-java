@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** AuthenticationType to be used for connection. */
+/**
+ * AuthenticationType to be used for connection.
+ */
 public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseAuthenticationType> {
-    /** Static value Basic for SybaseAuthenticationType. */
+    /**
+     * Static value Basic for SybaseAuthenticationType.
+     */
     public static final SybaseAuthenticationType BASIC = fromString("Basic");
 
-    /** Static value Windows for SybaseAuthenticationType. */
+    /**
+     * Static value Windows for SybaseAuthenticationType.
+     */
     public static final SybaseAuthenticationType WINDOWS = fromString("Windows");
 
     /**
      * Creates a new instance of SybaseAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
 
     /**
      * Creates or finds a SybaseAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SybaseAuthenticationType.
      */
@@ -38,7 +44,7 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
 
     /**
      * Gets known SybaseAuthenticationType values.
-     *
+     * 
      * @return known SybaseAuthenticationType values.
      */
     public static Collection<SybaseAuthenticationType> values() {

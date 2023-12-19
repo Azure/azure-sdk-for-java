@@ -50,7 +50,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -136,20 +135,6 @@ public class SearchTests extends SearchTestBase {
     }
 
     private SearchAsyncClient getAsyncClient(String indexName) {
-        return getSearchClientBuilder(indexName, false).buildAsyncClient();
-    }
-
-    private SearchClient setupClient(Supplier<String> indexSupplier) {
-        String indexName = indexSupplier.get();
-        indexesToDelete.add(indexName);
-
-        return getSearchClientBuilder(indexName, true).buildClient();
-    }
-
-    private SearchAsyncClient setupAsyncClient(Supplier<String> indexSupplier) {
-        String indexName = indexSupplier.get();
-        indexesToDelete.add(indexName);
-
         return getSearchClientBuilder(indexName, false).buildAsyncClient();
     }
 
@@ -439,8 +424,10 @@ public class SearchTests extends SearchTestBase {
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
     @Test
-    public void canRoundTripNonNullableValueTypesSync() {
-        SearchClient client = setupClient(this::createIndexWithNonNullableTypes);
+    public void canRoundTripNonNullableValueTypesSyncAndAsync() {
+        String indexName = createIndexWithNonNullableTypes();
+        indexesToDelete.add(indexName);
+        SearchClient client = getSearchClientBuilder(indexName, true).buildClient();
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
@@ -471,16 +458,10 @@ public class SearchTests extends SearchTestBase {
             .collect(Collectors.toMap(NonNullableModel::key, Function.identity()));
 
         compareMaps(expectedDocs, actualDocs, (expected, actual) -> assertObjectEquals(expected, actual, true));
-    }
 
-    @SuppressWarnings("UseOfObsoleteDateTimeApi")
-    @Test
-    public void canRoundTripNonNullableValueTypesAsync() {
-        SearchAsyncClient asyncClient = setupAsyncClient(this::createIndexWithNonNullableTypes);
-
-        Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
-        NonNullableModel doc1 = new NonNullableModel()
-            .key("123")
+        SearchAsyncClient asyncClient = getSearchClientBuilder(indexName, false).buildAsyncClient();
+        NonNullableModel doc1Async = new NonNullableModel()
+            .key("123async")
             .count(3)
             .isEnabled(true)
             .rating(5)
@@ -490,21 +471,23 @@ public class SearchTests extends SearchTestBase {
             .topLevelBucket(new Bucket().bucketName("A").count(12))
             .buckets(new Bucket[]{new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7)});
 
-        NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
+        NonNullableModel doc2Async = new NonNullableModel().key("456async").buckets(new Bucket[]{});
 
-        Map<String, NonNullableModel> expectedDocs = new HashMap<>();
-        expectedDocs.put(doc1.key(), doc1);
-        expectedDocs.put(doc2.key(), doc2);
+        Map<String, NonNullableModel> expectedDocsAsync = new HashMap<>();
+        expectedDocsAsync.put(doc1Async.key(), doc1Async);
+        expectedDocsAsync.put(doc2Async.key(), doc2Async);
 
-        uploadDocuments(asyncClient, Arrays.asList(doc1, doc2));
+        uploadDocuments(asyncClient, Arrays.asList(doc1Async, doc2Async));
 
         StepVerifier.create(asyncClient.search("*", new SearchOptions()).byPage())
             .assertNext(response -> {
-                Map<String, NonNullableModel> actualDocs = response.getValue().stream()
+                Map<String, NonNullableModel> actualDocsAsync = response.getValue().stream()
                     .map(sr -> sr.getDocument(NonNullableModel.class))
+                    .filter(model -> model.key().endsWith("async"))
                     .collect(Collectors.toMap(NonNullableModel::key, Function.identity()));
 
-                compareMaps(expectedDocs, actualDocs, (expected, actual) -> assertObjectEquals(expected, actual, true));
+                compareMaps(expectedDocsAsync, actualDocsAsync,
+                    (expected, actual) -> assertObjectEquals(expected, actual, true));
             })
             .verifyComplete();
     }
@@ -858,18 +841,20 @@ public class SearchTests extends SearchTestBase {
     }
 
     @Test
-    public void canFilterNonNullableTypeSync() {
-        SearchClient client = setupClient(this::createIndexWithValueTypes);
+    public void canFilterNonNullableTypeSyncAndAsync() {
+        SearchOptions searchOptions = new SearchOptions()
+            .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
 
-        List<SearchDocument> docsList = createDocsListWithValueTypes();
+        String indexName = createIndexWithValueTypes();
+        indexesToDelete.add(indexName);
+        SearchClient client = getSearchClientBuilder(indexName, true).buildClient();
+
+        List<SearchDocument> docsList = createDocsListWithValueTypes("");
         uploadDocuments(client, docsList);
 
         Map<String, SearchDocument> expectedDocs = docsList.stream()
             .filter(d -> !d.get("Key").equals("789"))
             .collect(Collectors.toMap(sd -> sd.get("Key").toString(), Function.identity()));
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
 
         SearchPagedIterable results = client.search("*", searchOptions, Context.NONE);
         assertNotNull(results);
@@ -879,26 +864,20 @@ public class SearchTests extends SearchTestBase {
             .collect(Collectors.toMap(sd -> sd.get("Key").toString(), Function.identity()));
 
         compareMaps(expectedDocs, actualDocs, (expected, actual) -> assertObjectEquals(expected, actual, true));
-    }
 
-    @Test
-    public void canFilterNonNullableTypeAsync() {
-        SearchAsyncClient asyncClient = setupAsyncClient(this::createIndexWithValueTypes);
+        SearchAsyncClient asyncClient = getSearchClientBuilder(indexName, false).buildAsyncClient();
+        List<SearchDocument> docsListAsync = createDocsListWithValueTypes("async");
+        uploadDocuments(asyncClient, docsListAsync);
 
-        List<SearchDocument> docsList = createDocsListWithValueTypes();
-        uploadDocuments(asyncClient, docsList);
-
-        Map<String, SearchDocument> expectedDocs = docsList.stream()
-            .filter(d -> !d.get("Key").equals("789"))
+        Map<String, SearchDocument> expectedDocsAsync = docsListAsync.stream()
+            .filter(d -> !d.get("Key").equals("789async"))
             .collect(Collectors.toMap(sd -> sd.get("Key").toString(), Function.identity()));
-
-        SearchOptions searchOptions = new SearchOptions()
-            .setFilter("IntValue eq 0 or (Bucket/BucketName eq 'B' and Bucket/Count lt 10)");
 
         StepVerifier.create(asyncClient.search("*", searchOptions)
                 .map(sr -> sr.getDocument(SearchDocument.class))
+                .filter(doc -> doc.get("Key").toString().endsWith("async"))
                 .collectMap(sd -> sd.get("Key").toString()))
-            .assertNext(results -> compareMaps(expectedDocs, results,
+            .assertNext(resultsAsync -> compareMaps(expectedDocsAsync, resultsAsync,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
@@ -1520,9 +1499,9 @@ public class SearchTests extends SearchTestBase {
         return index.getName();
     }
 
-    static List<SearchDocument> createDocsListWithValueTypes() {
+    static List<SearchDocument> createDocsListWithValueTypes(String keySuffix) {
         SearchDocument element1 = new SearchDocument();
-        element1.put("Key", "123");
+        element1.put("Key", "123" + keySuffix);
         element1.put("IntValue", 0);
 
         Map<String, Object> subElement1 = new HashMap<>();
@@ -1531,7 +1510,7 @@ public class SearchTests extends SearchTestBase {
         element1.put("Bucket", subElement1);
 
         SearchDocument element2 = new SearchDocument();
-        element2.put("Key", "456");
+        element2.put("Key", "456" + keySuffix);
         element2.put("IntValue", 7);
 
         Map<String, Object> subElement2 = new HashMap<>();
@@ -1540,7 +1519,7 @@ public class SearchTests extends SearchTestBase {
         element2.put("Bucket", subElement2);
 
         SearchDocument element3 = new SearchDocument();
-        element3.put("Key", "789");
+        element3.put("Key", "789" + keySuffix);
         element3.put("IntValue", 1);
 
         Map<String, Object> subElement3 = new HashMap<>();

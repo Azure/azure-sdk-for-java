@@ -13,7 +13,9 @@ import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Event Subscription. */
+/**
+ * Event Subscription.
+ */
 @Fluent
 public final class SubscriptionInner extends ProxyResource {
     /*
@@ -28,13 +30,15 @@ public final class SubscriptionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SubscriptionInner class. */
+    /**
+     * Creates an instance of SubscriptionInner class.
+     */
     public SubscriptionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the event subscription.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionProperties innerProperties() {
@@ -43,7 +47,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to Event Subscription resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the event subscription.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SubscriptionProvisioningState provisioningState() {
@@ -61,7 +65,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Get the deliveryConfiguration property: Information about the delivery configuration of the event subscription.
-     *
+     * 
      * @return the deliveryConfiguration value.
      */
     public DeliveryConfiguration deliveryConfiguration() {
@@ -70,7 +74,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Set the deliveryConfiguration property: Information about the delivery configuration of the event subscription.
-     *
+     * 
      * @param deliveryConfiguration the deliveryConfiguration value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -84,7 +88,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Get the eventDeliverySchema property: The event delivery schema for the event subscription.
-     *
+     * 
      * @return the eventDeliverySchema value.
      */
     public DeliverySchema eventDeliverySchema() {
@@ -93,7 +97,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Set the eventDeliverySchema property: The event delivery schema for the event subscription.
-     *
+     * 
      * @param eventDeliverySchema the eventDeliverySchema value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -107,7 +111,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Get the filtersConfiguration property: Information about the filter for the event subscription.
-     *
+     * 
      * @return the filtersConfiguration value.
      */
     public FiltersConfiguration filtersConfiguration() {
@@ -116,7 +120,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Set the filtersConfiguration property: Information about the filter for the event subscription.
-     *
+     * 
      * @param filtersConfiguration the filtersConfiguration value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -130,7 +134,7 @@ public final class SubscriptionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

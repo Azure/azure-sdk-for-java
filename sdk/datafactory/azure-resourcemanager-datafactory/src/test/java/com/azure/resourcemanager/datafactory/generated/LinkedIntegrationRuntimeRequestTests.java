@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedIntegrationRuntimeRequest model =
-            BinaryData.fromString("{\"factoryName\":\"nrjawgqwg\"}").toObject(LinkedIntegrationRuntimeRequest.class);
+        LinkedIntegrationRuntimeRequest model
+            = BinaryData.fromString("{\"factoryName\":\"nrjawgqwg\"}").toObject(LinkedIntegrationRuntimeRequest.class);
         Assertions.assertEquals("nrjawgqwg", model.linkedFactoryName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedIntegrationRuntimeRequest model =
-            new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("nrjawgqwg");
+        LinkedIntegrationRuntimeRequest model
+            = new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("nrjawgqwg");
         model = BinaryData.fromObject(model).toObject(LinkedIntegrationRuntimeRequest.class);
         Assertions.assertEquals("nrjawgqwg", model.linkedFactoryName());
     }

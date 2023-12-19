@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListSubnets API service callRetrieves all subnet that belongs to a virtual network. */
+/**
+ * Response for ListSubnets API service callRetrieves all subnet that belongs to a virtual network.
+ */
 @Fluent
 public final class SubnetListResult {
     /*
@@ -24,13 +26,15 @@ public final class SubnetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SubnetListResult class. */
+    /**
+     * Creates an instance of SubnetListResult class.
+     */
     public SubnetListResult() {
     }
 
     /**
      * Get the value property: The subnets in a virtual network.
-     *
+     * 
      * @return the value value.
      */
     public List<SubnetInner> value() {
@@ -39,7 +43,7 @@ public final class SubnetListResult {
 
     /**
      * Set the value property: The subnets in a virtual network.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubnetListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SubnetListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SubnetListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SubnetListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class SubnetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

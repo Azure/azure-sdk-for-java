@@ -36,55 +36,38 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"sfwxosowzxc\",\"dataLocation\":\"gicjooxdjeb\",\"notificationHubId\":\"ucww\",\"version\":\"ovbvmeueciv\",\"immutableResourceId\":\"zceuojgjrw\",\"linkedDomains\":[\"iotwmcdytdxwit\",\"nrjawgqwg\",\"hniskxfbkpyc\"]},\"identity\":{\"principalId\":\"7d11bc78-0262-45f2-964f-785493c7049d\",\"tenantId\":\"c75b7df9-fd8b-455e-9a76-e0180d88c2ac\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"dauwhvylwzbtd\":{\"principalId\":\"4789c494-9a33-42e7-b82a-2a28f26ba62c\",\"clientId\":\"3486de2e-c0e2-471f-8bd7-18b377db937d\"},\"jznb\":{\"principalId\":\"7a35cbba-d98a-4c63-adf4-5b22b1bd7e13\",\"clientId\":\"1e513b04-2baa-4ea2-b0cb-32c6d7a0388e\"}}},\"location\":\"ow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"hostName\":\"vwvxyslqbhsfx\",\"dataLocation\":\"blytk\",\"notificationHubId\":\"mpew\",\"version\":\"fbkrvrnsvs\",\"immutableResourceId\":\"johxcrsb\",\"linkedDomains\":[\"asrru\",\"wbhsqfsub\",\"gjb\"]},\"identity\":{\"principalId\":\"974e5b1a-902e-4a38-b9c0-f30b360899b1\",\"tenantId\":\"dea5e349-e51c-42d7-be6a-f3f0da212032\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fbjfdtwssotftpvj\":{\"principalId\":\"3d583232-f6aa-4850-84e7-5f64daa54956\",\"clientId\":\"53e4bbc9-815a-4ac8-b954-cac4e7201cdb\"},\"xilzznf\":{\"principalId\":\"eac58f4a-2e55-476f-b158-d385f59cd9c2\",\"clientId\":\"5557c7dc-b550-4e11-87d7-2a0f7c9c3b4d\"}}},\"location\":\"nvwpmqtaruouj\",\"tags\":{\"ewgdrjervn\":\"jhwqytjrybnw\",\"eh\":\"enq\"},\"id\":\"ndoygmifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommunicationServiceResource response =
-            manager
-                .communicationServices()
-                .define("kfrlhrxsbky")
-                .withRegion("hcdhmdual")
-                .withExistingResourceGroup("bh")
-                .withTags(mapOf("adm", "qpv", "r", "sr", "fmisg", "vxpvgomz"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("ahvljuaha", new UserAssignedIdentity())))
-                .withDataLocation("z")
-                .withLinkedDomains(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv"))
-                .create();
+        CommunicationServiceResource response = manager.communicationServices().define("lhbnxkna")
+            .withRegion("uaopppcqeq").withExistingResourceGroup("ixhnrztf")
+            .withTags(mapOf("ahzxctobgbk", "z", "mgrcfbu", "moizpos", "mjh", "rmfqjhhkxbpvj", "tswb", "xjyngudivk"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("kteo", new UserAssignedIdentity(), "wptfdy",
+                        new UserAssignedIdentity(), "qbuaceopzfqr", new UserAssignedIdentity())))
+            .withDataLocation("gdtpnapnyiro").withLinkedDomains(Arrays.asList("xgk")).create();
 
-        Assertions.assertEquals("ow", response.location());
-        Assertions.assertEquals("rzqlveu", response.tags().get("lupj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("gicjooxdjeb", response.dataLocation());
-        Assertions.assertEquals("iotwmcdytdxwit", response.linkedDomains().get(0));
+        Assertions.assertEquals("nvwpmqtaruouj", response.location());
+        Assertions.assertEquals("jhwqytjrybnw", response.tags().get("ewgdrjervn"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("blytk", response.dataLocation());
+        Assertions.assertEquals("asrru", response.linkedDomains().get(0));
     }
 
     // Use "Map.of" if available

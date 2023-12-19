@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Explicit Proxy Settings in Firewall Policy. */
+/**
+ * Explicit Proxy Settings in Firewall Policy.
+ */
 @Fluent
 public final class ExplicitProxy {
     /*
@@ -46,13 +48,15 @@ public final class ExplicitProxy {
     @JsonProperty(value = "pacFile")
     private String pacFile;
 
-    /** Creates an instance of ExplicitProxy class. */
+    /**
+     * Creates an instance of ExplicitProxy class.
+     */
     public ExplicitProxy() {
     }
 
     /**
      * Get the enableExplicitProxy property: When set to true, explicit proxy mode is enabled.
-     *
+     * 
      * @return the enableExplicitProxy value.
      */
     public Boolean enableExplicitProxy() {
@@ -61,7 +65,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the enableExplicitProxy property: When set to true, explicit proxy mode is enabled.
-     *
+     * 
      * @param enableExplicitProxy the enableExplicitProxy value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -72,7 +76,7 @@ public final class ExplicitProxy {
 
     /**
      * Get the httpPort property: Port number for explicit proxy http protocol, cannot be greater than 64000.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -81,7 +85,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the httpPort property: Port number for explicit proxy http protocol, cannot be greater than 64000.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -92,7 +96,7 @@ public final class ExplicitProxy {
 
     /**
      * Get the httpsPort property: Port number for explicit proxy https protocol, cannot be greater than 64000.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -101,7 +105,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the httpsPort property: Port number for explicit proxy https protocol, cannot be greater than 64000.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -112,7 +116,7 @@ public final class ExplicitProxy {
 
     /**
      * Get the enablePacFile property: When set to true, pac file port and url needs to be provided.
-     *
+     * 
      * @return the enablePacFile value.
      */
     public Boolean enablePacFile() {
@@ -121,7 +125,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the enablePacFile property: When set to true, pac file port and url needs to be provided.
-     *
+     * 
      * @param enablePacFile the enablePacFile value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -132,7 +136,7 @@ public final class ExplicitProxy {
 
     /**
      * Get the pacFilePort property: Port number for firewall to serve PAC file.
-     *
+     * 
      * @return the pacFilePort value.
      */
     public Integer pacFilePort() {
@@ -141,7 +145,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the pacFilePort property: Port number for firewall to serve PAC file.
-     *
+     * 
      * @param pacFilePort the pacFilePort value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -152,7 +156,7 @@ public final class ExplicitProxy {
 
     /**
      * Get the pacFile property: SAS URL for PAC file.
-     *
+     * 
      * @return the pacFile value.
      */
     public String pacFile() {
@@ -161,7 +165,7 @@ public final class ExplicitProxy {
 
     /**
      * Set the pacFile property: SAS URL for PAC file.
-     *
+     * 
      * @param pacFile the pacFile value to set.
      * @return the ExplicitProxy object itself.
      */
@@ -172,7 +176,7 @@ public final class ExplicitProxy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

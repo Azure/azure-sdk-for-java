@@ -8,108 +8,118 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
 
-/** An immutable client-side representation of SubvolumeInfo. */
+/**
+ * An immutable client-side representation of SubvolumeInfo.
+ */
 public interface SubvolumeInfo {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the path property: path
-     *
-     * <p>Path to the subvolume.
-     *
+     * 
+     * Path to the subvolume.
+     * 
      * @return the path value.
      */
     String path();
 
     /**
      * Gets the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * 
+     * Truncate subvolume to the provided size in bytes.
+     * 
      * @return the size value.
      */
     Long size();
 
     /**
      * Gets the parentPath property: name
-     *
-     * <p>parent path to the subvolume.
-     *
+     * 
+     * parent path to the subvolume.
+     * 
      * @return the parentPath value.
      */
     String parentPath();
 
     /**
      * Gets the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     SubvolumeInfoInner innerModel();
 
-    /** The entirety of the SubvolumeInfo definition. */
+    /**
+     * The entirety of the SubvolumeInfo definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The SubvolumeInfo definition stages. */
+    /**
+     * The SubvolumeInfo definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the SubvolumeInfo definition. */
+        /**
+         * The first stage of the SubvolumeInfo definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the SubvolumeInfo definition allowing to specify parent resource. */
+        /**
+         * The stage of the SubvolumeInfo definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName, poolName, volumeName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of the NetApp account.
              * @param poolName The name of the capacity pool.
              * @param volumeName The name of the volume.
              * @return the next definition stage.
              */
-            WithCreate withExistingVolume(
-                String resourceGroupName, String accountName, String poolName, String volumeName);
+            WithCreate withExistingVolume(String resourceGroupName, String accountName, String poolName,
+                String volumeName);
         }
 
         /**
@@ -120,57 +130,66 @@ public interface SubvolumeInfo {
             extends DefinitionStages.WithPath, DefinitionStages.WithSize, DefinitionStages.WithParentPath {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SubvolumeInfo create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SubvolumeInfo create(Context context);
         }
 
-        /** The stage of the SubvolumeInfo definition allowing to specify path. */
+        /**
+         * The stage of the SubvolumeInfo definition allowing to specify path.
+         */
         interface WithPath {
             /**
              * Specifies the path property: path
-             *
-             * <p>Path to the subvolume.
-             *
+             * 
+             * Path to the subvolume.
+             * 
              * @param path path
-             *     <p>Path to the subvolume.
+             * 
+             * Path to the subvolume.
              * @return the next definition stage.
              */
             WithCreate withPath(String path);
         }
 
-        /** The stage of the SubvolumeInfo definition allowing to specify size. */
+        /**
+         * The stage of the SubvolumeInfo definition allowing to specify size.
+         */
         interface WithSize {
             /**
              * Specifies the size property: size
-             *
-             * <p>Truncate subvolume to the provided size in bytes.
-             *
+             * 
+             * Truncate subvolume to the provided size in bytes.
+             * 
              * @param size size
-             *     <p>Truncate subvolume to the provided size in bytes.
+             * 
+             * Truncate subvolume to the provided size in bytes.
              * @return the next definition stage.
              */
             WithCreate withSize(Long size);
         }
 
-        /** The stage of the SubvolumeInfo definition allowing to specify parentPath. */
+        /**
+         * The stage of the SubvolumeInfo definition allowing to specify parentPath.
+         */
         interface WithParentPath {
             /**
              * Specifies the parentPath property: name
-             *
-             * <p>parent path to the subvolume.
-             *
+             * 
+             * parent path to the subvolume.
+             * 
              * @param parentPath name
-             *     <p>parent path to the subvolume.
+             * 
+             * parent path to the subvolume.
              * @return the next definition stage.
              */
             WithCreate withParentPath(String parentPath);
@@ -179,54 +198,64 @@ public interface SubvolumeInfo {
 
     /**
      * Begins update for the SubvolumeInfo resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SubvolumeInfo.Update update();
 
-    /** The template for SubvolumeInfo update. */
+    /**
+     * The template for SubvolumeInfo update.
+     */
     interface Update extends UpdateStages.WithSize, UpdateStages.WithPath {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SubvolumeInfo apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SubvolumeInfo apply(Context context);
     }
 
-    /** The SubvolumeInfo update stages. */
+    /**
+     * The SubvolumeInfo update stages.
+     */
     interface UpdateStages {
-        /** The stage of the SubvolumeInfo update allowing to specify size. */
+        /**
+         * The stage of the SubvolumeInfo update allowing to specify size.
+         */
         interface WithSize {
             /**
              * Specifies the size property: size
-             *
-             * <p>Truncate subvolume to the provided size in bytes.
-             *
+             * 
+             * Truncate subvolume to the provided size in bytes.
+             * 
              * @param size size
-             *     <p>Truncate subvolume to the provided size in bytes.
+             * 
+             * Truncate subvolume to the provided size in bytes.
              * @return the next definition stage.
              */
             Update withSize(Long size);
         }
 
-        /** The stage of the SubvolumeInfo update allowing to specify path. */
+        /**
+         * The stage of the SubvolumeInfo update allowing to specify path.
+         */
         interface WithPath {
             /**
              * Specifies the path property: path
-             *
-             * <p>path to the subvolume.
-             *
+             * 
+             * path to the subvolume.
+             * 
              * @param path path
-             *     <p>path to the subvolume.
+             * 
+             * path to the subvolume.
              * @return the next definition stage.
              */
             Update withPath(String path);
@@ -235,14 +264,14 @@ public interface SubvolumeInfo {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SubvolumeInfo refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -250,9 +279,9 @@ public interface SubvolumeInfo {
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the specified subvolume.
@@ -261,9 +290,9 @@ public interface SubvolumeInfo {
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
+     * 
+     * Get details of the specified subvolume.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

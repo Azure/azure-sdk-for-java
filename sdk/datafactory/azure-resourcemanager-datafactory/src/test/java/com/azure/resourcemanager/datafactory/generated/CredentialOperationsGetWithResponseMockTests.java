@@ -30,40 +30,26 @@ public final class CredentialOperationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"vaxyitnzpfdoete\"},\"description\":\"skqx\",\"annotations\":[\"datawl\",\"dataodrdnfmxomupdqp\",\"dataxivktdvwmefjpo\"],\"\":{\"trlo\":\"datayvbvxlrltr\",\"yr\":\"datarjvr\",\"trzlvfncph\":\"datahfrsyckqwefmq\",\"zg\":\"datalnbawff\"}},\"name\":\"bzmxzrai\",\"type\":\"zgrojpnxzj\",\"etag\":\"cyysyceyk\",\"id\":\"lxhymc\"}";
+        String responseStr
+            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"vaxyitnzpfdoete\"},\"description\":\"skqx\",\"annotations\":[\"datawl\",\"dataodrdnfmxomupdqp\",\"dataxivktdvwmefjpo\"],\"\":{\"trlo\":\"datayvbvxlrltr\",\"yr\":\"datarjvr\",\"trzlvfncph\":\"datahfrsyckqwefmq\",\"zg\":\"datalnbawff\"}},\"name\":\"bzmxzrai\",\"type\":\"zgrojpnxzj\",\"etag\":\"cyysyceyk\",\"id\":\"lxhymc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedIdentityCredentialResource response =
-            manager
-                .credentialOperations()
-                .getWithResponse("k", "udxvjr", "dbinqqrkkgawnae", "eui", com.azure.core.util.Context.NONE)
-                .getValue();
+        ManagedIdentityCredentialResource response = manager.credentialOperations()
+            .getWithResponse("k", "udxvjr", "dbinqqrkkgawnae", "eui", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("lxhymc", response.id());
         Assertions.assertEquals("skqx", response.properties().description());

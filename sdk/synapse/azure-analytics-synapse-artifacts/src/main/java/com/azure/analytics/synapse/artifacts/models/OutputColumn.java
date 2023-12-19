@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The columns to be read out from the Office 365 table. */
+/**
+ * The columns to be read out from the Office 365 table.
+ */
 @Fluent
 public final class OutputColumn {
     /*
@@ -16,12 +18,15 @@ public final class OutputColumn {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of OutputColumn class. */
-    public OutputColumn() {}
+    /**
+     * Creates an instance of OutputColumn class.
+     */
+    public OutputColumn() {
+    }
 
     /**
      * Get the name property: Name of the table column. Type: string.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -30,7 +35,7 @@ public final class OutputColumn {
 
     /**
      * Set the name property: Name of the table column. Type: string.
-     *
+     * 
      * @param name the name value to set.
      * @return the OutputColumn object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Common error representation. */
+/**
+ * Common error representation.
+ */
 @Immutable
 public final class Error extends ManagementError {
     /*
@@ -17,13 +19,15 @@ public final class Error extends ManagementError {
     @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private String innerError;
 
-    /** Creates an instance of Error class. */
+    /**
+     * Creates an instance of Error class.
+     */
     public Error() {
     }
 
     /**
      * Get the innerError property: Inner error message.
-     *
+     * 
      * @return the innerError value.
      */
     public String getInnerError() {
@@ -32,7 +36,7 @@ public final class Error extends ManagementError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

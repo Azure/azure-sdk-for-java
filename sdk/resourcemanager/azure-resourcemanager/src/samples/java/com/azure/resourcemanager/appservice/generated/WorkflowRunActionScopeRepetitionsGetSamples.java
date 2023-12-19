@@ -4,29 +4,23 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for WorkflowRunActionScopeRepetitions Get. */
+/**
+ * Samples for WorkflowRunActionScopeRepetitions Get.
+ */
 public final class WorkflowRunActionScopeRepetitionsGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/WorkflowRunActionScopeRepetitions_Get.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/WorkflowRunActionScopeRepetitions_Get
+     * .json
      */
     /**
      * Sample code: Get a scoped repetition.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAScopedRepetition(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getWorkflowRunActionScopeRepetitions()
-            .getWithResponse(
-                "testResourceGroup",
-                "test-name",
-                "testFlow",
-                "08586776228332053161046300351",
-                "for_each",
-                "000000",
-                com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getWorkflowRunActionScopeRepetitions().getWithResponse(
+            "testResourceGroup", "test-name", "testFlow", "08586776228332053161046300351", "for_each", "000000",
+            com.azure.core.util.Context.NONE);
     }
 }

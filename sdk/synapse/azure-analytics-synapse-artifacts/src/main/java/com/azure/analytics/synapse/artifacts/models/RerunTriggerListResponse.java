@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of rerun triggers. */
+/**
+ * A list of rerun triggers.
+ */
 @Fluent
 public final class RerunTriggerListResponse {
     /*
@@ -23,12 +25,15 @@ public final class RerunTriggerListResponse {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RerunTriggerListResponse class. */
-    public RerunTriggerListResponse() {}
+    /**
+     * Creates an instance of RerunTriggerListResponse class.
+     */
+    public RerunTriggerListResponse() {
+    }
 
     /**
      * Get the value property: List of rerun triggers.
-     *
+     * 
      * @return the value value.
      */
     public List<RerunTriggerResource> getValue() {
@@ -37,7 +42,7 @@ public final class RerunTriggerListResponse {
 
     /**
      * Set the value property: List of rerun triggers.
-     *
+     * 
      * @param value the value value to set.
      * @return the RerunTriggerListResponse object itself.
      */
@@ -49,7 +54,7 @@ public final class RerunTriggerListResponse {
     /**
      * Get the nextLink property: The continuation token for getting the next page of results, if any remaining results
      * exist, null otherwise.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {

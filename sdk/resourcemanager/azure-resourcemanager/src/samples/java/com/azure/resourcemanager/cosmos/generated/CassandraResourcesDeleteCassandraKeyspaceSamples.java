@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for CassandraResources DeleteCassandraKeyspace. */
+/**
+ * Samples for CassandraResources DeleteCassandraKeyspace.
+ */
 public final class CassandraResourcesDeleteCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBCassandraKeyspaceDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBCassandraKeyspaceDelete.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraKeyspaceDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getCassandraResources()
-            .deleteCassandraKeyspace("rg1", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().deleteCassandraKeyspace("rg1",
+            "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }
 }

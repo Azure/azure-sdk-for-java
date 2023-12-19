@@ -7,21 +7,33 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CustomDnsSuffixProvisioningState. */
+/**
+ * Defines values for CustomDnsSuffixProvisioningState.
+ */
 public enum CustomDnsSuffixProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Degraded. */
+    /**
+     * Enum value Degraded.
+     */
     DEGRADED("Degraded"),
 
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress");
 
-    /** The actual serialized value for a CustomDnsSuffixProvisioningState instance. */
+    /**
+     * The actual serialized value for a CustomDnsSuffixProvisioningState instance.
+     */
     private final String value;
 
     CustomDnsSuffixProvisioningState(String value) {
@@ -30,7 +42,7 @@ public enum CustomDnsSuffixProvisioningState {
 
     /**
      * Parses a serialized value to a CustomDnsSuffixProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CustomDnsSuffixProvisioningState object, or null if unable to parse.
      */
@@ -48,7 +60,9 @@ public enum CustomDnsSuffixProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

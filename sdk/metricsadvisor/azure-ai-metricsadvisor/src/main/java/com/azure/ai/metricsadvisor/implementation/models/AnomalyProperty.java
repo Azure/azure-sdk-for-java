@@ -6,43 +6,49 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.AnomalyStatus;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The AnomalyProperty model. */
+/**
+ * The AnomalyProperty model.
+ */
 @Fluent
-public final class AnomalyProperty {
+public final class AnomalyProperty implements JsonSerializable<AnomalyProperty> {
     /*
      * anomaly severity
      */
-    @JsonProperty(value = "anomalySeverity", required = true)
     private Severity anomalySeverity;
 
     /*
      * anomaly status
-     *
+     * 
      * only return for alerting anomaly result
      */
-    @JsonProperty(value = "anomalyStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AnomalyStatus anomalyStatus;
 
     /*
      * value of the anomaly
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Double value;
 
     /*
      * expected value of the anomaly given by smart detector
      */
-    @JsonProperty(value = "expectedValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double expectedValue;
 
-    /** Creates an instance of AnomalyProperty class. */
-    public AnomalyProperty() {}
+    /**
+     * Creates an instance of AnomalyProperty class.
+     */
+    public AnomalyProperty() {
+    }
 
     /**
      * Get the anomalySeverity property: anomaly severity.
-     *
+     * 
      * @return the anomalySeverity value.
      */
     public Severity getAnomalySeverity() {
@@ -51,7 +57,7 @@ public final class AnomalyProperty {
 
     /**
      * Set the anomalySeverity property: anomaly severity.
-     *
+     * 
      * @param anomalySeverity the anomalySeverity value to set.
      * @return the AnomalyProperty object itself.
      */
@@ -62,9 +68,9 @@ public final class AnomalyProperty {
 
     /**
      * Get the anomalyStatus property: anomaly status
-     *
-     * <p>only return for alerting anomaly result.
-     *
+     * 
+     * only return for alerting anomaly result.
+     * 
      * @return the anomalyStatus value.
      */
     public AnomalyStatus getAnomalyStatus() {
@@ -73,7 +79,7 @@ public final class AnomalyProperty {
 
     /**
      * Get the value property: value of the anomaly.
-     *
+     * 
      * @return the value value.
      */
     public Double getValue() {
@@ -82,10 +88,50 @@ public final class AnomalyProperty {
 
     /**
      * Get the expectedValue property: expected value of the anomaly given by smart detector.
-     *
+     * 
      * @return the expectedValue value.
      */
     public Double getExpectedValue() {
         return this.expectedValue;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("anomalySeverity", Objects.toString(this.anomalySeverity, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnomalyProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnomalyProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnomalyProperty.
+     */
+    public static AnomalyProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnomalyProperty deserializedAnomalyProperty = new AnomalyProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("anomalySeverity".equals(fieldName)) {
+                    deserializedAnomalyProperty.anomalySeverity = Severity.fromString(reader.getString());
+                } else if ("anomalyStatus".equals(fieldName)) {
+                    deserializedAnomalyProperty.anomalyStatus = AnomalyStatus.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedAnomalyProperty.value = reader.getNullable(JsonReader::getDouble);
+                } else if ("expectedValue".equals(fieldName)) {
+                    deserializedAnomalyProperty.expectedValue = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnomalyProperty;
+        });
     }
 }

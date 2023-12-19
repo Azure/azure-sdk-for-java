@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Integration runtime resource type. */
+/**
+ * Integration runtime resource type.
+ */
 @Fluent
 public final class IntegrationRuntimeResource extends SubResource {
     /*
@@ -16,12 +18,15 @@ public final class IntegrationRuntimeResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
 
-    /** Creates an instance of IntegrationRuntimeResource class. */
-    public IntegrationRuntimeResource() {}
+    /**
+     * Creates an instance of IntegrationRuntimeResource class.
+     */
+    public IntegrationRuntimeResource() {
+    }
 
     /**
      * Get the properties property: Integration runtime properties.
-     *
+     * 
      * @return the properties value.
      */
     public IntegrationRuntime getProperties() {
@@ -30,7 +35,7 @@ public final class IntegrationRuntimeResource extends SubResource {
 
     /**
      * Set the properties property: Integration runtime properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeResource object itself.
      */

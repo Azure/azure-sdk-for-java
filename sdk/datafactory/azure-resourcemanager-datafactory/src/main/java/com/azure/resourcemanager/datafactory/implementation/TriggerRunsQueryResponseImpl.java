@@ -15,8 +15,7 @@ public final class TriggerRunsQueryResponseImpl implements TriggerRunsQueryRespo
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    TriggerRunsQueryResponseImpl(
-        TriggerRunsQueryResponseInner innerObject,
+    TriggerRunsQueryResponseImpl(TriggerRunsQueryResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

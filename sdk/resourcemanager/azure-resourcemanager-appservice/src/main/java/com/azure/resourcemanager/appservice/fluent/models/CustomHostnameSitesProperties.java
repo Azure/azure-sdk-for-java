@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** CustomHostnameSites resource specific properties. */
+/**
+ * CustomHostnameSites resource specific properties.
+ */
 @Fluent
 public final class CustomHostnameSitesProperties {
     /*
@@ -29,13 +31,15 @@ public final class CustomHostnameSitesProperties {
     @JsonProperty(value = "siteResourceIds")
     private List<IdentifierInner> siteResourceIds;
 
-    /** Creates an instance of CustomHostnameSitesProperties class. */
+    /**
+     * Creates an instance of CustomHostnameSitesProperties class.
+     */
     public CustomHostnameSitesProperties() {
     }
 
     /**
      * Get the customHostname property: The customHostname property.
-     *
+     * 
      * @return the customHostname value.
      */
     public String customHostname() {
@@ -44,7 +48,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Set the customHostname property: The customHostname property.
-     *
+     * 
      * @param customHostname the customHostname value to set.
      * @return the CustomHostnameSitesProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Get the region property: The region property.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -64,7 +68,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Set the region property: The region property.
-     *
+     * 
      * @param region the region value to set.
      * @return the CustomHostnameSitesProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Get the siteResourceIds property: The siteResourceIds property.
-     *
+     * 
      * @return the siteResourceIds value.
      */
     public List<IdentifierInner> siteResourceIds() {
@@ -84,7 +88,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Set the siteResourceIds property: The siteResourceIds property.
-     *
+     * 
      * @param siteResourceIds the siteResourceIds value to set.
      * @return the CustomHostnameSitesProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class CustomHostnameSitesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

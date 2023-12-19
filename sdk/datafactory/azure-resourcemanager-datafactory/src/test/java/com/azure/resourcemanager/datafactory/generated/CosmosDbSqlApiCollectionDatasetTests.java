@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CosmosDbSqlApiCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbSqlApiCollectionDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CosmosDbSqlApiCollection\",\"typeProperties\":{\"collectionName\":\"datalvsmfjihv\"},\"description\":\"cqrttjf\",\"structure\":\"datammfjew\",\"schema\":\"dataq\",\"linkedServiceName\":{\"referenceName\":\"avdostw\",\"parameters\":{\"elvxgwzz\":\"datafm\",\"zvzrbvgwxhlx\":\"datawdtlcjgpvc\"}},\"parameters\":{\"vhhplkhwwdk\":{\"type\":\"Array\",\"defaultValue\":\"datadrwynbgovazoym\"},\"yxryearmhpwbuk\":{\"type\":\"Object\",\"defaultValue\":\"dataeqmgkcswz\"}},\"annotations\":[\"datamfasgtlvhqpoilos\",\"dataaemcezevftmh\",\"datal\"],\"folder\":{\"name\":\"jy\"},\"\":{\"miwtpcflcez\":\"datatm\",\"fpf\":\"datawwvwiftdjtv\"}}")
-                .toObject(CosmosDbSqlApiCollectionDataset.class);
+        CosmosDbSqlApiCollectionDataset model = BinaryData.fromString(
+            "{\"type\":\"CosmosDbSqlApiCollection\",\"typeProperties\":{\"collectionName\":\"datalvsmfjihv\"},\"description\":\"cqrttjf\",\"structure\":\"datammfjew\",\"schema\":\"dataq\",\"linkedServiceName\":{\"referenceName\":\"avdostw\",\"parameters\":{\"elvxgwzz\":\"datafm\",\"zvzrbvgwxhlx\":\"datawdtlcjgpvc\"}},\"parameters\":{\"vhhplkhwwdk\":{\"type\":\"Array\",\"defaultValue\":\"datadrwynbgovazoym\"},\"yxryearmhpwbuk\":{\"type\":\"Object\",\"defaultValue\":\"dataeqmgkcswz\"}},\"annotations\":[\"datamfasgtlvhqpoilos\",\"dataaemcezevftmh\",\"datal\"],\"folder\":{\"name\":\"jy\"},\"\":{\"miwtpcflcez\":\"datatm\",\"fpf\":\"datawwvwiftdjtv\"}}")
+            .toObject(CosmosDbSqlApiCollectionDataset.class);
         Assertions.assertEquals("cqrttjf", model.description());
         Assertions.assertEquals("avdostw", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vhhplkhwwdk").type());
@@ -31,26 +29,19 @@ public final class CosmosDbSqlApiCollectionDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiCollectionDataset model =
-            new CosmosDbSqlApiCollectionDataset()
-                .withDescription("cqrttjf")
-                .withStructure("datammfjew")
+        CosmosDbSqlApiCollectionDataset model
+            = new CosmosDbSqlApiCollectionDataset().withDescription("cqrttjf").withStructure("datammfjew")
                 .withSchema("dataq")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("avdostw")
-                        .withParameters(mapOf("elvxgwzz", "datafm", "zvzrbvgwxhlx", "datawdtlcjgpvc")))
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("avdostw")
+                    .withParameters(mapOf("elvxgwzz", "datafm", "zvzrbvgwxhlx", "datawdtlcjgpvc")))
                 .withParameters(
-                    mapOf(
-                        "vhhplkhwwdk",
-                        new ParameterSpecification()
-                            .withType(ParameterType.ARRAY)
+                    mapOf("vhhplkhwwdk",
+                        new ParameterSpecification().withType(ParameterType.ARRAY)
                             .withDefaultValue("datadrwynbgovazoym"),
                         "yxryearmhpwbuk",
                         new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataeqmgkcswz")))
                 .withAnnotations(Arrays.asList("datamfasgtlvhqpoilos", "dataaemcezevftmh", "datal"))
-                .withFolder(new DatasetFolder().withName("jy"))
-                .withCollectionName("datalvsmfjihv");
+                .withFolder(new DatasetFolder().withName("jy")).withCollectionName("datalvsmfjihv");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiCollectionDataset.class);
         Assertions.assertEquals("cqrttjf", model.description());
         Assertions.assertEquals("avdostw", model.linkedServiceName().referenceName());

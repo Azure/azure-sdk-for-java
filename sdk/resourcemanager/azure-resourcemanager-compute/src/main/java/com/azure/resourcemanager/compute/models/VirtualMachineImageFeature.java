@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies additional capabilities supported by the image. */
+/**
+ * Specifies additional capabilities supported by the image.
+ */
 @Fluent
 public final class VirtualMachineImageFeature {
     /*
@@ -22,13 +24,15 @@ public final class VirtualMachineImageFeature {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of VirtualMachineImageFeature class. */
+    /**
+     * Creates an instance of VirtualMachineImageFeature class.
+     */
     public VirtualMachineImageFeature() {
     }
 
     /**
      * Get the name property: The name of the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Set the name property: The name of the feature.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineImageFeature object itself.
      */
@@ -48,7 +52,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Get the value property: The corresponding value for the feature.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Set the value property: The corresponding value for the feature.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineImageFeature object itself.
      */
@@ -68,7 +72,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

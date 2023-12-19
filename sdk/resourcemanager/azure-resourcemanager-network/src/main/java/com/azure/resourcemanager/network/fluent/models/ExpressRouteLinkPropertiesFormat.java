@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ExpressRouteLink Resource Properties
- *
- * <p>Properties specific to ExpressRouteLink resources.
+ * 
+ * Properties specific to ExpressRouteLink resources.
  */
 @Fluent
 public final class ExpressRouteLinkPropertiesFormat {
@@ -68,19 +68,21 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /*
      * Definition of ExpressRouteLink Mac Security configuration.
-     *
+     * 
      * MacSec configuration.
      */
     @JsonProperty(value = "macSecConfig")
     private ExpressRouteLinkMacSecConfig macSecConfig;
 
-    /** Creates an instance of ExpressRouteLinkPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRouteLinkPropertiesFormat class.
+     */
     public ExpressRouteLinkPropertiesFormat() {
     }
 
     /**
      * Get the routerName property: Name of Azure router associated with physical port.
-     *
+     * 
      * @return the routerName value.
      */
     public String routerName() {
@@ -89,7 +91,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the interfaceName property: Name of Azure router interface.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -98,7 +100,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the patchPanelId property: Mapping between physical port to patch panel port.
-     *
+     * 
      * @return the patchPanelId value.
      */
     public String patchPanelId() {
@@ -107,7 +109,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the rackId property: Mapping of physical patch panel to rack.
-     *
+     * 
      * @return the rackId value.
      */
     public String rackId() {
@@ -116,7 +118,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the coloLocation property: Cololocation for ExpressRoute Hybrid Direct.
-     *
+     * 
      * @return the coloLocation value.
      */
     public String coloLocation() {
@@ -125,7 +127,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the connectorType property: Physical fiber port type.
-     *
+     * 
      * @return the connectorType value.
      */
     public ExpressRouteLinkConnectorType connectorType() {
@@ -134,7 +136,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @return the adminState value.
      */
     public ExpressRouteLinkAdminState adminState() {
@@ -143,7 +145,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Set the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @param adminState the adminState value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.
      */
@@ -154,7 +156,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -163,9 +165,9 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     *
-     * <p>MacSec configuration.
-     *
+     * 
+     * MacSec configuration.
+     * 
      * @return the macSecConfig value.
      */
     public ExpressRouteLinkMacSecConfig macSecConfig() {
@@ -174,9 +176,9 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     *
-     * <p>MacSec configuration.
-     *
+     * 
+     * MacSec configuration.
+     * 
      * @param macSecConfig the macSecConfig value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.
      */
@@ -187,7 +189,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

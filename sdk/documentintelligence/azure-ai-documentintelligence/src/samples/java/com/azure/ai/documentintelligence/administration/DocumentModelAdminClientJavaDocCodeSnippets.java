@@ -3,8 +3,8 @@
 
 package com.azure.ai.documentintelligence.administration;
 
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClient;
-import com.azure.ai.documentintelligence.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClient;
+import com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.AzureBlobContentSource;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
@@ -28,18 +28,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.HashMap;
 
 /**
- * Code snippet for {@link DocumentModelAdministrationClient}
+ * Code snippet for {@link DocumentIntelligenceAdministrationClient}
  */
 public class DocumentModelAdminClientJavaDocCodeSnippets {
-    private final DocumentModelAdministrationClient documentModelAdministrationClient =
-        new DocumentModelAdministrationClientBuilder().buildClient();
+    private final DocumentIntelligenceAdministrationClient documentIntelligenceAdministrationClient =
+        new DocumentIntelligenceAdministrationClientBuilder().buildClient();
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient} initialization
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient} initialization
      */
     public void documentModelAdministrationClientInInitialization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.initialization
-        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient client = new DocumentIntelligenceAdministrationClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -51,8 +51,8 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationClientKeyCred() {
         // BEGIN: readme-sample-createDocumentModelAdministrationClient
-        DocumentModelAdministrationClient client =
-            new DocumentModelAdministrationClientBuilder()
+        DocumentIntelligenceAdministrationClient client =
+            new DocumentIntelligenceAdministrationClientBuilder()
                 .credential(new AzureKeyCredential("{key}"))
                 .endpoint("{endpoint}")
                 .buildClient();
@@ -60,16 +60,16 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildDocumentModel(BinaryData, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginBuildDocumentModel(BinaryData, RequestOptions)}
      */
     public void beginBuildModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildDocumentModel#BuildDocumentModelRequest
         String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginBuildDocumentModel(
+            = documentIntelligenceAdministrationClient.beginBuildDocumentModel(
                 new BuildDocumentModelRequest("modelID", DocumentBuildMode.TEMPLATE)
                     .setAzureBlobSource(new AzureBlobContentSource(blobContainerUrl)))
-            .getFinalResult().getResult();
+            .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
@@ -84,11 +84,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfo()}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceInfo()}
      */
     public void getResourceInfo() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfo
-        ResourceDetails resourceDetails = documentModelAdministrationClient.getResourceInfo();
+        ResourceDetails resourceDetails = documentIntelligenceAdministrationClient.getResourceInfo();
         System.out.printf("Max number of models that can be build for this account: %d%n",
             resourceDetails.getCustomDocumentModels().getLimit());
         System.out.printf("Current count of built document analysis models: %d%n",
@@ -97,7 +97,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getResourceInfoWithResponse(RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getResourceInfoWithResponse(RequestOptions)}
      */
     public void getResourceInfoWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getResourceInfoWithResponse#RequestOptions
@@ -115,36 +115,36 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#deleteModel(String)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#deleteModel(String)}
      */
     public void deleteModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModel#string
         String modelId = "{custom-model-id}";
-        documentModelAdministrationClient.deleteModel(modelId);
+        documentIntelligenceAdministrationClient.deleteModel(modelId);
         System.out.printf("Model ID: %s is deleted.%n", modelId);
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModel#string
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#deleteModelWithResponse(String, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#deleteModelWithResponse(String, RequestOptions)}
      */
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-RequestOptions
         String modelId = "{custom-model-id}";
         Response<Void> response
-            = documentModelAdministrationClient.deleteModelWithResponse(modelId, new RequestOptions());
+            = documentIntelligenceAdministrationClient.deleteModelWithResponse(modelId, new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         System.out.printf("Model ID: %s is deleted.%n", modelId);
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentModelWithResponse#string-RequestOptions
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#authorizeModelCopy(AuthorizeCopyRequest)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#authorizeModelCopy(AuthorizeCopyRequest)}
      */
     public void getCopyAuthorization() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorization#AuthorizeCopyRequest
         CopyAuthorization documentModelCopyAuthorization
-            = documentModelAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest("copyModelID"));
+            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest("copyModelID"));
         System.out.printf("Copy Authorization for model id: %s, access token: %s, expiration time: %s, "
                 + "target resource ID; %s, target resource region: %s%n",
             documentModelCopyAuthorization.getTargetModelId(),
@@ -157,7 +157,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#authorizeModelCopyWithResponse(BinaryData, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#authorizeModelCopyWithResponse(BinaryData, RequestOptions)}
      */
     public void getCopyAuthorizationWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getCopyAuthorizationWithResponse#AuthorizeCopyRequest-RequestOptions
@@ -188,7 +188,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginComposeModel(BinaryData, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginComposeModel(BinaryData, RequestOptions)}
      */
     public void beginCreateComposedModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginComposeDocumentModel#list-RequestOptions
@@ -196,7 +196,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         String modelId2 = "{custom-model-id_2}";
         final DocumentModelDetails documentModelDetails
             = documentModelAdministrationClient.beginComposeModel(new ComposeDocumentModelRequest("composedModelID", Arrays.asList(new ComponentDocumentModelDetails(modelId1), new ComponentDocumentModelDetails(modelId2))), new RequestOptions())
-            .getFinalResult().getAnalyzeResult();
+            .getFinalResult();
 
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
@@ -214,18 +214,18 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginCopyModelTo(String, CopyAuthorization)}
      */
     public void beginCopy() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginCopyDocumentModelTo#string-copyAuthorization
         String copyModelId = "copy-model";
         // Get authorization to copy the model to target resource
         CopyAuthorization documentModelCopyAuthorization
-            = documentModelAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId));
+            = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId));
         // Start copy operation from the source client
         DocumentModelDetails documentModelDetails
-            = documentModelAdministrationClient.beginCopyModelTo(copyModelId, documentModelCopyAuthorization)
-            .getFinalResult().getResult();
+            = documentIntelligenceAdministrationClient.beginCopyModelTo(copyModelId, documentModelCopyAuthorization)
+            .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),
             documentModelDetails.getCreatedDateTime());
@@ -233,11 +233,11 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listModels()}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#listModels()}
      */
     public void listModels() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels
-        documentModelAdministrationClient.listModels()
+        documentIntelligenceAdministrationClient.listModels()
             .forEach(documentModel ->
                 System.out.printf("Model ID: %s, Model description: %s, Created on: %s.%n",
                     documentModel.getModelId(),
@@ -248,7 +248,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listModels(RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#listModels(RequestOptions)}
      */
     public void listModelsWithContext() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listModels#RequestOptions
@@ -265,12 +265,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getModel(String)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getModel(String)}
      */
     public void getModel() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModel#string
         String modelId = "{custom-model-id}";
-        DocumentModelDetails documentModelDetails = documentModelAdministrationClient.getModel(modelId);
+        DocumentModelDetails documentModelDetails = documentIntelligenceAdministrationClient.getModel(modelId);
         System.out.printf("Model ID: %s%n", documentModelDetails.getModelId());
         System.out.printf("Model Description: %s%n", documentModelDetails.getDescription());
         System.out.printf("Model Created on: %s%n", documentModelDetails.getCreatedDateTime());
@@ -285,7 +285,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getModelWithResponse(String, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getModelWithResponse(String, RequestOptions)}
      */
     public void getModelWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getModelWithResponse#string-RequestOptions
@@ -310,13 +310,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getOperation(String)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getOperation(String)}
      */
     public void getOperation() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperation#string
         String operationId = "{operation-id}";
         OperationDetails operationDetails
-            = documentModelAdministrationClient.getOperation(operationId);
+            = documentIntelligenceAdministrationClient.getOperation(operationId);
         System.out.printf("Operation ID: %s%n", operationDetails.getOperationId());
         System.out.printf("Operation Status: %s%n", operationDetails.getStatus());
         System.out.printf("Model ID created with this operation: %s%n",
@@ -328,7 +328,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getOperationWithResponse(String, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getOperationWithResponse(String, RequestOptions)}
      */
     public void getOperationWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getOperationWithResponse#string-RequestOptions
@@ -350,12 +350,12 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listOperations()}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#listOperations()}
      */
     public void listOperations() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations
         PagedIterable<OperationDetails>
-            modelOperationInfo = documentModelAdministrationClient.listOperations();
+            modelOperationInfo = documentIntelligenceAdministrationClient.listOperations();
         modelOperationInfo.forEach(modelOperationSummary -> {
             System.out.printf("Operation ID: %s%n", modelOperationSummary.getOperationId());
             System.out.printf("Operation Status: %s%n", modelOperationSummary.getStatus());
@@ -368,7 +368,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listOperations(RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#listOperations(RequestOptions)}
      */
     public void listOperationsWithContext() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listOperations#RequestOptions
@@ -388,7 +388,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#beginBuildClassifier(BuildDocumentClassifierRequest)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#beginBuildClassifier(BuildDocumentClassifierRequest)}
      */
     public void beginBuildClassifier() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.beginBuildClassifier#BuildDocumentClassifierRequest
@@ -403,9 +403,9 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
             ));
 
         DocumentClassifierDetails classifierDetails
-            = documentModelAdministrationClient.beginBuildClassifier(
+            = documentIntelligenceAdministrationClient.beginBuildClassifier(
                 new BuildDocumentClassifierRequest("classifierID", documentTypes))
-            .getFinalResult().getResult();
+            .getFinalResult();
 
         System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
         System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
@@ -421,35 +421,35 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#deleteClassifier(String)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#deleteClassifier(String)}
      */
     public void deleteDocumentClassifier() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentClassifier#string
         String classifierId = "{classifierId}";
-        documentModelAdministrationClient.deleteClassifier(classifierId);
+        documentIntelligenceAdministrationClient.deleteClassifier(classifierId);
         System.out.printf("Classifier ID: %s is deleted.%n", classifierId);
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentClassifier#string
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#deleteClassifierWithResponse(String, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#deleteClassifierWithResponse(String, RequestOptions)}
      */
     public void deleteDocumentClassifierWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentClassifierWithResponse#string-Context
         String classifierId = "{classifierId}";
         Response<Void> response
-            = documentModelAdministrationClient.deleteClassifierWithResponse(classifierId, new RequestOptions());
+            = documentIntelligenceAdministrationClient.deleteClassifierWithResponse(classifierId, new RequestOptions());
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         System.out.printf("Classifier ID: %s is deleted.%n", classifierId);
         // END: com.azure.ai.documentintelligence.DocumentModelAdminClient.deleteDocumentClassifierWithResponse#string-Context
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#listClassifiers()}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#listClassifiers()}
      */
     public void listDocumentClassifiers() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.listDocumentClassifiers
-        documentModelAdministrationClient.listClassifiers()
+        documentIntelligenceAdministrationClient.listClassifiers()
             .forEach(documentModel ->
                 System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
                     documentModel.getClassifierId(),
@@ -460,13 +460,13 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getClassifier(String)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getClassifier(String)}
      */
     public void getDocumentClassifier() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifier#string
         String classifierId = "{classifierId}";
         DocumentClassifierDetails documentClassifierDetails
-            = documentModelAdministrationClient.getClassifier(classifierId);
+            = documentIntelligenceAdministrationClient.getClassifier(classifierId);
         System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
         System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
         System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedDateTime());
@@ -485,7 +485,7 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link DocumentModelAdministrationClient#getClassifierWithResponse(String, RequestOptions)}
+     * Code snippet for {@link DocumentIntelligenceAdministrationClient#getClassifierWithResponse(String, RequestOptions)}
      */
     public void getDocumentClassifierWithResponse() {
         // BEGIN: com.azure.ai.documentintelligence.DocumentModelAdminClient.getDocumentClassifierWithResponse#string-RequestOptions

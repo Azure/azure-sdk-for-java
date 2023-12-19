@@ -5,45 +5,51 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 
-/** The WholeMetricConfiguration model. */
+/**
+ * The WholeMetricConfiguration model.
+ */
 @Fluent
-public final class WholeMetricConfiguration {
+public final class WholeMetricConfiguration implements JsonSerializable<WholeMetricConfiguration> {
     /*
      * condition operator
-     *
+     * 
      * should be specified when combining multiple detection conditions
      */
-    @JsonProperty(value = "conditionOperator")
     private AnomalyDetectionConfigurationLogicType conditionOperator;
 
     /*
      * The smartDetectionCondition property.
      */
-    @JsonProperty(value = "smartDetectionCondition")
     private SmartDetectionCondition smartDetectionCondition;
 
     /*
      * The hardThresholdCondition property.
      */
-    @JsonProperty(value = "hardThresholdCondition")
     private HardThresholdCondition hardThresholdCondition;
 
     /*
      * The changeThresholdCondition property.
      */
-    @JsonProperty(value = "changeThresholdCondition")
     private ChangeThresholdCondition changeThresholdCondition;
 
-    /** Creates an instance of WholeMetricConfiguration class. */
-    public WholeMetricConfiguration() {}
+    /**
+     * Creates an instance of WholeMetricConfiguration class.
+     */
+    public WholeMetricConfiguration() {
+    }
 
     /**
      * Get the conditionOperator property: condition operator
-     *
-     * <p>should be specified when combining multiple detection conditions.
-     *
+     * 
+     * should be specified when combining multiple detection conditions.
+     * 
      * @return the conditionOperator value.
      */
     public AnomalyDetectionConfigurationLogicType getConditionOperator() {
@@ -52,9 +58,9 @@ public final class WholeMetricConfiguration {
 
     /**
      * Set the conditionOperator property: condition operator
-     *
-     * <p>should be specified when combining multiple detection conditions.
-     *
+     * 
+     * should be specified when combining multiple detection conditions.
+     * 
      * @param conditionOperator the conditionOperator value to set.
      * @return the WholeMetricConfiguration object itself.
      */
@@ -65,7 +71,7 @@ public final class WholeMetricConfiguration {
 
     /**
      * Get the smartDetectionCondition property: The smartDetectionCondition property.
-     *
+     * 
      * @return the smartDetectionCondition value.
      */
     public SmartDetectionCondition getSmartDetectionCondition() {
@@ -74,7 +80,7 @@ public final class WholeMetricConfiguration {
 
     /**
      * Set the smartDetectionCondition property: The smartDetectionCondition property.
-     *
+     * 
      * @param smartDetectionCondition the smartDetectionCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
@@ -85,7 +91,7 @@ public final class WholeMetricConfiguration {
 
     /**
      * Get the hardThresholdCondition property: The hardThresholdCondition property.
-     *
+     * 
      * @return the hardThresholdCondition value.
      */
     public HardThresholdCondition getHardThresholdCondition() {
@@ -94,7 +100,7 @@ public final class WholeMetricConfiguration {
 
     /**
      * Set the hardThresholdCondition property: The hardThresholdCondition property.
-     *
+     * 
      * @param hardThresholdCondition the hardThresholdCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
@@ -105,7 +111,7 @@ public final class WholeMetricConfiguration {
 
     /**
      * Get the changeThresholdCondition property: The changeThresholdCondition property.
-     *
+     * 
      * @return the changeThresholdCondition value.
      */
     public ChangeThresholdCondition getChangeThresholdCondition() {
@@ -114,12 +120,58 @@ public final class WholeMetricConfiguration {
 
     /**
      * Set the changeThresholdCondition property: The changeThresholdCondition property.
-     *
+     * 
      * @param changeThresholdCondition the changeThresholdCondition value to set.
      * @return the WholeMetricConfiguration object itself.
      */
     public WholeMetricConfiguration setChangeThresholdCondition(ChangeThresholdCondition changeThresholdCondition) {
         this.changeThresholdCondition = changeThresholdCondition;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("conditionOperator", Objects.toString(this.conditionOperator, null));
+        jsonWriter.writeJsonField("smartDetectionCondition", this.smartDetectionCondition);
+        jsonWriter.writeJsonField("hardThresholdCondition", this.hardThresholdCondition);
+        jsonWriter.writeJsonField("changeThresholdCondition", this.changeThresholdCondition);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WholeMetricConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WholeMetricConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WholeMetricConfiguration.
+     */
+    public static WholeMetricConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WholeMetricConfiguration deserializedWholeMetricConfiguration = new WholeMetricConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("conditionOperator".equals(fieldName)) {
+                    deserializedWholeMetricConfiguration.conditionOperator
+                        = AnomalyDetectionConfigurationLogicType.fromString(reader.getString());
+                } else if ("smartDetectionCondition".equals(fieldName)) {
+                    deserializedWholeMetricConfiguration.smartDetectionCondition
+                        = SmartDetectionCondition.fromJson(reader);
+                } else if ("hardThresholdCondition".equals(fieldName)) {
+                    deserializedWholeMetricConfiguration.hardThresholdCondition
+                        = HardThresholdCondition.fromJson(reader);
+                } else if ("changeThresholdCondition".equals(fieldName)) {
+                    deserializedWholeMetricConfiguration.changeThresholdCondition
+                        = ChangeThresholdCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWholeMetricConfiguration;
+        });
     }
 }

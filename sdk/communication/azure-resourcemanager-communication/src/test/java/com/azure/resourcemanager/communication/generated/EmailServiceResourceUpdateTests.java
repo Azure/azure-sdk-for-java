@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailServiceResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailServiceResourceUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"coofsxlzev\":\"m\",\"abcypmivk\":\"bmqj\"}}")
+        EmailServiceResourceUpdate model
+            = BinaryData.fromString("{\"tags\":{\"coofsxlzev\":\"m\",\"abcypmivk\":\"bmqj\"}}")
                 .toObject(EmailServiceResourceUpdate.class);
         Assertions.assertEquals("m", model.tags().get("coofsxlzev"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailServiceResourceUpdate model =
-            new EmailServiceResourceUpdate().withTags(mapOf("coofsxlzev", "m", "abcypmivk", "bmqj"));
+        EmailServiceResourceUpdate model
+            = new EmailServiceResourceUpdate().withTags(mapOf("coofsxlzev", "m", "abcypmivk", "bmqj"));
         model = BinaryData.fromObject(model).toObject(EmailServiceResourceUpdate.class);
         Assertions.assertEquals("m", model.tags().get("coofsxlzev"));
     }

@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleCounterResetInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuleCounterResetInner model =
-            BinaryData
-                .fromString(
-                    "{\"priority\":\"ubcgjbirxb\",\"ruleStackName\":\"bsrfbj\",\"ruleListName\":\"twss\",\"firewallName\":\"ftpvjzbexil\",\"ruleName\":\"nfqqnvwp\"}")
-                .toObject(RuleCounterResetInner.class);
-        Assertions.assertEquals("bsrfbj", model.ruleStackName());
-        Assertions.assertEquals("twss", model.ruleListName());
-        Assertions.assertEquals("ftpvjzbexil", model.firewallName());
-        Assertions.assertEquals("nfqqnvwp", model.ruleName());
+        RuleCounterResetInner model = BinaryData.fromString(
+            "{\"priority\":\"c\",\"ruleStackName\":\"fwdsj\",\"ruleListName\":\"aljutiiswac\",\"firewallName\":\"gdkz\",\"ruleName\":\"wkfvhqcrailvp\"}")
+            .toObject(RuleCounterResetInner.class);
+        Assertions.assertEquals("fwdsj", model.ruleStackName());
+        Assertions.assertEquals("aljutiiswac", model.ruleListName());
+        Assertions.assertEquals("gdkz", model.firewallName());
+        Assertions.assertEquals("wkfvhqcrailvp", model.ruleName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleCounterResetInner model =
-            new RuleCounterResetInner()
-                .withRuleStackName("bsrfbj")
-                .withRuleListName("twss")
-                .withFirewallName("ftpvjzbexil")
-                .withRuleName("nfqqnvwp");
+        RuleCounterResetInner model = new RuleCounterResetInner().withRuleStackName("fwdsj")
+            .withRuleListName("aljutiiswac").withFirewallName("gdkz").withRuleName("wkfvhqcrailvp");
         model = BinaryData.fromObject(model).toObject(RuleCounterResetInner.class);
-        Assertions.assertEquals("bsrfbj", model.ruleStackName());
-        Assertions.assertEquals("twss", model.ruleListName());
-        Assertions.assertEquals("ftpvjzbexil", model.firewallName());
-        Assertions.assertEquals("nfqqnvwp", model.ruleName());
+        Assertions.assertEquals("fwdsj", model.ruleStackName());
+        Assertions.assertEquals("aljutiiswac", model.ruleListName());
+        Assertions.assertEquals("gdkz", model.firewallName());
+        Assertions.assertEquals("wkfvhqcrailvp", model.ruleName());
     }
 }
