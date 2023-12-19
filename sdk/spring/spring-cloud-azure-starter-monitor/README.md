@@ -96,7 +96,7 @@ You have to replace `{image-name}` by your docker image name.
 
 You may notice the following message during the application start-up:
 ```
-WARN  c.a.m.a.s.Ope
+WARN  c.a.m.a.s.OpenTelemetryVersionCheckRunner - The OpenTelemetry version is not compatible with the spring-cloud-azure-starter-monitor dependency. The OpenTelemetry version should be
 ```
 
 In this case, you have to import the OpenTelemetry Bills of Materials
