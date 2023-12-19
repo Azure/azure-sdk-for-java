@@ -4,10 +4,10 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.ThroughputControlGroupConfig;
-import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
-import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.models.FeedRange;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -17,6 +17,7 @@ public class FeedRangeThroughputControlConfigManager {
 
     private final ThroughputControlGroupConfig throughputControlGroupConfig;
     private final ChangeFeedContextClient documentClient;
+    private final AtomicBoolean throughputControlGroupEnabled;
 
     public FeedRangeThroughputControlConfigManager(
         ThroughputControlGroupConfig throughputControlGroupConfig,
@@ -27,6 +28,7 @@ public class FeedRangeThroughputControlConfigManager {
 
         this.throughputControlGroupConfig = throughputControlGroupConfig;
         this.documentClient = documentClient;
+        this.throughputControlGroupEnabled = new AtomicBoolean(false);
     }
 
     public ThroughputControlGroupConfig getThroughputControlConfigForFeedRange(FeedRange feedRange) {
@@ -34,30 +36,14 @@ public class FeedRangeThroughputControlConfigManager {
 
         // for pkRange leases, it has only been used to support for split
         // the lease feed range and partition key range is always a 1:1 mapping
-        // based on the thought that usually each CFP instance will only process a unique subset of partition key ranges
-        // we create a local throughput control group for each partition key range
-        return this.getThroughputControlGroupConfigInternal(feedRange);
-    }
+        // throughput control internally will divide the target RU across all pk ranges
+        // so all pk ranges can use the same local throughput control group
+        // Note: if global throughput control be added in future, then we will need to create one group per pkRange
 
-    private ThroughputControlGroupConfig getThroughputControlGroupConfigInternal(FeedRange feedRange) {
-        ThroughputControlGroupConfigBuilder throughputControlGroupConfigForFeedRangeBuilder =
-            new ThroughputControlGroupConfigBuilder()
-                .groupName(this.throughputControlGroupConfig.getGroupName() + "-" + feedRange.toString())
-                .continueOnInitError(this.throughputControlGroupConfig.continueOnInitError());
-
-        if (this.throughputControlGroupConfig.getTargetThroughput() != null) {
-            throughputControlGroupConfigForFeedRangeBuilder.targetThroughput(this.throughputControlGroupConfig.getTargetThroughput());
-        }
-        if (this.throughputControlGroupConfig.getTargetThroughputThreshold() != null) {
-            throughputControlGroupConfigForFeedRangeBuilder.targetThroughputThreshold(this.throughputControlGroupConfig.getTargetThroughputThreshold());
-        }
-        if (this.throughputControlGroupConfig.getPriorityLevel() != null) {
-            throughputControlGroupConfigForFeedRangeBuilder.priorityLevel(this.throughputControlGroupConfig.getPriorityLevel());
+        if (this.throughputControlGroupEnabled.compareAndSet(false, true)) {
+            this.documentClient.getContainerClient().enableLocalThroughputControlGroup(this.throughputControlGroupConfig);
         }
 
-        ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange = throughputControlGroupConfigForFeedRangeBuilder.build();
-        this.documentClient.getContainerClient().enableLocalThroughputControlGroup(throughputControlGroupConfigForFeedRange);
-
-        return throughputControlGroupConfigForFeedRange;
+        return this.throughputControlGroupConfig;
     }
 }

@@ -67,6 +67,7 @@ public class FeedRangeThroughputControlConfigManager {
         // for epk leases, it is used to support both split and merge
         // when merge happens, the current lease will be reused, so it can happen for the same partition key range, there are multiple leases map to it
         // for cases like this, we are going to find all leases mapped to the same partition key range, and then equally divide the RU allocation among the instances
+        // For this purpose, we are going to create a throughputControlGroup for each lease feed range
         return this.documentClient.getOverlappingRanges(feedRange.getRange(), false)
             .flatMap(partitionKeyRanges -> {
                 if (partitionKeyRanges.isEmpty()) {

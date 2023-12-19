@@ -43,8 +43,7 @@ public class FeedRangeThroughputControlConfigManagerTests {
             throughputControlConfigManager.getThroughputControlConfigForFeedRange(feedRange);
 
         assertThat(pkRangeThroughputControlConfig).isNotNull();
-        String expectedGroupName = throughputControlGroupConfig.getGroupName() + "-" + feedRange;
-        assertThat(pkRangeThroughputControlConfig.getGroupName()).isEqualTo(expectedGroupName);
+        assertThat(pkRangeThroughputControlConfig.getGroupName()).isEqualTo(throughputControlGroupConfig.getGroupName());
         assertThat(pkRangeThroughputControlConfig.getTargetThroughput()).isEqualTo(throughputControlGroupConfig.getTargetThroughput());
         assertThat(pkRangeThroughputControlConfig.getTargetThroughputThreshold()).isEqualTo(throughputControlGroupConfig.getTargetThroughputThreshold());
         assertThat(pkRangeThroughputControlConfig.getPriorityLevel()).isEqualTo(throughputControlGroupConfig.getPriorityLevel());
