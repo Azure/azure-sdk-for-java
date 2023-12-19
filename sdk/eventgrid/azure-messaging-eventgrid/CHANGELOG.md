@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Enabled stream-style serialization.
+- Updated to latest autorest.java
 
 ## 4.20.0 (2023-11-13)
 
