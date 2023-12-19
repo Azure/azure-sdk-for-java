@@ -73,7 +73,7 @@ public class CosmosItemResponse<T> {
      * @return the resource
      */
     @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of InternalObjectNode.
-    public byte[] getItemAsByteArray() {
+    private byte[] getItemAsByteArray() {
         if (item != null && this.itemClassType == Utils.byteArrayClass) {
             return (byte[])item;
         }
