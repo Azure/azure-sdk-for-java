@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbCollectionPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB MongoDB collection event. */
+/**
+ * An Azure Cosmos DB MongoDB collection event.
+ */
 @Fluent
 public final class RestorableMongodbCollectionGetResultInner {
     /*
@@ -35,13 +37,15 @@ public final class RestorableMongodbCollectionGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableMongodbCollectionGetResultInner class. */
+    /**
+     * Creates an instance of RestorableMongodbCollectionGetResultInner class.
+     */
     public RestorableMongodbCollectionGetResultInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a MongoDB collection event.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableMongodbCollectionProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB MongoDB collection event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableMongodbCollectionPropertiesResource resource() {
@@ -86,12 +90,12 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB MongoDB collection event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableMongodbCollectionGetResultInner object itself.
      */
-    public RestorableMongodbCollectionGetResultInner withResource(
-        RestorableMongodbCollectionPropertiesResource resource) {
+    public RestorableMongodbCollectionGetResultInner
+        withResource(RestorableMongodbCollectionPropertiesResource resource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RestorableMongodbCollectionProperties();
         }
@@ -101,7 +105,7 @@ public final class RestorableMongodbCollectionGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

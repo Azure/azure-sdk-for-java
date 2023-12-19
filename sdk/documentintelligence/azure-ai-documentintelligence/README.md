@@ -49,6 +49,8 @@ This table shows the relationship between SDK versions and supported API version
 | 2023-10-31-preview | DocumentIntelligenceClient and DocumentIntelligenceAsyncClient
 | 2023-07-31         | DocumentAnalysisClient and DocumentModelAdministrationClient in `azure-ai-formrecognizer` SDK
 
+Please see the [Migration Guide][migration_guide] for more information about migrating from `azure-ai-formrecognizer` to `azure-ai-documentintelligence`.
+
 ### Authentication
 
 In order to interact with the Azure Document Intelligence Service you'll need to create an instance of client class,
@@ -467,7 +469,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildcustommodel
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples#readme
-[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/migration-guide.md
+[migration_guide]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence/MIGRATION_GUIDE.md
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/CHANGELOG.md
 
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/

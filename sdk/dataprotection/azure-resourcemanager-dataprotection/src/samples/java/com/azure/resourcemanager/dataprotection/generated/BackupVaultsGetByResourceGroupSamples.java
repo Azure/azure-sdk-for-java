@@ -4,33 +4,37 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupVaults GetByResourceGroup. */
+/**
+ * Samples for BackupVaults GetByResourceGroup.
+ */
 public final class BackupVaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVault.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * GetBackupVault.json
      */
     /**
      * Sample code: Get BackupVault.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupVault(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.backupVaults().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/VaultCRUD/GetBackupVaultWithMSI.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/VaultCRUD/
+     * GetBackupVaultWithMSI.json
      */
     /**
      * Sample code: Get BackupVault With MSI.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupVaultWithMSI(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaults()
-            .getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+        manager.backupVaults().getByResourceGroupWithResponse("SampleResourceGroup", "swaggerExample",
+            com.azure.core.util.Context.NONE);
     }
 }

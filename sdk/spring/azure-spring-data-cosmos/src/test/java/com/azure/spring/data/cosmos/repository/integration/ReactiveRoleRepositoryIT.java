@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.ReactiveRoleRepository;
@@ -25,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -104,6 +101,34 @@ public class ReactiveRoleRepositoryIT {
         StepVerifier.create(roleDescFlux)
             .expectNext(TEST_ROLE_3)
             .expectNext(TEST_ROLE_1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueryWithNewLinesInQueryString() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        final Flux<Role> roleAscFlux = repository.annotatedFindRoleByNameWithSort(TestConstants.ROLE_NAME, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueryWithNewLinesInQueryString2() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        final Flux<Role> roleAscFlux = repository.annotatedFindRoleByNameWithSort2(TestConstants.ROLE_NAME, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
             .verifyComplete();
     }
 

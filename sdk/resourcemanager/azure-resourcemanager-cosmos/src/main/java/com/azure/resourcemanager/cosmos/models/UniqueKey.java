@@ -19,13 +19,15 @@ public final class UniqueKey {
     @JsonProperty(value = "paths")
     private List<String> paths;
 
-    /** Creates an instance of UniqueKey class. */
+    /**
+     * Creates an instance of UniqueKey class.
+     */
     public UniqueKey() {
     }
 
     /**
      * Get the paths property: List of paths must be unique for each document in the Azure Cosmos DB service.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -34,7 +36,7 @@ public final class UniqueKey {
 
     /**
      * Set the paths property: List of paths must be unique for each document in the Azure Cosmos DB service.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the UniqueKey object itself.
      */
@@ -45,7 +47,7 @@ public final class UniqueKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

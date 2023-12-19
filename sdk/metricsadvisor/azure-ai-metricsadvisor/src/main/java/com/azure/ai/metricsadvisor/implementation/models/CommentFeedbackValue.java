@@ -5,23 +5,31 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The CommentFeedbackValue model. */
+/**
+ * The CommentFeedbackValue model.
+ */
 @Fluent
-public final class CommentFeedbackValue {
+public final class CommentFeedbackValue implements JsonSerializable<CommentFeedbackValue> {
     /*
      * the comment string
      */
-    @JsonProperty(value = "commentValue", required = true)
     private String commentValue;
 
-    /** Creates an instance of CommentFeedbackValue class. */
-    public CommentFeedbackValue() {}
+    /**
+     * Creates an instance of CommentFeedbackValue class.
+     */
+    public CommentFeedbackValue() {
+    }
 
     /**
      * Get the commentValue property: the comment string.
-     *
+     * 
      * @return the commentValue value.
      */
     public String getCommentValue() {
@@ -30,12 +38,46 @@ public final class CommentFeedbackValue {
 
     /**
      * Set the commentValue property: the comment string.
-     *
+     * 
      * @param commentValue the commentValue value to set.
      * @return the CommentFeedbackValue object itself.
      */
     public CommentFeedbackValue setCommentValue(String commentValue) {
         this.commentValue = commentValue;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commentValue", this.commentValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommentFeedbackValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommentFeedbackValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommentFeedbackValue.
+     */
+    public static CommentFeedbackValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommentFeedbackValue deserializedCommentFeedbackValue = new CommentFeedbackValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commentValue".equals(fieldName)) {
+                    deserializedCommentFeedbackValue.commentValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommentFeedbackValue;
+        });
     }
 }
