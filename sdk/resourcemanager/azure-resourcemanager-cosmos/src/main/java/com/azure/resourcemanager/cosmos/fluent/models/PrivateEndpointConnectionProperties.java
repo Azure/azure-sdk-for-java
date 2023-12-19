@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
 import com.azure.resourcemanager.cosmos.models.PrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a private endpoint connection. */
+/**
+ * Properties of a private endpoint connection.
+ */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
     /*
@@ -36,13 +38,15 @@ public final class PrivateEndpointConnectionProperties {
     @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
-    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionProperties class.
+     */
     public PrivateEndpointConnectionProperties() {
     }
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
@@ -51,7 +55,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Get the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
@@ -71,7 +75,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Get the groupId property: Group id of the private endpoint.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -92,7 +96,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the groupId property: Group id of the private endpoint.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the private endpoint.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -112,7 +116,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the private endpoint.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class PrivateEndpointConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

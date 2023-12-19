@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CustomIpPrefixesClient. */
-public interface CustomIpPrefixesClient
-    extends InnerSupportsGet<CustomIpPrefixInner>,
-        InnerSupportsListing<CustomIpPrefixInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in CustomIpPrefixesClient.
+ */
+public interface CustomIpPrefixesClient extends InnerSupportsGet<CustomIpPrefixInner>,
+    InnerSupportsListing<CustomIpPrefixInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +42,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +55,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,7 +68,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -78,12 +78,12 @@ public interface CustomIpPrefixesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String customIpPrefixName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String customIpPrefixName,
+        Context context);
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +96,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -108,7 +108,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Deletes the specified custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the CustomIpPrefix.
      * @param context The context to associate with this operation.
@@ -121,7 +121,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param expand Expands referenced resources.
@@ -129,15 +129,15 @@ public interface CustomIpPrefixesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified custom IP prefix in a specified resource group along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomIpPrefixInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, String expand);
+    Mono<Response<CustomIpPrefixInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String customIpPrefixName, String expand);
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +150,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param expand Expands referenced resources.
@@ -161,12 +161,12 @@ public interface CustomIpPrefixesClient
      * @return the specified custom IP prefix in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomIpPrefixInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String customIpPrefixName, String expand, Context context);
+    Response<CustomIpPrefixInner> getByResourceGroupWithResponse(String resourceGroupName, String customIpPrefixName,
+        String expand, Context context);
 
     /**
      * Gets the specified custom IP prefix in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +179,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -189,12 +189,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String customIpPrefixName, CustomIpPrefixInner parameters);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -204,12 +204,12 @@ public interface CustomIpPrefixesClient
      * @return the {@link PollerFlux} for polling of custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
+    PollerFlux<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String customIpPrefixName, CustomIpPrefixInner parameters);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -219,12 +219,12 @@ public interface CustomIpPrefixesClient
      * @return the {@link SyncPoller} for polling of custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
+    SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(String resourceGroupName,
+        String customIpPrefixName, CustomIpPrefixInner parameters);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -235,12 +235,12 @@ public interface CustomIpPrefixesClient
      * @return the {@link SyncPoller} for polling of custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context);
+    SyncPoller<PollResult<CustomIpPrefixInner>, CustomIpPrefixInner> beginCreateOrUpdate(String resourceGroupName,
+        String customIpPrefixName, CustomIpPrefixInner parameters, Context context);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -250,12 +250,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomIpPrefixInner> createOrUpdateAsync(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
+    Mono<CustomIpPrefixInner> createOrUpdateAsync(String resourceGroupName, String customIpPrefixName,
+        CustomIpPrefixInner parameters);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -265,12 +265,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomIpPrefixInner createOrUpdate(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters);
+    CustomIpPrefixInner createOrUpdate(String resourceGroupName, String customIpPrefixName,
+        CustomIpPrefixInner parameters);
 
     /**
      * Creates or updates a custom IP prefix.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to the create or update custom IP prefix operation.
@@ -281,12 +281,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomIpPrefixInner createOrUpdate(
-        String resourceGroupName, String customIpPrefixName, CustomIpPrefixInner parameters, Context context);
+    CustomIpPrefixInner createOrUpdate(String resourceGroupName, String customIpPrefixName,
+        CustomIpPrefixInner parameters, Context context);
 
     /**
      * Updates custom IP prefix tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -296,12 +296,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String customIpPrefixName, TagsObject parameters);
+    Mono<Response<CustomIpPrefixInner>> updateTagsWithResponseAsync(String resourceGroupName, String customIpPrefixName,
+        TagsObject parameters);
 
     /**
      * Updates custom IP prefix tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -311,12 +311,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CustomIpPrefixInner> updateTagsAsync(
-        String resourceGroupName, String customIpPrefixName, TagsObject parameters);
+    Mono<CustomIpPrefixInner> updateTagsAsync(String resourceGroupName, String customIpPrefixName,
+        TagsObject parameters);
 
     /**
      * Updates custom IP prefix tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -327,12 +327,12 @@ public interface CustomIpPrefixesClient
      * @return custom IP prefix resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomIpPrefixInner> updateTagsWithResponse(
-        String resourceGroupName, String customIpPrefixName, TagsObject parameters, Context context);
+    Response<CustomIpPrefixInner> updateTagsWithResponse(String resourceGroupName, String customIpPrefixName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates custom IP prefix tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param customIpPrefixName The name of the custom IP prefix.
      * @param parameters Parameters supplied to update custom IP prefix tags.
@@ -346,7 +346,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedFlux}.
@@ -356,7 +356,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the custom IP prefixes in a subscription as paginated response with {@link PagedIterable}.
@@ -366,7 +366,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all the custom IP prefixes in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -378,7 +378,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -390,7 +390,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -402,7 +402,7 @@ public interface CustomIpPrefixesClient
 
     /**
      * Gets all custom IP prefixes in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

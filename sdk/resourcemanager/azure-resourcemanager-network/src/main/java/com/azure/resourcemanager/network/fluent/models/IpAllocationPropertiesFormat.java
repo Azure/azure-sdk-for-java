@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of the IpAllocation. */
+/**
+ * Properties of the IpAllocation.
+ */
 @Fluent
 public final class IpAllocationPropertiesFormat {
     /*
@@ -64,13 +66,15 @@ public final class IpAllocationPropertiesFormat {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> allocationTags;
 
-    /** Creates an instance of IpAllocationPropertiesFormat class. */
+    /**
+     * Creates an instance of IpAllocationPropertiesFormat class.
+     */
     public IpAllocationPropertiesFormat() {
     }
 
     /**
      * Get the subnet property: The Subnet that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -79,7 +83,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the virtualNetwork property: The VirtualNetwork that using the prefix of this IpAllocation resource.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -88,7 +92,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the type property: The type for the IpAllocation.
-     *
+     * 
      * @return the type value.
      */
     public IpAllocationType type() {
@@ -97,7 +101,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the type property: The type for the IpAllocation.
-     *
+     * 
      * @param type the type value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -108,7 +112,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -117,7 +121,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the prefix property: The address prefix for the IpAllocation.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -128,7 +132,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -137,7 +141,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the prefixLength property: The address prefix length for the IpAllocation.
-     *
+     * 
      * @param prefixLength the prefixLength value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -148,7 +152,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @return the prefixType value.
      */
     public IpVersion prefixType() {
@@ -157,7 +161,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the prefixType property: The address prefix Type for the IpAllocation.
-     *
+     * 
      * @param prefixType the prefixType value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -168,7 +172,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @return the ipamAllocationId value.
      */
     public String ipamAllocationId() {
@@ -177,7 +181,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the ipamAllocationId property: The IPAM allocation ID.
-     *
+     * 
      * @param ipamAllocationId the ipamAllocationId value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -188,7 +192,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Get the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @return the allocationTags value.
      */
     public Map<String, String> allocationTags() {
@@ -197,7 +201,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Set the allocationTags property: IpAllocation tags.
-     *
+     * 
      * @param allocationTags the allocationTags value to set.
      * @return the IpAllocationPropertiesFormat object itself.
      */
@@ -208,7 +212,7 @@ public final class IpAllocationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

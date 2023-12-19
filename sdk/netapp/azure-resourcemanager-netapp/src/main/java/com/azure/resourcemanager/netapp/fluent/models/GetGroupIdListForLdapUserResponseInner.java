@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Group Id list for Ldap user. */
+/**
+ * Group Id list for Ldap user.
+ */
 @Fluent
 public final class GetGroupIdListForLdapUserResponseInner {
     /*
@@ -17,13 +19,15 @@ public final class GetGroupIdListForLdapUserResponseInner {
     @JsonProperty(value = "groupIdsForLdapUser")
     private List<String> groupIdsForLdapUser;
 
-    /** Creates an instance of GetGroupIdListForLdapUserResponseInner class. */
+    /**
+     * Creates an instance of GetGroupIdListForLdapUserResponseInner class.
+     */
     public GetGroupIdListForLdapUserResponseInner() {
     }
 
     /**
      * Get the groupIdsForLdapUser property: Group Id list.
-     *
+     * 
      * @return the groupIdsForLdapUser value.
      */
     public List<String> groupIdsForLdapUser() {
@@ -32,7 +36,7 @@ public final class GetGroupIdListForLdapUserResponseInner {
 
     /**
      * Set the groupIdsForLdapUser property: Group Id list.
-     *
+     * 
      * @param groupIdsForLdapUser the groupIdsForLdapUser value to set.
      * @return the GetGroupIdListForLdapUserResponseInner object itself.
      */
@@ -43,7 +47,7 @@ public final class GetGroupIdListForLdapUserResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

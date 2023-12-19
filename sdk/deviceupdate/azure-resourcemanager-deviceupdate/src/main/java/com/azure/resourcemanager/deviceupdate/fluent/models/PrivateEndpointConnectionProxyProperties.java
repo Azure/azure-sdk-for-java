@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointConnectionProxyProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Private endpoint connection proxy object property bag. */
+/**
+ * Private endpoint connection proxy object property bag.
+ */
 @Immutable
 public final class PrivateEndpointConnectionProxyProperties {
     /*
@@ -18,8 +20,14 @@ public final class PrivateEndpointConnectionProxyProperties {
     private PrivateEndpointConnectionProxyProvisioningState provisioningState;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionProxyProperties class.
+     */
+    public PrivateEndpointConnectionProxyProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProxyProvisioningState provisioningState() {
@@ -28,7 +36,7 @@ public final class PrivateEndpointConnectionProxyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** User Session clause variable. */
+/**
+ * User Session clause variable.
+ */
 public final class ApplicationGatewayFirewallUserSessionVariable
     extends ExpandableStringEnum<ApplicationGatewayFirewallUserSessionVariable> {
-    /** Static value ClientAddr for ApplicationGatewayFirewallUserSessionVariable. */
+    /**
+     * Static value ClientAddr for ApplicationGatewayFirewallUserSessionVariable.
+     */
     public static final ApplicationGatewayFirewallUserSessionVariable CLIENT_ADDR = fromString("ClientAddr");
 
-    /** Static value GeoLocation for ApplicationGatewayFirewallUserSessionVariable. */
+    /**
+     * Static value GeoLocation for ApplicationGatewayFirewallUserSessionVariable.
+     */
     public static final ApplicationGatewayFirewallUserSessionVariable GEO_LOCATION = fromString("GeoLocation");
 
-    /** Static value None for ApplicationGatewayFirewallUserSessionVariable. */
+    /**
+     * Static value None for ApplicationGatewayFirewallUserSessionVariable.
+     */
     public static final ApplicationGatewayFirewallUserSessionVariable NONE = fromString("None");
 
     /**
      * Creates a new instance of ApplicationGatewayFirewallUserSessionVariable value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class ApplicationGatewayFirewallUserSessionVariable
 
     /**
      * Creates or finds a ApplicationGatewayFirewallUserSessionVariable from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayFirewallUserSessionVariable.
      */
@@ -42,7 +50,7 @@ public final class ApplicationGatewayFirewallUserSessionVariable
 
     /**
      * Gets known ApplicationGatewayFirewallUserSessionVariable values.
-     *
+     * 
      * @return known ApplicationGatewayFirewallUserSessionVariable values.
      */
     public static Collection<ApplicationGatewayFirewallUserSessionVariable> values() {

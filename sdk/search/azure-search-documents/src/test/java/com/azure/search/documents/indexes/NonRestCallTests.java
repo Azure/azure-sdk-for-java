@@ -4,6 +4,8 @@
 package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.reactivestreams.Publisher;
@@ -14,6 +16,7 @@ import java.util.stream.Stream;
 /**
  * Tests non-REST call cases.
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class NonRestCallTests {
     @ParameterizedTest
     @MethodSource("apiCallReturnsErrorSupplier")

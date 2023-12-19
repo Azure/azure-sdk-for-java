@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Jobs. */
+/**
+ * Resource collection API of Jobs.
+ */
 public interface Jobs {
     /**
      * Returns list of jobs belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Jobs {
 
     /**
      * Returns list of jobs belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Jobs {
 
     /**
      * Gets a job with id in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
@@ -47,12 +49,12 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job with id in a backup vault along with {@link Response}.
      */
-    Response<AzureBackupJobResource> getWithResponse(
-        String resourceGroupName, String vaultName, String jobId, Context context);
+    Response<AzureBackupJobResource> getWithResponse(String resourceGroupName, String vaultName, String jobId,
+        Context context);
 
     /**
      * Gets a job with id in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param jobId The Job ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).

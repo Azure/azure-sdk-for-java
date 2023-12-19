@@ -27,7 +27,9 @@ public final class UserArtifactSettings {
     @JsonProperty(value = "configFileName")
     private String configFileName;
 
-    /** Creates an instance of UserArtifactSettings class. */
+    /**
+     * Creates an instance of UserArtifactSettings class.
+     */
     public UserArtifactSettings() {
     }
 
@@ -35,7 +37,7 @@ public final class UserArtifactSettings {
      * Get the packageFileName property: Optional. The name to assign the downloaded package file on the VM. This is
      * limited to 4096 characters. If not specified, the package file will be named the same as the Gallery Application
      * name.
-     *
+     * 
      * @return the packageFileName value.
      */
     public String packageFileName() {
@@ -46,7 +48,7 @@ public final class UserArtifactSettings {
      * Set the packageFileName property: Optional. The name to assign the downloaded package file on the VM. This is
      * limited to 4096 characters. If not specified, the package file will be named the same as the Gallery Application
      * name.
-     *
+     * 
      * @param packageFileName the packageFileName value to set.
      * @return the UserArtifactSettings object itself.
      */
@@ -57,9 +59,9 @@ public final class UserArtifactSettings {
 
     /**
      * Get the configFileName property: Optional. The name to assign the downloaded config file on the VM. This is
-     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name appended
-     * with "_config".
-     *
+     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name
+     * appended with "_config".
+     * 
      * @return the configFileName value.
      */
     public String configFileName() {
@@ -68,9 +70,9 @@ public final class UserArtifactSettings {
 
     /**
      * Set the configFileName property: Optional. The name to assign the downloaded config file on the VM. This is
-     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name appended
-     * with "_config".
-     *
+     * limited to 4096 characters. If not specified, the config file will be named the Gallery Application name
+     * appended with "_config".
+     * 
      * @param configFileName the configFileName value to set.
      * @return the UserArtifactSettings object itself.
      */
@@ -81,7 +83,7 @@ public final class UserArtifactSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

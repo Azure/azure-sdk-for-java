@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The hub routing preference gateway types. */
+/**
+ * The hub routing preference gateway types.
+ */
 public final class HubRoutingPreference extends ExpandableStringEnum<HubRoutingPreference> {
-    /** Static value ExpressRoute for HubRoutingPreference. */
+    /**
+     * Static value ExpressRoute for HubRoutingPreference.
+     */
     public static final HubRoutingPreference EXPRESS_ROUTE = fromString("ExpressRoute");
 
-    /** Static value VpnGateway for HubRoutingPreference. */
+    /**
+     * Static value VpnGateway for HubRoutingPreference.
+     */
     public static final HubRoutingPreference VPN_GATEWAY = fromString("VpnGateway");
 
-    /** Static value ASPath for HubRoutingPreference. */
+    /**
+     * Static value ASPath for HubRoutingPreference.
+     */
     public static final HubRoutingPreference ASPATH = fromString("ASPath");
 
     /**
      * Creates a new instance of HubRoutingPreference value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class HubRoutingPreference extends ExpandableStringEnum<HubRoutingP
 
     /**
      * Creates or finds a HubRoutingPreference from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HubRoutingPreference.
      */
@@ -41,7 +49,7 @@ public final class HubRoutingPreference extends ExpandableStringEnum<HubRoutingP
 
     /**
      * Gets known HubRoutingPreference values.
-     *
+     * 
      * @return known HubRoutingPreference values.
      */
     public static Collection<HubRoutingPreference> values() {

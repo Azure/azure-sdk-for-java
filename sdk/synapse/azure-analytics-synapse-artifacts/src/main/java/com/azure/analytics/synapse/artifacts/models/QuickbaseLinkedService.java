@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Quickbase. */
+/**
+ * Linked service for Quickbase.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Quickbase")
 @JsonFlatten
@@ -37,12 +39,15 @@ public class QuickbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of QuickbaseLinkedService class. */
-    public QuickbaseLinkedService() {}
+    /**
+     * Creates an instance of QuickbaseLinkedService class.
+     */
+    public QuickbaseLinkedService() {
+    }
 
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object getUrl() {
@@ -51,7 +56,7 @@ public class QuickbaseLinkedService extends LinkedService {
 
     /**
      * Set the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the QuickbaseLinkedService object itself.
      */
@@ -62,7 +67,7 @@ public class QuickbaseLinkedService extends LinkedService {
 
     /**
      * Get the userToken property: The user token for the Quickbase source.
-     *
+     * 
      * @return the userToken value.
      */
     public SecretBase getUserToken() {
@@ -71,7 +76,7 @@ public class QuickbaseLinkedService extends LinkedService {
 
     /**
      * Set the userToken property: The user token for the Quickbase source.
-     *
+     * 
      * @param userToken the userToken value to set.
      * @return the QuickbaseLinkedService object itself.
      */
@@ -81,9 +86,9 @@ public class QuickbaseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -91,9 +96,9 @@ public class QuickbaseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickbaseLinkedService object itself.
      */
@@ -102,28 +107,36 @@ public class QuickbaseLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickbaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickbaseLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickbaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public QuickbaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

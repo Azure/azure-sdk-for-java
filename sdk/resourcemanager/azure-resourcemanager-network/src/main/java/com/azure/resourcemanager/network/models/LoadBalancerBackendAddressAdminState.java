@@ -14,18 +14,24 @@ import java.util.Collection;
  */
 public final class LoadBalancerBackendAddressAdminState
     extends ExpandableStringEnum<LoadBalancerBackendAddressAdminState> {
-    /** Static value None for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value None for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState NONE = fromString("None");
 
-    /** Static value Up for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value Up for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState UP = fromString("Up");
 
-    /** Static value Down for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value Down for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState DOWN = fromString("Down");
 
     /**
      * Creates a new instance of LoadBalancerBackendAddressAdminState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +40,7 @@ public final class LoadBalancerBackendAddressAdminState
 
     /**
      * Creates or finds a LoadBalancerBackendAddressAdminState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerBackendAddressAdminState.
      */
@@ -45,7 +51,7 @@ public final class LoadBalancerBackendAddressAdminState
 
     /**
      * Gets known LoadBalancerBackendAddressAdminState values.
-     *
+     * 
      * @return known LoadBalancerBackendAddressAdminState values.
      */
     public static Collection<LoadBalancerBackendAddressAdminState> values() {

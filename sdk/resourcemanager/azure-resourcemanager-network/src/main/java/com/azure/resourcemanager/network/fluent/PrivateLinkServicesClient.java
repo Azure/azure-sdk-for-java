@@ -25,14 +25,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkServicesClient. */
-public interface PrivateLinkServicesClient
-    extends InnerSupportsGet<PrivateLinkServiceInner>,
-        InnerSupportsListing<PrivateLinkServiceInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkServicesClient.
+ */
+public interface PrivateLinkServicesClient extends InnerSupportsGet<PrivateLinkServiceInner>,
+    InnerSupportsListing<PrivateLinkServiceInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +45,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +58,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +71,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -85,7 +85,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +98,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +110,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Deletes the specified private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
@@ -123,7 +123,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets the specified private link service by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
@@ -131,15 +131,15 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link service by resource group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkServiceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String serviceName, String expand);
+    Mono<Response<PrivateLinkServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String serviceName, String expand);
 
     /**
      * Gets the specified private link service by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +152,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets the specified private link service by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param expand Expands referenced resources.
@@ -163,12 +163,12 @@ public interface PrivateLinkServicesClient
      * @return the specified private link service by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceName, String expand, Context context);
+    Response<PrivateLinkServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String serviceName,
+        String expand, Context context);
 
     /**
      * Gets the specified private link service by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +181,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -191,12 +191,12 @@ public interface PrivateLinkServicesClient
      * @return private link service resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        PrivateLinkServiceInner parameters);
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -206,12 +206,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link PollerFlux} for polling of private link service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
+    PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -221,12 +221,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link SyncPoller} for polling of private link service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
+    SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -242,7 +242,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -252,12 +252,12 @@ public interface PrivateLinkServicesClient
      * @return private link service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
+    Mono<PrivateLinkServiceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        PrivateLinkServiceInner parameters);
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -267,12 +267,12 @@ public interface PrivateLinkServicesClient
      * @return private link service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceInner createOrUpdate(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
+    PrivateLinkServiceInner createOrUpdate(String resourceGroupName, String serviceName,
+        PrivateLinkServiceInner parameters);
 
     /**
      * Creates or updates an private link service in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param parameters Parameters supplied to the create or update private link service operation.
@@ -283,12 +283,12 @@ public interface PrivateLinkServicesClient
      * @return private link service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceInner createOrUpdate(
-        String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context);
+    PrivateLinkServiceInner createOrUpdate(String resourceGroupName, String serviceName,
+        PrivateLinkServiceInner parameters, Context context);
 
     /**
      * Gets all private link services in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -300,7 +300,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets all private link services in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -312,7 +312,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets all private link services in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +325,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets all private link service in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link service in a subscription as paginated response with {@link PagedFlux}.
@@ -335,7 +335,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets all private link service in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link service in a subscription as paginated response with {@link PagedIterable}.
@@ -345,7 +345,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Gets all private link service in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -357,7 +357,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -366,7 +366,7 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific private end point connection by specific private link service in the resource group along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> getPrivateEndpointConnectionWithResponseAsync(
@@ -374,7 +374,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -382,15 +382,15 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific private end point connection by specific private link service in the resource group on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    Mono<PrivateEndpointConnectionInner> getPrivateEndpointConnectionAsync(String resourceGroupName, String serviceName,
+        String peConnectionName);
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -400,15 +400,15 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific private end point connection by specific private link service in the resource group along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(
-        String resourceGroupName, String serviceName, String peConnectionName, String expand, Context context);
+    Response<PrivateEndpointConnectionInner> getPrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String serviceName, String peConnectionName, String expand, Context context);
 
     /**
      * Get the specific private end point connection by specific private link service in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -418,12 +418,12 @@ public interface PrivateLinkServicesClient
      * @return the specific private end point connection by specific private link service in the resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner getPrivateEndpointConnection(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    PrivateEndpointConnectionInner getPrivateEndpointConnection(String resourceGroupName, String serviceName,
+        String peConnectionName);
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -435,14 +435,12 @@ public interface PrivateLinkServicesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateEndpointConnectionInner>> updatePrivateEndpointConnectionWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String peConnectionName,
+        String resourceGroupName, String serviceName, String peConnectionName,
         PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -453,15 +451,12 @@ public interface PrivateLinkServicesClient
      * @return privateEndpointConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(
-        String resourceGroupName,
-        String serviceName,
-        String peConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    Mono<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionAsync(String resourceGroupName,
+        String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -473,16 +468,12 @@ public interface PrivateLinkServicesClient
      * @return privateEndpointConnection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String peConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    Response<PrivateEndpointConnectionInner> updatePrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String serviceName, String peConnectionName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Approve or reject private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -493,15 +484,12 @@ public interface PrivateLinkServicesClient
      * @return privateEndpointConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner updatePrivateEndpointConnection(
-        String resourceGroupName,
-        String serviceName,
-        String peConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner updatePrivateEndpointConnection(String resourceGroupName, String serviceName,
+        String peConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -511,12 +499,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(String resourceGroupName,
+        String serviceName, String peConnectionName);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -526,12 +514,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(String resourceGroupName,
+        String serviceName, String peConnectionName);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -541,12 +529,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String serviceName, String peConnectionName);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -557,12 +545,12 @@ public interface PrivateLinkServicesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
-        String resourceGroupName, String serviceName, String peConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(String resourceGroupName,
+        String serviceName, String peConnectionName, Context context);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -572,12 +560,12 @@ public interface PrivateLinkServicesClient
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePrivateEndpointConnectionAsync(
-        String resourceGroupName, String serviceName, String peConnectionName);
+    Mono<Void> deletePrivateEndpointConnectionAsync(String resourceGroupName, String serviceName,
+        String peConnectionName);
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -590,7 +578,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Delete private end point connection for a private link service in a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param peConnectionName The name of the private end point connection.
@@ -600,96 +588,96 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePrivateEndpointConnection(
-        String resourceGroupName, String serviceName, String peConnectionName, Context context);
+    void deletePrivateEndpointConnection(String resourceGroupName, String serviceName, String peConnectionName,
+        Context context);
 
     /**
      * Gets all private end point connections for a specific private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service as paginated response with {@link
-     *     PagedFlux}.
+     * @return all private end point connections for a specific private link service as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(
-        String resourceGroupName, String serviceName);
+    PagedFlux<PrivateEndpointConnectionInner> listPrivateEndpointConnectionsAsync(String resourceGroupName,
+        String serviceName);
 
     /**
      * Gets all private end point connections for a specific private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private end point connections for a specific private link service as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
-        String resourceGroupName, String serviceName);
+    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
+        String serviceName);
 
     /**
      * Gets all private end point connections for a specific private link service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceName The name of the private link service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private end point connections for a specific private link service as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private end point connections for a specific private link service as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<PrivateEndpointConnectionInner> listPrivateEndpointConnections(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityWithResponseAsync(String location,
+        CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityAsync(
-            String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+        beginCheckPrivateLinkServiceVisibilityAsync(String location,
+            CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
@@ -697,7 +685,7 @@ public interface PrivateLinkServicesClient
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -705,31 +693,31 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibility(
-            String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
+        beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters,
+            Context context);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
-     *     Mono}.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityAsync(String location,
+        CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,12 +726,12 @@ public interface PrivateLinkServicesClient
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location,
+        CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service.
-     *
+     * 
      * @param location The location of the domain name.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @param context The context to associate with this operation.
@@ -753,12 +741,12 @@ public interface PrivateLinkServicesClient
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
-        String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location,
+        CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -766,15 +754,15 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(
-        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<Response<Flux<ByteBuffer>>> checkPrivateLinkServiceVisibilityByResourceGroupWithResponseAsync(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -782,16 +770,16 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
-            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
+        beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(String location, String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -799,16 +787,16 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -817,35 +805,32 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of response for the CheckPrivateLinkServiceVisibility API service
-     *     call.
+     * call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
-        beginCheckPrivateLinkServiceVisibilityByResourceGroup(
-            String location,
-            String resourceGroupName,
-            CheckPrivateLinkServiceVisibilityRequest parameters,
-            Context context);
+        beginCheckPrivateLinkServiceVisibilityByResourceGroup(String location, String resourceGroupName,
+            CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of {@link
-     *     Mono}.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(
-        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
+    Mono<PrivateLinkServiceVisibilityInner> checkPrivateLinkServiceVisibilityByResourceGroupAsync(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -855,12 +840,12 @@ public interface PrivateLinkServicesClient
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param parameters The request body of CheckPrivateLinkService API call.
@@ -871,22 +856,19 @@ public interface PrivateLinkServicesClient
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location,
-        String resourceGroupName,
-        CheckPrivateLinkServiceVisibilityRequest parameters,
-        Context context);
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(String location,
+        String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesAsync(String location);
@@ -894,13 +876,13 @@ public interface PrivateLinkServicesClient
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(String location);
@@ -908,55 +890,55 @@ public interface PrivateLinkServicesClient
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(
-        String location, Context context);
+    PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServices(String location,
+        Context context);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroupAsync(
-        String location, String resourceGroupName);
+    PagedFlux<AutoApprovedPrivateLinkServiceInner>
+        listAutoApprovedPrivateLinkServicesByResourceGroupAsync(String location, String resourceGroupName);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(
-        String location, String resourceGroupName);
+    PagedIterable<AutoApprovedPrivateLinkServiceInner>
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
      * subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -964,9 +946,9 @@ public interface PrivateLinkServicesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of private link service id that can be linked to a private end point with auto approved as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AutoApprovedPrivateLinkServiceInner> listAutoApprovedPrivateLinkServicesByResourceGroup(
-        String location, String resourceGroupName, Context context);
+    PagedIterable<AutoApprovedPrivateLinkServiceInner>
+        listAutoApprovedPrivateLinkServicesByResourceGroup(String location, String resourceGroupName, Context context);
 }

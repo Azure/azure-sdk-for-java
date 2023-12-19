@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Google BigQuery service linked service. */
+/**
+ * Google BigQuery service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("GoogleBigQuery")
 @JsonFlatten
@@ -98,12 +100,15 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of GoogleBigQueryLinkedService class. */
-    public GoogleBigQueryLinkedService() {}
+    /**
+     * Creates an instance of GoogleBigQueryLinkedService class.
+     */
+    public GoogleBigQueryLinkedService() {
+    }
 
     /**
      * Get the project property: The default BigQuery project to query against.
-     *
+     * 
      * @return the project value.
      */
     public Object getProject() {
@@ -112,7 +117,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
 
     /**
      * Set the project property: The default BigQuery project to query against.
-     *
+     * 
      * @param project the project value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -123,7 +128,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
 
     /**
      * Get the additionalProjects property: A comma-separated list of public BigQuery projects to access.
-     *
+     * 
      * @return the additionalProjects value.
      */
     public Object getAdditionalProjects() {
@@ -132,7 +137,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
 
     /**
      * Set the additionalProjects property: A comma-separated list of public BigQuery projects to access.
-     *
+     * 
      * @param additionalProjects the additionalProjects value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -142,10 +147,10 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
-     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
-     * false.
-     *
+     * Get the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
+     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
+     * value is false.
+     * 
      * @return the requestGoogleDriveScope value.
      */
     public Object getRequestGoogleDriveScope() {
@@ -153,10 +158,10 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive access
-     * enables support for federated tables that combine BigQuery data with data from Google Drive. The default value is
-     * false.
-     *
+     * Set the requestGoogleDriveScope property: Whether to request access to Google Drive. Allowing Google Drive
+     * access enables support for federated tables that combine BigQuery data with data from Google Drive. The default
+     * value is false.
+     * 
      * @param requestGoogleDriveScope the requestGoogleDriveScope value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -168,7 +173,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
-     *
+     * 
      * @return the authenticationType value.
      */
     public GoogleBigQueryAuthenticationType getAuthenticationType() {
@@ -178,7 +183,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The OAuth 2.0 authentication mechanism used for authentication.
      * ServiceAuthentication can only be used on self-hosted IR.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -190,7 +195,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Get the refreshToken property: The refresh token obtained from Google for authorizing access to BigQuery for
      * UserAuthentication.
-     *
+     * 
      * @return the refreshToken value.
      */
     public SecretBase getRefreshToken() {
@@ -200,7 +205,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Set the refreshToken property: The refresh token obtained from Google for authorizing access to BigQuery for
      * UserAuthentication.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -212,7 +217,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Get the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -222,7 +227,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Set the clientId property: The client id of the google application used to acquire the refresh token. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -233,7 +238,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -242,7 +247,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret of the google application used to acquire the refresh token.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -254,7 +259,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Get the email property: The service account email ID that is used for ServiceAuthentication and can only be used
      * on self-hosted IR.
-     *
+     * 
      * @return the email value.
      */
     public Object getEmail() {
@@ -264,7 +269,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Set the email property: The service account email ID that is used for ServiceAuthentication and can only be used
      * on self-hosted IR.
-     *
+     * 
      * @param email the email value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -274,9 +279,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
+     * Get the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
+     * account email address and can only be used on self-hosted IR.
+     * 
      * @return the keyFilePath value.
      */
     public Object getKeyFilePath() {
@@ -284,9 +289,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service account
-     * email address and can only be used on self-hosted IR.
-     *
+     * Set the keyFilePath property: The full path to the .p12 key file that is used to authenticate the service
+     * account email address and can only be used on self-hosted IR.
+     * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -296,10 +301,10 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
+     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
+     * The default value is the cacerts.pem file installed with the IR.
+     * 
      * @return the trustedCertPath value.
      */
     public Object getTrustedCertPath() {
@@ -307,10 +312,10 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
-     * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
-     *
+     * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for
+     * verifying the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR.
+     * The default value is the cacerts.pem file installed with the IR.
+     * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -322,7 +327,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     *
+     * 
      * @return the useSystemTrustStore value.
      */
     public Object getUseSystemTrustStore() {
@@ -332,7 +337,7 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
      * from a specified PEM file. The default value is false.
-     *
+     * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -342,9 +347,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -352,9 +357,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleBigQueryLinkedService object itself.
      */
@@ -363,28 +368,36 @@ public class GoogleBigQueryLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GoogleBigQueryLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

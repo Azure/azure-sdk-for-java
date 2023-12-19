@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.InboundNatRulePortMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response for a QueryInboundNatRulePortMapping API. */
+/**
+ * The response for a QueryInboundNatRulePortMapping API.
+ */
 @Fluent
 public final class BackendAddressInboundNatRulePortMappingsInner {
     /*
@@ -18,13 +20,15 @@ public final class BackendAddressInboundNatRulePortMappingsInner {
     @JsonProperty(value = "inboundNatRulePortMappings")
     private List<InboundNatRulePortMapping> inboundNatRulePortMappings;
 
-    /** Creates an instance of BackendAddressInboundNatRulePortMappingsInner class. */
+    /**
+     * Creates an instance of BackendAddressInboundNatRulePortMappingsInner class.
+     */
     public BackendAddressInboundNatRulePortMappingsInner() {
     }
 
     /**
      * Get the inboundNatRulePortMappings property: Collection of inbound NAT rule port mappings.
-     *
+     * 
      * @return the inboundNatRulePortMappings value.
      */
     public List<InboundNatRulePortMapping> inboundNatRulePortMappings() {
@@ -33,19 +37,19 @@ public final class BackendAddressInboundNatRulePortMappingsInner {
 
     /**
      * Set the inboundNatRulePortMappings property: Collection of inbound NAT rule port mappings.
-     *
+     * 
      * @param inboundNatRulePortMappings the inboundNatRulePortMappings value to set.
      * @return the BackendAddressInboundNatRulePortMappingsInner object itself.
      */
-    public BackendAddressInboundNatRulePortMappingsInner withInboundNatRulePortMappings(
-        List<InboundNatRulePortMapping> inboundNatRulePortMappings) {
+    public BackendAddressInboundNatRulePortMappingsInner
+        withInboundNatRulePortMappings(List<InboundNatRulePortMapping> inboundNatRulePortMappings) {
         this.inboundNatRulePortMappings = inboundNatRulePortMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

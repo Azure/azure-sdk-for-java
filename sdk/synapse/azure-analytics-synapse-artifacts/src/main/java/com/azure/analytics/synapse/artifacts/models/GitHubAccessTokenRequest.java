@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GitHubAccessTokenRequest model. */
+/**
+ * The GitHubAccessTokenRequest model.
+ */
 @Fluent
 public final class GitHubAccessTokenRequest {
     /*
@@ -28,12 +30,15 @@ public final class GitHubAccessTokenRequest {
     @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
     private String gitHubAccessTokenBaseUrl;
 
-    /** Creates an instance of GitHubAccessTokenRequest class. */
-    public GitHubAccessTokenRequest() {}
+    /**
+     * Creates an instance of GitHubAccessTokenRequest class.
+     */
+    public GitHubAccessTokenRequest() {
+    }
 
     /**
      * Get the gitHubClientId property: The GitHub Client Id.
-     *
+     * 
      * @return the gitHubClientId value.
      */
     public String getGitHubClientId() {
@@ -42,7 +47,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubClientId property: The GitHub Client Id.
-     *
+     * 
      * @param gitHubClientId the gitHubClientId value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -53,7 +58,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubAccessCode property: The GitHub Access code.
-     *
+     * 
      * @return the gitHubAccessCode value.
      */
     public String getGitHubAccessCode() {
@@ -62,7 +67,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessCode property: The GitHub Access code.
-     *
+     * 
      * @param gitHubAccessCode the gitHubAccessCode value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -73,7 +78,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubAccessTokenBaseUrl property: The GitHub access token base URL.
-     *
+     * 
      * @return the gitHubAccessTokenBaseUrl value.
      */
     public String getGitHubAccessTokenBaseUrl() {
@@ -82,7 +87,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessTokenBaseUrl property: The GitHub access token base URL.
-     *
+     * 
      * @param gitHubAccessTokenBaseUrl the gitHubAccessTokenBaseUrl value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */

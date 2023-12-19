@@ -8,23 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of diagnostic provisioning. */
+/**
+ * Status of diagnostic provisioning.
+ */
 public final class DiagnosticProvisioningState extends ExpandableStringEnum<DiagnosticProvisioningState> {
-    /** Static value Succeeded for DiagnosticProvisioningState. */
+    /**
+     * Static value Succeeded for DiagnosticProvisioningState.
+     */
     public static final DiagnosticProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value PartialComplete for DiagnosticProvisioningState. */
+    /**
+     * Static value PartialComplete for DiagnosticProvisioningState.
+     */
     public static final DiagnosticProvisioningState PARTIAL_COMPLETE = fromString("PartialComplete");
 
-    /** Static value Failed for DiagnosticProvisioningState. */
+    /**
+     * Static value Failed for DiagnosticProvisioningState.
+     */
     public static final DiagnosticProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for DiagnosticProvisioningState. */
+    /**
+     * Static value Running for DiagnosticProvisioningState.
+     */
+    public static final DiagnosticProvisioningState RUNNING = fromString("Running");
+
+    /**
+     * Static value Canceled for DiagnosticProvisioningState.
+     */
     public static final DiagnosticProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of DiagnosticProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +48,7 @@ public final class DiagnosticProvisioningState extends ExpandableStringEnum<Diag
 
     /**
      * Creates or finds a DiagnosticProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiagnosticProvisioningState.
      */
@@ -44,7 +59,7 @@ public final class DiagnosticProvisioningState extends ExpandableStringEnum<Diag
 
     /**
      * Gets known DiagnosticProvisioningState values.
-     *
+     * 
      * @return known DiagnosticProvisioningState values.
      */
     public static Collection<DiagnosticProvisioningState> values() {

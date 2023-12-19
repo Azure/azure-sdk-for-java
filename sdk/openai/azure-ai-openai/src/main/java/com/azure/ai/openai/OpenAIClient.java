@@ -14,7 +14,6 @@ import com.azure.ai.openai.implementation.MultipartDataSerializationResult;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
-import com.azure.ai.openai.implementation.models.BatchImageGenerationOperationResponse;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
@@ -26,8 +25,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.ImageGenerationOptions;
-import com.azure.ai.openai.models.ImageOperationResponse;
-import com.azure.ai.openai.models.ImageResponse;
+import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -40,9 +38,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
@@ -716,89 +714,6 @@ public final class OpenAIClient {
     }
 
     /**
-     * Starts the generation of a batch of images from a text caption.
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link ImageResponse} for the image generation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImageResponse getImages(ImageGenerationOptions imageGenerationOptions) {
-        RequestOptions requestOptions = new RequestOptions();
-        BinaryData imageGenerationOptionsBinaryData = BinaryData.fromObject(imageGenerationOptions);
-        if (openAIServiceClient != null) {
-            return openAIServiceClient.generateImageWithResponse(imageGenerationOptionsBinaryData, requestOptions)
-                .getValue().toObject(ImageResponse.class);
-        } else {
-            return beginBeginAzureBatchImageGeneration(imageGenerationOptionsBinaryData, requestOptions)
-                .getFinalResult().toObject(ImageOperationResponse.class).getResult();
-        }
-    }
-
-    /**
-     * Starts the generation of a batch of images from a text caption.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     prompt: String (Required)
-     *     n: Integer (Optional)
-     *     size: String(256x256/512x512/1024x1024) (Optional)
-     *     response_format: String(url/b64_json) (Optional)
-     *     user: String (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     expires: Long (Optional)
-     *     result (Optional): {
-     *         created: long (Required)
-     *         data: BinaryData (Required)
-     *     }
-     *     status: String(notRunning/running/succeeded/canceled/failed) (Required)
-     *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
-     *     }
-     * }
-     * }</pre>
-     *
-     * @param imageGenerationOptions Represents the request data used to generate images.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<BinaryData, BinaryData> beginBeginAzureBatchImageGeneration(BinaryData imageGenerationOptions,
-        RequestOptions requestOptions) {
-        return this.serviceClient.beginBeginAzureBatchImageGeneration(imageGenerationOptions, requestOptions);
-    }
-
-    /**
      * Gets chat completions for the provided chat messages.
      * This is an Azure-specific version of chat completions that supports integration with configured data sources and
      * other augmentations to the base chat completions capabilities.
@@ -809,18 +724,6 @@ public final class OpenAIClient {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Required)
-     *             content: String (Required)
-     *             name: String (Optional)
-     *             function_call (Optional): {
-     *                 name: String (Required)
-     *                 arguments: String (Required)
-     *             }
-     *             context (Optional): {
-     *                 messages (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
      *         }
      *     ]
      *     functions (Optional): [
@@ -848,10 +751,24 @@ public final class OpenAIClient {
      *     model: String (Optional)
      *     dataSources (Optional): [
      *          (Optional){
-     *             type: String(AzureCognitiveSearch) (Required)
-     *             parameters: Object (Required)
      *         }
      *     ]
+     *     enhancements (Optional): {
+     *         grounding (Optional): {
+     *             enabled: boolean (Required)
+     *         }
+     *         ocr (Optional): {
+     *             enabled: boolean (Required)
+     *         }
+     *     }
+     *     seed: Long (Optional)
+     *     response_format (Optional): {
+     *     }
+     *     tools (Optional): [
+     *          (Optional){
+     *         }
+     *     ]
+     *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
      * <p>
@@ -866,7 +783,11 @@ public final class OpenAIClient {
      *             message (Optional): {
      *                 role: String(system/assistant/user/function/tool) (Required)
      *                 content: String (Required)
-     *                 name: String (Optional)
+     *                 tool_calls (Optional): [
+     *                      (Optional){
+     *                         id: String (Required)
+     *                     }
+     *                 ]
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
@@ -878,7 +799,9 @@ public final class OpenAIClient {
      *                 }
      *             }
      *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/function_call) (Required)
+     *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
+     *             finish_details (Optional): {
+     *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
@@ -888,6 +811,16 @@ public final class OpenAIClient {
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                 }
+     *                 custom_blocklists (Optional): [
+     *                      (Optional){
+     *                         id: String (Required)
+     *                         filtered: boolean (Required)
+     *                     }
+     *                 ]
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -900,15 +833,56 @@ public final class OpenAIClient {
      *                         innererror (Optional): (recursive schema, see innererror above)
      *                     }
      *                 }
+     *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
+     *                 protected_material_code (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                     URL: String (Optional)
+     *                     license: String (Required)
+     *                 }
+     *             }
+     *             enhancements (Optional): {
+     *                 grounding (Optional): {
+     *                     lines (Required): [
+     *                          (Required){
+     *                             text: String (Required)
+     *                             spans (Required): [
+     *                                  (Required){
+     *                                     text: String (Required)
+     *                                     offset: int (Required)
+     *                                     length: int (Required)
+     *                                     polygon (Required): [
+     *                                          (Required){
+     *                                             x: double (Required)
+     *                                             y: double (Required)
+     *                                         }
+     *                                     ]
+     *                                 }
+     *                             ]
+     *                         }
+     *                     ]
+     *                 }
      *             }
      *         }
      *     ]
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
-     *             content_filter_results (Optional): (recursive schema, see content_filter_results above)
+     *             content_filter_results (Required): {
+     *                 sexual (Optional): (recursive schema, see sexual above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): (recursive schema, see profanity above)
+     *                 custom_blocklists (Optional): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *                 error (Optional): (recursive schema, see error above)
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *             }
      *         }
      *     ]
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -989,8 +963,12 @@ public final class OpenAIClient {
         if (this.openAIServiceClient != null) {
             audioTranscriptionOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
+            audioTranscriptionOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1050,8 +1028,12 @@ public final class OpenAIClient {
         if (this.openAIServiceClient != null) {
             audioTranscriptionOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())) {
+            audioTranscriptionOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranscriptionOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1111,8 +1093,12 @@ public final class OpenAIClient {
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1171,8 +1157,12 @@ public final class OpenAIClient {
         if (this.openAIServiceClient != null) {
             audioTranslationOptions.setModel(deploymentOrModelName);
         }
+        // setting the name as part of the request object will allow users for better visualization in the web dashboard
+        if (CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())) {
+            audioTranslationOptions.setFilename(fileName);
+        }
         final MultipartDataHelper helper = new MultipartDataHelper();
-        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions, fileName);
+        final MultipartDataSerializationResult result = helper.serializeRequest(audioTranslationOptions);
         final BinaryData data = result.getData();
         requestOptions = helper.getRequestOptionsForMultipartFormData(requestOptions, result, helper.getBoundary());
         Response<BinaryData> response = openAIServiceClient != null
@@ -1192,6 +1182,7 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -1256,6 +1247,7 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     language: String (Optional)
      *     prompt: String (Optional)
@@ -1296,6 +1288,7 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -1359,6 +1352,7 @@ public final class OpenAIClient {
      * <pre>{@code
      * {
      *     file: byte[] (Required)
+     *     filename: String (Optional)
      *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
      *     prompt: String (Optional)
      *     temperature: Double (Optional)
@@ -1471,8 +1465,84 @@ public final class OpenAIClient {
     }
 
     /**
-     * Starts the generation of a batch of images from a text caption.
+     * Creates an image given a prompt.
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     model: String (Optional)
+     *     prompt: String (Required)
+     *     n: Integer (Optional)
+     *     size: String(256x256/512x512/1024x1024/1792x1024/1024x1792) (Optional)
+     *     response_format: String(url/b64_json) (Optional)
+     *     quality: String(standard/hd) (Optional)
+     *     style: String(natural/vivid) (Optional)
+     *     user: String (Optional)
+     * }
+     * }</pre>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
+     * <pre>{@code
+     * {
+     *     created: long (Required)
+     *     data (Required): [
+     *          (Required){
+     *             url: String (Optional)
+     *             b64_json: String (Optional)
+     *             revised_prompt: String (Optional)
+     *         }
+     *     ]
+     * }
+     * }</pre>
      *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a successful image generation operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getImageGenerationsWithResponse(String deploymentOrModelName,
+        BinaryData imageGenerationOptions, RequestOptions requestOptions) {
+        return openAIServiceClient != null
+            ? this.openAIServiceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
+                requestOptions)
+            : this.serviceClient.getImageGenerationsWithResponse(deploymentOrModelName, imageGenerationOptions,
+                requestOptions);
+    }
+
+    /**
+     * Creates an image given a prompt.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param imageGenerationOptions Represents the request data used to generate images.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of a successful image generation operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ImageGenerations> getImageGenerationsWithResponse(String deploymentOrModelName,
+        ImageGenerationOptions imageGenerationOptions, RequestOptions requestOptions) {
+        Response<BinaryData> response = getImageGenerationsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(imageGenerationOptions), requestOptions);
+        return new SimpleResponse<>(response, response.getValue().toObject(ImageGenerations.class));
+    }
+
+    /**
+     * Creates an image given a prompt.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param imageGenerationOptions Represents the request data used to generate images.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1480,16 +1550,15 @@ public final class OpenAIClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a polling status update or final response payload for an image
-     * operation.
+     * @return the result of a successful image generation operation.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<BatchImageGenerationOperationResponse, BatchImageGenerationOperationResponse>
-        beginBeginAzureBatchImageGeneration(ImageGenerationOptions imageGenerationOptions) {
-        // Generated convenience method for beginBeginAzureBatchImageGenerationWithModel
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImageGenerations getImageGenerations(String deploymentOrModelName,
+        ImageGenerationOptions imageGenerationOptions) {
+        // Generated convenience method for getImageGenerationsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginBeginAzureBatchImageGenerationWithModel(BinaryData.fromObject(imageGenerationOptions),
-            requestOptions);
+        return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
+            requestOptions).getValue().toObject(ImageGenerations.class);
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VMScaleSetConvertToSinglePlacementGroupInput model. */
+/**
+ * The VMScaleSetConvertToSinglePlacementGroupInput model.
+ */
 @Fluent
 public final class VMScaleSetConvertToSinglePlacementGroupInput {
     /*
@@ -18,7 +20,9 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
     @JsonProperty(value = "activePlacementGroupId")
     private String activePlacementGroupId;
 
-    /** Creates an instance of VMScaleSetConvertToSinglePlacementGroupInput class. */
+    /**
+     * Creates an instance of VMScaleSetConvertToSinglePlacementGroupInput class.
+     */
     public VMScaleSetConvertToSinglePlacementGroupInput() {
     }
 
@@ -26,7 +30,7 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
      * Get the activePlacementGroupId property: Id of the placement group in which you want future virtual machine
      * instances to be placed. To query placement group Id, please use Virtual Machine Scale Set VMs - Get API. If not
      * provided, the platform will choose one with maximum number of virtual machine instances.
-     *
+     * 
      * @return the activePlacementGroupId value.
      */
     public String activePlacementGroupId() {
@@ -37,7 +41,7 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
      * Set the activePlacementGroupId property: Id of the placement group in which you want future virtual machine
      * instances to be placed. To query placement group Id, please use Virtual Machine Scale Set VMs - Get API. If not
      * provided, the platform will choose one with maximum number of virtual machine instances.
-     *
+     * 
      * @param activePlacementGroupId the activePlacementGroupId value to set.
      * @return the VMScaleSetConvertToSinglePlacementGroupInput object itself.
      */
@@ -48,7 +52,7 @@ public final class VMScaleSetConvertToSinglePlacementGroupInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

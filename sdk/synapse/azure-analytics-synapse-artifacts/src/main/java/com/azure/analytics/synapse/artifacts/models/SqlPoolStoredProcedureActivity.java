@@ -10,9 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
-import java.util.Map;
 
-/** Execute SQL pool stored procedure activity. */
+/**
+ * Execute SQL pool stored procedure activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SqlPoolStoredProcedure")
 @JsonFlatten
@@ -34,14 +35,17 @@ public class SqlPoolStoredProcedureActivity extends Activity {
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    private Object storedProcedureParameters;
 
-    /** Creates an instance of SqlPoolStoredProcedureActivity class. */
-    public SqlPoolStoredProcedureActivity() {}
+    /**
+     * Creates an instance of SqlPoolStoredProcedureActivity class.
+     */
+    public SqlPoolStoredProcedureActivity() {
+    }
 
     /**
      * Get the sqlPool property: SQL pool stored procedure reference.
-     *
+     * 
      * @return the sqlPool value.
      */
     public SqlPoolReference getSqlPool() {
@@ -50,7 +54,7 @@ public class SqlPoolStoredProcedureActivity extends Activity {
 
     /**
      * Set the sqlPool property: SQL pool stored procedure reference.
-     *
+     * 
      * @param sqlPool the sqlPool value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
@@ -60,8 +64,9 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     }
 
     /**
-     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the storedProcedureName value.
      */
     public Object getStoredProcedureName() {
@@ -69,8 +74,9 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     }
 
     /**
-     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
@@ -82,62 +88,73 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> getStoredProcedureParameters() {
+    public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
 
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlPoolStoredProcedureActivity object itself.
      */
-    public SqlPoolStoredProcedureActivity setStoredProcedureParameters(
-            Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public SqlPoolStoredProcedureActivity setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlPoolStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

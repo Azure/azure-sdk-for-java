@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Data Explorer (Kusto) dataset. */
+/**
+ * The Azure Data Explorer (Kusto) dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorerTable")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class AzureDataExplorerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of AzureDataExplorerTableDataset class. */
-    public AzureDataExplorerTableDataset() {}
+    /**
+     * Creates an instance of AzureDataExplorerTableDataset class.
+     */
+    public AzureDataExplorerTableDataset() {
+    }
 
     /**
      * Get the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -40,7 +45,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * Set the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureDataExplorerTableDataset object itself.
      */
@@ -49,49 +54,63 @@ public class AzureDataExplorerTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

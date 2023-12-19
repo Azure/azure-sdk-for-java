@@ -7,12 +7,15 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sql Script resource type. */
+/**
+ * Sql Script resource type.
+ */
 @Fluent
 public final class SqlScriptResource {
     /*
      * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
+     * resourceType}/{resourceName}
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -41,13 +44,16 @@ public final class SqlScriptResource {
     @JsonProperty(value = "properties", required = true)
     private SqlScript properties;
 
-    /** Creates an instance of SqlScriptResource class. */
-    public SqlScriptResource() {}
+    /**
+     * Creates an instance of SqlScriptResource class.
+     */
+    public SqlScriptResource() {
+    }
 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -56,7 +62,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -65,7 +71,7 @@ public final class SqlScriptResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the SqlScriptResource object itself.
      */
@@ -77,7 +83,7 @@ public final class SqlScriptResource {
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
      * Microsoft.Storage/storageAccounts.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -86,7 +92,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -95,7 +101,7 @@ public final class SqlScriptResource {
 
     /**
      * Get the properties property: Properties of sql script.
-     *
+     * 
      * @return the properties value.
      */
     public SqlScript getProperties() {
@@ -104,7 +110,7 @@ public final class SqlScriptResource {
 
     /**
      * Set the properties property: Properties of sql script.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SqlScriptResource object itself.
      */

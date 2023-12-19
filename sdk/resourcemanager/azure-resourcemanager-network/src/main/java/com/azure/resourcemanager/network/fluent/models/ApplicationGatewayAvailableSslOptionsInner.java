@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Response for ApplicationGatewayAvailableSslOptions API service call. */
+/**
+ * Response for ApplicationGatewayAvailableSslOptions API service call.
+ */
 @Fluent
 public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     /*
@@ -29,13 +31,15 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ApplicationGatewayAvailableSslOptionsInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayAvailableSslOptionsInner class.
+     */
     public ApplicationGatewayAvailableSslOptionsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway available SSL options.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties() {
@@ -44,7 +48,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,7 +57,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -62,14 +66,18 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayAvailableSslOptionsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayAvailableSslOptionsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -78,7 +86,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @return the predefinedPolicies value.
      */
     public List<SubResource> predefinedPolicies() {
@@ -87,7 +95,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @param predefinedPolicies the predefinedPolicies value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -101,7 +109,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @return the defaultPolicy value.
      */
     public ApplicationGatewaySslPolicyName defaultPolicy() {
@@ -110,7 +118,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @param defaultPolicy the defaultPolicy value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -124,7 +132,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @return the availableCipherSuites value.
      */
     public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
@@ -133,12 +141,12 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @param availableCipherSuites the availableCipherSuites value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableCipherSuites(
-        List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
+    public ApplicationGatewayAvailableSslOptionsInner
+        withAvailableCipherSuites(List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
         }
@@ -148,7 +156,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @return the availableProtocols value.
      */
     public List<ApplicationGatewaySslProtocol> availableProtocols() {
@@ -157,12 +165,12 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @param availableProtocols the availableProtocols value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableProtocols(
-        List<ApplicationGatewaySslProtocol> availableProtocols) {
+    public ApplicationGatewayAvailableSslOptionsInner
+        withAvailableProtocols(List<ApplicationGatewaySslProtocol> availableProtocols) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
         }
@@ -172,7 +180,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

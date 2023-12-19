@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the response of a provision trigger dependency operation. */
+/**
+ * Defines the response of a provision trigger dependency operation.
+ */
 @Fluent
 public final class TriggerDependencyProvisioningStatus {
     /*
@@ -22,12 +24,15 @@ public final class TriggerDependencyProvisioningStatus {
     @JsonProperty(value = "provisioningStatus", required = true)
     private String provisioningStatus;
 
-    /** Creates an instance of TriggerDependencyProvisioningStatus class. */
-    public TriggerDependencyProvisioningStatus() {}
+    /**
+     * Creates an instance of TriggerDependencyProvisioningStatus class.
+     */
+    public TriggerDependencyProvisioningStatus() {
+    }
 
     /**
      * Get the triggerName property: Trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     public String getTriggerName() {
@@ -36,7 +41,7 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Set the triggerName property: Trigger name.
-     *
+     * 
      * @param triggerName the triggerName value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */
@@ -47,7 +52,7 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Get the provisioningStatus property: Provisioning status.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String getProvisioningStatus() {
@@ -56,7 +61,7 @@ public final class TriggerDependencyProvisioningStatus {
 
     /**
      * Set the provisioningStatus property: Provisioning status.
-     *
+     * 
      * @param provisioningStatus the provisioningStatus value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */

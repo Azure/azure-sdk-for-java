@@ -16,8 +16,9 @@ import java.util.Objects;
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
  * generate a {@code Pattern} to perform replacing.
  */
-public class RangeReplaceSubstitution extends Substitution {
-    private final List<Range> ranges;
+public final class RangeReplaceSubstitution extends Substitution implements Comparable<RangeReplaceSubstitution> {
+    private final int start;
+    private final int end;
 
     /**
      * Create a new Substitution.
@@ -27,12 +28,30 @@ public class RangeReplaceSubstitution extends Substitution {
      * placeholder is.
      * @param shouldEncode Whether the value from the method's argument should be encoded when the substitution is
      * taking place.
-     * @param substitutionBase The string that will have its ranges substituted.
+     * @param start The starting index of the range replacement substitution.
+     * @param end The ending index of the range replacement substitution.
      */
-    public RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
-        String substitutionBase) {
+    private RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
+        int start, int end) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
-        this.ranges = new ArrayList<>();
+        this.start = start;
+        this.end = end;
+    }
+
+    /**
+     * Gets the range replacement substitutions for the provided urlParameterName.
+     *
+     * @param urlParameterName The name that is used between curly quotes as a placeholder in the target URL.
+     * @param methodParameterIndex The index of the parameter in the original interface method where the value for the
+     * placeholder is.
+     * @param shouldEncode Whether the value from the method's argument should be encoded when the substitution is
+     * taking place.
+     * @param substitutionBase The base string that will be used to find the range replacement substitutions.
+     * @return The range replacement substitutions for the provided urlParameterName.
+     */
+    public static List<RangeReplaceSubstitution> getRangeReplaceSubstitutions(String urlParameterName,
+        int methodParameterIndex, boolean shouldEncode, String substitutionBase) {
+        List<RangeReplaceSubstitution> substitutions = new ArrayList<>();
 
         String placeholder = "{" + urlParameterName + "}";
         int indexOf = 0;
@@ -43,61 +62,66 @@ public class RangeReplaceSubstitution extends Substitution {
                 break;
             }
 
-            ranges.add(new Range(indexOf, indexOf + placeholder.length()));
+            substitutions.add(new RangeReplaceSubstitution(urlParameterName, methodParameterIndex, shouldEncode,
+                indexOf, indexOf + placeholder.length()));
             indexOf = indexOf + placeholder.length();
         }
+
+        return substitutions;
     }
 
-    public List<Range> getRanges() {
-        return ranges;
+    /**
+     * Gets the starting index of the range replacement substitution.
+     *
+     * @return The starting index of the range replacement substitution.
+     */
+    public int getStart() {
+        return start;
     }
 
-    static final class Range implements Comparable<Range> {
-        private final int start;
-        private final int end;
+    /**
+     * Gets the ending index of the range replacement substitution.
+     *
+     * @return The ending index of the range replacement substitution.
+     */
+    public int getEnd() {
+        return end;
+    }
 
-        Range(int start, int end) {
-            this.start = start;
-            this.end = end;
+    /**
+     * Gets the size of the range replacement substitution.
+     *
+     * @return The size of the range replacement substitution.
+     */
+    public int getSize() {
+        return end - start;
+    }
+
+
+    @Override
+    public int compareTo(RangeReplaceSubstitution o) {
+        if (start < o.start) {
+            return -1;
+        } else if (start > o.start) {
+            return 1;
+        } else {
+            return Integer.compare(end, o.end);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(start, end);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof RangeReplaceSubstitution)) {
+            return false;
         }
 
-        public int getStart() {
-            return start;
-        }
+        RangeReplaceSubstitution other = (RangeReplaceSubstitution) obj;
 
-        public int getEnd() {
-            return end;
-        }
-
-        public int getSize() {
-            return end - start;
-        }
-
-        @Override
-        public int compareTo(Range o) {
-            if (start < o.start) {
-                return -1;
-            } else if (start > o.start) {
-                return 1;
-            } else {
-                return Integer.compare(end, o.end);
-            }
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(start, end);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (!(obj instanceof Range)) {
-                return false;
-            }
-
-            Range other = (Range) obj;
-
-            return start == other.start && end == other.end;
-        }
+        return start == other.start && end == other.end;
     }
 }

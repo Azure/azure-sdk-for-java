@@ -21,8 +21,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,32 +32,29 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         return Utils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GroupInformation> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
-        PagedIterable<GroupInformationInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName, context);
+    public PagedIterable<GroupInformation> listByAccount(String resourceGroupName, String accountName,
+        Context context) {
+        PagedIterable<GroupInformationInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
         return Utils.mapPage(inner, inner1 -> new GroupInformationImpl(inner1, this.manager()));
+    }
+
+    public Response<GroupInformation> getWithResponse(String resourceGroupName, String accountName, String groupId,
+        Context context) {
+        Response<GroupInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, groupId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GroupInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public GroupInformation get(String resourceGroupName, String accountName, String groupId) {
         GroupInformationInner inner = this.serviceClient().get(resourceGroupName, accountName, groupId);
         if (inner != null) {
             return new GroupInformationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<GroupInformation> getWithResponse(
-        String resourceGroupName, String accountName, String groupId, Context context) {
-        Response<GroupInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, groupId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new GroupInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -15,42 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class FeatureValidationResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeatureValidationResponse model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"vbbxuripl\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"baxk\",\"xywr\"]},{\"featureName\":\"pyklyhpluodpvru\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"ibthostgktstvd\"]},{\"featureName\":\"clzedqbcvh\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"odqkdlwwqfb\",\"mlkxtrqjfs\",\"lmbtxhwgfwsrt\",\"wcoezbrhub\"]}]}")
-                .toObject(FeatureValidationResponse.class);
+        FeatureValidationResponse model = BinaryData.fromString(
+            "{\"objectType\":\"FeatureValidationResponse\",\"featureType\":\"DataSourceType\",\"features\":[{\"featureName\":\"gdyftumrtwna\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"iw\",\"ojgcyzt\",\"fmznba\"]},{\"featureName\":\"ph\",\"supportStatus\":\"GenerallyAvailable\",\"exposureControlledFeatures\":[\"nrpxehuw\"]}]}")
+            .toObject(FeatureValidationResponse.class);
         Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("vbbxuripl", model.features().get(0).featureName());
+        Assertions.assertEquals("gdyftumrtwna", model.features().get(0).featureName());
         Assertions.assertEquals(FeatureSupportStatus.GENERALLY_AVAILABLE, model.features().get(0).supportStatus());
-        Assertions.assertEquals("baxk", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals("iw", model.features().get(0).exposureControlledFeatures().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeatureValidationResponse model =
-            new FeatureValidationResponse()
-                .withFeatureType(FeatureType.DATA_SOURCE_TYPE)
-                .withFeatures(
-                    Arrays
-                        .asList(
-                            new SupportedFeature()
-                                .withFeatureName("vbbxuripl")
-                                .withSupportStatus(FeatureSupportStatus.GENERALLY_AVAILABLE)
-                                .withExposureControlledFeatures(Arrays.asList("baxk", "xywr")),
-                            new SupportedFeature()
-                                .withFeatureName("pyklyhpluodpvru")
-                                .withSupportStatus(FeatureSupportStatus.GENERALLY_AVAILABLE)
-                                .withExposureControlledFeatures(Arrays.asList("ibthostgktstvd")),
-                            new SupportedFeature()
-                                .withFeatureName("clzedqbcvh")
-                                .withSupportStatus(FeatureSupportStatus.GENERALLY_AVAILABLE)
-                                .withExposureControlledFeatures(
-                                    Arrays.asList("odqkdlwwqfb", "mlkxtrqjfs", "lmbtxhwgfwsrt", "wcoezbrhub"))));
+        FeatureValidationResponse model
+            = new FeatureValidationResponse().withFeatureType(FeatureType.DATA_SOURCE_TYPE)
+                .withFeatures(Arrays.asList(new SupportedFeature().withFeatureName("gdyftumrtwna")
+                    .withSupportStatus(FeatureSupportStatus.GENERALLY_AVAILABLE)
+                    .withExposureControlledFeatures(Arrays.asList("iw", "ojgcyzt", "fmznba")),
+                    new SupportedFeature().withFeatureName("ph")
+                        .withSupportStatus(FeatureSupportStatus.GENERALLY_AVAILABLE)
+                        .withExposureControlledFeatures(Arrays.asList("nrpxehuw"))));
         model = BinaryData.fromObject(model).toObject(FeatureValidationResponse.class);
         Assertions.assertEquals(FeatureType.DATA_SOURCE_TYPE, model.featureType());
-        Assertions.assertEquals("vbbxuripl", model.features().get(0).featureName());
+        Assertions.assertEquals("gdyftumrtwna", model.features().get(0).featureName());
         Assertions.assertEquals(FeatureSupportStatus.GENERALLY_AVAILABLE, model.features().get(0).supportStatus());
-        Assertions.assertEquals("baxk", model.features().get(0).exposureControlledFeatures().get(0));
+        Assertions.assertEquals("iw", model.features().get(0).exposureControlledFeatures().get(0));
     }
 }

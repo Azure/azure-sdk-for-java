@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.AvailablePrivateEndpointTypeInner;
 
-/** An instance of this class provides access to all the operations defined in AvailablePrivateEndpointTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailablePrivateEndpointTypesClient.
+ */
 public interface AvailablePrivateEndpointTypesClient {
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface AvailablePrivateEndpointTypesClient {
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface AvailablePrivateEndpointTypesClient {
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,7 +54,7 @@ public interface AvailablePrivateEndpointTypesClient {
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface AvailablePrivateEndpointTypesClient {
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,7 +80,7 @@ public interface AvailablePrivateEndpointTypesClient {
 
     /**
      * Returns all of the resource types that can be linked to a Private Endpoint in this subscription in this region.
-     *
+     * 
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
@@ -88,6 +90,6 @@ public interface AvailablePrivateEndpointTypesClient {
      * @return an array of available PrivateEndpoint types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(
-        String location, String resourceGroupName, Context context);
+    PagedIterable<AvailablePrivateEndpointTypeInner> listByResourceGroup(String location, String resourceGroupName,
+        Context context);
 }

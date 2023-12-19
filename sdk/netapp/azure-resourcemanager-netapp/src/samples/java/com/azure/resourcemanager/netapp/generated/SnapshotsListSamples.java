@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Snapshots List. */
+/**
+ * Samples for Snapshots List.
+ */
 public final class SnapshotsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Snapshots_List.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Snapshots_List.json
      */
     /**
      * Sample code: Snapshots_List.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void snapshotsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** LogAnalytics output properties. */
+/**
+ * LogAnalytics output properties.
+ */
 @Immutable
 public final class LogAnalyticsOutput {
     /*
@@ -16,13 +18,15 @@ public final class LogAnalyticsOutput {
     @JsonProperty(value = "output", access = JsonProperty.Access.WRITE_ONLY)
     private String output;
 
-    /** Creates an instance of LogAnalyticsOutput class. */
+    /**
+     * Creates an instance of LogAnalyticsOutput class.
+     */
     public LogAnalyticsOutput() {
     }
 
     /**
      * Get the output property: Output file Uri path to blob container.
-     *
+     * 
      * @return the output value.
      */
     public String output() {
@@ -31,7 +35,7 @@ public final class LogAnalyticsOutput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

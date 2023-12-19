@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the VM to check security groups for. */
+/**
+ * Parameters that define the VM to check security groups for.
+ */
 @Fluent
 public final class SecurityGroupViewParameters {
     /*
@@ -17,13 +19,15 @@ public final class SecurityGroupViewParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
-    /** Creates an instance of SecurityGroupViewParameters class. */
+    /**
+     * Creates an instance of SecurityGroupViewParameters class.
+     */
     public SecurityGroupViewParameters() {
     }
 
     /**
      * Get the targetResourceId property: ID of the target VM.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -32,7 +36,7 @@ public final class SecurityGroupViewParameters {
 
     /**
      * Set the targetResourceId property: ID of the target VM.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the SecurityGroupViewParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class SecurityGroupViewParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model SecurityGroupViewParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model SecurityGroupViewParameters"));
         }
     }
 

@@ -7,24 +7,38 @@ package com.azure.resourcemanager.cosmos.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The default consistency level and configuration settings of the Cosmos DB account. */
+/**
+ * The default consistency level and configuration settings of the Cosmos DB account.
+ */
 public enum DefaultConsistencyLevel {
-    /** Enum value Eventual. */
+    /**
+     * Enum value Eventual.
+     */
     EVENTUAL("Eventual"),
 
-    /** Enum value Session. */
+    /**
+     * Enum value Session.
+     */
     SESSION("Session"),
 
-    /** Enum value BoundedStaleness. */
+    /**
+     * Enum value BoundedStaleness.
+     */
     BOUNDED_STALENESS("BoundedStaleness"),
 
-    /** Enum value Strong. */
+    /**
+     * Enum value Strong.
+     */
     STRONG("Strong"),
 
-    /** Enum value ConsistentPrefix. */
+    /**
+     * Enum value ConsistentPrefix.
+     */
     CONSISTENT_PREFIX("ConsistentPrefix");
 
-    /** The actual serialized value for a DefaultConsistencyLevel instance. */
+    /**
+     * The actual serialized value for a DefaultConsistencyLevel instance.
+     */
     private final String value;
 
     DefaultConsistencyLevel(String value) {
@@ -33,7 +47,7 @@ public enum DefaultConsistencyLevel {
 
     /**
      * Parses a serialized value to a DefaultConsistencyLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DefaultConsistencyLevel object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum DefaultConsistencyLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

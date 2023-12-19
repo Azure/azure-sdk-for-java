@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlContainerPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB SQL container event. */
+/**
+ * An Azure Cosmos DB SQL container event.
+ */
 @Fluent
 public final class RestorableSqlContainerGetResultInner {
     /*
@@ -35,13 +37,15 @@ public final class RestorableSqlContainerGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableSqlContainerGetResultInner class. */
+    /**
+     * Creates an instance of RestorableSqlContainerGetResultInner class.
+     */
     public RestorableSqlContainerGetResultInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a SQL container event.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableSqlContainerProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB SQL container event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableSqlContainerPropertiesResource resource() {
@@ -86,7 +90,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB SQL container event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableSqlContainerGetResultInner object itself.
      */
@@ -100,7 +104,7 @@ public final class RestorableSqlContainerGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

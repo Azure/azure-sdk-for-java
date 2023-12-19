@@ -4,23 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for GremlinResources GetGremlinGraphThroughput. */
+/**
+ * Samples for GremlinResources GetGremlinGraphThroughput.
+ */
 public final class GremlinResourcesGetGremlinGraphThroughputSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBGremlinGraphThroughputGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBGremlinGraphThroughputGet.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphThroughputGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinGraphThroughputGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getGremlinResources()
-            .getGremlinGraphThroughputWithResponse(
-                "rg1", "ddb1", "databaseName", "graphName", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().getGremlinGraphThroughputWithResponse(
+            "rg1", "ddb1", "databaseName", "graphName", com.azure.core.util.Context.NONE);
     }
 }

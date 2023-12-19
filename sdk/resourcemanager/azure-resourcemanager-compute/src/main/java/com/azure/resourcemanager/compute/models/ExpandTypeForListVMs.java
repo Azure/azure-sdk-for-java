@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpandTypeForListVMs. */
+/**
+ * Defines values for ExpandTypeForListVMs.
+ */
 public final class ExpandTypeForListVMs extends ExpandableStringEnum<ExpandTypeForListVMs> {
-    /** Static value instanceView for ExpandTypeForListVMs. */
+    /**
+     * Static value instanceView for ExpandTypeForListVMs.
+     */
     public static final ExpandTypeForListVMs INSTANCE_VIEW = fromString("instanceView");
 
     /**
      * Creates a new instance of ExpandTypeForListVMs value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ExpandTypeForListVMs extends ExpandableStringEnum<ExpandTypeF
 
     /**
      * Creates or finds a ExpandTypeForListVMs from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpandTypeForListVMs.
      */
@@ -35,7 +39,7 @@ public final class ExpandTypeForListVMs extends ExpandableStringEnum<ExpandTypeF
 
     /**
      * Gets known ExpandTypeForListVMs values.
-     *
+     * 
      * @return known ExpandTypeForListVMs values.
      */
     public static Collection<ExpandTypeForListVMs> values() {
